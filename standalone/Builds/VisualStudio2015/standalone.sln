@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2015
+Project("{9A32AFA1-FB2C-7115-04F4-50F71BF175DC}") = "standalone", "standalone.vcxproj", "{2FDDFA81-B1A0-0DF7-6454-C99EF37BB2A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FDDFA81-B1A0-0DF7-6454-C99EF37BB2A0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2FDDFA81-B1A0-0DF7-6454-C99EF37BB2A0}.Debug|Win32.Build.0 = Debug|Win32
+		{2FDDFA81-B1A0-0DF7-6454-C99EF37BB2A0}.Release|Win32.ActiveCfg = Release|Win32
+		{2FDDFA81-B1A0-0DF7-6454-C99EF37BB2A0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

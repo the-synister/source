@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2015
+Project("{AB2999AD-D830-4CF2-E868-F8D669A52DB7}") = "plugin", "plugin.vcxproj", "{4B9D69C4-9E05-08A8-7553-64F62E413FDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B9D69C4-9E05-08A8-7553-64F62E413FDE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B9D69C4-9E05-08A8-7553-64F62E413FDE}.Debug|Win32.Build.0 = Debug|Win32
+		{4B9D69C4-9E05-08A8-7553-64F62E413FDE}.Release|Win32.ActiveCfg = Release|Win32
+		{4B9D69C4-9E05-08A8-7553-64F62E413FDE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

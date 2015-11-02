@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.0"
+              bundleIdentifier="de.tu-berlin.qu.synth.standalone" includeBinaryInAppConfig="1"
+              jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
+  <MAINGROUP id="rEFqQd" name="standalone">
+    <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
+      <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
+        <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
+        <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
+        <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
+        <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
+        <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
+      </GROUP>
+      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
+            file="../gui/PluginEditor.cpp"/>
+      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
+      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
+      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
+    </GROUP>
+    <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
+      <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
+        <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
+        <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
+              file="../audio/inc/PluginProcessor.h"/>
+        <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
+      </GROUP>
+      <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
+              file="../audio/src/PluginProcessor.cpp"/>
+        <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{B6EB776B-361D-4B6D-78CE-6CBB411F59E1}" name="Source">
+      <FILE id="t7mYjz" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="JucePlugin_Name=&quot;QUSynth&quot;">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="10.10 SDK" osxCompatibility="10.10 SDK"
+                       osxArchitecture="32BitUniversal" isDebug="1" optimisation="1"
+                       targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath=""/>
+        <CONFIGURATION name="Release" osxSDK="10.10 SDK" osxCompatibility="10.10 SDK"
+                       osxArchitecture="32BitUniversal" isDebug="0" optimisation="3"
+                       targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath=""/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../juce/modules"/>
+        <MODULEPATH id="juce_video" path="../juce/modules"/>
+        <MODULEPATH id="juce_opengl" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;QUSynth&quot;">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath=""/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath=""/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../juce/modules"/>
+        <MODULEPATH id="juce_events" path="../juce/modules"/>
+        <MODULEPATH id="juce_graphics" path="../juce/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../juce/modules"/>
+        <MODULEPATH id="juce_video" path="../juce/modules"/>
+        <MODULEPATH id="juce_opengl" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
+      </MODULEPATHS>
+    </VS2015>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
