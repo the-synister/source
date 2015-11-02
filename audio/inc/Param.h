@@ -7,12 +7,12 @@
 class Param {
 public:
     Param(const String &name, const String &unit, float minval, float maxval, float defaultval)
-        : name_(name)
-        , unit_(unit)
-        , min_(minval)
-        , max_(maxval)
-        , default_(defaultval)
-        , val_(defaultval)
+    : val_(defaultval)
+    , min_(minval)
+    , max_(maxval)
+    , default_(defaultval)
+    , name_(name)
+    , unit_(unit)
     {}
 
     const String& name() const { return name_; }

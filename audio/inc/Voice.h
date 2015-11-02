@@ -17,7 +17,7 @@ struct Waveforms {
 };
 
 
-template<typename float(*_waveform)(float)>
+template<float(*_waveform)(float)>
 struct Oscillator {
     float phase;
     float phaseDelta;
@@ -159,6 +159,8 @@ protected:
 
 
 private:
+    SynthParams &params;
+
     Oscillator<&Waveforms::square> osc1;
 
     Oscillator<&Waveforms::sinus> lfo1;
@@ -167,7 +169,6 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
 
-	SynthParams &params;
 };
 
 

@@ -38,13 +38,12 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="JucePlugin_Name=&quot;QUSynth&quot;">
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="10.10 SDK" osxCompatibility="10.10 SDK"
-                       osxArchitecture="32BitUniversal" isDebug="1" optimisation="1"
-                       targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="32BitUniversal"
+                       isDebug="1" optimisation="1" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
-        <CONFIGURATION name="Release" osxSDK="10.10 SDK" osxCompatibility="10.10 SDK"
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
                        osxArchitecture="32BitUniversal" isDebug="0" optimisation="3"
                        targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>

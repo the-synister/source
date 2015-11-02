@@ -4,3 +4,6 @@ Debug/
 *.suo
 *.opensdf
 /docs/
+.DS_Store
+xcuserdata/
+project.xcworkspace/

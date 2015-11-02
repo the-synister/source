@@ -26,7 +26,12 @@ PluginAudioProcessor::~PluginAudioProcessor()
 //==============================================================================
 const String PluginAudioProcessor::getName() const
 {
+#ifdef JucePlugin_Name
     return JucePlugin_Name;
+#else
+    // standalone
+    return "plugin";
+#endif
 }
 
 const String PluginAudioProcessor::getInputChannelName (int channelIndex) const
