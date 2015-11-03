@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_17F31DC76882C8CC__
-#define __JUCE_HEADER_17F31DC76882C8CC__
+#ifndef __JUCE_HEADER_B8FE7FA7A346D8E2__
+#define __JUCE_HEADER_B8FE7FA7A346D8E2__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,12 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PlugUI  : public Component,
-                public SliderListener
+class EnvPanel  : public Component
 {
 public:
     //==============================================================================
-    PlugUI (SynthParams &p);
-    ~PlugUI();
+    EnvPanel (SynthParams &p);
+    ~EnvPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -49,7 +48,6 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -59,18 +57,13 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> label;
-    ScopedPointer<Slider> freq;
-    ScopedPointer<MidiKeyboardComponent> keyboard;
-    ScopedPointer<TabbedComponent> tabs;
-    ScopedPointer<Label> label2;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_17F31DC76882C8CC__
+#endif   // __JUCE_HEADER_B8FE7FA7A346D8E2__
