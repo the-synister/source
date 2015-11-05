@@ -24,7 +24,7 @@
 //[/Headers]
 
 #include "PlugUI.h"
-
+#include "MouseOverKnob.h"
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
@@ -44,10 +44,15 @@ PlugUI::PlugUI (SynthParams &p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (freq = new Slider ("frequency"));
+
+
+	addAndMakeVisible(label2 = new Label("new label",
+		TRANS("master tune")));
+
+    addAndMakeVisible (freq = new MouseOverKnob("frequency", params, label2));
     freq->setRange (220, 880, 0);
-    freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    freq->setSliderStyle (MouseOverKnob::RotaryVerticalDrag);
+    freq->setTextBoxStyle (MouseOverKnob::TextBoxBelow, false, 64, 20);
     freq->addListener (this);
 
     addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
@@ -64,23 +69,19 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
     tabs->setCurrentTabIndex (0);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("master tune")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    
 
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
-    freq->setTextValueSuffix(String(" ") + params.freq.unit());
+	freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
+
+	// hide textbox and add listener
+	freq->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
     //[/UserPreSize]
 
     setSize (800, 600);
-
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
@@ -110,7 +111,7 @@ void PlugUI::paint (Graphics& g)
 
     g.fillAll (Colours::white);
 
-    //[UserPaint] Add your own custom painting code here..
+    //[UserPaint] Add your own custom painting code here..	
     //[/UserPaint]
 }
 
@@ -123,7 +124,7 @@ void PlugUI::resized()
     freq->setBounds (726, 32, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
-    label2->setBounds (726, 8, 64, 16);
+	label2->attachToComponent(freq, false);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -143,8 +144,6 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
 }
-
-
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 //[/MiscUserCode]
