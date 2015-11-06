@@ -33,7 +33,6 @@ private:
 	SynthParams &params;
 	Label* knobLabel;
 	String knobName;
-	bool drawLabelText = false;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED
