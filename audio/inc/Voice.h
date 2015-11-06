@@ -71,8 +71,16 @@ public:
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
-        lfo1.phase = 0.f;
-        lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+		if (params.lfo1wave.get() == 0)
+		{
+			lfo1sine.phase = 0.f;
+			lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+		} 
+		else
+		{
+			lfo1square.phase = 0.f;
+			lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+		}
         
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
@@ -93,7 +101,8 @@ public:
         {
             // we're being told to stop playing immediately, so reset everything..
             clearCurrentNote();
-            lfo1.reset();
+            lfo1sine.reset();
+			lfo1square.reset();
             osc1.reset();
         }
     }
@@ -114,7 +123,7 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
-        if(lfo1.isActive())
+        if(lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
             {
@@ -129,7 +138,8 @@ public:
                     if (tailOff <= 0.005f)
                     {
                         clearCurrentNote(); 
-                        lfo1.reset();
+                        lfo1sine.reset();
+						lfo1square.reset();
                         break;
                     }
                 }
@@ -151,10 +161,20 @@ protected:
         //! \todo add pitch wheel values
 
         const float modAmount = params.osc1lfo1depth.get();
-        for (int s = 0; s < numSamples;++s)
-        {
-            pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount));
-        }
+		if (params.lfo1wave.get() == 0)
+		{
+			for (int s = 0; s < numSamples;++s)
+			{
+				pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount));
+			}
+		}
+		else
+		{
+			for (int s = 0; s < numSamples;++s)
+			{
+				pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount));
+			}
+		}
     }
 
 
@@ -163,7 +183,8 @@ private:
 
     Oscillator<&Waveforms::square> osc1;
 
-    Oscillator<&Waveforms::sinus> lfo1;
+    Oscillator<&Waveforms::sinus> lfo1sine;
+    Oscillator<&Waveforms::square> lfo1square;
 
     float level, tailOff;
 
