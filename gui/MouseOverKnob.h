@@ -11,31 +11,29 @@
 #ifndef MOUSEOVERKNOB_H_INCLUDED
 #define MOUSEOVERKNOB_H_INCLUDED
 
-//[Headers]     -- You can add your own extra header files here --
+//[Headers]
 #include "JuceHeader.h"
 #include "SynthParams.h"
 //[/Headers]
 
-class MouseOverKnob : public Slider, public LabelListener
+class MouseOverKnob : public Slider, 
+					  public LabelListener
 {
 public:
 	//==============================================================================
 	MouseOverKnob(const String& knobName, SynthParams &p, Label *label);
 	~MouseOverKnob();
 	//==============================================================================
-	//[UserMethods]     -- You can add your own custom methods in this section.
-	void paint(Graphics& g);
 
+	void paint(Graphics& g);
 	void labelTextChanged(Label* labelTextChanged);
-	//[/UserMethods]
+	void mouseDoubleClick(const MouseEvent &e);
 
 private:
-	//[UserVariables]   -- You can add your own custom variables in this section.
 	SynthParams &params;
 	Label* knobLabel;
 	String knobName;
 	bool drawLabelText = false;
-	//[/UserVariables]
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

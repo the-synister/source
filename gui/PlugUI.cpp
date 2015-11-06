@@ -44,15 +44,17 @@ PlugUI::PlugUI (SynthParams &p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-
-
 	addAndMakeVisible(label2 = new Label("new label",
 		TRANS("master tune")));
+	label2->setFont(Font(15.00f, Font::plain));
+	label2->setJustificationType(Justification::centred);
+	label2->setEditable(false, false, false);
+	label2->setColour(TextEditor::textColourId, Colours::black);
+	label2->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
 
     addAndMakeVisible (freq = new MouseOverKnob("frequency", params, label2));
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (MouseOverKnob::RotaryVerticalDrag);
-    freq->setTextBoxStyle (MouseOverKnob::TextBoxBelow, false, 64, 20);
     freq->addListener (this);
 
     addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
@@ -69,16 +71,10 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
     tabs->setCurrentTabIndex (0);
 
-    
-
-
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
 	freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
-
-	// hide textbox and add listener
-	freq->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
     //[/UserPreSize]
 
     setSize (800, 600);

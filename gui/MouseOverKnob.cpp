@@ -10,30 +10,31 @@
 
 #include "MouseOverKnob.h"
 
+//==============================================================================
 MouseOverKnob::MouseOverKnob(const String& name, SynthParams &p, Label *label)
 	: Slider(name), params(p), knobName(label->getText()){
+
 	knobLabel = label;
+
+	// add listener to label
 	label->addListener(this);
-	label->setFont(Font(15.00f, Font::plain));
-	label->setJustificationType(Justification::centred);
-	label->setEditable(false, true, false); // set label as editable on double click
-	label->setColour(TextEditor::textColourId, Colours::black);
-	label->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+	label->addMouseListener(this, true);
+
+	// default is NoTextBox
+	this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
 }
 
-MouseOverKnob::~MouseOverKnob() {
-	knobLabel = nullptr;
-}
+MouseOverKnob::~MouseOverKnob() {}
+//==============================================================================
 
 void MouseOverKnob::paint(Graphics& g) {
-	
-	
+
+	// only if mouse is over or dragging the slider then show current value
 	if (this->isMouseOverOrDragging()) 
 	{
-		knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::sendNotification);
-		//freq->setTextBoxStyle(MouseOverKnob::TextBoxAbove, false, 64, 20);
-		//label2->setVisible(false);
-		drawLabelText = true;
+		if (!knobLabel->isBeingEdited()) {
+			knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::sendNotification);
+		}
 	}
 	else
 	{
@@ -41,12 +42,27 @@ void MouseOverKnob::paint(Graphics& g) {
 			knobLabel->setText(knobName, NotificationType::sendNotification);
 			drawLabelText = false;
 		}
-		//freq->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
-		//label2->setVisible(true);
 	}
+
+	// if not superClass paint() is called then slider image is not drawn
 	__super::paint(g);
 }
 
+/**
+* If slider is clicked then values can be edited manually
+*/
+void MouseOverKnob::mouseDoubleClick(const MouseEvent &e) {
+
+	if (e.eventComponent == this) {
+		knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::sendNotification);
+		knobLabel->showEditor();
+	}
+}
+
+/**
+* After editing the label, the values are checked.
+* If they are in range then value is set else do nothing.
+*/
 void MouseOverKnob::labelTextChanged(Label* labelTextChanged) {
 
 	if (atof((labelTextChanged->getText().toUTF8())) >= this->getMinimum() && atof((labelTextChanged->getText().toUTF8())) <= this->getMaximum()) {
