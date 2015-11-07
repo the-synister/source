@@ -52,7 +52,7 @@ PlugUI::PlugUI (SynthParams &p)
 	label2->setColour(TextEditor::textColourId, Colours::black);
 	label2->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
 
-    addAndMakeVisible (freq = new MouseOverKnob("frequency", params, label2));
+    addAndMakeVisible (freq = new MouseOverKnob("frequency", label2));
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (MouseOverKnob::RotaryVerticalDrag);
     freq->addListener (this);

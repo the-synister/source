@@ -11,8 +11,8 @@
 #include "MouseOverKnob.h"
 
 //==============================================================================
-MouseOverKnob::MouseOverKnob(const String& name, SynthParams &p, Label *label)
-	: Slider(name), params(p), knobName(label->getText())
+MouseOverKnob::MouseOverKnob(const String& name, Label *label)
+	: Slider(name), knobName(label->getText())
 {
 	knobLabel = label;
 
@@ -34,7 +34,7 @@ void MouseOverKnob::paint(Graphics& g)
 	{
 		if (!knobLabel->isBeingEdited()) 
 		{
-			knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::dontSendNotification);
+			knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
 		}
 	}
 	else
@@ -53,7 +53,7 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
 	if (e.eventComponent == this) 
 	{
-		knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::dontSendNotification);
+		knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
 		knobLabel->showEditor();
 	}
 }
@@ -76,7 +76,7 @@ void MouseOverKnob::labelTextChanged(Label* labelTextChanged)
 		} 
 		else 
 		{
-			knobLabel->setText((String)static_cast<float>(this->getValue()) + String(" ") + params.freq.unit(), NotificationType::dontSendNotification);
+			knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
 		}
 	}
 }

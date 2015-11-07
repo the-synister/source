@@ -13,7 +13,6 @@
 
 //[Headers]
 #include "JuceHeader.h"
-#include "SynthParams.h"
 //[/Headers]
 
 class MouseOverKnob : public Slider, 
@@ -21,7 +20,7 @@ class MouseOverKnob : public Slider,
 {
 public:
 	//==============================================================================
-	MouseOverKnob(const String& knobName, SynthParams &p, Label *label);
+	MouseOverKnob(const String& knobName, Label *label);
 	~MouseOverKnob();
 	//==============================================================================
 
@@ -30,7 +29,6 @@ public:
 	void mouseDoubleClick(const MouseEvent &e);
 
 private:
-	SynthParams &params;
 	Label* knobLabel;
 	String knobName;
 };
