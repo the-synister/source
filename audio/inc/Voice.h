@@ -114,13 +114,32 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
+        
+        //Filter initialisation
+        const float currentLowcutFreq = params.lpCutoff.get();
+        
+        float lastSample = 0;
+        
+        const float sRate = static_cast<float>(getSampleRate());
+        
+        double costh, coef;
+        const float pi = 3.141593;
+        
+        costh = 2. - cos(2*pi*currentLowcutFreq/sRate);
+        coef = sqrt(costh*costh - 1.) - costh;
+        
         if(lfo1.isActive())
         {
             if (tailOff > 0.f)
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+
+                    //Lowpass Filter
+                    currentSample = (float)(currentSample*(1 + coef) - lastSample*coef);
+                    lastSample = currentSample;
+
 
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
@@ -138,12 +157,17 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    
+                    currentSample = (float)(currentSample*(1 + coef) - lastSample*coef);
+                    lastSample = currentSample;
+                    
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
                 }
             }
         }
+        
     }
 
 protected:
@@ -157,6 +181,8 @@ protected:
         }
     }
 
+
+    
 
 private:
     SynthParams &params;
