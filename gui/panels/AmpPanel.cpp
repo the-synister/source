@@ -128,7 +128,7 @@ void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == pan)
     {
         //[UserSliderCode_pan] -- add your slider handling code here..
-		params.panDir.setUI(static_cast<float>(pan->getValue()));
+        params.panDir.setUI(static_cast<float>(pan->getValue()));
         //[/UserSliderCode_pan]
     }
 
