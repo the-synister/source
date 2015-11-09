@@ -129,14 +129,15 @@ public:
                         //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
                         const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
 
-                        //Assuming we are working with 2 channels (0-Left Channel, 1-Right Channel)
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-
-                        /**
-                        for(int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                            outputBuffer.addSample(c, startSample + s, currentSample);
-                        **/
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
 
                         tailOff *= 0.99999f;
                         if (tailOff <= 0.005f)
@@ -154,13 +155,15 @@ public:
                         //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
                         const float currentSample = (osc1.next(pitchMod[s])) * level;
 
-                        //Assuming we are working with 2 channels (0-Left Channel, 1-Right Channel)
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                        /**
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
                             for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                                outputBuffer.addSample(c, startSample + s, currentSample);
-                        **/
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
                     }
                 }
         }
