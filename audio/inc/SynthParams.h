@@ -13,6 +13,7 @@ public:
     Param lfo1freq; //!< lfo frequency in Hz
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
+	Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
     ParamDb vol; //!< volume in [0..1]
