@@ -20,29 +20,38 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "AmpPanel.h"
+#include "EnvPanel.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-AmpPanel::AmpPanel (SynthParams &p)
+EnvPanel::EnvPanel (SynthParams &p)
     : params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (amp = new Slider ("amp"));
-    amp->setRange (-96, 12, 0);
-    amp->setSliderStyle (Slider::LinearVertical);
-    amp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    amp->addListener (this);
+    addAndMakeVisible (decay = new Slider ("Decay"));
+    decay->setRange (0.0001, 0.9999, 0);
+    decay->setSliderStyle (Slider::RotaryVerticalDrag);
+    decay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    decay->addListener (this);
+
+    addAndMakeVisible (label = new Label ("decay label",
+                                          TRANS("decay")));
+    label->setFont (Font (15.00f, Font::plain));
+    label->setJustificationType (Justification::centred);
+    label->setEditable (false, false, false);
+    label->setColour (TextEditor::textColourId, Colours::black);
+    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
-    amp->setValue(params.vol.getUI());
-    amp->setTextValueSuffix(String(" ") + params.vol.unit());
+    decay->setValue(params.decayFac.getUI());
+    decay->setTextValueSuffix(String(" ") + params.decayFac.unit());
+
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -52,12 +61,13 @@ AmpPanel::AmpPanel (SynthParams &p)
     //[/Constructor]
 }
 
-AmpPanel::~AmpPanel()
+EnvPanel::~EnvPanel()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    amp = nullptr;
+    decay = nullptr;
+    label = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -65,7 +75,7 @@ AmpPanel::~AmpPanel()
 }
 
 //==============================================================================
-void AmpPanel::paint (Graphics& g)
+void EnvPanel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
@@ -76,26 +86,27 @@ void AmpPanel::paint (Graphics& g)
     //[/UserPaint]
 }
 
-void AmpPanel::resized()
+void EnvPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    amp->setBounds (8, 32, 64, 128);
+    decay->setBounds (8, 32, 64, 64);
+    label->setBounds (8, 8, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
 
-void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
+void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == amp)
+    if (sliderThatWasMoved == decay)
     {
-        //[UserSliderCode_amp] -- add your slider handling code here..
-        params.vol.setUI(static_cast<float>(amp->getValue()));
-        //[/UserSliderCode_amp]
+        //[UserSliderCode_decay] -- add your slider handling code here..
+        params.decayFac.setUI(static_cast<float>(decay->getValue()));
+        //[/UserSliderCode_decay]
     }
 
     //[UsersliderValueChanged_Post]
@@ -117,16 +128,22 @@ void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="AmpPanel" componentName=""
+<JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
                  parentClasses="public Component" constructorParams="SynthParams &amp;p"
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 128" min="-96" max="12" int="0"
-          style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Decay" id="d136f7fae1b8db84" memberName="decay" virtualName=""
+          explicitFocusOrder="0" pos="8 32 64 64" min="0.00010000000000000000479"
+          max="0.99990000000000001101" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="decay label" id="2d8c58beff3e29a9" memberName="label" virtualName=""
+         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
+         labelText="decay" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

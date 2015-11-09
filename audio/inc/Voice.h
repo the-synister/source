@@ -70,12 +70,14 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
-
+        
         lfo1.phase = 0.f;
         lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+        
+        
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -92,6 +94,7 @@ public:
         else
         {
             // we're being told to stop playing immediately, so reset everything..
+            
             clearCurrentNote();
             lfo1.reset();
             osc1.reset();
@@ -125,7 +128,8 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
 
-                    tailOff *= 0.99999f;
+                    tailOff *= params.decayFac.get();
+                    //tailOff *= 0.99999f;
                     if (tailOff <= 0.005f)
                     {
                         clearCurrentNote(); 
