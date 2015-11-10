@@ -28,7 +28,7 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -63,10 +63,8 @@ OscPanel::OscPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    ftune1->setValue(params.osc1fine.getUI());
-    ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
-    lfo1depth1->setValue(params.osc1lfo1depth.getUI());
-    lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
+    registerSlider(ftune1, &params.osc1fine);
+    registerSlider(lfo1depth1, &params.osc1lfo1depth);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -119,18 +117,17 @@ void OscPanel::resized()
 void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == ftune1)
     {
         //[UserSliderCode_ftune1] -- add your slider handling code here..
-        params.osc1fine.setUI(static_cast<float>(ftune1->getValue()));
         //[/UserSliderCode_ftune1]
     }
     else if (sliderThatWasMoved == lfo1depth1)
     {
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
-        params.osc1lfo1depth.setUI(static_cast<float>(lfo1depth1->getValue()));
         //[/UserSliderCode_lfo1depth1]
     }
 

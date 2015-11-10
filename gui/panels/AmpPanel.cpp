@@ -28,7 +28,7 @@
 
 //==============================================================================
 AmpPanel::AmpPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -89,12 +89,12 @@ void AmpPanel::resized()
 void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == amp)
     {
         //[UserSliderCode_amp] -- add your slider handling code here..
-        params.vol.setUI(static_cast<float>(amp->getValue()));
         //[/UserSliderCode_amp]
     }
 

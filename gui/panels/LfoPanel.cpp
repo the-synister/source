@@ -28,7 +28,7 @@
 
 //==============================================================================
 LfoPanel::LfoPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -49,8 +49,7 @@ LfoPanel::LfoPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    freq->setValue(params.lfo1freq.getUI());
-    freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
+    registerSlider(freq, &params.lfo1freq);
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     //[/UserPreSize]
 
@@ -100,12 +99,12 @@ void LfoPanel::resized()
 void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == freq)
     {
         //[UserSliderCode_freq] -- add your slider handling code here..
-        params.lfo1freq.setUI(static_cast<float>(freq->getValue()));
         //[/UserSliderCode_freq]
     }
 

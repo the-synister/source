@@ -7,6 +7,7 @@
 class SynthParams {
 public:
     SynthParams();
+    ~SynthParams();
 
     Param freq;  //!< master tune in Hz
 

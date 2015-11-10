@@ -28,7 +28,7 @@
 
 //==============================================================================
 EnvPanel::EnvPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
