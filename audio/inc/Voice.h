@@ -48,12 +48,12 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-	: params(p) 
+    Voice(SynthParams &p, int blockSize)
+    : params(p)
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
-	{}
+    {}
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -73,7 +73,7 @@ public:
 
         lfo1.phase = 0.f;
         lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
     }
@@ -193,5 +193,3 @@ private:
     AudioSampleBuffer pitchModBuffer;
 
 };
-
-
