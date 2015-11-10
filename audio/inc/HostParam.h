@@ -8,14 +8,14 @@
 template<typename _par>
 class HostParam : public AudioProcessorParameter, public Param::Listener {
 public:
-	HostParam(_par &p) : param(p) {
+    HostParam(_par &p) : param(p) {
         param.addListener(this);
     }
 
     ~HostParam() {
         param.removeListener(this);
     }
-	
+
     float getValue() const override {
         return engineToHost(param.getUI());
     }
@@ -24,7 +24,7 @@ public:
         jassert(newValue >= 0.f && newValue <= 1.f);
         param.setHost(hostToEngine(newValue));
     }
-	
+
     virtual float getDefaultValue() const override {
         return engineToHost(param.getDefault());
     }
@@ -58,6 +58,5 @@ protected:
         return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
     }
 
-	_par &param;
+    _par &param;
 };
-

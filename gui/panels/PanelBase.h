@@ -51,4 +51,3 @@ protected:
     std::map<Slider*, Param*> sliderReg;
     SynthParams &params;
 };
-
