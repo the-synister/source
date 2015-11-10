@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# A git hook script to find and fix trailing whitespace
+# in your commits. Bypass it with the --no-verify option
+# to git-commit
+
+# detect platform
+platform="win"
+uname_result=`uname`
+if [ "$uname_result" = "Linux" ]; then
+  platform="linux"
+elif [ "$uname_result" = "Darwin" ]; then
+  platform="mac"
+fi
+
+if [ "$platform" = "mac" ]; then
+  echo “convert eol to LF”
+  juce/Introjucer.app/Contents/MacOS/Introjucer --trim-whitespace Source
+  juce/Introjucer.app/Contents/MacOS/Introjucer --remove-tabs Source
+elif [ "$platform" = "win" ]; then
+  echo “convert eol to CRLF”
+  juce/The\ Introjucer.exe --trim-whitespace Source
+  juce/The\ Introjucer.exe --remove-tabs Source
+fi  
+
+exit
