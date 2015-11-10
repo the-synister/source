@@ -11,14 +11,20 @@
 #include "MouseOverKnob.h"
 
 //==============================================================================
-MouseOverKnob::MouseOverKnob(const String& name, Label *label)
-	: Slider(name), knobName(label->getText())
+MouseOverKnob::MouseOverKnob(const String& name, String labelName): Slider(name)
 {
-	knobLabel = label;
+	knobName = labelName;
 
-	// add listener to label
-	label->addListener(this);
-	label->addMouseListener(this, true);
+	addAndMakeVisible(knobLabel = new Label("new label", TRANS(knobName)));
+	knobLabel->setFont(Font(15.00f, Font::plain));
+	knobLabel->setJustificationType(Justification::centred);
+	knobLabel->setEditable(false, false, false);
+	knobLabel->setColour(TextEditor::textColourId, Colours::black);
+	knobLabel->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+	knobLabel->attachToComponent(this, false);
+
+	knobLabel->addListener(this);
+	knobLabel->addMouseListener(this, false);
 
 	// default is NoTextBox
 	this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
@@ -27,23 +33,28 @@ MouseOverKnob::MouseOverKnob(const String& name, Label *label)
 MouseOverKnob::~MouseOverKnob() {}
 //==============================================================================
 
-void MouseOverKnob::paint(Graphics& g) 
+/**
+*
+*/
+void MouseOverKnob::mouseEnter(const MouseEvent &e)
 {
-	// only if mouse is over or dragging the slider then show current value
-	if (this->isMouseOverOrDragging()) 
+	if (e.eventComponent == this || e.eventComponent == knobLabel)
 	{
-		if (!knobLabel->isBeingEdited()) 
-		{
-			knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
-		}
+		knobLabel->setVisible(false);
+        this->setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, 64, 20);
 	}
-	else
-	{
-		knobLabel->setText(knobName, NotificationType::dontSendNotification);
-	}
+}
 
-	// if not superClass paint() is called then slider image is not drawn
-	__super::paint(g);
+/**
+*
+*/
+void MouseOverKnob::mouseExit(const MouseEvent &e)
+{
+	if (e.eventComponent == this || e.eventComponent == knobLabel)
+	{
+		knobLabel->setVisible(true);
+		this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, 64, 20);
+	}
 }
 
 /**
@@ -51,10 +62,9 @@ void MouseOverKnob::paint(Graphics& g)
 */
 void MouseOverKnob::mouseDoubleClick(const MouseEvent &e) 
 {
-	if (e.eventComponent == this) 
+	if (e.eventComponent == this || e.eventComponent == knobLabel)
 	{
-		knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
-		knobLabel->showEditor();
+		this->showTextBox();
 	}
 }
 
@@ -64,19 +74,4 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 */
 void MouseOverKnob::labelTextChanged(Label* labelTextChanged) 
 {
-	if (atof((labelTextChanged->getText().toUTF8())) >= this->getMinimum() && atof((labelTextChanged->getText().toUTF8())) <= this->getMaximum()) 
-	{
-		this->setValue(atof((labelTextChanged->getText().toUTF8())));
-	}
-	else 
-	{
-		if (!this->isMouseOverOrDragging())
-		{
-			knobLabel->setText(knobName, NotificationType::dontSendNotification);
-		} 
-		else 
-		{
-			knobLabel->setText((String)static_cast<float>(this->getValue()) + this->getTextValueSuffix(), NotificationType::dontSendNotification);
-		}
-	}
 }

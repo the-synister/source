@@ -20,16 +20,17 @@ class MouseOverKnob : public Slider,
 {
 public:
 	//==============================================================================
-	MouseOverKnob(const String& knobName, Label *label);
+	MouseOverKnob(const String& name, String labelName);
 	~MouseOverKnob();
 	//==============================================================================
 
-	void paint(Graphics& g);
 	void labelTextChanged(Label* labelTextChanged);
+	void mouseEnter(const MouseEvent &e);
+	void mouseExit(const MouseEvent &e);
 	void mouseDoubleClick(const MouseEvent &e);
 
 private:
-	Label* knobLabel;
+	ScopedPointer<Label> knobLabel;
 	String knobName;
 };
 

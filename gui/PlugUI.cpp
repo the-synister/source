@@ -30,73 +30,76 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-PlugUI::PlugUI (SynthParams &p)
-    : params(p)
+PlugUI::PlugUI(SynthParams &p)
+	: params(p)
 {
-    //[Constructor_pre] You can add your own custom stuff here..
-    //[/Constructor_pre]
+	//[Constructor_pre] You can add your own custom stuff here..
+	//[/Constructor_pre]
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("synth plugin")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+	addAndMakeVisible(label = new Label("new label",
+		TRANS("synth plugin")));
+	label->setFont(Font(15.00f, Font::plain));
+	label->setJustificationType(Justification::centredLeft);
+	label->setEditable(false, false, false);
+	label->setColour(TextEditor::textColourId, Colours::black);
+	label->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+
+	addAndMakeVisible(freq = new MouseOverKnob("frequency", "master tune"));
+	freq->setRange(220, 880, 0);
+	freq->setSliderStyle(Slider::RotaryVerticalDrag);
+	freq->setTextBoxStyle(Slider::NoTextBox, false, 64, 20);
+	freq->addListener(this);
+
+	addAndMakeVisible(keyboard = new MidiKeyboardComponent(params.keyboardState,
+		MidiKeyboardComponent::horizontalKeyboard));
+	keyboard->setName("midi keyboard");
+
+	addAndMakeVisible(tabs = new TabbedComponent(TabbedButtonBar::TabsAtTop));
+	tabs->setTabBarDepth(30);
+	tabs->addTab(TRANS("OSC"), Colours::lightgrey, new OscPanel(params), true);
+	tabs->addTab(TRANS("LFO"), Colours::lightgrey, new LfoPanel(params), true);
+	tabs->addTab(TRANS("ENV"), Colours::lightgrey, 0, false);
+	tabs->addTab(TRANS("FILT"), Colours::lightgrey, 0, false);
+	tabs->addTab(TRANS("AMP"), Colours::lightgrey, new AmpPanel(params), true);
+	tabs->addTab(TRANS("FX"), Colours::lightgrey, 0, false);
+	tabs->setCurrentTabIndex(0);
 
 	addAndMakeVisible(label2 = new Label("new label",
-		TRANS("master tune")));
+		TRANS("")));
 	label2->setFont(Font(15.00f, Font::plain));
 	label2->setJustificationType(Justification::centred);
 	label2->setEditable(false, false, false);
 	label2->setColour(TextEditor::textColourId, Colours::black);
 	label2->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
 
-    addAndMakeVisible (freq = new MouseOverKnob("frequency", label2));
-    freq->setRange (220, 880, 0);
-    freq->setSliderStyle (MouseOverKnob::RotaryVerticalDrag);
-    freq->addListener (this);
 
-    addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
-                                                             MidiKeyboardComponent::horizontalKeyboard));
-    keyboard->setName ("midi keyboard");
-
-    addAndMakeVisible (tabs = new TabbedComponent (TabbedButtonBar::TabsAtTop));
-    tabs->setTabBarDepth (30);
-    tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
-    tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
-    tabs->addTab (TRANS("ENV"), Colours::lightgrey, 0, false);
-    tabs->addTab (TRANS("FILT"), Colours::lightgrey, 0, false);
-    tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
-    tabs->setCurrentTabIndex (0);
-
-    //[UserPreSize]
-    freq->setValue(params.freq.getUI());
+	//[UserPreSize]
+	freq->setValue(params.freq.getUI());
 	freq->setTextValueSuffix(String(" ") + params.freq.unit());
-    freq->setSkewFactorFromMidPoint(params.freq.getDefault());
-    //[/UserPreSize]
+	freq->setSkewFactorFromMidPoint(params.freq.getDefault());
+	//[/UserPreSize]
 
-    setSize (800, 600);
+	setSize(800, 600);
 
-    //[Constructor] You can add your own custom stuff here..
-    //[/Constructor]
+
+	//[Constructor] You can add your own custom stuff here..
+	//[/Constructor]
 }
 
 PlugUI::~PlugUI()
 {
-    //[Destructor_pre]. You can add your own custom destruction code here..
-    //[/Destructor_pre]
+	//[Destructor_pre]. You can add your own custom destruction code here..
+	//[/Destructor_pre]
 
-    label = nullptr;
-    freq = nullptr;
-    keyboard = nullptr;
-    tabs = nullptr;
-    label2 = nullptr;
+	label = nullptr;
+	freq = nullptr;
+	keyboard = nullptr;
+	tabs = nullptr;
+	label2 = nullptr;
 
 
-    //[Destructor]. You can add your own custom destruction code here..
-    //[/Destructor]
+	//[Destructor]. You can add your own custom destruction code here..
+	//[/Destructor]
 }
 
 //==============================================================================
