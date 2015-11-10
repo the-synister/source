@@ -70,18 +70,13 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
-
-        if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
-        {
-            lfo1sine.phase = 0.f;
-            lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        } 
-        else // if lfo1wave is 1, lfo is set to square wave
-        {
-            lfo1square.phase = 0.f;
-            lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        }
-        
+            
+        // change the phases of both lfo waveforms, in case the user switches them during a note
+        lfo1sine.phase = 0.f;
+        lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1square.phase = 0.f;
+        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
     }
