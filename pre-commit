@@ -14,13 +14,9 @@ elif [ "$uname_result" = "Darwin" ]; then
 fi
 
 if [ "$platform" = "mac" ]; then
-  echo “convert eol to LF”
-  juce/Introjucer.app/Contents/MacOS/Introjucer --trim-whitespace Source
-  juce/Introjucer.app/Contents/MacOS/Introjucer --remove-tabs Source
+  ./fix-eol.sh
 elif [ "$platform" = "win" ]; then
-  echo “convert eol to CRLF”
-  juce/The\ Introjucer.exe --trim-whitespace Source
-  juce/The\ Introjucer.exe --remove-tabs Source
+  fix-eol.bat
 fi  
 
 exit
