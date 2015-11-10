@@ -57,4 +57,3 @@ public:
     void setUI(float f) { set(fromDb(f)); }
     float getUI() const { return toDb(get()); }
 };
-
