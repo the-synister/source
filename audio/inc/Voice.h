@@ -71,12 +71,12 @@ public:
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
-		if (params.lfo1wave.get() == 0)
+		if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
 		{
 			lfo1sine.phase = 0.f;
 			lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 		} 
-		else
+		else // if lfo1wave is 1, lfo is set to square wave
 		{
 			lfo1square.phase = 0.f;
 			lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
@@ -161,14 +161,14 @@ protected:
         //! \todo add pitch wheel values
 
         const float modAmount = params.osc1lfo1depth.get();
-		if (params.lfo1wave.get() == 0)
+		if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
 		{
 			for (int s = 0; s < numSamples;++s)
 			{
 				pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount));
 			}
 		}
-		else
+		else // if lfo1wave is 1, lfo is set to square wave
 		{
 			for (int s = 0; s < numSamples;++s)
 			{
