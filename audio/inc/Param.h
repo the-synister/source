@@ -89,4 +89,3 @@ public:
     }
     virtual float getUI() const override { return toDb(get()); }
 };
-
