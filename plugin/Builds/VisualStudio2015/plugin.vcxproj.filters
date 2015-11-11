@@ -358,6 +358,9 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1660,6 +1663,9 @@
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">
