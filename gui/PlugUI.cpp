@@ -65,7 +65,7 @@ PlugUI::PlugUI(SynthParams &p)
 	tabs->setCurrentTabIndex(0);
 
 	addAndMakeVisible(label2 = new Label("new label",
-		TRANS("")));
+		TRANS("master tune")));
 	label2->setFont(Font(15.00f, Font::plain));
 	label2->setJustificationType(Justification::centred);
 	label2->setEditable(false, false, false);
@@ -123,7 +123,7 @@ void PlugUI::resized()
     freq->setBounds (726, 32, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
-	label2->attachToComponent(freq, false);
+	//label2->attachToComponent(freq, false);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

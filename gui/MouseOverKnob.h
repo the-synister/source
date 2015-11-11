@@ -16,22 +16,24 @@
 //[/Headers]
 
 class MouseOverKnob : public Slider, 
-					  public LabelListener
+                      public ComponentListener
 {
 public:
 	//==============================================================================
-	MouseOverKnob(const String& name, String labelName);
+	MouseOverKnob(const String& name, String labelText, int width = 64, int height = 64);
 	~MouseOverKnob();
 	//==============================================================================
+    void resized();
+    void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized);
 
-	void labelTextChanged(Label* labelTextChanged);
-	void mouseEnter(const MouseEvent &e);
+    void mouseEnter(const MouseEvent &e);
 	void mouseExit(const MouseEvent &e);
 	void mouseDoubleClick(const MouseEvent &e);
+    void mouseDrag(const MouseEvent &e);
 
 private:
 	ScopedPointer<Label> knobLabel;
-	String knobName;
+    int width = 64, height = 64;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED
