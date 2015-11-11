@@ -18,14 +18,14 @@ MouseOverKnob::MouseOverKnob(const String& name, String labelText, int width, in
     this->width = width;
     this->height = height;
 
-	addAndMakeVisible(knobLabel = new Label("new label", TRANS(labelText)));
-	knobLabel->setFont(Font(15.00f, Font::plain));
-	knobLabel->setJustificationType(Justification::centred);
-	knobLabel->setEditable(false, false, false);
-	knobLabel->setColour(TextEditor::textColourId, Colours::black);
-	knobLabel->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+    addAndMakeVisible(knobLabel = new Label("new label", TRANS(labelText)));
+    knobLabel->setFont(Font(15.00f, Font::plain));
+    knobLabel->setJustificationType(Justification::centred);
+    knobLabel->setEditable(false, false, false);
+    knobLabel->setColour(TextEditor::textColourId, Colours::black);
+    knobLabel->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
 
-	knobLabel->attachToComponent(this, false);
+    knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
 }
 
@@ -39,11 +39,11 @@ MouseOverKnob::~MouseOverKnob() {
 */
 void MouseOverKnob::mouseEnter(const MouseEvent &e)
 {
-	if (e.eventComponent == this)
-	{
-		knobLabel->setVisible(false);
+    if (e.eventComponent == this)
+    {
+        knobLabel->setVisible(false);
         this->setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
-	}
+    }
 }
 
 /**
@@ -51,11 +51,11 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
 */
 void MouseOverKnob::mouseExit(const MouseEvent &e)
 {
-	if (e.eventComponent == this)
-	{
-		knobLabel->setVisible(true);
-		this->setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
-	}
+    if (e.eventComponent == this)
+    {
+        knobLabel->setVisible(true);
+        this->setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
+    }
 }
 
 /**
@@ -63,10 +63,10 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 */
 void MouseOverKnob::mouseDoubleClick(const MouseEvent &e) 
 {
-	if (e.eventComponent == this)
-	{
-		this->showTextBox();
-	}
+    if (e.eventComponent == this)
+    {
+        this->showTextBox();
+    }
 }
 
 /**

@@ -19,20 +19,20 @@ class MouseOverKnob : public Slider,
                       public ComponentListener
 {
 public:
-	//==============================================================================
-	MouseOverKnob(const String& name, String labelText, int width = 64, int height = 64);
-	~MouseOverKnob();
-	//==============================================================================
+    //==============================================================================
+    MouseOverKnob(const String& name, String labelText, int width = 64, int height = 64);
+    ~MouseOverKnob();
+    //==============================================================================
     void resized();
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized);
 
     void mouseEnter(const MouseEvent &e);
-	void mouseExit(const MouseEvent &e);
-	void mouseDoubleClick(const MouseEvent &e);
+    void mouseExit(const MouseEvent &e);
+    void mouseDoubleClick(const MouseEvent &e);
     void mouseDrag(const MouseEvent &e);
 
 private:
-	ScopedPointer<Label> knobLabel;
+    ScopedPointer<Label> knobLabel;
     int width = 64, height = 64;
 };
 
