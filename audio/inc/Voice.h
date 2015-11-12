@@ -48,8 +48,8 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize)
-    : params(p)
+    Voice(SynthParams &p, int blockSize) 
+    : params(p) 
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
@@ -70,10 +70,13 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
-
-        lfo1.phase = 0.f;
-        lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-
+            
+        // change the phases of both lfo waveforms, in case the user switches them during a note
+        lfo1sine.phase = 0.f;
+        lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1square.phase = 0.f;
+        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
     }
@@ -93,7 +96,8 @@ public:
         {
             // we're being told to stop playing immediately, so reset everything..
             clearCurrentNote();
-            lfo1.reset();
+            lfo1sine.reset();
+            lfo1square.reset();
             osc1.reset();
         }
     }
@@ -114,35 +118,59 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
-        if(lfo1.isActive())
+        const float currentPan = params.panDir.get();
+
+        // Pan Influence
+        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+        
+        if (lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
             {
-                for (int s = 0; s < numSamples;++s)
-                {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample (c, startSample+s, currentSample);
-
-                    tailOff *= 0.99999f;
-                    if (tailOff <= 0.005f)
+                    for (int s = 0; s < numSamples; ++s)
                     {
-                        clearCurrentNote();
-                        lfo1.reset();
-                        break;
+                        //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                        const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
+
+                        tailOff *= 0.99999f;
+                        if (tailOff <= 0.005f)
+                        {
+                            clearCurrentNote(); 
+                            lfo1sine.reset();
+                            lfo1square.reset();
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                for (int s = 0; s < numSamples;++s)
+                else
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample(c, startSample+s, currentSample);
+                    for (int s = 0; s < numSamples; ++s)
+                    {
+                        //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                        const float currentSample = (osc1.next(pitchMod[s])) * level;
+
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
+                    }
                 }
-            }
         }
     }
 
@@ -151,22 +179,34 @@ protected:
         //! \todo add pitch wheel values
 
         const float modAmount = params.osc1lfo1depth.get();
-        for (int s = 0; s < numSamples;++s)
+        if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
         {
-            pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount));
+            for (int s = 0; s < numSamples;++s)
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount));
+            }
+        }
+        else // if lfo1wave is 1, lfo is set to square wave
+        {
+            for (int s = 0; s < numSamples;++s)
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount));
+            }
         }
     }
-
 
 private:
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
 
-    Oscillator<&Waveforms::sinus> lfo1;
+    Oscillator<&Waveforms::sinus> lfo1sine;
+    Oscillator<&Waveforms::square> lfo1square;
 
     float level, tailOff;
 
     AudioSampleBuffer pitchModBuffer;
 
 };
+
+
