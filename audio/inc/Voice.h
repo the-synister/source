@@ -118,36 +118,59 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
-        if(lfo1square.isActive() || lfo1sine.isActive())
+        const float currentPan = params.panDir.get();
+
+        // Pan Influence
+        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+        
+        if (lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
             {
-                for (int s = 0; s < numSamples;++s)
-                {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample (c, startSample+s, currentSample);
-
-                    tailOff *= 0.99999f;
-                    if (tailOff <= 0.005f)
+                    for (int s = 0; s < numSamples; ++s)
                     {
-                        clearCurrentNote(); 
-                        lfo1sine.reset();
-                        lfo1square.reset();
-                        break;
+                        //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                        const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
+
+                        tailOff *= 0.99999f;
+                        if (tailOff <= 0.005f)
+                        {
+                            clearCurrentNote(); 
+                            lfo1sine.reset();
+                            lfo1square.reset();
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                for (int s = 0; s < numSamples;++s)
+                else
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample(c, startSample+s, currentSample);
+                    for (int s = 0; s < numSamples; ++s)
+                    {
+                        //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                        const float currentSample = (osc1.next(pitchMod[s])) * level;
+
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
+                    }
                 }
-            }
         }
     }
 
