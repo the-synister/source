@@ -144,6 +144,12 @@ public:
                 }
             }
         }
+        // once: 
+        // calc, init max buffer length
+        // loop:
+        // read output buffer
+        // write to delay buffer
+        // calc delay length
     }
 
 protected:
