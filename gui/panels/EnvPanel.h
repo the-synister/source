@@ -35,7 +35,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public Component
+class EnvPanel  : public Component,
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -48,6 +49,7 @@ public:
 
     void paint (Graphics& g);
     void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -57,6 +59,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<Slider> decay;
+    ScopedPointer<Label> label;
 
 
     //==============================================================================

@@ -134,7 +134,9 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
 
-                    tailOff *= 0.99999f;
+                    tailOff *= params.decayFac.get();
+                    //tailOff *= 0.99999f;
+
                     if (tailOff <= 0.005f)
                     {
                         clearCurrentNote(); 

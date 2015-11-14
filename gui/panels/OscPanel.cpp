@@ -110,7 +110,7 @@ void OscPanel::resized()
 
     ftune1->setBounds (8, 32, 64, 64);
     label->setBounds (8, 8, 64, 16);
-    lfo1depth1->setBounds (80, 32, 64, 64);
+    lfo1depth1->setBounds (88, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -169,7 +169,7 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-          virtualName="" explicitFocusOrder="0" pos="80 32 64 64" min="0"
+          virtualName="" explicitFocusOrder="0" pos="88 32 64 64" min="0"
           max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="d2ef03a114e2a714" memberName="label3" virtualName=""
