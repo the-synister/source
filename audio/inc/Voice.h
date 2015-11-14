@@ -52,8 +52,17 @@ public:
 	: params(p) 
     , level (0.f)
     , tailOff (0.f)
-    , pitchModBuffer(1,blockSize)
-	{}
+    , pitchModBuffer(1, blockSize)
+	{
+        maxDelayLengthInSamples = int(getSampleRate()) * 2;
+        delayBuffer = AudioSampleBuffer(2, maxDelayLengthInSamples);
+        delayBuffer.clear(0, 0, maxDelayLengthInSamples);
+        delayBuffer.clear(1, 0, maxDelayLengthInSamples);
+        delayIteratorIndex = 0;
+        delayFeedbackValue = 0.001f;
+        delayOffsetInSamples = int(44100/20);
+        delayDryWet = 1.f;
+    }
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -144,11 +153,21 @@ public:
                 }
             }
         }
-        // once: 
-        // calc, init max buffer length
-        // loop:
-        // read output buffer
-        // write to delay buffer
+        
+        // delay
+        copyRenderedBlockToDelayBuffer(outputBuffer);
+        outputBuffer.applyGain(0.5f);
+
+        for (int s = 0; s < numSamples; ++s)
+        {
+            float currentSample = 0.f;
+            for (int c = 0; c < outputBuffer.getNumChannels(); ++c){
+                currentSample = (outputBuffer.getSample(c, startSample + s) * 0.5 + 
+                    delayBuffer.getSample(c, (startSample + s + delayOffsetInSamples) ) * 0.5 * delayFeedbackValue );
+                    outputBuffer.clear(c,startSample,1);
+                    outputBuffer.addSample(c, startSample + s, currentSample);
+            }
+        }
         // calc delay length
     }
 
@@ -163,6 +182,29 @@ protected:
         }
     }
 
+    void copyRenderedBlockToDelayBuffer(const AudioSampleBuffer& bufferIn)
+    {
+        for (int s = 0; s < bufferIn.getNumSamples(); ++s)
+        {
+            
+            for (int c = 0; c < bufferIn.getNumChannels(); ++c)
+            {
+                delayBuffer.clear(c, 0, 1);
+                delayBuffer.addSample(c, getDelayIndex(0 + s + delayOffsetInSamples), bufferIn.getSample(c, 0 + s));
+            }
+        }
+
+        //for (int c = 0; c < bufferIn.getNumChannels(); ++c)
+          //  delayBuffer.copyFrom(c, 0, bufferIn.getReadPointer(c), bufferIn.getNumSamples()); wtf??!?!?
+    }
+    
+    int getDelayIndex(int indexIn)
+    {
+        if (indexIn > maxDelayLengthInSamples)
+            return indexIn - maxDelayLengthInSamples;
+        else
+            return indexIn;
+    }
 
 private:
     SynthParams &params;
@@ -174,7 +216,10 @@ private:
     float level, tailOff;
 
     AudioSampleBuffer pitchModBuffer;
-
+    AudioSampleBuffer delayBuffer;
+    int maxDelayLengthInSamples;
+    float delayFeedbackValue;
+    float delayDryWet;
+    int delayIteratorIndex;
+    int delayOffsetInSamples;
 };
-
-
