@@ -14,6 +14,7 @@ public:
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
+    Param osc1PitchRange; //!< range in [0..12] st
 
     ParamDb vol; //!< volume in [0..1]
 

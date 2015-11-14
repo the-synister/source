@@ -63,10 +63,12 @@ public:
     }
 
     void startNote (int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int /*currentPitchWheelPosition*/) override
+                    SynthesiserSound*, int currentPitchWheelPosition) override
     {
         level = velocity * 0.15f;
         tailOff = 0.f;
+
+        currentPitchValue = currentPitchWheelPosition;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
@@ -98,9 +100,9 @@ public:
         }
     }
 
-    void pitchWheelMoved (int /*newValue*/) override
+    void pitchWheelMoved (int newValue) override
     {
-        // can't be bothered implementing this for the demo!
+        currentPitchValue = newValue;
     }
 
     void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
@@ -148,12 +150,14 @@ public:
 
 protected:
     void renderModulation(int numSamples) {
-        //! \todo add pitch wheel values
+        
+        // add pitch wheel values
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
         for (int s = 0; s < numSamples;++s)
         {
-            pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount));
+            pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount) * Param::fromCent(currentPitchInCents));
         }
     }
 
@@ -166,6 +170,8 @@ private:
     Oscillator<&Waveforms::sinus> lfo1;
 
     float level, tailOff;
+
+    int currentPitchValue;
 
     AudioSampleBuffer pitchModBuffer;
 

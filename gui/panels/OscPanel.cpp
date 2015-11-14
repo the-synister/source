@@ -61,12 +61,27 @@ OscPanel::OscPanel (SynthParams &p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible(pitchRange = new Slider("pitch range"));
+    pitchRange->setRange(0, 12, 0);
+    pitchRange->setSliderStyle(Slider::RotaryVerticalDrag);
+    pitchRange->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    pitchRange->addListener(this);
+
+    addAndMakeVisible(label4 = new Label("new label",
+        TRANS("Pitch Range")));
+    label4->setFont(Font(15.00f, Font::plain));
+    label4->setJustificationType(Justification::centred);
+    label4->setEditable(false, false, false);
+    label4->setColour(TextEditor::textColourId, Colours::black);
+    label4->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
     ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
     lfo1depth1->setValue(params.osc1lfo1depth.getUI());
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
+    pitchRange->setValue(params.osc1PitchRange.getUI());
+    pitchRange->setTextValueSuffix(String(" ") + params.osc1PitchRange.unit());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -85,7 +100,8 @@ OscPanel::~OscPanel()
     label = nullptr;
     lfo1depth1 = nullptr;
     label3 = nullptr;
-
+    pitchRange = nullptr;
+    label4 = nullptr;
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -112,6 +128,8 @@ void OscPanel::resized()
     label->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
+    pitchRange->setBounds(152, 32, 64, 64);
+    label4->setBounds(152, 8, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -131,6 +149,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
         params.osc1lfo1depth.setUI(static_cast<float>(lfo1depth1->getValue()));
+        //[/UserSliderCode_lfo1depth1]
+    }
+    else if (sliderThatWasMoved == pitchRange)
+    {
+        //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
+        params.osc1PitchRange.setUI(static_cast<float>(pitchRange->getValue()));
         //[/UserSliderCode_lfo1depth1]
     }
 
