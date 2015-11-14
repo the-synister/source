@@ -16,8 +16,7 @@
 //[/Headers]
 
 class MouseOverKnob : public Slider, 
-                      public ComponentListener,
-                      public LabelListener
+                      public ComponentListener
 {
 public:
     //==============================================================================
@@ -32,12 +31,8 @@ public:
     void mouseDoubleClick(const MouseEvent &e);
     void mouseDrag(const MouseEvent &e);
 
-    void editorShown(Label* labelTextChanged);
-    void labelTextChanged(Label* labelTextChanged);
-
 private:
     ScopedPointer<Label> knobLabel;
-    String labelText;
     int width = 64, height = 64;
 };
 
