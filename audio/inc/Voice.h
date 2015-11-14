@@ -54,13 +54,13 @@ public:
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
 	{
-        maxDelayLengthInSamples = int(getSampleRate()) * 2;
+        maxDelayLengthInSamples = int(getSampleRate() * 2);
         delayBuffer = AudioSampleBuffer(2, maxDelayLengthInSamples);
         delayBuffer.clear(0, 0, maxDelayLengthInSamples);
         delayBuffer.clear(1, 0, maxDelayLengthInSamples);
         delayIteratorIndex = 0;
-        delayFeedbackValue = 0.001f;
-        delayOffsetInSamples = int(44100/20);
+        delayFeedbackValue = 0.3f;
+        delayOffsetInSamples = 44100;
         delayDryWet = 1.f;
     }
 
@@ -165,8 +165,8 @@ public:
             float currentSample = 0.f;
             for (int c = 0; c < outputBuffer.getNumChannels(); ++c){
                 currentSample = (outputBuffer.getSample(c, startSample + s) * 0.5 + 
-                    delayBuffer.getSample(c, (startSample + s + delayOffsetInSamples) ) * 0.5 * delayFeedbackValue );
-                    outputBuffer.clear(c,startSample,1);
+                    delayBuffer.getSample(c, getDelayIndex(startSample + s + delayOffsetInSamples) ) * 0.5 * delayFeedbackValue );
+                    outputBuffer.clear(c,startSample + s,1);
                     outputBuffer.addSample(c, startSample + s, currentSample);
             }
         }
@@ -191,7 +191,7 @@ protected:
             
             for (int c = 0; c < bufferIn.getNumChannels(); ++c)
             {
-                delayBuffer.clear(c, 0, 1);
+                //delayBuffer.clear(c, getDelayIndex(0 + s + delayOffsetInSamples), 1);
                 delayBuffer.addSample(c, getDelayIndex(0 + s + delayOffsetInSamples), bufferIn.getSample(c, 0 + s));
             }
         }
