@@ -36,7 +36,7 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-				public SliderListener
+                public SliderListener
 
 {
 public:

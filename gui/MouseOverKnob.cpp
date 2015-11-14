@@ -12,13 +12,11 @@
 
 //==============================================================================
 // contructer & destructer
-MouseOverKnob::MouseOverKnob(const String& name, String labelText, int width, int height): Slider(name)
+MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 {
     this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
-    this->width = width;
-    this->height = height;
 
-    addAndMakeVisible(knobLabel = new Label("new label", TRANS(labelText)));
+    addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(15.00f, Font::plain));
     knobLabel->setJustificationType(Justification::centred);
     knobLabel->setEditable(false, false, false);
@@ -29,7 +27,8 @@ MouseOverKnob::MouseOverKnob(const String& name, String labelText, int width, in
     knobLabel->addComponentListener(this);
 }
 
-MouseOverKnob::~MouseOverKnob() {
+MouseOverKnob::~MouseOverKnob()
+{
     knobLabel = nullptr;
 }
 //==============================================================================
@@ -72,9 +71,10 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 /**
 * Only drag on slider, not on label.
 */
-void MouseOverKnob::mouseDrag(const MouseEvent &e) {
-    
-    if (e.eventComponent == this) {
+void MouseOverKnob::mouseDrag(const MouseEvent &e) 
+{
+    if (e.eventComponent == this) 
+    {
         Slider::mouseDrag(e);
     }
 }
@@ -84,10 +84,12 @@ void MouseOverKnob::mouseDrag(const MouseEvent &e) {
 */
 void MouseOverKnob::resized()
 {   
-    if (!this->isMouseOver()) {
+    if (!this->isMouseOver()) 
+    {
         this->setSize(width, height - 20);
     }
-    else {
+    else 
+    {
         this->setSize(width, height);
     }
 
@@ -97,7 +99,8 @@ void MouseOverKnob::resized()
 /**
 * Always set label below slider.
 */
-void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) {
+void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) 
+{
     ignoreUnused(component);
     ignoreUnused(wasMoved);
     ignoreUnused(wasResized);

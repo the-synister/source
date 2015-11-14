@@ -20,7 +20,7 @@ class MouseOverKnob : public Slider,
 {
 public:
     //==============================================================================
-    MouseOverKnob(const String& name, String labelText, int width = 64, int height = 64);
+    MouseOverKnob(const String& name);
     ~MouseOverKnob();
     //==============================================================================
     void resized();
