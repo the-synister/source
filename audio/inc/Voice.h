@@ -48,20 +48,21 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-	: params(p) 
+    Voice(SynthParams &p, int blockSize)
+    : params(p)
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
-	{
+    {
         maxDelayLengthInSamples = int(getSampleRate() * 2);
         delayBuffer = AudioSampleBuffer(2, maxDelayLengthInSamples);
         delayBuffer.clear(0, 0, maxDelayLengthInSamples);
         delayBuffer.clear(1, 0, maxDelayLengthInSamples);
-        delayIteratorIndex = 0;
-        delayFeedbackValue = 0.3f;
-        delayOffsetInSamples = 44100;
-        delayDryWet = 1.f;
+        delayFeedbackValue = 0.f;
+        delayLengthInSamples = 441;
+        delayWet = 0.0f;
+        loopPosition = 0;
+        readLoopPosition = 0;
     }
 
 
@@ -82,7 +83,7 @@ public:
 
         lfo1.phase = 0.f;
         lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
     }
@@ -135,11 +136,10 @@ public:
                         outputBuffer.addSample (c, startSample+s, currentSample);
 
                     tailOff *= params.decayFac.get();
-                    //tailOff *= 0.99999f;
 
                     if (tailOff <= 0.005f)
                     {
-                        clearCurrentNote(); 
+                        clearCurrentNote();
                         lfo1.reset();
                         break;
                     }
@@ -155,22 +155,28 @@ public:
                 }
             }
         }
-        
+
         // delay
+        delayFeedbackValue = params.delayFeedback.get();
+        delayLengthInSamples = int(params.delayTime.get()*(getSampleRate() / 1000));
+        delayWet = params.delayDryWet.get();
         copyRenderedBlockToDelayBuffer(outputBuffer);
-        outputBuffer.applyGain(0.5f);
 
         for (int s = 0; s < numSamples; ++s)
         {
             float currentSample = 0.f;
             for (int c = 0; c < outputBuffer.getNumChannels(); ++c){
-                currentSample = (outputBuffer.getSample(c, startSample + s) * 0.5 + 
-                    delayBuffer.getSample(c, getDelayIndex(startSample + s + delayOffsetInSamples) ) * 0.5 * delayFeedbackValue );
-                    outputBuffer.clear(c,startSample + s,1);
-                    outputBuffer.addSample(c, startSample + s, currentSample);
+                if (readLoopPosition >= delayLengthInSamples) {
+                    readLoopPosition = 0;
+                    delayBuffer.applyGain(delayFeedbackValue);
+                }
+                currentSample = outputBuffer.getSample(c, startSample + s) * (1 - delayWet);
+                currentSample += delayBuffer.getSample(c, startSample + readLoopPosition) * (delayWet);
+                //outputBuffer.clear(c, startSample + s, 1);
+                outputBuffer.addSample(c, startSample + s, currentSample);
+                readLoopPosition++;
             }
         }
-        // calc delay length
     }
 
 protected:
@@ -188,24 +194,24 @@ protected:
     {
         for (int s = 0; s < bufferIn.getNumSamples(); ++s)
         {
-            
             for (int c = 0; c < bufferIn.getNumChannels(); ++c)
             {
-                //delayBuffer.clear(c, getDelayIndex(0 + s + delayOffsetInSamples), 1);
-                delayBuffer.addSample(c, getDelayIndex(0 + s + delayOffsetInSamples), bufferIn.getSample(c, 0 + s));
+                if (loopPosition >= delayLengthInSamples){
+                    loopPosition = 0;
+
+                    // delayBuffer.reverse(0, delayLengthInSamples);
+
+                    //TODO proper normalization
+                    float peak = delayBuffer.getMagnitude(0, delayLengthInSamples);
+                    if (peak > 1.f) {
+                        delayBuffer.applyGain( float(1.f / peak) );
+                    }
+                }
+                delayBuffer.addSample(c, loopPosition, bufferIn.getSample(c, s));
+                loopPosition++;
             }
         }
 
-        //for (int c = 0; c < bufferIn.getNumChannels(); ++c)
-          //  delayBuffer.copyFrom(c, 0, bufferIn.getReadPointer(c), bufferIn.getNumSamples()); wtf??!?!?
-    }
-    
-    int getDelayIndex(int indexIn)
-    {
-        if (indexIn > maxDelayLengthInSamples)
-            return indexIn - maxDelayLengthInSamples;
-        else
-            return indexIn;
     }
 
 private:
@@ -218,10 +224,12 @@ private:
     float level, tailOff;
 
     AudioSampleBuffer pitchModBuffer;
+
     AudioSampleBuffer delayBuffer;
     int maxDelayLengthInSamples;
     float delayFeedbackValue;
-    float delayDryWet;
-    int delayIteratorIndex;
-    int delayOffsetInSamples;
+    float delayWet;
+    int delayLengthInSamples;
+    int loopPosition;
+    int readLoopPosition;
 };

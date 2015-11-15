@@ -21,6 +21,11 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    Param delayFeedback;
+    Param delayDryWet;
+    Param delayTime;
+    Param delaySync;
+
 protected:
 };
 

@@ -8,4 +8,8 @@ SynthParams::SynthParams()
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
+, delayDryWet("Dry/Wet", "%", 0.f, 1.f, 0.f)
+, delayFeedback("Feedback", "%", 0.f, 1.f, 0.f)
+, delayTime("Time", "ms", 1, 2000, 1000)
+, delaySync("Tempo Sync", "", 0.f, 1.f, 0.f)
 {}
