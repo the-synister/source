@@ -114,6 +114,13 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
+        
+        //check for ladder filter settings
+        //const float currentLadderCutoff = params.ladderFreq.get();
+        //float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
+
+        //const float currentLadderAmp = (currentLadderCutoff/sqrt(currentLadderCutoff - ))
+
         if(lfo1.isActive())
         {
             if (tailOff > 0.f)

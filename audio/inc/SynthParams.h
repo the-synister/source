@@ -15,6 +15,8 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
+    Param ladderFreq; //!< Cutoof frequency for the ladder Filter [0...20K] Hz
+
     ParamDb vol; //!< volume in [0..1]
 
     MidiKeyboardState keyboardState;
