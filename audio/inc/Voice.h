@@ -54,6 +54,7 @@ public:
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
 	{}
+    
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -115,18 +116,29 @@ public:
 
         const float currentAmp = params.vol.get();
         
-        //Filter initialisation
-        const float currentLowcutFreq = params.lpCutoff.get();
-        
-        float lastSample = 0;
+
         
         const float sRate = static_cast<float>(getSampleRate());
-        
-        double costh, coef;
         const float pi = 3.141593;
+
         
-        costh = 2. - cos(2*pi*currentLowcutFreq/sRate);
-        coef = sqrt(costh*costh - 1.) - costh;
+        //New Filter Design: Biquad (2 delays)
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+        
+        const float currentLowcutFreq =  params.lpCutoff.get() / sRate;
+        const float currentResonance = pow(10, -params.lpResonance.get()/20);
+
+        // coefficients for lowpass, depending on resonance and lowcut frequency
+        k = 0.5 * currentResonance * sin(2 * pi * currentLowcutFreq);
+        coeff1 = 0.5 * (1 - k) / (1 + k);
+        coeff2 = (0.5 + coeff1) * cos(2 * pi * currentLowcutFreq);
+        coeff3 = (0.5 + coeff1 - coeff2) * 0.25;
+        
+        b0 = 2 * coeff3;
+        b1 = 2 * 2 * coeff3;
+        b2 = 2 * coeff3;
+        a1 = 2 * -coeff2;
+        a2 = 2 * coeff1;
         
         if(lfo1.isActive())
         {
@@ -136,9 +148,15 @@ public:
                 {
                     float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
 
-                    //Lowpass Filter
-                    currentSample = (float)(currentSample*(1 + coef) - lastSample*coef);
+                    //filtering
                     lastSample = currentSample;
+                    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+                    
+                    //delaying samples
+                    inputDelay2 = inputDelay1;
+                    inputDelay1 = lastSample;
+                    outputDelay2 = outputDelay1;
+                    outputDelay1 = currentSample;
 
 
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
@@ -158,9 +176,16 @@ public:
                 for (int s = 0; s < numSamples;++s)
                 {
                     float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    
-                    currentSample = (float)(currentSample*(1 + coef) - lastSample*coef);
+
+                    //filtering
                     lastSample = currentSample;
+                    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+                    
+                    //delaying samples
+                    inputDelay2 = inputDelay1;
+                    inputDelay1 = lastSample;
+                    outputDelay2 = outputDelay1;
+                    outputDelay1 = currentSample;
                     
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
@@ -185,6 +210,14 @@ protected:
     
 
 private:
+    
+    //Filter initialisation
+    float lastSample = 0;
+    
+    //New Filter Design
+    float inputDelay1 = 0, inputDelay2 = 0, outputDelay1 = 0, outputDelay2 = 0;
+
+    
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;

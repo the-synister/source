@@ -16,6 +16,8 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
     
     Param lpCutoff; //!< filter cutoff frequency in Hz
+    
+    Param lpResonance; //! filter resonance in dB
 
     ParamDb vol; //!< volume in [0..1]
 

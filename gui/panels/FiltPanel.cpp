@@ -34,13 +34,13 @@ FiltPanel::FiltPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (CutoffSlider = new Slider ("Cutoff"));
-    CutoffSlider->setRange (0, 20000, 1);
+    CutoffSlider->setRange (10, 20000, 1);
     CutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     CutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     CutoffSlider->addListener (this);
 
     addAndMakeVisible (ResonanceSlider = new Slider ("Resonance"));
-    ResonanceSlider->setRange (0, 10, 0);
+    ResonanceSlider->setRange (-25, 25, 0);
     ResonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     ResonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ResonanceSlider->addListener (this);
@@ -71,6 +71,10 @@ FiltPanel::FiltPanel (SynthParams &p)
 
 
     //[UserPreSize]
+    CutoffSlider->setValue(params.lpCutoff.getUI());
+    CutoffSlider->setTextValueSuffix(String(" ") + params.lpCutoff.unit());
+    ResonanceSlider->setValue(params.lpResonance.getUI());
+    ResonanceSlider->setTextValueSuffix(String(" ") + params.lpResonance.unit());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -137,6 +141,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == ResonanceSlider)
     {
         //[UserSliderCode_ResonanceSlider] -- add your slider handling code here..
+        params.lpResonance.setUI(static_cast<float>(ResonanceSlider->getValue()));
         //[/UserSliderCode_ResonanceSlider]
     }
 
@@ -166,12 +171,12 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="CutoffSlider"
-          virtualName="" explicitFocusOrder="0" pos="56 64 80 72" min="0"
+          virtualName="" explicitFocusOrder="0" pos="56 64 80 72" min="10"
           max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="ResonanceSlider"
-          virtualName="" explicitFocusOrder="0" pos="240 64 72 72" min="0"
-          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="" explicitFocusOrder="0" pos="240 64 72 72" min="-25"
+          max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Lowpass Label" id="a6bb552e4fa24670" memberName="lpfLabel"
          virtualName="" explicitFocusOrder="0" pos="40 8 150 24" edTextCol="ff000000"
