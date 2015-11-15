@@ -7,6 +7,7 @@ SynthParams::SynthParams()
 , lfo1wave("Wave", "", 0.f, 1.f, 0.f)
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
+, osc1trngAmount("trianlge", "prct", 0.0f, 1.0f, 0.0f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
 {}

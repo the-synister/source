@@ -61,12 +61,28 @@ OscPanel::OscPanel (SynthParams &p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (osc1trngAmount = new Slider ("Osc1 Triangle Amount"));
+    osc1trngAmount->setRange (0, 1, 0);
+    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    osc1trngAmount->addListener (this);
+
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("Triangle Morph\n")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centredLeft);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
     ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
     lfo1depth1->setValue(params.osc1lfo1depth.getUI());
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
+    osc1trngAmount->setValue(params.osc1trngAmount.getUI());
+    osc1trngAmount->setTextValueSuffix(String(" ") + params.osc1trngAmount.unit());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -85,6 +101,8 @@ OscPanel::~OscPanel()
     label = nullptr;
     lfo1depth1 = nullptr;
     label3 = nullptr;
+    osc1trngAmount = nullptr;
+    label2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -112,6 +130,8 @@ void OscPanel::resized()
     label->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
+    osc1trngAmount->setBounds (160, 32, 64, 64);
+    label2->setBounds (152, 8, 120, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -132,6 +152,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
         params.osc1lfo1depth.setUI(static_cast<float>(lfo1depth1->getValue()));
         //[/UserSliderCode_lfo1depth1]
+    }
+    else if (sliderThatWasMoved == osc1trngAmount)
+    {
+        //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
+		params.osc1trngAmount.setUI(static_cast<float>(osc1trngAmount->getValue()));
+        //[/UserSliderCode_osc1trngAmount]
     }
 
     //[UsersliderValueChanged_Post]
@@ -177,6 +203,15 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="LFO 1" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
+          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0"
+          max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="fffbfc69001f744b" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="152 8 120 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="Triangle Morph&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

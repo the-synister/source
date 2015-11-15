@@ -11,16 +11,25 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs)  { return std::sin(phs); }
-    static float square(float phs) { return std::copysign(1.f, float_Pi - phs);  }
-    static float saw(float phs)    { return phs / (float_Pi*2.f) - .5f; }
+	static float sinus(float phs, float trngAmount) { return std::sin(phs); }
+	//static float square(float phs) { return  std::copysign(1.f, float_Pi - phs); }
+	static float square(float phs, float trngAmount) {
+
+		return (1 - trngAmount)*std::copysign(1.f, float_Pi - phs) + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+	}
+	static float saw(float phs, float trngAmount) {
+
+		return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+
+	}
 };
 
 
-template<float(*_waveform)(float)>
+template<float(*_waveform)(float, float)>
 struct Oscillator {
-    float phase;
-    float phaseDelta;
+	float phase;
+	float phaseDelta;
+    float trngAmount;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
 
@@ -34,13 +43,13 @@ struct Oscillator {
     }
 
     float next() {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount);
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
 
     float next(float pitchMod) {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
@@ -79,6 +88,7 @@ public:
             
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+		osc1.trngAmount = params.osc1trngAmount.get();
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
