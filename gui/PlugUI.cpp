@@ -73,6 +73,12 @@ PlugUI::PlugUI (SynthParams &p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
+    savePresetButton->addListener (this);
+
+    addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
+    loadPresetButton->addListener (this);
+
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
@@ -97,6 +103,8 @@ PlugUI::~PlugUI()
     keyboard = nullptr;
     tabs = nullptr;
     label2 = nullptr;
+    savePresetButton = nullptr;
+    loadPresetButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -125,6 +133,8 @@ void PlugUI::resized()
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
     label2->setBounds (726, 8, 64, 16);
+    savePresetButton->setBounds (8, 36, 88, 24);
+    loadPresetButton->setBounds (8, 64, 88, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -143,6 +153,28 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void PlugUI::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == savePresetButton)
+    {
+        //[UserButtonCode_savePresetButton] -- add your button handler code here..
+        params.writeXMLPatch();
+        //[/UserButtonCode_savePresetButton]
+    }
+    else if (buttonThatWasClicked == loadPresetButton)
+    {
+        //[UserButtonCode_loadPresetButton] -- add your button handler code here..
+        params.readXMLPatch();
+        //[/UserButtonCode_loadPresetButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -199,6 +231,12 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="master tune" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
+  <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
+              virtualName="" explicitFocusOrder="0" pos="8 36 88 24" buttonText="Save preset"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
+              virtualName="" explicitFocusOrder="0" pos="8 64 88 24" buttonText="Load preset"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

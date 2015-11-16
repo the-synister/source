@@ -20,5 +20,10 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    void writeXMLPatch(); // writes the XML string to a file
+
+    void readXMLPatch(); // fill the synth params with data from a file
+
+
 protected:
 };

@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                public SliderListener
+                public SliderListener,
+                public ButtonListener
 {
 public:
     //==============================================================================
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -64,6 +66,8 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
+    ScopedPointer<TextButton> savePresetButton;
+    ScopedPointer<TextButton> loadPresetButton;
 
 
     //==============================================================================
