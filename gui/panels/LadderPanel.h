@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class LadderPanel  : public Component,
-                     public SliderListener
+                     public SliderListener,
+                     public ButtonListener
 {
 public:
     //==============================================================================
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -63,6 +65,7 @@ private:
     ScopedPointer<Slider> resonance;
     ScopedPointer<Label> label;
     ScopedPointer<Label> label2;
+    ScopedPointer<ToggleButton> toggleButton;
 
 
     //==============================================================================

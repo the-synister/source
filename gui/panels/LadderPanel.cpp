@@ -34,7 +34,7 @@ LadderPanel::LadderPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (cutoff = new Slider ("cutoff"));
-    cutoff->setRange (0, 20000, 0);
+    cutoff->setRange (50, 20000, 0);
     cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoff->addListener (this);
@@ -61,8 +61,14 @@ LadderPanel::LadderPanel (SynthParams &p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (toggleButton = new ToggleButton ("ladder_switch"));
+    toggleButton->setButtonText (TRANS("on / off"));
+    toggleButton->addListener (this);
+
 
     //[UserPreSize]
+    cutoff->setValue(params.ladderCutoff.getUI());
+    resonance->setValue(params.ladderRes.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -81,6 +87,7 @@ LadderPanel::~LadderPanel()
     resonance = nullptr;
     label = nullptr;
     label2 = nullptr;
+    toggleButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -104,10 +111,11 @@ void LadderPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoff->setBounds (40, 32, 80, 64);
-    resonance->setBounds (144, 32, 80, 64);
-    label->setBounds (40, 112, 80, 24);
-    label2->setBounds (144, 112, 80, 24);
+    cutoff->setBounds (40, 56, 80, 64);
+    resonance->setBounds (144, 56, 80, 64);
+    label->setBounds (40, 128, 80, 24);
+    label2->setBounds (144, 128, 80, 24);
+    toggleButton->setBounds (40, 16, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -134,6 +142,21 @@ void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void LadderPanel::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == toggleButton)
+    {
+        //[UserButtonCode_toggleButton] -- add your button handler code here..
+        //[/UserButtonCode_toggleButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -156,23 +179,26 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName=""
-          explicitFocusOrder="0" pos="40 32 80 64" min="0" max="20000"
+          explicitFocusOrder="0" pos="40 56 80 64" min="50" max="20000"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="resonance" id="5cc36d41af142d68" memberName="resonance"
-          virtualName="" explicitFocusOrder="0" pos="144 32 80 64" min="0"
+          virtualName="" explicitFocusOrder="0" pos="144 56 80 64" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="cutoff_label" id="5683a20abc5da5f" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="40 112 80 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="40 128 80 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Frequency&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="res_label" id="1f4d820c02ca3cb6" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="144 112 80 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="144 128 80 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Resonance&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <TOGGLEBUTTON name="ladder_switch" id="4864a1a9937b8363" memberName="toggleButton"
+                virtualName="" explicitFocusOrder="0" pos="40 16 150 24" buttonText="on / off"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
