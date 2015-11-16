@@ -14,7 +14,9 @@ struct Waveforms {
 	static float sinus(float phs, float trngAmount) { return std::sin(phs); }
 	static float square(float phs, float trngAmount) { return  std::copysign(1.f, float_Pi - phs); }
 	static float saw(float phs, float trngAmount) {
-		return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+		//return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+		if (phs < trngAmount) { return (.5 - 1 / trngAmount * phs); }
+		else { return (-.5 + 1 / (float_Pi + trngAmount) * phs); }
 	}
 };
 
