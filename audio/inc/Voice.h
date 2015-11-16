@@ -124,8 +124,6 @@ public:
 
         const float currentAmp = params.vol.get();
         
-
-        
         const float sRate = static_cast<float>(getSampleRate());
         
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
@@ -152,18 +150,12 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    float currentSample = osc1.next(pitchMod[s]);
 
                     //filtering
-                    lastSample = currentSample;
-                    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-                    
-                    //delaying samples
-                    inputDelay2 = inputDelay1;
-                    inputDelay1 = lastSample;
-                    outputDelay2 = outputDelay1;
-                    outputDelay1 = currentSample;
-
+                    currentSample = biquadLowpass(currentSample, b0, b1, b2, a1, a2);
+                    //amplification
+                    currentSample *= level * tailOff * currentAmp;
 
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
@@ -181,17 +173,12 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    float currentSample = osc1.next(pitchMod[s]);
 
                     //filtering
-                    lastSample = currentSample;
-                    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-                    
-                    //delaying samples
-                    inputDelay2 = inputDelay1;
-                    inputDelay1 = lastSample;
-                    outputDelay2 = outputDelay1;
-                    outputDelay1 = currentSample;
+                    currentSample = biquadLowpass(currentSample, b0, b1, b2, a1, a2);
+                    //amplification
+                    currentSample *= level * currentAmp;
                     
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
@@ -212,7 +199,16 @@ protected:
         }
     }
     
-    float biquadLowpass(float inputSignal){
+    float biquadLowpass(float inputSignal,  float b0, float b1, float b2, float a1, float a2){
+        lastSample = inputSignal;
+        
+        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+        
+        //delaying samples
+        inputDelay2 = inputDelay1;
+        inputDelay1 = lastSample;
+        outputDelay2 = outputDelay1;
+        outputDelay1 = inputSignal;
         
         return inputSignal;
     }
