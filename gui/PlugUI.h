@@ -64,6 +64,8 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
+    ScopedPointer<Label> bpmLabel;
+    ScopedPointer<TextEditor> bpmDisplay;
 
 
     //==============================================================================

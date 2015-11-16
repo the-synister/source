@@ -22,5 +22,9 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    AudioPlayHead::CurrentPositionInfo currentPositionInfo;
+    
+    juce::String bpm();
+
 protected:
 };
