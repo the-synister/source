@@ -114,12 +114,6 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
-        
-        //check for ladder filter settings
-        //const float currentLadderCutoff = params.ladderFreq.get();
-        //float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
-
-        //const float currentLadderAmp = (currentLadderCutoff/sqrt(currentLadderCutoff - ))
 
         if(lfo1.isActive())
         {
@@ -127,7 +121,11 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    const float currentSample = filterLP((osc1.next(pitchMod[s])) * level * tailOff) * currentAmp;
+                    
+                    //Check if Ladderfilter is on!
+                    //currentSample = filterLP(currentSample);
 
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
@@ -145,12 +143,54 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    const float currentSample = filterLP((osc1.next(pitchMod[s])) * level * tailOff) * currentAmp;
+                    
+                    //Check if Ladderfilter is on!
+                    //currentSample = filterLP(currentSample);
+                    
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
                 }
             }
         }
+    }
+
+    // Calculates coefficients for second order Butterworth lowpass
+    float *getButterCoefficients() {
+        
+        const float cutoffFreq = params.ladderCutoff.get();
+        const float currentResonance = pow(10.f, -params.ladderRes.get() / 20.f);
+        const float sRate = static_cast<float>(getSampleRate());
+        
+        const float interVar = 1.f / (tanf(float_Pi*cutoffFreq / sRate));
+        float butterCoeffs[5] = { };
+
+        butterCoeffs[0] = 1.f / (1.0f + sqrt(2.0f)*interVar + pow(interVar,2.f));
+        butterCoeffs[1] = 2.f*butterCoeffs[0];
+        butterCoeffs[2] = butterCoeffs[0];
+        butterCoeffs[3] = 2.f*butterCoeffs[0] * (1.f - pow(interVar, 2));
+        butterCoeffs[4] = butterCoeffs[0] * (1.0f - sqrt(2.0f)*interVar + pow(interVar,2.f));
+
+        return butterCoeffs;
+    }
+
+    //apply Lowpass Filter to the current Sample in renderNextBlock()
+    float filterLP(float currentSample){
+
+        const float *butterCoeffs = getButterCoefficients();
+
+        currentSample = *(butterCoeffs)*currentSample + *(butterCoeffs+1)*inputDelay1 + *(butterCoeffs+2)*inputDelay2 
+            - *(butterCoeffs+3)*outputDelay1 - *(butterCoeffs+4)*outputDelay2;
+
+        //delaying samples
+        inputDelay2 = inputDelay1;
+        inputDelay1 = lastSample;
+        outputDelay2 = outputDelay1;
+        outputDelay1 = currentSample;
+
+        return currentSample;
+
     }
 
 protected:
@@ -175,5 +215,11 @@ private:
     float level, tailOff;
 
     AudioSampleBuffer pitchModBuffer;
+
+    //Filter initialisation
+    float lastSample = 0;
+
+    //New Filter Design
+    float inputDelay1 = 0, inputDelay2 = 0, outputDelay1 = 0, outputDelay2 = 0;
 
 };

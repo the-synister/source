@@ -7,5 +7,6 @@ SynthParams::SynthParams()
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
-, ladderFreq("LadderFreq", "Hz", 0.f, 20000.f, 20000.f)
+, ladderCutoff("LadderFreq", "Hz", 10.f, 20000.f, 20000.f)
+, ladderRes("LadderRes", "dB", 0.f, 10.f, 0.f)
 {}

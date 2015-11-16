@@ -120,12 +120,13 @@ void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == cutoff)
     {
         //[UserSliderCode_cutoff] -- add your slider handling code here..
-        params.ladderFreq.setUI(static_cast<float>(cutoff->getValue()));
+        params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
         //[/UserSliderCode_cutoff]
     }
     else if (sliderThatWasMoved == resonance)
     {
         //[UserSliderCode_resonance] -- add your slider handling code here..
+        params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
         //[/UserSliderCode_resonance]
     }
 
