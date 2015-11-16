@@ -64,7 +64,7 @@ private:
     Synthesiser synth;
     // currentPositionInfo used for getting the bpm.
     AudioPlayHead* playHead;
-    
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };

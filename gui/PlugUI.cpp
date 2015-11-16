@@ -88,8 +88,8 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setScrollbarsShown (false);
     bpmDisplay->setCaretVisible (false);
     bpmDisplay->setPopupMenuEnabled (true);
-//    params.bpms(params.currentPositionInfo.bpm);
-    bpmDisplay->setText ("");
+    params.bpm << params.currentPositionInfo.bpm;
+    bpmDisplay->setText (params.bpm);
 
 
     //[UserPreSize]

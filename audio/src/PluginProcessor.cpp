@@ -144,7 +144,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     playHead = this->getPlayHead();
     playHead->getCurrentPosition (currentPositionInfo);
-    
+
 
     // pass these messages to the keyboard state so that it can update the component
     // to show on-screen which keys are being pressed on the physical midi keyboard.

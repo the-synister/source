@@ -204,7 +204,7 @@ private:
     Oscillator<&Waveforms::square> lfo1square;
 
     float level, tailOff;
-    
+
     AudioSampleBuffer pitchModBuffer;
 
 };
