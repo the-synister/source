@@ -138,11 +138,11 @@ public:
         coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
         coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
         
-        b0 = 2 * coeff3;
-        b1 = 2 * 2 * coeff3;
-        b2 = 2 * coeff3;
-        a1 = 2 * -coeff2;
-        a2 = 2 * coeff1;
+        b0 = 2.f * coeff3;
+        b1 = 2.f * 2.f * coeff3;
+        b2 = 2.f * coeff3;
+        a1 = 2.f * -coeff2;
+        a2 = 2.f * coeff1;
         
         if(lfo1.isActive())
         {
