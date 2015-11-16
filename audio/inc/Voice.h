@@ -49,10 +49,16 @@ struct Oscillator {
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize) 
-	: params(p) 
+    :    lastSample(0.f)
+    , inputDelay1(0.f)
+    , inputDelay2(0.f)
+    , outputDelay1(0.f)
+    , outputDelay2(0.f)
+    , params(p)
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
+
 	{}
     
 
@@ -66,6 +72,8 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int /*currentPitchWheelPosition*/) override
     {
+        lastSample = 0.f, inputDelay1 = 0.f, inputDelay2 = 0.f, outputDelay1 = 0.f, outputDelay2 = 0.f;
+        
         level = velocity * 0.15f;
         tailOff = 0.f;
 
@@ -119,20 +127,18 @@ public:
 
         
         const float sRate = static_cast<float>(getSampleRate());
-        const float pi = 3.141593;
-
         
-        //New Filter Design: Biquad (2 delays)
+        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
         
         const float currentLowcutFreq =  params.lpCutoff.get() / sRate;
         const float currentResonance = pow(10, -params.lpResonance.get()/20);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
-        k = 0.5 * currentResonance * sin(2 * pi * currentLowcutFreq);
-        coeff1 = 0.5 * (1 - k) / (1 + k);
-        coeff2 = (0.5 + coeff1) * cos(2 * pi * currentLowcutFreq);
-        coeff3 = (0.5 + coeff1 - coeff2) * 0.25;
+        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
+        coeff1 = 0.5f * (1.f - k) / (1.f + k);
+        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
+        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
         
         b0 = 2 * coeff3;
         b1 = 2 * 2 * coeff3;
@@ -205,18 +211,19 @@ protected:
             pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount));
         }
     }
+    
+    float biquadLowpass(float inputSignal){
+        
+        return inputSignal;
+    }
 
 
     
 
 private:
     
-    //Filter initialisation
-    float lastSample = 0;
-    
     //New Filter Design
-    float inputDelay1 = 0, inputDelay2 = 0, outputDelay1 = 0, outputDelay2 = 0;
-
+    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
     
     SynthParams &params;
 
