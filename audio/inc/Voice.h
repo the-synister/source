@@ -48,8 +48,8 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-    : params(p) 
+    Voice(SynthParams &p, int blockSize)
+    : params(p)
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
@@ -70,13 +70,13 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
-            
+
         // change the phases of both lfo waveforms, in case the user switches them during a note
         lfo1sine.phase = 0.f;
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-            
+
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
     }
@@ -123,7 +123,7 @@ public:
         // Pan Influence
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-        
+
         if (lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
@@ -146,7 +146,7 @@ public:
                         tailOff *= 0.99999f;
                         if (tailOff <= 0.005f)
                         {
-                            clearCurrentNote(); 
+                            clearCurrentNote();
                             lfo1sine.reset();
                             lfo1square.reset();
                             break;
@@ -208,5 +208,3 @@ private:
     AudioSampleBuffer pitchModBuffer;
 
 };
-
-
