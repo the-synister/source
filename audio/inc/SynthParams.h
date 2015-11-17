@@ -22,9 +22,5 @@ public:
 
     MidiKeyboardState keyboardState;
 
-    AudioPlayHead::CurrentPositionInfo currentPositionInfo;
-
-    String bpm;
-
 protected:
 };
