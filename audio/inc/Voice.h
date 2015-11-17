@@ -156,7 +156,7 @@ public:
                     //TODO - check if ladder filter is on!
                     const float currentSample = filterLP(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    
+
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
                 }
@@ -166,11 +166,11 @@ public:
 
     // Calculates coefficients for second order Butterworth lowpass
     void setButterCoefficients() {
-        
+
         //const float currentResonance = pow(10.f, -params.ladderRes.get() / 20.f);
         const float cutoffFreq = params.ladderCutoff.get();
         const float sRate = static_cast<float>(getSampleRate());
-        
+
         const float interVar = 1.f / (tanf(float_Pi*cutoffFreq / sRate));
 
         butterCoeffs[0] = 1.f / (1.0f + sqrt(2.0f)*interVar + pow(interVar,2.f));
@@ -190,7 +190,7 @@ public:
             currentLadderCutoffFreq = params.ladderCutoff.get();
         }
 
-        currentSample = *(butterCoeffs)*currentSample + *(butterCoeffs+1)*inputDelay1 + *(butterCoeffs+2)*inputDelay2 
+        currentSample = *(butterCoeffs)*currentSample + *(butterCoeffs+1)*inputDelay1 + *(butterCoeffs+2)*inputDelay2
             - *(butterCoeffs+3)*outputDelay1 - *(butterCoeffs+4)*outputDelay2;
 
         //delaying samples
