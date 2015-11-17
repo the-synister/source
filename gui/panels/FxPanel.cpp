@@ -54,7 +54,7 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Dry / Wet")));
+                                           TRANS("Wet")));
     label2->setFont (Font (15.00f, Font::plain));
     label2->setJustificationType (Justification::centredTop);
     label2->setEditable (false, false, false);
@@ -225,7 +225,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="e9970f1693202a99" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="144 32 72 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="Dry / Wet" editableSingleClick="0" editableDoubleClick="0"
+         edBkgCol="0" labelText="Wet" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="12"/>
   <SLIDER name="timeSlider1" id="5ac27dc9db375d94" memberName="timeSlider"
