@@ -54,18 +54,18 @@ void SynthParams::readXMLPatch()
     // TODO how much validation should be done? none? attribute names? attribute ranges?
 
     // read the xml params into the synth params
-    FileChooser openFileChooser("Please select the place you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
+    FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
     if (openFileChooser.browseForFileToOpen())
     {
         File openedFile(openFileChooser.getResult());
         XmlElement* xmlPatch = XmlDocument::parse(openedFile);
 
         // set all the settings
-        freq.setUI(xmlPatch->getChildByName("freq")->getDoubleAttribute("value"));
-        lfo1freq.setUI(xmlPatch->getChildByName("lfo1freq")->getDoubleAttribute("value"));
-        lfo1wave.setUI(xmlPatch->getChildByName("lfo1wave")->getDoubleAttribute("value"));
-        osc1fine.setUI(xmlPatch->getChildByName("osc1fine")->getDoubleAttribute("value"));
-        osc1lfo1depth.setUI(xmlPatch->getChildByName("osc1lfo1depth")->getDoubleAttribute("value"));
-        vol.setUI(xmlPatch->getChildByName("vol")->getDoubleAttribute("value"));
+        freq.setUI(static_cast<float>(xmlPatch->getChildByName("freq")->getDoubleAttribute("value")));
+        lfo1freq.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1freq")->getDoubleAttribute("value")));
+        lfo1wave.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1wave")->getDoubleAttribute("value")));
+        osc1fine.setUI(static_cast<float>(xmlPatch->getChildByName("osc1fine")->getDoubleAttribute("value")));
+        osc1lfo1depth.setUI(static_cast<float>(xmlPatch->getChildByName("osc1lfo1depth")->getDoubleAttribute("value")));
+        vol.setUI(static_cast<float>(xmlPatch->getChildByName("vol")->getDoubleAttribute("value")));
     }
 }
