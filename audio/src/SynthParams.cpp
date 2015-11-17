@@ -6,5 +6,6 @@ SynthParams::SynthParams()
 , lfo1freq("Freq", "Hz", .01f, 50.f, 1.f)
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
+, osc1pulsewidth("Width","prct", 0.01f, 0.99f, 0.5f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 {}

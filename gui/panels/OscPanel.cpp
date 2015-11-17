@@ -61,12 +61,27 @@ OscPanel::OscPanel (SynthParams &p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (pulsewidth = new Slider ("Pulse Width"));
+    pulsewidth->setRange (0.01, 0.99, 0);
+    pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
+    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pulsewidth->addListener (this);
+
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("Pulse Width\n")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centred);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
     ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
     lfo1depth1->setValue(params.osc1lfo1depth.getUI());
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
+	pulsewidth->setValue(params.osc1pulsewidth.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -85,6 +100,8 @@ OscPanel::~OscPanel()
     label = nullptr;
     lfo1depth1 = nullptr;
     label3 = nullptr;
+    pulsewidth = nullptr;
+    label2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -112,6 +129,8 @@ void OscPanel::resized()
     label->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
+    pulsewidth->setBounds (160, 32, 64, 64);
+    label2->setBounds (160, 8, 64, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -132,6 +151,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
         params.osc1lfo1depth.setUI(static_cast<float>(lfo1depth1->getValue()));
         //[/UserSliderCode_lfo1depth1]
+    }
+    else if (sliderThatWasMoved == pulsewidth)
+    {
+        //[UserSliderCode_pulsewidth] -- add your slider handling code here..
+		params.osc1pulsewidth.setUI(static_cast<float>(pulsewidth->getValue()));
+        //[/UserSliderCode_pulsewidth]
     }
 
     //[UsersliderValueChanged_Post]
@@ -177,6 +202,16 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="LFO 1" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
+          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0.010000000000000000208"
+          max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="160 8 64 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
