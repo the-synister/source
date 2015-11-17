@@ -156,7 +156,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-		params.osc1trngAmount.setUI(static_cast<float>(osc1trngAmount->getValue()));
+        params.osc1trngAmount.setUI(static_cast<float>(osc1trngAmount->getValue()));
         //[/UserSliderCode_osc1trngAmount]
     }
 

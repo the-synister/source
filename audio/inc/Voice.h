@@ -11,20 +11,20 @@ public:
 };
 
 struct Waveforms {
-	static float sinus(float phs, float trngAmount) { return std::sin(phs); }
-	static float square(float phs, float trngAmount) { return  std::copysign(1.f, float_Pi - phs); }
-	static float saw(float phs, float trngAmount) {
-		//return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
-		if (phs < trngAmount) { return (.5f - 1.f / trngAmount * phs); }
-		else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount) * (phs-trngAmount)); }
-	}
+    static float sinus(float phs, float trngAmount) { return std::sin(phs); }
+    static float square(float phs, float trngAmount) { return  std::copysign(1.f, float_Pi - phs); }
+    static float saw(float phs, float trngAmount) {
+        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+        if (phs < trngAmount) { return (.5f - 1.f / trngAmount * phs); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount) * (phs-trngAmount)); }
+    }
 };
 
 
 template<float(*_waveform)(float, float)>
 struct Oscillator {
-	float phase;
-	float phaseDelta;
+    float phase;
+    float phaseDelta;
     float trngAmount;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
@@ -53,8 +53,8 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-    : params(p) 
+    Voice(SynthParams &p, int blockSize)
+    : params(p)
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
@@ -75,16 +75,16 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
-            
+
         // change the phases of both lfo waveforms, in case the user switches them during a note
         lfo1sine.phase = 0.f;
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-            
+
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-		osc1.trngAmount = params.osc1trngAmount.get();
+        osc1.trngAmount = params.osc1trngAmount.get();
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -129,7 +129,7 @@ public:
         // Pan Influence
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-        
+
         if (lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
@@ -152,7 +152,7 @@ public:
                         tailOff *= 0.99999f;
                         if (tailOff <= 0.005f)
                         {
-                            clearCurrentNote(); 
+                            clearCurrentNote();
                             lfo1sine.reset();
                             lfo1square.reset();
                             break;
@@ -214,5 +214,3 @@ private:
     AudioSampleBuffer pitchModBuffer;
 
 };
-
-
