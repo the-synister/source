@@ -150,7 +150,7 @@ public:
 
 protected:
     void renderModulation(int numSamples) {
-        
+
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
