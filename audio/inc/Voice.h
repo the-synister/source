@@ -13,7 +13,7 @@ public:
 struct Waveforms {
     static float sinus(float phs, float width)  { return std::sin(phs); }
     static float square(float phs, float width) {
-		//check for phase and apply duty cycle
+		//square wave with duty cycle
 		if (phs < 2 * float_Pi * width)
 			return 1;
 		else
@@ -32,8 +32,6 @@ struct Oscillator {
 	float width;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
-
-	width = params.osc1pulsewidth.get();
 
     void reset() {
         phase = 0.f;
@@ -87,6 +85,7 @@ public:
         
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+		osc1.width = params.osc1pulsewidth.get();
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
