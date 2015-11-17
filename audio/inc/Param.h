@@ -31,7 +31,7 @@ public:
 
     constexpr static float MIN_DB = -96.f;
 
-    static float toDb(float linear) { return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
+    static float toDb(float linear) {return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
     static float fromDb(float db) { return db <= MIN_DB ? 0.f : std::pow(10.f, db / 20.f); }
 
     static float toCent(float factor) { return std::log(factor) / log(2.f)*1200.f; }
