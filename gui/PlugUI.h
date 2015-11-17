@@ -50,7 +50,8 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-
+    
+    ScopedPointer<Label> bpmDisplay;
 
 
 private:
@@ -65,7 +66,6 @@ private:
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> bpmLabel;
-    ScopedPointer<TextEditor> bpmDisplay;
 
 
     //==============================================================================

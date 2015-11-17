@@ -81,15 +81,13 @@ PlugUI::PlugUI (SynthParams &p)
     bpmLabel->setColour (TextEditor::textColourId, Colours::black);
     bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (bpmDisplay = new TextEditor ("bpm display"));
-    bpmDisplay->setMultiLine (false);
-    bpmDisplay->setReturnKeyStartsNewLine (false);
-    bpmDisplay->setReadOnly (true);
-    bpmDisplay->setScrollbarsShown (false);
-    bpmDisplay->setCaretVisible (false);
-    bpmDisplay->setPopupMenuEnabled (true);
-    params.bpm << params.currentPositionInfo.bpm;
-    bpmDisplay->setText (params.bpm);
+    addAndMakeVisible (bpmDisplay = new Label ("bpm display",
+                                               String::empty));
+    bpmDisplay->setFont (Font (15.00f, Font::plain));
+    bpmDisplay->setJustificationType (Justification::centredLeft);
+    bpmDisplay->setEditable (false, false, false);
+    bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
+    bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -146,7 +144,7 @@ void PlugUI::resized()
     tabs->setBounds (8, 128, 784, 416);
     label2->setBounds (726, 8, 64, 16);
     bpmLabel->setBounds (8, 64, 56, 24);
-    bpmDisplay->setBounds (64, 64, 80, 24);
+    bpmDisplay->setBounds (56, 64, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -226,10 +224,11 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
-  <TEXTEDITOR name="bpm display" id="7e518ea87319085" memberName="bpmDisplay"
-              virtualName="" explicitFocusOrder="0" pos="64 64 80 24" initialText=""
-              multiline="0" retKeyStartsLine="0" readonly="1" scrollbars="0"
-              caret="0" popupmenu="1"/>
+  <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
+         virtualName="" explicitFocusOrder="0" pos="56 64 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
