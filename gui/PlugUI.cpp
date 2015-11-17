@@ -110,7 +110,7 @@ void PlugUI::paint (Graphics& g)
 
     g.fillAll (Colours::white);
 
-    //[UserPaint] Add your own custom painting code here..	
+    //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
 

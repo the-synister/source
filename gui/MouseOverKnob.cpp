@@ -60,7 +60,7 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 /**
 * If slider is double clicked then values can be edited manually.
 */
-void MouseOverKnob::mouseDoubleClick(const MouseEvent &e) 
+void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
     if (e.eventComponent == this)
     {
@@ -71,9 +71,9 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 /**
 * Only drag on slider, not on label.
 */
-void MouseOverKnob::mouseDrag(const MouseEvent &e) 
+void MouseOverKnob::mouseDrag(const MouseEvent &e)
 {
-    if (e.eventComponent == this) 
+    if (e.eventComponent == this)
     {
         Slider::mouseDrag(e);
     }
@@ -83,12 +83,12 @@ void MouseOverKnob::mouseDrag(const MouseEvent &e)
 * Overwrite resize(), so that slider size is independent of textbox visibility.
 */
 void MouseOverKnob::resized()
-{   
-    if (!this->isMouseOver()) 
+{
+    if (!this->isMouseOver())
     {
         this->setSize(width, height - 20);
     }
-    else 
+    else
     {
         this->setSize(width, height);
     }
@@ -99,7 +99,7 @@ void MouseOverKnob::resized()
 /**
 * Always set label below slider.
 */
-void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) 
+void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
     ignoreUnused(component);
     ignoreUnused(wasMoved);

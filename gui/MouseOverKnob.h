@@ -15,7 +15,7 @@
 #include "JuceHeader.h"
 //[/Headers]
 
-class MouseOverKnob : public Slider, 
+class MouseOverKnob : public Slider,
                       public ComponentListener
 {
 public:
