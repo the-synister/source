@@ -47,6 +47,28 @@ LfoPanel::LfoPanel (SynthParams &p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (wave = new Slider ("wave switch"));
+    wave->setRange (0, 1, 1);
+    wave->setSliderStyle (Slider::LinearHorizontal);
+    wave->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    wave->addListener (this);
+
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("sine wave")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centredLeft);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (label3 = new Label ("new label",
+                                           TRANS("square wave")));
+    label3->setFont (Font (15.00f, Font::plain));
+    label3->setJustificationType (Justification::centredLeft);
+    label3->setEditable (false, false, false);
+    label3->setColour (TextEditor::textColourId, Colours::black);
+    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     freq->setValue(params.lfo1freq.getUI());
@@ -68,6 +90,9 @@ LfoPanel::~LfoPanel()
 
     freq = nullptr;
     label = nullptr;
+    wave = nullptr;
+    label2 = nullptr;
+    label3 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -93,6 +118,9 @@ void LfoPanel::resized()
 
     freq->setBounds (8, 32, 64, 64);
     label->setBounds (8, 8, 64, 16);
+    wave->setBounds (166, 40, 41, 32);
+    label2->setBounds (112, 72, 71, 24);
+    label3->setBounds (189, 72, 83, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -107,6 +135,12 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_freq] -- add your slider handling code here..
         params.lfo1freq.setUI(static_cast<float>(freq->getValue()));
         //[/UserSliderCode_freq]
+    }
+    else if (sliderThatWasMoved == wave)
+    {
+        //[UserSliderCode_wave] -- add your slider handling code here..
+        params.lfo1wave.setUI(static_cast<int>(wave->getValue()));
+        //[/UserSliderCode_wave]
     }
 
     //[UsersliderValueChanged_Post]
@@ -135,14 +169,28 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 32 64 64" min="0.01" max="50" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="freq label" id="44d54eb754724ef0" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
          labelText="freq" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
+          explicitFocusOrder="0" pos="166 40 41 32" min="0" max="1" int="1"
+          style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="e7b5c6b105490306" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="112 72 71 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="sine wave" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="new label" id="a5e6136827f3a519" memberName="label3" virtualName=""
+         explicitFocusOrder="0" pos="189 72 83 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="square wave" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
