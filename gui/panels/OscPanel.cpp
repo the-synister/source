@@ -70,7 +70,7 @@ OscPanel::OscPanel (SynthParams &p)
     addAndMakeVisible (label4 = new Label ("new label",
                                            TRANS("Pitch Range")));
     label4->setFont (Font (15.00f, Font::plain));
-    label4->setJustificationType (Justification::centred);
+    label4->setJustificationType (Justification::centredLeft);
     label4->setEditable (false, false, false);
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
@@ -103,6 +103,7 @@ OscPanel::~OscPanel()
     label3 = nullptr;
     pitchRange = nullptr;
     label4 = nullptr;
+
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -154,9 +155,9 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     }
     else if (sliderThatWasMoved == pitchRange)
     {
-        //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
+        //[UserSliderCode_pitchRange] -- add your slider handling code here..
         params.osc1PitchRange.setUI(static_cast<float>(pitchRange->getValue()));
-        //[/UserSliderCode_lfo1depth1]
+        //[/UserSliderCode_pitchRange]
     }
 
     //[UsersliderValueChanged_Post]
@@ -204,7 +205,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="36"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
           virtualName="" explicitFocusOrder="0" pos="156 32 64 64" min="0"
-          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="4067670d690acd0" memberName="label4" virtualName=""
          explicitFocusOrder="0" pos="149 4 80 24" edTextCol="ff000000"

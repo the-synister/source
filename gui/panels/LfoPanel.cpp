@@ -74,6 +74,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     freq->setValue(params.lfo1freq.getUI());
     freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
+    wave->setValue(params.lfo1wave.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -139,7 +140,7 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == wave)
     {
         //[UserSliderCode_wave] -- add your slider handling code here..
-        params.lfo1wave.setUI(static_cast<int>(wave->getValue()));
+        params.lfo1wave.setUI(std::round(static_cast<float>(wave->getValue())));
         //[/UserSliderCode_wave]
     }
 
@@ -169,9 +170,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 32 64 64" min="0.010000000000000000208"
+          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="freq label" id="44d54eb754724ef0" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
          labelText="freq" editableSingleClick="0" editableDoubleClick="0"
