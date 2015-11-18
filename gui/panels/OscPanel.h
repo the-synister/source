@@ -63,8 +63,6 @@ private:
     ScopedPointer<Label> label;
     ScopedPointer<Slider> lfo1depth1;
     ScopedPointer<Label> label3;
-    ScopedPointer<Slider> pitchRange;
-    ScopedPointer<Label> label4;
     ScopedPointer<Slider> pulsewidth;
     ScopedPointer<Label> label2;
 
