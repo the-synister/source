@@ -72,6 +72,7 @@ FiltPanel::FiltPanel (SynthParams &p)
 
     //[UserPreSize]
     CutoffSlider->setValue(params.lpCutoff.getUI());
+    CutoffSlider->setSkewFactorFromMidPoint (1000.0);
     CutoffSlider->setTextValueSuffix(String(" ") + params.lpCutoff.unit());
     ResonanceSlider->setValue(params.lpResonance.getUI());
     ResonanceSlider->setTextValueSuffix(String(" ") + params.lpResonance.unit());
