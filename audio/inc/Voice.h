@@ -75,7 +75,7 @@ public:
         lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         
         osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) + Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
