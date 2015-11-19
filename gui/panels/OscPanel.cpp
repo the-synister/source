@@ -83,7 +83,7 @@ OscPanel::OscPanel (SynthParams &p)
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
     pitchRange->setValue(params.osc1PitchRange.getUI());
     pitchRange->setTextValueSuffix(String(" ") + params.osc1PitchRange.unit());
-	pulsewidth->setValue(params.osc1pulsewidth.getUI());
+    pulsewidth->setValue(params.osc1pulsewidth.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -131,8 +131,8 @@ void OscPanel::resized()
     label->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
-    pulsewidth->setBounds (8, 152, 64, 64);
-    label2->setBounds (8, 128, 64, 24);
+    pulsewidth->setBounds (160, 32, 64, 64);
+    label2->setBounds (160, 8, 64, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -205,12 +205,12 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="" explicitFocusOrder="0" pos="8 152 64 64" min="0.010000000000000000208"
+          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0.010000000000000000208"
           max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="8 128 64 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="160 8 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
