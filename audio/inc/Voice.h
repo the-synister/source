@@ -72,7 +72,11 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int /*currentPitchWheelPosition*/) override
     {
-        lastSample = 0.f, inputDelay1 = 0.f, inputDelay2 = 0.f, outputDelay1 = 0.f, outputDelay2 = 0.f;
+        lastSample = 0.f;
+        inputDelay1 = 0.f;
+        inputDelay2 = 0.f;
+        outputDelay1 = 0.f;
+        outputDelay2 = 0.f;
         
         level = velocity * 0.15f;
         tailOff = 0.f;
