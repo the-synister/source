@@ -62,7 +62,7 @@ OscPanel::OscPanel (SynthParams &p)
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (osc1trngAmount = new Slider ("Osc1 Triangle Amount"));
-    osc1trngAmount->setRange (0, 3.14159, 0);
+    osc1trngAmount->setRange (0, 1, 0);
     osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
     osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     osc1trngAmount->addListener (this);
@@ -205,7 +205,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="36"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
           virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0"
-          max="3.1415926535900001" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="fffbfc69001f744b" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="152 8 120 16" edTextCol="ff000000"
