@@ -65,6 +65,8 @@ private:
     ScopedPointer<Label> label3;
     ScopedPointer<Slider> pulsewidth;
     ScopedPointer<Label> label2;
+    ScopedPointer<Slider> pitchRange;
+    ScopedPointer<Label> label4;
 
 
     //==============================================================================

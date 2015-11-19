@@ -21,6 +21,7 @@
 #include "panels/OscPanel.h"
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
+#include "panels/EnvPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"

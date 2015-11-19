@@ -75,6 +75,20 @@ OscPanel::OscPanel (SynthParams &p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (pitchRange = new Slider ("pitch range"));
+    pitchRange->setRange (0, 10, 0);
+    pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
+    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pitchRange->addListener (this);
+
+    addAndMakeVisible (label4 = new Label ("new label",
+                                           TRANS("Pitch Range")));
+    label4->setFont (Font (15.00f, Font::plain));
+    label4->setJustificationType (Justification::centredLeft);
+    label4->setEditable (false, false, false);
+    label4->setColour (TextEditor::textColourId, Colours::black);
+    label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
@@ -104,6 +118,8 @@ OscPanel::~OscPanel()
     label3 = nullptr;
     pulsewidth = nullptr;
     label2 = nullptr;
+    pitchRange = nullptr;
+    label4 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -131,8 +147,10 @@ void OscPanel::resized()
     label->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     label3->setBounds (80, 8, 64, 16);
-    pulsewidth->setBounds (160, 32, 64, 64);
-    label2->setBounds (160, 8, 64, 24);
+    pulsewidth->setBounds (152, 32, 64, 64);
+    label2->setBounds (152, 8, 64, 24);
+    pitchRange->setBounds (224, 32, 64, 64);
+    label4->setBounds (216, 8, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -159,6 +177,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
 		params.osc1pulsewidth.setUI(static_cast<float>(pulsewidth->getValue()));
         //[/UserSliderCode_pulsewidth]
+    }
+    else if (sliderThatWasMoved == pitchRange)
+    {
+        //[UserSliderCode_pitchRange] -- add your slider handling code here..
+        //[/UserSliderCode_pitchRange]
     }
 
     //[UsersliderValueChanged_Post]
@@ -205,15 +228,24 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0.010000000000000000208"
+          virtualName="" explicitFocusOrder="0" pos="152 32 64 64" min="0.010000000000000000208"
           max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="160 8 64 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="152 8 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
+  <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
+          virtualName="" explicitFocusOrder="0" pos="224 32 64 64" min="0"
+          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="4067670d690acd0" memberName="label4" virtualName=""
+         explicitFocusOrder="0" pos="216 8 80 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Pitch Range" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
