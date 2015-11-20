@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class LfoPanel  : public Component,
-                  public SliderListener
+                  public SliderListener,
+                  public ButtonListener
 {
 public:
     //==============================================================================
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -64,6 +66,9 @@ private:
     ScopedPointer<Slider> wave;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;
+    ScopedPointer<ToggleButton> tempoSyncSwitch;
+    ScopedPointer<Slider> notelength;
+    ScopedPointer<Label> label4;
 
 
     //==============================================================================

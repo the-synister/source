@@ -74,9 +74,9 @@ public:
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
-        lfo1sine.phase = 0.f;
+        lfo1sine.phase = .5f*float_Pi;
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        lfo1square.phase = 0.f;
+        lfo1square.phase = .5f*float_Pi;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 
         osc1.phase = 0.f;

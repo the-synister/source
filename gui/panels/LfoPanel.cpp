@@ -69,12 +69,32 @@ LfoPanel::LfoPanel (SynthParams &p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
+    tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
+    tempoSyncSwitch->addListener (this);
+
+    addAndMakeVisible (notelength = new Slider ("notelength"));
+    notelength->setRange (1, 32, 1);
+    notelength->setSliderStyle (Slider::IncDecButtons);
+    notelength->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    notelength->addListener (this);
+
+    addAndMakeVisible (label4 = new Label ("new label",
+                                           TRANS("Change note length 1/x")));
+    label4->setFont (Font (15.00f, Font::plain));
+    label4->setJustificationType (Justification::centredLeft);
+    label4->setEditable (false, false, false);
+    label4->setColour (TextEditor::textColourId, Colours::black);
+    label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     freq->setValue(params.lfo1freq.getUI());
     freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     wave->setValue(params.lfo1wave.getUI());
+    tempoSyncSwitch->setValue(params.lfo1TempSync.getUI());
+    notelength->setValue(params.noteLength.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -94,6 +114,9 @@ LfoPanel::~LfoPanel()
     wave = nullptr;
     label2 = nullptr;
     label3 = nullptr;
+    tempoSyncSwitch = nullptr;
+    notelength = nullptr;
+    label4 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -122,6 +145,9 @@ void LfoPanel::resized()
     wave->setBounds (166, 40, 41, 32);
     label2->setBounds (112, 72, 71, 24);
     label3->setBounds (189, 72, 83, 24);
+    tempoSyncSwitch->setBounds (82, 113, 150, 24);
+    notelength->setBounds (168, 152, 150, 24);
+    label4->setBounds (8, 152, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -143,9 +169,29 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         params.lfo1wave.setUI(std::round(static_cast<float>(wave->getValue())));
         //[/UserSliderCode_wave]
     }
+    else if (sliderThatWasMoved == notelength)
+    {
+        //[UserSliderCode_notelength] -- add your slider handling code here..
+        //[/UserSliderCode_notelength]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == tempoSyncSwitch)
+    {
+        //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
+        //[/UserButtonCode_tempoSyncSwitch]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -170,9 +216,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 32 64 64" min="0.01" max="50" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="freq label" id="44d54eb754724ef0" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
          labelText="freq" editableSingleClick="0" editableDoubleClick="0"
@@ -190,6 +236,18 @@ BEGIN_JUCER_METADATA
   <LABEL name="new label" id="a5e6136827f3a519" memberName="label3" virtualName=""
          explicitFocusOrder="0" pos="189 72 83 24" edTextCol="ff000000"
          edBkgCol="0" labelText="square wave" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
+                virtualName="" explicitFocusOrder="0" pos="82 113 150 24" buttonText="Tempo Sync"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <SLIDER name="notelength" id="6fa8673edff62372" memberName="notelength"
+          virtualName="" explicitFocusOrder="0" pos="168 152 150 24" min="1"
+          max="32" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="22b737542921a599" memberName="label4" virtualName=""
+         explicitFocusOrder="0" pos="8 152 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Change note length 1/x" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
