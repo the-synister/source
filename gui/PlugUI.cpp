@@ -35,6 +35,7 @@ PlugUI::PlugUI (SynthParams &p)
     : params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
+    startTimerHz (30);
     //[/Constructor_pre]
 
     addAndMakeVisible (label = new Label ("new label",
@@ -101,6 +102,21 @@ PlugUI::PlugUI (SynthParams &p)
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
+}
+
+void PlugUI::timerCallback()
+{
+    updateBpmDisplay (params.positionInfo[params.lastPositionIndex.__a_]);
+}
+
+void PlugUI::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo currentPos)
+{
+    lastBpmInfo = currentPos.bpm;
+
+    MemoryOutputStream bpmDisplayText;
+
+    bpmDisplayText << String(currentPos.bpm, 2);
+    bpmDisplay->setText(bpmDisplayText.toString(), dontSendNotification);
 }
 
 PlugUI::~PlugUI()

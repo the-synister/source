@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                public SliderListener
+                public SliderListener,
+                private Timer
 {
 public:
     //==============================================================================
@@ -47,16 +48,18 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     //[/UserMethods]
 
-    void paint (Graphics& g);
-    void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
-    
-    ScopedPointer<Label> bpmDisplay;
-
+    void paint (Graphics& g) override;
+    void resized() override;
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
+    void timerCallback() override;
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
+
+    float lastBpmInfo;
+
+    void updateBpmDisplay(AudioPlayHead::CurrentPositionInfo);
     //[/UserVariables]
 
     //==============================================================================
@@ -66,7 +69,7 @@ private:
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> bpmLabel;
-
+    ScopedPointer<Label> bpmDisplay;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)

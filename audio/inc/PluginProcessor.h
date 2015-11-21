@@ -58,14 +58,10 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    
-    AudioPlayHead::CurrentPositionInfo lastPositionInfo;
-
 private:
     //==============================================================================
     Synthesiser synth;
 
-    AudioPlayHead::CurrentPositionInfo currentPositionInfo;
     void updateHostInfo();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)

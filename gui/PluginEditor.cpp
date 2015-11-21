@@ -19,33 +19,13 @@ PluginAudioProcessorEditor::PluginAudioProcessorEditor (PluginAudioProcessor& p)
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (800, 600);
-    
-    startTimerHz (30);
-    
+
     addAndMakeVisible(ui = new PlugUI(p));
 }
 
 PluginAudioProcessorEditor::~PluginAudioProcessorEditor()
 {
     ui = nullptr;
-}
-
-void PluginAudioProcessorEditor::timerCallback()
-{
-    std::cout << "inside timer callback";
-    updateBpmDisplay (processor.lastPositionInfo);
-}
-
-void PluginAudioProcessorEditor::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo currentPos)
-{
-   if (lastDisplayedPosition != currentPos) {
-       lastDisplayedPosition = currentPos;
-       
-        MemoryOutputStream bpmDisplay;
-
-        bpmDisplay << String(currentPos.bpm, 2);
-        ui->bpmDisplay->setText(bpmDisplay.toString(), dontSendNotification);
-    }
 }
 
 //==============================================================================

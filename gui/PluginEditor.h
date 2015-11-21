@@ -21,8 +21,7 @@
 //==============================================================================
 /**
 */
-class PluginAudioProcessorEditor  : public AudioProcessorEditor,
-                                    private Timer
+class PluginAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
     PluginAudioProcessorEditor (PluginAudioProcessor&);
@@ -31,23 +30,13 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-    void timerCallback() override;
-    
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     PluginAudioProcessor& processor;
     ScopedPointer<PlugUI> ui;
-    
-    AudioPlayHead::CurrentPositionInfo lastDisplayedPosition;
-    
-    void updateBpmDisplay(AudioPlayHead::CurrentPositionInfo);
-    
-    PluginAudioProcessor& getProcessor() const
-    {
-        return static_cast<PluginAudioProcessor&> (processor);
-    }
-    
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessorEditor)
 };
 

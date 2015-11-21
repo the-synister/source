@@ -22,5 +22,10 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    AudioPlayHead::CurrentPositionInfo positionInfo [2];
+
+    std::atomic<int> lastPositionIndex;
+    std::atomic<int> tempIndex;
+    std::atomic<int> currentPositionIndex;
 protected:
 };
