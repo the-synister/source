@@ -54,12 +54,14 @@ public:
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
     , maxDelayLengthInSamples(static_cast<int>(getSampleRate() * 2))
+    , loopPosition(0)
+    , readLoopPosition(0)
     {
+        //TODO: find Channel number -> iterate
         delayBuffer = AudioSampleBuffer(2, maxDelayLengthInSamples);
         delayBuffer.clear(0, 0, maxDelayLengthInSamples);
         delayBuffer.clear(1, 0, maxDelayLengthInSamples);
-        loopPosition = 0;
-        readLoopPosition = 0;
+
     }
 
 
@@ -154,18 +156,19 @@ public:
         }
 
         // delay
+        //outputBuffer.applyGain(0.7f);
         copyRenderedBlockToDelayBuffer(outputBuffer);
         for (int s = 0; s < numSamples; ++s)
         {
             float currentSample = 0.f;
             for (int c = 0; c < outputBuffer.getNumChannels(); ++c){
-                if (readLoopPosition + startSample >= int(params.delayTime.get()*(getSampleRate() / 1000))) {
+                if (readLoopPosition + startSample >= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0))) {
                     readLoopPosition = 0;
                     delayBuffer.applyGain(params.delayFeedback.get());
                 }
-                currentSample = outputBuffer.getSample(c, startSample + s) /* *(1 - params.delayWet.get())*/;
-                currentSample += delayBuffer.getSample(c, startSample + readLoopPosition) /** params.delayFeedback.get()*/;
-                outputBuffer.setSample(c, startSample + s, currentSample);
+                currentSample = outputBuffer.getSample(c, startSample + s)  * 0.7f * (1.f - params.delayDryWet.get());
+                currentSample += delayBuffer.getSample(c, startSample + readLoopPosition) * 0.7f * (params.delayDryWet.get() /* * params.delayFeedback.get()*/);
+                outputBuffer.addSample(c, startSample + s, currentSample);
                 ++readLoopPosition;
             }
         }
@@ -188,10 +191,10 @@ protected:
         {
             for (int c = 0; c < bufferIn.getNumChannels(); ++c)
             {
-                if (loopPosition >= int(params.delayTime.get()*(getSampleRate() / 1000))){
+                if (loopPosition >= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000))){
                     loopPosition = 0;
                 }
-                delayBuffer.addSample(c, loopPosition, bufferIn.getSample(c, s) * params.delayDryWet.get() );
+                delayBuffer.addSample(c, loopPosition, bufferIn.getSample(c, s) /* * params.delayDryWet.get() */);
                 ++loopPosition;
             }
         }
