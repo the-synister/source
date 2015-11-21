@@ -134,6 +134,7 @@ void PluginAudioProcessor::releaseResources()
 
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    updateHostInfo();
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -152,8 +153,6 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
-    updateHostInfo();
 }
 
 void PluginAudioProcessor::updateHostInfo()
