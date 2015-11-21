@@ -56,9 +56,9 @@ public:
     , maxDelayLengthInSamples(static_cast<int>(getSampleRate() * 2))
     , loopPosition(0)
     , readLoopPosition(0)
+    , delayBuffer (AudioSampleBuffer(2, static_cast<int>(getSampleRate() * 2)))
     {
         //TODO: find Channel number -> iterate
-        delayBuffer = AudioSampleBuffer(2, maxDelayLengthInSamples);
         delayBuffer.clear(0, 0, maxDelayLengthInSamples);
         delayBuffer.clear(1, 0, maxDelayLengthInSamples);
 
