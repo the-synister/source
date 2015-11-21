@@ -39,13 +39,13 @@ OscPanel::OscPanel (SynthParams &p)
     ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ftune1->addListener (this);
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("fine")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centred);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (fineLabel = new Label ("new label",
+                                              TRANS("fine")));
+    fineLabel->setFont (Font (15.00f, Font::plain));
+    fineLabel->setJustificationType (Justification::centred);
+    fineLabel->setEditable (false, false, false);
+    fineLabel->setColour (TextEditor::textColourId, Colours::black);
+    fineLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (lfo1depth1 = new Slider ("LFO depth 1"));
     lfo1depth1->setRange (0, 12, 0);
@@ -53,13 +53,13 @@ OscPanel::OscPanel (SynthParams &p)
     lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfo1depth1->addListener (this);
 
-    addAndMakeVisible (label3 = new Label ("new label",
-                                           TRANS("LFO 1")));
-    label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centred);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (lfoOscLabel = new Label ("new label",
+                                                TRANS("LFO 1")));
+    lfoOscLabel->setFont (Font (15.00f, Font::plain));
+    lfoOscLabel->setJustificationType (Justification::centred);
+    lfoOscLabel->setEditable (false, false, false);
+    lfoOscLabel->setColour (TextEditor::textColourId, Colours::black);
+    lfoOscLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (pulsewidth = new Slider ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
@@ -67,13 +67,13 @@ OscPanel::OscPanel (SynthParams &p)
     pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     pulsewidth->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Pulse Width\n")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (pulseWidthLabel = new Label ("new label",
+                                                    TRANS("Pulse Width\n")));
+    pulseWidthLabel->setFont (Font (15.00f, Font::plain));
+    pulseWidthLabel->setJustificationType (Justification::centred);
+    pulseWidthLabel->setEditable (false, false, false);
+    pulseWidthLabel->setColour (TextEditor::textColourId, Colours::black);
+    pulseWidthLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (pitchRange = new Slider ("pitch range"));
     pitchRange->setRange (0, 10, 0);
@@ -81,13 +81,13 @@ OscPanel::OscPanel (SynthParams &p)
     pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     pitchRange->addListener (this);
 
-    addAndMakeVisible (label4 = new Label ("new label",
-                                           TRANS("Pitch Range")));
-    label4->setFont (Font (15.00f, Font::plain));
-    label4->setJustificationType (Justification::centredLeft);
-    label4->setEditable (false, false, false);
-    label4->setColour (TextEditor::textColourId, Colours::black);
-    label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (pitchRangeLabel = new Label ("new label",
+                                                    TRANS("Pitch Range")));
+    pitchRangeLabel->setFont (Font (15.00f, Font::plain));
+    pitchRangeLabel->setJustificationType (Justification::centredLeft);
+    pitchRangeLabel->setEditable (false, false, false);
+    pitchRangeLabel->setColour (TextEditor::textColourId, Colours::black);
+    pitchRangeLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -113,13 +113,13 @@ OscPanel::~OscPanel()
     //[/Destructor_pre]
 
     ftune1 = nullptr;
-    label = nullptr;
+    fineLabel = nullptr;
     lfo1depth1 = nullptr;
-    label3 = nullptr;
+    lfoOscLabel = nullptr;
     pulsewidth = nullptr;
-    label2 = nullptr;
+    pulseWidthLabel = nullptr;
     pitchRange = nullptr;
-    label4 = nullptr;
+    pitchRangeLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -144,13 +144,13 @@ void OscPanel::resized()
     //[/UserPreResize]
 
     ftune1->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
+    fineLabel->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
-    label3->setBounds (80, 8, 64, 16);
+    lfoOscLabel->setBounds (80, 8, 64, 16);
     pulsewidth->setBounds (152, 32, 64, 64);
-    label2->setBounds (152, 8, 64, 24);
+    pulseWidthLabel->setBounds (152, 8, 64, 24);
     pitchRange->setBounds (224, 32, 64, 64);
-    label4->setBounds (216, 8, 80, 24);
+    pitchRangeLabel->setBounds (216, 8, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -213,17 +213,17 @@ BEGIN_JUCER_METADATA
           virtualName="" explicitFocusOrder="0" pos="8 32 64 64" min="-100"
           max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="9d171eeecf3cc269" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
-         labelText="fine" editableSingleClick="0" editableDoubleClick="0"
+  <LABEL name="new label" id="9d171eeecf3cc269" memberName="fineLabel"
+         virtualName="" explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="fine" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
           virtualName="" explicitFocusOrder="0" pos="80 32 64 64" min="0"
           max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="d2ef03a114e2a714" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="80 8 64 16" edTextCol="ff000000"
+  <LABEL name="new label" id="d2ef03a114e2a714" memberName="lfoOscLabel"
+         virtualName="" explicitFocusOrder="0" pos="80 8 64 16" edTextCol="ff000000"
          edBkgCol="0" labelText="LFO 1" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
@@ -232,8 +232,8 @@ BEGIN_JUCER_METADATA
           max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="152 8 64 24" edTextCol="ff000000"
+  <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="pulseWidthLabel"
+         virtualName="" explicitFocusOrder="0" pos="152 8 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
@@ -241,8 +241,8 @@ BEGIN_JUCER_METADATA
           virtualName="" explicitFocusOrder="0" pos="224 32 64 64" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="4067670d690acd0" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="216 8 80 24" edTextCol="ff000000"
+  <LABEL name="new label" id="4067670d690acd0" memberName="pitchRangeLabel"
+         virtualName="" explicitFocusOrder="0" pos="216 8 80 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pitch Range" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
