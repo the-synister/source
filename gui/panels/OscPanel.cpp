@@ -61,6 +61,20 @@ OscPanel::OscPanel (SynthParams &p)
     lfoOscLabel->setColour (TextEditor::textColourId, Colours::black);
     lfoOscLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (osc1trngAmount = new Slider ("Osc1 Triangle Amount"));
+    osc1trngAmount->setRange (0, 1, 0);
+    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    osc1trngAmount->addListener (this);
+
+    addAndMakeVisible (triangleMorphLabel = new Label ("new label",
+                                                       TRANS("Triangle Morph\n")));
+    triangleMorphLabel->setFont (Font (15.00f, Font::plain));
+    triangleMorphLabel->setJustificationType (Justification::centred);
+    triangleMorphLabel->setEditable (false, false, false);
+    triangleMorphLabel->setColour (TextEditor::textColourId, Colours::black);
+    triangleMorphLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
     addAndMakeVisible (pulsewidth = new Slider ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
     pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -76,32 +90,19 @@ OscPanel::OscPanel (SynthParams &p)
     pulseWidthLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (pitchRange = new Slider ("pitch range"));
-    pitchRange->setRange (0, 10, 0);
+    pitchRange->setRange (0, 12, 0);
     pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
     pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     pitchRange->addListener (this);
 
     addAndMakeVisible (pitchRangeLabel = new Label ("new label",
-                                                    TRANS("Pitch Range")));
+                                                    TRANS("Pitch\n"
+                                                    "Range")));
     pitchRangeLabel->setFont (Font (15.00f, Font::plain));
-    pitchRangeLabel->setJustificationType (Justification::centredLeft);
+    pitchRangeLabel->setJustificationType (Justification::centred);
     pitchRangeLabel->setEditable (false, false, false);
     pitchRangeLabel->setColour (TextEditor::textColourId, Colours::black);
     pitchRangeLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (osc1trngAmount = new Slider ("Osc1 Triangle Amount"));
-    osc1trngAmount->setRange (0, 1, 0);
-    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
-    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    osc1trngAmount->addListener (this);
-
-    addAndMakeVisible (triangleMorphLabel = new Label ("new label",
-                                                       TRANS("Triangle Morph\n")));
-    triangleMorphLabel->setFont (Font (15.00f, Font::plain));
-    triangleMorphLabel->setJustificationType (Justification::centredLeft);
-    triangleMorphLabel->setEditable (false, false, false);
-    triangleMorphLabel->setColour (TextEditor::textColourId, Colours::black);
-    triangleMorphLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -165,12 +166,12 @@ void OscPanel::resized()
     fineLabel->setBounds (8, 8, 64, 16);
     lfo1depth1->setBounds (80, 32, 64, 64);
     lfoOscLabel->setBounds (80, 8, 64, 16);
-    osc1trngAmount->setBounds (160, 32, 64, 64);
-    triangleMorphLabel->setBounds (152, 8, 120, 16);
-    pulsewidth->setBounds (152, 32, 64, 64);
-    pulseWidthLabel->setBounds (152, 8, 64, 24);
-    pitchRange->setBounds (224, 32, 64, 64);
-    pitchRangeLabel->setBounds (216, 8, 80, 24);
+    osc1trngAmount->setBounds (152, 32, 64, 64);
+    triangleMorphLabel->setBounds (138, 3, 93, 31);
+    pulsewidth->setBounds (224, 32, 64, 64);
+    pulseWidthLabel->setBounds (218, 7, 80, 24);
+    pitchRange->setBounds (296, 32, 64, 64);
+    pitchRangeLabel->setBounds (292, 2, 72, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -197,6 +198,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
         params.osc1trngAmount.setUI(static_cast<float>(osc1trngAmount->getValue()));
         //[/UserSliderCode_osc1trngAmount]
+    }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
@@ -254,31 +256,33 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
-          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0"
+          virtualName="" explicitFocusOrder="0" pos="152 32 64 64" min="0"
           max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="fffbfc69001f744b" memberName="triangleMorphLabel"
-         virtualName="" explicitFocusOrder="0" pos="152 8 120 16" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="138 3 93 31" edTextCol="ff000000"
          edBkgCol="0" labelText="Triangle Morph&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="" explicitFocusOrder="0" pos="152 32 64 64" min="0.010000000000000000208"
+          virtualName="" explicitFocusOrder="0" pos="224 32 64 64" min="0.010000000000000000208"
           max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="pulseWidthLabel"
-         virtualName="" explicitFocusOrder="0" pos="152 8 64 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="218 7 80 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
-          virtualName="" explicitFocusOrder="0" pos="156 32 64 64" min="0"
+          virtualName="" explicitFocusOrder="0" pos="296 32 64 64" min="0"
           max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="4067670d690acd0" memberName="pitchRangeLabel"
-         virtualName="" explicitFocusOrder="0" pos="216 8 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Pitch Range" editableSingleClick="0"
+         virtualName="" explicitFocusOrder="0" pos="292 2 72 32" edTextCol="ff000000"
+         edBkgCol="0" labelText="Pitch&#10;Range" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
