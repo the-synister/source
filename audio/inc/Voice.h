@@ -193,7 +193,7 @@ protected:
         {
             for (int c = 0; c < bufferIn.getNumChannels(); ++c)
             {
-                if (loopPosition >= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000))){
+                if ( (loopPosition %= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000))) == 0){
                     loopPosition = 0;
                 }
                 delayBuffer.addSample(c, loopPosition, bufferIn.getSample(c, s) /* * params.delayDryWet.get() */);
