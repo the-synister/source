@@ -10,49 +10,42 @@ SynthParams::SynthParams()
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 {}
 
-void SynthParams::writeXMLPatch() {
+const float version = 1.0f;
+
+
+void SynthParams::addElement(XmlElement* patch, String name, float value) {
+    XmlElement* node = new XmlElement(name);
+    node->setAttribute("value", value);
+    patch->addChildElement(node);
+}
+
+void SynthParams::writeXMLPatch() 
+{
     // create an outer node of the patch
-    XmlElement patch("patch");
+    XmlElement* patch = new XmlElement("patch");
+    patch->setAttribute("version", version);
 
-    // create the inner elements for the different settings
-    XmlElement* freqElem = new XmlElement("freq");
-    XmlElement* lfo1freqElem = new XmlElement("lfo1freq");
-    XmlElement* lfo1waveElem = new XmlElement("lfo1wave");
-    XmlElement* osc1fineElem = new XmlElement("osc1fine");
-    XmlElement* osc1lfo1depthElem = new XmlElement("osc1lfo1depth");
-    XmlElement* volElem = new XmlElement("vol");
+    addElement(patch, "freq", freq.get());
+    addElement(patch, "lfo1freq", lfo1freq.get());
+    addElement(patch, "lfo1wave", lfo1wave.get());
+    addElement(patch, "osc1fine", osc1fine.get());
+    addElement(patch, "osc1lfo1depth", osc1lfo1depth.get());
+    addElement(patch, "vol", vol.get());
 
-    // fill the elements with the appropriate values
-    freqElem->setAttribute("value", freq.get());
-    lfo1freqElem->setAttribute("value", lfo1freq.get());
-    lfo1waveElem->setAttribute("value", lfo1wave.get());
-    osc1fineElem->setAttribute("value", osc1fine.get());
-    osc1lfo1depthElem->setAttribute("value", osc1lfo1depth.get());
-    volElem->setAttribute("value", vol.get());
-
-    // add all settings to the patchSettings node
-    patch.addChildElement(freqElem);
-    patch.addChildElement(lfo1freqElem);
-    patch.addChildElement(lfo1waveElem);
-    patch.addChildElement(osc1fineElem);
-    patch.addChildElement(osc1lfo1depthElem);
-    patch.addChildElement(volElem);
-    
     // create the output
     FileChooser saveDirChooser("Please select the place you want to save!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
     if (saveDirChooser.browseForFileToSave(true))
     {
         File saveFile(saveDirChooser.getResult());
         saveFile.create();
-        patch.writeToFile(saveFile, ""); // DTD optional, no validation yet
+        patch->writeToFile(saveFile, ""); // DTD optional, no validation yet
     }
+    delete(patch);
 }
+
 
 void SynthParams::readXMLPatch()
 {
-    // for the whole read process: DTD might be added in the future, no validation yet
-    // TODO how much validation should be done? none? attribute names? attribute ranges?
-
     // read the xml params into the synth params
     FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
     if (openFileChooser.browseForFileToOpen())
@@ -60,12 +53,25 @@ void SynthParams::readXMLPatch()
         File openedFile(openFileChooser.getResult());
         XmlElement* xmlPatch = XmlDocument::parse(openedFile);
 
-        // set all the settings
-        freq.setUI(static_cast<float>(xmlPatch->getChildByName("freq")->getDoubleAttribute("value")));
-        lfo1freq.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1freq")->getDoubleAttribute("value")));
-        lfo1wave.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1wave")->getDoubleAttribute("value")));
-        osc1fine.setUI(static_cast<float>(xmlPatch->getChildByName("osc1fine")->getDoubleAttribute("value")));
-        osc1lfo1depth.setUI(static_cast<float>(xmlPatch->getChildByName("osc1lfo1depth")->getDoubleAttribute("value")));
-        vol.setUI(static_cast<float>(xmlPatch->getChildByName("vol")->getDoubleAttribute("value")));
+        // if the versions don't align, inform the user
+        if (xmlPatch->getTagName() != "patch" || static_cast<float>(xmlPatch->getDoubleAttribute("version")) != version) {
+            AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Version Conflict", 
+                "The file was not created by the current version of the software, all possible settings will be applied.",
+                "OK");
+        }
+
+        // set the values if they exist in the XML
+        if(xmlPatch->getChildByName("freq") != NULL) 
+            freq.setUI(static_cast<float>(xmlPatch->getChildByName("freq")->getDoubleAttribute("value")));
+        if (xmlPatch->getChildByName("lfo1freq") != NULL)
+            lfo1freq.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1freq")->getDoubleAttribute("value")));
+        if (xmlPatch->getChildByName("lfo1wave") != NULL)
+            lfo1wave.setUI(static_cast<float>(xmlPatch->getChildByName("lfo1wave")->getDoubleAttribute("value")));
+        if (xmlPatch->getChildByName("osc1fine") != NULL)
+            osc1fine.setUI(static_cast<float>(xmlPatch->getChildByName("osc1fine")->getDoubleAttribute("value")));
+        if (xmlPatch->getChildByName("osc1lfo1depth") != NULL)
+            osc1lfo1depth.setUI(static_cast<float>(xmlPatch->getChildByName("osc1lfo1depth")->getDoubleAttribute("value")));
+        if (xmlPatch->getChildByName("vol") != NULL)
+            vol.setUI(static_cast<float>(xmlPatch->getChildByName("vol")->getDoubleAttribute("value")));
     }
 }

@@ -24,6 +24,7 @@ public:
 
     void readXMLPatch(); // fill the synth params with data from a file
 
-
 protected:
+private:
+    void addElement(XmlElement* patch, String name, float value); // adds an element to the XML tree
 };

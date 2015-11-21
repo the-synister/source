@@ -21,8 +21,11 @@ public:
     void set(float f) { val_.store(f); }
     float get() const { return val_.load(); }
 
-    //! \todo check min/max!
-    void setUI(float f) { set(f); }
+    void setUI(float f) 
+    {
+        if(f >= min_ && f <= max_) set(f); 
+        else set(default_);
+    }
     float getUI() const { return get(); }
 
     float getMin() const { return min_; }
