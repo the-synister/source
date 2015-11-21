@@ -202,7 +202,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		params.osc1pulsewidth.setUI(static_cast<float>(pulsewidth->getValue()));
+        params.osc1pulsewidth.setUI(static_cast<float>(pulsewidth->getValue()));
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)

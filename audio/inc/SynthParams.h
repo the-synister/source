@@ -17,7 +17,7 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
-	Param osc1pulsewidth;//!< pulse width in [0,01..0,99] 
+    Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
 
     Param panDir; //!< pan R/L [-100..100]
 
