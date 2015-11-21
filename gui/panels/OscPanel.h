@@ -64,7 +64,7 @@ private:
     ScopedPointer<Slider> lfo1depth1;
     ScopedPointer<Label> label3;
     ScopedPointer<Slider> osc1trngAmount;
-    ScopedPointer<Label> label2;
+    ScopedPointer<Label> triangleMorphLabel;
 
 
     //==============================================================================
