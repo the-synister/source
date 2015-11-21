@@ -37,7 +37,6 @@
 */
 class PlugUI  : public Component,
                 public SliderListener
-
 {
 public:
     //==============================================================================
@@ -52,6 +51,8 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
@@ -63,6 +64,8 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)
 };

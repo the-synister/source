@@ -17,6 +17,11 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
     Param osc1PitchRange; //!< range in [0..12] st
 
+    Param envAttack;    //!< env attack in [0.001..5]s (logarithmic scaling)
+    Param envDecay;     //!< env decay in [0.001..5]s (logarithmic scaling)
+    Param envSustain;   //!< env sustain in [0..-96]dB
+    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+
     Param panDir; //!< pan R/L [-100..100]
 
     ParamDb vol; //!< volume in [0..1]
