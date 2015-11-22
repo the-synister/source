@@ -75,6 +75,20 @@ OscPanel::OscPanel (SynthParams &p)
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (LFO_fade_in = new Slider ("LFO fade_in"));
+    LFO_fade_in->setRange (0, 10, 0);
+    LFO_fade_in->setSliderStyle (Slider::RotaryVerticalDrag);
+    LFO_fade_in->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    LFO_fade_in->addListener (this);
+
+    addAndMakeVisible (LFO_fadein_label = new Label ("LFO fade_in label",
+                                                     TRANS("LFO fade in")));
+    LFO_fadein_label->setFont (Font (15.00f, Font::plain));
+    LFO_fadein_label->setJustificationType (Justification::centred);
+    LFO_fadein_label->setEditable (false, false, false);
+    LFO_fadein_label->setColour (TextEditor::textColourId, Colours::black);
+    LFO_fadein_label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
@@ -103,6 +117,8 @@ OscPanel::~OscPanel()
     label3 = nullptr;
     pitchRange = nullptr;
     label4 = nullptr;
+    LFO_fade_in = nullptr;
+    LFO_fadein_label = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -132,6 +148,8 @@ void OscPanel::resized()
     label3->setBounds (80, 8, 64, 16);
     pitchRange->setBounds (156, 32, 64, 64);
     label4->setBounds (149, 4, 80, 24);
+    LFO_fade_in->setBounds (240, 31, 64, 64);
+    LFO_fadein_label->setBounds (240, 7, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -158,6 +176,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_pitchRange] -- add your slider handling code here..
         params.osc1PitchRange.setUI(static_cast<float>(pitchRange->getValue()));
         //[/UserSliderCode_pitchRange]
+    }
+    else if (sliderThatWasMoved == LFO_fade_in)
+    {
+        //[UserSliderCode_LFO_fade_in] -- add your slider handling code here..
+		params.lfo_fadein.setUI(static_cast<float>(LFO_fade_in->getValue()));
+        //[/UserSliderCode_LFO_fade_in]
     }
 
     //[UsersliderValueChanged_Post]
@@ -212,6 +236,15 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Pitch Range" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <SLIDER name="LFO fade_in" id="3c4d67b75173e0e3" memberName="LFO_fade_in"
+          virtualName="" explicitFocusOrder="0" pos="240 31 64 64" min="0"
+          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="LFO fade_in label" id="8234bc16ffc2471e" memberName="LFO_fadein_label"
+         virtualName="" explicitFocusOrder="0" pos="240 7 64 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="LFO fade in" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
