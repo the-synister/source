@@ -74,10 +74,26 @@ public:
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
-        lfo1sine.phase = .5f*float_Pi;
-        lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        lfo1square.phase = .5f*float_Pi;
-        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+
+		// BPM - Information is currently missing
+		if (params.lfo1TempSync.get() == 1.f) {
+
+			lfo1sine.phase = .5f*float_Pi;
+			lfo1square.phase = .5f*float_Pi;
+            lfo1sine.phaseDelta = bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+		    lfo1square.phaseDelta = bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+
+		}
+		else {
+
+            lfo1sine.phase = .5f*float_Pi;
+            lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1square.phase = .5f*float_Pi;
+            lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+		}
+		
+
+
 
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
