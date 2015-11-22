@@ -337,6 +337,9 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
@@ -1549,6 +1552,9 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>Juce Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\juce_audio_basics.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1604,6 +1610,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h">
       <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
       <Filter>standalone\Gui</Filter>
@@ -2992,6 +3001,9 @@
       <Filter>Juce Modules\juce_video</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
+      <Filter>Juce Library Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">

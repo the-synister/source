@@ -63,7 +63,8 @@ private:
     ScopedPointer<Label> label;
     ScopedPointer<Slider> wave;
     ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
+    ScopedPointer<Label> squareWaveLabel;
+    ScopedPointer<Label> sampleAndHoldLabel;
 
 
     //==============================================================================

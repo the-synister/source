@@ -206,8 +206,17 @@ protected:
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
-        else // if lfo1wave is 1, lfo is set to square wave
+        else if (params.lfo1wave.get() == 1) // if lfo1wave is 1, lfo is set to random wave
         {
+            for (int s = 0; s < numSamples; ++s)
+            {
+                const float randomValue = static_cast<float> (rand() % 6);
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount*randomValue) * Param::fromCent(currentPitchInCents));
+            }
+        }
+        else // if lfo1wave is 2, lfo is set to square wave
+        {
+
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
