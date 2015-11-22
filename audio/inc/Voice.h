@@ -210,7 +210,7 @@ protected:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float randomValue = static_cast<float> (rand() % 6);
+                const float randomValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount*randomValue) * Param::fromCent(currentPitchInCents));
             }
         }
