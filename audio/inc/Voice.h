@@ -53,15 +53,15 @@ public:
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
-    , lastSample(0.f)
-    , inputDelay1(0.f)
-    , inputDelay2(0.f)
-    , outputDelay1(0.f)
-    , outputDelay2(0.f)
-    , currentLadderCutoffFreq(params.ladderCutoff.get())
-    {
-        setButterCoefficients();
-    }
+    , ladderOut(0.f)
+    , ladderInDelay(0.f)
+    , lpOut1(0.f)
+    , lpOut2(0.f)
+    , lpOut3(0.f)
+    , lpOut1Delay(0.f)
+    , lpOut2Delay(0.f)
+    , lpOut3Delay(0.f)
+    {}
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -73,12 +73,18 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int /*currentPitchWheelPosition*/) override
     {
-        lastSample = 0.f, inputDelay1 = 0.f, inputDelay2 = 0.f, outputDelay1 = 0.f, outputDelay2 = 0.f;
+        //for ladder filter
+        ladderOut = 0.f;
+        ladderInDelay = 0.f;
+        lpOut1 = 0.f;
+        lpOut2 = 0.f;
+        lpOut3 = 0.f;
+        lpOut1Delay = 0.f;
+        lpOut2Delay = 0.f;
+        lpOut3Delay = 0.f;
+
         level = velocity * 0.15f;
         tailOff = 0.f;
-
-        //calculate butterworth coefficients
-        setButterCoefficients();
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
@@ -132,10 +138,9 @@ public:
             if (tailOff > 0.f)
             {
                 for (int s = 0; s < numSamples;++s)
-                {
-                    //TODO - check if ladder filter is on!
-                    const float currentSample = filterLP(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
+                {                    
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    const float currentSample = ladderFilter(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
 
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample (c, startSample+s, currentSample);
@@ -153,9 +158,8 @@ public:
             {
                 for (int s = 0; s < numSamples;++s)
                 {
-                    //TODO - check if ladder filter is on!
-                    const float currentSample = filterLP(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    const float currentSample = ladderFilter(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
                     
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample+s, currentSample);
@@ -164,45 +168,42 @@ public:
         }
     }
 
-    // Calculates coefficients for second order Butterworth lowpass
-    void setButterCoefficients() {
-        
-        //const float currentResonance = pow(10.f, -params.ladderRes.get() / 20.f);
-        const float cutoffFreq = params.ladderCutoff.get();
+
+
+    //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
+    float ladderFilter(float ladderIn){
+
         const float sRate = static_cast<float>(getSampleRate());
-        
-        const float interVar = 1.f / (tanf(float_Pi*cutoffFreq / sRate));
 
-        butterCoeffs[0] = 1.f / (1.0f + sqrt(2.0f)*interVar + pow(interVar,2.f));
-        butterCoeffs[1] = 2.f*butterCoeffs[0];
-        butterCoeffs[2] = butterCoeffs[0];
-        butterCoeffs[3] = 2.f*butterCoeffs[0] * (1.f - pow(interVar, 2));
-        butterCoeffs[4] = butterCoeffs[0] * (1.0f - sqrt(2.0f)*interVar + pow(interVar,2.f));
+        float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
+        float currentLadderCutoffFreq = params.ladderCutoff.get();
 
+        //coeffecients and parameters
+        float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
+        float g = omega_c / 2.f;
+        float a = (1.f - g) / (1.f + g);
+        float b = g / (1.f + g);
+
+        // subtract the feedback
+        ladderIn = ladderIn - currentResonance * ladderOut;
+
+        // proecess through 1 pole Filters 4 times
+        lpOut1 = b*(ladderIn + ladderInDelay) + a*lpOut1;
+        ladderInDelay = ladderIn;
+
+        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* lpOut2;
+        lpOut1Delay = lpOut1;
+
+        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* lpOut3;
+        lpOut2Delay = lpOut2;
+
+        ladderOut = b*(lpOut3 + lpOut3Delay) + a* ladderOut;
+        lpOut3Delay = lpOut3;
+
+        return ladderOut;
     }
 
-    //apply Lowpass Filter to the current Sample in renderNextBlock()
-    float filterLP(float currentSample){
-
-        if (currentLadderCutoffFreq != params.ladderCutoff.get())
-        {
-            setButterCoefficients();
-            currentLadderCutoffFreq = params.ladderCutoff.get();
-        }
-
-        currentSample = *(butterCoeffs)*currentSample + *(butterCoeffs+1)*inputDelay1 + *(butterCoeffs+2)*inputDelay2 
-            - *(butterCoeffs+3)*outputDelay1 - *(butterCoeffs+4)*outputDelay2;
-
-        //delaying samples
-        inputDelay2 = inputDelay1;
-        inputDelay1 = lastSample;
-        outputDelay2 = outputDelay1;
-        outputDelay1 = currentSample;
-
-        return currentSample;
-    }
-
-protected:
+protected:  
     void renderModulation(int numSamples) {
         //! \todo add pitch wheel values
 
@@ -225,8 +226,13 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
 
-    //Filter initialisation
-    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, currentLadderCutoffFreq;
-    float butterCoeffs[5];
-
+    // for the lader filter
+    float ladderOut;
+    float ladderInDelay;
+    float lpOut1;
+    float lpOut2;
+    float lpOut3;
+    float lpOut1Delay;
+    float lpOut2Delay;
+    float lpOut3Delay;
 };
