@@ -48,7 +48,7 @@ struct Oscillator {
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize)
+    Voice(SynthParams &p, int blockSize, int channels)
     : params(p)
     , level (0.f)
     , tailOff (0.f)
@@ -59,8 +59,9 @@ public:
     , currentDelayLength(0)
     {
         //TODO: find Channel number -> iterate
-        delayBuffer.clear(0, 0, maxDelayLengthInSamples);
-        delayBuffer.clear(1, 0, maxDelayLengthInSamples);
+        for (int c = 0; c < channels; ++c) {
+            delayBuffer.clear(c, 0, maxDelayLengthInSamples);
+        }
     }
 
 

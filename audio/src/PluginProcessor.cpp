@@ -119,7 +119,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     synth.clearVoices();
     for (int i = 8; --i >= 0;)
     {
-        synth.addVoice(new Voice(*this, samplesPerBlock));
+        synth.addVoice(new Voice(*this, samplesPerBlock, 2));
     }
     synth.clearSounds();
     synth.addSound(new Sound());
