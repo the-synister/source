@@ -55,13 +55,12 @@ public:
     , pitchModBuffer(1, blockSize)
     , maxDelayLengthInSamples(static_cast<int>(getSampleRate() * 2))
     , loopPosition(0)
-    , readLoopPosition(2)
     , delayBuffer (AudioSampleBuffer(2, static_cast<int>(getSampleRate() * 2)))
+    , currentDelayLength(0)
     {
         //TODO: find Channel number -> iterate
         delayBuffer.clear(0, 0, maxDelayLengthInSamples);
         delayBuffer.clear(1, 0, maxDelayLengthInSamples);
-
     }
 
 
@@ -155,23 +154,25 @@ public:
             }
         }
 
+
         // delay
-        copyRenderedBlockToDelayBuffer(outputBuffer);
+        //currentDelayLength = static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0)); // save it for the block or not?
+
         for (int s = 0; s < numSamples; ++s)
         {
-            for (int c = 0; c < outputBuffer.getNumChannels(); ++c){
-                if ((readLoopPosition %= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0))) == 0) {
-                    readLoopPosition = 0;
+            for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                if (loopPosition + startSample >= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0))) {
+                    loopPosition = 0;
                 }
                 float currentSample = 0.f;
-                currentSample = delayBuffer.getSample(c, startSample + readLoopPosition) * (params.delayDryWet.get() );
+                float delayedSample = 0.f;
 
-                // apply feedback gain samplewise, not blockwise
-                delayBuffer.setSample(c, startSample + readLoopPosition, currentSample * params.delayFeedback.get() ); 
-
-                currentSample += outputBuffer.getSample(c, startSample + s) /* * (1.f - params.delayDryWet.get() ) */;
-                outputBuffer.setSample(c, startSample + s, currentSample);
-                ++readLoopPosition;
+                currentSample = outputBuffer.getSample(c, startSample + s);
+                delayedSample = delayBuffer.getSample(c, loopPosition);
+                delayBuffer.setSample(c, loopPosition, currentSample);
+                delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
+                outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get() );
+                ++loopPosition;
             }
         }
     }
@@ -187,22 +188,6 @@ protected:
         }
     }
 
-    void copyRenderedBlockToDelayBuffer(const AudioSampleBuffer& bufferIn)
-    {
-        for (int s = 0; s < bufferIn.getNumSamples(); ++s)
-        {
-            for (int c = 0; c < bufferIn.getNumChannels(); ++c)
-            {
-                if ( (loopPosition %= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000))) == 0){
-                    loopPosition = 0;
-                }
-                delayBuffer.addSample(c, loopPosition, bufferIn.getSample(c, s) /* * params.delayDryWet.get() */);
-                ++loopPosition;
-            }
-        }
-
-    }
-
 private:
     SynthParams &params;
 
@@ -216,5 +201,5 @@ private:
     AudioSampleBuffer delayBuffer;
     int maxDelayLengthInSamples;
     int loopPosition;
-    int readLoopPosition;
+    int currentDelayLength;
 };
