@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "JuceHeader.h"
@@ -53,14 +52,12 @@ public:
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
-    , maxDelayLengthInSamples(static_cast<int>(getSampleRate() * 2))
     , loopPosition(0)
-    , delayBuffer (AudioSampleBuffer(2, static_cast<int>(getSampleRate() * 2)))
-    , currentDelayLength(0)
+    , delayBuffer (AudioSampleBuffer(channels, static_cast<int>(getSampleRate() * 2.0)))
+    , currentDelayLength(static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0)))
     {
-        //TODO: find Channel number -> iterate
         for (int c = 0; c < channels; ++c) {
-            delayBuffer.clear(c, 0, maxDelayLengthInSamples);
+            delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
         }
     }
 
@@ -155,24 +152,35 @@ public:
             }
         }
 
-
         // delay
-        //currentDelayLength = static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0)); // save it for the block or not?
-
         for (int s = 0; s < numSamples; ++s)
         {
             for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                if (loopPosition + startSample >= static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0))) {
+
+                // get new length from UI
+                int newLoopLength = static_cast<int>(params.delayTime.get() * (getSampleRate() / 1000.0) );
+               
+                // reset the loop position according to the current delay length
+                if (loopPosition + startSample >= newLoopLength) { // TODO: what exactly is startSample?
                     loopPosition = 0;
                 }
                 float currentSample = 0.f;
                 float delayedSample = 0.f;
 
+                // clear old material from buffer
+                if (newLoopLength < currentDelayLength) { // TODO: this is still a bit messy
+                    delayBuffer.applyGain(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength, 0.f);
+                }
+
+                // add new material to buffer
                 currentSample = outputBuffer.getSample(c, startSample + s);
                 delayedSample = delayBuffer.getSample(c, loopPosition);
                 delayBuffer.setSample(c, loopPosition, currentSample);
-                delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
+                delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get() );
                 outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get() );
+
+                // iterate
+                currentDelayLength = newLoopLength;
                 ++loopPosition;
             }
         }
@@ -199,8 +207,8 @@ private:
     float level, tailOff;
 
     AudioSampleBuffer pitchModBuffer;
+
     AudioSampleBuffer delayBuffer;
-    int maxDelayLengthInSamples;
     int loopPosition;
     int currentDelayLength;
 };
