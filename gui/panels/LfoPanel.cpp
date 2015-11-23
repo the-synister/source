@@ -75,6 +75,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     wave->setValue(params.lfo1wave.getUI());
+
     //[/UserPreSize]
 
     setSize (600, 400);

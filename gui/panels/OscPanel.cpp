@@ -76,7 +76,7 @@ OscPanel::OscPanel (SynthParams &p)
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (LFO_fade_in = new Slider ("LFO fade_in"));
-    LFO_fade_in->setRange (0, 10, 0);
+    LFO_fade_in->setRange (0, 10, 0.01);
     LFO_fade_in->setSliderStyle (Slider::RotaryVerticalDrag);
     LFO_fade_in->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     LFO_fade_in->addListener (this);
@@ -93,6 +93,9 @@ OscPanel::OscPanel (SynthParams &p)
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
     ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
+	LFO_fade_in->setValue(params.lfo_fadein.getUI());
+	LFO_fade_in->setTextValueSuffix(String(" ") + params.lfo_fadein.unit());
+	LFO_fade_in->setSkewFactorFromMidPoint(1);  // Setting the slider logarithmic (value 1s in the middle of slider)
     lfo1depth1->setValue(params.osc1lfo1depth.getUI());
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
     pitchRange->setValue(params.osc1PitchRange.getUI());
@@ -238,8 +241,9 @@ BEGIN_JUCER_METADATA
          fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="LFO fade_in" id="3c4d67b75173e0e3" memberName="LFO_fade_in"
           virtualName="" explicitFocusOrder="0" pos="240 31 64 64" min="0"
-          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          max="10" int="0.010000000000000000208" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="LFO fade_in label" id="8234bc16ffc2471e" memberName="LFO_fadein_label"
          virtualName="" explicitFocusOrder="0" pos="240 7 64 16" edTextCol="ff000000"
          edBkgCol="0" labelText="LFO fade in" editableSingleClick="0"
