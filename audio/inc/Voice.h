@@ -11,8 +11,8 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width)  { return std::sin(phs); }
-    static float square(float phs, float trngAmount, float width) {
+    static float sinus(float phs, float trngAmount, float width, float randomValue)  { return std::sin(phs); }
+    static float square(float phs, float trngAmount, float width, float randomValue) {
         //square wave with duty cycle
         if (phs < 2 * float_Pi * width)
             return 1;
@@ -22,11 +22,11 @@ struct Waveforms {
         //return std::copysign(1.f, float_Pi - phs);
     }
     
-    static float random(float phs, float trngAmount, float width) {
-        return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/1.0f));
+    static float random(float phs, float trngAmount, float width, float randomValue) {
+        return randomValue;
     }
     
-    static float saw(float phs, float trngAmount, float width) {
+    static float saw(float phs, float trngAmount, float widthfloat, float randomValue) {
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
         else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
@@ -34,18 +34,28 @@ struct Waveforms {
 };
 
 
-template<float(*_waveform)(float, float, float)>
+template<float(*_waveform)(float, float, float, float)>
 struct Oscillator {
     float phase;
     float phaseDelta;
     float trngAmount;
     float width;
-
-    Oscillator() : phase(0.f), phaseDelta(0.f) {}
+    float sampleAndHoldValue;
+    bool sampleAndHoldValueFlag;
+    bool smaller;
+    
+    Oscillator() : phase(0.f)
+                 , phaseDelta(0.f)
+                 , sampleAndHoldValue(0.f)
+                 , sampleAndHoldValueFlag(false)
+                 , smaller(true)
+    {}
 
     void reset() {
         phase = 0.f;
         phaseDelta = 0.f;
+        sampleAndHoldValueFlag = false;
+        sampleAndHoldValue = 0.f;
     }
 
     bool isActive() const {
@@ -53,13 +63,47 @@ struct Oscillator {
     }
 
     float next() {
-        const float result = _waveform(phase, trngAmount, width);
+        if (!sampleAndHoldValueFlag) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            sampleAndHoldValueFlag = true;
+        } else if (phase > 2 * float_Pi * width && !smaller) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            smaller = true;
+        } else if (phase < 2 * float_Pi * width && smaller) {
+            smaller = false;
+        }
+        
+        const float result = _waveform(phase, trngAmount, width, sampleAndHoldValue);
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-
+    /*
+    float nextRandomSampleAndHold() {
+        
+        if (sampleAndHoldValueCounter < 0) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            ++sampleAndHoldValueCounter;
+        } else if (phase < 2 * float_Pi * width) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+        }
+        
+        const float result = _waveform(phase, width, sampleAndHoldValue);
+        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
+        return result;
+    }*/
+    
     float next(float pitchMod) {
-        const float result = _waveform(phase, trngAmount, width);
+        if (!sampleAndHoldValueFlag) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            sampleAndHoldValueFlag = true;
+        } else if (phase > 2 * float_Pi * width && !smaller) {
+            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            smaller = true;
+        } else if (phase < 2 * float_Pi * width && smaller) {
+            smaller = false;
+        }
+        
+        const float result = _waveform(phase, trngAmount, width, sampleAndHoldValue);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
@@ -99,6 +143,8 @@ public:
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1random.sampleAndHoldValueFlag = false;
+        lfo1random.sampleAndHoldValue = 0.f;
         
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
