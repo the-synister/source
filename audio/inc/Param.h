@@ -57,6 +57,10 @@ public:
     using Param::Param;
 
     //! \todo check min/max!
-    void setUI(float f) { set(fromDb(f)); }
+    void setUI(float f) 
+    { 
+        if (fromDb(f) >= min_ && fromDb(f) <= max_) set(fromDb(f));
+        else set(default_);
+    }
     float getUI() const { return toDb(get()); }
 };
