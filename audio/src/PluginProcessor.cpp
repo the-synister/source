@@ -160,14 +160,14 @@ void PluginAudioProcessor::updateHostInfo()
     // currentPositionInfo used for getting the bpm.
     if (AudioPlayHead* playHead = getPlayHead())
     {
-        if (playHead->getCurrentPosition (positionInfo[currentPositionIndex.__a_])) {
-            positionInfo[lastPositionIndex.__a_] = positionInfo[currentPositionIndex.__a_];
+        if (playHead->getCurrentPosition (positionInfo[currentPositionIndex.operator int()])) {
+            positionInfo[lastPositionIndex.operator int()] = positionInfo[currentPositionIndex.operator int()];
 
-            tempIndex.store(currentPositionIndex.__a_, std::memory_order_relaxed);
+            tempIndex.operator=(currentPositionIndex.operator int());
 
-            currentPositionIndex.store(lastPositionIndex.__a_, std::memory_order_relaxed);
+            currentPositionIndex.operator=(lastPositionIndex.operator int());
 
-            lastPositionIndex.store(tempIndex.__a_, std::memory_order_relaxed);
+            lastPositionIndex.operator=(tempIndex.operator int());
             return;
         }
     }

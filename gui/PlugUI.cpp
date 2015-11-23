@@ -106,7 +106,7 @@ PlugUI::PlugUI (SynthParams &p)
 
 void PlugUI::timerCallback()
 {
-    updateBpmDisplay (params.positionInfo[params.lastPositionIndex.__a_]);
+    updateBpmDisplay (params.positionInfo[params.lastPositionIndex.operator int()]);
 }
 
 void PlugUI::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo currentPos)
