@@ -21,6 +21,11 @@ struct Waveforms {
 
         //return std::copysign(1.f, float_Pi - phs);
     }
+    
+    static float random(float phs, float trngAmount, float width) {
+        return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/1.0f));
+    }
+    
     static float saw(float phs, float trngAmount, float width) {
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
@@ -92,11 +97,14 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-
+        lfo1random.phase = 0.f;
+        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
         osc1.trngAmount = params.osc1trngAmount.get();
         osc1.width = params.osc1pulsewidth.get();
+        lfo1square.width = osc1.width;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -116,6 +124,7 @@ public:
             clearCurrentNote();
             lfo1sine.reset();
             lfo1square.reset();
+            lfo1random.reset();
             osc1.reset();
         }
     }
@@ -167,6 +176,7 @@ public:
                             clearCurrentNote();
                             lfo1sine.reset();
                             lfo1square.reset();
+                            lfo1random.reset();
                             break;
                         }
                     }
@@ -210,11 +220,10 @@ protected:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float randomValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount*randomValue) * Param::fromCent(currentPitchInCents));
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
-        else // if lfo1wave is 2, lfo is set to square wave
+        else if (params.lfo1wave.get() == 2)// if lfo1wave is 2, lfo is set to square wave
         {
 
             for (int s = 0; s < numSamples;++s)
@@ -231,7 +240,8 @@ private:
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
-
+    Oscillator<&Waveforms::random> lfo1random;
+    
     float level, tailOff;
 
     int currentPitchValue;
