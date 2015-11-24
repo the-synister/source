@@ -38,6 +38,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     attack->setSliderStyle (Slider::RotaryVerticalDrag);
     attack->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     attack->addListener (this);
+    attack->setSkewFactor (0.5);
 
     addAndMakeVisible (label1 = new Label ("new label",
                                            TRANS("Attack")));
@@ -52,6 +53,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     decay->setSliderStyle (Slider::RotaryVerticalDrag);
     decay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     decay->addListener (this);
+    decay->setSkewFactor (0.5);
 
     addAndMakeVisible (label2 = new Label ("new label",
                                            TRANS("Decay")));
@@ -80,6 +82,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     release->setSliderStyle (Slider::RotaryVerticalDrag);
     release->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     release->addListener (this);
+    release->setSkewFactor (0.5);
 
     addAndMakeVisible (label4 = new Label ("new label",
                                            TRANS("Release")));
@@ -214,7 +217,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="attack" id="3c32cde7173ddbe6" memberName="attack" virtualName=""
           explicitFocusOrder="0" pos="8 32 64 64" min="0.001" max="5" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="9d171eeecf3cc269" memberName="label1" virtualName=""
          explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
          labelText="Attack" editableSingleClick="0" editableDoubleClick="0"
@@ -223,7 +226,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="decay" id="84a4159bee0728d6" memberName="decay" virtualName=""
           explicitFocusOrder="0" pos="80 32 64 64" min="0.001" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="e17b991ffdabe7cd" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="80 8 64 16" edTextCol="ff000000"
          edBkgCol="0" labelText="Decay" editableSingleClick="0" editableDoubleClick="0"
@@ -241,7 +244,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="release" id="c8bc1120a33101cd" memberName="release" virtualName=""
           explicitFocusOrder="0" pos="224 32 64 64" min="0.001" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <LABEL name="new label" id="935d071bb8ce6b2c" memberName="label4" virtualName=""
          explicitFocusOrder="0" pos="224 8 64 16" edTextCol="ff000000"
          edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"

@@ -53,6 +53,7 @@ public:
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
+    , envModBuffer(1, blockSize)
     {}
 
 
@@ -82,9 +83,7 @@ public:
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
-        // get number of samples for decay and attack
-        attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
-        decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
+        // reset attackDecayCounter
         attackDecayCounter = 0;
     }
 
@@ -99,8 +98,7 @@ public:
             {                   // stopNote method could be called more than once.
                 tailOff = 1.0;
 
-                // get number of samples for release
-                releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+                // reset releaseCounter
                 releaseCounter = 0;
             }
         }
@@ -127,12 +125,11 @@ public:
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         renderModulation(numSamples);
-        const float *pitchMod = pitchModBuffer.getReadPointer(0);        
+        const float *pitchMod = pitchModBuffer.getReadPointer(0);
+        const float *envMod = envModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
-
-        sustainLevel = Param::fromDb(params.envSustain.get());
 
         // Pan Influence
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
@@ -144,10 +141,8 @@ public:
             {
                 for (int s = 0; s < numSamples; ++s)
                 {
-                    setEnvCoeff();
-
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * envCoeff;
+                    const float currentSample = (osc1.next(pitchMod[s])) * level * envMod[s];
 
                     //check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2) {
@@ -161,24 +156,21 @@ public:
 
                     //tailOff *= 0.99999f;
                     //if (tailOff <= 0.005f)
-                    if(releaseSamples <= releaseCounter)
+                    if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
                     {
                         clearCurrentNote();
                         lfo1sine.reset();
                         lfo1square.reset();
                         break;
                     }
-                    releaseCounter++;
                 }
             }
             else
             {
                 for (int s = 0; s < numSamples; ++s)
                 {               
-                    setEnvCoeff();
-
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * envCoeff;
+                    const float currentSample = (osc1.next(pitchMod[s])) * level * envMod[s];
 
                     //check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2) {
@@ -189,32 +181,37 @@ public:
                         for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                             outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
-                    attackDecayCounter++;
                 }
             }
         }
     }
 
 protected:
-    /**
-    * set envCoeff logarithmically between 0.0f and 1.0f
-    */
-    void setEnvCoeff() 
+    float setEnvCoeff() 
     {
+        float envCoeff;
+        float sustainLevel = Param::fromDb(params.envSustain.get());
 
-        // attack phase goes from 0dB to peak volume
+        // number of samples for all phases
+        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
+        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
+        int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+
+        // attack phase sets envCoeff from 0.0f to 1.0f
         if (attackDecayCounter <= attackSamples)
         {
-            // here envCoeff goes from 0.0f to 1.0f
             envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
+            valueAtRelease = envCoeff;
+            attackDecayCounter++;
         }
         else
         {
-            // decay phase goes from peak volume to sustain level
+            // decay phase sets envCoeff from 1.0f to sustain level
             if (attackDecayCounter <= attackSamples + decaySamples)
             {
-                // here envCoeff goes from 1.0f to sustain level
                 envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
+                valueAtRelease = envCoeff;
+                attackDecayCounter++;
             }
 
             // if attack and decay phase is over then sustain level
@@ -224,12 +221,14 @@ protected:
             }
         }
 
-        // release phase
+        // release phase sets envCoeff from valueAtRelease to 0.0f
         if (tailOff > 0.f)
         {
-            // here envCoeff goes from 1.0f to 0.0f
-            tailOff = interpolateLog(releaseCounter, releaseSamples);
+            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
+            releaseCounter++;
         }
+
+        return envCoeff;
     }
 
     /**
@@ -237,7 +236,7 @@ protected:
     */
     float interpolateLog(int curr, int t)
     {
-        // coeff of growth, maybe a different one better?
+        // coeff of growth/shrink, maybe on which depends on time is better?
         float k = std::exp(1.0f);
 
         return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
@@ -254,6 +253,7 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                envModBuffer.setSample(0, s, setEnvCoeff());
             }
         }
         else // if lfo1wave is 1, lfo is set to square wave
@@ -261,6 +261,7 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                envModBuffer.setSample(0, s, setEnvCoeff());
             }
         }
     }
@@ -278,13 +279,10 @@ private:
     int currentPitchValue;
 
     // variables for env
-    float envCoeff;
-    float sustainLevel;
-    int attackSamples;
-    int decaySamples;
-    int releaseSamples;
+    float valueAtRelease;
     int attackDecayCounter;
     int releaseCounter;
 
     AudioSampleBuffer pitchModBuffer;
+    AudioSampleBuffer envModBuffer;
 };
