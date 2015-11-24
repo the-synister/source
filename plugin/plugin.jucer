@@ -15,6 +15,8 @@
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
+        <FILE id="Dxrkit" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
+        <FILE id="taacFm" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
         <FILE id="blqsaY" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="UNPeJT" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="De7pfA" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
@@ -25,6 +27,9 @@
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
       <FILE id="CsCI10" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
       <FILE id="dn6HHP" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
+      <FILE id="BC8NfY" name="MouseOverKnob.cpp" compile="1" resource="0"
+            file="../gui/MouseOverKnob.cpp"/>
+      <FILE id="K0EoAF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
     </GROUP>
     <GROUP id="{949202BF-874E-EF1D-0F32-E294A4403CF7}" name="Audio">
       <GROUP id="{B810726F-87B4-284E-870E-8BE0D67A873E}" name="inc">
