@@ -68,6 +68,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     sustain->setSliderStyle (Slider::RotaryVerticalDrag);
     sustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     sustain->addListener (this);
+    sustain->setSkewFactor (3);
 
     addAndMakeVisible (label3 = new Label ("new label",
                                            TRANS("Sustain")));
@@ -235,7 +236,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="sustain" id="4bc867c016d7595f" memberName="sustain" virtualName=""
           explicitFocusOrder="0" pos="152 32 64 64" min="-96" max="0" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <LABEL name="new label" id="139710301efdafa4" memberName="label3" virtualName=""
          explicitFocusOrder="0" pos="152 8 64 16" edTextCol="ff000000"
          edBkgCol="0" labelText="Sustain" editableSingleClick="0" editableDoubleClick="0"
