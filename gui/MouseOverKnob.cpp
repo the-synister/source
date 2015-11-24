@@ -14,8 +14,6 @@
 // contructer & destructer
 MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 {
-    this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
-
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(15.00f, Font::plain));
     knobLabel->setJustificationType(Justification::centred);
@@ -25,6 +23,8 @@ MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 
     knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
+
+    initTextBox();
 }
 
 MouseOverKnob::~MouseOverKnob()
@@ -32,6 +32,16 @@ MouseOverKnob::~MouseOverKnob()
     knobLabel = nullptr;
 }
 //==============================================================================
+
+void MouseOverKnob::initTextBox() 
+{
+    if (knobLabel->isVisible()) {
+        setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
+    } else {
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
+    }
+}
+
 
 /**
 * If mouse enters slider then replace label with textbox.
@@ -41,7 +51,7 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(false);
-        this->setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
     }
 }
 
@@ -53,7 +63,7 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(true);
-        this->setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
     }
 }
 
@@ -64,7 +74,7 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
     if (e.eventComponent == this)
     {
-        this->showTextBox();
+        showTextBox();
     }
 }
 

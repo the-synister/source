@@ -21,6 +21,7 @@
         <FILE id="UNPeJT" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="De7pfA" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
         <FILE id="N5FVsW" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
+        <FILE id="WkkRKZ" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>

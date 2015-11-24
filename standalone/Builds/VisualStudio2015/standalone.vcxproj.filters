@@ -1608,6 +1608,9 @@
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>

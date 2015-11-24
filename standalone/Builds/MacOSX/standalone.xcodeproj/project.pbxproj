@@ -137,6 +137,7 @@
 		18CC10AB5A33C7BBBA443AF1 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_CameraDevice.cpp"; path = "../../../juce/modules/juce_video/capture/juce_CameraDevice.cpp"; sourceTree = "SOURCE_ROOT"; };
 		191527C1B9BAA36CAF9727E5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_Clipboard.cpp"; path = "../../../juce/modules/juce_gui_basics/native/juce_linux_Clipboard.cpp"; sourceTree = "SOURCE_ROOT"; };
 		192EFC53BBF8855F7547EE58 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Uuid.h"; path = "../../../juce/modules/juce_core/misc/juce_Uuid.h"; sourceTree = "SOURCE_ROOT"; };
+		1A281D6829318B5C9C90FD66 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PanelBase.h; path = ../../../gui/panels/PanelBase.h; sourceTree = "SOURCE_ROOT"; };
 		1A49808DBD85D2D37CB59CCC = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_TemporaryFile.cpp"; path = "../../../juce/modules/juce_core/files/juce_TemporaryFile.cpp"; sourceTree = "SOURCE_ROOT"; };
 		1A95BE74396C1641A3AB21E2 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ComponentListener.cpp"; path = "../../../juce/modules/juce_gui_basics/components/juce_ComponentListener.cpp"; sourceTree = "SOURCE_ROOT"; };
 		1AE99C6E4CFC0B41D3CEAE04 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MemoryOutputStream.h"; path = "../../../juce/modules/juce_core/streams/juce_MemoryOutputStream.h"; sourceTree = "SOURCE_ROOT"; };
@@ -974,7 +975,8 @@
 					7EF85698F414E1045AF8E35F,
 					8A36C1BFE432C182126D5DC8,
 					F10C7727430FA1C2D460F8DD,
-					DFE02E065F32D9F317733954, ); name = panels; sourceTree = "<group>"; };
+					DFE02E065F32D9F317733954,
+					1A281D6829318B5C9C90FD66, ); name = panels; sourceTree = "<group>"; };
 		959CBC4C3F0A0259B6A0EBD9 = {isa = PBXGroup; children = (
 					09B0D5FE7E49E7607B436EF7,
 					998B00077599547E2903FAAA,

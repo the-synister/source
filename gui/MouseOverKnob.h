@@ -23,6 +23,9 @@ public:
     MouseOverKnob(const String& name);
     ~MouseOverKnob();
     //==============================================================================
+
+    void initTextBox();
+
     void resized();
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized);
 

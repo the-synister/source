@@ -5,6 +5,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "MouseOverKnob.h"
 
 class PanelBase : public Component, protected Timer
 {
@@ -24,6 +25,11 @@ protected:
         slider->setName(p->name());
         slider->setValue(p->getUI());
         slider->setTextValueSuffix(String(" ") + p->unit());
+    }
+
+    void registerSlider(MouseOverKnob *slider, Param *p) {
+        registerSlider(static_cast<Slider*>(slider), p);
+        slider->initTextBox();
     }
 
     void updateDirtySliders() {
