@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class OscPanel  : public Component,
-                  public SliderListener
+                  public SliderListener,
+                  public ButtonListener
 {
 public:
     //==============================================================================
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -65,6 +67,8 @@ private:
     ScopedPointer<Label> label3;
     ScopedPointer<Slider> pulsewidth;
     ScopedPointer<Label> label2;
+    ScopedPointer<TextButton> squareWaveButton;
+    ScopedPointer<TextButton> sawWaveButton;
 
 
     //==============================================================================

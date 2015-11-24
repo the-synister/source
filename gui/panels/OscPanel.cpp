@@ -75,6 +75,14 @@ OscPanel::OscPanel (SynthParams &p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (squareWaveButton = new TextButton ("squareWaveButton"));
+    squareWaveButton->setButtonText (TRANS("Square Wave"));
+    squareWaveButton->addListener (this);
+
+    addAndMakeVisible (sawWaveButton = new TextButton ("sawWaveButton"));
+    sawWaveButton->setButtonText (TRANS("Saw Wave"));
+    sawWaveButton->addListener (this);
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
@@ -82,6 +90,8 @@ OscPanel::OscPanel (SynthParams &p)
     lfo1depth1->setValue(params.osc1lfo1depth.getUI());
     lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
 	pulsewidth->setValue(params.osc1pulsewidth.getUI());
+	squareWaveButton->setToggleState(1, 1);
+	sawWaveButton->setToggleState(0, 0);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -102,6 +112,8 @@ OscPanel::~OscPanel()
     label3 = nullptr;
     pulsewidth = nullptr;
     label2 = nullptr;
+    squareWaveButton = nullptr;
+    sawWaveButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -131,6 +143,8 @@ void OscPanel::resized()
     label3->setBounds (80, 8, 64, 16);
     pulsewidth->setBounds (160, 32, 64, 64);
     label2->setBounds (160, 8, 64, 24);
+    squareWaveButton->setBounds (32, 152, 150, 24);
+    sawWaveButton->setBounds (32, 192, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -161,6 +175,32 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void OscPanel::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == squareWaveButton)
+    {
+        //[UserButtonCode_squareWaveButton] -- add your button handler code here..
+		params.osc1WaveForm.setUI(1.0f);
+		squareWaveButton->setToggleState(1,1);
+		sawWaveButton->setToggleState(0, 0);
+        //[/UserButtonCode_squareWaveButton]
+    }
+    else if (buttonThatWasClicked == sawWaveButton)
+    {
+        //[UserButtonCode_sawWaveButton] -- add your button handler code here..
+		params.osc1WaveForm.setUI(2.0f);
+		squareWaveButton->setToggleState(0, 0);
+		sawWaveButton->setToggleState(1, 1);
+        //[/UserButtonCode_sawWaveButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -212,6 +252,12 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
+  <TEXTBUTTON name="squareWaveButton" id="2d38ae78af3687c8" memberName="squareWaveButton"
+              virtualName="" explicitFocusOrder="0" pos="32 152 150 24" buttonText="Square Wave"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="sawWaveButton" id="ac21fe3812e51ce9" memberName="sawWaveButton"
+              virtualName="" explicitFocusOrder="0" pos="32 192 150 24" buttonText="Saw Wave"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

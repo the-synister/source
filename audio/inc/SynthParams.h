@@ -17,6 +17,8 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
 
+	Param osc1WaveForm;//!< int value for defining waveform [1..3]
+
     Param panDir; //!< pan R/L [-100..100]
 
     ParamDb vol; //!< volume in [0..1]

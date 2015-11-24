@@ -8,6 +8,7 @@ SynthParams::SynthParams()
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
 , osc1pulsewidth("Width","prct", 0.01f, 0.99f, 0.5f)
+, osc1WaveForm("Waveform", "int", 1.0f, 3.0f, 1.0f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
 {}
