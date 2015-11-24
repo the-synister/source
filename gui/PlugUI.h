@@ -48,18 +48,19 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     //[/UserMethods]
 
-    void paint (Graphics& g) override;
-    void resized() override;
-    void sliderValueChanged (Slider* sliderThatWasMoved) override;
-    void timerCallback() override;
+    void paint (Graphics& g);
+    void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
+
+
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
 
     float lastBpmInfo;
-
-    void updateBpmDisplay(AudioPlayHead::CurrentPositionInfo);
+    void timerCallback() override;
+    void updateBpmDisplay(AudioPlayHead::CurrentPositionInfo&);
     //[/UserVariables]
 
     //==============================================================================
@@ -70,6 +71,7 @@ private:
     ScopedPointer<Label> label2;
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)

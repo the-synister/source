@@ -9,7 +9,6 @@ SynthParams::SynthParams()
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
-, lastPositionIndex(1)
-, tempIndex(0)
-, currentPositionIndex(0)
+, positionIndex(0)
+, positionInfo{}
 {}

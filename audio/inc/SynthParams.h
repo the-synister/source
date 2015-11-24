@@ -3,6 +3,7 @@
 
 #include "JuceHeader.h"
 #include "Param.h"
+#include <array>
 
 class SynthParams {
 public:
@@ -22,10 +23,8 @@ public:
 
     MidiKeyboardState keyboardState;
 
-    AudioPlayHead::CurrentPositionInfo positionInfo [2];
+    std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
-    std::atomic<int> lastPositionIndex;
-    std::atomic<int> tempIndex;
-    std::atomic<int> currentPositionIndex;
+    std::atomic<int> positionIndex;
 protected:
 };

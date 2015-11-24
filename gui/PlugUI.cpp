@@ -104,21 +104,6 @@ PlugUI::PlugUI (SynthParams &p)
     //[/Constructor]
 }
 
-void PlugUI::timerCallback()
-{
-    updateBpmDisplay (params.positionInfo[params.lastPositionIndex.operator int()]);
-}
-
-void PlugUI::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo currentPos)
-{
-    lastBpmInfo = currentPos.bpm;
-
-    MemoryOutputStream bpmDisplayText;
-
-    bpmDisplayText << String(currentPos.bpm, 2);
-    bpmDisplay->setText(bpmDisplayText.toString(), dontSendNotification);
-}
-
 PlugUI::~PlugUI()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
@@ -184,6 +169,20 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void PlugUI::timerCallback()
+{
+    updateBpmDisplay (params.positionInfo[(params.positionIndex.load() + 1) % 2]);
+}
+
+void PlugUI::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo &currentPos)
+{
+    lastBpmInfo = currentPos.bpm;
+
+    MemoryOutputStream bpmDisplayText;
+
+    bpmDisplayText << String(currentPos.bpm, 2);
+    bpmDisplay->setText(bpmDisplayText.toString(), dontSendNotification);
+}
 //[/MiscUserCode]
 
 
@@ -197,7 +196,7 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PlugUI" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
+                 parentClasses="public Component, private Timer" constructorParams="SynthParams &amp;p"
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
                  initialHeight="600">
