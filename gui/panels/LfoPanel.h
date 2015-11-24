@@ -58,8 +58,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> freq;
-    ScopedPointer<Label> label;
+    ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<Slider> wave;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;

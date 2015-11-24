@@ -58,18 +58,12 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> ftune1;
-    ScopedPointer<Label> fineLabel;
-    ScopedPointer<Slider> lfo1depth1;
-    ScopedPointer<Label> lfoOscLabel;
-    ScopedPointer<Slider> osc1trngAmount;
-    ScopedPointer<Label> triangleMorphLabel;
-    ScopedPointer<Slider> pulsewidth;
-    ScopedPointer<Label> pulseWidthLabel;
-    ScopedPointer<Slider> pitchRange;
-    ScopedPointer<Label> pitchRangeLabel;
-    ScopedPointer<Slider> ctune1;
-    ScopedPointer<Label> coarseTuneLabel;
+    ScopedPointer<MouseOverKnob> ftune1;
+    ScopedPointer<MouseOverKnob> lfo1depth1;
+    ScopedPointer<MouseOverKnob> osc1trngAmount;
+    ScopedPointer<MouseOverKnob> pulsewidth;
+    ScopedPointer<MouseOverKnob> pitchRange;
+    ScopedPointer<MouseOverKnob> ctune1;
 
 
     //==============================================================================

@@ -33,19 +33,11 @@ LfoPanel::LfoPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (freq = new Slider ("LFO freq"));
+    addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     freq->addListener (this);
-
-    addAndMakeVisible (label = new Label ("freq label",
-                                          TRANS("freq")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centred);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (wave = new Slider ("wave switch"));
     wave->setRange (0, 1, 1);
@@ -89,7 +81,6 @@ LfoPanel::~LfoPanel()
     //[/Destructor_pre]
 
     freq = nullptr;
-    label = nullptr;
     wave = nullptr;
     label2 = nullptr;
     label3 = nullptr;
@@ -116,11 +107,10 @@ void LfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
-    wave->setBounds (166, 40, 41, 32);
-    label2->setBounds (112, 72, 71, 24);
-    label3->setBounds (189, 72, 83, 24);
+    freq->setBounds (8, 8, 64, 64);
+    wave->setBounds (134, 16, 41, 32);
+    label2->setBounds (80, 48, 71, 24);
+    label3->setBounds (157, 48, 83, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -168,26 +158,21 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.010000000000000000208"
+  <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
           max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="freq label" id="44d54eb754724ef0" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
-         labelText="freq" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
-          explicitFocusOrder="0" pos="166 40 41 32" min="0" max="1" int="1"
+          explicitFocusOrder="0" pos="134 16 41 32" min="0" max="1" int="1"
           style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="e7b5c6b105490306" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="112 72 71 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="80 48 71 24" edTextCol="ff000000"
          edBkgCol="0" labelText="sine wave" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="a5e6136827f3a519" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="189 72 83 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="157 48 83 24" edTextCol="ff000000"
          edBkgCol="0" labelText="square wave" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
