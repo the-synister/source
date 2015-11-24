@@ -96,6 +96,7 @@ public:
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromCent(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
         osc1.trngAmount = params.osc1trngAmount.get();
         osc1.width = params.osc1pulsewidth.get();
+        lfo1square.width = params.osc1pulsewidth.get();
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override

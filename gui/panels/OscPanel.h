@@ -72,6 +72,7 @@ private:
     ScopedPointer<Slider> ctune1;
     ScopedPointer<Label> coarseTuneLabel;
 
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscPanel)
 };

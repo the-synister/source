@@ -109,14 +109,15 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
-    
+
     addAndMakeVisible (coarseTuneLabel = new Label ("new label",
-                                           TRANS("coarse")));
+                                                    TRANS("Coarse Tune")));
     coarseTuneLabel->setFont (Font (15.00f, Font::plain));
     coarseTuneLabel->setJustificationType (Justification::centred);
     coarseTuneLabel->setEditable (false, false, false);
     coarseTuneLabel->setColour (TextEditor::textColourId, Colours::black);
     coarseTuneLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     ftune1->setValue(params.osc1fine.getUI());
@@ -157,6 +158,7 @@ OscPanel::~OscPanel()
     ctune1 = nullptr;
     coarseTuneLabel = nullptr;
 
+
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
 }
@@ -188,8 +190,8 @@ void OscPanel::resized()
     pulseWidthLabel->setBounds (218, 7, 80, 24);
     pitchRange->setBounds (296, 32, 64, 64);
     pitchRangeLabel->setBounds (292, 2, 72, 32);
-    ctune1->setBounds (24, 32, 64, 64);
-    coarseTuneLabel->setBounds (24, 8, 64, 16);
+    ctune1->setBounds (368, 32, 64, 64);
+    coarseTuneLabel->setBounds (360, 8, 80, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -308,14 +310,14 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-         virtualName="" explicitFocusOrder="0" pos="24 32 64 64" min="-11"
-         max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-         textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="18844143981102bf" memberName="coarseTuneLabel" virtualName=""
-         explicitFocusOrder="0" pos="24 8 64 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="coarse" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+          virtualName="" explicitFocusOrder="0" pos="368 32 64 64" min="-11"
+          max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="new label" id="18844143981102bf" memberName="coarseTuneLabel"
+         virtualName="" explicitFocusOrder="0" pos="360 8 80 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="Coarse Tune" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
