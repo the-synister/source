@@ -18,6 +18,7 @@ public:
         jassert(minval <= defaultval);
         jassert(defaultval <= maxval);
     }
+    virtual ~Param() {}
 
     const String& name() const { return name_; }
     const String& unit() const { return unit_; }
