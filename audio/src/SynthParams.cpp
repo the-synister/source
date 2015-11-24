@@ -9,7 +9,7 @@ SynthParams::SynthParams()
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 {}
-
+ 
 
 void SynthParams::addElement(XmlElement* patch, String name, float value) {
     XmlElement* node = new XmlElement(name);
@@ -20,7 +20,7 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
 void SynthParams::writeXMLPatch() 
 {
     // create an outer node of the patch
-    XmlElement* patch = new XmlElement("patch");
+    ScopedPointer<XmlElement> patch = new XmlElement("patch");
     patch->setAttribute("version", version);
 
     addElement(patch, "freq", freq.get());
@@ -38,7 +38,6 @@ void SynthParams::writeXMLPatch()
         saveFile.create();
         patch->writeToFile(saveFile, ""); // DTD optional, no validation yet
     }
-    delete(patch);
 }
 
 
@@ -49,7 +48,7 @@ void SynthParams::readXMLPatch()
     if (openFileChooser.browseForFileToOpen())
     {
         File openedFile(openFileChooser.getResult());
-        XmlElement* xmlPatch = XmlDocument::parse(openedFile);
+        ScopedPointer<XmlElement> xmlPatch = XmlDocument::parse(openedFile);
 
         // if the versions don't align, inform the user
         if (xmlPatch->getTagName() != "patch" || static_cast<float>(xmlPatch->getDoubleAttribute("version")) > version) {
@@ -83,5 +82,7 @@ void SynthParams::readXMLPatch()
         {
             vol.setUI(static_cast<float>(xmlPatch->getChildByName("vol")->getDoubleAttribute("value")));
         }
+        // TODO merge from master before, set flag that UI is dirty now
+        // TODO get set method from host, provide the xml values to it
     }
 }
