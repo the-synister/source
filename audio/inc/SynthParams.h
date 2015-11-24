@@ -20,6 +20,8 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    const float version = 1.0f; // version of the program, to be written into the xml
+
     void writeXMLPatch(); // writes the XML string to a file
 
     void readXMLPatch(); // fill the synth params with data from a file

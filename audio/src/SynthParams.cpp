@@ -10,8 +10,6 @@ SynthParams::SynthParams()
 , vol("Vol", "dB", 0.f, 1.f, .5f)
 {}
 
-const float version = 1.0f;
-
 
 void SynthParams::addElement(XmlElement* patch, String name, float value) {
     XmlElement* node = new XmlElement(name);
@@ -54,9 +52,9 @@ void SynthParams::readXMLPatch()
         XmlElement* xmlPatch = XmlDocument::parse(openedFile);
 
         // if the versions don't align, inform the user
-        if (xmlPatch->getTagName() != "patch" || static_cast<float>(xmlPatch->getDoubleAttribute("version")) != version) {
+        if (xmlPatch->getTagName() != "patch" || static_cast<float>(xmlPatch->getDoubleAttribute("version")) > version) {
             AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Version Conflict", 
-                "The file was not created by the current version of the software, all possible settings will be applied.",
+                "The file was created by a newer version of the software, some settings may be ignored.",
                 "OK");
         }
 
