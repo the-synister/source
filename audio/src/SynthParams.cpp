@@ -15,7 +15,6 @@ SynthParams::SynthParams()
 {
 }
 
-SynthParams::~SynthParams() 
+SynthParams::~SynthParams()
 {
 }
-

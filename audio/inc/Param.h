@@ -26,8 +26,8 @@ public:
     float get() const { return val_.load(); }
 
     //! \todo check min/max!
-    virtual void setUI(float f, bool notifyHost = true) { 
-        set(f); 
+    virtual void setUI(float f, bool notifyHost = true) {
+        set(f);
         if(notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const { return get(); }
@@ -84,7 +84,7 @@ public:
 
     //! \todo check min/max!
     virtual void setUI(float f, bool notifyHost = true) override {
-        set(fromDb(f)); 
+        set(fromDb(f));
         if (notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const override { return toDb(get()); }

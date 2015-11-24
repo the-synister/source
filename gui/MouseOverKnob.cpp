@@ -33,7 +33,7 @@ MouseOverKnob::~MouseOverKnob()
 }
 //==============================================================================
 
-void MouseOverKnob::initTextBox() 
+void MouseOverKnob::initTextBox()
 {
     if (knobLabel->isVisible()) {
         setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
