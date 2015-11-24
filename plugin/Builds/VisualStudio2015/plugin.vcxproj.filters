@@ -1671,6 +1671,9 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\HostParam.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>

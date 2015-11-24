@@ -18,8 +18,16 @@
 //==============================================================================
 PluginAudioProcessor::PluginAudioProcessor()
 {
+    addParameter(new HostParam<Param>(osc1fine));
+    addParameter(new HostParam<Param>(osc1coarse));
+
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
+
+    addParameter(new HostParam<Param>(osc1trngAmount));
+    addParameter(new HostParam<Param>(osc1pulsewidth));
+
+    addParameter(new HostParam<Param>(panDir));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

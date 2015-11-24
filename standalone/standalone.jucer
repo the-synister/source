@@ -27,6 +27,7 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"

@@ -1305,6 +1305,7 @@
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
+    <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h"/>
