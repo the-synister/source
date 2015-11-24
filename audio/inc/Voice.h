@@ -74,7 +74,7 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int /*currentPitchWheelPosition*/) override
     {
-		
+
 
         level = velocity * 0.15f;
         tailOff = 0.f;
@@ -88,23 +88,23 @@ public:
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 
-		int wf = static_cast<int>(params.osc1WaveForm.get());
-		switch (wf)
-		{
-		case 1:
-		{
-			osc1.phase = 0.f;
-			osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-			osc1.width = params.osc1pulsewidth.get();
-			break;
-		}
-		case 2:
-		{
-			osc2.phase = 0.f;
-			osc2.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-			break;
-		}
-		}
+        int wf = static_cast<int>(params.osc1WaveForm.get());
+        switch (wf)
+        {
+        case 1:
+        {
+            osc1.phase = 0.f;
+            osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1.width = params.osc1pulsewidth.get();
+            break;
+        }
+        case 2:
+        {
+            osc2.phase = 0.f;
+            osc2.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            break;
+        }
+        }
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -125,7 +125,7 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             osc1.reset();
-			osc2.reset();
+            osc2.reset();
         }
     }
 
@@ -157,19 +157,19 @@ public:
             {
                     for (int s = 0; s < numSamples; ++s)
                     {
-                        //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;	
+                        //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
                         //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
-						int wf = static_cast<int>(params.osc1WaveForm.get());
-						float currentSample;
-						switch (wf)
-						{
-						case 1:
-							currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
-							break;
-						case 2:
-							currentSample = (osc2.next(pitchMod[s])) * level * tailOff;
-							break;
-						}
+                        int wf = static_cast<int>(params.osc1WaveForm.get());
+                        float currentSample;
+                        switch (wf)
+                        {
+                        case 1:
+                            currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+                            break;
+                        case 2:
+                            currentSample = (osc2.next(pitchMod[s])) * level * tailOff;
+                            break;
+                        }
                         //check if the output is a stereo output
                         if (outputBuffer.getNumChannels() == 2) {
                             outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
@@ -196,17 +196,17 @@ public:
                     {
                         //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
                         //const float currentSample = (osc1.next(pitchMod[s])) * level;
-						float currentSample;
-						int wf = static_cast<int>(params.osc1WaveForm.get());
-						switch (wf)
-						{
-						case 1:
-							currentSample = (osc1.next(pitchMod[s])) * level;
-							break;
-						case 2:
-							currentSample = (osc2.next(pitchMod[s])) * level;
-							break;
-						}
+                        float currentSample;
+                        int wf = static_cast<int>(params.osc1WaveForm.get());
+                        switch (wf)
+                        {
+                        case 1:
+                            currentSample = (osc1.next(pitchMod[s])) * level;
+                            break;
+                        case 2:
+                            currentSample = (osc2.next(pitchMod[s])) * level;
+                            break;
+                        }
 
                         //check if the output is a stereo output
                         if (outputBuffer.getNumChannels() == 2) {
@@ -247,7 +247,7 @@ private:
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
-	Oscillator<&Waveforms::saw> osc2;
+    Oscillator<&Waveforms::saw> osc2;
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
