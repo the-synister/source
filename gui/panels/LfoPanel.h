@@ -60,6 +60,9 @@ private:
     //==============================================================================
     ScopedPointer<Slider> freq;
     ScopedPointer<Label> label;
+    ScopedPointer<Slider> wave;
+    ScopedPointer<Label> label2;
+    ScopedPointer<Label> label3;
 
 
     //==============================================================================

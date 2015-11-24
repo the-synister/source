@@ -59,9 +59,17 @@ private:
 
     //==============================================================================
     ScopedPointer<Slider> ftune1;
-    ScopedPointer<Label> label;
+    ScopedPointer<Label> fineLabel;
     ScopedPointer<Slider> lfo1depth1;
-    ScopedPointer<Label> label3;
+    ScopedPointer<Label> lfoOscLabel;
+    ScopedPointer<Slider> osc1trngAmount;
+    ScopedPointer<Label> triangleMorphLabel;
+    ScopedPointer<Slider> pulsewidth;
+    ScopedPointer<Label> pulseWidthLabel;
+    ScopedPointer<Slider> pitchRange;
+    ScopedPointer<Label> pitchRangeLabel;
+    ScopedPointer<Slider> ctune1;
+    ScopedPointer<Label> coarseTuneLabel;
 
 
     //==============================================================================
