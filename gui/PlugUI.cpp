@@ -25,62 +25,55 @@
 //[/Headers]
 
 #include "PlugUI.h"
-#include "MouseOverKnob.h"
+
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-PlugUI::PlugUI(SynthParams &p)
+PlugUI::PlugUI (SynthParams &p)
     : params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible(label = new Label("new label",
-        TRANS("synth plugin")));
-    label->setFont(Font(15.00f, Font::plain));
-    label->setJustificationType(Justification::centredLeft);
-    label->setEditable(false, false, false);
-    label->setColour(TextEditor::textColourId, Colours::black);
-    label->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+    addAndMakeVisible (label = new Label ("new label",
+                                          TRANS("synth plugin")));
+    label->setFont (Font (15.00f, Font::plain));
+    label->setJustificationType (Justification::centredLeft);
+    label->setEditable (false, false, false);
+    label->setColour (TextEditor::textColourId, Colours::black);
+    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible(freq = new MouseOverKnob("master tune"));
-    freq->setRange(220, 880, 0);
-    freq->setSliderStyle(Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle(Slider::NoTextBox, false, 64, 20);
-    freq->addListener(this);
+    addAndMakeVisible (freq = new MouseOverKnob ("frequency"));
+    freq->setRange (220, 880, 0);
+    freq->setSliderStyle (Slider::RotaryVerticalDrag);
+    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    freq->addListener (this);
 
-    addAndMakeVisible(keyboard = new MidiKeyboardComponent(params.keyboardState,
-        MidiKeyboardComponent::horizontalKeyboard));
-    keyboard->setName("midi keyboard");
+    addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
+                                                             MidiKeyboardComponent::horizontalKeyboard));
+    keyboard->setName ("midi keyboard");
 
-    addAndMakeVisible(tabs = new TabbedComponent(TabbedButtonBar::TabsAtTop));
-    tabs->setTabBarDepth(30);
-    tabs->addTab(TRANS("OSC"), Colours::lightgrey, new OscPanel(params), true);
-    tabs->addTab(TRANS("LFO"), Colours::lightgrey, new LfoPanel(params), true);
-    tabs->addTab(TRANS("ENV"), Colours::lightgrey, 0, false);
-    tabs->addTab(TRANS("FILT"), Colours::lightgrey, 0, false);
-    tabs->addTab(TRANS("AMP"), Colours::lightgrey, new AmpPanel(params), true);
-    tabs->addTab(TRANS("FX"), Colours::lightgrey, 0, false);
-    tabs->setCurrentTabIndex(0);
-
-    addAndMakeVisible(label2 = new Label("new label",
-        TRANS("master tune")));
-    label2->setFont(Font(15.00f, Font::plain));
-    label2->setJustificationType(Justification::centred);
-    label2->setEditable(false, false, false);
-    label2->setColour(TextEditor::textColourId, Colours::black);
-    label2->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+    addAndMakeVisible (tabs = new TabbedComponent (TabbedButtonBar::TabsAtTop));
+    tabs->setTabBarDepth (30);
+    tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
+    tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
+    tabs->addTab (TRANS("ENV"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("FILT"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->setCurrentTabIndex (0);
 
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
     freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
+    freq->initTextBox();
     //[/UserPreSize]
 
-    setSize(800, 600);
+    setSize (800, 600);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -96,7 +89,6 @@ PlugUI::~PlugUI()
     freq = nullptr;
     keyboard = nullptr;
     tabs = nullptr;
-    label2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -121,10 +113,9 @@ void PlugUI::resized()
     //[/UserPreResize]
 
     label->setBounds (8, 8, 150, 24);
-    freq->setBounds (726, 32, 64, 64);
+    freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
-    //label2->attachToComponent(freq, false);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -144,6 +135,8 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
 }
+
+
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 //[/MiscUserCode]
@@ -169,8 +162,8 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="synth plugin" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
-  <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="726 32 64 64" min="220" max="880"
+  <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="728 8 64 64" min="220" max="880"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
@@ -192,11 +185,6 @@ BEGIN_JUCER_METADATA
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
          constructorParams="" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
-  <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="726 8 64 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="master tune" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

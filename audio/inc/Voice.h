@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "JuceHeader.h"
@@ -11,22 +10,27 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width, float randomValue)  { return std::sin(phs); }
-    static float square(float phs, float trngAmount, float width, float randomValue) {
+    static float sinus(float phs, float trngAmount, float width)  { 
+        ignoreUnused(trngAmount, width);
+        return std::sin(phs); 
+    }
+    static float square(float phs, float trngAmount, float width) {
+        ignoreUnused(trngAmount, width);
         //square wave with duty cycle
-        if (phs < 2 * float_Pi * width)
-            return 1;
-        else
-            return -1;
-
+        if (phs < 2.f * float_Pi * width) {
+            return 1.f;
+        } else {
+            return -1.f;
+        }
         //return std::copysign(1.f, float_Pi - phs);
     }
     
     static float random(float phs, float trngAmount, float width, float randomValue) {
         return randomValue;
     }
-    
-    static float saw(float phs, float trngAmount, float widthfloat, float randomValue) {
+
+    static float saw(float phs, float trngAmount, float width) {
+        ignoreUnused(width);
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
         else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
@@ -134,12 +138,12 @@ public:
         lfo1random.sampleAndHoldValue = 0.f;
         
         osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
         osc1.trngAmount = params.osc1trngAmount.get();
         osc1.width = params.osc1pulsewidth.get();
+        lfo1square.width = params.osc1pulsewidth.get();
         osc1.sampleAndHoldValueFlag = false;
         osc1.sampleAndHoldValue = 0.f;
-        lfo1square.width = osc1.width;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override

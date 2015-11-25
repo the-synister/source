@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class LfoPanel  : public Component,
+class LfoPanel  : public PanelBase,
                   public SliderListener
 {
 public:
@@ -55,12 +55,10 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> freq;
-    ScopedPointer<Label> label;
+    ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<Slider> wave;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> squareWaveLabel;
