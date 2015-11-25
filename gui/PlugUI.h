@@ -61,7 +61,7 @@ private:
 
     float lastBpmInfo;
     void timerCallback() override;
-    void updateBpmDisplay(AudioPlayHead::CurrentPositionInfo&);
+    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
     //[/UserVariables]
 
     //==============================================================================

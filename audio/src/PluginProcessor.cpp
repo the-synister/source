@@ -28,6 +28,9 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
     addParameter(new HostParam<Param>(panDir));
+    
+    positionInfo[positionIndex.load()].resetToDefault();
+    positionInfo[(positionIndex.load() + 1) % 2].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -172,7 +175,7 @@ void PluginAudioProcessor::updateHostInfo()
     {
         if (playHead->getCurrentPosition (positionInfo[positionIndex.load()])) {
             positionInfo[(positionIndex.load() + 1) % 2] = positionInfo[positionIndex.load()];
-            positionIndex.store((positionIndex.load()+1) % 2);
+            positionIndex.exchange((positionIndex.load()+1) % 2);
             return;
         }
     }

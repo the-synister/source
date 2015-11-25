@@ -175,7 +175,7 @@ void PlugUI::timerCallback()
     updateBpmDisplay (params.positionInfo[(params.positionIndex.load() + 1) % 2]);
 }
 
-void PlugUI::updateBpmDisplay(AudioPlayHead::CurrentPositionInfo &currentPos)
+void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
 {
     lastBpmInfo = currentPos.bpm;
 
