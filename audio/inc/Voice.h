@@ -51,9 +51,8 @@ public:
     Voice(SynthParams &p, int blockSize)
     : params(p)
     , level (0.f)
-    , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
-    , envModBuffer(1, blockSize)
+    , env1Buffer(1, blockSize)
     {}
 
 
@@ -67,7 +66,7 @@ public:
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
         level = velocity * 0.15f;
-        tailOff = 0.f;
+        releaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -94,10 +93,8 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (tailOff == 0.0) // we only need to begin a tail-off if it's not already doing so - the
-            {                   // stopNote method could be called more than once.
-                tailOff = 1.0;
-
+            if (releaseCounter == -1) // we only need to begin a tail-off if it's not already doing so - the
+            {                         // stopNote method could be called more than once.
                 // reset releaseCounter
                 releaseCounter = 0;
             }
@@ -111,7 +108,7 @@ public:
             osc1.reset();
         }
     }
-
+    
     void pitchWheelMoved (int newValue) override
     {
         currentPitchValue = newValue;
@@ -126,7 +123,7 @@ public:
     {
         renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
-        const float *envMod = envModBuffer.getReadPointer(0);
+        const float *env1Mod = env1Buffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -137,57 +134,33 @@ public:
 
         if (lfo1square.isActive() || lfo1sine.isActive())
         {
-            if (tailOff > 0.f)
+            for (int s = 0; s < numSamples; ++s)
             {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * envMod[s];
+                const float currentSample = (osc1.next(pitchMod[s])) * level * env1Mod[s];
 
-                    //check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                    }
-
-                    //tailOff *= 0.99999f;
-                    //if (tailOff <= 0.005f)
-                    if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
-                    {
-                        clearCurrentNote();
-                        lfo1sine.reset();
-                        lfo1square.reset();
-                        break;
-                    }
+                //check if the output is a stereo output
+                if (outputBuffer.getNumChannels() == 2) {
+                    outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                    outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
-            }
-            else
-            {
-                for (int s = 0; s < numSamples; ++s)
-                {               
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    const float currentSample = (osc1.next(pitchMod[s])) * level * envMod[s];
+                else {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                }
 
-                    //check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                    }
+                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
+                {
+                    clearCurrentNote();
+                    lfo1sine.reset();
+                    lfo1square.reset();
+                    break;
                 }
             }
         }
     }
 
 protected:
-    float setEnvCoeff() 
+    float getEnvCoeff() 
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
@@ -197,35 +170,37 @@ protected:
         int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
         int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
 
-        // attack phase sets envCoeff from 0.0f to 1.0f
-        if (attackDecayCounter <= attackSamples)
-        {
-            envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
-            valueAtRelease = envCoeff;
-            attackDecayCounter++;
-        }
-        else
-        {
-            // decay phase sets envCoeff from 1.0f to sustain level
-            if (attackDecayCounter <= attackSamples + decaySamples)
-            {
-                envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
-                valueAtRelease = envCoeff;
-                attackDecayCounter++;
-            }
-
-            // if attack and decay phase is over then sustain level
-            else
-            {
-                envCoeff = sustainLevel;
-            }
-        }
-
         // release phase sets envCoeff from valueAtRelease to 0.0f
-        if (tailOff > 0.f)
+        if (releaseCounter > -1)
         {
             envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
             releaseCounter++;
+        }
+        else 
+        {
+            // attack phase sets envCoeff from 0.0f to 1.0f
+            if (attackDecayCounter <= attackSamples)
+            {
+                envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
+                valueAtRelease = envCoeff;
+                attackDecayCounter++;
+            }
+            else
+            {
+                // decay phase sets envCoeff from 1.0f to sustain level
+                if (attackDecayCounter <= attackSamples + decaySamples)
+                {
+                    envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
+                    valueAtRelease = envCoeff;
+                    attackDecayCounter++;
+                }
+
+                // if attack and decay phase is over then sustain level
+                else
+                {
+                    envCoeff = sustainLevel;
+                }
+            }
         }
 
         return envCoeff;
@@ -253,7 +228,7 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                envModBuffer.setSample(0, s, setEnvCoeff());
+                env1Buffer.setSample(0, s, getEnvCoeff());
             }
         }
         else // if lfo1wave is 1, lfo is set to square wave
@@ -261,7 +236,7 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                envModBuffer.setSample(0, s, setEnvCoeff());
+                env1Buffer.setSample(0, s, getEnvCoeff());
             }
         }
     }
@@ -274,7 +249,7 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
 
-    float level, tailOff;
+    float level;
 
     int currentPitchValue;
 
@@ -284,5 +259,5 @@ private:
     int releaseCounter;
 
     AudioSampleBuffer pitchModBuffer;
-    AudioSampleBuffer envModBuffer;
+    AudioSampleBuffer env1Buffer;
 };
