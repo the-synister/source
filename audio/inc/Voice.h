@@ -56,6 +56,7 @@ struct Oscillator {
         phaseDelta = 0.f;
         sampleAndHoldValueFlag = false;
         sampleAndHoldValue = 0.f;
+        smaller = false;
     }
 
     bool isActive() const {
@@ -66,10 +67,10 @@ struct Oscillator {
         if (!sampleAndHoldValueFlag) {
             sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
             sampleAndHoldValueFlag = true;
-        } else if (phase > 2 * float_Pi * width && !smaller) {
+        } else if (phase > 2 * float_Pi && !smaller) {
             sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
             smaller = true;
-        } else if (phase < 2 * float_Pi * width && smaller) {
+        } else if (phase < 2 * float_Pi && smaller) {
             smaller = false;
         }
         
@@ -77,29 +78,15 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-    /*
-    float nextRandomSampleAndHold() {
-        
-        if (sampleAndHoldValueCounter < 0) {
-            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
-            ++sampleAndHoldValueCounter;
-        } else if (phase < 2 * float_Pi * width) {
-            sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
-        }
-        
-        const float result = _waveform(phase, width, sampleAndHoldValue);
-        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return result;
-    }*/
     
     float next(float pitchMod) {
         if (!sampleAndHoldValueFlag) {
             sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
             sampleAndHoldValueFlag = true;
-        } else if (phase > 2 * float_Pi * width && !smaller) {
+        } else if (phase > 2 * float_Pi && !smaller) {
             sampleAndHoldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
             smaller = true;
-        } else if (phase < 2 * float_Pi * width && smaller) {
+        } else if (phase < 2 * float_Pi && smaller) {
             smaller = false;
         }
         
@@ -150,6 +137,8 @@ public:
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
         osc1.trngAmount = params.osc1trngAmount.get();
         osc1.width = params.osc1pulsewidth.get();
+        osc1.sampleAndHoldValueFlag = false;
+        osc1.sampleAndHoldValue = 0.f;
         lfo1square.width = osc1.width;
     }
 
