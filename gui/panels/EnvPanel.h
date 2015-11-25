@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public Component
+class EnvPanel  : public PanelBase
 {
 public:
     //==============================================================================
@@ -53,7 +53,6 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================

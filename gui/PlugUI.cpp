@@ -46,7 +46,7 @@ PlugUI::PlugUI (SynthParams &p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (freq = new Slider ("frequency"));
+    addAndMakeVisible (freq = new MouseOverKnob ("frequency"));
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
@@ -60,7 +60,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->setTabBarDepth (30);
     tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
     tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
-    tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
+    tabs->addTab (TRANS("ENV"), Colours::lightgrey, 0, false);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, 0, false);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
@@ -90,11 +90,11 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
     freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
+    freq->initTextBox();
     //[/UserPreSize]
 
     setSize (800, 600);
@@ -140,12 +140,13 @@ void PlugUI::resized()
     //[/UserPreResize]
 
     label->setBounds (8, 8, 150, 24);
-    freq->setBounds (726, 32, 64, 64);
+    freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
     label2->setBounds (726, 8, 64, 16);
     bpmLabel->setBounds (8, 64, 56, 24);
     bpmDisplay->setBounds (56, 64, 150, 24);
+
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -206,8 +207,8 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="synth plugin" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
-  <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="726 32 64 64" min="220" max="880"
+  <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="728 8 64 64" min="220" max="880"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
@@ -220,8 +221,8 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
          constructorParams="params" jucerComponentFile=""/>
-    <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName="EnvPanel"
-         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
+         constructorParams="" jucerComponentFile=""/>
     <TAB name="FILT" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
          constructorParams="" jucerComponentFile=""/>
     <TAB name="AMP" colour="ffd3d3d3" useJucerComp="0" contentClassName="AmpPanel"
