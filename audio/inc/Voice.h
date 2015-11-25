@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "JuceHeader.h"
@@ -11,16 +10,35 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs)  { return std::sin(phs); }
-    static float square(float phs) { return std::copysign(1.f, float_Pi - phs);  }
-    static float saw(float phs)    { return phs / (float_Pi*2.f) - .5f; }
+    static float sinus(float phs, float trngAmount, float width)  { 
+        ignoreUnused(trngAmount, width);
+        return std::sin(phs); 
+    }
+    static float square(float phs, float trngAmount, float width) {
+        ignoreUnused(trngAmount, width);
+        //square wave with duty cycle
+        if (phs < 2.f * float_Pi * width) {
+            return 1.f;
+        } else {
+            return -1.f;
+        }
+        //return std::copysign(1.f, float_Pi - phs);
+    }
+    static float saw(float phs, float trngAmount, float width) {
+        ignoreUnused(width);
+        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+        if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
+    }
 };
 
 
-template<float(*_waveform)(float)>
+template<float(*_waveform)(float, float, float)>
 struct Oscillator {
     float phase;
     float phaseDelta;
+    float trngAmount;
+    float width;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
 
@@ -34,13 +52,13 @@ struct Oscillator {
     }
 
     float next() {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
 
     float next(float pitchMod) {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
@@ -80,6 +98,10 @@ public:
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 
         osc1.phase = 0.f;
+        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+        osc1.trngAmount = params.osc1trngAmount.get();
+        osc1.width = params.osc1pulsewidth.get();
+        lfo1square.width = params.osc1pulsewidth.get();
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
         // reset attackDecayCounter
@@ -108,7 +130,7 @@ public:
             osc1.reset();
         }
     }
-    
+
     void pitchWheelMoved (int newValue) override
     {
         currentPitchValue = newValue;
@@ -143,7 +165,8 @@ public:
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
-                else {
+                else 
+                {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
@@ -176,7 +199,7 @@ protected:
             envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
             releaseCounter++;
         }
-        else 
+        else
         {
             // attack phase sets envCoeff from 0.0f to 1.0f
             if (attackDecayCounter <= attackSamples)
@@ -202,7 +225,6 @@ protected:
                 }
             }
         }
-
         return envCoeff;
     }
 
@@ -219,6 +241,12 @@ protected:
 
     void renderModulation(int numSamples) {
 
+        // set the env1buffer
+        for (int s = 0; s < numSamples; ++s)
+        {
+            env1Buffer.setSample(0, s, getEnvCoeff());
+        }
+
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
@@ -228,7 +256,6 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                env1Buffer.setSample(0, s, getEnvCoeff());
             }
         }
         else // if lfo1wave is 1, lfo is set to square wave
@@ -236,7 +263,6 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                env1Buffer.setSample(0, s, getEnvCoeff());
             }
         }
     }
