@@ -11,12 +11,21 @@ SynthParams::SynthParams()
 , osc1PitchRange("Pitch", "st", 0.f, 12.f, 0.f)
 , osc1pulsewidth("Width", "prct", 0.01f, 0.99f, 0.5f)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
-, positionIndex(0)
-, positionInfo{}
 , vol("Vol", "dB", 0.f, 1.f, .5f)
-{
-}
+, positionInfo()
+, positionIndex(0)
+{}
 
 SynthParams::~SynthParams()
 {
+}
+
+int SynthParams::getAudioIndex()
+{
+    return positionIndex.load();
+}
+
+int SynthParams::getGUIIndex()
+{
+    return (positionIndex.load() + 1) % 2;
 }

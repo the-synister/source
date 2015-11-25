@@ -172,7 +172,7 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PlugUI::timerCallback()
 {
-    updateBpmDisplay (params.positionInfo[(params.positionIndex.load() + 1) % 2]);
+    updateBpmDisplay (params.positionInfo[params.getGUIIndex()]);
 }
 
 void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)

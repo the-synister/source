@@ -30,5 +30,8 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
+    
+    int getGUIIndex();
+    int getAudioIndex();
 protected:
 };

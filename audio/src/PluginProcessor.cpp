@@ -29,8 +29,8 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
     
-    positionInfo[positionIndex.load()].resetToDefault();
-    positionInfo[(positionIndex.load() + 1) % 2].resetToDefault();
+    positionInfo[0].resetToDefault();
+    positionInfo[1].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -173,14 +173,13 @@ void PluginAudioProcessor::updateHostInfo()
     // currentPositionInfo used for getting the bpm.
     if (AudioPlayHead* playHead = getPlayHead())
     {
-        if (playHead->getCurrentPosition (positionInfo[positionIndex.load()])) {
-            positionInfo[(positionIndex.load() + 1) % 2] = positionInfo[positionIndex.load()];
-            positionIndex.exchange((positionIndex.load()+1) % 2);
+        if (playHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
+            positionIndex.exchange(getGUIIndex());
             return;
         }
     }
 
-    positionInfo[positionIndex.load()].resetToDefault();
+    positionInfo[getAudioIndex()].resetToDefault();
 
 }
 
