@@ -104,17 +104,17 @@ public:
         {
         case 1:
         {
-            osc1.phase = 0.f;
-            osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-            osc1.width = params.osc1pulsewidth.get();
+			osc1Sine.phase = 0.f;
+			osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+			osc1Sine.width = params.osc1pulsewidth.get();
             lfo1square.width = params.osc1pulsewidth.get();
             break;
         }
         case 2:
         {
-            osc2.phase = 0.f;
-            osc2.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-            osc2.trngAmount = params.osc1trngAmount.get();
+			osc1Saw.phase = 0.f;
+			osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+			osc1Saw.trngAmount = params.osc1trngAmount.get();
             break;
         }
         }
@@ -137,8 +137,8 @@ public:
             clearCurrentNote();
             lfo1sine.reset();
             lfo1square.reset();
-            osc1.reset();
-            osc2.reset();
+			osc1Sine.reset();
+			osc1Saw.reset();
         }
     }
 
@@ -177,10 +177,10 @@ public:
                         switch (wf)
                         {
                         case 1:
-                            currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+                            currentSample = (osc1Sine.next(pitchMod[s])) * level * tailOff;
                             break;
                         case 2:
-                            currentSample = (osc2.next(pitchMod[s])) * level * tailOff;
+                            currentSample = (osc1Saw.next(pitchMod[s])) * level * tailOff;
                             break;
                         }
                         //check if the output is a stereo output
@@ -214,10 +214,10 @@ public:
                         switch (wf)
                         {
                         case 1:
-                            currentSample = (osc1.next(pitchMod[s])) * level;
+                            currentSample = (osc1Sine.next(pitchMod[s])) * level;
                             break;
                         case 2:
-                            currentSample = (osc2.next(pitchMod[s])) * level;
+                            currentSample = (osc1Saw.next(pitchMod[s])) * level;
                             break;
                         }
 
@@ -261,8 +261,8 @@ protected:
 private:
     SynthParams &params;
 
-    Oscillator<&Waveforms::square> osc1;
-    Oscillator<&Waveforms::saw> osc2;
+    Oscillator<&Waveforms::square> osc1Sine;
+    Oscillator<&Waveforms::saw> osc1Saw;
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
