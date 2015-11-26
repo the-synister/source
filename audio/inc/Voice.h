@@ -192,11 +192,24 @@ protected:
         int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
         int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
         int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+        
+        // get growth/shrink rate from knobs
+        float attackGrowthRate = params.envAttackShape.get();
+        float decayShrinkRate = params.envDecayShape.get();
+        float releaseShrinkRate = params.envReleaseShape.get();
 
         // release phase sets envCoeff from valueAtRelease to 0.0f
         if (releaseCounter > -1)
         {
-            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
+            if (releaseShrinkRate < 1.0f)
+            {
+                releaseShrinkRate = 1 / releaseShrinkRate;
+                envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
+            }
+            else
+            {
+                envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
+            }
             releaseCounter++;
         }
         else
@@ -204,7 +217,15 @@ protected:
             // attack phase sets envCoeff from 0.0f to 1.0f
             if (attackDecayCounter <= attackSamples)
             {
-                envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
+                if (attackGrowthRate < 1.0f)
+                {
+                    attackGrowthRate = 1 / attackGrowthRate;
+                    envCoeff = interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, true);
+                }
+                else
+                {
+                    envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, false);
+                }
                 valueAtRelease = envCoeff;
                 attackDecayCounter++;
             }
@@ -213,7 +234,15 @@ protected:
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
-                    envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
+                    if (decayShrinkRate < 1.0f)
+                    {
+                        decayShrinkRate = 1 / decayShrinkRate;
+                        envCoeff = 1 - interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
+                    }
+                    else
+                    {
+                        envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
+                    }
                     valueAtRelease = envCoeff;
                     attackDecayCounter++;
                 }
@@ -229,14 +258,22 @@ protected:
     }
 
     /**
-    * help function that interpolates logarithmically from 1.0 to 0.0f in t samples
+    * interpolate logarithmically from 1.0 to 0.0f in t samples
+    @c counter of the specific phase
+    @t number of samples after which the specific phase should be over
+    @k coeff of growth/shrink, k=1 for linear
+    @slow slow start of phase
     */
-    float interpolateLog(int curr, int t)
+    float interpolateLog(int c, int t, float k, bool slow)
     {
-        // coeff of growth/shrink, maybe on which depends on time is better?
-        float k = std::exp(1.0f);
-
-        return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
+        if (slow)
+        {
+            return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
+        else
+        {
+            return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
     }
 
     void renderModulation(int numSamples) {

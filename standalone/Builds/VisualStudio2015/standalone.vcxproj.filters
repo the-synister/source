@@ -340,13 +340,13 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1617,13 +1617,13 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
-      <Filter>standalone\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
