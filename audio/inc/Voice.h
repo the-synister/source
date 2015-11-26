@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "JuceHeader.h"
@@ -11,24 +10,34 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float width)  { return std::sin(phs); }
-    static float square(float phs, float width) {
+    static float sinus(float phs, float trngAmount, float width)  {
+        ignoreUnused(trngAmount, width);
+        return std::sin(phs);
+    }
+    static float square(float phs, float trngAmount, float width) {
+        ignoreUnused(trngAmount, width);
         //square wave with duty cycle
-        if (phs < 2 * float_Pi * width)
-            return 1;
-        else
-            return -1;
-
+        if (phs < 2.f * float_Pi * width) {
+            return 1.f;
+        } else {
+            return -1.f;
+        }
         //return std::copysign(1.f, float_Pi - phs);
     }
-    static float saw(float phs, float width)    { return phs / (float_Pi*2.f) - .5f; }
+    static float saw(float phs, float trngAmount, float width) {
+        ignoreUnused(width);
+        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+        if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
+    }
 };
 
 
-template<float(*_waveform)(float, float)>
+template<float(*_waveform)(float, float, float)>
 struct Oscillator {
     float phase;
     float phaseDelta;
+    float trngAmount;
     float width;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
@@ -43,13 +52,13 @@ struct Oscillator {
     }
 
     float next() {
-        const float result = _waveform(phase, width);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
 
     float next(float pitchMod) {
-        const float result = _waveform(phase, width);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
@@ -72,12 +81,14 @@ public:
     }
 
     void startNote (int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int /*currentPitchWheelPosition*/) override
+                    SynthesiserSound*, int currentPitchWheelPosition) override
     {
 
 
         level = velocity * 0.15f;
         tailOff = 0.f;
+
+        currentPitchValue = currentPitchWheelPosition;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
@@ -94,14 +105,16 @@ public:
         case 1:
         {
             osc1.phase = 0.f;
-            osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
             osc1.width = params.osc1pulsewidth.get();
+            lfo1square.width = params.osc1pulsewidth.get();
             break;
         }
         case 2:
         {
             osc2.phase = 0.f;
             osc2.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc2.trngAmount = params.osc1trngAmount.get();
             break;
         }
         }
@@ -129,9 +142,9 @@ public:
         }
     }
 
-    void pitchWheelMoved (int /*newValue*/) override
+    void pitchWheelMoved (int newValue) override
     {
-        // can't be bothered implementing this for the demo!
+        currentPitchValue = newValue;
     }
 
     void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
@@ -224,21 +237,23 @@ public:
 
 protected:
     void renderModulation(int numSamples) {
-        //! \todo add pitch wheel values
+
+        // add pitch wheel values
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
         if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
         {
             for (int s = 0; s < numSamples;++s)
             {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount));
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
         else // if lfo1wave is 1, lfo is set to square wave
         {
             for (int s = 0; s < numSamples;++s)
             {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount));
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
     }
@@ -253,6 +268,8 @@ private:
     Oscillator<&Waveforms::square> lfo1square;
 
     float level, tailOff;
+
+    int currentPitchValue;
 
     AudioSampleBuffer pitchModBuffer;
 

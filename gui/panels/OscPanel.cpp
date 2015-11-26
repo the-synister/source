@@ -28,53 +28,46 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (ftune1 = new Slider ("fine tune 1"));
+    addAndMakeVisible (ftune1 = new MouseOverKnob ("fine tune 1"));
     ftune1->setRange (-100, 100, 0);
     ftune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ftune1->addListener (this);
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("fine")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centred);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (lfo1depth1 = new Slider ("LFO depth 1"));
+    addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
     lfo1depth1->setRange (0, 12, 0);
     lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
     lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfo1depth1->addListener (this);
 
-    addAndMakeVisible (label3 = new Label ("new label",
-                                           TRANS("LFO 1")));
-    label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centred);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (osc1trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
+    osc1trngAmount->setRange (0, 1, 0);
+    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    osc1trngAmount->addListener (this);
 
-    addAndMakeVisible (pulsewidth = new Slider ("Pulse Width"));
+    addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
     pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
     pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     pulsewidth->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Pulse Width\n")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (pitchRange = new MouseOverKnob ("pitch range"));
+    pitchRange->setRange (0, 12, 0);
+    pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
+    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pitchRange->addListener (this);
 
+    addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
+    ctune1->setRange (-11, 11, 1);
+    ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
+    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    ctune1->addListener (this);
     addAndMakeVisible (squareWaveButton = new TextButton ("squareWaveButton"));
     squareWaveButton->setButtonText (TRANS("Square Wave"));
     squareWaveButton->addListener (this);
@@ -85,11 +78,12 @@ OscPanel::OscPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    ftune1->setValue(params.osc1fine.getUI());
-    ftune1->setTextValueSuffix(String(" ") + params.osc1fine.unit());
-    lfo1depth1->setValue(params.osc1lfo1depth.getUI());
-    lfo1depth1->setTextValueSuffix(String(" ") + params.osc1lfo1depth.unit());
-	pulsewidth->setValue(params.osc1pulsewidth.getUI());
+    registerSlider(ftune1, &params.osc1fine);
+    registerSlider(lfo1depth1, &params.osc1lfo1depth);
+    registerSlider(osc1trngAmount, &params.osc1trngAmount);
+    registerSlider(pitchRange, &params.osc1PitchRange);
+    registerSlider(pulsewidth, &params.osc1pulsewidth);
+    registerSlider(ctune1, &params.osc1coarse);
 	squareWaveButton->setToggleState(1, 1);
 	sawWaveButton->setToggleState(0, 0);
     //[/UserPreSize]
@@ -107,13 +101,13 @@ OscPanel::~OscPanel()
     //[/Destructor_pre]
 
     ftune1 = nullptr;
-    label = nullptr;
     lfo1depth1 = nullptr;
-    label3 = nullptr;
+    osc1trngAmount = nullptr;
     pulsewidth = nullptr;
-    label2 = nullptr;
-    squareWaveButton = nullptr;
-    sawWaveButton = nullptr;
+    pitchRange = nullptr;
+    ctune1 = nullptr;
+	squareWaveButton = nullptr;
+	sawWaveButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -137,14 +131,14 @@ void OscPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    ftune1->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
-    lfo1depth1->setBounds (80, 32, 64, 64);
-    label3->setBounds (80, 8, 64, 16);
-    pulsewidth->setBounds (160, 32, 64, 64);
-    label2->setBounds (160, 8, 64, 24);
-    squareWaveButton->setBounds (32, 152, 150, 24);
-    sawWaveButton->setBounds (32, 192, 150, 24);
+    ftune1->setBounds (80, 8, 64, 64);
+    lfo1depth1->setBounds (224, 8, 64, 64);
+    osc1trngAmount->setBounds (296, 8, 64, 64);
+    pulsewidth->setBounds (368, 8, 64, 64);
+    pitchRange->setBounds (152, 8, 64, 64);
+    ctune1->setBounds (8, 8, 64, 64);
+	squareWaveButton->setBounds(32, 152, 150, 24);
+	sawWaveButton->setBounds(32, 192, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -152,25 +146,38 @@ void OscPanel::resized()
 void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == ftune1)
     {
         //[UserSliderCode_ftune1] -- add your slider handling code here..
-        params.osc1fine.setUI(static_cast<float>(ftune1->getValue()));
         //[/UserSliderCode_ftune1]
     }
     else if (sliderThatWasMoved == lfo1depth1)
     {
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
-        params.osc1lfo1depth.setUI(static_cast<float>(lfo1depth1->getValue()));
         //[/UserSliderCode_lfo1depth1]
+    }
+    else if (sliderThatWasMoved == osc1trngAmount)
+    {
+        //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
+        //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		params.osc1pulsewidth.setUI(static_cast<float>(pulsewidth->getValue()));
         //[/UserSliderCode_pulsewidth]
+    }
+    else if (sliderThatWasMoved == pitchRange)
+    {
+        //[UserSliderCode_pitchRange] -- add your slider handling code here..
+        //[/UserSliderCode_pitchRange]
+    }
+    else if (sliderThatWasMoved == ctune1)
+    {
+        //[UserSliderCode_ctune1] -- add your slider handling code here..
+        //[/UserSliderCode_ctune1]
     }
 
     //[UsersliderValueChanged_Post]
@@ -219,30 +226,36 @@ void OscPanel::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
-          virtualName="" explicitFocusOrder="0" pos="8 32 64 64" min="-100"
-          max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="9d171eeecf3cc269" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
-         labelText="fine" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-          virtualName="" explicitFocusOrder="0" pos="80 32 64 64" min="0"
-          max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
+          min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="d2ef03a114e2a714" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="80 8 64 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="LFO 1" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          min="0.010000000000000000208" max="0.98999999999999999112" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
+          min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
           virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0.010000000000000000208"
           max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
