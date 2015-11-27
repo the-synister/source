@@ -65,6 +65,7 @@ private:
     ScopedPointer<MouseOverKnob> attackShape;
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
+    ScopedPointer<MouseOverKnob> keyVelToEnv;
 
 
     //==============================================================================

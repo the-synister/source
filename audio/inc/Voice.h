@@ -83,6 +83,7 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
+        currentVelocity = velocity;
         level = velocity * 0.15f;
         releaseCounter = -1;
 
@@ -189,8 +190,9 @@ protected:
         float sustainLevel = Param::fromDb(params.envSustain.get());
 
         // number of samples for all phases
-        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
-        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
+        // if needed consider key velocity for attack and decay
+        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
+        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
         int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
         
         // get growth/shrink rate from knobs
@@ -317,6 +319,7 @@ private:
     int currentPitchValue;
 
     // variables for env
+    float currentVelocity;
     float valueAtRelease;
     int attackDecayCounter;
     int releaseCounter;

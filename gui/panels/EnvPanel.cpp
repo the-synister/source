@@ -82,6 +82,12 @@ EnvPanel::EnvPanel (SynthParams &p)
     releaseShape->addListener (this);
     releaseShape->setSkewFactor (0.3);
 
+    addAndMakeVisible (keyVelToEnv = new MouseOverKnob ("KeyVel To Env"));
+    keyVelToEnv->setRange (0, 1, 0);
+    keyVelToEnv->setSliderStyle (Slider::RotaryVerticalDrag);
+    keyVelToEnv->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    keyVelToEnv->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(attackTime, &params.envAttack);
@@ -91,6 +97,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(attackShape, &params.envAttackShape);
     registerSlider(decayShape, &params.envDecayShape);
     registerSlider(releaseShape, &params.envReleaseShape);
+    registerSlider(keyVelToEnv, &params.keyVelToEnv);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -112,6 +119,7 @@ EnvPanel::~EnvPanel()
     attackShape = nullptr;
     decayShape = nullptr;
     releaseShape = nullptr;
+    keyVelToEnv = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -142,6 +150,7 @@ void EnvPanel::resized()
     attackShape->setBounds (8, 80, 64, 64);
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (152, 80, 64, 64);
+    keyVelToEnv->setBounds (296, 48, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -186,6 +195,11 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_releaseShape] -- add your slider handling code here..
         //[/UserSliderCode_releaseShape]
+    }
+    else if (sliderThatWasMoved == keyVelToEnv)
+    {
+        //[UserSliderCode_keyVelToEnv] -- add your slider handling code here..
+        //[/UserSliderCode_keyVelToEnv]
     }
 
     //[UsersliderValueChanged_Post]
@@ -241,6 +255,10 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
+  <SLIDER name="KeyVel To Env" id="595a20e744f094d5" memberName="keyVelToEnv"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 48 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
