@@ -253,6 +253,7 @@ protected:
                 else
                 {
                     envCoeff = sustainLevel;
+                    valueAtRelease = envCoeff;
                 }
             }
         }

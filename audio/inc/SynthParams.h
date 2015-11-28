@@ -20,7 +20,7 @@ public:
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
 
-    Param keyVelToEnv;  //!< if 1 then consider key velocity
+    Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
