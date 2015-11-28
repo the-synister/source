@@ -19,9 +19,6 @@
       <FILE id="gOJ8IR" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="tUbLq3" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
-      <FILE id="BdWKFl" name="MouseOverKnob.cpp" compile="1" resource="0"
-            file="../gui/MouseOverKnob.cpp"/>
-      <FILE id="uxmAoC" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
       <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
