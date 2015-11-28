@@ -24,9 +24,6 @@
       <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
       <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
       <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
-      <FILE id="gOJ8IR" name="MouseOverKnob.cpp" compile="1" resource="0"
-            file="../gui/MouseOverKnob.cpp"/>
-      <FILE id="tUbLq3" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
