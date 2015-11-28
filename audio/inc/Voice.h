@@ -62,6 +62,12 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
+
+	float nextDelay(float pitchMod, float delaySamples) {
+		const float result = _waveform(phase - delaySamples, trngAmount, width);
+		phase = std::fmod(phase - delaySamples + phaseDelta*pitchMod, float_Pi * 2.0f);
+		return result;
+	}
 };
 
 class Voice : public SynthesiserVoice {
@@ -96,6 +102,9 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+
+		lfoChor.phase = 0.f;
+		lfoChor.phaseDelta = params.lfoChorfreq.get() / sRate * 2.f * float_Pi;
 
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
@@ -143,6 +152,9 @@ public:
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
 
+		// read chorus-knob
+		const float chorAmount = params.chorAmount.get();
+
         // Pan Influence
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
@@ -153,8 +165,13 @@ public:
             {
                     for (int s = 0; s < numSamples; ++s)
                     {
-                        //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                        const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+						
+						//const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+						float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
+
+						if (chorusSwitch==1) {
+						  currentSample = currentSample * (1.f - chorAmount*.5f) + osc1.nextDelay(pitchMod[s], lfoChor.next()*15.f + 10.f) * (chorAmount * .5f) * level * tailOff;
+						}
 
                         //check if the output is a stereo output
                         if (outputBuffer.getNumChannels() == 2) {
@@ -220,11 +237,16 @@ protected:
         }
     }
 
+	float renderChorSample(float insample) {
+	
+	
+	}
+
 private:
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
-
+	Oscillator<&Waveforms::sinus> lfoChor;
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
 
