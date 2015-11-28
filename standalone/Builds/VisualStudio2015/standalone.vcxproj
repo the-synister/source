@@ -134,7 +134,6 @@
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
-    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
@@ -1283,7 +1282,6 @@
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
-    <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
