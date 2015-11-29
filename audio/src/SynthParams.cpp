@@ -17,9 +17,20 @@ SynthParams::SynthParams()
 , delayFeedback("Feedback", "%", 0.f, 1.f, 0.f)
 , delayTime("Time", "ms", 1, 2000, 1000)
 , delaySync("Tempo Sync", "", 0.f, 1.f, 0.f)
-{
-}
+, positionInfo()
+, positionIndex(0)
+{}
 
 SynthParams::~SynthParams()
 {
+}
+
+int SynthParams::getAudioIndex()
+{
+    return positionIndex.load();
+}
+
+int SynthParams::getGUIIndex()
+{
+    return (positionIndex.load() + 1) % 2;
 }

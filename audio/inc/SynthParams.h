@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "Param.h"
+#include <array>
 
 class SynthParams {
 public:
@@ -33,5 +34,11 @@ public:
     Param delayTime;
     Param delaySync;
 
+    std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
+
+    std::atomic<int> positionIndex;
+    
+    int getGUIIndex();
+    int getAudioIndex();
 protected:
 };

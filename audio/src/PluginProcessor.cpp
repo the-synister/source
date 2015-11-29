@@ -28,6 +28,9 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
     addParameter(new HostParam<Param>(panDir));
+    
+    positionInfo[0].resetToDefault();
+    positionInfo[1].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -144,6 +147,7 @@ void PluginAudioProcessor::releaseResources()
 
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    updateHostInfo();
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -152,7 +156,6 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // this code if your algorithm already fills all the output channels.
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
 
     // pass these messages to the keyboard state so that it can update the component
     // to show on-screen which keys are being pressed on the physical midi keyboard.
@@ -163,6 +166,21 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+}
+
+void PluginAudioProcessor::updateHostInfo()
+{
+    // currentPositionInfo used for getting the bpm.
+    if (AudioPlayHead* playHead = getPlayHead())
+    {
+        if (playHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
+            positionIndex.exchange(getGUIIndex());
+            return;
+        }
+    }
+
+    positionInfo[getAudioIndex()].resetToDefault();
+
 }
 
 //==============================================================================
