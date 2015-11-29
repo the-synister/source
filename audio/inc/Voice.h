@@ -51,6 +51,7 @@ public:
     Voice(SynthParams &p, int blockSize)
     : params(p)
     , level (0.f)
+    , totSamples(0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
     {}
@@ -66,6 +67,7 @@ public:
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
         level = velocity * 0.15f;
+        totSamples = 0;
         tailOff = 0.f;
 
         currentPitchValue = currentPitchWheelPosition;
@@ -116,7 +118,19 @@ public:
 
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
-        renderModulation(numSamples);
+        const float sRate = static_cast<float>(getSampleRate());  // Sample rate
+
+        // Fade in LFO
+        float factor_fade_in_LFO = 1.f;   // Defaut value of fade in factor is 1 (100%)
+        const float samples_fade_in_LFO = params.lfo_fadein.get() * sRate;     // Length in samples of the LFO fade in
+        if (samples_fade_in_LFO == 0.f)
+            factor_fade_in_LFO = 1.f;         // If no decay, factor of fade in is directly 1 (100%)
+        else                                  // Otherwise the factor due to the fade in in progress is determined
+            if (totSamples > samples_fade_in_LFO)  // If the fade in is reached
+                factor_fade_in_LFO = 1.f;          // The factor is 1 (100%)
+            else                                   // Otherwise the factor is determined
+                factor_fade_in_LFO = totSamples / samples_fade_in_LFO;
+        renderModulation(numSamples, factor_fade_in_LFO);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
@@ -174,15 +188,16 @@ public:
                     }
                 }
         }
+        totSamples += numSamples;
     }
 
 protected:
-    void renderModulation(int numSamples) {
+    void renderModulation(int numSamples, float factor_fade_in_LFO) {
 
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
-        const float modAmount = params.osc1lfo1depth.get();
+        const float modAmount = params.osc1lfo1depth.get() * factor_fade_in_LFO;
         if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
         {
             for (int s = 0; s < numSamples;++s)
@@ -207,7 +222,7 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
 
-    float level, tailOff;
+    float level, tailOff, totSamples;
 
     int currentPitchValue;
 

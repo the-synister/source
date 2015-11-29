@@ -65,6 +65,8 @@ private:
     ScopedPointer<Label> label3;
     ScopedPointer<Slider> pitchRange;
     ScopedPointer<Label> label4;
+    ScopedPointer<Slider> LFO_fade_in;
+    ScopedPointer<Label> LFO_fadein_label;
 
 
     //==============================================================================
