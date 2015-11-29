@@ -10,6 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "Voice.h"
+#include "HostParam.h"
 
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
@@ -17,6 +18,16 @@
 //==============================================================================
 PluginAudioProcessor::PluginAudioProcessor()
 {
+    addParameter(new HostParam<Param>(osc1fine));
+    addParameter(new HostParam<Param>(osc1coarse));
+
+    addParameter(new HostParam<Param>(lfo1freq));
+    addParameter(new HostParam<Param>(osc1lfo1depth));
+
+    addParameter(new HostParam<Param>(osc1trngAmount));
+    addParameter(new HostParam<Param>(osc1pulsewidth));
+
+    addParameter(new HostParam<Param>(panDir));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -168,17 +179,12 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    ignoreUnused(destData);
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    SynthParams::writeXMLPatchHost(destData);
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    ignoreUnused(data,sizeInBytes);
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    SynthParams::readXMLPatchHost(data, sizeInBytes);
 }
 
 //==============================================================================
