@@ -17,8 +17,6 @@ SynthParams::SynthParams()
 , delayFeedback("Feedback", "%", 0.f, 1.f, 0.f)
 , delayTime("Time", "ms", 1, 5000, 1000)
 , delaySync("Tempo Sync", "", 0.f, 1.f, 0.f)
-, delaySyncDividend("Dividend", "", 1, 4, 1)
-, delaySyncDivider("Divider", "", 1, 16, 1)
 , positionInfo()
 , positionIndex(0)
 {}

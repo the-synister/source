@@ -33,8 +33,6 @@ public:
     Param delayDryWet;
     Param delayTime;
     Param delaySync;
-    Param delaySyncDividend;
-    Param delaySyncDivider;
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

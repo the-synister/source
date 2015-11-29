@@ -58,8 +58,8 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (dividend = new ComboBox ("new combo box"));
     dividend->setEditableText (false);
     dividend->setJustificationType (Justification::centred);
-    dividend->setTextWhenNothingSelected (String::empty);
-    dividend->setTextWhenNoChoicesAvailable (String::empty);
+    dividend->setTextWhenNothingSelected (String("1"));
+    dividend->setTextWhenNoChoicesAvailable (String("1"));
     dividend->addItem (TRANS("1"), 1);
     dividend->addItem (TRANS("2"), 2);
     dividend->addItem (TRANS("3"), 3);
@@ -69,8 +69,8 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (divisor = new ComboBox ("new combo box"));
     divisor->setEditableText (false);
     divisor->setJustificationType (Justification::centred);
-    divisor->setTextWhenNothingSelected (String::empty);
-    divisor->setTextWhenNoChoicesAvailable (String::empty);
+    divisor->setTextWhenNothingSelected (String("1"));
+    divisor->setTextWhenNoChoicesAvailable (String("1"));
     divisor->addItem (TRANS("1"), 1);
     divisor->addItem (TRANS("2"), 2);
     divisor->addItem (TRANS("3"), 3);
@@ -84,6 +84,10 @@ FxPanel::FxPanel (SynthParams &p)
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
+    divisor->setText(String("1"));
+    dividend->setText(String("1"));
+    dividend->setEnabled(false);
+    divisor->setEnabled(false);
 
     dryWetSlider->setValue(params.delayDryWet.getUI());
     //dryWetSlider->setTextValueSuffix(String(" ") + params.delayDryWet.unit());
@@ -182,6 +186,9 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 
     if (buttonThatWasClicked == syncToggle)
     {
+        timeSlider->setEnabled(!timeSlider->isEnabled());
+        dividend->setEnabled(!dividend->isEnabled());
+        divisor->setEnabled(!divisor->isEnabled());
         //[UserButtonCode_syncToggle] -- add your button handler code here..
         //[/UserButtonCode_syncToggle]
     }
@@ -195,19 +202,35 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == dividend)
+    if (comboBoxThatHasChanged == dividend || comboBoxThatHasChanged == divisor)
     {
-        //[UserComboBoxCode_dividend] -- add your combo box handling code here..
-        //[/UserComboBoxCode_dividend]
+        if (syncToggle->getToggleState())
+        {
+            double newTimeValue;
+            double bps = (params.positionInfo[0].bpm / 60.) ;
+            double beatInMs = 1000*(1. / bps) * (params.positionInfo[0].timeSigDenominator / params.positionInfo[0].timeSigNumerator);
+            
+            double divTmp = dividend->getText().getDoubleValue();
+            double divsorTmp = divisor->getText().getDoubleValue();
+
+            newTimeValue = beatInMs * (divTmp / divsorTmp);
+
+            if (newTimeValue > params.delayTime.getMax())
+            {
+                newTimeValue = params.delayTime.getMax();
+                // ui feedback? blink?
+            }
+            params.delayTime.set(static_cast<float>(newTimeValue));
+            timeSlider->setValue(params.delayTime.get());
+        }
     }
     else if (comboBoxThatHasChanged == divisor)
     {
-        //[UserComboBoxCode_divisor] -- add your combo box handling code here..
-        //[/UserComboBoxCode_divisor]
-    }
+        if (syncToggle->getToggleState())
+        {
 
-    //[UsercomboBoxChanged_Post]
-    //[/UsercomboBoxChanged_Post]
+        }
+    }
 }
 
 
