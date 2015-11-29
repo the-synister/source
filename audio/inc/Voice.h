@@ -63,9 +63,10 @@ struct Oscillator {
         return result;
     }
 
-	float nextDelay(float pitchMod, float delaySamples) {
-		const float result = _waveform(phase - delaySamples, trngAmount, width);
-		phase = std::fmod(phase - delaySamples + phaseDelta*pitchMod, float_Pi * 2.0f);
+	float nextDelay(float pitchMod, float delaySample) {
+		
+		const float result = _waveform(phase - delaySample, trngAmount, width);
+		phase = std::fmod(phase - delaySample + phaseDelta*pitchMod, float_Pi * 2.0f);
 		return result;
 	}
 };
@@ -102,6 +103,7 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+
 
 		lfoChor.phase = 0.f;
 		lfoChor.phaseDelta = params.lfoChorfreq.get() / sRate * 2.f * float_Pi;
@@ -148,7 +150,7 @@ public:
     {
         renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
-
+		const float sRate = static_cast<float>(getSampleRate());
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
 
@@ -169,8 +171,8 @@ public:
 						//const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
 						float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
 
-						if (params.chorusSwitch==1) {
-						  currentSample = currentSample * (1.f - chorAmount*.5f) + osc1.nextDelay(pitchMod[s], lfoChor.next()*15.f + 10.f) * (chorAmount * .5f) * level * tailOff;
+						if (params.chorSwitch.getUI()==1) {
+						  currentSample = currentSample * (1.f - chorAmount*.5f)    +    osc1.nextDelay(pitchMod[s], (lfoChor.next()*15.f + 10.f) * sRate/1000) * (chorAmount * .5f) * level * tailOff;
 						}
 
                         //check if the output is a stereo output
@@ -189,6 +191,7 @@ public:
                             clearCurrentNote();
                             lfo1sine.reset();
                             lfo1square.reset();
+							lfoChor.reset();
                             break;
                         }
                     }
@@ -198,7 +201,7 @@ public:
                     for (int s = 0; s < numSamples; ++s)
                     {
                         //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                        const float currentSample = (osc1.next(pitchMod[s])) * level;
+                        float currentSample = (osc1.next(pitchMod[s])) * level;
 
                         //check if the output is a stereo output
                         if (outputBuffer.getNumChannels() == 2) {
@@ -237,10 +240,6 @@ protected:
         }
     }
 
-	float renderChorSample(float insample) {
-	
-	
-	}
 
 private:
     SynthParams &params;

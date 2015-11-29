@@ -15,7 +15,7 @@ public:
 
 	Param lfoChorfreq; // delay-lfo frequency in Hz
 	Param chorAmount; // wetness of signal [0 ... 1]
-	Param chorSwitch; // Chorus on / off bool
+	Param chorSwitch; // Chorus on / off [1 / 0]
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
