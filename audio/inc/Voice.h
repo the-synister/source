@@ -161,7 +161,7 @@ public:
                 int newLoopLength = static_cast<int>(params.delayTime.get() * (getSampleRate() / 1000.0) );
                
                 // reset the loop position according to the current delay length
-                if (loopPosition + startSample >= newLoopLength) { // TODO: what exactly is startSample?
+                if (loopPosition >= newLoopLength) {
                     loopPosition = 0;
                 }
                 float currentSample = 0.f;
