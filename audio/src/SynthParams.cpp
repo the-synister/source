@@ -57,6 +57,7 @@ void SynthParams::writeXMLPatchStandalone() {
 
 void SynthParams::fillValues(XmlElement* patch) {
     // if the versions don't align, inform the user
+    if (patch == NULL) return;
     if (patch->getTagName() != "patch" || (static_cast<float>(patch->getDoubleAttribute("version"))) > version) {
         AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Version Conflict",
             "The file was created by a newer version of the software, some settings may be ignored.",
