@@ -73,6 +73,7 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int /*currentPitchWheelPosition*/) override
     {
+        
         //for ladder filter
         ladderOut = 0.f;
         ladderInDelay = 0.f;
@@ -171,11 +172,12 @@ public:
 
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
+    //naive 1 pole filters wigh a hyperbolic tangent saturator
     float ladderFilter(float ladderIn){
 
         const float sRate = static_cast<float>(getSampleRate());
 
-        float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
+        //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
         float currentLadderCutoffFreq = params.ladderCutoff.get();
 
         //coeffecients and parameters
@@ -185,19 +187,22 @@ public:
         float b = g / (1.f + g);
 
         // subtract the feedback
-        ladderIn = ladderIn - currentResonance * ladderOut;
+        // inverse hyperbolic Sinus
+        //ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // hyperbolic tangent
+        ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
 
         // proecess through 1 pole Filters 4 times
-        lpOut1 = b*(ladderIn + ladderInDelay) + a*lpOut1;
+        lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
         ladderInDelay = ladderIn;
 
-        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* lpOut2;
+        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* tanh(lpOut2);
         lpOut1Delay = lpOut1;
 
-        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* lpOut3;
+        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* tanh(lpOut3);
         lpOut2Delay = lpOut2;
 
-        ladderOut = b*(lpOut3 + lpOut3Delay) + a* ladderOut;
+        ladderOut = b*(lpOut3 + lpOut3Delay) + a* tanh(ladderOut);
         lpOut3Delay = lpOut3;
 
         return ladderOut;
@@ -226,7 +231,7 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
 
-    // for the lader filter
+    //for the lader filter
     float ladderOut;
     float ladderInDelay;
     float lpOut1;
