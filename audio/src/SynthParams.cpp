@@ -29,7 +29,12 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch) {
     addElement(patch, "lfo1freq", lfo1freq.get());
     addElement(patch, "lfo1wave", lfo1wave.get());
     addElement(patch, "osc1fine", osc1fine.get());
+    addElement(patch, "osc1coarse", osc1coarse.get());
     addElement(patch, "osc1lfo1depth", osc1lfo1depth.get());
+    addElement(patch, "osc1trngAmount", osc1trngAmount.get());
+    addElement(patch, "osc1PitchRange", osc1PitchRange.get());
+    addElement(patch, "osc1pulsewidth", osc1pulsewidth.get());
+    addElement(patch, "panDir", panDir.get());
     addElement(patch, "vol", ParamDb::toDb(vol.get()));
 }
 
@@ -55,6 +60,15 @@ void SynthParams::writeXMLPatchStandalone() {
     }
 }
 
+
+//TODO : this function doesn't work right now, params can't be passed... what to do?
+void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param param) {
+    if (patch->getChildByName(paramName) != NULL) {
+        param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+    }
+
+}
+
 void SynthParams::fillValues(XmlElement* patch) {
     // if the versions don't align, inform the user
     if (patch == NULL) return;
@@ -65,28 +79,38 @@ void SynthParams::fillValues(XmlElement* patch) {
     }
 
     // set the values if they exist in the XML
-    if (patch->getChildByName("freq") != NULL)
-    {
+    // can't be used right now: fillValueIfExists(patch, "freq", SynthParams::freq);
+    if (patch->getChildByName("freq") != NULL) {
         freq.setUI(static_cast<float>(patch->getChildByName("freq")->getDoubleAttribute("value")));
     }
-    if (patch->getChildByName("lfo1freq") != NULL)
-    {
+    if (patch->getChildByName("lfo1freq") != NULL) {
         lfo1freq.setUI(static_cast<float>(patch->getChildByName("lfo1freq")->getDoubleAttribute("value")));
     }
-    if (patch->getChildByName("lfo1wave") != NULL)
-    {
+    if (patch->getChildByName("lfo1wave") != NULL) {
         lfo1wave.setUI(static_cast<float>(patch->getChildByName("lfo1wave")->getDoubleAttribute("value")));
     }
-    if (patch->getChildByName("osc1fine") != NULL)
-    {
+    if (patch->getChildByName("osc1fine") != NULL) {
         osc1fine.setUI(static_cast<float>(patch->getChildByName("osc1fine")->getDoubleAttribute("value")));
     }
-    if (patch->getChildByName("osc1lfo1depth") != NULL)
-    {
+    if (patch->getChildByName("osc1coarse") != NULL) {
+        osc1coarse.setUI(static_cast<float>(patch->getChildByName("osc1coarse")->getDoubleAttribute("value")));
+    }
+    if (patch->getChildByName("osc1lfo1depth") != NULL) {
         osc1lfo1depth.setUI(static_cast<float>(patch->getChildByName("osc1lfo1depth")->getDoubleAttribute("value")));
     }
-    if (patch->getChildByName("vol") != NULL)
-    {
+    if (patch->getChildByName("osc1trngAmount") != NULL) {
+        osc1trngAmount.setUI(static_cast<float>(patch->getChildByName("osc1trngAmount")->getDoubleAttribute("value")));
+    }
+    if (patch->getChildByName("osc1PitchRange") != NULL) {
+        osc1PitchRange.setUI(static_cast<float>(patch->getChildByName("osc1PitchRange")->getDoubleAttribute("value")));
+    }
+    if (patch->getChildByName("osc1pulsewidth") != NULL) {
+        osc1pulsewidth.setUI(static_cast<float>(patch->getChildByName("osc1pulsewidth")->getDoubleAttribute("value")));
+    }
+    if (patch->getChildByName("panDir") != NULL) {
+        panDir.setUI(static_cast<float>(patch->getChildByName("panDir")->getDoubleAttribute("value")));
+    }
+    if (patch->getChildByName("vol") != NULL) {
         vol.setUI(static_cast<float>(patch->getChildByName("vol")->getDoubleAttribute("value")));
     }
 

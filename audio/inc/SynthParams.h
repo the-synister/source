@@ -32,6 +32,8 @@ public:
 
     void writeXMLPatchStandalone();
 
+    void fillValueIfExists(XmlElement * patch, String paramName, Param param);
+
     void fillValues(XmlElement * patch);
 
     void readXMLPatchHost(const void * data, int sizeInBytes);
