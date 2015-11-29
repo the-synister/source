@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OscPanel  : public Component,
+class OscPanel  : public PanelBase,
                   public SliderListener
 {
 public:
@@ -55,18 +55,15 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> ftune1;
-    ScopedPointer<Label> label;
-    ScopedPointer<Slider> lfo1depth1;
-    ScopedPointer<Label> label3;
-    ScopedPointer<Slider> pitchRange;
-    ScopedPointer<Label> label4;
-    ScopedPointer<Slider> LFO_fade_in;
-    ScopedPointer<Label> LFO_fadein_label;
+    ScopedPointer<MouseOverKnob> ftune1;
+    ScopedPointer<MouseOverKnob> lfo1depth1;
+    ScopedPointer<MouseOverKnob> osc1trngAmount;
+    ScopedPointer<MouseOverKnob> pulsewidth;
+    ScopedPointer<MouseOverKnob> pitchRange;
+    ScopedPointer<MouseOverKnob> ctune1;
 
 
     //==============================================================================

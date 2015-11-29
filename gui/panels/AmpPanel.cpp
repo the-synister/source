@@ -28,7 +28,7 @@
 
 //==============================================================================
 AmpPanel::AmpPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -63,8 +63,8 @@ AmpPanel::AmpPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    amp->setValue(params.vol.getUI());
-    amp->setTextValueSuffix(String(" ") + params.vol.unit());
+    registerSlider(amp, &params.vol);
+    registerSlider(pan, &params.panDir);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -106,10 +106,10 @@ void AmpPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    amp->setBounds (8, 32, 64, 128);
-    pan->setBounds (80, 96, 112, 64);
-    label2->setBounds (161, 120, 24, 24);
-    label3->setBounds (90, 120, 24, 24);
+    amp->setBounds (8, 8, 64, 128);
+    pan->setBounds (80, 72, 112, 64);
+    label2->setBounds (161, 96, 24, 24);
+    label3->setBounds (90, 96, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -117,18 +117,17 @@ void AmpPanel::resized()
 void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == amp)
     {
         //[UserSliderCode_amp] -- add your slider handling code here..
-        params.vol.setUI(static_cast<float>(amp->getValue()));
         //[/UserSliderCode_amp]
     }
     else if (sliderThatWasMoved == pan)
     {
         //[UserSliderCode_pan] -- add your slider handling code here..
-        params.panDir.setUI(static_cast<float>(pan->getValue()));
         //[/UserSliderCode_pan]
     }
 
@@ -152,26 +151,26 @@ void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="AmpPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 128" min="-96" max="12" int="0"
+  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="Slider"
+          explicitFocusOrder="0" pos="8 8 64 128" min="-96" max="12" int="0"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName=""
-          explicitFocusOrder="0" pos="80 96 112 64" min="-100" max="100"
+  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="Slider"
+          explicitFocusOrder="0" pos="80 72 112 64" min="-100" max="100"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="R label" id="38f0a446950aca39" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="161 120 24 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="161 96 24 24" edTextCol="ff000000"
          edBkgCol="0" labelText="R" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="L label" id="fb5b8372200665a9" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="90 120 24 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="90 96 24 24" edTextCol="ff000000"
          edBkgCol="0" labelText="L" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
