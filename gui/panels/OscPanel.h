@@ -64,6 +64,7 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<MouseOverKnob> LFOFadeIn;
 
 
     //==============================================================================
