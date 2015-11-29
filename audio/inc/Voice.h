@@ -72,7 +72,7 @@ public:
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
     , loopPosition(0)
-    , delayBuffer (AudioSampleBuffer(channels, static_cast<int>(getSampleRate() * 2.0)))
+    , delayBuffer (AudioSampleBuffer(channels, static_cast<int>(getSampleRate() * 5.0)))
     , currentDelayLength(static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0)))
     {
         for (int c = 0; c < channels; ++c) {
@@ -213,7 +213,7 @@ public:
                 int newLoopLength = static_cast<int>(params.delayTime.get() * (getSampleRate() / 1000.0) );
                
                 // reset the loop position according to the current delay length
-                if (loopPosition >= newLoopLength) {
+                if ((loopPosition %= newLoopLength) == 0) {
                     loopPosition = 0;
                 }
                 float currentSample = 0.f;

@@ -206,9 +206,9 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
-          min="0.01" max="0.98999999999999999" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          min="0.010000000000000000208" max="0.98999999999999999112" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

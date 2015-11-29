@@ -37,7 +37,8 @@
 */
 class FxPanel  : public PanelBase,
                  public SliderListener,
-                 public ButtonListener
+                 public ButtonListener,
+                 public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -52,6 +53,7 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -64,6 +66,8 @@ private:
     ScopedPointer<MouseOverKnob> dryWetSlider;
     ScopedPointer<MouseOverKnob> timeSlider;
     ScopedPointer<ToggleButton> syncToggle;
+    ScopedPointer<ComboBox> dividend;
+    ScopedPointer<ComboBox> divisor;
 
 
     //==============================================================================

@@ -36,28 +36,54 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
     feedbackSlider->setRange (0, 100, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     feedbackSlider->addListener (this);
 
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
     dryWetSlider->setRange (0, 100, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
-    timeSlider->setRange (1, 2000, 1);
+    timeSlider->setRange (1, 5000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     timeSlider->addListener (this);
 
     addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
     syncToggle->setButtonText (TRANS("Sync"));
     syncToggle->addListener (this);
 
+    addAndMakeVisible (dividend = new ComboBox ("new combo box"));
+    dividend->setEditableText (false);
+    dividend->setJustificationType (Justification::centred);
+    dividend->setTextWhenNothingSelected (String::empty);
+    dividend->setTextWhenNoChoicesAvailable (String::empty);
+    dividend->addItem (TRANS("1"), 1);
+    dividend->addItem (TRANS("2"), 2);
+    dividend->addItem (TRANS("3"), 3);
+    dividend->addItem (TRANS("4"), 4);
+    dividend->addListener (this);
+
+    addAndMakeVisible (divisor = new ComboBox ("new combo box"));
+    divisor->setEditableText (false);
+    divisor->setJustificationType (Justification::centred);
+    divisor->setTextWhenNothingSelected (String::empty);
+    divisor->setTextWhenNoChoicesAvailable (String::empty);
+    divisor->addItem (TRANS("1"), 1);
+    divisor->addItem (TRANS("2"), 2);
+    divisor->addItem (TRANS("3"), 3);
+    divisor->addItem (TRANS("4"), 4);
+    divisor->addItem (TRANS("8"), 5);
+    divisor->addItem (TRANS("16"), 6);
+    divisor->addListener (this);
+
 
     //[UserPreSize]
-
+    registerSlider(feedbackSlider, &params.delayFeedback);
+    registerSlider(dryWetSlider, &params.delayDryWet);
+    registerSlider(timeSlider, &params.delayTime);
 
     dryWetSlider->setValue(params.delayDryWet.getUI());
     //dryWetSlider->setTextValueSuffix(String(" ") + params.delayDryWet.unit());
@@ -67,12 +93,8 @@ FxPanel::FxPanel (SynthParams &p)
     //feedbackSlider->setTextValueSuffix(String(" ") + params.delayFeedback.unit());
 
     //syncToggle
-    syncToggle->setEnabled(false);
 
     //[/UserPreSize]
-    registerSlider(dryWetSlider, &params.delayFeedback);
-    registerSlider(timeSlider, &params.delayTime);
-    registerSlider(feedbackSlider, &params.delayFeedback);
 
     setSize (600, 400);
 
@@ -90,6 +112,8 @@ FxPanel::~FxPanel()
     dryWetSlider = nullptr;
     timeSlider = nullptr;
     syncToggle = nullptr;
+    dividend = nullptr;
+    divisor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -117,6 +141,8 @@ void FxPanel::resized()
     dryWetSlider->setBounds (80, 8, 64, 64);
     timeSlider->setBounds (152, 8, 64, 64);
     syncToggle->setBounds (224, 8, 63, 24);
+    dividend->setBounds (224, 32, 55, 16);
+    divisor->setBounds (224, 56, 55, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -164,6 +190,26 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == dividend)
+    {
+        //[UserComboBoxCode_dividend] -- add your combo box handling code here..
+        //[/UserComboBoxCode_dividend]
+    }
+    else if (comboBoxThatHasChanged == divisor)
+    {
+        //[UserComboBoxCode_divisor] -- add your combo box handling code here..
+        //[/UserComboBoxCode_divisor]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -188,18 +234,26 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="152 8 64 64" min="1" max="2000" int="1"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <COMBOBOX name="new combo box" id="f2c88d87f26bec88" memberName="dividend"
+            virtualName="" explicitFocusOrder="0" pos="224 32 55 16" editable="0"
+            layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected=""
+            textWhenNoItems=""/>
+  <COMBOBOX name="new combo box" id="182e27201e78c23e" memberName="divisor"
+            virtualName="" explicitFocusOrder="0" pos="224 56 55 16" editable="0"
+            layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16" textWhenNonSelected=""
+            textWhenNoItems=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
