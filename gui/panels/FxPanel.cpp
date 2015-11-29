@@ -28,52 +28,28 @@
 
 //==============================================================================
 FxPanel::FxPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (feedbackSlider = new Slider ("feedbackSlider1"));
+    addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
     feedbackSlider->setRange (0, 100, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     feedbackSlider->addListener (this);
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("Feedback")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredTop);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (dryWetSlider = new Slider ("dryWetSlider1"));
+    addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
     dryWetSlider->setRange (0, 100, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     dryWetSlider->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Wet")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centredTop);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (timeSlider = new Slider ("timeSlider1"));
+    addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
     timeSlider->setRange (1, 2000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     timeSlider->addListener (this);
-
-    addAndMakeVisible (label3 = new Label ("new label",
-                                           TRANS("Time")));
-    label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centredTop);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
     syncToggle->setButtonText (TRANS("Sync"));
@@ -81,17 +57,22 @@ FxPanel::FxPanel (SynthParams &p)
 
 
     //[UserPreSize]
+
+
     dryWetSlider->setValue(params.delayDryWet.getUI());
-    dryWetSlider->setTextValueSuffix(String(" ") + params.delayDryWet.unit());
+    //dryWetSlider->setTextValueSuffix(String(" ") + params.delayDryWet.unit());
     timeSlider->setValue(params.delayTime.getUI());
-    timeSlider->setTextValueSuffix(String(" ") + params.delayTime.unit());
+    //timeSlider->setTextValueSuffix(String(" ") + params.delayTime.unit());
     feedbackSlider->setValue(params.delayFeedback.getUI());
-    feedbackSlider->setTextValueSuffix(String(" ") + params.delayFeedback.unit());
+    //feedbackSlider->setTextValueSuffix(String(" ") + params.delayFeedback.unit());
 
     //syncToggle
     syncToggle->setEnabled(false);
 
     //[/UserPreSize]
+    registerSlider(dryWetSlider, &params.delayFeedback);
+    registerSlider(timeSlider, &params.delayTime);
+    registerSlider(feedbackSlider, &params.delayFeedback);
 
     setSize (600, 400);
 
@@ -106,11 +87,8 @@ FxPanel::~FxPanel()
     //[/Destructor_pre]
 
     feedbackSlider = nullptr;
-    label = nullptr;
     dryWetSlider = nullptr;
-    label2 = nullptr;
     timeSlider = nullptr;
-    label3 = nullptr;
     syncToggle = nullptr;
 
 
@@ -135,13 +113,10 @@ void FxPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    feedbackSlider->setBounds (32, 56, 87, 72);
-    label->setBounds (40, 32, 72, 16);
-    dryWetSlider->setBounds (136, 56, 87, 72);
-    label2->setBounds (144, 32, 72, 16);
-    timeSlider->setBounds (240, 56, 87, 72);
-    label3->setBounds (248, 32, 72, 16);
-    syncToggle->setBounds (336, 104, 63, 24);
+    feedbackSlider->setBounds (8, 8, 64, 64);
+    dryWetSlider->setBounds (80, 8, 64, 64);
+    timeSlider->setBounds (152, 8, 64, 64);
+    syncToggle->setBounds (224, 8, 63, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -205,40 +180,25 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FxPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="feedbackSlider1" id="9c0383d8383ea645" memberName="feedbackSlider"
-          virtualName="" explicitFocusOrder="0" pos="32 56 87 72" min="0"
-          max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="2a06a11c8bdb9f27" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="40 32 72 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="Feedback" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="12"/>
-  <SLIDER name="dryWetSlider1" id="38a3801ec95e842b" memberName="dryWetSlider"
-          virtualName="" explicitFocusOrder="0" pos="136 56 87 72" min="0"
-          max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="e9970f1693202a99" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="144 32 72 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="Wet" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="12"/>
-  <SLIDER name="timeSlider1" id="5ac27dc9db375d94" memberName="timeSlider"
-          virtualName="" explicitFocusOrder="0" pos="240 56 87 72" min="1"
-          max="2000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="acae269e78c925a5" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="248 32 72 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="Time" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="12"/>
+  <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="152 8 64 64" min="1" max="2000" int="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="336 104 63 24" buttonText="Sync"
+                virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 

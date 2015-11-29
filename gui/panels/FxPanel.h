@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FxPanel  : public Component,
+class FxPanel  : public PanelBase,
                  public SliderListener,
                  public ButtonListener
 {
@@ -57,16 +57,12 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> feedbackSlider;
-    ScopedPointer<Label> label;
-    ScopedPointer<Slider> dryWetSlider;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Slider> timeSlider;
-    ScopedPointer<Label> label3;
+    ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> dryWetSlider;
+    ScopedPointer<MouseOverKnob> timeSlider;
     ScopedPointer<ToggleButton> syncToggle;
 
 
