@@ -169,7 +169,7 @@ public:
 						//const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
 						float currentSample = (osc1.next(pitchMod[s])) * level * tailOff;
 
-						if (chorusSwitch==1) {
+						if (params.chorusSwitch==1) {
 						  currentSample = currentSample * (1.f - chorAmount*.5f) + osc1.nextDelay(pitchMod[s], lfoChor.next()*15.f + 10.f) * (chorAmount * .5f) * level * tailOff;
 						}
 

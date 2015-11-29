@@ -13,8 +13,9 @@ public:
     Param lfo1freq; //!< lfo frequency in Hz
     Param lfo1wave; //!< lfo wave switch 0 = sine wave or 1 = square wave
 
-	Param lfoChorfreq; //
-	Param chorAmount;
+	Param lfoChorfreq; // delay-lfo frequency in Hz
+	Param chorAmount; // wetness of signal [0 ... 1]
+	Param chorSwitch; // Chorus on / off bool
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
