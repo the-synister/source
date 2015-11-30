@@ -117,7 +117,6 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
     wave->setBounds (120, 40, 192, 32);
     label2->setBounds (88, 72, 80, 24);
     squareWaveLabel->setBounds (266, 72, 83, 24);
