@@ -15,8 +15,7 @@ SynthParams::SynthParams()
 , ladderCutoff("LadderFreq", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "  ", 0.f, 10.f, 0.f)
 {}
-{
-}
+
 
 SynthParams::~SynthParams()
 {
