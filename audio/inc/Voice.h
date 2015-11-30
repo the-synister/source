@@ -188,7 +188,7 @@ public:
 
         // subtract the feedback
         // inverse hyperbolic Sinus
-        //ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
         // hyperbolic tangent
         ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
 

@@ -16,7 +16,7 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
     Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
-    Param ladderRes; //< resonance gain for the ladder Filter [0...10] dB
+    Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
     ParamDb vol; //!< volume in [0..1]
 
