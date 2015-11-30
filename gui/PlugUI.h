@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "MouseOverKnob.h"
 //[/Headers]
 
 
@@ -60,10 +61,9 @@ private:
 
     //==============================================================================
     ScopedPointer<Label> label;
-    ScopedPointer<Slider> freq;
+    ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
-    ScopedPointer<Label> label2;
 
 
     //==============================================================================
