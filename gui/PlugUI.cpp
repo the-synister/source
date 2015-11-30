@@ -64,7 +64,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, 0, false);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, 0, false);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params, *delay), true);
     tabs->setCurrentTabIndex (0);
 
     addAndMakeVisible (label2 = new Label ("new label",
@@ -179,7 +179,7 @@ void PlugUI::timerCallback()
 void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
 {
     lastBpmInfo = static_cast<float>(currentPos.bpm);
-
+    params.bpm.set(currentPos.bpm);
     MemoryOutputStream bpmDisplayText;
 
     bpmDisplayText << String(currentPos.bpm, 2);

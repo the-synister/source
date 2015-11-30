@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "FxDelay.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -64,21 +65,15 @@ struct Oscillator {
     }
 };
 
-class Voice : public SynthesiserVoice {
+class Voice : public SynthesiserVoice{
 public:
-    Voice(SynthParams &p, int blockSize, int channels)
+    Voice(SynthParams &p, int blockSize, int channels, FxDelay &delay)
 	: params(p) 
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
-    , loopPosition(0)
-    , delayBuffer (AudioSampleBuffer(channels, static_cast<int>(getSampleRate() * 5.0)))
-    , currentDelayLength(static_cast<int>(params.delayTime.get()*(getSampleRate() / 1000.0)))
-    {
-        for (int c = 0; c < channels; ++c) {
-            delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
-        }
-    }
+    , delay(p, channels, getSampleRate())
+    {}
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -203,39 +198,12 @@ public:
                 }
             }
         }
-
         // delay
-        for (int s = 0; s < numSamples; ++s)
-        {
-            for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-
-                // get new length from UI
-                int newLoopLength = static_cast<int>(params.delayTime.get() * (getSampleRate() / 1000.0) );
-               
-                // reset the loop position according to the current delay length
-                if ((loopPosition %= newLoopLength) == 0) {
-                    loopPosition = 0;
-                }
-                float currentSample = 0.f;
-                float delayedSample = 0.f;
-
-                // clear old material from buffer
-                if (newLoopLength < currentDelayLength) { // TODO: this is still a bit messy
-                    delayBuffer.applyGain(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength, 0.f);
-                }
-
-                // add new material to buffer
-                currentSample = outputBuffer.getSample(c, startSample + s);
-                delayedSample = delayBuffer.getSample(c, loopPosition);
-                delayBuffer.setSample(c, loopPosition, currentSample);
-                delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get() );
-                outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get() );
-
-                // iterate
-                currentDelayLength = newLoopLength;
-                ++loopPosition;
-            }
+        //TODO: dirty flag, so it does not calculates the time if not needed
+        if (params.delaySync.get()) {
+            delay.calcDelayTime(params.delayDividend.get(), params.delayDivisor.get(), params.bpm.get()); // fetch host tempo changes
         }
+        delay.renderDelay(outputBuffer, startSample, numSamples, getSampleRate()); // adds the delay to the outputBuffer
     }
 
 protected:
@@ -275,7 +243,5 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
 
-    AudioSampleBuffer delayBuffer;
-    int loopPosition;
-    int currentDelayLength;
+    FxDelay delay;
 };

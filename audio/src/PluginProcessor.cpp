@@ -12,6 +12,7 @@
 #include "Voice.h"
 #include "HostParam.h"
 
+
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
@@ -133,7 +134,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     synth.clearVoices();
     for (int i = 8; --i >= 0;)
     {
-        synth.addVoice(new Voice(*this, samplesPerBlock, 2));
+        synth.addVoice(new Voice(*this, samplesPerBlock, 2, *delay));
     }
     synth.clearSounds();
     synth.addSound(new Sound());

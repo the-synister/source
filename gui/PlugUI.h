@@ -24,6 +24,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
+#include "FxDelay.h"
 //[/Headers]
 
 
@@ -62,6 +63,7 @@ private:
     float lastBpmInfo;
     void timerCallback() override;
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+    FxDelay *delay;
     //[/UserVariables]
 
     //==============================================================================

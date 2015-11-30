@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "FxDelay.h"
 //[/Headers]
 
 
@@ -42,7 +43,7 @@ class FxPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    FxPanel (SynthParams &p);
+    FxPanel (SynthParams &p, FxDelay &d);
     ~FxPanel();
 
     //==============================================================================
@@ -68,7 +69,7 @@ private:
     ScopedPointer<ToggleButton> syncToggle;
     ScopedPointer<ComboBox> dividend;
     ScopedPointer<ComboBox> divisor;
-
+    FxDelay *delay;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FxPanel)
