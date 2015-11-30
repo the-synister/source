@@ -189,8 +189,8 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
         timeSlider->setEnabled(!timeSlider->isEnabled());
         dividend->setEnabled(!dividend->isEnabled());
         divisor->setEnabled(!divisor->isEnabled());
-        //[UserButtonCode_syncToggle] -- add your button handler code here..
-        //[/UserButtonCode_syncToggle]
+        //TODO trigger sync time calculation (write function)
+        //TODO retrigger on bpm change
     }
 
     //[UserbuttonClicked_Post]
@@ -208,7 +208,7 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         {
             double newTimeValue;
             double bps = (params.positionInfo[0].bpm / 60.) ;
-            double beatInMs = 1000*(1. / bps) * (params.positionInfo[0].timeSigDenominator / params.positionInfo[0].timeSigNumerator);
+            double beatInMs = 1000*(2. / bps) /* * (params.positionInfo[0].timeSigDenominator / params.positionInfo[0].timeSigNumerator)*/;
             
             double divTmp = dividend->getText().getDoubleValue();
             double divsorTmp = divisor->getText().getDoubleValue();
