@@ -64,10 +64,16 @@ struct Oscillator {
     }
 };
 
+
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize)
-    : params(p)
+    Voice(SynthParams &p, int blockSize) 
+    :    lastSample(0.f)
+    , inputDelay1(0.f)
+    , inputDelay2(0.f)
+    , outputDelay1(0.f)
+    , outputDelay2(0.f)
+    , params(p)
     , level (0.f)
     , pitchModBuffer(1,blockSize)
     , env1Buffer(1, blockSize)
@@ -83,6 +89,12 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
+        lastSample = 0.f;
+        inputDelay1 = 0.f;
+        inputDelay2 = 0.f;
+        outputDelay1 = 0.f;
+        outputDelay2 = 0.f;
+        
         level = velocity * 0.15f;
         releaseCounter = -1;
 
@@ -96,6 +108,7 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+
 
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
@@ -158,7 +171,7 @@ public:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float currentSample = (osc1.next(pitchMod[s])) * level * env1Mod[s];
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -266,8 +279,47 @@ protected:
             }
         }
     }
+    
+    float biquadLowpass(float inputSignal) {
+        const float sRate = static_cast<float>(getSampleRate());
+
+        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+
+        const float currentLowcutFreq = params.lpCutoff.get() / sRate;
+        const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
+
+        // coefficients for lowpass, depending on resonance and lowcut frequency
+        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
+        coeff1 = 0.5f * (1.f - k) / (1.f + k);
+        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
+        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+
+        b0 = 2.f * coeff3;
+        b1 = 2.f * 2.f * coeff3;
+        b2 = 2.f * coeff3;
+        a1 = 2.f * -coeff2;
+        a2 = 2.f * coeff1;
+
+        lastSample = inputSignal;
+        
+        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+        
+        //delaying samples
+        inputDelay2 = inputDelay1;
+        inputDelay1 = lastSample;
+        outputDelay2 = outputDelay1;
+        outputDelay1 = inputSignal;
+        
+        return inputSignal;
+    }
+
 
 private:
+    
+    //New Filter Design
+    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
+    
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
@@ -287,3 +339,5 @@ private:
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
 };
+
+

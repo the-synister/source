@@ -16,6 +16,10 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
+    
+    Param lpCutoff; //!< filter cutoff frequency in Hz
+    Param lpResonance; //! filter resonance in dB
+
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
