@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +36,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class LadderPanel  : public Component,
+class LadderPanel  : public PanelBase,
                      public SliderListener
 {
 public:
@@ -61,8 +62,6 @@ private:
     //==============================================================================
     ScopedPointer<Slider> cutoff;
     ScopedPointer<Slider> resonance;
-    ScopedPointer<Label> cutoff_label;
-    ScopedPointer<Label> res_label;
 
 
     //==============================================================================

@@ -28,7 +28,7 @@
 
 //==============================================================================
 LadderPanel::LadderPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -44,22 +44,6 @@ LadderPanel::LadderPanel (SynthParams &p)
     resonance->setSliderStyle (Slider::RotaryVerticalDrag);
     resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonance->addListener (this);
-
-    addAndMakeVisible (cutoff_label = new Label ("cutoff label",
-                                                 TRANS("Frequency\n")));
-    cutoff_label->setFont (Font (15.00f, Font::plain));
-    cutoff_label->setJustificationType (Justification::centredLeft);
-    cutoff_label->setEditable (false, false, false);
-    cutoff_label->setColour (TextEditor::textColourId, Colours::black);
-    cutoff_label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (res_label = new Label ("res label",
-                                              TRANS("Resonance\n")));
-    res_label->setFont (Font (15.00f, Font::plain));
-    res_label->setJustificationType (Justification::centredLeft);
-    res_label->setEditable (false, false, false);
-    res_label->setColour (TextEditor::textColourId, Colours::black);
-    res_label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -84,8 +68,6 @@ LadderPanel::~LadderPanel()
 
     cutoff = nullptr;
     resonance = nullptr;
-    cutoff_label = nullptr;
-    res_label = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -111,8 +93,6 @@ void LadderPanel::resized()
 
     cutoff->setBounds (40, 56, 80, 64);
     resonance->setBounds (144, 56, 80, 64);
-    cutoff_label->setBounds (40, 128, 80, 24);
-    res_label->setBounds (144, 128, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -155,8 +135,8 @@ void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="LadderPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
@@ -168,16 +148,6 @@ BEGIN_JUCER_METADATA
           virtualName="" explicitFocusOrder="0" pos="144 56 80 64" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="cutoff label" id="5683a20abc5da5f" memberName="cutoff_label"
-         virtualName="" explicitFocusOrder="0" pos="40 128 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Frequency&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
-  <LABEL name="res label" id="1f4d820c02ca3cb6" memberName="res_label"
-         virtualName="" explicitFocusOrder="0" pos="144 128 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Resonance&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
