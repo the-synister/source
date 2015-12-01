@@ -70,26 +70,26 @@ struct Oscillator {
 template<float(*_waveform)(float, float, float)>
 struct RandomOscillator : Oscillator<&Waveforms::square>
 {
-    float holdedValue;
+    float heldValue;
     
     RandomOscillator() : Oscillator()
-                       , holdedValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
+                       , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
                       {}
     
     void reset()
     {
         phase = 0.f;
         phaseDelta = 0.f;
-        holdedValue = 0.f;
+        heldValue = 0.f;
     }
     
     float next()
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
-             holdedValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+             heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
          }
         
-        const float result = holdedValue;
+        const float result = heldValue;
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
@@ -131,7 +131,7 @@ public:
         
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        lfo1random.holdedValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
