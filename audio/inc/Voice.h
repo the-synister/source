@@ -69,7 +69,7 @@ public:
     Voice(SynthParams &p, int blockSize)
     : params(p)
     , level (0.f)
-    , totSamples(0.f)
+    , totSamples(0)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
     {}
@@ -142,8 +142,7 @@ public:
         const float sRate = static_cast<float>(getSampleRate());  // Sample rate
 
         // Modulation
-        const float samples_fade_in_LFO = params.lfo_fadein.get() * sRate;     // Length in samples of the LFO fade in
-        renderModulation(numSamples, samples_fade_in_LFO);
+        renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
@@ -201,14 +200,16 @@ public:
                     }
                 }
         }
-        totSamples += static_cast<float>(numSamples);
+        totSamples += numSamples;
     }
 
 protected:
-    void renderModulation(int numSamples, const float samples_fade_in_LFO) {
+    void renderModulation(int numSamples) {
 
-        float factor_fade_in_LFO = 1.f;                       // Defaut value of fade in factor is 1 (100%)
-        float modAmount = params.osc1lfo1depth.get();   // Default value of modAmount is the value from the slider
+		const float sRate = static_cast<float>(getSampleRate());  // Sample rate
+        float factor_fade_in_LFO = 1.f;                           // Defaut value of fade in factor is 1 (100%)
+        float modAmount = params.osc1lfo1depth.get();             // Default value of modAmount is the value from the slider
+		const float samples_fade_in_LFO = params.lfo_fadein.get() * sRate;     // Length in samples of the LFO fade in
 
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
@@ -225,13 +226,13 @@ protected:
                 }
                 else                                  // Otherwise the factor due to the fade in in progress is determined
                 {
-                    if ((totSamples + s) > samples_fade_in_LFO)  // If the fade in is reached
+                    if ((static_cast<float>(totSamples + s)) > samples_fade_in_LFO)  // If the fade in is reached
                     {
                         factor_fade_in_LFO = 1.f;          // The factor is 1 (100%)
                     }
                     else                                   // Otherwise the factor is determined
                     {
-                        factor_fade_in_LFO = (totSamples + s) / samples_fade_in_LFO;
+                        factor_fade_in_LFO = static_cast<float>(totSamples + s) / samples_fade_in_LFO;
                     }
                 }
 
@@ -251,13 +252,13 @@ protected:
                 }
                 else                                  // Otherwise the factor due to the fade in in progress is determined
                 {
-                    if ((totSamples + s) > samples_fade_in_LFO)  // If the fade in is reached
+                    if (static_cast<float>(totSamples + s) > samples_fade_in_LFO)  // If the fade in is reached
                     {
                         factor_fade_in_LFO = 1.f;          // The factor is 1 (100%)
                     }
                     else                                   // Otherwise the factor is determined
                     {
-                        factor_fade_in_LFO = (totSamples + s) / samples_fade_in_LFO;
+                        factor_fade_in_LFO = static_cast<float>(totSamples + s) / samples_fade_in_LFO;
                     }
                 }
 
@@ -276,9 +277,9 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
 
-    float level, tailOff, totSamples;
+    float level, tailOff;
 
-    int currentPitchValue;
+    int currentPitchValue, totSamples;
 
     AudioSampleBuffer pitchModBuffer;
 
