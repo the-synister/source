@@ -33,25 +33,40 @@ EnvPanel::EnvPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (decay = new Slider ("Decay"));
-    decay->setRange (0.0001, 0.9999, 0);
+    addAndMakeVisible (attack = new MouseOverKnob ("Attack"));
+    attack->setRange (0.001, 5, 0);
+    attack->setSliderStyle (Slider::RotaryVerticalDrag);
+    attack->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    attack->addListener (this);
+    attack->setSkewFactor (0.5);
+
+    addAndMakeVisible (decay = new MouseOverKnob ("Decay"));
+    decay->setRange (0.001, 5, 0);
     decay->setSliderStyle (Slider::RotaryVerticalDrag);
     decay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     decay->addListener (this);
+    decay->setSkewFactor (0.5);
 
-    addAndMakeVisible (label = new Label ("decay label",
-                                          TRANS("decay")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centred);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (sustain = new MouseOverKnob ("Sustain"));
+    sustain->setRange (-96, 0, 0);
+    sustain->setSliderStyle (Slider::RotaryVerticalDrag);
+    sustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    sustain->addListener (this);
+    sustain->setSkewFactor (3);
+
+    addAndMakeVisible (release = new MouseOverKnob ("Release"));
+    release->setRange (0.001, 5, 0);
+    release->setSliderStyle (Slider::RotaryVerticalDrag);
+    release->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    release->addListener (this);
+    release->setSkewFactor (0.5);
 
 
     //[UserPreSize]
-    decay->setValue(params.decayFac.getUI());
-    decay->setTextValueSuffix(String(" ") + params.decayFac.unit());
-
+    registerSlider(attack, &params.envAttack);
+    registerSlider(decay, &params.envDecay);
+    registerSlider(sustain, &params.envSustain);
+    registerSlider(release, &params.envRelease);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -66,8 +81,10 @@ EnvPanel::~EnvPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    attack = nullptr;
     decay = nullptr;
-    label = nullptr;
+    sustain = nullptr;
+    release = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -91,8 +108,10 @@ void EnvPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    decay->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
+    attack->setBounds (8, 8, 64, 64);
+    decay->setBounds (80, 8, 64, 64);
+    sustain->setBounds (152, 8, 64, 64);
+    release->setBounds (224, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -100,13 +119,28 @@ void EnvPanel::resized()
 void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == decay)
+    if (sliderThatWasMoved == attack)
+    {
+        //[UserSliderCode_attack] -- add your slider handling code here..
+        //[/UserSliderCode_attack]
+    }
+    else if (sliderThatWasMoved == decay)
     {
         //[UserSliderCode_decay] -- add your slider handling code here..
-        params.decayFac.setUI(static_cast<float>(decay->getValue()));
         //[/UserSliderCode_decay]
+    }
+    else if (sliderThatWasMoved == sustain)
+    {
+        //[UserSliderCode_sustain] -- add your slider handling code here..
+        //[/UserSliderCode_sustain]
+    }
+    else if (sliderThatWasMoved == release)
+    {
+        //[UserSliderCode_release] -- add your slider handling code here..
+        //[/UserSliderCode_release]
     }
 
     //[UsersliderValueChanged_Post]
@@ -134,16 +168,22 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="Decay" id="d136f7fae1b8db84" memberName="decay" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.00010000000000000000479"
-          max="0.99990000000000001101" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="decay label" id="2d8c58beff3e29a9" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
-         labelText="decay" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+  <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="attack" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.001" max="5" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+  <SLIDER name="Decay" id="84a4159bee0728d6" memberName="decay" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="80 8 64 64" min="0.001" max="5" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustain" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="152 8 64 64" min="-96" max="0" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
+  <SLIDER name="Release" id="c8bc1120a33101cd" memberName="release" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="224 8 64 64" min="0.001" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
