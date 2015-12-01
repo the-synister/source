@@ -134,7 +134,7 @@ public:
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
         
         const float currentLowcutFreq =  params.lpCutoff.get() / sRate;
-        const float currentResonance = pow(10, -params.lpResonance.get()/20);
+        const float currentResonance = pow(10.f, -params.lpResonance.get()/20.f);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
         k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
