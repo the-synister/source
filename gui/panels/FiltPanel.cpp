@@ -28,54 +28,28 @@
 
 //==============================================================================
 FiltPanel::FiltPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (CutoffSlider = new Slider ("Cutoff"));
-    CutoffSlider->setRange (10, 20000, 1);
-    CutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    CutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    CutoffSlider->addListener (this);
+    addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
+    cutoffSlider->setRange (10, 20000, 1);
+    cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider->addListener (this);
 
-    addAndMakeVisible (ResonanceSlider = new Slider ("Resonance"));
-    ResonanceSlider->setRange (-25, 25, 0);
-    ResonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    ResonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    ResonanceSlider->addListener (this);
-
-    addAndMakeVisible (lpfLabel = new Label ("Lowpass Label",
-                                             TRANS("Lowpass Filter")));
-    lpfLabel->setFont (Font (15.00f, Font::plain));
-    lpfLabel->setJustificationType (Justification::centredLeft);
-    lpfLabel->setEditable (false, false, false);
-    lpfLabel->setColour (TextEditor::textColourId, Colours::black);
-    lpfLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("Cutoff")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (reso_lbl = new Label ("Resonance",
-                                             TRANS("Resonance")));
-    reso_lbl->setFont (Font (15.00f, Font::plain));
-    reso_lbl->setJustificationType (Justification::centredLeft);
-    reso_lbl->setEditable (false, false, false);
-    reso_lbl->setColour (TextEditor::textColourId, Colours::black);
-    reso_lbl->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
+    resonanceSlider->setRange (-25, 25, 0);
+    resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    resonanceSlider->addListener (this);
 
 
     //[UserPreSize]
-    CutoffSlider->setValue(params.lpCutoff.getUI());
-    CutoffSlider->setSkewFactorFromMidPoint (1000.0);
-    CutoffSlider->setTextValueSuffix(String(" ") + params.lpCutoff.unit());
-    ResonanceSlider->setValue(params.lpResonance.getUI());
-    ResonanceSlider->setTextValueSuffix(String(" ") + params.lpResonance.unit());
+    registerSlider(cutoffSlider, &params.lpCutoff);
+    cutoffSlider->setSkewFactorFromMidPoint (1000.0);
+    registerSlider(resonanceSlider, &params.lpResonance);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -90,11 +64,8 @@ FiltPanel::~FiltPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    CutoffSlider = nullptr;
-    ResonanceSlider = nullptr;
-    lpfLabel = nullptr;
-    label = nullptr;
-    reso_lbl = nullptr;
+    cutoffSlider = nullptr;
+    resonanceSlider = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -118,11 +89,8 @@ void FiltPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    CutoffSlider->setBounds (56, 64, 80, 72);
-    ResonanceSlider->setBounds (240, 64, 72, 72);
-    lpfLabel->setBounds (40, 8, 150, 24);
-    label->setBounds (72, 40, 48, 24);
-    reso_lbl->setBounds (240, 40, 71, 24);
+    cutoffSlider->setBounds (8, 8, 64, 64);
+    resonanceSlider->setBounds (80, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -130,20 +98,18 @@ void FiltPanel::resized()
 void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == CutoffSlider)
+    if (sliderThatWasMoved == cutoffSlider)
     {
-        //[UserSliderCode_CutoffSlider] -- add your slider handling code here..
-        params.lpCutoff.setUI(static_cast<float>(CutoffSlider->getValue()));
-
-        //[/UserSliderCode_CutoffSlider]
+        //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
+        //[/UserSliderCode_cutoffSlider]
     }
-    else if (sliderThatWasMoved == ResonanceSlider)
+    else if (sliderThatWasMoved == resonanceSlider)
     {
-        //[UserSliderCode_ResonanceSlider] -- add your slider handling code here..
-        params.lpResonance.setUI(static_cast<float>(ResonanceSlider->getValue()));
-        //[/UserSliderCode_ResonanceSlider]
+        //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
+        //[/UserSliderCode_resonanceSlider]
     }
 
     //[UsersliderValueChanged_Post]
@@ -166,34 +132,19 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FiltPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="CutoffSlider"
-          virtualName="" explicitFocusOrder="0" pos="56 64 80 72" min="10"
-          max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="ResonanceSlider"
-          virtualName="" explicitFocusOrder="0" pos="240 64 72 72" min="-25"
-          max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Lowpass Label" id="a6bb552e4fa24670" memberName="lpfLabel"
-         virtualName="" explicitFocusOrder="0" pos="40 8 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Lowpass Filter" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
-  <LABEL name="new label" id="11c4b0d3d48821ba" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="72 40 48 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Cutoff" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
-  <LABEL name="Resonance" id="3bfcec617ed028c5" memberName="reso_lbl"
-         virtualName="" explicitFocusOrder="0" pos="240 40 71 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Resonance" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
