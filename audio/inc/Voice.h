@@ -87,11 +87,10 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
              heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
-         }
+        }
         
-        const float result = heldValue;
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return result;
+        return heldValue;
     }
 
 };
