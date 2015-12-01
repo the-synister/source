@@ -12,9 +12,11 @@ SynthParams::SynthParams()
 , osc1pulsewidth("Width", "prct", 0.01f, 0.99f, 0.5f)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
-, positionInfo()
 , positionIndex(0)
-{}
+{
+    positionInfo[0].resetToDefault();
+    positionInfo[1].resetToDefault();
+}
 
 SynthParams::~SynthParams()
 {

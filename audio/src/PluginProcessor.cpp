@@ -28,9 +28,6 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
     addParameter(new HostParam<Param>(panDir));
-    
-    positionInfo[0].resetToDefault();
-    positionInfo[1].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
