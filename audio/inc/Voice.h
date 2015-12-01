@@ -75,12 +75,9 @@ public:
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
-    , params(p)
     , level (0.f)
-    , tailOff (0.f)
     , pitchModBuffer(1, blockSize)
     , delay(p, channels, getSampleRate())
-    , pitchModBuffer(1,blockSize)
     , env1Buffer(1, blockSize)
     {}
 
@@ -350,8 +347,5 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
-};
-
-
     FxDelay delay;
 };
