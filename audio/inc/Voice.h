@@ -69,7 +69,7 @@ public:
         tailOff = 0.f;
 
         currentPitchValue = currentPitchWheelPosition;
-
+		
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
@@ -80,8 +80,8 @@ public:
 
 			lfo1sine.phase = .5f*float_Pi;
 			lfo1square.phase = .5f*float_Pi;
-            lfo1sine.phaseDelta = bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-		    lfo1square.phaseDelta = bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = currentPositionInfo.bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+		    lfo1square.phaseDelta = currentPositionInfo.bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
 
 		}
 		else {
@@ -222,6 +222,9 @@ private:
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
+
+	AudioPlayHead* playHead;
+	AudioPlayHead::CurrentPositionInfo currentPositionInfo;
 
     float level, tailOff;
 

@@ -93,7 +93,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     wave->setValue(params.lfo1wave.getUI());
-    tempoSyncSwitch->setValue(params.lfo1TempSync.getUI());
+    //tempoSyncSwitch->setToggleState(params.lfo1TempSync.getUI());
     notelength->setValue(params.noteLength.getUI());
     //[/UserPreSize]
 
@@ -187,6 +187,7 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == tempoSyncSwitch)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
+        params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
     }
 
