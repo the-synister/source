@@ -27,6 +27,14 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
+    addParameter(new HostParam<Param>(lpCutoff));
+    addParameter(new HostParam<Param>(lpResonance));
+
+    addParameter(new HostParam<Param>(envAttack));
+    addParameter(new HostParam<Param>(envDecay));
+    addParameter(new HostParam<Param>(envSustain));
+    addParameter(new HostParam<Param>(envRelease));
+
     addParameter(new HostParam<Param>(panDir));
 }
 
