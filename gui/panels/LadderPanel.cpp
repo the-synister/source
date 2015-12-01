@@ -33,13 +33,13 @@ LadderPanel::LadderPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (cutoff = new Slider ("cutoff"));
+    addAndMakeVisible (cutoff = new MouseOverKnob ("Cutoff"));
     cutoff->setRange (10, 20000, 0);
     cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoff->addListener (this);
 
-    addAndMakeVisible (resonance = new Slider ("resonance"));
+    addAndMakeVisible (resonance = new MouseOverKnob ("resonance"));
     resonance->setRange (0, 10, 0);
     resonance->setSliderStyle (Slider::RotaryVerticalDrag);
     resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
@@ -47,11 +47,8 @@ LadderPanel::LadderPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    cutoff->setValue(params.ladderCutoff.getUI());
-    cutoff->setTextValueSuffix(String(" ") + params.ladderCutoff.unit());
-    cutoff->setSkewFactor(0.5);
-    resonance->setValue(params.ladderRes.getUI());
-    resonance->setTextValueSuffix(String(" ") + params.ladderRes.unit());
+    registerSlider(cutoff, &params.ladderCutoff);
+    registerSlider(resonance, &params.ladderRes);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -105,13 +102,11 @@ void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == cutoff)
     {
         //[UserSliderCode_cutoff] -- add your slider handling code here..
-        params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
         //[/UserSliderCode_cutoff]
     }
     else if (sliderThatWasMoved == resonance)
     {
         //[UserSliderCode_resonance] -- add your slider handling code here..
-        params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
         //[/UserSliderCode_resonance]
     }
 
