@@ -10,6 +10,8 @@
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
+        <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
+        <FILE id="SyrRUI" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
