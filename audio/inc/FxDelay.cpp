@@ -32,15 +32,14 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, int 
             int newLoopLength = static_cast<int>(params.delayTime.get() * (sampleRate / 1000.0));
 
             // reset the loop position according to the current delay length
-            if ((loopPosition %= newLoopLength) == 0) {
-                loopPosition = 0;
-            }
+            loopPosition %= newLoopLength;
+
             float currentSample = 0.f;
             float delayedSample = 0.f;
 
             // clear old material from buffer
             if (newLoopLength < currentDelayLength) { // TODO: this is still a bit messy
-                delayBuffer.applyGain(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength, 0.f);
+                delayBuffer.clear(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength);
             }
 
             // add new material to buffer
