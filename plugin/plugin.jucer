@@ -13,16 +13,14 @@
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
-        <FILE id="rFNIOZ" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
-        <FILE id="Bo42lE" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
+        <FILE id="T6NiX2" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
+        <FILE id="ZjJ77i" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
+        <FILE id="zVG02a" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
+        <FILE id="l2unIn" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="n4LLrh" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="Sh6NXS" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
-        <FILE id="Dxrkit" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
-        <FILE id="taacFm" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
-        <FILE id="opYHyZ" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
-        <FILE id="jS6szn" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="blqsaY" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="UNPeJT" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="De7pfA" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
