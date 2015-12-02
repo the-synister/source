@@ -1,20 +1,20 @@
 /*
-==============================================================================
+  ==============================================================================
 
-This is an automatically generated GUI class created by the Introjucer!
+  This is an automatically generated GUI class created by the Introjucer!
 
-Be careful when adding custom code to these files, as only the code within
-the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-and re-saved.
+  Be careful when adding custom code to these files, as only the code within
+  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
+  and re-saved.
 
-Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 3.2.0
 
-------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
-The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-Copyright (c) 2015 - ROLI Ltd.
+  The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
+  Copyright (c) 2015 - ROLI Ltd.
 
-==============================================================================
+  ==============================================================================
 */
 
 //[Headers] You can add your own extra header files here...
@@ -27,59 +27,58 @@ Copyright (c) 2015 - ROLI Ltd.
 //[/MiscUserDefs]
 
 //==============================================================================
-FxPanel::FxPanel(SynthParams &p, FxDelay &d)
+FxPanel::FxPanel (SynthParams &p, FxDelay &d)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
+    delay = &d;
     //[/Constructor_pre]
 
-    delay = &d;
+    addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
+    feedbackSlider->setRange (0, 100, 0);
+    feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    feedbackSlider->addListener (this);
 
-    addAndMakeVisible(feedbackSlider = new MouseOverKnob("Feedback"));
-    feedbackSlider->setRange(0, 100, 0);
-    feedbackSlider->setSliderStyle(Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle(Slider::TextBoxBelow, true, 80, 20);
-    feedbackSlider->addListener(this);
+    addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
+    dryWetSlider->setRange (0, 100, 0);
+    dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    dryWetSlider->addListener (this);
 
-    addAndMakeVisible(dryWetSlider = new MouseOverKnob("Wet"));
-    dryWetSlider->setRange(0, 100, 0);
-    dryWetSlider->setSliderStyle(Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle(Slider::TextBoxBelow, true, 80, 20);
-    dryWetSlider->addListener(this);
+    addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
+    timeSlider->setRange (1, 5000, 1);
+    timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    timeSlider->addListener (this);
 
-    addAndMakeVisible(timeSlider = new MouseOverKnob("Time"));
-    timeSlider->setRange(1, 5000, 1);
-    timeSlider->setSliderStyle(Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle(Slider::TextBoxBelow, true, 80, 20);
-    timeSlider->addListener(this);
+    addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
+    syncToggle->setButtonText (TRANS("Sync"));
+    syncToggle->addListener (this);
 
-    addAndMakeVisible(syncToggle = new ToggleButton("syncToggle1"));
-    syncToggle->setButtonText(TRANS("Sync"));
-    syncToggle->addListener(this);
+    addAndMakeVisible (dividend = new ComboBox ("delayDividend"));
+    dividend->setEditableText (false);
+    dividend->setJustificationType (Justification::centred);
+    dividend->setTextWhenNothingSelected (TRANS("1"));
+    dividend->setTextWhenNoChoicesAvailable (TRANS("1"));
+    dividend->addItem (TRANS("1"), 1);
+    dividend->addItem (TRANS("2"), 2);
+    dividend->addItem (TRANS("3"), 3);
+    dividend->addItem (TRANS("4"), 4);
+    dividend->addListener (this);
 
-    addAndMakeVisible(dividend = new ComboBox("new combo box"));
-    dividend->setEditableText(false);
-    dividend->setJustificationType(Justification::centred);
-    dividend->setTextWhenNothingSelected(String("1"));
-    dividend->setTextWhenNoChoicesAvailable(String("1"));
-    dividend->addItem(TRANS("1"), 1);
-    dividend->addItem(TRANS("2"), 2);
-    dividend->addItem(TRANS("3"), 3);
-    dividend->addItem(TRANS("4"), 4);
-    dividend->addListener(this);
-
-    addAndMakeVisible(divisor = new ComboBox("new combo box"));
-    divisor->setEditableText(false);
-    divisor->setJustificationType(Justification::centred);
-    divisor->setTextWhenNothingSelected(String("1"));
-    divisor->setTextWhenNoChoicesAvailable(String("1"));
-    divisor->addItem(TRANS("1"), 1);
-    divisor->addItem(TRANS("2"), 2);
-    divisor->addItem(TRANS("3"), 3);
-    divisor->addItem(TRANS("4"), 4);
-    divisor->addItem(TRANS("8"), 5);
-    divisor->addItem(TRANS("16"), 6);
-    divisor->addListener(this);
+    addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
+    divisor->setEditableText (false);
+    divisor->setJustificationType (Justification::centred);
+    divisor->setTextWhenNothingSelected (TRANS("1"));
+    divisor->setTextWhenNoChoicesAvailable (TRANS("1"));
+    divisor->addItem (TRANS("1"), 1);
+    divisor->addItem (TRANS("2"), 2);
+    divisor->addItem (TRANS("3"), 3);
+    divisor->addItem (TRANS("4"), 4);
+    divisor->addItem (TRANS("8"), 5);
+    divisor->addItem (TRANS("16"), 6);
+    divisor->addListener (this);
 
 
     //[UserPreSize]
@@ -91,18 +90,18 @@ FxPanel::FxPanel(SynthParams &p, FxDelay &d)
     dividend->setEnabled(false);
     divisor->setEnabled(false);
 
-    dryWetSlider->setValue(params.delayDryWet.getUI());
-    //dryWetSlider->setTextValueSuffix(String(" ") + params.delayDryWet.unit());
-    timeSlider->setValue(params.delayTime.getUI());
-    //timeSlider->setTextValueSuffix(String(" ") + params.delayTime.unit());
-    feedbackSlider->setValue(params.delayFeedback.getUI());
-    //feedbackSlider->setTextValueSuffix(String(" ") + params.delayFeedback.unit());
+    //divisor->setTextWhenNothingSelected(String("1"));
+    //divisor->setTextWhenNoChoicesAvailable(String("1"));
+    //divisor->setTextWhenNothingSelected(String("1"));
+    //divisor->setTextWhenNoChoicesAvailable(String("1"));
 
-    //syncToggle
+    dryWetSlider->setValue(params.delayDryWet.getUI());
+    timeSlider->setValue(params.delayTime.getUI());
+    feedbackSlider->setValue(params.delayFeedback.getUI());
 
     //[/UserPreSize]
 
-    setSize(600, 400);
+    setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -127,12 +126,12 @@ FxPanel::~FxPanel()
 }
 
 //==============================================================================
-void FxPanel::paint(Graphics& g)
+void FxPanel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll(Colours::white);
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -143,19 +142,38 @@ void FxPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    feedbackSlider->setBounds(8, 8, 64, 64);
-    dryWetSlider->setBounds(80, 8, 64, 64);
-    timeSlider->setBounds(152, 8, 64, 64);
-    syncToggle->setBounds(224, 8, 63, 24);
-    dividend->setBounds(224, 32, 55, 16);
-    divisor->setBounds(224, 56, 55, 16);
+    feedbackSlider->setBounds (8, 8, 64, 64);
+    dryWetSlider->setBounds (80, 8, 64, 64);
+    timeSlider->setBounds (152, 8, 64, 64);
+    syncToggle->setBounds (224, 8, 63, 24);
+    dividend->setBounds (224, 32, 55, 16);
+    divisor->setBounds (224, 56, 55, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
 
-void FxPanel::sliderValueChanged(Slider* sliderThatWasMoved)
+void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    if (sliderThatWasMoved == feedbackSlider)
+    {
+        //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
+        params.delayFeedback.setUI(static_cast<float>(feedbackSlider->getValue()*0.01));
+        //[/UserSliderCode_feedbackSlider]
+    }
+    else if (sliderThatWasMoved == dryWetSlider)
+    {
+        //[UserSliderCode_dryWetSlider] -- add your slider handling code here..
+        params.delayDryWet.setUI(static_cast<float>(dryWetSlider->getValue()*0.01));
+        //[/UserSliderCode_dryWetSlider]
+    }
+    else if (sliderThatWasMoved == timeSlider)
+    {
+        //[UserSliderCode_timeSlider] -- add your slider handling code here..
+        params.delayTime.setUI(static_cast<float>(timeSlider->getValue()));
+        //[/UserSliderCode_timeSlider]
+    }
+
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == feedbackSlider)
@@ -181,11 +199,9 @@ void FxPanel::sliderValueChanged(Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
-void FxPanel::buttonClicked(Button* buttonThatWasClicked)
+void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
-    //[/UserbuttonClicked_Pre]
-
     if (buttonThatWasClicked == syncToggle)
     {
         timeSlider->setEnabled(!timeSlider->isEnabled());
@@ -204,58 +220,48 @@ void FxPanel::buttonClicked(Button* buttonThatWasClicked)
             timeSlider->setValue(params.delayTime.get());
         }
     }
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == syncToggle)
+    {
+        //[UserButtonCode_syncToggle] -- add your button handler code here..
+        //[/UserButtonCode_syncToggle]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
 }
 
-void FxPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    //[/UsercomboBoxChanged_Pre]
-
     if (comboBoxThatHasChanged == dividend || comboBoxThatHasChanged == divisor)
     {
         double newTimeValue = delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
-        
+
         if (newTimeValue > params.delayTime.getMax())
         {
             newTimeValue = params.delayTime.getMax();
             // ui feedback? blink?
         }
-        else{ params.delayTime.set(static_cast<float>(newTimeValue)); }
+        else { params.delayTime.set(static_cast<float>(newTimeValue)); }
         timeSlider->setValue(params.delayTime.get());
+    }
+    //[/UsercomboBoxChanged_Pre]
 
-        //if (syncToggle->getToggleState())
-        //{
-        //    double tmp = delay->calcDelayTime( dividend->getText().getDoubleValue(), );
-        //    timeSlider->setValue(tmp);
-
-        //    double newTimeValue;
-        //    double bps = (params.positionInfo[0].bpm / 60.);
-        //    double beatInMs = 1000 * (2. / bps) /* * (params.positionInfo[0].timeSigDenominator / params.positionInfo[0].timeSigNumerator)*/;
-
-        //    double divTmp = dividend->getText().getDoubleValue();
-        //    double divsorTmp = divisor->getText().getDoubleValue();
-
-        //    newTimeValue = beatInMs * (divTmp / divsorTmp);
-
-        //    if (newTimeValue > params.delayTime.getMax())
-        //    {
-        //        newTimeValue = params.delayTime.getMax();
-        //        // ui feedback? blink?
-        //    }
-        //    params.delayTime.set(static_cast<float>(newTimeValue));
-        //    timeSlider->setValue(params.delayTime.get());
-        //}
+    if (comboBoxThatHasChanged == dividend)
+    {
+        //[UserComboBoxCode_dividend] -- add your combo box handling code here..
+        //[/UserComboBoxCode_dividend]
     }
     else if (comboBoxThatHasChanged == divisor)
     {
-        if (syncToggle->getToggleState())
-        {
-
-        }
+        //[UserComboBoxCode_divisor] -- add your combo box handling code here..
+        //[/UserComboBoxCode_divisor]
     }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -268,40 +274,40 @@ void FxPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 #if 0
 /*  -- Introjucer information section --
 
-This is where the Introjucer stores the metadata that describe this GUI layout, so
-make changes in here at your peril!
+    This is where the Introjucer stores the metadata that describe this GUI layout, so
+    make changes in here at your peril!
 
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FxPanel" componentName=""
-parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
-initialHeight="400">
-<BACKGROUND backgroundColour="ffffffff"/>
-<SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
-explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
-style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
-explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
-style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
-connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
-<COMBOBOX name="new combo box" id="f2c88d87f26bec88" memberName="dividend"
-virtualName="" explicitFocusOrder="0" pos="224 32 55 16" editable="0"
-layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected=""
-textWhenNoItems=""/>
-<COMBOBOX name="new combo box" id="182e27201e78c23e" memberName="divisor"
-virtualName="" explicitFocusOrder="0" pos="224 56 55 16" editable="0"
-layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16" textWhenNonSelected=""
-textWhenNoItems=""/>
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, FxDelay &amp;d"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
+                 initialHeight="400">
+  <BACKGROUND backgroundColour="ffffffff"/>
+  <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
+                virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
+            virtualName="" explicitFocusOrder="0" pos="224 32 55 16" editable="0"
+            layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected="1"
+            textWhenNoItems="1"/>
+  <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
+            virtualName="" explicitFocusOrder="0" pos="224 56 55 16" editable="0"
+            layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16" textWhenNonSelected="1"
+            textWhenNoItems="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

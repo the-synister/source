@@ -60,6 +60,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    FxDelay *delay;
     //[/UserVariables]
 
     //==============================================================================
@@ -69,7 +70,7 @@ private:
     ScopedPointer<ToggleButton> syncToggle;
     ScopedPointer<ComboBox> dividend;
     ScopedPointer<ComboBox> divisor;
-    FxDelay *delay;
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FxPanel)
