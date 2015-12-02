@@ -1,9 +1,16 @@
 #include "SynthParams.h"
 
+
+namespace {
+    static const char *lfowavenames[] = {
+        "Sine", "Square", "S&Hold", nullptr
+    };
+}
+
 SynthParams::SynthParams()
 : freq("Freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "Hz", .01f, 50.f, 1.f)
-, lfo1wave("Wave", eLfoWaves::eLfoSine)
+, lfo1wave("Wave", eLfoWaves::eLfoSine, lfowavenames)
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "st", -11.f, 11.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)

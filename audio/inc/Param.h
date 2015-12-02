@@ -36,6 +36,7 @@ public:
     virtual float getUI() const { return get(); }
     virtual String getUIString() const { return getUIString(get()); }
     virtual String getUIString(float v) const { return String::formatted("%f", v); }
+    virtual bool hasLabels() const { return false; }
 
     float getMin() const { return min_; }
     float getMax() const { return max_; }
@@ -104,10 +105,12 @@ public:
             static_cast<float>(defaultval),
             static_cast<int>(_enum::nSteps))
     , step_(defaultval)
+    , labelsSet(false)
     {
         const char **lbl = labels;
         for(int i = 0; i<labels_.size() && lbl != nullptr && *lbl != nullptr; ++i, ++lbl) {
             labels_[i] = *lbl;
+            labelsSet = true;
         }
     }
 
@@ -136,9 +139,11 @@ public:
             return "value";
         }
     }
+    virtual bool hasLabels() const override { return labelsSet; }
 
 protected:
     std::atomic<_enum> step_;
     std::array<String, static_cast<size_t>(_enum::nSteps)> labels_;
+    bool labelsSet;
 };
 
