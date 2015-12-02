@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,7 +35,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public Component
+class EnvPanel  : public PanelBase,
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -48,15 +49,19 @@ public:
 
     void paint (Graphics& g);
     void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MouseOverKnob> attack;
+    ScopedPointer<MouseOverKnob> decay;
+    ScopedPointer<MouseOverKnob> sustain;
+    ScopedPointer<MouseOverKnob> release;
 
 
     //==============================================================================

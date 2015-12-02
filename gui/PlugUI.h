@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "MouseOverKnob.h"
 //[/Headers]
 
 
@@ -36,8 +37,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                public SliderListener
-
+                public SliderListener,
+                private Timer
 {
 public:
     //==============================================================================
@@ -52,17 +53,27 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
+
+    float lastBpmInfo;
+    void timerCallback() override;
+    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<Label> label;
-    ScopedPointer<Slider> freq;
+    ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<Label> label2;
+    ScopedPointer<Label> bpmLabel;
+    ScopedPointer<Label> bpmDisplay;
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)
 };

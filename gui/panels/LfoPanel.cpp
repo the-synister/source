@@ -28,46 +28,46 @@
 
 //==============================================================================
 LfoPanel::LfoPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (freq = new Slider ("LFO freq"));
+    addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     freq->addListener (this);
 
-    addAndMakeVisible (label = new Label ("freq label",
-                                          TRANS("freq")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centred);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (wave = new Slider ("wave switch"));
-    wave->setRange (0, 1, 1);
+    wave->setRange (0, 2, 1);
     wave->setSliderStyle (Slider::LinearHorizontal);
     wave->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
     wave->addListener (this);
 
     addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("sine wave")));
+                                           TRANS("Sine Wave |")));
     label2->setFont (Font (15.00f, Font::plain));
     label2->setJustificationType (Justification::centredLeft);
     label2->setEditable (false, false, false);
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (label3 = new Label ("new label",
-                                           TRANS("square wave")));
-    label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centredLeft);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (squareWaveLabel = new Label ("new label",
+                                                    TRANS("Square Wave")));
+    squareWaveLabel->setFont (Font (15.00f, Font::plain));
+    squareWaveLabel->setJustificationType (Justification::centredLeft);
+    squareWaveLabel->setEditable (false, false, false);
+    squareWaveLabel->setColour (TextEditor::textColourId, Colours::black);
+    squareWaveLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (sampleAndHoldLabel = new Label ("new label",
+                                                       TRANS("Sample and Hold |")));
+    sampleAndHoldLabel->setFont (Font (15.00f, Font::plain));
+    sampleAndHoldLabel->setJustificationType (Justification::centredLeft);
+    sampleAndHoldLabel->setEditable (false, false, false);
+    sampleAndHoldLabel->setColour (TextEditor::textColourId, Colours::black);
+    sampleAndHoldLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
     tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
@@ -89,8 +89,7 @@ LfoPanel::LfoPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    freq->setValue(params.lfo1freq.getUI());
-    freq->setTextValueSuffix(String(" ") + params.lfo1freq.unit());
+    registerSlider(freq, &params.lfo1freq);
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     wave->setValue(params.lfo1wave.getUI());
     tempoSyncSwitch->setToggleState(0,0);
@@ -110,13 +109,13 @@ LfoPanel::~LfoPanel()
     //[/Destructor_pre]
 
     freq = nullptr;
-    label = nullptr;
     wave = nullptr;
     label2 = nullptr;
-    label3 = nullptr;
     tempoSyncSwitch = nullptr;
     notelength = nullptr;
     label4 = nullptr;
+    squareWaveLabel = nullptr;
+    sampleAndHoldLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -141,13 +140,13 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 32, 64, 64);
-    label->setBounds (8, 8, 64, 16);
-    wave->setBounds (166, 40, 41, 32);
-    label2->setBounds (112, 72, 71, 24);
-    label3->setBounds (189, 72, 83, 24);
     tempoSyncSwitch->setBounds (82, 113, 150, 24);
     notelength->setBounds (168, 152, 150, 24);
     label4->setBounds (8, 152, 150, 24);
+    wave->setBounds (120, 40, 192, 32);
+    label2->setBounds (88, 72, 80, 24);
+    squareWaveLabel->setBounds (266, 72, 83, 24);
+    sampleAndHoldLabel->setBounds (160, 72, 112, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -155,12 +154,12 @@ void LfoPanel::resized()
 void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == freq)
     {
         //[UserSliderCode_freq] -- add your slider handling code here..
-        params.lfo1freq.setUI(static_cast<float>(freq->getValue()));
         //[/UserSliderCode_freq]
     }
     else if (sliderThatWasMoved == wave)
@@ -212,32 +211,32 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="LfoPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName=""
-          explicitFocusOrder="0" pos="8 32 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="freq label" id="44d54eb754724ef0" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 64 16" edTextCol="ff000000" edBkgCol="0"
-         labelText="freq" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+  <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
+          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
-          explicitFocusOrder="0" pos="166 40 41 32" min="0" max="1" int="1"
+          explicitFocusOrder="0" pos="120 40 192 32" min="0" max="2" int="1"
           style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="e7b5c6b105490306" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="112 72 71 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="sine wave" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
-  <LABEL name="new label" id="a5e6136827f3a519" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="189 72 83 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="square wave" editableSingleClick="0"
+         explicitFocusOrder="0" pos="88 72 80 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Sine Wave |" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="new label" id="a5e6136827f3a519" memberName="squareWaveLabel"
+         virtualName="" explicitFocusOrder="0" pos="266 72 83 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Square Wave" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="new label" id="cf2effe035a853f" memberName="sampleAndHoldLabel"
+         virtualName="" explicitFocusOrder="0" pos="160 72 112 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Sample and Hold |" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
