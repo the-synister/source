@@ -140,8 +140,8 @@ public:
 
 			lfo1sine.phase = .5f*float_Pi;
 			lfo1square.phase = .5f*float_Pi;
-            //lfo1sine.phaseDelta = currentPositionInfo.bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            //lfo1square.phaseDelta = currentPositionInfo.bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1square.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
 
 		}
 		else {
