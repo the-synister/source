@@ -38,8 +38,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                private Timer,
-                public SliderListener
+                public SliderListener,
+                private Timer
 {
 public:
     //==============================================================================
@@ -63,7 +63,7 @@ private:
     float lastBpmInfo;
     void timerCallback() override;
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
-    FxDelay *delay;
+    FxDelay* delay;
     //[/UserVariables]
 
     //==============================================================================

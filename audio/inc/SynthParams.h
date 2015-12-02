@@ -12,7 +12,7 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
-    Param lfo1wave; //!< lfo wave switch 0 = sine wave or 1 = square wave
+    Param lfo1wave; //!< lfo wave switch 0 = sine wave, 0.5 = random, or 1 = square wave
 
     Param decayFac; //!< decay in [0.001..60] s
 

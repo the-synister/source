@@ -27,7 +27,7 @@ SynthParams::SynthParams()
 , delayDivisor("SyncDel Diviser", "", 1, 16, 1)
 , positionInfo()
 , positionIndex(0)
-, bpm("BPM", "", 0.f, 300.f, 120.f)
+, bpm("BPM", "", 20.f, 300.f, 120.f)
 {}
 
 SynthParams::~SynthParams()

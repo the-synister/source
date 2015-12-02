@@ -92,7 +92,6 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
     freq->setTextValueSuffix(String(" ") + params.freq.unit());
@@ -149,6 +148,7 @@ void PlugUI::resized()
     label2->setBounds (726, 8, 64, 16);
     bpmLabel->setBounds (8, 64, 56, 24);
     bpmDisplay->setBounds (56, 64, 150, 24);
+
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -179,8 +179,8 @@ void PlugUI::timerCallback()
 
 void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
 {
-    lastBpmInfo = static_cast<float>(currentPos.bpm);
-    params.bpm.set(currentPos.bpm);
+    lastBpmInfo = currentPos.bpm;
+
     MemoryOutputStream bpmDisplayText;
 
     bpmDisplayText << String(currentPos.bpm, 2);

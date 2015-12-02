@@ -25,6 +25,7 @@ struct Waveforms {
         }
         //return std::copysign(1.f, float_Pi - phs);
     }
+
     static float saw(float phs, float trngAmount, float width) {
         ignoreUnused(width);
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
@@ -40,8 +41,10 @@ struct Oscillator {
     float phaseDelta;
     float trngAmount;
     float width;
-
-    Oscillator() : phase(0.f), phaseDelta(0.f) {}
+    
+    Oscillator() : phase(0.f)
+                 , phaseDelta(0.f)
+    {}
 
     void reset() {
         phase = 0.f;
@@ -57,7 +60,7 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-
+    
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
@@ -65,6 +68,33 @@ struct Oscillator {
     }
 };
 
+template<float(*_waveform)(float, float, float)>
+struct RandomOscillator : Oscillator<&Waveforms::square>
+{
+    float heldValue;
+    
+    RandomOscillator() : Oscillator()
+                       , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
+                      {}
+    
+    void reset()
+    {
+        phase = 0.f;
+        phaseDelta = 0.f;
+        heldValue = 0.f;
+    }
+    
+    float next()
+    {
+        if (phase + phaseDelta > 2.0f * float_Pi) {
+             heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+        }
+        
+        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
+        return heldValue;
+    }
+
+};
 
 class Voice : public SynthesiserVoice {
 public:
@@ -110,7 +140,10 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-
+        
+        lfo1random.phase = 0.f;
+        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
 
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
@@ -142,6 +175,7 @@ public:
             clearCurrentNote();
             lfo1sine.reset();
             lfo1square.reset();
+            lfo1random.reset();
             osc1.reset();
         }
     }
@@ -280,8 +314,16 @@ protected:
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
-        else // if lfo1wave is 1, lfo is set to square wave
+        else if (params.lfo1wave.get() == 1) // if lfo1wave is 1, lfo is set to random wave
         {
+            for (int s = 0; s < numSamples; ++s)
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
+            }
+        }
+        else if (params.lfo1wave.get() == 2)// if lfo1wave is 2, lfo is set to square wave
+        {
+
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
@@ -335,7 +377,8 @@ private:
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
-
+    RandomOscillator<&Waveforms::square> lfo1random;
+    
     float level;
 
     int currentPitchValue;
