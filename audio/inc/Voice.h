@@ -135,7 +135,6 @@ public:
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
 
-		// BPM - Information is currently missing
 		if (params.lfo1TempSync.get() == 1.f) {
 
 			lfo1sine.phase = .5f*float_Pi;
