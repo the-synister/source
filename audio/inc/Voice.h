@@ -298,21 +298,21 @@ protected:
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
-        if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
+        if (params.lfo1wave.getStep() == eLfoWaves::eLfoSine)
         {
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
-        else if (params.lfo1wave.get() == 1) // if lfo1wave is 1, lfo is set to random wave
+        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSampleHold)
         {
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
-        else if (params.lfo1wave.get() == 2)// if lfo1wave is 2, lfo is set to square wave
+        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSquare)
         {
 
             for (int s = 0; s < numSamples;++s)

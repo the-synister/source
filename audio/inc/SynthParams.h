@@ -4,6 +4,14 @@
 #include "Param.h"
 #include <array>
 
+enum class eLfoWaves : int {
+    eLfoSine = 0,
+    eLfoSquare = 1,
+    eLfoSampleHold = 2,
+    nSteps = 3
+    };
+    
+
 class SynthParams {
 public:
     SynthParams();
@@ -12,7 +20,7 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
-    Param lfo1wave; //!< lfo wave switch 0 = sine wave, 0.5 = random, or 1 = square wave
+    ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
