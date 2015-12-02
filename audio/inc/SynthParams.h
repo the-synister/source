@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "Param.h"
+#include <vector>
 
 class SynthParams {
 public:
@@ -26,21 +27,23 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    // list of current params, just add your new param here if you want it to be serialized
+    std::vector<Param*> serializeParams { &freq, &lfo1freq, &lfo1wave, &osc1fine, &osc1coarse, &osc1lfo1depth,
+        &osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &panDir, &vol};
+
     const float version = 1.1f; // version of the program, to be written into the xml
 
     void writeXMLPatchHost(MemoryBlock& destData);
 
     void writeXMLPatchStandalone();
 
-    void fillValueIfExists(XmlElement * patch, String paramName, Param param);
+    void fillValueIfExists(XmlElement * patch, String paramName, Param& param);
 
     void fillValues(XmlElement * patch);
 
     void readXMLPatchHost(const void * data, int sizeInBytes);
 
     void readXMLPatchStandalone();
-
-    //void readXMLPatch(XmlElement* patch); // fill the synth params with data from a file
 
 protected:
 private:

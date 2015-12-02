@@ -6,12 +6,13 @@
 
 class Param {
 public:
-    Param(const String &name, const String &unit, float minval, float maxval, float defaultval)
+    Param(const String &name, const String &serializationTag, const String &unit, float minval, float maxval, float defaultval)
     : val_(defaultval)
     , min_(minval)
     , max_(maxval)
     , default_(defaultval)
     , name_(name)
+    , serializationTag_(serializationTag)
     , unit_(unit)
     {
         jassert(minval < maxval);
@@ -21,6 +22,7 @@ public:
     virtual ~Param() {}
 
     const String& name() const { return name_; }
+    const String& serializationTag() const { return serializationTag_; }
     const String& unit() const { return unit_; }
 
     void set(float f) { val_.store(f); }
@@ -74,6 +76,7 @@ protected:
     float max_;
     float default_;
     String name_;
+    String serializationTag_;
     String unit_;
 
     ListenerList<Listener> listener;
