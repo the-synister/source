@@ -111,11 +111,11 @@ LfoPanel::~LfoPanel()
     freq = nullptr;
     wave = nullptr;
     label2 = nullptr;
+    squareWaveLabel = nullptr;
+    sampleAndHoldLabel = nullptr;
     tempoSyncSwitch = nullptr;
     notelength = nullptr;
     label4 = nullptr;
-    squareWaveLabel = nullptr;
-    sampleAndHoldLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -139,14 +139,14 @@ void LfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (8, 32, 64, 64);
-    tempoSyncSwitch->setBounds (82, 113, 150, 24);
-    notelength->setBounds (168, 152, 150, 24);
-    label4->setBounds (8, 152, 150, 24);
+    freq->setBounds (8, 8, 64, 64);
     wave->setBounds (120, 40, 192, 32);
     label2->setBounds (88, 72, 80, 24);
     squareWaveLabel->setBounds (266, 72, 83, 24);
     sampleAndHoldLabel->setBounds (160, 72, 112, 24);
+    tempoSyncSwitch->setBounds (82, 113, 150, 24);
+    notelength->setBounds (168, 152, 150, 24);
+    label4->setBounds (8, 152, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -171,6 +171,7 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == notelength)
     {
         //[UserSliderCode_notelength] -- add your slider handling code here..
+        params.noteLength.setUI(notelength->getValue());
         //[/UserSliderCode_notelength]
     }
 
@@ -217,9 +218,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
           explicitFocusOrder="0" pos="120 40 192 32" min="0" max="2" int="1"
           style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
