@@ -62,6 +62,7 @@ private:
     ScopedPointer<Slider> pan;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;
+    ScopedPointer<Slider> keyVelocity;
 
 
     //==============================================================================

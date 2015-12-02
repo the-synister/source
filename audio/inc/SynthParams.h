@@ -29,6 +29,8 @@ public:
     Param envDecay;     //!< env decay in [0.001..5]s (logarithmic scaling)
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+    
+    Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
 
     Param panDir; //!< pan R/L [-100..100]
 
