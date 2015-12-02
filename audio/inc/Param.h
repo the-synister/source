@@ -108,8 +108,8 @@ public:
     , labelsSet(false)
     {
         const char **lbl = labels;
-        for(int i = 0; i<labels_.size() && lbl != nullptr && *lbl != nullptr; ++i, ++lbl) {
-            labels_[i] = *lbl;
+        for(size_t u = 0; u<labels_.size() && lbl != nullptr && *lbl != nullptr; ++u, ++lbl) {
+            labels_[u] = *lbl;
             labelsSet = true;
         }
     }
@@ -126,17 +126,19 @@ public:
     
     virtual void setUI(float f, bool notifyHost = true) override {
         set(f);
-        step_.store(static_cast<_enum>(std::trunc(f+.5f)));
+        int ival = static_cast<int>(std::trunc(f + .5f));
+        jassert(ival >= 0 && ival < static_cast<int>(_enum::nSteps));
+        step_.store(static_cast<_enum>(ival));
         if (notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual String getUIString() const override { return labels_[static_cast<size_t>(getStep())]; }
     virtual String getUIString(float v) const override {
-        int i = static_cast<int>(std::trunc(v+.5f));
-        if(i>0 && i<labels_.size()) {
-            return labels_[i];
+        size_t u = static_cast<size_t>(std::trunc(v+.5f));
+        if(u<labels_.size()) {
+            return labels_[u];
         } else {
             jassert(false);
-            return "value";
+            return String::formatted("val%u",u);
         }
     }
     virtual bool hasLabels() const override { return labelsSet; }

@@ -3,7 +3,7 @@
 
 namespace {
     static const char *lfowavenames[] = {
-        "Sine", "Square", "S&Hold", nullptr
+        "Sine", "Square", "Smpl+Hold", nullptr
     };
 }
 
