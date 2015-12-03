@@ -138,10 +138,13 @@ public:
 		if (params.lfo1TempSync.get() == 1.f) {
 
 			lfo1sine.phase = .5f*float_Pi;
-			lfo1square.phase = .5f*float_Pi;
+			lfo1square.phase = 0.f;
+			lfo1random.phase = 0.f;
+			
             lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1square.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-
+			lfo1random.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+		
 		}
 		else {
 
