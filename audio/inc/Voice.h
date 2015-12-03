@@ -141,6 +141,9 @@ public:
 			lfo1square.phase = .5f*float_Pi;
             lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1square.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1random.phase = .5f*float_Pi;
+            lfo1random.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
 
 		}
 		else {
@@ -150,7 +153,7 @@ public:
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             
-            lfo1random.phase = 0.f;
+            lfo1random.phase = .5f*float_Pi;
             lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
 		}
@@ -213,7 +216,7 @@ public:
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
-        if (lfo1square.isActive() || lfo1sine.isActive())
+        if (lfo1square.isActive() || lfo1sine.isActive() || lfo1random.isActive())
         {
             for (int s = 0; s < numSamples; ++s)
             {
