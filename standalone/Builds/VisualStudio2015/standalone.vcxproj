@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JucePlugin_Name=&quot;QUSynth&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;_DEBUG;JucePlugin_Name=&quot;QUSynth&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -97,7 +97,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JucePlugin_Name=&quot;QUSynth&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;JucePlugin_Name=&quot;QUSynth&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -129,6 +129,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
@@ -139,6 +140,7 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
+    <ClCompile Include="..\..\..\audio\StepSequencer.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1278,6 +1280,7 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
@@ -1292,6 +1295,7 @@
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h"/>
+    <ClInclude Include="..\..\..\audio\StepSequencer.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>

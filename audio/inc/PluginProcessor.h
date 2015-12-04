@@ -63,6 +63,12 @@ private:
     Synthesiser synth;
 
     void updateHostInfo();
+
+    void runSeq(MidiBuffer& midiMessages);
+    // variables for seq
+    int seqCounter = -1;
+    double seqTimeCounter = 0;
+    bool seqIsPlaying = false;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };

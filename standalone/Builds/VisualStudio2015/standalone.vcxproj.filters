@@ -325,6 +325,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -353,6 +356,9 @@
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\StepSequencer.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
@@ -1599,6 +1605,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1639,6 +1648,9 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\StepSequencer.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">

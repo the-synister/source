@@ -30,8 +30,14 @@ public:
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
 
-    Param panDir; //!< pan R/L [-100..100]
+    Param seqSpeed;
+    Param seqNoteLength;
+    Param SeqNote1;
+    Param SeqNote2;
+    Param SeqNote3;
+    Param SeqNote4;
 
+    Param panDir; //!< pan R/L [-100..100]
     ParamDb vol; //!< volume in [0..1]
 
     MidiKeyboardState keyboardState;

@@ -6,6 +6,8 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="GmR4AI" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
+        <FILE id="s93fCI" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
@@ -35,11 +37,14 @@
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
+        <FILE id="CC6Av3" name="StepSequencer.h" compile="0" resource="0" file="../audio/StepSequencer.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>
+        <FILE id="dJb7fM" name="StepSequencer.cpp" compile="1" resource="0"
+              file="../audio/StepSequencer.cpp"/>
       </GROUP>
     </GROUP>
     <GROUP id="{B6EB776B-361D-4B6D-78CE-6CBB411F59E1}" name="Source">

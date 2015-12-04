@@ -13,6 +13,8 @@
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
+        <FILE id="LjV3LZ" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
+        <FILE id="Hl9fwP" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="Dxrkit" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
@@ -41,11 +43,14 @@
         <FILE id="MZRnMw" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
         <FILE id="zORnwQ" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
+        <FILE id="Kxq35M" name="StepSequencer.h" compile="0" resource="0" file="../audio/StepSequencer.h"/>
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>
+        <FILE id="qhEJF3" name="StepSequencer.cpp" compile="1" resource="0"
+              file="../audio/StepSequencer.cpp"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>

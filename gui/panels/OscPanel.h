@@ -64,6 +64,12 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<MouseOverKnob> seqSpeed;
+    ScopedPointer<MouseOverKnob> seqNoteLength;
+    ScopedPointer<MouseOverKnob> seqNote1;
+    ScopedPointer<MouseOverKnob> seqNote2;
+    ScopedPointer<MouseOverKnob> seqNote3;
+    ScopedPointer<MouseOverKnob> seqNote4;
 
 
     //==============================================================================
