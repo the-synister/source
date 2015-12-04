@@ -43,7 +43,7 @@ class FxPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    FxPanel (SynthParams &p, FxDelay &d);
+    FxPanel(SynthParams &p);
     ~FxPanel();
 
     //==============================================================================

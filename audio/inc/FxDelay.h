@@ -26,17 +26,18 @@ public:
             delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
         }
     }
-
-    double calcDelayTime(double dividendIn, double divisorIn, double bpmIn);
-    void renderDelay(AudioSampleBuffer& outputBuffer, int startSample, int numSamples, double sampleRate);
+    ~FxDelay(){}
+    double calcDelayTime(double const &dividendIn, double const &divisorIn, double const &bpmIn); //deprecated
+    void renderDelay(AudioSampleBuffer& outputBuffer, int const &startSample, double const &sampleRate, double const &bpmIn);
 
 private:
     SynthParams &params;
     AudioSampleBuffer delayBuffer;
     int loopPosition;
     int currentDelayLength;
-    double delayTime;
     double bpm;
+    float divisor;
+    float dividend;
     std::atomic<bool> bpmDirty;
 };
 #endif  // FXDELAY_H_INCLUDED

@@ -27,11 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-FxPanel::FxPanel (SynthParams &p, FxDelay &d)
+FxPanel::FxPanel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    delay = &d;
     //[/Constructor_pre]
 
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
@@ -107,6 +106,7 @@ FxPanel::FxPanel (SynthParams &p, FxDelay &d)
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
 }
+
 
 FxPanel::~FxPanel()
 {
@@ -202,29 +202,38 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
-    if (buttonThatWasClicked == syncToggle)
-    {
-        timeSlider->setEnabled(!timeSlider->isEnabled());
-        dividend->setEnabled(!dividend->isEnabled());
-        divisor->setEnabled(!divisor->isEnabled());
-
-        if (!timeSlider->isEnabled()) {
-            double newTimeValue = delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
-
-            if (newTimeValue > params.delayTime.getMax())
-            {
-                newTimeValue = params.delayTime.getMax();
-                // ui feedback? blink?
-            }
-            else { params.delayTime.set(static_cast<float>(newTimeValue)); }
-            timeSlider->setValue(params.delayTime.get());
-        }
-    }
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == syncToggle)
     {
         //[UserButtonCode_syncToggle] -- add your button handler code here..
+
+        timeSlider->setEnabled(!timeSlider->isEnabled());
+        dividend->setEnabled(!dividend->isEnabled());
+        divisor->setEnabled(!divisor->isEnabled());
+
+        if (divisor->isEnabled()) {
+            params.delaySync.set(1.f);
+            params.delayTime.set(params.delayTime.get() + 0.0000001f);
+        }
+        else { 
+            params.delaySync.set(0.f); 
+            timeSlider->setValue(params.delayTime.get());
+            params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
+        }
+        
+        //if (!timeSlider->isEnabled()) {
+        //    double newTimeValue = 500;// delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
+
+        //    if (newTimeValue > params.delayTime.getMax())
+        //    {
+        //        newTimeValue = params.delayTime.getMax();
+        //        // ui feedback? blink?
+        //    }
+        //    else { params.delayTime.set(static_cast<float>(newTimeValue)); }
+        //    timeSlider->setValue(params.delayTime.get());
+        //}
+
         //[/UserButtonCode_syncToggle]
     }
 
@@ -235,28 +244,32 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    if (comboBoxThatHasChanged == dividend || comboBoxThatHasChanged == divisor)
-    {
-        double newTimeValue = delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
 
-        if (newTimeValue > params.delayTime.getMax())
-        {
-            newTimeValue = params.delayTime.getMax();
-            // ui feedback? blink?
-        }
-        else { params.delayTime.set(static_cast<float>(newTimeValue)); }
-        timeSlider->setValue(params.delayTime.get());
-    }
+    //if (comboBoxThatHasChanged == dividend || comboBoxThatHasChanged == divisor)
+    //{
+    //    double newTimeValue = 500; // delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
+
+    //    if (newTimeValue > params.delayTime.getMax())
+    //    {
+    //        newTimeValue = params.delayTime.getMax();
+    //        // ui feedback? blink?
+    //    }
+    //    else { params.delayTime.set(static_cast<float>(newTimeValue)); }
+    //    timeSlider->setValue(params.delayTime.get());
+    //}
+
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == dividend)
     {
         //[UserComboBoxCode_dividend] -- add your combo box handling code here..
+        params.delayDividend.set(dividend->getText().getFloatValue());
         //[/UserComboBoxCode_dividend]
     }
     else if (comboBoxThatHasChanged == divisor)
     {
         //[UserComboBoxCode_divisor] -- add your combo box handling code here..
+        params.delayDivisor.set(divisor->getText().getFloatValue());
         //[/UserComboBoxCode_divisor]
     }
 
@@ -280,7 +293,7 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FxPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, FxDelay &amp;d"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">

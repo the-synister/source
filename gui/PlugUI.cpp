@@ -65,7 +65,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params, *delay), true);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
     addAndMakeVisible (label2 = new Label ("new label",
@@ -91,6 +91,7 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setEditable (false, false, false);
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
@@ -148,7 +149,6 @@ void PlugUI::resized()
     label2->setBounds (726, 8, 64, 16);
     bpmLabel->setBounds (8, 64, 56, 24);
     bpmDisplay->setBounds (56, 64, 150, 24);
-
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -179,8 +179,7 @@ void PlugUI::timerCallback()
 
 void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
 {
-    lastBpmInfo = currentPos.bpm;
-
+    lastBpmInfo = static_cast<float>(currentPos.bpm);
     MemoryOutputStream bpmDisplayText;
 
     bpmDisplayText << String(currentPos.bpm, 2);

@@ -2,7 +2,6 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
-#include "FxDelay.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -98,7 +97,7 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize, int channels, FxDelay &delay)
+    Voice(SynthParams &p, int blockSize)
 	: params(p) 
     , lastSample(0.f)
     , inputDelay1(0.f)
@@ -107,10 +106,12 @@ public:
     , outputDelay2(0.f)
     , level (0.f)
     , pitchModBuffer(1, blockSize)
-    , delay(p, channels, getSampleRate())
     , env1Buffer(1, blockSize)
     {}
 
+    SynthParams* getSynthParams() {
+        return &params;
+    }
 
     bool canPlaySound (SynthesiserSound* sound) override
     {
@@ -229,12 +230,6 @@ public:
                         }
                     }
                 }
-        // delay
-        //TODO: dirty flag, so it does not calculates the time if not needed
-        if (params.delaySync.get()) {
-            delay.calcDelayTime(params.delayDividend.get(), params.delayDivisor.get(), params.bpm.get()); // fetch host tempo changes
-        }
-        delay.renderDelay(outputBuffer, startSample, numSamples, getSampleRate()); // adds the delay to the outputBuffer
     }
 
 protected:
@@ -365,13 +360,10 @@ protected:
         return inputSignal;
     }
 
-
 private:
-    
+    SynthParams &params;
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-    
-    SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
 
@@ -390,5 +382,4 @@ private:
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
-    FxDelay delay;
 };

@@ -12,13 +12,13 @@
 #include "Voice.h"
 #include "HostParam.h"
 
-
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-//==============================================================================
+//============================================================1==================
 PluginAudioProcessor::PluginAudioProcessor()
 {
+
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
 
@@ -142,8 +142,9 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     synth.clearVoices();
     for (int i = 8; --i >= 0;)
     {
-        synth.addVoice(new Voice(*this, samplesPerBlock, 2, *delay));
+        synth.addVoice(new Voice(*this, samplesPerBlock));
     }
+    delay = new FxDelay(*this, samplesPerBlock, sRate);
     synth.clearSounds();
     synth.addSound(new Sound());
 }
@@ -175,6 +176,14 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // fx
+    // delay
+    delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
+
+    //if (this->params.delayDryWet.get() > 0.f) { // how can i access the correct params here? these are just default values
+    //    delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[0].bpm); // adds the delay to the outputBuffer       
+    //}
 }
 
 void PluginAudioProcessor::updateHostInfo()

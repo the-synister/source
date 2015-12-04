@@ -24,7 +24,6 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
-#include "FxDelay.h"
 //[/Headers]
 
 
@@ -38,8 +37,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                public SliderListener,
-                private Timer
+                private Timer,
+                public SliderListener
 {
 public:
     //==============================================================================
@@ -54,8 +53,6 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
-
-
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
@@ -63,7 +60,6 @@ private:
     float lastBpmInfo;
     void timerCallback() override;
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
-    FxDelay* delay;
     //[/UserVariables]
 
     //==============================================================================
