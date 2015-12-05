@@ -179,11 +179,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // fx
     // delay
-    delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
-
-    //if (this->params.delayDryWet.get() > 0.f) { // how can i access the correct params here? these are just default values
-    //    delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[0].bpm); // adds the delay to the outputBuffer       
-    //}
+    if (delayDryWet.get() > 0.f) {
+        delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
+    }
 }
 
 void PluginAudioProcessor::updateHostInfo()

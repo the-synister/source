@@ -84,6 +84,7 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
             float currentSample = outputBuffer.getSample(c, startSample + s);
             float delayedSample = delayBuffer.getSample(c, loopPosition);
             delayBuffer.setSample(c, loopPosition, currentSample);
+            //delayBuffer.setSample(c, newLoopLength - loopPosition, currentSample); // reverse + overflow
             delayedSample = filterDelay(delayedSample, sampleRate); // here it does record the filter
             delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
             //delayedSample = filterDelay(delayedSample, sampleRate); // here it does not record the filter
