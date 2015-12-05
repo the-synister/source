@@ -21,16 +21,19 @@ public:
         , delayBuffer(AudioSampleBuffer(channels, static_cast<int>(sampleRate * 5.0)))
         , currentDelayLength(static_cast<int>(params.delayTime.get()*(sampleRate / 1000.0)))
         , bpm(120)
+        , divisor(0)
+        , dividend(0)
     {
         for (int c = 0; c < channels; ++c) {
             delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
         }
     }
     ~FxDelay(){}
-    double calcDelayTime(double const &dividendIn, double const &divisorIn, double const &bpmIn); //deprecated
-    void renderDelay(AudioSampleBuffer& outputBuffer, int const &startSample, double const &sampleRate, double const &bpmIn);
+    
+    void renderDelay(AudioSampleBuffer& outputBuffer, int startSample, double sampleRate, double bpmIn);
 
 private:
+    void calcDelayTime(double bpmIn);
     SynthParams &params;
     AudioSampleBuffer delayBuffer;
     int loopPosition;
