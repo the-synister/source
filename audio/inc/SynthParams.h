@@ -38,12 +38,12 @@ public:
 
     MidiKeyboardState keyboardState;
 
-    Param delayFeedback;
-    Param delayDryWet;
-    Param delayTime;
-    Param delaySync;
-    Param delayDividend;
-    Param delayDivisor;
+    Param delayFeedback;    //!< delay feedback amount
+    Param delayDryWet;      //!< delay wet signal
+    Param delayTime;        //!< delay time in ms
+    Param delaySync;        //!< sync / manual toggle
+    Param delayDividend;    //!< sync dividend
+    Param delayDivisor;     //!< sync divisor
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

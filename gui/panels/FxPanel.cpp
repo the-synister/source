@@ -50,12 +50,14 @@ FxPanel::FxPanel (SynthParams &p)
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     timeSlider->addListener (this);
+    timeSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
     syncToggle->setButtonText (TRANS("Sync"));
     syncToggle->addListener (this);
 
     addAndMakeVisible (dividend = new ComboBox ("delayDividend"));
+    dividend->setTooltip (TRANS("Dividend"));
     dividend->setEditableText (false);
     dividend->setJustificationType (Justification::centred);
     dividend->setTextWhenNothingSelected (TRANS("1"));
@@ -67,6 +69,7 @@ FxPanel::FxPanel (SynthParams &p)
     dividend->addListener (this);
 
     addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
+    divisor->setTooltip (TRANS("Divisor"));
     divisor->setEditableText (false);
     divisor->setJustificationType (Justification::centred);
     divisor->setTextWhenNothingSelected (TRANS("1"));
@@ -106,7 +109,6 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
 }
-
 
 FxPanel::~FxPanel()
 {
@@ -216,12 +218,12 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
             params.delaySync.set(1.f);
             params.delayTime.set(params.delayTime.get() + 0.0000001f);
         }
-        else { 
-            params.delaySync.set(0.f); 
+        else {
+            params.delaySync.set(0.f);
             timeSlider->setValue(params.delayTime.get());
             params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
         }
-        
+
         //if (!timeSlider->isEnabled()) {
         //    double newTimeValue = 500;// delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
 
@@ -309,18 +311,18 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
-            virtualName="" explicitFocusOrder="0" pos="224 32 55 16" editable="0"
-            layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected="1"
+            virtualName="" explicitFocusOrder="0" pos="224 32 55 16" tooltip="Dividend"
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected="1"
             textWhenNoItems="1"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
-            virtualName="" explicitFocusOrder="0" pos="224 56 55 16" editable="0"
-            layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16" textWhenNonSelected="1"
-            textWhenNoItems="1"/>
+            virtualName="" explicitFocusOrder="0" pos="224 56 55 16" tooltip="Divisor"
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16"
+            textWhenNonSelected="1" textWhenNoItems="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

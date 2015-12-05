@@ -328,10 +328,10 @@
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
+    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
+    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
@@ -1608,10 +1608,10 @@
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
+    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
