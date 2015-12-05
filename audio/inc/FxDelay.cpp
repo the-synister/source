@@ -19,7 +19,7 @@ void FxDelay::calcDelayTime(double bpmIn)
         dividend != params.delayDividend.get()) {
 
         // TODO: check for very high bpm
-        params.delayTime.set(static_cast<float>(4. * 1000.0 * (1. / (bpmIn / 60.)) *
+        params.delayTime.set(static_cast<float>(2. * 1000.0 * (1. / (bpmIn / 60.)) *
             static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
         bpm = bpmIn;
         divisor = params.delayDivisor.get();
@@ -56,7 +56,7 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
 
             // iterate
             currentDelayLength = newLoopLength;
-            ++loopPosition;
         }
+        ++loopPosition;
     }
 }
