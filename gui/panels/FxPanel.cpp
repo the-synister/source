@@ -82,11 +82,27 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->addItem (TRANS("16"), 6);
     divisor->addListener (this);
 
+    addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
+    cutoffSlider->setRange (1, 20000, 1);
+    cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    cutoffSlider->addListener (this);
+    cutoffSlider->setSkewFactor (0.33);
+
+    addAndMakeVisible (resSlider = new MouseOverKnob ("Resonance"));
+    resSlider->setRange (-25, 25, 1);
+    resSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    resSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    resSlider->addListener (this);
+    resSlider->setSkewFactor (0.33);
+
 
     //[UserPreSize]
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
+    registerSlider(resSlider, &params.delayResonance);
+    registerSlider(cutoffSlider, &params.delayCutoff);
     divisor->setText(String("1"));
     dividend->setText(String("1"));
     dividend->setEnabled(false);
@@ -121,6 +137,8 @@ FxPanel::~FxPanel()
     syncToggle = nullptr;
     dividend = nullptr;
     divisor = nullptr;
+    cutoffSlider = nullptr;
+    resSlider = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -150,6 +168,8 @@ void FxPanel::resized()
     syncToggle->setBounds (224, 8, 63, 24);
     dividend->setBounds (224, 32, 55, 16);
     divisor->setBounds (224, 56, 55, 16);
+    cutoffSlider->setBounds (288, 8, 64, 64);
+    resSlider->setBounds (360, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -195,6 +215,18 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_timeSlider] -- add your slider handling code here..
         params.delayTime.setUI(static_cast<float>(timeSlider->getValue()));
         //[/UserSliderCode_timeSlider]
+    }
+    else if (sliderThatWasMoved == cutoffSlider)
+    {
+        //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
+        params.delayCutoff.setUI(static_cast<float>(cutoffSlider->getValue()));
+        //[/UserSliderCode_cutoffSlider]
+    }
+    else if (sliderThatWasMoved == resSlider)
+    {
+        //[UserSliderCode_resSlider] -- add your slider handling code here..
+        params.delayResonance.setUI(static_cast<float>(resSlider->getValue()));
+        //[/UserSliderCode_resSlider]
     }
 
     //[UsersliderValueChanged_Post]
@@ -323,6 +355,14 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="224 56 55 16" tooltip="Divisor"
             editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16"
             textWhenNonSelected="1" textWhenNoItems="1"/>
+  <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="288 8 64 64"
+          min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+  <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 8 64 64"
+          min="-25" max="25" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

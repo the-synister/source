@@ -25,6 +25,8 @@ SynthParams::SynthParams()
 , delaySync("Tempo Sync", "", 0.f, 1.f, 0.f)
 , delayDividend("SyncDel Dividend", "", 1, 4, 1)
 , delayDivisor("SyncDel Diviser", "", 1, 16, 1)
+, delayCutoff("Del Cut", "Hz", 10.f, 20000.f, 20000.f)
+, delayResonance("Del Reso", "dB", -25.f, 25.f, 0.f)
 , positionInfo()
 , positionIndex(0)
 {}

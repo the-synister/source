@@ -23,6 +23,11 @@ public:
         , bpm(120)
         , divisor(0)
         , dividend(0)
+        , lastSample(0.f)
+        , inputDelay1(0.f)
+        , inputDelay2(0.f)
+        , outputDelay1(0.f)
+        , outputDelay2(0.f)
     {
         for (int c = 0; c < channels; ++c) {
             delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
@@ -34,6 +39,7 @@ public:
 
 private:
     void calcDelayTime(double bpmIn);
+    float filterDelay(float inputSignal, const double sRate);
     SynthParams &params;
     AudioSampleBuffer delayBuffer;
     int loopPosition;
@@ -42,5 +48,6 @@ private:
     float divisor;
     float dividend;
     std::atomic<bool> bpmDirty;
+    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
 };
 #endif  // FXDELAY_H_INCLUDED

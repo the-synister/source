@@ -44,6 +44,8 @@ public:
     Param delaySync;        //!< sync / manual toggle
     Param delayDividend;    //!< sync dividend
     Param delayDivisor;     //!< sync divisor
+    Param delayCutoff;
+    Param delayResonance;
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

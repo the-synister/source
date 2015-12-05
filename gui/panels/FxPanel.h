@@ -70,6 +70,8 @@ private:
     ScopedPointer<ToggleButton> syncToggle;
     ScopedPointer<ComboBox> dividend;
     ScopedPointer<ComboBox> divisor;
+    ScopedPointer<MouseOverKnob> cutoffSlider;
+    ScopedPointer<MouseOverKnob> resSlider;
 
 
     //==============================================================================

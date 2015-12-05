@@ -10,6 +10,39 @@ Author:  nj
 
 #include "FxDelay.h"
 
+float FxDelay::filterDelay(float inputSignal, const double sRate) {
+
+    //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+    float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+
+    const float currentLowcutFreq = params.delayCutoff.get() / static_cast<float>(sRate);
+    const float currentResonance = pow(10.f, -params.delayResonance.get() / 20.f);
+
+    // coefficients for lowpass, depending on resonance and lowcut frequency
+    k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
+    coeff1 = 0.5f * (1.f - k) / (1.f + k);
+    coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
+    coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+
+    b0 = 2.f * coeff3;
+    b1 = 2.f * 2.f * coeff3;
+    b2 = 2.f * coeff3;
+    a1 = 2.f * -coeff2;
+    a2 = 2.f * coeff1;
+
+    lastSample = inputSignal;
+
+    inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+
+    //delaying samples
+    inputDelay2 = inputDelay1;
+    inputDelay1 = lastSample;
+    outputDelay2 = outputDelay1;
+    outputDelay1 = inputSignal;
+
+    return inputSignal;
+}
+
 void FxDelay::calcDelayTime(double bpmIn)
 {
     // check for changes, re-calculate delay time - how slow is this?
@@ -51,7 +84,9 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
             float currentSample = outputBuffer.getSample(c, startSample + s);
             float delayedSample = delayBuffer.getSample(c, loopPosition);
             delayBuffer.setSample(c, loopPosition, currentSample);
+            delayedSample = filterDelay(delayedSample, sampleRate); // here it does record the filter
             delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
+            //delayedSample = filterDelay(delayedSample, sampleRate); // here it does not record the filter
             outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get());
 
             // iterate
