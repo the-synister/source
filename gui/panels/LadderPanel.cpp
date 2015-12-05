@@ -39,7 +39,7 @@ LadderPanel::LadderPanel (SynthParams &p)
     cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoff->addListener (this);
 
-    addAndMakeVisible (resonance = new MouseOverKnob ("resonance"));
+    addAndMakeVisible (resonance = new MouseOverKnob ("Resonance"));
     resonance->setRange (0, 10, 0);
     resonance->setSliderStyle (Slider::RotaryVerticalDrag);
     resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
@@ -102,11 +102,13 @@ void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == cutoff)
     {
         //[UserSliderCode_cutoff] -- add your slider handling code here..
+        params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
         //[/UserSliderCode_cutoff]
     }
     else if (sliderThatWasMoved == resonance)
     {
         //[UserSliderCode_resonance] -- add your slider handling code here..
+        params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
         //[/UserSliderCode_resonance]
     }
 
@@ -135,13 +137,13 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName=""
+  <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="40 56 80 64" min="10" max="20000"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="resonance" id="5cc36d41af142d68" memberName="resonance"
-          virtualName="" explicitFocusOrder="0" pos="144 56 80 64" min="0"
-          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="144 56 80 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

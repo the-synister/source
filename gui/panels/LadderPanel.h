@@ -58,8 +58,10 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> cutoff;
-    ScopedPointer<Slider> resonance;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LadderPanel)
 };
