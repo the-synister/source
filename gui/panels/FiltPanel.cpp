@@ -45,9 +45,26 @@ FiltPanel::FiltPanel (SynthParams &p)
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
 
+    addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
+    modSrc->setEditableText (false);
+    modSrc->setJustificationType (Justification::centred);
+    modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    modSrc->addItem (TRANS("No Mod"), 1);
+    modSrc->addItem (TRANS("LFO"), 2);
+    modSrc->addItem (TRANS("Envelope"), 3);
+    modSrc->addListener (this);
+
+    addAndMakeVisible (modSliderCut = new MouseOverKnob ("modSliderCut1"));
+    modSliderCut->setRange (0, 100, 0);
+    modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
+    modSliderCut->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    modSliderCut->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
+    registerSlider(modSliderCut, &params.lpModAmout);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(resonanceSlider, &params.lpResonance);
     //[/UserPreSize]
@@ -66,6 +83,8 @@ FiltPanel::~FiltPanel()
 
     cutoffSlider = nullptr;
     resonanceSlider = nullptr;
+    modSrc = nullptr;
+    modSliderCut = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -90,7 +109,9 @@ void FiltPanel::resized()
     //[/UserPreResize]
 
     cutoffSlider->setBounds (8, 8, 64, 64);
-    resonanceSlider->setBounds (80, 8, 64, 64);
+    resonanceSlider->setBounds (104, 8, 64, 64);
+    modSrc->setBounds (8, 80, 64, 16);
+    modSliderCut->setBounds (8, 104, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -111,9 +132,29 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
         //[/UserSliderCode_resonanceSlider]
     }
+    else if (sliderThatWasMoved == modSliderCut)
+    {
+        //[UserSliderCode_modSliderCut] -- add your slider handling code here..
+        //[/UserSliderCode_modSliderCut]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == modSrc)
+    {
+        //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
+        //[/UserComboBoxCode_modSrc]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -142,8 +183,16 @@ BEGIN_JUCER_METADATA
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="104 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
+            explicitFocusOrder="0" pos="8 80 64 16" editable="0" layout="36"
+            items="No Mod&#10;LFO&#10;Envelope" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <SLIDER name="modSliderCut1" id="2596fb730a93410" memberName="modSliderCut"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 104 64 64"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

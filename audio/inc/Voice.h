@@ -205,7 +205,7 @@ public:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * env1Mod[s];
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), Param::fromSemi(lfo1sine.next())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -217,7 +217,6 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
-
                 if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
                 {
                     clearCurrentNote();
@@ -322,13 +321,18 @@ protected:
         }
     }
     
-    float biquadLowpass(float inputSignal) {
+    float biquadLowpass(float inputSignal, float modValue) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-        const float currentLowcutFreq = params.lpCutoff.get() / sRate;
+        float currentLowcutFreq = params.lpCutoff.get() * modValue / sRate;
+
+        //if (params.lpModAmout.get() > 0.f) {
+        //    currentLowcutFreq *= modValue;
+        //}
+
         const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
@@ -352,6 +356,10 @@ protected:
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
+
+        if (inputSignal > 1.f) {
+            inputSignal = 1.f;
+        }
         
         return inputSignal;
     }
