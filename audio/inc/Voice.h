@@ -108,6 +108,7 @@ public:
     , pitchModBuffer(1,blockSize)
     , lfo1ModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
+    , filterEnvBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         for (int s = 0; s < blockSize; ++s) {
@@ -133,6 +134,7 @@ public:
         
         level = velocity * 0.15f;
         releaseCounter = -1;
+        filterReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -158,6 +160,7 @@ public:
 
         // reset attackDecayCounter
         attackDecayCounter = 0;
+        filterAttackDecayCounter = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -172,6 +175,11 @@ public:
                 // reset releaseCounter
                 releaseCounter = 0;
             }
+
+            if (filterReleaseCounter == -1)
+            {
+                filterReleaseCounter = 0;
+        }
         }
         else
         {
@@ -201,6 +209,7 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
+        const float *filterEnvMod = filterEnvBuffer.getReadPointer(0);
 
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
@@ -241,6 +250,49 @@ public:
     }
 
 protected:
+    float getFilterEnvCoeff()
+    {
+        float filterEnvCoeff;
+        float filterSustainLevel = params.filterEnvSustain.get() / static_cast<float>(getSampleRate());
+
+        //number of all samples for all phases
+        int filterAttackSamples = static_cast<int>(getSampleRate() * params.filterEnvAttack.get());
+        int filterDecaySamples = static_cast<int>(getSampleRate() * params.filterEnvDecay.get());
+        int filterReleaseSamples = static_cast<int>(getSampleRate() * params.filterEnvRelease.get());
+
+        if (filterReleaseCounter > -1)
+        {
+            filterEnvCoeff = filterValueAtRelease * interpolateLog(filterReleaseCounter, filterReleaseSamples);
+            filterReleaseCounter++;
+        }
+        else
+        {
+            if(filterAttackDecayCounter <= filterAttackSamples)
+            {
+                filterEnvCoeff = 1.0f - interpolateLog(filterAttackDecayCounter, filterAttackSamples);
+                filterValueAtRelease = filterEnvCoeff;
+                filterAttackDecayCounter++;
+            }
+            else
+            {
+                if (filterAttackDecayCounter <= filterAttackSamples + filterDecaySamples)
+                {
+                    filterEnvCoeff = interpolateLog(filterAttackDecayCounter - filterAttackSamples, filterDecaySamples) * (1.0f - filterSustainLevel) + filterSustainLevel;
+                    filterValueAtRelease = filterEnvCoeff;
+                    filterAttackDecayCounter++;
+                }
+
+                else
+                {
+                    filterEnvCoeff = filterSustainLevel;
+                }
+            }
+        
+        }
+        //jassert(isfinite(filterEnvCoeff));
+        return filterEnvCoeff;
+    }
+    
     float getEnvCoeff() 
     {
         float envCoeff;
@@ -304,6 +356,12 @@ protected:
         for (int s = 0; s < numSamples; ++s)
         {
             env1Buffer.setSample(0, s, getEnvCoeff());
+        }
+
+        // set the filterEnvBuffer
+        for (int s = 0; s < numSamples; ++s)
+        {
+            filterEnvBuffer.setSample(0, s, getFilterEnvCoeff());
         }
 
         // add pitch wheel values
@@ -384,7 +442,7 @@ protected:
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
-
+        
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
@@ -415,10 +473,16 @@ private:
     int attackDecayCounter;
     int releaseCounter;
 
+    //variables for filter env
+    float filterValueAtRelease;
+    int filterAttackDecayCounter;
+    int filterReleaseCounter;
+
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
+    AudioSampleBuffer filterEnvBuffer;
 };
 
 
