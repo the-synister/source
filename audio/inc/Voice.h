@@ -218,8 +218,7 @@ public:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), modSources[params.lpModSource.get()][s]) * level;
-
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s]) * level * env1Mod[s];
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
@@ -284,6 +283,7 @@ protected:
                 }
             }
         }
+        std::cout << envCoeff;
         return envCoeff;
     }
 
@@ -343,9 +343,19 @@ protected:
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
+        // mod to frequency calculation
+        float moddedFreq = params.lpCutoff.get();
+        if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
 
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
 
-        const float currentLowcutFreq = ( (params.lpCutoff.get() - 5000.f * modValue * params.lpModAmout.get()/100.f) / sRate);
+            if(moddedFreq < params.lpCutoff.getMin()){
+                moddedFreq = params.lpCutoff.getMin();
+            }else if(moddedFreq > params.lpCutoff.getMax()){
+                moddedFreq = params.lpCutoff.getMax();
+            }
+        }
+        const float currentLowcutFreq = (moddedFreq / sRate);
 
         //if (params.lpModAmout.get() > 0.f) {
         //    currentLowcutFreq *= modValue;

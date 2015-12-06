@@ -178,7 +178,7 @@ void PlugUI::timerCallback()
 
 void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
 {
-    lastBpmInfo = currentPos.bpm;
+    lastBpmInfo = static_cast<float>(currentPos.bpm);
 
     MemoryOutputStream bpmDisplayText;
 

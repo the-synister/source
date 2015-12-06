@@ -150,7 +150,7 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == modSrc)
     {
         //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
-        params.lpModSource.set(modSrc->getSelectedItemIndex());
+        params.lpModSource.set(static_cast<float>(modSrc->getSelectedItemIndex()));
         //[/UserComboBoxCode_modSrc]
     }
 
