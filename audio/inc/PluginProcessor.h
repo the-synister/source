@@ -66,8 +66,10 @@ private:
 
     void updateHostInfo();
 
-    // StepSequencer call
-    void runSeq(MidiBuffer& midiMessages);
+    // StepSequencer main call
+    void runSeq(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    void stopSeq(MidiBuffer& midiMessages);
+    bool seqIsPlaying = false;
 
     // StepSequencer gui params
     int midiSeq[8];
@@ -76,11 +78,16 @@ private:
     float seqStepSpeed;
     double seqNoteLength;
 
-    // StepSequencer further related variables
+    // StepSequencer host sync mode
+    void seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     int seqNote = -1;
     double seqNextStep = 0.0;
     double stopNoteTime = 0.0;
-    bool seqIsPlaying = false;
+
+    // StepSequencer no host sync mode
+    void seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    int nextPlaySample = 0;
+    int noteOffSample = 0;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };

@@ -60,19 +60,27 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<Slider> seqStep1;
+    ScopedPointer<Slider> seqStep2;
+    ScopedPointer<Slider> seqStep3;
+    ScopedPointer<Slider> seqStep4;
+    ScopedPointer<Slider> seqStep5;
+    ScopedPointer<Slider> seqStep6;
+    ScopedPointer<Slider> seqStep7;
+    ScopedPointer<Slider> seqStep8;
     ScopedPointer<MouseOverKnob> seqStepSpeed;
     ScopedPointer<MouseOverKnob> seqStepLength;
-    ScopedPointer<MouseOverKnob> seqStep1;
-    ScopedPointer<MouseOverKnob> seqStep2;
     ScopedPointer<TextButton> seqPlay;
     ScopedPointer<ToggleButton> syncHost;
-    ScopedPointer<MouseOverKnob> seqStep3;
-    ScopedPointer<MouseOverKnob> seqStep4;
     ScopedPointer<MouseOverKnob> seqNumSteps;
-    ScopedPointer<MouseOverKnob> seqStep5;
-    ScopedPointer<MouseOverKnob> seqStep6;
-    ScopedPointer<MouseOverKnob> seqStep7;
-    ScopedPointer<MouseOverKnob> seqStep8;
+    ScopedPointer<Label> labelStep1;
+    ScopedPointer<Label> labelStep2;
+    ScopedPointer<Label> labelStep3;
+    ScopedPointer<Label> labelStep4;
+    ScopedPointer<Label> labelStep5;
+    ScopedPointer<Label> labelStep6;
+    ScopedPointer<Label> labelStep7;
+    ScopedPointer<Label> labelStep8;
 
 
     //==============================================================================
