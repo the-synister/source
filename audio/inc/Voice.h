@@ -214,7 +214,7 @@ public:
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-        modSources[2] = env1Mod;
+        modSources[2] = filterEnvMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -238,7 +238,7 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
-                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
+                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter)
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -404,15 +404,20 @@ protected:
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
         if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
-
+        
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
-
-            if(moddedFreq < params.lpCutoff.getMin()){
-                moddedFreq = params.lpCutoff.getMin();
-            }else if(moddedFreq > params.lpCutoff.getMax()){
-                moddedFreq = params.lpCutoff.getMax();
-            }
         }
+        else if (params.lpModSource.get() == 2) { // env
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+        }
+        
+        if (moddedFreq < params.lpCutoff.getMin()) {
+            moddedFreq = params.lpCutoff.getMin();
+        }
+        else if (moddedFreq > params.lpCutoff.getMax()) {
+            moddedFreq = params.lpCutoff.getMax();
+        }
+
         const float currentLowcutFreq = (moddedFreq / sRate);
 
         //if (params.lpModAmout.get() > 0.f) {
