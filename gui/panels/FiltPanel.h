@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class FiltPanel  : public PanelBase,
-                   public SliderListener
+                   public SliderListener,
+                   public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -64,6 +66,8 @@ private:
     ScopedPointer<MouseOverKnob> FilterDecay;
     ScopedPointer<MouseOverKnob> FilterSustain;
     ScopedPointer<MouseOverKnob> FilterRelease;
+    ScopedPointer<ComboBox> modSrc;
+    ScopedPointer<MouseOverKnob> modSliderCut;
 
 
     //==============================================================================

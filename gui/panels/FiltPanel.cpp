@@ -73,9 +73,27 @@ FiltPanel::FiltPanel (SynthParams &p)
     FilterRelease->addListener (this);
     FilterRelease->setSkewFactor (0.5);
 
+    addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
+    modSrc->setEditableText (false);
+    modSrc->setJustificationType (Justification::centred);
+    modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    modSrc->addItem (TRANS("No Mod"), 1);
+    modSrc->addItem (TRANS("LFO1"), 2);
+    modSrc->addItem (TRANS("Envelope1"), 3);
+    modSrc->addListener (this);
+
+    addAndMakeVisible (modSliderCut = new MouseOverKnob ("modSliderCut1"));
+    modSliderCut->setRange (0, 100, 0);
+    modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
+    modSliderCut->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    modSliderCut->addListener (this);
+    modSliderCut->setSkewFactor (0.33);
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
+    registerSlider(modSliderCut, &params.lpModAmout);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(resonanceSlider, &params.lpResonance);
     registerSlider(FilterAttack, &params.filterEnvAttack);
@@ -103,6 +121,8 @@ FiltPanel::~FiltPanel()
     FilterDecay = nullptr;
     FilterSustain = nullptr;
     FilterRelease = nullptr;
+    modSrc = nullptr;
+    modSliderCut = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -127,11 +147,13 @@ void FiltPanel::resized()
     //[/UserPreResize]
 
     cutoffSlider->setBounds (8, 8, 64, 64);
-    resonanceSlider->setBounds (80, 8, 64, 64);
-    FilterAttack->setBounds (9, 96, 64, 64);
-    FilterDecay->setBounds (81, 96, 64, 64);
-    FilterSustain->setBounds (153, 96, 64, 64);
-    FilterRelease->setBounds (225, 96, 64, 64);
+    resonanceSlider->setBounds (152, 8, 64, 64);
+    FilterAttack->setBounds (9, 104, 64, 64);
+    FilterDecay->setBounds (81, 104, 64, 64);
+    FilterSustain->setBounds (153, 104, 64, 64);
+    FilterRelease->setBounds (225, 104, 64, 64);
+    modSrc->setBounds (8, 80, 64, 16);
+    modSliderCut->setBounds (80, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -172,9 +194,30 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_FilterRelease] -- add your slider handling code here..
         //[/UserSliderCode_FilterRelease]
     }
+    else if (sliderThatWasMoved == modSliderCut)
+    {
+        //[UserSliderCode_modSliderCut] -- add your slider handling code here..
+        //[/UserSliderCode_modSliderCut]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == modSrc)
+    {
+        //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
+        params.lpModSource.set(static_cast<float>(modSrc->getSelectedItemIndex()));
+        //[/UserComboBoxCode_modSrc]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -203,25 +246,33 @@ BEGIN_JUCER_METADATA
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="FilterAttack"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="9 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="9 104 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay" id="84a4159bee0728d6" memberName="FilterDecay" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="81 96 64 64" min="0.001" max="5"
+          explicitFocusOrder="0" pos="81 104 64 64" min="0.001" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="FilterSustain"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="153 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="153 104 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release" id="c8bc1120a33101cd" memberName="FilterRelease"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="225 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="225 104 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+  <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
+            explicitFocusOrder="0" pos="8 80 64 16" editable="0" layout="36"
+            items="No Mod&#10;LFO1&#10;Envelope1" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <SLIDER name="modSliderCut1" id="2596fb730a93410" memberName="modSliderCut"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -106,9 +106,15 @@ public:
     , params(p)
     , level (0.f)
     , pitchModBuffer(1,blockSize)
+    , lfo1ModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
     , filterEnvBuffer(1, blockSize)
-    {}
+    , noModBuffer(1, blockSize)
+    {
+        for (int s = 0; s < blockSize; ++s) {
+            noModBuffer.setSample(0, s, 0.f);
+        }
+    }
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -173,7 +179,7 @@ public:
             if (filterReleaseCounter == -1)
             {
                 filterReleaseCounter = 0;
-            }
+        }
         }
         else
         {
@@ -199,9 +205,16 @@ public:
     void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         renderModulation(numSamples);
+        const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
+        const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
         const float *filterEnvMod = filterEnvBuffer.getReadPointer(0);
+
+        std::vector<const float*> modSources(3);
+        modSources[0] = noMod;
+        modSources[1] = lfo1Mod;
+        modSources[2] = filterEnvMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -214,8 +227,7 @@ public:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), filterEnvMod[s]) * level * env1Mod[s];
-
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s]) * level * env1Mod[s];
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
@@ -224,9 +236,8 @@ public:
                 else 
                 {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
-
                 if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter)
                 {
                     clearCurrentNote();
@@ -324,6 +335,7 @@ protected:
                 }
             }
         }
+        std::cout << envCoeff;
         return envCoeff;
     }
 
@@ -361,6 +373,7 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1sine.next()*0.5f );
             }
         }
         else if (params.lfo1wave.get() == 1) // if lfo1wave is 1, lfo is set to random wave
@@ -368,6 +381,7 @@ protected:
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1random.next()*0.5f);
             }
         }
         else if (params.lfo1wave.get() == 2)// if lfo1wave is 2, lfo is set to square wave
@@ -376,17 +390,40 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1square.next()*0.5f);
             }
         }
     }
     
-    float biquadLowpass(float inputSignal, float envCoeff) {
+    float biquadLowpass(float inputSignal, float modValue) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-        const float currentLowcutFreq = (params.lpCutoff.get() / sRate) * envCoeff;
+        // mod to frequency calculation
+        float moddedFreq = params.lpCutoff.get();
+        if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
+        
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
+        }
+        else if (params.lpModSource.get() == 2) { // env
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+        }
+        
+        if (moddedFreq < params.lpCutoff.getMin()) {
+            moddedFreq = params.lpCutoff.getMin();
+        }
+        else if (moddedFreq > params.lpCutoff.getMax()) {
+            moddedFreq = params.lpCutoff.getMax();
+        }
+
+        const float currentLowcutFreq = (moddedFreq / sRate);
+
+        //if (params.lpModAmout.get() > 0.f) {
+        //    currentLowcutFreq *= modValue;
+        //}
+
         const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
@@ -410,6 +447,10 @@ protected:
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
+        
+        if (inputSignal > 1.f) {
+            inputSignal = 1.f;
+        }
         
         return inputSignal;
     }
@@ -443,7 +484,9 @@ private:
     int filterReleaseCounter;
 
     AudioSampleBuffer pitchModBuffer;
+    AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
+    AudioSampleBuffer noModBuffer;
     AudioSampleBuffer filterEnvBuffer;
 };
 
