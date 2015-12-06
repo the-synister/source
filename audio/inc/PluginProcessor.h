@@ -14,10 +14,12 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "StepSequencer.h"
 
 //==============================================================================
 /**
 */
+class Sequencer;
 class PluginAudioProcessor  : public AudioProcessor, public SynthParams
 {
 public:
@@ -64,10 +66,20 @@ private:
 
     void updateHostInfo();
 
+    // StepSequencer call
     void runSeq(MidiBuffer& midiMessages);
-    // variables for seq
-    int seqCounter = -1;
-    double seqTimeCounter = 0;
+
+    // StepSequencer gui params
+    int midiSeq[8];
+    int seqMode;
+    int seqNumSteps;
+    float seqStepSpeed;
+    double seqNoteLength;
+
+    // StepSequencer further related variables
+    int seqNote = -1;
+    double seqNextStep = 0.0;
+    double stopNoteTime = 0.0;
     bool seqIsPlaying = false;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)

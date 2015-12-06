@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_48919873852F91A2__
-#define __JUCE_HEADER_48919873852F91A2__
+#ifndef __JUCE_HEADER_1700DD60DF66F07A__
+#define __JUCE_HEADER_1700DD60DF66F07A__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,14 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OscPanel  : public PanelBase,
-                  public SliderListener
+class SeqPanel  : public PanelBase,
+                  public SliderListener,
+                  public ButtonListener
 {
 public:
     //==============================================================================
-    OscPanel (SynthParams &p);
-    ~OscPanel();
+    SeqPanel (SynthParams &p);
+    ~SeqPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -50,6 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -58,19 +60,26 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> ftune1;
-    ScopedPointer<MouseOverKnob> lfo1depth1;
-    ScopedPointer<MouseOverKnob> osc1trngAmount;
-    ScopedPointer<MouseOverKnob> pulsewidth;
-    ScopedPointer<MouseOverKnob> pitchRange;
-    ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<MouseOverKnob> seqStepSpeed;
+    ScopedPointer<MouseOverKnob> seqStepLength;
+    ScopedPointer<MouseOverKnob> seqStep1;
+    ScopedPointer<MouseOverKnob> seqStep2;
+    ScopedPointer<TextButton> seqPlay;
+    ScopedPointer<ToggleButton> syncHost;
+    ScopedPointer<MouseOverKnob> seqStep3;
+    ScopedPointer<MouseOverKnob> seqStep4;
+    ScopedPointer<MouseOverKnob> seqNumSteps;
+    ScopedPointer<MouseOverKnob> seqStep5;
+    ScopedPointer<MouseOverKnob> seqStep6;
+    ScopedPointer<MouseOverKnob> seqStep7;
+    ScopedPointer<MouseOverKnob> seqStep8;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeqPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_48919873852F91A2__
+#endif   // __JUCE_HEADER_1700DD60DF66F07A__

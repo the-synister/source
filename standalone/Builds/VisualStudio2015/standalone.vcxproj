@@ -140,7 +140,6 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
-    <ClCompile Include="..\..\..\audio\StepSequencer.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1295,7 +1294,6 @@
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h"/>
-    <ClInclude Include="..\..\..\audio\StepSequencer.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>

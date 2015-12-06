@@ -23,6 +23,7 @@
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
 #include "panels/FiltPanel.h"
+#include "panels/SeqPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -65,7 +66,8 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
-    tabs->setCurrentTabIndex (0);
+    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
+    tabs->setCurrentTabIndex (6);
 
     addAndMakeVisible (label2 = new Label ("new label",
                                            TRANS("master tune")));
@@ -217,7 +219,7 @@ BEGIN_JUCER_METADATA
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TABBEDCOMPONENT name="tabs" id="748541b462cb42f4" memberName="tabs" virtualName=""
                    explicitFocusOrder="0" pos="8 128 784 416" orientation="top"
-                   tabBarDepth="30" initialTab="0">
+                   tabBarDepth="30" initialTab="6">
     <TAB name="OSC" colour="ffd3d3d3" useJucerComp="0" contentClassName="OscPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
@@ -230,6 +232,8 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
          constructorParams="" jucerComponentFile=""/>
+    <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
+         constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
   <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="726 8 64 16" edTextCol="ff000000"

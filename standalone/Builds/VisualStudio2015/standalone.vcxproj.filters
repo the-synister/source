@@ -358,9 +358,6 @@
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\StepSequencer.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>standalone\Source</Filter>
     </ClCompile>
@@ -1648,9 +1645,6 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\StepSequencer.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">

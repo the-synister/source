@@ -37,14 +37,11 @@
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
-        <FILE id="CC6Av3" name="StepSequencer.h" compile="0" resource="0" file="../audio/StepSequencer.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>
-        <FILE id="dJb7fM" name="StepSequencer.cpp" compile="1" resource="0"
-              file="../audio/StepSequencer.cpp"/>
       </GROUP>
     </GROUP>
     <GROUP id="{B6EB776B-361D-4B6D-78CE-6CBB411F59E1}" name="Source">
