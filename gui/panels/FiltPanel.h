@@ -60,6 +60,10 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resonanceSlider;
+    ScopedPointer<MouseOverKnob> FilterAttack;
+    ScopedPointer<MouseOverKnob> FilterDecay;
+    ScopedPointer<MouseOverKnob> FilterSustain;
+    ScopedPointer<MouseOverKnob> FilterRelease;
 
 
     //==============================================================================

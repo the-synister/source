@@ -45,11 +45,44 @@ FiltPanel::FiltPanel (SynthParams &p)
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
 
+    addAndMakeVisible (FilterAttack = new MouseOverKnob ("Attack"));
+    FilterAttack->setRange (0.001, 5, 0);
+    FilterAttack->setSliderStyle (Slider::RotaryVerticalDrag);
+    FilterAttack->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    FilterAttack->addListener (this);
+    FilterAttack->setSkewFactor (0.5);
+
+    addAndMakeVisible (FilterDecay = new MouseOverKnob ("Decay"));
+    FilterDecay->setRange (0.001, 5, 0);
+    FilterDecay->setSliderStyle (Slider::RotaryVerticalDrag);
+    FilterDecay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    FilterDecay->addListener (this);
+    FilterDecay->setSkewFactor (0.5);
+
+    addAndMakeVisible (FilterSustain = new MouseOverKnob ("Sustain"));
+    FilterSustain->setRange (10, 20000, 1);
+    FilterSustain->setSliderStyle (Slider::RotaryVerticalDrag);
+    FilterSustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    FilterSustain->addListener (this);
+    FilterSustain->setSkewFactor (3);
+
+    addAndMakeVisible (FilterRelease = new MouseOverKnob ("Release"));
+    FilterRelease->setRange (0.001, 5, 0);
+    FilterRelease->setSliderStyle (Slider::RotaryVerticalDrag);
+    FilterRelease->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    FilterRelease->addListener (this);
+    FilterRelease->setSkewFactor (0.5);
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(resonanceSlider, &params.lpResonance);
+    registerSlider(FilterAttack, &params.filterEnvAttack);
+    registerSlider(FilterDecay, &params.filterEnvDecay);
+    registerSlider(FilterRelease, &params.filterEnvRelease);
+    registerSlider(FilterSustain, &params.filterEnvSustain);
+    FilterSustain->setSkewFactorFromMidPoint(1000.0);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -66,6 +99,10 @@ FiltPanel::~FiltPanel()
 
     cutoffSlider = nullptr;
     resonanceSlider = nullptr;
+    FilterAttack = nullptr;
+    FilterDecay = nullptr;
+    FilterSustain = nullptr;
+    FilterRelease = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -91,6 +128,10 @@ void FiltPanel::resized()
 
     cutoffSlider->setBounds (8, 8, 64, 64);
     resonanceSlider->setBounds (80, 8, 64, 64);
+    FilterAttack->setBounds (9, 96, 64, 64);
+    FilterDecay->setBounds (81, 96, 64, 64);
+    FilterSustain->setBounds (153, 96, 64, 64);
+    FilterRelease->setBounds (225, 96, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -110,6 +151,26 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
         //[/UserSliderCode_resonanceSlider]
+    }
+    else if (sliderThatWasMoved == FilterAttack)
+    {
+        //[UserSliderCode_FilterAttack] -- add your slider handling code here..
+        //[/UserSliderCode_FilterAttack]
+    }
+    else if (sliderThatWasMoved == FilterDecay)
+    {
+        //[UserSliderCode_FilterDecay] -- add your slider handling code here..
+        //[/UserSliderCode_FilterDecay]
+    }
+    else if (sliderThatWasMoved == FilterSustain)
+    {
+        //[UserSliderCode_FilterSustain] -- add your slider handling code here..
+        //[/UserSliderCode_FilterSustain]
+    }
+    else if (sliderThatWasMoved == FilterRelease)
+    {
+        //[UserSliderCode_FilterRelease] -- add your slider handling code here..
+        //[/UserSliderCode_FilterRelease]
     }
 
     //[UsersliderValueChanged_Post]
@@ -145,6 +206,22 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="FilterAttack"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="9 96 64 64"
+          min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+  <SLIDER name="Decay" id="84a4159bee0728d6" memberName="FilterDecay" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="81 96 64 64" min="0.001" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="FilterSustain"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="153 96 64 64"
+          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
+  <SLIDER name="Release" id="c8bc1120a33101cd" memberName="FilterRelease"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="225 96 64 64"
+          min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
