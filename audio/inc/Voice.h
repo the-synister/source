@@ -227,7 +227,7 @@ public:
                          outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
 
-                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
+                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter)
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
