@@ -107,6 +107,7 @@ public:
     , level (0.f)
     , pitchModBuffer(1,blockSize)
     , env1Buffer(1, blockSize)
+    , filterEnvBuffer(1, blockSize)
     {}
 
 
@@ -127,6 +128,7 @@ public:
         
         level = velocity * 0.15f;
         releaseCounter = -1;
+        filterReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -152,6 +154,7 @@ public:
 
         // reset attackDecayCounter
         attackDecayCounter = 0;
+        filterAttackDecayCounter = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -165,6 +168,11 @@ public:
             {                         // stopNote method could be called more than once.
                 // reset releaseCounter
                 releaseCounter = 0;
+            }
+
+            if (filterReleaseCounter == -1)
+            {
+                filterReleaseCounter = 0;
             }
         }
         else
@@ -193,6 +201,7 @@ public:
         renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
+        const float *filterEnvMod = filterEnvBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -205,7 +214,7 @@ public:
         {
             for (int s = 0; s < numSamples; ++s)
             {
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * env1Mod[s];
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), filterEnvMod[s]) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -215,7 +224,7 @@ public:
                 else 
                 {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
 
                 if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter)
@@ -230,6 +239,49 @@ public:
     }
 
 protected:
+    float getFilterEnvCoeff()
+    {
+        float filterEnvCoeff;
+        float filterSustainLevel = params.filterEnvSustain.get() / static_cast<float>(getSampleRate());
+
+        //number of all samples for all phases
+        int filterAttackSamples = static_cast<int>(getSampleRate() * params.filterEnvAttack.get());
+        int filterDecaySamples = static_cast<int>(getSampleRate() * params.filterEnvDecay.get());
+        int filterReleaseSamples = static_cast<int>(getSampleRate() * params.filterEnvRelease.get());
+
+        if (filterReleaseCounter > -1)
+        {
+            filterEnvCoeff = filterValueAtRelease * interpolateLog(filterReleaseCounter, filterReleaseSamples);
+            filterReleaseCounter++;
+        }
+        else
+        {
+            if(filterAttackDecayCounter <= filterAttackSamples)
+            {
+                filterEnvCoeff = 1.0f - interpolateLog(filterAttackDecayCounter, filterAttackSamples);
+                filterValueAtRelease = filterEnvCoeff;
+                filterAttackDecayCounter++;
+            }
+            else
+            {
+                if (filterAttackDecayCounter <= filterAttackSamples + filterDecaySamples)
+                {
+                    filterEnvCoeff = interpolateLog(filterAttackDecayCounter - filterAttackSamples, filterDecaySamples) * (1.0f - filterSustainLevel) + filterSustainLevel;
+                    filterValueAtRelease = filterEnvCoeff;
+                    filterAttackDecayCounter++;
+                }
+
+                else
+                {
+                    filterEnvCoeff = filterSustainLevel;
+                }
+            }
+        
+        }
+        //jassert(isfinite(filterEnvCoeff));
+        return filterEnvCoeff;
+    }
+    
     float getEnvCoeff() 
     {
         float envCoeff;
@@ -294,6 +346,12 @@ protected:
             env1Buffer.setSample(0, s, getEnvCoeff());
         }
 
+        // set the filterEnvBuffer
+        for (int s = 0; s < numSamples; ++s)
+        {
+            filterEnvBuffer.setSample(0, s, getFilterEnvCoeff());
+        }
+
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
@@ -322,13 +380,13 @@ protected:
         }
     }
     
-    float biquadLowpass(float inputSignal) {
+    float biquadLowpass(float inputSignal, float envCoeff) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-        const float currentLowcutFreq = params.lpCutoff.get() / sRate;
+        const float currentLowcutFreq = (params.lpCutoff.get() / sRate) * envCoeff;
         const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
@@ -379,8 +437,14 @@ private:
     int attackDecayCounter;
     int releaseCounter;
 
+    //variables for filter env
+    float filterValueAtRelease;
+    int filterAttackDecayCounter;
+    int filterReleaseCounter;
+
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
+    AudioSampleBuffer filterEnvBuffer;
 };
 
 
