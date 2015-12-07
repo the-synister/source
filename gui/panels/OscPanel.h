@@ -37,8 +37,7 @@
                                                                     //[/Comments]
 */
 class OscPanel  : public PanelBase,
-                  public SliderListener,
-                  public ButtonListener
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -52,7 +51,6 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -67,10 +65,10 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
-    ScopedPointer<TextButton> squareWaveButton;
-    ScopedPointer<TextButton> sawWaveButton;
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
+    ScopedPointer<Label> sawlabel;
+    ScopedPointer<Label> squarelabel;
 
 
     //==============================================================================

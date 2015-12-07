@@ -69,22 +69,30 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
 
-    addAndMakeVisible (squareWaveButton = new TextButton ("squareWaveButton"));
-    squareWaveButton->setButtonText (TRANS("Square Wave"));
-    squareWaveButton->addListener (this);
-
-    addAndMakeVisible (sawWaveButton = new TextButton ("sawWaveButton"));
-    sawWaveButton->setButtonText (TRANS("Saw Wave"));
-    sawWaveButton->addListener (this);
-
-    addAndMakeVisible (waveformVisual = new WaveformVisual());
+    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
-    waveformSwitch->setRange (0, 1, 0);
-    waveformSwitch->setSliderStyle (Slider::Rotary);
-    waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    waveformSwitch->setRange (1, 2, 1);
+    waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
+    waveformSwitch->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
     waveformSwitch->addListener (this);
+
+    addAndMakeVisible (sawlabel = new Label ("Saw Label",
+                                             TRANS("saw wave")));
+    sawlabel->setFont (Font (15.00f, Font::plain));
+    sawlabel->setJustificationType (Justification::centredLeft);
+    sawlabel->setEditable (false, false, false);
+    sawlabel->setColour (TextEditor::textColourId, Colours::black);
+    sawlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (squarelabel = new Label ("Square Label",
+                                                TRANS("square wave\n")));
+    squarelabel->setFont (Font (15.00f, Font::plain));
+    squarelabel->setJustificationType (Justification::centredLeft);
+    squarelabel->setEditable (false, false, false);
+    squarelabel->setColour (TextEditor::textColourId, Colours::black);
+    squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -94,14 +102,13 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
-	squareWaveButton->setToggleState(1, 1);
-	sawWaveButton->setToggleState(0, 0);
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
+	osc1trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -116,10 +123,10 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
-    squareWaveButton = nullptr;
-    sawWaveButton = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
+    sawlabel = nullptr;
+    squarelabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -146,13 +153,13 @@ void OscPanel::resized()
     ftune1->setBounds (80, 8, 64, 64);
     lfo1depth1->setBounds (224, 8, 64, 64);
     osc1trngAmount->setBounds (296, 8, 64, 64);
-    pulsewidth->setBounds (368, 8, 64, 64);
+    pulsewidth->setBounds (296, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
-    squareWaveButton->setBounds (32, 192, 150, 24);
-    sawWaveButton->setBounds (32, 232, 150, 24);
-    waveformVisual->setBounds (224, 128, 208, 96);
-    waveformSwitch->setBounds (8, 104, 64, 64);
+    waveformVisual->setBounds (24, 112, 208, 96);
+    waveformSwitch->setBounds (360, 128, 64, 64);
+    sawlabel->setBounds (432, 152, 150, 24);
+    squarelabel->setBounds (256, 152, 96, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -176,14 +183,14 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-		waveformVisual->setTrngAmount(osc1trngAmount->getValue());
+		waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
 		waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		waveformVisual->setPulseWidth(pulsewidth->getValue());
+		waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
 		waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
@@ -200,41 +207,31 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
+		int waveformKey = static_cast<int>(waveformSwitch->getValue());
+		params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
+		waveformVisual->setWaveformKey(waveformKey);
+		switch (waveformKey)
+		{
+		case 1:
+		{
+			pulsewidth->setVisible(true);
+			osc1trngAmount->setVisible(false);
+			break;
+		}
+		case 2:
+		{
+			pulsewidth->setVisible(false);
+			osc1trngAmount->setVisible(true);
+			break;
+		}
+		}
+		waveformVisual->repaint();
+
         //[/UserSliderCode_waveformSwitch]
     }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
-}
-
-void OscPanel::buttonClicked (Button* buttonThatWasClicked)
-{
-    //[UserbuttonClicked_Pre]
-    //[/UserbuttonClicked_Pre]
-
-    if (buttonThatWasClicked == squareWaveButton)
-    {
-        //[UserButtonCode_squareWaveButton] -- add your button handler code here..
-		params.osc1WaveForm.setUI(1.0f);
-		squareWaveButton->setToggleState(1,1);
-		sawWaveButton->setToggleState(0, 0);
-		waveformVisual->setWaveformKey(1);
-		waveformVisual->repaint();
-        //[/UserButtonCode_squareWaveButton]
-    }
-    else if (buttonThatWasClicked == sawWaveButton)
-    {
-        //[UserButtonCode_sawWaveButton] -- add your button handler code here..
-		params.osc1WaveForm.setUI(2.0f);
-		squareWaveButton->setToggleState(0, 0);
-		sawWaveButton->setToggleState(1, 1);
-		waveformVisual->setWaveformKey(2);
-		waveformVisual->repaint();
-        //[/UserButtonCode_sawWaveButton]
-    }
-
-    //[UserbuttonClicked_Post]
-    //[/UserbuttonClicked_Post]
 }
 
 
@@ -271,7 +268,7 @@ BEGIN_JUCER_METADATA
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
           min="0.010000000000000000208" max="0.98999999999999999112" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
@@ -283,19 +280,23 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <TEXTBUTTON name="squareWaveButton" id="2d38ae78af3687c8" memberName="squareWaveButton"
-              virtualName="" explicitFocusOrder="0" pos="32 192 150 24" buttonText="Square Wave"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <TEXTBUTTON name="sawWaveButton" id="ac21fe3812e51ce9" memberName="sawWaveButton"
-              virtualName="" explicitFocusOrder="0" pos="32 232 150 24" buttonText="Saw Wave"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="224 128 208 96"
-                    class="Component" params=""/>
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
+                    class="Component" params="static_cast&lt;int&gt;(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="8 104 64 64" min="0"
-          max="1" int="0" style="Rotary" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="1"
+          max="2" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
+         virtualName="" explicitFocusOrder="0" pos="432 152 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="saw wave" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="Square Label" id="390c269ec611617c" memberName="squarelabel"
+         virtualName="" explicitFocusOrder="0" pos="256 152 96 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="square wave&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
