@@ -1,7 +1,7 @@
 #include "WaveformVisual.h"
 #include "Voice.h"
 
-void WaveformVisual::paint(Graphics &g) 
+void WaveformVisual::paint(Graphics &g)
 {
 	g.fillAll(Colours::black);
 	Path wavePath;
@@ -11,7 +11,7 @@ void WaveformVisual::paint(Graphics &g)
 	const float step = 4*float_Pi / width;
 
 	for (float x = 0.0f; x < width; ++x) {
-		
+
 		float phs = x * step;
 		if (phs > (2 * float_Pi))
 			phs = phs - (2 * float_Pi);
@@ -27,9 +27,8 @@ void WaveformVisual::paint(Graphics &g)
 			wavePath.lineTo(x, centreY - 0.4 * getHeight() * Waveforms::saw(phs, m_fTrngAmount, m_fPulseWidth));
 			break;
 		}
-		
+
 	}
 	g.setColour(Colours::lightgreen);
 	g.strokePath(wavePath, PathStrokeType(2.0f));
 }
-

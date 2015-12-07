@@ -8,7 +8,7 @@
 class WaveformVisual : public Component
 {
 
-public: 
+public:
 
 	WaveformVisual(int waveformKey, float pulseWidth, float trngAmount)
 		: m_iWaveformKey(waveformKey)
@@ -26,7 +26,7 @@ private:
 	float m_fTrngAmount;
 	float m_fPulseWidth;
 	int m_iWaveformKey;
-	
+
 
 
 };

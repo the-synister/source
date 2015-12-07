@@ -104,17 +104,17 @@ public:
         {
         case 1:
         {
-			osc1Sine.phase = 0.f;
-			osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-			osc1Sine.width = params.osc1pulsewidth.get();
+            osc1Sine.phase = 0.f;
+            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+            osc1Sine.width = params.osc1pulsewidth.get();
             lfo1square.width = params.osc1pulsewidth.get();
             break;
         }
         case 2:
         {
-			osc1Saw.phase = 0.f;
-			osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-			osc1Saw.trngAmount = params.osc1trngAmount.get();
+            osc1Saw.phase = 0.f;
+            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1Saw.trngAmount = params.osc1trngAmount.get();
             break;
         }
         }
@@ -137,8 +137,8 @@ public:
             clearCurrentNote();
             lfo1sine.reset();
             lfo1square.reset();
-			osc1Sine.reset();
-			osc1Saw.reset();
+            osc1Sine.reset();
+            osc1Saw.reset();
         }
     }
 
