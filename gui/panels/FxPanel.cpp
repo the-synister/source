@@ -177,6 +177,10 @@ void FxPanel::resized()
 void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    //handleSlider(sliderThatWasMoved);
+    //[/UsersliderValueChanged_Pre]
+
+    //[UsersliderValueChanged_Pre]
     if (sliderThatWasMoved == feedbackSlider)
     {
         //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
@@ -256,18 +260,6 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
             params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
         }
 
-        //if (!timeSlider->isEnabled()) {
-        //    double newTimeValue = 500;// delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
-
-        //    if (newTimeValue > params.delayTime.getMax())
-        //    {
-        //        newTimeValue = params.delayTime.getMax();
-        //        // ui feedback? blink?
-        //    }
-        //    else { params.delayTime.set(static_cast<float>(newTimeValue)); }
-        //    timeSlider->setValue(params.delayTime.get());
-        //}
-
         //[/UserButtonCode_syncToggle]
     }
 
@@ -278,20 +270,6 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-
-    //if (comboBoxThatHasChanged == dividend || comboBoxThatHasChanged == divisor)
-    //{
-    //    double newTimeValue = 500; // delay->calcDelayTime(dividend->getText().getDoubleValue(), divisor->getText().getDoubleValue(), params.bpm.get());
-
-    //    if (newTimeValue > params.delayTime.getMax())
-    //    {
-    //        newTimeValue = params.delayTime.getMax();
-    //        // ui feedback? blink?
-    //    }
-    //    else { params.delayTime.set(static_cast<float>(newTimeValue)); }
-    //    timeSlider->setValue(params.delayTime.get());
-    //}
-
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == dividend)
