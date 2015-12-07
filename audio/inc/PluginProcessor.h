@@ -14,7 +14,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
-#include "StepSequencer.h"
+#include <array>
 
 //==============================================================================
 /**
@@ -66,28 +66,35 @@ private:
 
     void updateHostInfo();
 
-    // StepSequencer main call
+    // StepSequencer functions
     void runSeq(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    void seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    void seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    void seqHostSync2(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    void midiNoteChanged(MidiBuffer& midiMessages);
     void stopSeq(MidiBuffer& midiMessages);
-    bool seqIsPlaying = false;
 
     // StepSequencer gui params
-    int midiSeq[8];
+    
+    // TODO: start error if high bpm and short steps
+    //       beware with std::array -> host crashes
+    std::array<int, 8> prevMidiSeq;
+    std::array<int, 8> currMidiSeq;
+    
+    //int prevMidiSeq[8];
+    //int currMidiSeq[8];
     int seqMode;
     int seqNumSteps;
     float seqStepSpeed;
     double seqNoteLength;
 
-    // StepSequencer host sync mode
-    void seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
+    // StepSequencer variables
     int seqNote = -1;
     double seqNextStep = 0.0;
     double stopNoteTime = 0.0;
-
-    // StepSequencer no host sync mode
-    void seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     int nextPlaySample = 0;
     int noteOffSample = 0;
+    bool seqIsPlaying = false;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };
