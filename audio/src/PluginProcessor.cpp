@@ -219,8 +219,7 @@ void PluginAudioProcessor::runSeq(AudioSampleBuffer& buffer, MidiBuffer & midiMe
         seqNoHostSync(buffer, midiMessages);
         break;
     case 2:
-        seqHostSync(buffer, midiMessages); // ppq approach, more robust
-        //seqHostSync2(buffer, midiMessages); // sample approach, same start bug but worse because always at start
+        seqHostSync(buffer, midiMessages);
         break;
     default:
         stopSeq(midiMessages);
@@ -290,70 +289,7 @@ void PluginAudioProcessor::seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& 
 }
 
 /*
-* Called while stepSequencer is synced with host (seqMode == 2). Sample approach
-*/
-void PluginAudioProcessor::seqHostSync2(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
-{
-    AudioPlayHead::CurrentPositionInfo hostPlayHead = positionInfo[getAudioIndex()];
-    int64 currPosSample = hostPlayHead.timeInSamples;
-
-    double quarterSec = 60.0 / positionInfo[getAudioIndex()].bpm;
-    int stepIntervalSample = static_cast<int>(quarterSec * seqStepSpeed * getSampleRate());
-    int noteLengthSample = static_cast<int>(quarterSec * seqNoteLength * getSampleRate());
-
-    if (hostPlayHead.isPlaying)
-    {
-
-        // if is playing a note then prepare sending midi noteOff message
-        if (seqIsPlaying)
-        {
-            // if midi noteOff message fits into current buffer
-            if (noteOffSample < buffer.getNumSamples() - 1)
-            {
-                // send midimessage into midibuffer
-                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-                midiMessages.addEvent(m, noteOffSample);
-                seqIsPlaying = false;
-            }
-        }
-
-        if (!seqIsPlaying)
-        {
-            // if midi noteOn message fits into current buffer
-            if (nextPlaySample < buffer.getNumSamples()-1)
-            {
-                // set Note to play
-                seqNote = (currPosSample / stepIntervalSample) % seqNumSteps;
-
-                // emphasis on step 1
-                float seqVelocity = 0.45f;
-                if (seqNote == 0)
-                {
-                    seqVelocity = 0.85f;
-                }
-
-                // send midimessage into midibuffer
-                if (currMidiSeq[seqNote] != -1)
-                {
-                    MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
-                    midiMessages.addEvent(m, nextPlaySample);
-                    seqIsPlaying = true;
-                }
-            }
-        }
-    }
-    else
-    {
-        // if host is not playing then stop sequencer and reset variables
-        stopSeq(midiMessages);
-    }
-    // always recalculate noteOffSample and nextPlaySample in host sync mode
-    nextPlaySample = abs(static_cast<int>(remainder(currPosSample, stepIntervalSample)));
-    noteOffSample = abs(static_cast<int>(remainder(currPosSample, noteLengthSample)));
-}
-
-/*
-* Called while stepSequencer is synced with host (seqMode == 2). ppq approach
+* Called while stepSequencer is synced with host (seqMode == 2).
 */
 void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
@@ -375,22 +311,25 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
             }
 
             // calculate the right note to play
-            seqNote = static_cast<int>(currPos / seqStepSpeed) % seqNumSteps; // TODO: start bug!
+            seqNote = static_cast<int>(currPos / seqStepSpeed) % seqNumSteps;
 
             // send midimessage into midibuffer
-            if (!seqIsPlaying && (currMidiSeq[seqNote] != -1) && (seqNote != -1))
+            if (!seqIsPlaying && (seqNote != -1))
             {
-                // emphasis on step 1
-                float seqVelocity = 0.45f;
-                if (seqNote == 0)
+                if (currMidiSeq[seqNote] != -1)
                 {
-                    seqVelocity = 0.85f;
-                }
+                    // emphasis on step 1
+                    float seqVelocity = 0.45f;
+                    if (seqNote == 0)
+                    {
+                        seqVelocity = 0.85f;
+                    }
 
-                MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
-                midiMessages.addEvent(m, 0);
-                stopNoteTime = currPos + seqNoteLength;
-                seqIsPlaying = true;
+                    MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
+                    midiMessages.addEvent(m, 0);
+                    stopNoteTime = currPos + seqNoteLength;
+                    seqIsPlaying = true;
+                }
             }
         }
 
@@ -417,10 +356,12 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
 
 /*
 * If any seqStepNote changed then send noteOff message for the old note.
+* Better if there was a own seq class so that each slider would call 
+* a single noteOff function before changing values.
 */
 void PluginAudioProcessor::midiNoteChanged(MidiBuffer & midiMessages)
 {
-    for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < seqNumSteps; ++i)
     {
         if (prevMidiSeq[i] != currMidiSeq[i])
         {

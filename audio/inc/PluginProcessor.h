@@ -75,14 +75,10 @@ private:
     void stopSeq(MidiBuffer& midiMessages);
 
     // StepSequencer gui params
-    
-    // TODO: start error if high bpm and short steps
-    //       beware with std::array -> host crashes
+    // TODO: start error if high bpm and short steps plays first note twice
     std::array<int, 8> prevMidiSeq;
     std::array<int, 8> currMidiSeq;
     
-    //int prevMidiSeq[8];
-    //int currMidiSeq[8];
     int seqMode;
     int seqNumSteps;
     float seqStepSpeed;
