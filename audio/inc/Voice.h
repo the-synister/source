@@ -168,8 +168,13 @@ public:
             {
                 for (int s = 0; s < numSamples; ++s)
                 {
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * tailOff;
+                    float currentSample;
+
+                    if (params.passtype.get() == 0) currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * tailOff;
+                    else currentSample = biquadHighpass(osc1.next(pitchMod[s])) * level * tailOff;
+                    // TODO bandpass!
+       
+                    
 
                     //check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2) {
@@ -196,7 +201,10 @@ public:
                 for (int s = 0; s < numSamples; ++s)
                 {
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level;
+                    float currentSample;
+                    if (params.passtype.get() == 0) currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level;
+                    else currentSample = biquadHighpass(osc1.next(pitchMod[s])) * level;
+                    // TODO Bandpass
 
                     //check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2) {
@@ -234,7 +242,41 @@ protected:
             }
         }
     }
-    
+
+    float biquadHighpass(float inputSignal) {
+        const float sRate = static_cast<float>(getSampleRate());
+
+        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+
+        const float currentHighcutFreq = params.hpCutoff.get() / sRate;
+        const float currentResonance = pow(10.f, -params.hpResonance.get() / 20.f);
+
+        // coefficients for highpass, depending on resonance and highcut frequency
+        k = 0.5f * currentResonance * sin(float_Pi * currentHighcutFreq);
+        coeff1 = 0.5f * (1.f - k) / (1.f + k);
+        coeff2 = (0.5f + coeff1) * cos(float_Pi * currentHighcutFreq);
+        coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
+
+        b0 = 2.f * coeff3;
+        b1 = -4.f * coeff3;
+        b2 = 2.f * coeff3;
+        a1 = -2.f * coeff2;
+        a2 = 2.f * coeff1;
+
+        lastSample = inputSignal;
+
+        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+
+        //delaying samples
+        inputDelay2 = inputDelay1;
+        inputDelay1 = lastSample;
+        outputDelay2 = outputDelay1;
+        outputDelay1 = inputSignal;
+
+        return inputSignal;
+    }
+
     float biquadLowpass(float inputSignal) {
         const float sRate = static_cast<float>(getSampleRate());
 
