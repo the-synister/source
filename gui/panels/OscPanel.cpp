@@ -68,6 +68,7 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
+
     addAndMakeVisible (squareWaveButton = new TextButton ("squareWaveButton"));
     squareWaveButton->setButtonText (TRANS("Square Wave"));
     squareWaveButton->addListener (this);
@@ -75,6 +76,15 @@ OscPanel::OscPanel (SynthParams &p)
     addAndMakeVisible (sawWaveButton = new TextButton ("sawWaveButton"));
     sawWaveButton->setButtonText (TRANS("Saw Wave"));
     sawWaveButton->addListener (this);
+
+    addAndMakeVisible (waveformVisual = new WaveformVisual());
+    waveformVisual->setName ("Waveform Visual");
+
+    addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
+    waveformSwitch->setRange (0, 1, 0);
+    waveformSwitch->setSliderStyle (Slider::Rotary);
+    waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    waveformSwitch->addListener (this);
 
 
     //[UserPreSize]
@@ -106,8 +116,10 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
-	squareWaveButton = nullptr;
-	sawWaveButton = nullptr;
+    squareWaveButton = nullptr;
+    sawWaveButton = nullptr;
+    waveformVisual = nullptr;
+    waveformSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -137,8 +149,10 @@ void OscPanel::resized()
     pulsewidth->setBounds (368, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
-	squareWaveButton->setBounds(32, 152, 150, 24);
-	sawWaveButton->setBounds(32, 192, 150, 24);
+    squareWaveButton->setBounds (32, 192, 150, 24);
+    sawWaveButton->setBounds (32, 232, 150, 24);
+    waveformVisual->setBounds (224, 128, 208, 96);
+    waveformSwitch->setBounds (8, 104, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -162,11 +176,15 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
+		waveformVisual->setTrngAmount(osc1trngAmount->getValue());
+		waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
+		waveformVisual->setPulseWidth(pulsewidth->getValue());
+		waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)
@@ -178,6 +196,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_ctune1] -- add your slider handling code here..
         //[/UserSliderCode_ctune1]
+    }
+    else if (sliderThatWasMoved == waveformSwitch)
+    {
+        //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_waveformSwitch]
     }
 
     //[UsersliderValueChanged_Post]
@@ -195,6 +218,8 @@ void OscPanel::buttonClicked (Button* buttonThatWasClicked)
 		params.osc1WaveForm.setUI(1.0f);
 		squareWaveButton->setToggleState(1,1);
 		sawWaveButton->setToggleState(0, 0);
+		waveformVisual->setWaveformKey(1);
+		waveformVisual->repaint();
         //[/UserButtonCode_squareWaveButton]
     }
     else if (buttonThatWasClicked == sawWaveButton)
@@ -203,6 +228,8 @@ void OscPanel::buttonClicked (Button* buttonThatWasClicked)
 		params.osc1WaveForm.setUI(2.0f);
 		squareWaveButton->setToggleState(0, 0);
 		sawWaveButton->setToggleState(1, 1);
+		waveformVisual->setWaveformKey(2);
+		waveformVisual->repaint();
         //[/UserButtonCode_sawWaveButton]
     }
 
@@ -256,21 +283,19 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-          virtualName="" explicitFocusOrder="0" pos="160 32 64 64" min="0.010000000000000000208"
-          max="0.98999999999999999112" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="6c4a0c81a4fa9676" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="160 8 64 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Pulse Width&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
   <TEXTBUTTON name="squareWaveButton" id="2d38ae78af3687c8" memberName="squareWaveButton"
-              virtualName="" explicitFocusOrder="0" pos="32 152 150 24" buttonText="Square Wave"
+              virtualName="" explicitFocusOrder="0" pos="32 192 150 24" buttonText="Square Wave"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="sawWaveButton" id="ac21fe3812e51ce9" memberName="sawWaveButton"
-              virtualName="" explicitFocusOrder="0" pos="32 192 150 24" buttonText="Saw Wave"
+              virtualName="" explicitFocusOrder="0" pos="32 232 150 24" buttonText="Saw Wave"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="224 128 208 96"
+                    class="Component" params=""/>
+  <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
+          virtualName="" explicitFocusOrder="0" pos="8 104 64 64" min="0"
+          max="1" int="0" style="Rotary" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

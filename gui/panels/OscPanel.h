@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -37,7 +38,7 @@
 */
 class OscPanel  : public PanelBase,
                   public SliderListener,
-				  public ButtonListener
+                  public ButtonListener
 {
 public:
     //==============================================================================
@@ -66,8 +67,10 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
-	ScopedPointer<TextButton> squareWaveButton;
-	ScopedPointer<TextButton> sawWaveButton;
+    ScopedPointer<TextButton> squareWaveButton;
+    ScopedPointer<TextButton> sawWaveButton;
+    ScopedPointer<WaveformVisual> waveformVisual;
+    ScopedPointer<Slider> waveformSwitch;
 
 
     //==============================================================================
