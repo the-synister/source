@@ -408,7 +408,8 @@ protected:
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
         }
         else if (params.lpModSource.get() == 2) { // env
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+            //moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+            moddedFreq = (params.lpCutoff.get() + ((modValue)* 20000.f *  params.lpModAmout.get() / 100.f));
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) {
