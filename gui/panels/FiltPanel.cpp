@@ -79,16 +79,15 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
     modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     modSrc->addItem (TRANS("No Mod"), 1);
-    modSrc->addItem (TRANS("LFO1"), 2);
-    modSrc->addItem (TRANS("Envelope1"), 3);
+    modSrc->addItem (TRANS("LFO 1"), 2);
+    modSrc->addItem (TRANS("ENV 1"), 3);
     modSrc->addListener (this);
 
-    addAndMakeVisible (modSliderCut = new MouseOverKnob ("modSliderCut1"));
-    modSliderCut->setRange (0, 100, 0);
-    modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
-    modSliderCut->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    addAndMakeVisible (modSliderCut = new Slider ("Mod"));
+    modSliderCut->setRange (0, 10, 0);
+    modSliderCut->setSliderStyle (Slider::Rotary);
+    modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
     modSliderCut->addListener (this);
-    modSliderCut->setSkewFactor (0.33);
 
 
     //[UserPreSize]
@@ -147,13 +146,13 @@ void FiltPanel::resized()
     //[/UserPreResize]
 
     cutoffSlider->setBounds (8, 8, 64, 64);
-    resonanceSlider->setBounds (152, 8, 64, 64);
-    FilterAttack->setBounds (9, 104, 64, 64);
-    FilterDecay->setBounds (81, 104, 64, 64);
-    FilterSustain->setBounds (153, 104, 64, 64);
-    FilterRelease->setBounds (225, 104, 64, 64);
+    resonanceSlider->setBounds (104, 8, 64, 64);
+    FilterAttack->setBounds (273, 8, 64, 64);
+    FilterDecay->setBounds (345, 8, 64, 64);
+    FilterSustain->setBounds (417, 8, 64, 64);
+    FilterRelease->setBounds (489, 8, 64, 64);
     modSrc->setBounds (8, 80, 64, 16);
-    modSliderCut->setBounds (80, 8, 64, 64);
+    modSliderCut->setBounds (64, 8, 31, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -197,6 +196,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
+        params.lpModAmout.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
 
@@ -246,33 +246,33 @@ BEGIN_JUCER_METADATA
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="104 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="FilterAttack"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="9 104 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="273 8 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay" id="84a4159bee0728d6" memberName="FilterDecay" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="81 104 64 64" min="0.001" max="5"
+          explicitFocusOrder="0" pos="345 8 64 64" min="0.001" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="FilterSustain"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="153 104 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="417 8 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release" id="c8bc1120a33101cd" memberName="FilterRelease"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="225 104 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="489 8 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="8 80 64 16" editable="0" layout="36"
-            items="No Mod&#10;LFO1&#10;Envelope1" textWhenNonSelected="No Mod"
+            items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
-  <SLIDER name="modSliderCut1" id="2596fb730a93410" memberName="modSliderCut"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
-          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+  <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
+          explicitFocusOrder="0" pos="64 8 31 24" min="0" max="10" int="0"
+          style="Rotary" textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

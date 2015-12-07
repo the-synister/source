@@ -67,7 +67,7 @@ private:
     ScopedPointer<MouseOverKnob> FilterSustain;
     ScopedPointer<MouseOverKnob> FilterRelease;
     ScopedPointer<ComboBox> modSrc;
-    ScopedPointer<MouseOverKnob> modSliderCut;
+    ScopedPointer<Slider> modSliderCut;
 
 
     //==============================================================================

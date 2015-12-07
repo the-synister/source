@@ -398,19 +398,15 @@ protected:
     float biquadLowpass(float inputSignal, float modValue) {
         const float sRate = static_cast<float>(getSampleRate());
 
-        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
-
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
-        if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
-        
+
+        if (params.lpModSource.get() == 1) {        //bipolar (lfo) modValues
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
         }
-        else if (params.lpModSource.get() == 2) { // env
+        else if (params.lpModSource.get() == 2) {   // env, this is just for testing, env_cutoff branch is the real thing
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
         }
-        
         if (moddedFreq < params.lpCutoff.getMin()) {
             moddedFreq = params.lpCutoff.getMin();
         }
@@ -418,12 +414,10 @@ protected:
             moddedFreq = params.lpCutoff.getMax();
         }
 
+        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+
         const float currentLowcutFreq = (moddedFreq / sRate);
-
-        //if (params.lpModAmout.get() > 0.f) {
-        //    currentLowcutFreq *= modValue;
-        //}
-
         const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
