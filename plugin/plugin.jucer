@@ -12,6 +12,10 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
+            file="../gui/WaveformVisual.cpp"/>
+      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
+            file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
