@@ -244,6 +244,21 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    if (params.seqMode.get() < 1.5f)
+    {
+        if (params.seqMode.get() < 0.5f)
+        {
+            seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
+        }
+        else
+        {
+            seqPlay->setColour(TextButton::buttonColourId, Colours::lightgreen);
+        }
+    }
+    else
+    {
+        syncHost->setToggleState(true, dontSendNotification);
+    }
     //[/UserPreResize]
 
     seqStep1->setBounds (264, 48, 48, 264);
@@ -364,7 +379,7 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
             else
             {
                 params.seqMode.set(0.0f);
-                seqPlay->setColour(TextButton::buttonColourId, Colours::dimgrey);
+                seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
             }
         }
         //[/UserButtonCode_seqPlay]
@@ -380,7 +395,7 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         {
             params.seqMode.set(0.0f);
         }
-        seqPlay->setColour(TextButton::buttonColourId, Colours::dimgrey);
+        seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
         //[/UserButtonCode_syncHost]
     }
 

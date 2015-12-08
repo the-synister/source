@@ -70,12 +70,11 @@ private:
     void runSeq(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     void seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     void seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
-    void seqHostSync2(AudioSampleBuffer& buffer, MidiBuffer& midiMessages);
     void midiNoteChanged(MidiBuffer& midiMessages);
     void stopSeq(MidiBuffer& midiMessages);
 
     // StepSequencer gui params
-    // TODO: start error if high bpm and short steps plays first note twice
+    // TODO: start a error if high bpm and short steps plays first note twice
     std::array<int, 8> prevMidiSeq;
     std::array<int, 8> currMidiSeq;
     

@@ -277,8 +277,9 @@ void PluginAudioProcessor::seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& 
 
             // calculate noteOffSample and nextPlaySample 
             double quarterSec = 60.0 / positionInfo[getAudioIndex()].bpm;
-            noteOffSample = static_cast<int>(quarterSec * seqNoteLength * getSampleRate());
-            nextPlaySample = static_cast<int>(quarterSec * seqStepSpeed * getSampleRate());
+            int diff = buffer.getNumSamples() - 1 - nextPlaySample;
+            noteOffSample = static_cast<int>(quarterSec * seqNoteLength * getSampleRate()) - diff;
+            nextPlaySample = static_cast<int>(quarterSec * seqStepSpeed * getSampleRate()) - diff;
         }
         else
         {
@@ -289,7 +290,7 @@ void PluginAudioProcessor::seqNoHostSync(AudioSampleBuffer& buffer, MidiBuffer& 
 }
 
 /*
-* Called while stepSequencer is synced with host (seqMode == 2).
+* Called while stepSequencer is synced with host (seqMode == 2). ppq approach
 */
 void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
@@ -299,6 +300,21 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
 
     if (hostPlayHead.isPlaying)
     {
+        // time for creating corresponding noteOff event to end each step
+        if (currPos >= stopNoteTime)
+        {
+            // send midimessage into midibuffer
+            if (seqIsPlaying)
+            {
+                if (currMidiSeq[seqNote] != -1)
+                {
+                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
+                    midiMessages.addEvent(m, 0);
+                    seqIsPlaying = false;
+                }
+            }
+        }
+
         // time for creating noteOn event
         if (currPos >= seqNextStep)
         {
@@ -336,21 +352,6 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
                 }
             }
         }
-
-        // time for creating corresponding noteOff event to end each step
-        if (currPos >= stopNoteTime)
-        {
-            // send midimessage into midibuffer
-            if (seqIsPlaying)
-            {
-                if (currMidiSeq[seqNote] != -1)
-                {
-                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-                    midiMessages.addEvent(m, 0);
-                    seqIsPlaying = false;
-                }
-            }
-        }
     }
     else
     {
@@ -358,7 +359,7 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
         stopSeq(midiMessages);
     }
     // recalculate next step position in host sync mode
-    seqNextStep = currPos + abs(remainder(currPos, static_cast<double>(seqStepSpeed)));
+    seqNextStep = jmax(0.0, currPos) + abs(remainder(currPos, static_cast<double>(seqStepSpeed)));
 }
 
 /*
