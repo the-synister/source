@@ -223,7 +223,7 @@ public:
 
                         //check if the output is a stereo output
                         if (outputBuffer.getNumChannels() == 2) {
-                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                             outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                             outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                         }
                         else {

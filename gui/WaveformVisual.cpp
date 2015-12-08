@@ -6,7 +6,7 @@ void WaveformVisual::paint(Graphics &g)
 	g.fillAll(Colours::black);
 	Path wavePath;
 	const float centreY = getHeight() / 2.0f;
-	const float amplitude = 0.3f;
+	const float amplitude = 0.4f;
 	const int width = getWidth();
 	const float step = 4*float_Pi / width;
 
@@ -20,15 +20,15 @@ void WaveformVisual::paint(Graphics &g)
 		{
 		case 1:
 		{
-			wavePath.lineTo(x, centreY - 0.4 * getHeight() * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
+			wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
 			break;
 		}
 		case 2:
-			wavePath.lineTo(x, centreY - 0.4 * getHeight() * Waveforms::saw(phs, m_fTrngAmount, m_fPulseWidth));
+			wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::saw(phs, m_fTrngAmount, m_fPulseWidth));
 			break;
 		}
 
 	}
 	g.setColour(Colours::lightgreen);
-	g.strokePath(wavePath, PathStrokeType(2.0f));
+	g.strokePath(wavePath, PathStrokeType(2.5f));
 }
