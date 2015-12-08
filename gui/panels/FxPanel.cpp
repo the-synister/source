@@ -90,7 +90,7 @@ FxPanel::FxPanel (SynthParams &p)
     cutoffSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (resSlider = new MouseOverKnob ("Resonance"));
-    resSlider->setRange (-25, 25, 1);
+    resSlider->setRange (-25, 0, 1);
     resSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     resSlider->addListener (this);
@@ -299,7 +299,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -314,11 +314,11 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="288 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 8 64 64"
-          min="-25" max="25" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          min="-25" max="0" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

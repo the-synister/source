@@ -10,12 +10,12 @@ Author:  nj
 
 #include "FxDelay.h"
 
-float FxDelay::filterDelay(float inputSignal, const double sRate) {
+float FxDelay::filterDelay(float inputSignal) {
 
     //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
     float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-    const float currentLowcutFreq = params.delayCutoff.get() / static_cast<float>(sRate);
+    const float currentLowcutFreq = params.delayCutoff.get() / static_cast<float>(sampleRate);
     const float currentResonance = pow(10.f, -params.delayResonance.get() / 20.f);
 
     // coefficients for lowpass, depending on resonance and lowcut frequency
@@ -43,6 +43,18 @@ float FxDelay::filterDelay(float inputSignal, const double sRate) {
     return inputSignal;
 }
 
+void FxDelay::init(int channelsIn, double sampleRateIn)
+{
+    channels = channelsIn;
+    sampleRate = sampleRateIn;
+    delayBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 5.0));
+    currentDelayLength = static_cast<int>(params.delayTime.get()*(sampleRate / 1000.0));
+
+    for (int c = 0; c < channels; ++c) {
+        delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
+    }
+}
+
 void FxDelay::calcDelayTime(double bpmIn)
 {
     // check for changes, re-calculate delay time - how slow is this?
@@ -60,10 +72,11 @@ void FxDelay::calcDelayTime(double bpmIn)
     }
 }
 
-void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, double sampleRate, double bpmIn)
+void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int blockSizeIn)
 {
+    blockSize = blockSizeIn;
     int newLoopLength;
-    calcDelayTime(bpmIn);
+    calcDelayTime(params.positionInfo[params.getGUIIndex()].bpm);
 
     for (int s = 0; s < outputBuffer.getNumSamples(); ++s)
     {
@@ -85,7 +98,7 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
             float delayedSample = delayBuffer.getSample(c, loopPosition);
             delayBuffer.setSample(c, loopPosition, currentSample);
             //delayBuffer.setSample(c, newLoopLength - loopPosition, currentSample); // reverse + overflow
-            delayedSample = filterDelay(delayedSample, sampleRate); // here it does record the filter
+            delayedSample = filterDelay(delayedSample); // here it does record the filter
             delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
             //delayedSample = filterDelay(delayedSample, sampleRate); // here it does not record the filter
             outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get());

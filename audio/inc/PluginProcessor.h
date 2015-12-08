@@ -60,13 +60,13 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    // FX
-    FxDelay delay;
-
-    SynthParams params;
 private:
     //==============================================================================
     Synthesiser synth;
+    
+    // FX
+    FxDelay delay;
+
     void updateHostInfo();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)

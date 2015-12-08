@@ -17,7 +17,7 @@
 
 //============================================================1==================
 PluginAudioProcessor::PluginAudioProcessor() :
-    delay(*this, 2, 44100.0)
+    delay(*this)
 {
 
     addParameter(new HostParam<Param>(osc1fine));
@@ -146,6 +146,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
+    delay.init(2, sRate);
     synth.addSound(new Sound());
 }
 
@@ -180,7 +181,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // fx
     // delay
     if (delayDryWet.get() > 0.f) {
-        delay.renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
+        delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
 }
 

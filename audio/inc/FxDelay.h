@@ -15,11 +15,9 @@
 
 class FxDelay {
 public:
-    FxDelay(SynthParams &p, int channels, double sampleRate)
+    FxDelay(SynthParams &p)
         : params(p)
         , loopPosition(0)
-        , delayBuffer(AudioSampleBuffer(channels, static_cast<int>(sampleRate * 5.0)))
-        , currentDelayLength(static_cast<int>(params.delayTime.get()*(sampleRate / 1000.0)))
         , bpm(120)
         , divisor(0)
         , dividend(0)
@@ -29,25 +27,25 @@ public:
         , outputDelay1(0.f)
         , outputDelay2(0.f)
     {
-        for (int c = 0; c < channels; ++c) {
-            delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
-        }
     }
     ~FxDelay(){}
     
-    void renderDelay(AudioSampleBuffer& outputBuffer, int startSample, double sampleRate, double bpmIn);
+    void render(AudioSampleBuffer& outputBuffer, int startSample, int blockSizeIn);
+    void init(int channelsIn, double sampleRateIn);
 
 private:
     void calcDelayTime(double bpmIn);
-    float filterDelay(float inputSignal, const double sRate);
+    float filterDelay(float inputSignal);
     SynthParams &params;
     AudioSampleBuffer delayBuffer;
+    double sampleRate;
+    int channels;
     int loopPosition;
     int currentDelayLength;
     double bpm;
+    int blockSize;          //!< usable in the future for midi event handling
     float divisor;
     float dividend;
-    std::atomic<bool> bpmDirty;
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
 };
 #endif  // FXDELAY_H_INCLUDED
