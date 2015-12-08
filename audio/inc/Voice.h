@@ -223,7 +223,7 @@ public:
             for (int s = 0; s < numSamples; ++s) {
                 for (int s = 0; s < numSamples; ++s) {
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s])))* level * tailOff * currentAmp;
+                    const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]))) * level * env1Mod[s];
 
                     //check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2) {
@@ -318,9 +318,7 @@ protected:
                     valueAtRelease = envCoeff;
                     attackDecayCounter++;
                 }
-
-                // if attack and decay phase is over then sustain level
-                else
+                else // if attack and decay phase is over then sustain level
                 {
                     envCoeff = sustainLevel;
                 }
