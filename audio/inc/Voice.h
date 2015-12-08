@@ -98,14 +98,13 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize) 
-    :    lastSample(0.f)
+    : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
     , level (0.f)
-    , pitchModBuffer(1,blockSize)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
     , lpOut1(0.f)
@@ -114,6 +113,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
+    , pitchModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
     {}
 
@@ -221,26 +221,24 @@ public:
 
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
-                for (int s = 0; s < numSamples; ++s) {
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]))) * level * env1Mod[s];
+                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]))) * level * env1Mod[s];
 
-                    //check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    } else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                        }
+                //check if the output is a stereo output
+                if (outputBuffer.getNumChannels() == 2) {
+                    outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                    outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                } else {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
+                }
 
-                    if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
-                        clearCurrentNote();
-                        lfo1sine.reset();
-                        lfo1square.reset();
-                        break;
-                    }
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
+                    clearCurrentNote();
+                    lfo1sine.reset();
+                    lfo1square.reset();
+                    break;
                 }
             }
         }
@@ -248,7 +246,8 @@ public:
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
     //naive 1 pole filters wigh a hyperbolic tangent saturator
-    float ladderFilter(float ladderIn){
+    float ladderFilter(float ladderIn)
+    {
 
         const float sRate = static_cast<float>(getSampleRate());
 
