@@ -22,6 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -34,11 +35,12 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FxPanel  : public Component
+class FxPanel  : public PanelBase,
+                 public SliderListener
 {
 public:
     //==============================================================================
-    FxPanel ();
+    FxPanel (SynthParams &p);
     ~FxPanel();
 
     //==============================================================================
@@ -47,6 +49,7 @@ public:
 
     void paint (Graphics& g);
     void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -55,6 +58,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MouseOverKnob> clippingFactor;
 
 
     //==============================================================================

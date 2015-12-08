@@ -116,12 +116,11 @@ void LfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (8, 32, 64, 64);
+    freq->setBounds (8, 8, 64, 64);
     wave->setBounds (120, 40, 192, 32);
     label2->setBounds (88, 72, 80, 24);
     squareWaveLabel->setBounds (266, 72, 83, 24);
     sampleAndHoldLabel->setBounds (160, 72, 112, 24);
-
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

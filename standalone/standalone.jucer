@@ -12,6 +12,8 @@
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
         <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
         <FILE id="SyrRUI" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
+        <FILE id="GGyVHQ" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
+        <FILE id="fCjuAG" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
         <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
@@ -29,6 +31,7 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="KYdWhH" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
@@ -37,6 +40,7 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="PrZ2TP" name="FxClipping.cpp" compile="1" resource="0" file="../audio/inc/FxClipping.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

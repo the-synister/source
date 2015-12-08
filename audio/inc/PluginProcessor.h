@@ -14,6 +14,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "FxClipping.h"
 
 //==============================================================================
 /**
@@ -58,6 +59,10 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    float currentSample;
+    SynthParams params;
+    FxClipping clip;
 private:
     //==============================================================================
     Synthesiser synth;

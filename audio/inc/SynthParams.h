@@ -29,6 +29,8 @@ public:
     Param envDecay;     //!< env decay in [0.001..5]s (logarithmic scaling)
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+    
+    Param clippingFactor;     //!< clipping factor of the amplitude of the signal in [0..100] (percentage of the amplitude)
 
     Param panDir; //!< pan R/L [-100..100]
 
