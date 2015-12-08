@@ -61,7 +61,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     // FX
-    ScopedPointer<FxDelay> delay;
+    FxDelay delay;
+
     SynthParams params;
 private:
     //==============================================================================

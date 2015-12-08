@@ -16,7 +16,8 @@
 #include <PluginEditor.h>
 
 //============================================================1==================
-PluginAudioProcessor::PluginAudioProcessor()
+PluginAudioProcessor::PluginAudioProcessor() :
+    delay(*this, 2, 44100.0)
 {
 
     addParameter(new HostParam<Param>(osc1fine));
@@ -144,7 +145,6 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     {
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
-    delay = new FxDelay(*this, samplesPerBlock, sRate);
     synth.clearSounds();
     synth.addSound(new Sound());
 }
@@ -180,7 +180,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // fx
     // delay
     if (delayDryWet.get() > 0.f) {
-        delay->renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
+        delay.renderDelay(buffer, 0, getSampleRate(), positionInfo[getGUIIndex()].bpm); // adds the delay to the outputBuffer
     }
 }
 
