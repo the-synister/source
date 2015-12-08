@@ -349,6 +349,9 @@
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -1657,6 +1660,9 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h">

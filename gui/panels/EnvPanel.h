@@ -35,7 +35,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public PanelBase
+class EnvPanel  : public PanelBase,
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -48,6 +49,7 @@ public:
 
     void paint (Graphics& g);
     void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -56,6 +58,10 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MouseOverKnob> attack;
+    ScopedPointer<MouseOverKnob> decay;
+    ScopedPointer<MouseOverKnob> sustain;
+    ScopedPointer<MouseOverKnob> release;
 
 
     //==============================================================================
