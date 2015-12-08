@@ -28,7 +28,7 @@
 
 //==============================================================================
 EnvPanel::EnvPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -92,8 +92,8 @@ void EnvPanel::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>

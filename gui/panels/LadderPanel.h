@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -35,9 +35,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class LadderPanel  : public Component,
-                     public SliderListener,
-                     public ButtonListener
+class LadderPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
@@ -51,21 +50,16 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> cutoff;
-    ScopedPointer<Slider> resonance;
-    ScopedPointer<Label> label;
-    ScopedPointer<Label> label2;
-    ScopedPointer<ToggleButton> toggleButton;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================

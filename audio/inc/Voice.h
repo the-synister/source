@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "JuceHeader.h"
@@ -11,16 +10,35 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs)  { return std::sin(phs); }
-    static float square(float phs) { return std::copysign(1.f, float_Pi - phs);  }
-    static float saw(float phs)    { return phs / (float_Pi*2.f) - .5f; }
+    static float sinus(float phs, float trngAmount, float width)  { 
+        ignoreUnused(trngAmount, width);
+        return std::sin(phs); 
+    }
+    static float square(float phs, float trngAmount, float width) {
+        ignoreUnused(trngAmount, width);
+        //square wave with duty cycle
+        if (phs < 2.f * float_Pi * width) {
+            return 1.f;
+        } else {
+            return -1.f;
+        }
+        //return std::copysign(1.f, float_Pi - phs);
+    }
+    static float saw(float phs, float trngAmount, float width) {
+        ignoreUnused(width);
+        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
+        if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
+    }
 };
 
 
-template<float(*_waveform)(float)>
+template<float(*_waveform)(float, float, float)>
 struct Oscillator {
     float phase;
     float phaseDelta;
+    float trngAmount;
+    float width;
 
     Oscillator() : phase(0.f), phaseDelta(0.f) {}
 
@@ -34,13 +52,13 @@ struct Oscillator {
     }
 
     float next() {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
 
     float next(float pitchMod) {
-        const float result = _waveform(phase);
+        const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
@@ -53,15 +71,15 @@ public:
     , level (0.f)
     , tailOff (0.f)
     , pitchModBuffer(1,blockSize)
-    , lastSample(0.f)
-    , inputDelay1(0.f)
-    , inputDelay2(0.f)
-    , outputDelay1(0.f)
-    , outputDelay2(0.f)
-    , currentLadderCutoffFreq(params.ladderCutoff.get())
-    {
-        setButterCoefficients();
-    }
+    , ladderOut(0.f)
+    , ladderInDelay(0.f)
+    , lpOut1(0.f)
+    , lpOut2(0.f)
+    , lpOut3(0.f)
+    , lpOut1Delay(0.f)
+    , lpOut2Delay(0.f)
+    , lpOut3Delay(0.f)
+    {}
 
 
     bool canPlaySound (SynthesiserSound* sound) override
@@ -71,23 +89,38 @@ public:
     }
 
     void startNote (int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int /*currentPitchWheelPosition*/) override
+                    SynthesiserSound*, int currentPitchWheelPosition) override
     {
-        lastSample = 0.f, inputDelay1 = 0.f, inputDelay2 = 0.f, outputDelay1 = 0.f, outputDelay2 = 0.f;
+        
+        //for ladder filter
+        ladderOut = 0.f;
+        ladderInDelay = 0.f;
+        lpOut1 = 0.f;
+        lpOut2 = 0.f;
+        lpOut3 = 0.f;
+        lpOut1Delay = 0.f;
+        lpOut2Delay = 0.f;
+        lpOut3Delay = 0.f;
+
         level = velocity * 0.15f;
         tailOff = 0.f;
 
-        //calculate butterworth coefficients
-        setButterCoefficients();
+        currentPitchValue = currentPitchWheelPosition;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
 
-        lfo1.phase = 0.f;
-        lfo1.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        // change the phases of both lfo waveforms, in case the user switches them during a note
+        lfo1sine.phase = 0.f;
+        lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1square.phase = 0.f;
+        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 
         osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+        osc1.trngAmount = params.osc1trngAmount.get();
+        osc1.width = params.osc1pulsewidth.get();
+        lfo1square.width = params.osc1pulsewidth.get();
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -105,14 +138,15 @@ public:
         {
             // we're being told to stop playing immediately, so reset everything..
             clearCurrentNote();
-            lfo1.reset();
+            lfo1sine.reset();
+            lfo1square.reset();
             osc1.reset();
         }
     }
 
-    void pitchWheelMoved (int /*newValue*/) override
+    void pitchWheelMoved (int newValue) override
     {
-        // can't be bothered implementing this for the demo!
+        currentPitchValue = newValue;
     }
 
     void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
@@ -126,107 +160,142 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
 
         const float currentAmp = params.vol.get();
+        const float currentPan = params.panDir.get();
 
-        if(lfo1.isActive())
+        // Pan Influence
+        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+
+        if (lfo1square.isActive() || lfo1sine.isActive())
         {
             if (tailOff > 0.f)
             {
-                for (int s = 0; s < numSamples;++s)
+                    for (int s = 0; s < numSamples; ++s)
                 {
-                    //TODO - check if ladder filter is on!
-                    const float currentSample = filterLP(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    const float currentSample = ladderFilter(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
 
+                        //check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2) {
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample (c, startSample+s, currentSample);
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
 
                     tailOff *= 0.99999f;
                     if (tailOff <= 0.005f)
                     {
                         clearCurrentNote();
-                        lfo1.reset();
+                            lfo1sine.reset();
+                            lfo1square.reset();
                         break;
                     }
                 }
             }
             else
             {
-                for (int s = 0; s < numSamples;++s)
+                for (int s = 0; s < numSamples; ++s)
                 {
-                    //TODO - check if ladder filter is on!
-                    const float currentSample = filterLP(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                    const float currentSample = ladderFilter(osc1.next(pitchMod[s]))* level * tailOff * currentAmp;
 
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                        outputBuffer.addSample(c, startSample+s, currentSample);
+                    //check if the output is a stereo output
+                    if (outputBuffer.getNumChannels() == 2) {
+                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                    }
+                    else {
+                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                                    outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
                 }
             }
         }
     }
 
-    // Calculates coefficients for second order Butterworth lowpass
-    void setButterCoefficients() {
+    //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
+    //naive 1 pole filters wigh a hyperbolic tangent saturator
+    float ladderFilter(float ladderIn){
 
-        //const float currentResonance = pow(10.f, -params.ladderRes.get() / 20.f);
-        const float cutoffFreq = params.ladderCutoff.get();
         const float sRate = static_cast<float>(getSampleRate());
 
-        const float interVar = 1.f / (tanf(float_Pi*cutoffFreq / sRate));
+        //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
+        float currentLadderCutoffFreq = params.ladderCutoff.get();
 
-        butterCoeffs[0] = 1.f / (1.0f + sqrt(2.0f)*interVar + pow(interVar,2.f));
-        butterCoeffs[1] = 2.f*butterCoeffs[0];
-        butterCoeffs[2] = butterCoeffs[0];
-        butterCoeffs[3] = 2.f*butterCoeffs[0] * (1.f - pow(interVar, 2));
-        butterCoeffs[4] = butterCoeffs[0] * (1.0f - sqrt(2.0f)*interVar + pow(interVar,2.f));
+        //coeffecients and parameters
+        float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
+        float g = omega_c / 2.f;
+        float a = (1.f - g) / (1.f + g);
+        float b = g / (1.f + g);
 
-    }
+        // subtract the feedback
+        // inverse hyperbolic Sinus
+        // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // hyperbolic tangent
+        ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
 
-    //apply Lowpass Filter to the current Sample in renderNextBlock()
-    float filterLP(float currentSample){
+        // proecess through 1 pole Filters 4 times
+        lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
+        ladderInDelay = ladderIn;
 
-        if (currentLadderCutoffFreq != params.ladderCutoff.get())
-        {
-            setButterCoefficients();
-            currentLadderCutoffFreq = params.ladderCutoff.get();
-        }
+        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* tanh(lpOut2);
+        lpOut1Delay = lpOut1;
 
-        currentSample = *(butterCoeffs)*currentSample + *(butterCoeffs+1)*inputDelay1 + *(butterCoeffs+2)*inputDelay2
-            - *(butterCoeffs+3)*outputDelay1 - *(butterCoeffs+4)*outputDelay2;
+        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* tanh(lpOut3);
+        lpOut2Delay = lpOut2;
 
-        //delaying samples
-        inputDelay2 = inputDelay1;
-        inputDelay1 = lastSample;
-        outputDelay2 = outputDelay1;
-        outputDelay1 = currentSample;
+        ladderOut = b*(lpOut3 + lpOut3Delay) + a* tanh(ladderOut);
+        lpOut3Delay = lpOut3;
 
-        return currentSample;
+        return ladderOut;
     }
 
 protected:
     void renderModulation(int numSamples) {
-        //! \todo add pitch wheel values
+
+        // add pitch wheel values
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
+        if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
+        {
+            for (int s = 0; s < numSamples;++s)
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
+            }
+        }
+        else // if lfo1wave is 1, lfo is set to square wave
+        {
         for (int s = 0; s < numSamples;++s)
         {
-            pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1.next()*modAmount));
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
+            }
         }
     }
-
 
 private:
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
 
-    Oscillator<&Waveforms::sinus> lfo1;
+    Oscillator<&Waveforms::sinus> lfo1sine;
+    Oscillator<&Waveforms::square> lfo1square;
 
     float level, tailOff;
 
+    int currentPitchValue;
+
     AudioSampleBuffer pitchModBuffer;
 
-    //Filter initialisation
-    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, currentLadderCutoffFreq;
-    float butterCoeffs[5];
-
+    //for the lader filter
+    float ladderOut;
+    float ladderInDelay;
+    float lpOut1;
+    float lpOut2;
+    float lpOut3;
+    float lpOut1Delay;
+    float lpOut2Delay;
+    float lpOut3Delay;
 };

@@ -28,47 +28,27 @@
 
 //==============================================================================
 LadderPanel::LadderPanel (SynthParams &p)
-    : params(p)
+    : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (cutoff = new Slider ("cutoff"));
-    cutoff->setRange (50, 20000, 0);
+    addAndMakeVisible (cutoff = new MouseOverKnob ("Cutoff"));
+    cutoff->setRange (10, 20000, 0);
     cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoff->addListener (this);
 
-    addAndMakeVisible (resonance = new Slider ("resonance"));
+    addAndMakeVisible (resonance = new MouseOverKnob ("Resonance"));
     resonance->setRange (0, 10, 0);
     resonance->setSliderStyle (Slider::RotaryVerticalDrag);
     resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonance->addListener (this);
 
-    addAndMakeVisible (label = new Label ("cutoff_label",
-                                          TRANS("Frequency\n")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (label2 = new Label ("res_label",
-                                           TRANS("Resonance\n")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centredLeft);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (toggleButton = new ToggleButton ("ladder_switch"));
-    toggleButton->setButtonText (TRANS("on / off"));
-    toggleButton->addListener (this);
-
 
     //[UserPreSize]
-    cutoff->setValue(params.ladderCutoff.getUI());
-    resonance->setValue(params.ladderRes.getUI());
+    registerSlider(cutoff, &params.ladderCutoff);
+    registerSlider(resonance, &params.ladderRes);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -85,9 +65,6 @@ LadderPanel::~LadderPanel()
 
     cutoff = nullptr;
     resonance = nullptr;
-    label = nullptr;
-    label2 = nullptr;
-    toggleButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -113,9 +90,6 @@ void LadderPanel::resized()
 
     cutoff->setBounds (40, 56, 80, 64);
     resonance->setBounds (144, 56, 80, 64);
-    label->setBounds (40, 128, 80, 24);
-    label2->setBounds (144, 128, 80, 24);
-    toggleButton->setBounds (40, 16, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -123,38 +97,24 @@ void LadderPanel::resized()
 void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == cutoff)
     {
         //[UserSliderCode_cutoff] -- add your slider handling code here..
-        params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
+        //params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
         //[/UserSliderCode_cutoff]
     }
     else if (sliderThatWasMoved == resonance)
     {
         //[UserSliderCode_resonance] -- add your slider handling code here..
-        params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
+        //params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
         //[/UserSliderCode_resonance]
     }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
-}
-
-void LadderPanel::buttonClicked (Button* buttonThatWasClicked)
-{
-    //[UserbuttonClicked_Pre]
-    //[/UserbuttonClicked_Pre]
-
-    if (buttonThatWasClicked == toggleButton)
-    {
-        //[UserButtonCode_toggleButton] -- add your button handler code here..
-        //[/UserButtonCode_toggleButton]
-    }
-
-    //[UserbuttonClicked_Post]
-    //[/UserbuttonClicked_Post]
 }
 
 
@@ -173,32 +133,19 @@ void LadderPanel::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="LadderPanel" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="params(p)" snapPixels="8" snapActive="1"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName=""
-          explicitFocusOrder="0" pos="40 56 80 64" min="50" max="20000"
+  <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="40 56 80 64" min="10" max="20000"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="resonance" id="5cc36d41af142d68" memberName="resonance"
-          virtualName="" explicitFocusOrder="0" pos="144 56 80 64" min="0"
-          max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="144 56 80 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="cutoff_label" id="5683a20abc5da5f" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="40 128 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Frequency&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
-  <LABEL name="res_label" id="1f4d820c02ca3cb6" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="144 128 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Resonance&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
-  <TOGGLEBUTTON name="ladder_switch" id="4864a1a9937b8363" memberName="toggleButton"
-                virtualName="" explicitFocusOrder="0" pos="40 16 150 24" buttonText="on / off"
-                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
