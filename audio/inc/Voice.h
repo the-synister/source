@@ -108,7 +108,7 @@ public:
     , pitchModBuffer(1,blockSize)
     , lfo1ModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
-    , filterEnvBuffer(1, blockSize)
+    , freeEnv1Buffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         for (int s = 0; s < blockSize; ++s) {
@@ -134,7 +134,7 @@ public:
         
         level = velocity * 0.15f;
         releaseCounter = -1;
-        filterReleaseCounter = -1;
+        freeEnv1ReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -160,7 +160,7 @@ public:
 
         // reset attackDecayCounter
         attackDecayCounter = 0;
-        filterAttackDecayCounter = 0;
+        freeEnv1AttackDecayCounter = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -176,9 +176,9 @@ public:
                 releaseCounter = 0;
             }
 
-            if (filterReleaseCounter == -1)
+            if (freeEnv1ReleaseCounter == -1)
             {
-                filterReleaseCounter = 0;
+                freeEnv1ReleaseCounter = 0;
         }
         }
         else
@@ -209,7 +209,7 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
-        const float *filterEnvMod = filterEnvBuffer.getReadPointer(0);
+        const float *filterEnvMod = freeEnv1Buffer.getReadPointer(0);
 
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
@@ -238,7 +238,7 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
-                if(static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter)
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= freeEnv1ReleaseCounter)
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -250,47 +250,47 @@ public:
     }
 
 protected:
-    float getFilterEnvCoeff()
+    float getEnv1Coeff()
     {
-        float filterEnvCoeff;
-        float filterSustainLevel = params.filterEnvSustain.get() / static_cast<float>(getSampleRate());
+        float freeEnvCoeff;
+        float sustainLevel = params.freeEnv1Sustain.get(); // / static_cast<float>(getSampleRate());
 
         //number of all samples for all phases
-        int filterAttackSamples = static_cast<int>(getSampleRate() * params.filterEnvAttack.get());
-        int filterDecaySamples = static_cast<int>(getSampleRate() * params.filterEnvDecay.get());
-        int filterReleaseSamples = static_cast<int>(getSampleRate() * params.filterEnvRelease.get());
+        int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
+        int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
+        int releaseSamples = static_cast<int>(getSampleRate() * params.freeEnv1Release.get());
 
-        if (filterReleaseCounter > -1)
+        if (freeEnv1ReleaseCounter > -1)
         {
-            filterEnvCoeff = filterValueAtRelease * interpolateLog(filterReleaseCounter, filterReleaseSamples);
-            filterReleaseCounter++;
+            freeEnvCoeff = freeEnv1ValueAtRelease * interpolateLog(freeEnv1ReleaseCounter, releaseSamples);
+            freeEnv1ReleaseCounter++;
         }
         else
         {
-            if(filterAttackDecayCounter <= filterAttackSamples)
+            if(freeEnv1AttackDecayCounter <= attackSamples)
             {
-                filterEnvCoeff = 1.0f - interpolateLog(filterAttackDecayCounter, filterAttackSamples);
-                filterValueAtRelease = filterEnvCoeff;
-                filterAttackDecayCounter++;
+                freeEnvCoeff = 1.0f - interpolateLog(freeEnv1AttackDecayCounter, attackSamples);
+                freeEnv1ValueAtRelease = freeEnvCoeff;
+                freeEnv1AttackDecayCounter++;
             }
             else
             {
-                if (filterAttackDecayCounter <= filterAttackSamples + filterDecaySamples)
+                if (freeEnv1AttackDecayCounter <= attackSamples + decaySamples)
                 {
-                    filterEnvCoeff = interpolateLog(filterAttackDecayCounter - filterAttackSamples, filterDecaySamples) * (1.0f - filterSustainLevel) + filterSustainLevel;
-                    filterValueAtRelease = filterEnvCoeff;
-                    filterAttackDecayCounter++;
+                    freeEnvCoeff = interpolateLog(freeEnv1AttackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
+                    freeEnv1ValueAtRelease = freeEnvCoeff;
+                    freeEnv1AttackDecayCounter++;
                 }
 
                 else
                 {
-                    filterEnvCoeff = filterSustainLevel;
+                    freeEnvCoeff = sustainLevel;
                 }
             }
         
         }
         //jassert(isfinite(filterEnvCoeff));
-        return filterEnvCoeff;
+        return freeEnvCoeff;
     }
     
     float getEnvCoeff() 
@@ -335,7 +335,7 @@ protected:
                 }
             }
         }
-        std::cout << envCoeff;
+        //std::cout << envCoeff;
         return envCoeff;
     }
 
@@ -361,7 +361,7 @@ protected:
         // set the filterEnvBuffer
         for (int s = 0; s < numSamples; ++s)
         {
-            filterEnvBuffer.setSample(0, s, getFilterEnvCoeff());
+            freeEnv1Buffer.setSample(0, s, getEnv1Coeff());
         }
 
         // add pitch wheel values
@@ -400,6 +400,7 @@ protected:
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+        float value;
 
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
@@ -408,8 +409,17 @@ protected:
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
         }
         else if (params.lpModSource.get() == 2) { // env
-            //moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
-            moddedFreq = (params.lpCutoff.get() + ((modValue)* 20000.f *  params.lpModAmout.get() / 100.f));
+            value = 20000.f * (modValue)* params.lpModAmout.get() / 100.f;
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+            /*if(modValue == params.freeEnv1Sustain.get())
+            { 
+                moddedFreq = aaamodValue * 20000.f *  params.lpModAmout.get() / 100.f;
+            }
+            else 
+            {
+                moddedFreq = (params.lpCutoff.get() + (modValue * 20000.f *  paraaams.lpModAmout.get() / 100.f));
+            }*/
+                
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) {
@@ -480,15 +490,15 @@ private:
     int releaseCounter;
 
     //variables for filter env
-    float filterValueAtRelease;
-    int filterAttackDecayCounter;
-    int filterReleaseCounter;
+    float freeEnv1ValueAtRelease;
+    int freeEnv1AttackDecayCounter;
+    int freeEnv1ReleaseCounter;
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
-    AudioSampleBuffer filterEnvBuffer;
+    AudioSampleBuffer freeEnv1Buffer;
 };
 
 

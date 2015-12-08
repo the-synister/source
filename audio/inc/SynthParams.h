@@ -32,10 +32,10 @@ public:
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
 
-    Param filterEnvAttack;    //!< filter env attack in [0.001..5]s (logarithmic scaling)
-    Param filterEnvDecay;     //!< filter env decay in [0.001..5]s (logarithmic scaling)
-    Param filterEnvSustain;   //!< filter env sustain in [10..20000]Hz
-    Param filterEnvRelease;   //!< filter env release in [0.001..5]s (logarithmic scaling)
+    Param freeEnv1Attack;    //!< filter env attack in [0.001..5]s (logarithmic scaling)
+    Param freeEnv1Decay;     //!< filter env decay in [0.001..5]s (logarithmic scaling)
+    Param freeEnv1Sustain;   //!< filter env sustain in [0 .. 1] 
+    Param freeEnv1Release;   //!< filter env release in [0.001..5]s (logarithmic scaling)
 
     Param panDir; //!< pan R/L [-100..100]
 

@@ -62,6 +62,12 @@ private:
     ScopedPointer<MouseOverKnob> decay;
     ScopedPointer<MouseOverKnob> sustain;
     ScopedPointer<MouseOverKnob> release;
+    ScopedPointer<MouseOverKnob> freeEnv1Attack;
+    ScopedPointer<MouseOverKnob> freeEnv1Decay;
+    ScopedPointer<MouseOverKnob> freeEnv1Sustain;
+    ScopedPointer<MouseOverKnob> freeEnv1Release;
+    ScopedPointer<Label> VolEnvLabel;
+    ScopedPointer<Label> Env1Label;
 
 
     //==============================================================================
