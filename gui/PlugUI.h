@@ -37,7 +37,8 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
-                public SliderListener
+                public SliderListener,
+                private Timer
 {
 public:
     //==============================================================================
@@ -57,6 +58,10 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
+
+    float lastBpmInfo;
+    void timerCallback() override;
+    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
     //[/UserVariables]
 
     //==============================================================================
@@ -64,6 +69,9 @@ private:
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
+    ScopedPointer<Label> label2;
+    ScopedPointer<Label> bpmLabel;
+    ScopedPointer<Label> bpmDisplay;
 
 
     //==============================================================================
