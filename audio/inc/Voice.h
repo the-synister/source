@@ -279,7 +279,8 @@ private:
 
     float level, tailOff;
 
-    int currentPitchValue, totSamples;
+	int currentPitchValue;
+	int totSamples;
 
     AudioSampleBuffer pitchModBuffer;
 
