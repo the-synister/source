@@ -46,7 +46,7 @@
         <FILE id="zORnwQ" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
-        <FILE id="V2GEb6" name="FxDelay.cpp" compile="1" resource="0" file="../audio/inc/FxDelay.cpp"/>
+        <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

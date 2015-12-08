@@ -367,7 +367,7 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\FxDelay.cpp">
+    <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">

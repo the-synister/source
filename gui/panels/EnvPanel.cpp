@@ -169,20 +169,20 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="attack" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.0010000000000000000208"
-          max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.001" max="5" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay" id="84a4159bee0728d6" memberName="decay" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="80 8 64 64" min="0.0010000000000000000208"
-          max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
+          explicitFocusOrder="0" pos="80 8 64 64" min="0.001" max="5" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustain" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="-96" max="0" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release" id="c8bc1120a33101cd" memberName="release" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="224 8 64 64" min="0.0010000000000000000208"
-          max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          explicitFocusOrder="0" pos="224 8 64 64" min="0.001" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
 </JUCER_COMPONENT>
 

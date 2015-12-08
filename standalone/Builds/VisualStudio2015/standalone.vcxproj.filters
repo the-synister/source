@@ -352,10 +352,10 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
+    <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\FxDelay.cpp">
+    <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp">

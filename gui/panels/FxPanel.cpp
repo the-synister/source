@@ -180,28 +180,6 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    //[UsersliderValueChanged_Pre]
-    if (sliderThatWasMoved == feedbackSlider)
-    {
-        //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
-        params.delayFeedback.setUI(static_cast<float>(feedbackSlider->getValue()*0.01));
-        //[/UserSliderCode_feedbackSlider]
-    }
-    else if (sliderThatWasMoved == dryWetSlider)
-    {
-        //[UserSliderCode_dryWetSlider] -- add your slider handling code here..
-        params.delayDryWet.setUI(static_cast<float>(dryWetSlider->getValue()*0.01));
-        //[/UserSliderCode_dryWetSlider]
-    }
-    else if (sliderThatWasMoved == timeSlider)
-    {
-        //[UserSliderCode_timeSlider] -- add your slider handling code here..
-        params.delayTime.setUI(static_cast<float>(timeSlider->getValue()));
-        //[/UserSliderCode_timeSlider]
-    }
-
-    //[/UsersliderValueChanged_Pre]
-
     if (sliderThatWasMoved == feedbackSlider)
     {
         //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
@@ -321,7 +299,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -336,11 +314,11 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="288 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 8 64 64"
           min="-25" max="25" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
