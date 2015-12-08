@@ -303,19 +303,23 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
         if (currPos >= seqNextStep)
         {
             // stop note if could not stop before playing next note (important for seqNoteLength == seqStepSpeed)
-            if (seqIsPlaying && (currMidiSeq[seqNote] != -1))
+            if (seqIsPlaying)
             {
-                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-                midiMessages.addEvent(m, 0);
-                seqIsPlaying = false;
+                if (currMidiSeq[seqNote] != -1)
+                {
+                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
+                    midiMessages.addEvent(m, 0);
+                    seqIsPlaying = false;
+                }
             }
 
-            // calculate the right note to play
-            seqNote = static_cast<int>(currPos / seqStepSpeed) % seqNumSteps;
-
             // send midimessage into midibuffer
-            if (!seqIsPlaying && (seqNote != -1))
+            if (!seqIsPlaying)
             {
+                // calculate the right note to play
+                seqNote = jmax(0, static_cast<int>(currPos / static_cast<double>(seqStepSpeed)) % seqNumSteps);
+                seqNote = jmin(seqNote, seqNumSteps - 1);
+
                 if (currMidiSeq[seqNote] != -1)
                 {
                     // emphasis on step 1
@@ -337,11 +341,14 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
         if (currPos >= stopNoteTime)
         {
             // send midimessage into midibuffer
-            if (seqIsPlaying && (currMidiSeq[seqNote] != -1))
+            if (seqIsPlaying)
             {
-                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-                midiMessages.addEvent(m, 0);
-                seqIsPlaying = false;
+                if (currMidiSeq[seqNote] != -1)
+                {
+                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
+                    midiMessages.addEvent(m, 0);
+                    seqIsPlaying = false;
+                }
             }
         }
     }
@@ -351,7 +358,7 @@ void PluginAudioProcessor::seqHostSync(AudioSampleBuffer& buffer, MidiBuffer& mi
         stopSeq(midiMessages);
     }
     // recalculate next step position in host sync mode
-    seqNextStep = currPos + abs(remainder(currPos, seqStepSpeed));
+    seqNextStep = currPos + abs(remainder(currPos, static_cast<double>(seqStepSpeed)));
 }
 
 /*
