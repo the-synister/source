@@ -70,15 +70,15 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
         // get new length from UI
         newLoopLength = static_cast<int>(params.delayTime.get() * (sampleRate / 1000.0));
 
+        // reset the loop position according to the current delay length
+        loopPosition %= newLoopLength;
+
+        // clear old material from buffer
+        if (newLoopLength < currentDelayLength) { // TODO: this is still a bit messy
+            delayBuffer.clear(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength);
+        }
+
         for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-
-            // reset the loop position according to the current delay length
-            loopPosition %= newLoopLength;
-
-            // clear old material from buffer
-            if (newLoopLength < currentDelayLength) { // TODO: this is still a bit messy
-                delayBuffer.clear(newLoopLength, delayBuffer.getNumSamples() - currentDelayLength);
-            }
 
             // add new material to buffer
             float currentSample = outputBuffer.getSample(c, startSample + s);
@@ -90,9 +90,9 @@ void FxDelay::renderDelay(AudioSampleBuffer& outputBuffer, int startSample, doub
             //delayedSample = filterDelay(delayedSample, sampleRate); // here it does not record the filter
             outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get());
 
-            // iterate
-            currentDelayLength = newLoopLength;
         }
+        // iterate
+        currentDelayLength = newLoopLength;
         ++loopPosition;
     }
 }
