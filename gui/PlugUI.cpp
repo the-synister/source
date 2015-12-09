@@ -22,6 +22,7 @@
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
+#include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/SeqPanel.h"
 //[/Headers]
@@ -66,16 +67,9 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
-    tabs->setCurrentTabIndex (6);
-
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("master tune")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    tabs->setCurrentTabIndex (0);
 
     addAndMakeVisible (bpmLabel = new Label ("bpm label",
                                              TRANS("BPM:")));
@@ -117,7 +111,6 @@ PlugUI::~PlugUI()
     freq = nullptr;
     keyboard = nullptr;
     tabs = nullptr;
-    label2 = nullptr;
     bpmLabel = nullptr;
     bpmDisplay = nullptr;
 
@@ -147,7 +140,6 @@ void PlugUI::resized()
     freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
-    label2->setBounds (726, 8, 64, 16);
     bpmLabel->setBounds (8, 64, 56, 24);
     bpmDisplay->setBounds (56, 64, 150, 24);
     //[UserResized] Add your own custom resize handling here..
@@ -219,7 +211,7 @@ BEGIN_JUCER_METADATA
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TABBEDCOMPONENT name="tabs" id="748541b462cb42f4" memberName="tabs" virtualName=""
                    explicitFocusOrder="0" pos="8 128 784 416" orientation="top"
-                   tabBarDepth="30" initialTab="6">
+                   tabBarDepth="30" initialTab="0">
     <TAB name="OSC" colour="ffd3d3d3" useJucerComp="0" contentClassName="OscPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
@@ -232,14 +224,11 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
          constructorParams="" jucerComponentFile=""/>
+    <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
+         constructorParams="params" jucerComponentFile=""/>
     <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
          constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
-  <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="726 8 64 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="master tune" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
          virtualName="" explicitFocusOrder="0" pos="8 64 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"

@@ -24,7 +24,7 @@ StepSequencer::StepSequencer(SynthParams &p)
     , noteOffSample(0)
     , seqIsPlaying(false)
 {
-    // get GUI params
+    // init GUI params
     currMidiSeq[0] = static_cast<int>(params.seqStep1.get());
     currMidiSeq[1] = static_cast<int>(params.seqStep2.get());
     currMidiSeq[2] = static_cast<int>(params.seqStep3.get());
@@ -35,7 +35,7 @@ StepSequencer::StepSequencer(SynthParams &p)
     currMidiSeq[7] = static_cast<int>(params.seqStep8.get());
     prevMidiSeq = currMidiSeq;
 
-    seqMode = static_cast<int>(params.seqMode.get());
+    seqMode = params.seqMode.getStep();
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
     seqStepSpeed = params.seqStepSpeed.get();
     seqNoteLength = jmin(params.seqStepLength.get(), seqStepSpeed);
@@ -60,7 +60,7 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
     currMidiSeq[5] = static_cast<int>(params.seqStep6.get());
     currMidiSeq[6] = static_cast<int>(params.seqStep7.get());
     currMidiSeq[7] = static_cast<int>(params.seqStep8.get());
-    seqMode = static_cast<int>(params.seqMode.get());
+    seqMode = params.seqMode.getStep();
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
     seqStepSpeed = params.seqStepSpeed.get();
     seqNoteLength = jmin(params.seqStepLength.get(), seqStepSpeed);
@@ -71,10 +71,10 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
 
     switch (seqMode)
     {
-    case 1:
+    case eSeqModes::seqPlay:
         seqNoHostSync(midiMessages, bufferSize, sampleRate);
         break;
-    case 2:
+    case eSeqModes::seqSyncHost:
         seqHostSync(midiMessages);
         break;
     default:
@@ -84,7 +84,7 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
 }
 
 /*
-* Called while stepSequencer is not synced with host (seqMode == 1).
+* Called while stepSequencer is not synced with host.
 */
 void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate)
 {
@@ -120,7 +120,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
             seqNote = seqNote%seqNumSteps;
 
             // emphasis on step 1
-            float seqVelocity = 0.45f;
+            float seqVelocity = 0.5f;
             if (seqNote == 0)
             {
                 seqVelocity = 0.85f;
@@ -149,7 +149,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
 }
 
 /*
-* Called while stepSequencer is synced with host (seqMode == 2).
+* Called while stepSequencer is synced with host.
 */
 void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
 {
@@ -197,7 +197,7 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
                 if (currMidiSeq[seqNote] != -1)
                 {
                     // emphasis on step 1
-                    float seqVelocity = 0.45f;
+                    float seqVelocity = 0.5f;
                     if (seqNote == 0)
                     {
                         seqVelocity = 0.85f;

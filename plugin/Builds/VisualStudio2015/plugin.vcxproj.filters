@@ -340,6 +340,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -1656,6 +1659,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>

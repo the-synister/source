@@ -244,9 +244,9 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-    if (params.seqMode.get() < 1.5f)
+    if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
     {
-        if (params.seqMode.get() < 0.5f)
+        if (params.seqMode.getStep() == eSeqModes::seqStop)
         {
             seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
         }
@@ -369,16 +369,16 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == seqPlay)
     {
         //[UserButtonCode_seqPlay] -- add your button handler code here..
-        if (params.seqMode.get() < 1.5f)
+        if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
         {
-            if (params.seqMode.get() < 0.5f)
+            if (params.seqMode.getStep() == eSeqModes::seqStop)
             {
-                params.seqMode.set(1.0f);
+                params.seqMode.setStep(eSeqModes::seqPlay);
                 seqPlay->setColour(TextButton::buttonColourId, Colours::lightgreen);
             }
             else
             {
-                params.seqMode.set(0.0f);
+                params.seqMode.setStep(eSeqModes::seqStop);
                 seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
             }
         }
@@ -387,13 +387,13 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == syncHost)
     {
         //[UserButtonCode_syncHost] -- add your button handler code here..
-        if (params.seqMode.get() < 1.5f)
+        if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
         {
-            params.seqMode.set(2.0f);
+            params.seqMode.setStep(eSeqModes::seqSyncHost);
         }
         else
         {
-            params.seqMode.set(0.0f);
+            params.seqMode.setStep(eSeqModes::seqStop);
         }
         seqPlay->setColour(TextButton::buttonColourId, Colours::grey);
         //[/UserButtonCode_syncHost]

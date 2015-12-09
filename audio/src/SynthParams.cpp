@@ -1,9 +1,20 @@
 #include "SynthParams.h"
 
+
+namespace {
+    static const char *lfowavenames[] = {
+        "Sine", "Square", "Smpl+Hold", nullptr
+    };
+
+    static const char *seqModeNames[] = {
+        "Stop", "Play", "SyncHost", nullptr
+    };
+}
+
 SynthParams::SynthParams()
 : freq("Freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "Hz", .01f, 50.f, 1.f)
-, lfo1wave("Wave", "", 0.f, 1.f, 0.f)
+, lfo1wave("Wave", eLfoWaves::eLfoSine, lfowavenames)
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "st", -11.f, 11.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
@@ -16,7 +27,7 @@ SynthParams::SynthParams()
 , envSustain("Sustain", "dB", -96.0f, 0.0f, -5.0f)
 , envRelease("Release", "s", 0.001f, 5.0f, 0.5f)
 , osc1pulsewidth("Width", "prct", 0.01f, 0.99f, 0.5f)
-, seqMode("SeqMode", "", 0.0f, 2.0f, 0.0f)
+, seqMode("SeqMode", eSeqModes::seqStop, seqModeNames)
 , seqNumSteps("SeqNumSteps", "steps", 1.0f, 8.0f, 4.0f)
 , seqStepSpeed("SeqSpeed", "qn", 0.125f, 4.0f, 1.0f)
 , seqStepLength("SeqNoteLength", "qn", 0.125f, 4.0f, 1.0f)
@@ -30,6 +41,8 @@ SynthParams::SynthParams()
 , seqStep8("seqNote8", "", -1, 127, 72)
 , panDir("Pan", "pct", -100.f, 100.f, 0.f)
 , vol("Vol", "dB", 0.f, 1.f, .5f)
+, ladderCutoff("LadderFreq", "Hz", 10.f, 20000.f, 20000.f)
+, ladderRes("LadderRes", "  ", 0.f, 10.f, 0.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

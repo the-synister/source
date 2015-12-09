@@ -34,10 +34,9 @@ private:
     SynthParams &params;
 
     // StepSequencer gui params
-    // TODO: start error if high bpm and short steps plays first note twice
     std::array<int, 8> prevMidiSeq;
     std::array<int, 8> currMidiSeq;
-    int seqMode;
+    eSeqModes seqMode;
     int seqNumSteps;
     float seqStepSpeed;
     double seqNoteLength;
