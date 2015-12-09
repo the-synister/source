@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
@@ -1289,6 +1290,7 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>

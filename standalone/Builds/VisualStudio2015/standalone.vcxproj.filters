@@ -352,6 +352,9 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -1631,6 +1634,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
       <Filter>standalone\Audio\inc</Filter>
