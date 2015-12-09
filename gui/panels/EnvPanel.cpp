@@ -61,21 +61,21 @@ EnvPanel::EnvPanel (SynthParams &p)
     releaseTime->addListener (this);
     releaseTime->setSkewFactor (0.5);
 
-    addAndMakeVisible (attackShape = new MouseOverKnob ("A Shape"));
+    addAndMakeVisible (attackShape = new MouseOverKnob ("Attack Shape"));
     attackShape->setRange (0.01, 10, 0);
     attackShape->setSliderStyle (Slider::RotaryVerticalDrag);
     attackShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     attackShape->addListener (this);
     attackShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (decayShape = new MouseOverKnob ("D Shape"));
+    addAndMakeVisible (decayShape = new MouseOverKnob ("Decay Shape"));
     decayShape->setRange (0.01, 10, 0);
     decayShape->setSliderStyle (Slider::RotaryVerticalDrag);
     decayShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     decayShape->addListener (this);
     decayShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (releaseShape = new MouseOverKnob ("R Shape"));
+    addAndMakeVisible (releaseShape = new MouseOverKnob ("Release Shape"));
     releaseShape->setRange (0.01, 10, 0);
     releaseShape->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
@@ -243,15 +243,15 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="A Shape" id="27ef7f1857e5d79b" memberName="attackShape"
+  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="D Shape" id="18adbff3650623b1" memberName="decayShape"
+  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="R Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
+  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
