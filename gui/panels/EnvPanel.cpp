@@ -61,28 +61,28 @@ EnvPanel::EnvPanel (SynthParams &p)
     releaseTime->addListener (this);
     releaseTime->setSkewFactor (0.5);
 
-    addAndMakeVisible (attackShape = new MouseOverKnob ("Attack Shape"));
+    addAndMakeVisible (attackShape = new MouseOverKnob ("A Shape"));
     attackShape->setRange (0.01, 10, 0);
     attackShape->setSliderStyle (Slider::RotaryVerticalDrag);
     attackShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     attackShape->addListener (this);
     attackShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (decayShape = new MouseOverKnob ("Decay Shape"));
+    addAndMakeVisible (decayShape = new MouseOverKnob ("D Shape"));
     decayShape->setRange (0.01, 10, 0);
     decayShape->setSliderStyle (Slider::RotaryVerticalDrag);
     decayShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     decayShape->addListener (this);
     decayShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (releaseShape = new MouseOverKnob ("Release Shape"));
+    addAndMakeVisible (releaseShape = new MouseOverKnob ("R Shape"));
     releaseShape->setRange (0.01, 10, 0);
     releaseShape->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     releaseShape->addListener (this);
     releaseShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (keyVelToEnv = new MouseOverKnob ("KeyVel To Env"));
+    addAndMakeVisible (keyVelToEnv = new MouseOverKnob ("Vel to Env"));
     keyVelToEnv->setRange (0, 1, 0);
     keyVelToEnv->setSliderStyle (Slider::RotaryVerticalDrag);
     keyVelToEnv->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
@@ -145,12 +145,12 @@ void EnvPanel::resized()
 
     attackTime->setBounds (8, 8, 64, 64);
     decayTime->setBounds (80, 8, 64, 64);
-    sustainLevel->setBounds (224, 48, 64, 64);
-    releaseTime->setBounds (152, 8, 64, 64);
+    sustainLevel->setBounds (152, 8, 64, 64);
+    releaseTime->setBounds (224, 8, 64, 64);
     attackShape->setBounds (8, 80, 64, 64);
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (152, 80, 64, 64);
-    keyVelToEnv->setBounds (296, 48, 64, 64);
+    keyVelToEnv->setBounds (224, 80, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -236,27 +236,27 @@ BEGIN_JUCER_METADATA
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 48 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="-96" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
+  <SLIDER name="A Shape" id="27ef7f1857e5d79b" memberName="attackShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape"
+  <SLIDER name="D Shape" id="18adbff3650623b1" memberName="decayShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
+  <SLIDER name="R Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 80 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="KeyVel To Env" id="595a20e744f094d5" memberName="keyVelToEnv"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 48 64 64"
+  <SLIDER name="Vel to Env" id="595a20e744f094d5" memberName="keyVelToEnv"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 80 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
