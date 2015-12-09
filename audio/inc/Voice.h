@@ -97,13 +97,14 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
+    Voice(SynthParams &p, int blockSize)
     : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , level (0.f)
+    , params(p)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
     , lpOut1(0.f)

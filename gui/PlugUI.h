@@ -53,6 +53,8 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
