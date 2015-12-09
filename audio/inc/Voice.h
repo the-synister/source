@@ -259,10 +259,10 @@ protected:
 
     /**
     * interpolate logarithmically from 1.0 to 0.0f in t samples
-    @c counter of the specific phase
-    @t number of samples after which the specific phase should be over
-    @k coeff of growth/shrink, k=1 for linear
-    @slow slow start of phase
+    @param c counter of the specific phase
+    @param t number of samples after which the specific phase should be over
+    @param k coeff of growth/shrink, k=1 for linear
+    @param slow how fast is phase applied at the start
     */
     float interpolateLog(int c, int t, float k, bool slow)
     {

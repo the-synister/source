@@ -137,8 +137,8 @@ void EnvPanel::resized()
 
     attackTime->setBounds (8, 8, 64, 64);
     decayTime->setBounds (80, 8, 64, 64);
-    sustainLevel->setBounds (224, 48, 64, 64);
-    releaseTime->setBounds (152, 8, 64, 64);
+    sustainLevel->setBounds (152, 8, 64, 64);
+    releaseTime->setBounds (224, 8, 64, 64);
     attackShape->setBounds (8, 80, 64, 64);
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (152, 80, 64, 64);
@@ -222,11 +222,11 @@ BEGIN_JUCER_METADATA
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 48 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="-96" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
