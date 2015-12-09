@@ -232,7 +232,7 @@ public:
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-        modSources[2] = filterEnvMod;
+        modSources[2] = env1Mod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -256,7 +256,7 @@ public:
                 }
                 }
 
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
