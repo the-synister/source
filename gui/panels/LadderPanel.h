@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_7B9503E899CF8C9A__
-#define __JUCE_HEADER_7B9503E899CF8C9A__
+#ifndef __JUCE_HEADER_A04CC96EC550D490__
+#define __JUCE_HEADER_A04CC96EC550D490__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,14 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FiltPanel  : public PanelBase,
-                   public SliderListener,
-                   public ComboBoxListener
+class LadderPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p);
-    ~FiltPanel();
+    LadderPanel (SynthParams &p);
+    ~LadderPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -51,7 +50,6 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -60,22 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> cutoffSlider;
-    ScopedPointer<MouseOverKnob> resonanceSlider;
-    ScopedPointer<MouseOverKnob> FilterAttack;
-    ScopedPointer<MouseOverKnob> FilterDecay;
-    ScopedPointer<MouseOverKnob> FilterSustain;
-    ScopedPointer<MouseOverKnob> FilterRelease;
-    ScopedPointer<ComboBox> modSrc;
-    ScopedPointer<Slider> modSliderCut;
-    ScopedPointer<Label> label;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LadderPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_7B9503E899CF8C9A__
+#endif   // __JUCE_HEADER_A04CC96EC550D490__

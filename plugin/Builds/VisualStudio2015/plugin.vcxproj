@@ -131,6 +131,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
@@ -1298,6 +1299,7 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>

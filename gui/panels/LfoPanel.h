@@ -59,10 +59,7 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> freq;
-    ScopedPointer<Slider> wave;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> squareWaveLabel;
-    ScopedPointer<Label> sampleAndHoldLabel;
+    ScopedPointer<MouseOverKnob> wave;
 
 
     //==============================================================================

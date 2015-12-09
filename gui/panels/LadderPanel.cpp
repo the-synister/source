@@ -20,36 +20,35 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "LfoPanel.h"
+#include "LadderPanel.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-LfoPanel::LfoPanel (SynthParams &p)
+LadderPanel::LadderPanel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
-    freq->setRange (0.01, 50, 0);
-    freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    freq->addListener (this);
+    addAndMakeVisible (cutoff = new MouseOverKnob ("Cutoff"));
+    cutoff->setRange (10, 20000, 0);
+    cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
+    cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoff->addListener (this);
 
-    addAndMakeVisible (wave = new MouseOverKnob ("wave switch"));
-    wave->setRange (0, 2, 1);
-    wave->setSliderStyle (Slider::RotaryVerticalDrag);
-    wave->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    wave->addListener (this);
+    addAndMakeVisible (resonance = new MouseOverKnob ("Resonance"));
+    resonance->setRange (0, 10, 0);
+    resonance->setSliderStyle (Slider::RotaryVerticalDrag);
+    resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    resonance->addListener (this);
 
 
     //[UserPreSize]
-    registerSlider(freq, &params.lfo1freq);
-    freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
-    registerSlider(wave, &params.lfo1wave);
+    registerSlider(cutoff, &params.ladderCutoff);
+    registerSlider(resonance, &params.ladderRes);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -59,13 +58,13 @@ LfoPanel::LfoPanel (SynthParams &p)
     //[/Constructor]
 }
 
-LfoPanel::~LfoPanel()
+LadderPanel::~LadderPanel()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    freq = nullptr;
-    wave = nullptr;
+    cutoff = nullptr;
+    resonance = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -73,7 +72,7 @@ LfoPanel::~LfoPanel()
 }
 
 //==============================================================================
-void LfoPanel::paint (Graphics& g)
+void LadderPanel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
@@ -84,34 +83,34 @@ void LfoPanel::paint (Graphics& g)
     //[/UserPaint]
 }
 
-void LfoPanel::resized()
+void LadderPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (8, 8, 64, 64);
-    wave->setBounds (80, 8, 64, 64);
-    freq->setBounds (8, 8, 64, 64);
-    wave->setBounds (120, 40, 192, 32);
+    cutoff->setBounds (40, 56, 80, 64);
+    resonance->setBounds (144, 56, 80, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
 
-void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
+void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == freq)
+    if (sliderThatWasMoved == cutoff)
     {
-        //[UserSliderCode_freq] -- add your slider handling code here..
-        //[/UserSliderCode_freq]
+        //[UserSliderCode_cutoff] -- add your slider handling code here..
+        //params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
+        //[/UserSliderCode_cutoff]
     }
-    else if (sliderThatWasMoved == wave)
+    else if (sliderThatWasMoved == resonance)
     {
-        //[UserSliderCode_wave] -- add your slider handling code here..
-        //[/UserSliderCode_wave]
+        //[UserSliderCode_resonance] -- add your slider handling code here..
+        //params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
+        //[/UserSliderCode_resonance]
     }
 
     //[UsersliderValueChanged_Post]
@@ -133,26 +132,20 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="LfoPanel" componentName=""
+<JUCER_COMPONENT documentType="Component" className="LadderPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+  <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="40 56 80 64" min="10" max="20000"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
-          explicitFocusOrder="0" pos="120 40 192 32" min="0" max="2" int="1"
-          style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="144 56 80 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
