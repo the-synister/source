@@ -19,6 +19,8 @@
         <FILE id="l2unIn" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="n4LLrh" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="Sh6NXS" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
+        <FILE id="arXpqu" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
+        <FILE id="q6cLYL" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="blqsaY" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>

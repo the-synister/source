@@ -4,6 +4,14 @@
 #include "Param.h"
 #include <array>
 
+enum class eLfoWaves : int {
+    eLfoSine = 0,
+    eLfoSquare = 1,
+    eLfoSampleHold = 2,
+    nSteps = 3
+    };
+    
+
 class SynthParams {
 public:
     SynthParams();
@@ -12,7 +20,7 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
-    Param lfo1wave; //!< lfo wave switch 0 = sine wave, 0.5 = random, or 1 = square wave
+    ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
     Param decayFac; //!< decay in [0.001..60] s
 
@@ -33,6 +41,9 @@ public:
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
 
     Param panDir; //!< pan R/L [-100..100]
+
+    Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
+    Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
     ParamDb vol; //!< volume in [0..1]
 
