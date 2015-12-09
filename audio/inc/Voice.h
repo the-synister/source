@@ -232,7 +232,7 @@ public:
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-        modSources[2] = env1Mod;
+        modSources[2] = filterEnvMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
