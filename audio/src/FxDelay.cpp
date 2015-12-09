@@ -10,7 +10,7 @@ Author:  nj
 
 #include "FxDelay.h"
 
-float FxDelay::filterDelay(float inputSignal) {
+float FxDelay::filter(float currentSample) {
 
     //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
     float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
@@ -30,17 +30,17 @@ float FxDelay::filterDelay(float inputSignal) {
     a1 = 2.f * -coeff2;
     a2 = 2.f * coeff1;
 
-    lastSample = inputSignal;
+    lastSample = currentSample;
 
-    inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
 
     //delaying samples
     inputDelay2 = inputDelay1;
     inputDelay1 = lastSample;
     outputDelay2 = outputDelay1;
-    outputDelay1 = inputSignal;
+    outputDelay1 = currentSample;
 
-    return inputSignal;
+    return currentSample;
 }
 
 void FxDelay::init(int channelsIn, double sampleRateIn)
@@ -55,8 +55,9 @@ void FxDelay::init(int channelsIn, double sampleRateIn)
     }
 }
 
-void FxDelay::calcDelayTime(double bpmIn)
+void FxDelay::calcTime()
 {
+    int bpmIn = static_cast<int>(params.positionInfo[params.getGUIIndex()].bpm);
     // check for changes, re-calculate delay time - how slow is this?
     if (params.delaySync.get() > 0 ||
         bpm != bpmIn ||
@@ -64,7 +65,7 @@ void FxDelay::calcDelayTime(double bpmIn)
         dividend != params.delayDividend.get()) {
 
         // TODO: check for very high bpm
-        params.delayTime.set(static_cast<float>(2. * 1000.0 * (1. / (bpmIn / 60.)) *
+        params.delayTime.set(static_cast<float>(4000.0 * (1. / (bpmIn / 60.)) *
             static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
         bpm = bpmIn;
         divisor = params.delayDivisor.get();
@@ -72,11 +73,10 @@ void FxDelay::calcDelayTime(double bpmIn)
     }
 }
 
-void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int blockSizeIn)
+void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn)
 {
-    blockSize = blockSizeIn;
     int newLoopLength;
-    calcDelayTime(params.positionInfo[params.getGUIIndex()].bpm);
+    calcTime();
 
     for (int s = 0; s < outputBuffer.getNumSamples(); ++s)
     {
@@ -98,9 +98,9 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int block
             float delayedSample = delayBuffer.getSample(c, loopPosition);
             delayBuffer.setSample(c, loopPosition, currentSample);
             //delayBuffer.setSample(c, newLoopLength - loopPosition, currentSample); // reverse + overflow
-            delayedSample = filterDelay(delayedSample); // here it does record the filter
+            delayedSample = filter(delayedSample); // here it does record the filter
             delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
-            //delayedSample = filterDelay(delayedSample, sampleRate); // here it does not record the filter
+            //delayedSample = filter(delayedSample); // here it does not record the filter
             outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get());
 
         }

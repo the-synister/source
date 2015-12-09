@@ -66,20 +66,22 @@ FxPanel::FxPanel (SynthParams &p)
     dividend->addItem (TRANS("2"), 2);
     dividend->addItem (TRANS("3"), 3);
     dividend->addItem (TRANS("4"), 4);
+    dividend->addItem (TRANS("5"), 5);
     dividend->addListener (this);
 
     addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
     divisor->setTooltip (TRANS("Divisor"));
     divisor->setEditableText (false);
     divisor->setJustificationType (Justification::centred);
-    divisor->setTextWhenNothingSelected (TRANS("1"));
-    divisor->setTextWhenNoChoicesAvailable (TRANS("1"));
+    divisor->setTextWhenNothingSelected (TRANS("4"));
+    divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
     divisor->addItem (TRANS("1"), 1);
     divisor->addItem (TRANS("2"), 2);
     divisor->addItem (TRANS("3"), 3);
     divisor->addItem (TRANS("4"), 4);
     divisor->addItem (TRANS("8"), 5);
     divisor->addItem (TRANS("16"), 6);
+    divisor->addItem (TRANS("32"), 7);
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
@@ -103,10 +105,11 @@ FxPanel::FxPanel (SynthParams &p)
     registerSlider(timeSlider, &params.delayTime);
     registerSlider(resSlider, &params.delayResonance);
     registerSlider(cutoffSlider, &params.delayCutoff);
-    divisor->setText(String("1"));
+    divisor->setText(String("4"));
     dividend->setText(String("1"));
     dividend->setEnabled(false);
     divisor->setEnabled(false);
+    resSlider->setVisible(false);
 
     //divisor->setTextWhenNothingSelected(String("1"));
     //divisor->setTextWhenNoChoicesAvailable(String("1"));
@@ -230,7 +233,7 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 
         if (divisor->isEnabled()) {
             params.delaySync.set(1.f);
-            params.delayTime.set(params.delayTime.get() + 0.0000001f);
+            params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
         }
         else {
             params.delaySync.set(0.f);
@@ -305,12 +308,12 @@ BEGIN_JUCER_METADATA
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
             virtualName="" explicitFocusOrder="0" pos="224 32 55 16" tooltip="Dividend"
-            editable="0" layout="36" items="1&#10;2&#10;3&#10;4" textWhenNonSelected="1"
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5" textWhenNonSelected="1"
             textWhenNoItems="1"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
             virtualName="" explicitFocusOrder="0" pos="224 56 55 16" tooltip="Divisor"
-            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16"
-            textWhenNonSelected="1" textWhenNoItems="1"/>
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16&#10;32"
+            textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="288 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

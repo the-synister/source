@@ -27,15 +27,16 @@ public:
         , outputDelay1(0.f)
         , outputDelay2(0.f)
     {
+
     }
     ~FxDelay(){}
     
-    void render(AudioSampleBuffer& outputBuffer, int startSample, int blockSizeIn);
+    void render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn);
     void init(int channelsIn, double sampleRateIn);
 
 private:
-    void calcDelayTime(double bpmIn);
-    float filterDelay(float inputSignal);
+    void calcTime();
+    float filter(float inputSignal);
     SynthParams &params;
     AudioSampleBuffer delayBuffer;
     double sampleRate;
@@ -43,7 +44,6 @@ private:
     int loopPosition;
     int currentDelayLength;
     double bpm;
-    int blockSize;          //!< usable in the future for midi event handling
     float divisor;
     float dividend;
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
