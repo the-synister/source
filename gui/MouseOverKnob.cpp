@@ -14,8 +14,6 @@
 // contructer & destructer
 MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 {
-    this->setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
-
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(15.00f, Font::plain));
     knobLabel->setJustificationType(Justification::centred);
@@ -25,6 +23,8 @@ MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 
     knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
+
+    initTextBox();
 }
 
 MouseOverKnob::~MouseOverKnob()
@@ -32,6 +32,20 @@ MouseOverKnob::~MouseOverKnob()
     knobLabel = nullptr;
 }
 //==============================================================================
+
+void MouseOverKnob::initTextBox()
+{
+    if (knobLabel->isVisible()) {
+        setTextBoxStyle(MouseOverKnob::NoTextBox, false, textBoxWidth, textBoxHeight);
+    } else {
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, textBoxWidth, textBoxHeight);
+    }
+}
+
+void MouseOverKnob::setName  (const String& newName) {
+    knobLabel->setText(newName, NotificationType::dontSendNotification);
+}
+
 
 /**
 * If mouse enters slider then replace label with textbox.
@@ -41,7 +55,7 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(false);
-        this->setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, textBoxWidth, textBoxHeight);
     }
 }
 
@@ -53,27 +67,27 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(true);
-        this->setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, true, textBoxWidth, textBoxHeight);
     }
 }
 
 /**
 * If slider is double clicked then values can be edited manually.
 */
-void MouseOverKnob::mouseDoubleClick(const MouseEvent &e) 
+void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
     if (e.eventComponent == this)
     {
-        this->showTextBox();
+        showTextBox();
     }
 }
 
 /**
 * Only drag on slider, not on label.
 */
-void MouseOverKnob::mouseDrag(const MouseEvent &e) 
+void MouseOverKnob::mouseDrag(const MouseEvent &e)
 {
-    if (e.eventComponent == this) 
+    if (e.eventComponent == this)
     {
         Slider::mouseDrag(e);
     }
@@ -83,30 +97,41 @@ void MouseOverKnob::mouseDrag(const MouseEvent &e)
 * Overwrite resize(), so that slider size is independent of textbox visibility.
 */
 void MouseOverKnob::resized()
-{   
-    if (!this->isMouseOver()) 
+{
+    if (!this->isMouseOver())
     {
-        this->setSize(width, height - 20);
+        this->setSize(knobWidth, knobHeight - textBoxHeight);
     }
-    else 
+    else
     {
-        this->setSize(width, height);
+        this->setSize(knobWidth, knobHeight);
     }
 
     Slider::resized();
 }
 
+void MouseOverKnob::setTextBoxStyle(juce::Slider::TextEntryBoxPosition pos, bool readOnly, int boxWidth, int boxHeight)
+{
+    textBoxWidth = boxWidth;
+    textBoxHeight = boxHeight;
+
+    Slider::setTextBoxStyle(pos, readOnly, textBoxWidth, textBoxHeight);
+}
+
+void MouseOverKnob::setBounds(int x, int y, int width, int height)
+{
+    knobWidth = width;
+    knobHeight = height;
+    Slider::setBounds(x, y, knobWidth, knobHeight);
+}
+
 /**
 * Always set label below slider.
 */
-void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) 
+void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
-    ignoreUnused(component);
-    ignoreUnused(wasMoved);
-    ignoreUnused(wasResized);
-
-    knobLabel->setSize(width, 20);
-    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
+    knobLabel->setSize(200, textBoxHeight);
+    knobLabel->setTopLeftPosition(this->getX() + (knobWidth-200)/2, this->getY() + this->getHeight());
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }

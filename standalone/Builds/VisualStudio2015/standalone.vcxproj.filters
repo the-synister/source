@@ -325,10 +325,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp">
@@ -337,13 +343,13 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1596,10 +1602,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h">
@@ -1608,14 +1620,20 @@
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
-      <Filter>standalone\Gui</Filter>
+    <ClInclude Include="..\..\..\audio\inc\HostParam.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
       <Filter>standalone\Audio\inc</Filter>

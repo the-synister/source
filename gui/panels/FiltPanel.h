@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_5AD0F87140DC6984__
-#define __JUCE_HEADER_5AD0F87140DC6984__
+#ifndef __JUCE_HEADER_7B9503E899CF8C9A__
+#define __JUCE_HEADER_7B9503E899CF8C9A__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class AmpPanel  : public PanelBase,
-                  public SliderListener
+class FiltPanel  : public PanelBase,
+                   public SliderListener
 {
 public:
     //==============================================================================
-    AmpPanel (SynthParams &p);
-    ~AmpPanel();
+    FiltPanel (SynthParams &p);
+    ~FiltPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -58,17 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> amp;
-    ScopedPointer<MouseOverKnob> pan;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
+    ScopedPointer<MouseOverKnob> cutoffSlider;
+    ScopedPointer<MouseOverKnob> resonanceSlider;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AmpPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_5AD0F87140DC6984__
+#endif   // __JUCE_HEADER_7B9503E899CF8C9A__

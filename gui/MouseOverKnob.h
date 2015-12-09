@@ -15,7 +15,7 @@
 #include "JuceHeader.h"
 //[/Headers]
 
-class MouseOverKnob : public Slider, 
+class MouseOverKnob : public Slider,
                       public ComponentListener
 {
 public:
@@ -23,17 +23,27 @@ public:
     MouseOverKnob(const String& name);
     ~MouseOverKnob();
     //==============================================================================
-    void resized();
-    void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized);
 
-    void mouseEnter(const MouseEvent &e);
-    void mouseExit(const MouseEvent &e);
-    void mouseDoubleClick(const MouseEvent &e);
-    void mouseDrag(const MouseEvent &e);
+    void initTextBox();
+
+    virtual void setName(const String& newName) override;
+
+    void resized() override;
+    void setBounds(int x, int y, int width, int height);
+    void setTextBoxStyle(juce::Slider::TextEntryBoxPosition pos, bool readOnly, int boxWidth, int boxHeight);
+    void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
+
+    void mouseEnter(const MouseEvent &e) override;
+    void mouseExit(const MouseEvent &e) override;
+    void mouseDoubleClick(const MouseEvent &e) override;
+    void mouseDrag(const MouseEvent &e) override;
 
 private:
     ScopedPointer<Label> knobLabel;
-    int width = 64, height = 64;
+    int knobWidth = 64;
+    int knobHeight = 64;
+    int textBoxWidth = 80;
+    int textBoxHeight = 20;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED
