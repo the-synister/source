@@ -219,28 +219,48 @@ public:
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
+        if (tailOff > 0.f) {
+            if (lfo1square.isActive() || lfo1sine.isActive()) {
+                for (int s = 0; s < numSamples; ++s) {
+                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                    const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), TODO CONSTANT)) * level * env1Mod[s];
 
-        if (lfo1square.isActive() || lfo1sine.isActive()) {
-            for (int s = 0; s < numSamples; ++s) {
-                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), TODO CONSTANT)) * level * env1Mod[s];
+                    //check if the output is a stereo output
+                    if (outputBuffer.getNumChannels() == 2) {
+                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                    }
+                    else {
+                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
+                    }
+
+                    if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
+                        clearCurrentNote();
+                        lfo1sine.reset();
+                        lfo1square.reset();
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int s = 0; s < numSamples; ++s)
+            {
+                //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                const float currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level;
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                } else {
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                }
+                else {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                    }
                 }
-
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
-                    clearCurrentNote();
-                    lfo1sine.reset();
-                    lfo1square.reset();
-                    break;
-                }
+            }
+        }
                 ////const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
                 //float currentSample;
                 //if (params.passtype.get() == 1) {
