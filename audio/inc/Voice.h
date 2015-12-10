@@ -206,7 +206,7 @@ public:
         // not interested in controllers in this case.
     }
 
-    void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
+    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
@@ -220,41 +220,26 @@ public:
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
         if (lfo1square.isActive() || lfo1sine.isActive()) {
-                for (int s = 0; s < numSamples; ++s) {
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                    const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), eHighpass)) * level * env1Mod[s];
-
-                    //check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                        }
-                    }
-
-                    if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
-                        clearCurrentNote();
-                        lfo1sine.reset();
-                        lfo1square.reset();
-                        break;
-                    }
-                }
-        } else {
-            for (int s = 0; s < numSamples; ++s)
-            {
-                //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), CONSTANT TODO) * level;
+            for (int s = 0; s < numSamples; ++s) {
+                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), params.passtype.getStep())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                } else {
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                }
+                else {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                    }
+                }
+
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
+                    clearCurrentNote();
+                    lfo1sine.reset();
+                    lfo1square.reset();
+                    break;
                 }
             }
         }
@@ -329,9 +314,6 @@ protected:
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
-<<<<<< HEAD
-
-=======
                     envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
                     valueAtRelease = envCoeff;
                     attackDecayCounter++;
@@ -339,7 +321,6 @@ protected:
                 else // if attack and decay phase is over then sustain level
                 {
                     envCoeff = sustainLevel;
->>>>>>> master
                 }
             }
         }
@@ -392,7 +373,7 @@ protected:
         }
     }
 
-    float biquadFilter(float inputSignal, String filterType) {
+    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
@@ -400,7 +381,7 @@ protected:
 
         currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        if (filterType == "lowpass") {
+        if (filterType == eBiquadFilters::eLowpass) {
             currentCutFreq = params.lpCutoff.get() / sRate;
 
             // coefficients for lowpass, depending on resonance and lowcut frequency
@@ -414,13 +395,13 @@ protected:
             b2 = 2.f * coeff3;
             a1 = 2.f * -coeff2;
             a2 = 2.f * coeff1;
-        } else if (filterType == "highpass") {
+        } else if (filterType == eBiquadFilters::eHighpass) {
             currentCutFreq = params.hpCutoff.get() / sRate;
 
             // coefficients for highpass, depending on resonance and highcut frequency
-            k = 0.5f * currentResonance * sin(float_Pi * currentHighcutFreq);
+            k = 0.5f * currentResonance * sin(float_Pi * currentCutFreq);
             coeff1 = 0.5f * (1.f - k) / (1.f + k);
-            coeff2 = (0.5f + coeff1) * cos(float_Pi * currentHighcutFreq);
+            coeff2 = (0.5f + coeff1) * cos(float_Pi * currentCutFreq);
             coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
 
             b0 = 2.f * coeff3;

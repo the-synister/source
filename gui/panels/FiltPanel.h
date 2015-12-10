@@ -61,11 +61,7 @@ private:
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resonanceSlider;
     ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<MouseOverKnob> resonanceSlider2;
-    ScopedPointer<Slider> passtype;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
-    ScopedPointer<Label> label4;
+    ScopedPointer<MouseOverKnob> passtype;
 
 
     //==============================================================================

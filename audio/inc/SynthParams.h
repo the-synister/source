@@ -13,7 +13,8 @@ enum class eLfoWaves : int {
 
 enum class eBiquadFilters : int {
     eLowpass = 0,
-    eHighpass = 1
+    eHighpass = 1,
+    nSteps = 2
 };
     
 

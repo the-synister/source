@@ -29,7 +29,9 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
     addParameter(new HostParam<Param>(lpCutoff));
-    addParameter(new HostParam<Param>(lpResonance));
+    addParameter(new HostParam<Param>(hpCutoff));
+    addParameter(new HostParam<Param>(biquadResonance));
+    addParameter(new HostParam<Param>(passtype));
 
     addParameter(new HostParam<Param>(envAttack));
     addParameter(new HostParam<Param>(envDecay));
