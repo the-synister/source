@@ -241,6 +241,25 @@ public:
                     lfo1square.reset();
                     break;
                 }
+                ////const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
+                //float currentSample;
+                //if (params.passtype.get() == 1) {
+                //    currentSample = biquadFilter(osc1.next(pitchMod[s]), "lowpass") * level;
+                //}
+                //else {
+                //    currentSample = biquadFilter(osc1.next(pitchMod[s]), "highpass") * level;
+                //}
+                //// TODO Bandpass
+
+                ////check if the output is a stereo output
+                //if (outputBuffer.getNumChannels() == 2) {
+                //    outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                //    outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                //}
+                //else {
+                //    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                //        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                //}
             }
         }
     }
@@ -314,26 +333,8 @@ protected:
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
-//<<<<<<< HEAD
-                    //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
-                    float currentSample;
-                    if (params.passtype.get() == 1 ) {
-                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "lowpass") * level;
-                    }
-                    else {
-                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "highpass") * level;
-                    }
-                    // TODO Bandpass
+<<<<<< HEAD
 
-                    //check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                    }
 =======
                     envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
                     valueAtRelease = envCoeff;
