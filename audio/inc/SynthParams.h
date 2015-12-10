@@ -10,6 +10,11 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
+
+enum class eBiquadFilters : int {
+    eLowpass = 0,
+    eHighpass = 1
+};
     
 
 class SynthParams {
@@ -26,7 +31,7 @@ public:
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
-    Param passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
+    ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz

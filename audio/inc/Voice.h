@@ -223,7 +223,7 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), CONSTANT)) * level * env1Mod[s];
+                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), TODO CONSTANT)) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -314,10 +314,10 @@ protected:
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
                     float currentSample;
-                    if (params.passtype.get() == 0) {
+                    if (params.passtype.get() == 1 ) {
                         currentSample = biquadFilter(osc1.next(pitchMod[s]), "lowpass") * level;
                     }
                     else {

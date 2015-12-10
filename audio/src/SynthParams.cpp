@@ -5,6 +5,10 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+
+    static const char *biquadFilters[] = {
+        "Lowpass", "Highpass", nullptr
+    };
 }
 
 SynthParams::SynthParams()
@@ -14,7 +18,7 @@ SynthParams::SynthParams()
 , osc1fine("f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "st", -11.f, 11.f, 0.f)
 , osc1lfo1depth("mod", "st", 0.f, 12.f, 0.f)
-, passtype("passtype", "", 0.f, 2.f, 0.f)
+, passtype("passtype", eBiquadFilters::eLowpass, biquadFilters)
 , lpCutoff("LP Cut", "Hz", 10.f, 20000.f, 20000.f)
 , biquadResonance("Filter Reso", "dB", -25.f, 25.f, 0.f)
 , hpCutoff("LP Cut", "Hz", 10.f, 20000.f, 10.f)
