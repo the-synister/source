@@ -172,28 +172,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-   /* if (clippingFactor.get() > 0.f) {
-        float threshold = 1.f;
-        float amplifiedSample = 0.f;
-        for (int s = 0; s < buffer.getNumSamples(); ++s) {
-            for (int c = 0; c < buffer.getNumChannels(); ++c) {
-                currentSample = buffer.getSample(c, s);
-                amplifiedSample = currentSample * clippingFactor.get();
-                if (amplifiedSample > 0 && amplifiedSample > threshold) {
-                    buffer.clear(c, s, 1);
-                    buffer.setSample(c, s, threshold);
-                } else if (amplifiedSample < 0 && amplifiedSample < -threshold) {
-                    buffer.clear(c, s, 1);
-                    buffer.setSample(c, s, -threshold);
-                }
-                
-            }
-        }
 
-    }*/
-    
-    if (clippingFactor.get() > 0.f) {
-        clip.clipSignal(buffer);
+    if (clippingFactor.get() > 1.f) {
+        clip.clipSignal(buffer, 0, buffer.getNumSamples());
     }
 }
 
