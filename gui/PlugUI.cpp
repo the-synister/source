@@ -22,6 +22,7 @@
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
+#include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"
 //[/Headers]
@@ -65,7 +66,8 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
     addAndMakeVisible (label2 = new Label ("new label",
@@ -230,6 +232,8 @@ BEGIN_JUCER_METADATA
     <TAB name="AMP" colour="ffd3d3d3" useJucerComp="0" contentClassName="AmpPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
+         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
          constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
   <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""

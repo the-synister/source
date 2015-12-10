@@ -21,6 +21,7 @@ PluginAudioProcessor::PluginAudioProcessor() : clip(*this)
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
 
+    addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
 
