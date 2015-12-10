@@ -170,8 +170,11 @@ public:
                 {
                     float currentSample;
 
-                    if (params.passtype.get() == 0) currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level * tailOff;
-                    else currentSample = biquadHighpass(osc1.next(pitchMod[s])) * level * tailOff;
+                    if (params.passtype.get() == 0) {
+                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "lowpass") * level * tailOff;
+                    } else {
+                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "highpass") * level * tailOff;
+                    }
                     // TODO bandpass!
        
                     
@@ -202,8 +205,12 @@ public:
                 {
                     //const float currentSample = (osc1.next(pitchMod[s])) * level * currentAmp;
                     float currentSample;
-                    if (params.passtype.get() == 0) currentSample = biquadLowpass(osc1.next(pitchMod[s])) * level;
-                    else currentSample = biquadHighpass(osc1.next(pitchMod[s])) * level;
+                    if (params.passtype.get() == 0) {
+                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "lowpass") * level;
+                    }
+                    else {
+                        currentSample = biquadFilter(osc1.next(pitchMod[s]), "highpass") * level;
+                    }
                     // TODO Bandpass
 
                     //check if the output is a stereo output
@@ -243,60 +250,43 @@ protected:
         }
     }
 
-    float biquadHighpass(float inputSignal) {
+    float biquadFilter(float inputSignal, String filterType) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2, currentCutFreq, currentResonance;
 
-        const float currentHighcutFreq = params.hpCutoff.get() / sRate;
-        const float currentResonance = pow(10.f, -params.hpResonance.get() / 20.f);
+        currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        // coefficients for highpass, depending on resonance and highcut frequency
-        k = 0.5f * currentResonance * sin(float_Pi * currentHighcutFreq);
-        coeff1 = 0.5f * (1.f - k) / (1.f + k);
-        coeff2 = (0.5f + coeff1) * cos(float_Pi * currentHighcutFreq);
-        coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
+        if (filterType == "lowpass") {
+            currentCutFreq = params.lpCutoff.get() / sRate;
 
-        b0 = 2.f * coeff3;
-        b1 = -4.f * coeff3;
-        b2 = 2.f * coeff3;
-        a1 = -2.f * coeff2;
-        a2 = 2.f * coeff1;
+            // coefficients for lowpass, depending on resonance and lowcut frequency
+            k = 0.5f * currentResonance * sin(2.f * float_Pi * currentCutFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentCutFreq);
+            coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
 
-        lastSample = inputSignal;
+            b0 = 2.f * coeff3;
+            b1 = 2.f * 2.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = 2.f * -coeff2;
+            a2 = 2.f * coeff1;
+        } else if (filterType == "highpass") {
+            currentCutFreq = params.hpCutoff.get() / sRate;
 
-        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+            // coefficients for highpass, depending on resonance and highcut frequency
+            k = 0.5f * currentResonance * sin(float_Pi * currentHighcutFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(float_Pi * currentHighcutFreq);
+            coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
 
-        //delaying samples
-        inputDelay2 = inputDelay1;
-        inputDelay1 = lastSample;
-        outputDelay2 = outputDelay1;
-        outputDelay1 = inputSignal;
-
-        return inputSignal;
-    }
-
-    float biquadLowpass(float inputSignal) {
-        const float sRate = static_cast<float>(getSampleRate());
-
-        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
-
-        const float currentLowcutFreq = params.lpCutoff.get() / sRate;
-        const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
-
-        // coefficients for lowpass, depending on resonance and lowcut frequency
-        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
-        coeff1 = 0.5f * (1.f - k) / (1.f + k);
-        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
-        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
-
-        b0 = 2.f * coeff3;
-        b1 = 2.f * 2.f * coeff3;
-        b2 = 2.f * coeff3;
-        a1 = 2.f * -coeff2;
-        a2 = 2.f * coeff1;
+            b0 = 2.f * coeff3;
+            b1 = -4.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = -2.f * coeff2;
+            a2 = 2.f * coeff1;
+        }
 
         lastSample = inputSignal;
         
