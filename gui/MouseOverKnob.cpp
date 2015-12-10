@@ -36,9 +36,9 @@ MouseOverKnob::~MouseOverKnob()
 void MouseOverKnob::initTextBox()
 {
     if (knobLabel->isVisible()) {
-        setTextBoxStyle(MouseOverKnob::NoTextBox, false, textBoxWidth, textBoxHeight);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     } else {
-        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, textBoxWidth, textBoxHeight);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -55,7 +55,7 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(false);
-        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, textBoxWidth, textBoxHeight);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -67,7 +67,7 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(true);
-        setTextBoxStyle(MouseOverKnob::NoTextBox, true, textBoxWidth, textBoxHeight);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, true, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -100,7 +100,7 @@ void MouseOverKnob::resized()
 {
     if (!this->isMouseOver())
     {
-        this->setSize(knobWidth, knobHeight - textBoxHeight);
+        this->setSize(knobWidth, knobHeight - this->getTextBoxHeight());
     }
     else
     {
@@ -110,19 +110,14 @@ void MouseOverKnob::resized()
     Slider::resized();
 }
 
-void MouseOverKnob::setTextBoxStyle(juce::Slider::TextEntryBoxPosition pos, bool readOnly, int boxWidth, int boxHeight)
-{
-    textBoxWidth = boxWidth;
-    textBoxHeight = boxHeight;
-
-    Slider::setTextBoxStyle(pos, readOnly, textBoxWidth, textBoxHeight);
-}
-
+/*
+* Needed to save bounds of slider.
+*/
 void MouseOverKnob::setBounds(int x, int y, int width, int height)
 {
     knobWidth = width;
     knobHeight = height;
-    Slider::setBounds(x, y, knobWidth, knobHeight);
+    Slider::setBounds(x, y, width, height);
 }
 
 /**
@@ -130,8 +125,8 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
 */
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
-    knobLabel->setSize(200, textBoxHeight);
-    knobLabel->setTopLeftPosition(this->getX() + (knobWidth-200)/2, this->getY() + this->getHeight());
+    knobLabel->setSize(labelWidth, this->getTextBoxHeight());
+    knobLabel->setTopLeftPosition(this->getX() + (knobWidth- labelWidth)/2, this->getY() + this->getHeight());
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }

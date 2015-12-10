@@ -30,7 +30,6 @@ public:
 
     void resized() override;
     void setBounds(int x, int y, int width, int height);
-    void setTextBoxStyle(juce::Slider::TextEntryBoxPosition pos, bool readOnly, int boxWidth, int boxHeight);
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
     void mouseEnter(const MouseEvent &e) override;
@@ -42,8 +41,7 @@ private:
     ScopedPointer<Label> knobLabel;
     int knobWidth = 64;
     int knobHeight = 64;
-    int textBoxWidth = 80;
-    int textBoxHeight = 20;
+    int labelWidth = 200;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED
