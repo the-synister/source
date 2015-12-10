@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_B8FE7FA7A346D8E2__
-#define __JUCE_HEADER_B8FE7FA7A346D8E2__
+#ifndef __JUCE_HEADER_A04CC96EC550D490__
+#define __JUCE_HEADER_A04CC96EC550D490__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public PanelBase,
-                  public SliderListener
+class LadderPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
-    EnvPanel (SynthParams &p);
-    ~EnvPanel();
+    LadderPanel (SynthParams &p);
+    ~LadderPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -58,17 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> attack;
-    ScopedPointer<MouseOverKnob> decay;
-    ScopedPointer<MouseOverKnob> sustain;
-    ScopedPointer<MouseOverKnob> release;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LadderPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_B8FE7FA7A346D8E2__
+#endif   // __JUCE_HEADER_A04CC96EC550D490__
