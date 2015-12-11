@@ -161,6 +161,7 @@ public:
         // reset attackDecayCounter
         attackDecayCounter = 0;
         freeEnv1AttackDecayCounter = 0;
+        testCnt = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -400,26 +401,34 @@ protected:
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
-        float value;
+        //float value;
 
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
+        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
+        float freqAtSustain = params.lpCutoff.getMax() * pow(params.freeEnv1Sustain.get(), 2.f);
+
+        int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
+        int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
+        
         if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
         
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
         }
         else if (params.lpModSource.get() == 2) { // env
-            value = 20000.f * (modValue)* params.lpModAmout.get() / 100.f;
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
-            /*if(modValue == params.freeEnv1Sustain.get())
-            { 
-                moddedFreq = aaamodValue * 20000.f *  params.lpModAmout.get() / 100.f;
-            }
-            else 
+            //moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+            if (testCnt <= static_cast<int>(getSampleRate() * params.freeEnv1Attack.get()))
             {
-                moddedFreq = (params.lpCutoff.get() + (modValue * 20000.f *  paraaams.lpModAmout.get() / 100.f));
-            }*/
-                
+                moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
+                testCnt++;
+            }
+            //else if (testCnt <= attackSamples+decaySamples)
+            else
+            {
+                // Sustain value is dependant on moddedMaxFreq ... not so cool ...
+                // and the sustain knob should be logorythmic ...
+                moddedFreq = moddedMaxFreq * modValue;
+            }
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) {
@@ -493,6 +502,7 @@ private:
     float freeEnv1ValueAtRelease;
     int freeEnv1AttackDecayCounter;
     int freeEnv1ReleaseCounter;
+    int testCnt;
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
