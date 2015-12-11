@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;..\..\..\vst;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -98,7 +98,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;..\..\..\vst;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -131,8 +131,10 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
@@ -1297,8 +1299,10 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>

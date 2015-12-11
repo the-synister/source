@@ -36,12 +36,20 @@ public:
     virtual String getLabel() const override {
         return param.unit();
     }
+    
+    virtual int getNumSteps() const override {
+        return param.getNumSteps();
+    }
 
     //! \todo implement this
     virtual float getValueForText(const String& text) const override {
         return text.getFloatValue();
     }
 
+    //! \todo implement getText
+    virtual String getText (float value, int maximumStringLength) const override {
+        return param.getUIString(value).substring(0, maximumStringLength);
+    }
 
     virtual void paramUIChanged() override {
         // this will (unnecessarily) call setValue
@@ -55,7 +63,11 @@ protected:
     }
     float hostToEngine(float hostVal) const {
         jassert(hostVal >= 0.f && hostVal <= 1.f);
-        return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
+        if(param.getNumSteps()==0) {
+            return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
+        } else {
+            return trunc(hostVal*static_cast<float>(param.getNumSteps()-1) + .5f);
+        }
     }
 
     _par &param;

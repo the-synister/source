@@ -6,19 +6,23 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="Z3iEfN" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
+        <FILE id="JUtYnk" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
+        <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
+        <FILE id="SyrRUI" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
-      <FILE id="N2CteC" name="MouseOverKnob.cpp" compile="1" resource="0"
+      <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
-      <FILE id="BbojkD" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
       <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>

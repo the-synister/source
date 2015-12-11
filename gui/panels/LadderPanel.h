@@ -17,13 +17,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_17F31DC76882C8CC__
-#define __JUCE_HEADER_17F31DC76882C8CC__
+#ifndef __JUCE_HEADER_A04CC96EC550D490__
+#define __JUCE_HEADER_A04CC96EC550D490__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "SynthParams.h"
-#include "MouseOverKnob.h"
+#include "PanelBase.h"
 //[/Headers]
 
 
@@ -36,15 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PlugUI  : public Component,
-                public SliderListener,
-                public ButtonListener,
-                private Timer
+class LadderPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
-    PlugUI (SynthParams &p);
-    ~PlugUI();
+    LadderPanel (SynthParams &p);
+    ~LadderPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -53,36 +50,23 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams &params;
-
-    float lastBpmInfo;
-    void timerCallback() override;
-    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> label;
-    ScopedPointer<MouseOverKnob> freq;
-    ScopedPointer<MidiKeyboardComponent> keyboard;
-    ScopedPointer<TabbedComponent> tabs;
-    ScopedPointer<Label> label2;
-    ScopedPointer<TextButton> savePresetButton;
-    ScopedPointer<TextButton> loadPresetButton;
-    ScopedPointer<Label> bpmLabel;
-    ScopedPointer<Label> bpmDisplay;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PlugUI)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LadderPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_17F31DC76882C8CC__
+#endif   // __JUCE_HEADER_A04CC96EC550D490__

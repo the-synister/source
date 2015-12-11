@@ -22,6 +22,8 @@
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
+#include "panels/LadderPanel.h"
+#include "panels/FiltPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -35,6 +37,7 @@ PlugUI::PlugUI (SynthParams &p)
     : params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
+    startTimerHz (30);
     //[/Constructor_pre]
 
     addAndMakeVisible (label = new Label ("new label",
@@ -59,12 +62,36 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->setTabBarDepth (30);
     tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
     tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
-    tabs->addTab (TRANS("ENV"), Colours::lightgrey, 0, false);
-    tabs->addTab (TRANS("FILT"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
+    tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("master tune")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centred);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (bpmLabel = new Label ("bpm label",
+                                             TRANS("BPM:")));
+    bpmLabel->setFont (Font (15.00f, Font::plain));
+    bpmLabel->setJustificationType (Justification::centredLeft);
+    bpmLabel->setEditable (false, false, false);
+    bpmLabel->setColour (TextEditor::textColourId, Colours::black);
+    bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (bpmDisplay = new Label ("bpm display",
+                                               String::empty));
+    bpmDisplay->setFont (Font (15.00f, Font::plain));
+    bpmDisplay->setJustificationType (Justification::centredLeft);
+    bpmDisplay->setEditable (false, false, false);
+    bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
+    bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible(label2 = new Label("new label",
         TRANS("master tune")));
@@ -105,7 +132,8 @@ PlugUI::~PlugUI()
     label2 = nullptr;
     savePresetButton = nullptr;
     loadPresetButton = nullptr;
-
+    bpmLabel = nullptr;
+    bpmDisplay = nullptr;
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -135,6 +163,9 @@ void PlugUI::resized()
     label2->setBounds (726, 8, 64, 16);
     savePresetButton->setBounds (8, 36, 88, 24);
     loadPresetButton->setBounds (8, 64, 88, 24);
+    bpmLabel->setBounds (8, 64, 56, 24);
+    bpmDisplay->setBounds (56, 64, 150, 24);
+
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -180,6 +211,20 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void PlugUI::timerCallback()
+{
+    updateBpmDisplay (params.positionInfo[params.getGUIIndex()]);
+}
+
+void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
+{
+    lastBpmInfo = currentPos.bpm;
+
+    MemoryOutputStream bpmDisplayText;
+
+    bpmDisplayText << String(currentPos.bpm, 2);
+    bpmDisplay->setText(bpmDisplayText.toString(), dontSendNotification);
+}
 //[/MiscUserCode]
 
 
@@ -193,7 +238,7 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PlugUI" componentName=""
-                 parentClasses="public Component" constructorParams="SynthParams &amp;p"
+                 parentClasses="public Component, private Timer" constructorParams="SynthParams &amp;p"
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
                  initialHeight="600">
@@ -217,14 +262,16 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
          constructorParams="params" jucerComponentFile=""/>
-    <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
-         constructorParams="" jucerComponentFile=""/>
-    <TAB name="FILT" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
-         constructorParams="" jucerComponentFile=""/>
+    <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName="EnvPanel"
+         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="FILT" colour="ffd3d3d3" useJucerComp="0" contentClassName="FiltPanel"
+         constructorParams="params" jucerComponentFile=""/>
     <TAB name="AMP" colour="ffd3d3d3" useJucerComp="0" contentClassName="AmpPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
          constructorParams="" jucerComponentFile=""/>
+    <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
+         constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
   <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="726 8 64 16" edTextCol="ff000000"
@@ -237,6 +284,16 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
               virtualName="" explicitFocusOrder="0" pos="8 64 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
+         virtualName="" explicitFocusOrder="0" pos="8 64 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
+         virtualName="" explicitFocusOrder="0" pos="56 64 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
