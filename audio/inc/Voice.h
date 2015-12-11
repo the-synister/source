@@ -388,7 +388,6 @@ protected:
                 }
             }
         }
-        std::cout << envCoeff;
         return envCoeff;
     }
 
