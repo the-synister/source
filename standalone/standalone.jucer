@@ -18,7 +18,7 @@
         <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
-        <FILE id="cPBXUN" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
+        <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
@@ -31,7 +31,7 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
-        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
+        <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"

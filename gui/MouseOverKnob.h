@@ -25,9 +25,9 @@ public:
     //==============================================================================
 
     void initTextBox();
-    
+
     virtual void setName(const String& newName) override;
-    
+
     void resized() override;
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 

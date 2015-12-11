@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "Param.h"
+#include <vector>
 #include <array>
 
 enum class eLfoWaves : int {
@@ -51,11 +52,32 @@ public:
 
     MidiKeyboardState keyboardState;
 
+    // list of current params, just add your new param here if you want it to be serialized
+    std::vector<Param*> serializeParams;
+
+    const float version = 1.1f; // version of the program, to be written into the xml
+
+    void writeXMLPatchHost(MemoryBlock& destData);
+
+    void writeXMLPatchStandalone();
+
+    void fillValueIfExists(XmlElement * patch, String paramName, Param& param);
+
+    void fillValues(XmlElement * patch);
+
+    void readXMLPatchHost(const void * data, int sizeInBytes);
+
+    void readXMLPatchStandalone();
+
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
     
     int getGUIIndex();
     int getAudioIndex();
+
 protected:
+private:
+    void addElement(XmlElement* patch, String name, float value); // adds an element to the XML tree
+    void writeXMLPatchTree(XmlElement * patch);
 };
