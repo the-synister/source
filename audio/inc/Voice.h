@@ -125,7 +125,7 @@ public:
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
         
-        level = velocity * (params.keyVelocityLevel.get() / 96.f);
+        level = (velocity - 1.f) * params.keyVelocityLevel.get();
         releaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
