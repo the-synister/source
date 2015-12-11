@@ -1,7 +1,8 @@
 #include "SynthParams.h"
 
 SynthParams::SynthParams()
-: freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
+: serializeParams{ &freq, &lfo1freq, &lfo1wave, &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &panDir, &vol}
+, freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", "", 0.f, 1.f, 0.f)
 , osc1fine("f.tune", "osc1fine", "ct", -100.f, 100.f, 0.f)
@@ -26,12 +27,10 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch) {
     patch->setAttribute("version", version);
 
     // iterate over all params and insert them into the tree
-    for (std::vector<Param*>::iterator paramsIt = serializeParams.begin(); paramsIt != serializeParams.end(); ++paramsIt) {
-        float value = (*paramsIt)->getUI();
-       // if((*paramsIt)->unit() == "dB")  value = ParamDb::fromDb(value);
-        addElement(patch, (*paramsIt)->serializationTag(), value);
+    for (auto &param : serializeParams) {
+        float value = param->getUI();
+        addElement(patch, param->serializationTag(), value);
     }
-
 }
 
 void SynthParams::writeXMLPatchHost(MemoryBlock& destData) {
@@ -75,8 +74,8 @@ void SynthParams::fillValues(XmlElement* patch) {
     }
 
     // iterate over all params and set the values if they exist in the xml
-    for (std::vector<Param*>::iterator paramsIt = serializeParams.begin(); paramsIt != serializeParams.end(); ++paramsIt) {
-        fillValueIfExists(patch, (*paramsIt)->serializationTag(), (**paramsIt));
+    for (auto &param : serializeParams) {
+        fillValueIfExists(patch, param->serializationTag(), *param);
     }
 
 }

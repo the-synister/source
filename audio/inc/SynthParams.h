@@ -28,8 +28,7 @@ public:
     MidiKeyboardState keyboardState;
 
     // list of current params, just add your new param here if you want it to be serialized
-    std::vector<Param*> serializeParams { &freq, &lfo1freq, &lfo1wave, &osc1fine, &osc1coarse, &osc1lfo1depth,
-        &osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &panDir, &vol};
+    std::vector<Param*> serializeParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
 
