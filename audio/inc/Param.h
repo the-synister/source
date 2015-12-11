@@ -104,8 +104,8 @@ public:
 template<typename _enum>
 class ParamStepped : public Param {
 public:
-    ParamStepped(const String &name, _enum defaultval, const char **labels = nullptr)
-    : Param(name, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
+    ParamStepped(const String &name, const String &serializationTag, _enum defaultval, const char **labels = nullptr)
+    : Param(name, serializationTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
             static_cast<float>(defaultval),
             static_cast<int>(_enum::nSteps))
     , step_(defaultval)
