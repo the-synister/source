@@ -25,14 +25,16 @@ public:
     //==============================================================================
 
     void initTextBox();
+    
+    virtual void setName(const String& newName) override;
+    
+    void resized() override;
+    void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
-    void resized();
-    void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized);
-
-    void mouseEnter(const MouseEvent &e);
-    void mouseExit(const MouseEvent &e);
-    void mouseDoubleClick(const MouseEvent &e);
-    void mouseDrag(const MouseEvent &e);
+    void mouseEnter(const MouseEvent &e) override;
+    void mouseExit(const MouseEvent &e) override;
+    void mouseDoubleClick(const MouseEvent &e) override;
+    void mouseDrag(const MouseEvent &e) override;
 
 private:
     ScopedPointer<Label> knobLabel;

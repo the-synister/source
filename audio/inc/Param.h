@@ -6,13 +6,14 @@
 
 class Param {
 public:
-    Param(const String &name, const String &unit, float minval, float maxval, float defaultval)
+    Param(const String &name, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
     : val_(defaultval)
     , min_(minval)
     , max_(maxval)
     , default_(defaultval)
     , name_(name)
     , unit_(unit)
+    , numSteps_(numSteps)
     {
         jassert(minval < maxval);
         jassert(minval <= defaultval);
@@ -22,6 +23,7 @@ public:
 
     const String& name() const { return name_; }
     const String& unit() const { return unit_; }
+    int getNumSteps() const { return numSteps_; }
 
     void set(float f) { val_.store(f); }
     float get() const { return val_.load(); }
@@ -32,6 +34,9 @@ public:
         if(notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const { return get(); }
+    virtual String getUIString() const { return getUIString(get()); }
+    virtual String getUIString(float v) const { return String::formatted("%f", v); }
+    virtual bool hasLabels() const { return false; }
 
     float getMin() const { return min_; }
     float getMax() const { return max_; }
@@ -74,6 +79,7 @@ protected:
     float default_;
     String name_;
     String unit_;
+    int numSteps_;
 
     ListenerList<Listener> listener;
     std::atomic<bool> uiDirty;
@@ -90,3 +96,56 @@ public:
     }
     virtual float getUI() const override { return toDb(get()); }
 };
+
+template<typename _enum>
+class ParamStepped : public Param {
+public:
+    ParamStepped(const String &name, _enum defaultval, const char **labels = nullptr)
+    : Param(name, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
+            static_cast<float>(defaultval),
+            static_cast<int>(_enum::nSteps))
+    , step_(defaultval)
+    , labelsSet(false)
+    {
+        const char **lbl = labels;
+        for(size_t u = 0; u<labels_.size() && lbl != nullptr && *lbl != nullptr; ++u, ++lbl) {
+            labels_[u] = *lbl;
+            labelsSet = true;
+        }
+    }
+
+    //! \todo what about the set method? Make sure that no inconsistent state is created!
+    
+    _enum getStep () const {
+        return step_.load();
+    }
+    void setStep (_enum v) {
+        step_.store(v);
+        set(static_cast<float>(v));
+    }
+    
+    virtual void setUI(float f, bool notifyHost = true) override {
+        set(f);
+        int ival = static_cast<int>(std::trunc(f + .5f));
+        jassert(ival >= 0 && ival < static_cast<int>(_enum::nSteps));
+        step_.store(static_cast<_enum>(ival));
+        if (notifyHost) listener.call(&Listener::paramUIChanged);
+    }
+    virtual String getUIString() const override { return labels_[static_cast<size_t>(getStep())]; }
+    virtual String getUIString(float v) const override {
+        size_t u = static_cast<size_t>(std::trunc(v+.5f));
+        if(u<labels_.size()) {
+            return labels_[u];
+        } else {
+            jassert(false);
+            return String::formatted("val%u",u);
+        }
+    }
+    virtual bool hasLabels() const override { return labelsSet; }
+
+protected:
+    std::atomic<_enum> step_;
+    std::array<String, static_cast<size_t>(_enum::nSteps)> labels_;
+    bool labelsSet;
+};
+
