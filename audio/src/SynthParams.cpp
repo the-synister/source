@@ -33,7 +33,6 @@ SynthParams::SynthParams()
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 }
-{}
  
 
 void SynthParams::addElement(XmlElement* patch, String name, float value) {
