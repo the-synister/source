@@ -177,9 +177,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 void PluginAudioProcessor::updateHostInfo()
 {
     // currentPositionInfo used for getting the bpm.
-    if (AudioPlayHead* playHead = getPlayHead())
+    if (AudioPlayHead* pHead = getPlayHead())
     {
-        if (playHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
+        if (pHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
             positionIndex.exchange(getGUIIndex());
             return;
         }

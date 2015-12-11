@@ -65,7 +65,6 @@ LfoPanel::~LfoPanel()
     //[/Destructor_pre]
 
     freq = nullptr;
-    // label = nullptr;
     wave = nullptr;
 
 
@@ -89,6 +88,7 @@ void LfoPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
+
     freq->setBounds (8, 8, 64, 64);
     wave->setBounds (80, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
@@ -143,7 +143,8 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

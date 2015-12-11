@@ -37,9 +37,9 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
+                private Timer,
                 public SliderListener,
-                public ButtonListener,
-                private Timer
+                public ButtonListener
 {
 public:
     //==============================================================================
@@ -67,11 +67,9 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> label;
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
-    ScopedPointer<Label> label2;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<Label> bpmLabel;
