@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "Envelope.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -98,12 +99,13 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize) 
-    :    lastSample(0.f)
+    : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
+    , env(p, getSampleRate())
     , level (0.f)
     , pitchModBuffer(1,blockSize)
     , lfo1ModBuffer(1, blockSize)
@@ -111,9 +113,11 @@ public:
     , freeEnv1Buffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
+
         for (int s = 0; s < blockSize; ++s) {
             noModBuffer.setSample(0, s, 0.f);
         }
+        
     }
 
 
@@ -133,8 +137,9 @@ public:
         outputDelay2 = 0.f;
         
         level = velocity * 0.15f;
-        releaseCounter = -1;
-        freeEnv1ReleaseCounter = -1;
+        env.resetAllCounters();
+        //env.releaseCounter = -1;
+        //freeEnv1ReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -159,8 +164,8 @@ public:
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
         // reset attackDecayCounter
-        attackDecayCounter = 0;
-        freeEnv1AttackDecayCounter = 0;
+        //attackDecayCounter = 0;
+        //freeEnv1AttackDecayCounter = 0;
         testCnt = 0;
     }
 
@@ -171,15 +176,16 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (releaseCounter == -1) // we only need to begin a tail-off if it's not already doing so - the
+            if (env.getReleaseCounter() == -1) // we only need to begin a tail-off if it's not already doing so - the
             {                         // stopNote method could be called more than once.
                 // reset releaseCounter
-                releaseCounter = 0;
+                //releaseCounter = 0;
+                env.resetReleaseCounter();
             }
 
-            if (freeEnv1ReleaseCounter == -1)
+            if (env.getfreeEnv1ReleaseCounter() == -1)
             {
-                freeEnv1ReleaseCounter = 0;
+                env.resetfreeEnv1ReleaseCounter();
         }
         }
         else
@@ -239,7 +245,7 @@ public:
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= freeEnv1ReleaseCounter)
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env.getfreeEnv1ReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -251,7 +257,7 @@ public:
     }
 
 protected:
-    float getEnv1Coeff()
+/*    float getEnv1Coeff()
     {
         float freeEnvCoeff;
         float sustainLevel = params.freeEnv1Sustain.get(); // / static_cast<float>(getSampleRate());
@@ -338,31 +344,31 @@ protected:
         }
         //std::cout << envCoeff;
         return envCoeff;
-    }
+    }*/
 
     /**
     * help function that interpolates logarithmically from 1.0 to 0.0f in t samples
     */
-    float interpolateLog(int curr, int t)
+    /*float interpolateLog(int curr, int t)
     {
         // coeff of growth/shrink, maybe on which depends on time is better?
         float k = std::exp(1.0f);
 
         return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
-    }
+    }*/
 
     void renderModulation(int numSamples) {
 
-        // set the env1buffer
+        // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
         {
-            env1Buffer.setSample(0, s, getEnvCoeff());
+            env1Buffer.setSample(0, s, env.getEnvCoeff());
         }
 
-        // set the filterEnvBuffer
+        // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)
         {
-            freeEnv1Buffer.setSample(0, s, getEnv1Coeff());
+            freeEnv1Buffer.setSample(0, s, env.getEnv1Coeff());
         }
 
         // add pitch wheel values
@@ -406,10 +412,10 @@ protected:
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
         float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
-        float freqAtSustain = params.lpCutoff.getMax() * pow(params.freeEnv1Sustain.get(), 2.f);
+        //float freqAtSustain = params.lpCutoff.getMax() * pow(params.freeEnv1Sustain.get(), 2.f);
 
-        int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
-        int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
+        //int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
+        //int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
         
         if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
         
@@ -494,14 +500,14 @@ private:
     int currentPitchValue;
 
     // variables for env
-    float valueAtRelease;
-    int attackDecayCounter;
-    int releaseCounter;
+    //float valueAtRelease;
+    //int attackDecayCounter;
+    //int releaseCounter;
 
     //variables for filter env
-    float freeEnv1ValueAtRelease;
-    int freeEnv1AttackDecayCounter;
-    int freeEnv1ReleaseCounter;
+    //float freeEnv1ValueAtRelease;
+    //int freeEnv1AttackDecayCounter;
+    //int freeEnv1ReleaseCounter;
     int testCnt;
 
     AudioSampleBuffer pitchModBuffer;
@@ -509,6 +515,8 @@ private:
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer freeEnv1Buffer;
+    
+    Envelope env;
 };
 
 
