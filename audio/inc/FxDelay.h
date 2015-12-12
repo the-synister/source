@@ -26,9 +26,8 @@ public:
         , inputDelay2(0.f)
         , outputDelay1(0.f)
         , outputDelay2(0.f)
-    {
-
-    }
+        , delayBuffer()
+    {}
     ~FxDelay(){}
     
     void render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn);

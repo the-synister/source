@@ -47,12 +47,9 @@ void FxDelay::init(int channelsIn, double sampleRateIn)
 {
     channels = channelsIn;
     sampleRate = sampleRateIn;
-    delayBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 5.0));
+    delayBuffer.setSize(channels, static_cast<int>(sampleRate * 5.0));
     currentDelayLength = static_cast<int>(params.delayTime.get()*(sampleRate / 1000.0));
-
-    for (int c = 0; c < channels; ++c) {
-        delayBuffer.clear(c, 0, delayBuffer.getNumSamples());
-    }
+    delayBuffer.clear();
 }
 
 void FxDelay::calcTime()
