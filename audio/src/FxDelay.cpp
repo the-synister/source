@@ -16,10 +16,10 @@ float FxDelay::filter(float currentSample) {
     float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
     const float currentLowcutFreq = params.delayCutoff.get() / static_cast<float>(sampleRate);
-    const float currentResonance = pow(10.f, -params.delayResonance.get() / 20.f);
+    //const float currentResonance = pow(10.f, -params.delayResonance.get() / 20.f);
 
     // coefficients for lowpass, depending on resonance and lowcut frequency
-    k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
+    k = 0.5f * sin(2.f * float_Pi * currentLowcutFreq);
     coeff1 = 0.5f * (1.f - k) / (1.f + k);
     coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
     coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
@@ -56,17 +56,28 @@ void FxDelay::calcTime()
 {
     int bpmIn = static_cast<int>(params.positionInfo[params.getGUIIndex()].bpm);
     // check for changes, re-calculate delay time - how slow is this?
-    if (params.delaySync.get() > 0 ||
+    if (params.delaySync.getStep() == eOnOffToggle::eOn ||
         bpm != bpmIn ||
         divisor != params.delayDivisor.get() ||
-        dividend != params.delayDividend.get()) {
+        dividend != params.delayDividend.get() ||
+        triplet != params.delayTriplet.getStep() ){
 
-        // TODO: check for very high bpm
+        // TODO: what happends here @ 20 bpm?
         params.delayTime.set(static_cast<float>(4000.0 * (1. / (bpmIn / 60.)) *
             static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
+
+        if (params.delayTriplet.getStep() == eOnOffToggle::eOn) {
+            params.delayTime.set(params.delayTime.get()*0.666667f);
+        }
+
         bpm = bpmIn;
         divisor = params.delayDivisor.get();
         dividend = params.delayDividend.get();
+        triplet = params.delayTriplet.getStep();
+
+        if (params.delayTime.get() > static_cast<float>(maxDelayLength)) {
+            params.delayTime.set(static_cast<float>(maxDelayLength));
+        }
     }
 }
 
@@ -93,11 +104,25 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSa
             // add new material to buffer
             float currentSample = outputBuffer.getSample(c, startSample + s);
             float delayedSample = delayBuffer.getSample(c, loopPosition);
-            delayBuffer.setSample(c, loopPosition, currentSample);
-            //delayBuffer.setSample(c, newLoopLength - loopPosition, currentSample); // reverse + overflow
-            delayedSample = filter(delayedSample); // here it does record the filter
-            delayBuffer.addSample(c, loopPosition, delayedSample * params.delayFeedback.get());
-            //delayedSample = filter(delayedSample); // here it does not record the filter
+            
+            // reverse order
+            int orderPosition;
+            if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
+                orderPosition = loopPosition;
+            } else { orderPosition = newLoopLength - loopPosition; }
+
+            delayBuffer.setSample(c, orderPosition, currentSample);
+
+            if (params.delayRecordFilter.getStep() == eOnOffToggle::eOn) {
+                delayedSample = filter(delayedSample);
+            }
+            
+            delayBuffer.addSample(c, orderPosition, delayedSample * params.delayFeedback.get());
+
+            if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {
+                delayedSample = filter(delayedSample);
+            }
+
             outputBuffer.addSample(c, startSample + s, delayedSample * params.delayDryWet.get());
 
         }

@@ -361,13 +361,13 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
@@ -1683,19 +1683,22 @@
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Param.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">

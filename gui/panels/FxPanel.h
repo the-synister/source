@@ -72,6 +72,9 @@ private:
     ScopedPointer<ComboBox> divisor;
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<ToggleButton> tripTggl;
+    ScopedPointer<ToggleButton> filtTggl;
+    ScopedPointer<ToggleButton> revTggl;
 
 
     //==============================================================================

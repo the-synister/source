@@ -189,9 +189,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 void PluginAudioProcessor::updateHostInfo()
 {
     // currentPositionInfo used for getting the bpm.
-    if (AudioPlayHead* playHead = getPlayHead())
+    if (AudioPlayHead* pHead = getPlayHead())
     {
-        if (playHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
+        if (pHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
             positionIndex.exchange(getGUIIndex());
             return;
         }
@@ -215,17 +215,12 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    ignoreUnused(destData);
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    SynthParams::writeXMLPatchHost(destData);
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    ignoreUnused(data,sizeInBytes);
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    SynthParams::readXMLPatchHost(data, sizeInBytes);
 }
 
 //==============================================================================

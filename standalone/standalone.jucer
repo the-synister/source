@@ -6,21 +6,21 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="JKipUS" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
+        <FILE id="kXuahO" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
         <FILE id="Z3iEfN" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
         <FILE id="JUtYnk" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
+        <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
+        <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
         <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
         <FILE id="SyrRUI" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
-        <FILE id="LIp9yK" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
-        <FILE id="mCeodY" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
-        <FILE id="rcsjc5" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
-        <FILE id="KpkM4Y" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
         <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="zotqyG" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="e7fTxy" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
-        <FILE id="cPBXUN" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
+        <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
@@ -33,8 +33,8 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
-        <FILE id="TG68Og" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
-        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
+        <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
+        <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
@@ -42,7 +42,7 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
-        <FILE id="yJExDp" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
+        <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

@@ -27,6 +27,7 @@ public:
         , outputDelay1(0.f)
         , outputDelay2(0.f)
         , delayBuffer()
+        , maxDelayLength(5000)
     {}
     ~FxDelay(){}
     
@@ -42,9 +43,11 @@ private:
     int channels;
     int loopPosition;
     int currentDelayLength;
+    int maxDelayLength;
     double bpm;
     float divisor;
     float dividend;
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
+    eOnOffToggle triplet;
 };
 #endif  // FXDELAY_H_INCLUDED
