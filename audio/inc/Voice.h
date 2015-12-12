@@ -10,16 +10,17 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width)  { 
+    static float sinus(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
+        return std::sin(phs);
     }
     static float square(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
         //square wave with duty cycle
         if (phs < 2.f * float_Pi * width) {
             return 1.f;
-        } else {
+        }
+        else {
             return -1.f;
         }
         //return std::copysign(1.f, float_Pi - phs);
@@ -29,7 +30,7 @@ struct Waveforms {
         ignoreUnused(width);
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
-        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
     }
 };
 
@@ -40,9 +41,9 @@ struct Oscillator {
     float phaseDelta;
     float trngAmount;
     float width;
-    
+
     Oscillator() : phase(0.f)
-                 , phaseDelta(0.f)
+        , phaseDelta(0.f)
     {}
 
     void reset() {
@@ -59,7 +60,7 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-    
+
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
@@ -71,24 +72,24 @@ template<float(*_waveform)(float, float, float)>
 struct RandomOscillator : Oscillator<&Waveforms::square>
 {
     float heldValue;
-    
+
     RandomOscillator() : Oscillator()
-                       , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
-                      {}
-    
+        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f)
+    {}
+
     void reset()
     {
         phase = 0.f;
         phaseDelta = 0.f;
         heldValue = 0.f;
     }
-    
+
     float next()
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
-             heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
-        
+
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return heldValue;
     }
@@ -97,26 +98,26 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-    : lastSample(0.f)
-    , inputDelay1(0.f)
-    , inputDelay2(0.f)
-    , outputDelay1(0.f)
-    , outputDelay2(0.f)
-    , params(p)
-    , level (0.f)
-    , ladderOut(0.f)
-    , ladderInDelay(0.f)
-    , lpOut1(0.f)
-    , lpOut2(0.f)
-    , lpOut3(0.f)
-    , lpOut1Delay(0.f)
-    , lpOut2Delay(0.f)
-    , lpOut3Delay(0.f)
-    , pitchModBuffer(1, blockSize)
-    , lfo1ModBuffer(1, blockSize)
-    , env1Buffer(1, blockSize)
-    , noModBuffer(1, blockSize)
+    Voice(SynthParams &p, int blockSize)
+        : lastSample(0.f)
+        , inputDelay1(0.f)
+        , inputDelay2(0.f)
+        , outputDelay1(0.f)
+        , outputDelay2(0.f)
+        , params(p)
+        , level(0.f)
+        , ladderOut(0.f)
+        , ladderInDelay(0.f)
+        , lpOut1(0.f)
+        , lpOut2(0.f)
+        , lpOut3(0.f)
+        , lpOut1Delay(0.f)
+        , lpOut2Delay(0.f)
+        , lpOut3Delay(0.f)
+        , pitchModBuffer(1, blockSize)
+        , env1Buffer(1, blockSize)
+        , lfo1ModBuffer(1, blockSize)
+        , noModBuffer(1, blockSize)
     {
         for (int s = 0; s < blockSize; ++s) {
             noModBuffer.setSample(0, s, 0.f);
@@ -124,14 +125,14 @@ public:
     }
 
 
-    bool canPlaySound (SynthesiserSound* sound) override
+    bool canPlaySound(SynthesiserSound* sound) override
     {
         ignoreUnused(sound);
         return true;
     }
 
-    void startNote (int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int currentPitchWheelPosition) override
+    void startNote(int midiNoteNumber, float velocity,
+        SynthesiserSound*, int currentPitchWheelPosition) override
     {
         //for ladder filter
         ladderOut = 0.f;
@@ -148,7 +149,7 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
-        
+
         currentVelocity = velocity;
         level = velocity * 0.15f;
         releaseCounter = -1;
@@ -156,17 +157,17 @@ public:
         currentPitchValue = currentPitchWheelPosition;
 
         const float sRate = static_cast<float>(getSampleRate());
-        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
+        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         lfo1sine.phase = 0.f;
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
 
         osc1.phase = 0.f;
         osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
@@ -179,7 +180,7 @@ public:
         attackDecayCounter = 0;
     }
 
-    void stopNote (float /*velocity*/, bool allowTailOff) override
+    void stopNote(float /*velocity*/, bool allowTailOff) override
     {
         if (allowTailOff)
         {
@@ -188,7 +189,7 @@ public:
 
             if (releaseCounter == -1) // we only need to begin a tail-off if it's not already doing so - the
             {                         // stopNote method could be called more than once.
-                // reset releaseCounter
+                                      // reset releaseCounter
                 releaseCounter = 0;
             }
         }
@@ -203,17 +204,17 @@ public:
         }
     }
 
-    void pitchWheelMoved (int newValue) override
+    void pitchWheelMoved(int newValue) override
     {
         currentPitchValue = newValue;
     }
 
-    void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
+    void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
     {
         // not interested in controllers in this case.
     }
 
-    void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
+    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
@@ -221,10 +222,9 @@ public:
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
 
-        std::vector<const float*> modSources(3);
+        std::vector<const float*> modSources(2);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -233,22 +233,23 @@ public:
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
-        if (lfo1square.isActive() || lfo1sine.isActive())
-        {
-            for (int s = 0; s < numSamples; ++s)
-            {
+        if (lfo1square.isActive() || lfo1sine.isActive()) {
+            for (int s = 0; s < numSamples; ++s) {
+                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
                 const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s]) * level * env1Mod[s]);
+
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                } else {
+                }
+                else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
 
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() )) {
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
@@ -297,7 +298,7 @@ public:
     }
 
 protected:
-    float getEnvCoeff() 
+    float getEnvCoeff()
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
@@ -385,7 +386,7 @@ protected:
             return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
         }
         else
-    {
+        {
             return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
         }
     }
@@ -407,6 +408,7 @@ protected:
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1sine.next()*0.5f);
             }
         }
         else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSampleHold)
@@ -414,6 +416,7 @@ protected:
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1random.next()*0.5f);
             }
         }
         else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSquare)
@@ -421,21 +424,22 @@ protected:
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
+                lfo1ModBuffer.setSample(0, s, lfo1square.next()*0.5f);
             }
         }
     }
-    
+
     float biquadLowpass(float inputSignal, float modValue) {
         const float sRate = static_cast<float>(getSampleRate());
-
         // mod to frequency calculation
+        
         float moddedFreq = params.lpCutoff.get();
 
         if (params.lpModSource.get() == 1) {        //bipolar (lfo) modValues
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f));
         }
         else if (params.lpModSource.get() == 2) {   // env, this is just for testing, env_cutoff branch is the real thing
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
+            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue)* params.lpModAmout.get() / 100.f));
         }
         if (moddedFreq < params.lpCutoff.getMin()) {
             moddedFreq = params.lpCutoff.getMin();
@@ -463,28 +467,28 @@ protected:
         a2 = 2.f * coeff1;
 
         lastSample = inputSignal;
-        
+
         inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-        
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
+
         outputDelay1 = inputSignal;
-        
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
-        
+
         return inputSignal;
     }
 
 
 private:
-    
+
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-    
+
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
@@ -492,7 +496,7 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
-    
+
     float level;
 
     int currentPitchValue;
@@ -513,12 +517,10 @@ private:
     float lpOut2Delay;
     float lpOut3Delay;
 
-
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
-
 };
 
 
