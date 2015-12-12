@@ -119,9 +119,7 @@ public:
         , lfo1ModBuffer(1, blockSize)
         , noModBuffer(1, blockSize)
     {
-        for (int s = 0; s < blockSize; ++s) {
-            noModBuffer.setSample(0, s, 0.f);
-        }
+        noModBuffer.clear();
     }
 
 
