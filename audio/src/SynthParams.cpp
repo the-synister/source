@@ -14,7 +14,7 @@ SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
-    &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
+    &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
