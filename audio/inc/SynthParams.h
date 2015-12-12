@@ -11,7 +11,12 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
-    
+
+enum class eModSource : int {
+    eNone = 0,
+    eLFO1 = 1,
+    nSteps = 2
+};
 
 class SynthParams {
 public:
@@ -29,7 +34,7 @@ public:
     
     Param lpCutoff;     //!< filter cutoff frequency in Hz
     Param lpResonance;  //! filter resonance in dB
-    Param lpModSource;  //! filter moduluation source
+    ParamStepped<eModSource> lpModSource;  //! filter moduluation source
     Param lpModAmout;   //! filter moduluation amount
 
     Param osc1trngAmount; //Triangle Amount [0 ... 1]

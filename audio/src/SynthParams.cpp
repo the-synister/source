@@ -5,6 +5,9 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+    static const char *modsourcenames[] = {
+        "None", "LFO1", nullptr
+    };
 }
 
 SynthParams::SynthParams()
@@ -22,7 +25,7 @@ SynthParams::SynthParams()
 , osc1lfo1depth("mod", "osc1lfo1depth", "st", 0.f, 12.f, 0.f)
 , lpCutoff("LP Cut", "lpCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , lpResonance("LP Reso", "lpResonance", "dB", -25.f, 25.f, 0.f)
-, lpModSource("LP ModSrc", "lpMod", "", 0, 1, 0)
+, lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
 , lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)

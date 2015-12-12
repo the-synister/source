@@ -433,11 +433,8 @@ protected:
         
         float moddedFreq = params.lpCutoff.get();
 
-        if (params.lpModSource.get() == 1) {        //bipolar (lfo) modValues
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f));
-        }
-        else if (params.lpModSource.get() == 2) {   // env, this is just for testing, env_cutoff branch is the real thing
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue)* params.lpModAmout.get() / 100.f));
         }
         if (moddedFreq < params.lpCutoff.getMin()) {
             moddedFreq = params.lpCutoff.getMin();
