@@ -45,34 +45,6 @@ FiltPanel::FiltPanel (SynthParams &p)
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
 
-    addAndMakeVisible (FilterAttack = new MouseOverKnob ("Attack"));
-    FilterAttack->setRange (0.001, 5, 0);
-    FilterAttack->setSliderStyle (Slider::RotaryVerticalDrag);
-    FilterAttack->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    FilterAttack->addListener (this);
-    FilterAttack->setSkewFactor (0.5);
-
-    addAndMakeVisible (FilterDecay = new MouseOverKnob ("Decay"));
-    FilterDecay->setRange (0.001, 5, 0);
-    FilterDecay->setSliderStyle (Slider::RotaryVerticalDrag);
-    FilterDecay->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    FilterDecay->addListener (this);
-    FilterDecay->setSkewFactor (0.5);
-
-    addAndMakeVisible (FilterSustain = new MouseOverKnob ("Sustain"));
-    FilterSustain->setRange (10, 20000, 1);
-    FilterSustain->setSliderStyle (Slider::RotaryVerticalDrag);
-    FilterSustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    FilterSustain->addListener (this);
-    FilterSustain->setSkewFactor (3);
-
-    addAndMakeVisible (FilterRelease = new MouseOverKnob ("Release"));
-    FilterRelease->setRange (0.001, 5, 0);
-    FilterRelease->setSliderStyle (Slider::RotaryVerticalDrag);
-    FilterRelease->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    FilterRelease->addListener (this);
-    FilterRelease->setSkewFactor (0.5);
-
     addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
     modSrc->setEditableText (false);
     modSrc->setJustificationType (Justification::centred);
@@ -89,25 +61,12 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
     modSliderCut->addListener (this);
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("the env_to_filter is outdated in this branch!")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
     registerSlider(modSliderCut, &params.lpModAmout);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(resonanceSlider, &params.lpResonance);
-    registerSlider(FilterAttack, &params.filterEnvAttack);
-    registerSlider(FilterDecay, &params.filterEnvDecay);
-    registerSlider(FilterRelease, &params.filterEnvRelease);
-    registerSlider(FilterSustain, &params.filterEnvSustain);
-    FilterSustain->setSkewFactorFromMidPoint(1000.0);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -124,13 +83,8 @@ FiltPanel::~FiltPanel()
 
     cutoffSlider = nullptr;
     resonanceSlider = nullptr;
-    FilterAttack = nullptr;
-    FilterDecay = nullptr;
-    FilterSustain = nullptr;
-    FilterRelease = nullptr;
     modSrc = nullptr;
     modSliderCut = nullptr;
-    label = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -156,13 +110,8 @@ void FiltPanel::resized()
 
     cutoffSlider->setBounds (8, 8, 64, 64);
     resonanceSlider->setBounds (104, 8, 64, 64);
-    FilterAttack->setBounds (273, 8, 64, 64);
-    FilterDecay->setBounds (345, 8, 64, 64);
-    FilterSustain->setBounds (417, 8, 64, 64);
-    FilterRelease->setBounds (489, 8, 64, 64);
     modSrc->setBounds (8, 80, 64, 16);
     modSliderCut->setBounds (64, 8, 31, 24);
-    label->setBounds (272, 88, 280, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -182,26 +131,6 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
         //[/UserSliderCode_resonanceSlider]
-    }
-    else if (sliderThatWasMoved == FilterAttack)
-    {
-        //[UserSliderCode_FilterAttack] -- add your slider handling code here..
-        //[/UserSliderCode_FilterAttack]
-    }
-    else if (sliderThatWasMoved == FilterDecay)
-    {
-        //[UserSliderCode_FilterDecay] -- add your slider handling code here..
-        //[/UserSliderCode_FilterDecay]
-    }
-    else if (sliderThatWasMoved == FilterSustain)
-    {
-        //[UserSliderCode_FilterSustain] -- add your slider handling code here..
-        //[/UserSliderCode_FilterSustain]
-    }
-    else if (sliderThatWasMoved == FilterRelease)
-    {
-        //[UserSliderCode_FilterRelease] -- add your slider handling code here..
-        //[/UserSliderCode_FilterRelease]
     }
     else if (sliderThatWasMoved == modSliderCut)
     {
@@ -259,24 +188,6 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="104 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Attack" id="3c32cde7173ddbe6" memberName="FilterAttack"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="273 8 64 64"
-          min="0.0010000000000000000208" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Decay" id="84a4159bee0728d6" memberName="FilterDecay" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="345 8 64 64" min="0.0010000000000000000208"
-          max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="FilterSustain"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="417 8 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
-  <SLIDER name="Release" id="c8bc1120a33101cd" memberName="FilterRelease"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="489 8 64 64"
-          min="0.0010000000000000000208" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.5"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="8 80 64 16" editable="0" layout="36"
             items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
@@ -285,11 +196,6 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="64 8 31 24" min="0" max="10" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="117dea7c1bb1d263" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="272 88 280 48" edTextCol="ff000000"
-         edBkgCol="0" labelText="the env_to_filter is outdated in this branch!"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -58,10 +58,14 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> attack;
-    ScopedPointer<MouseOverKnob> decay;
-    ScopedPointer<MouseOverKnob> sustain;
-    ScopedPointer<MouseOverKnob> release;
+    ScopedPointer<MouseOverKnob> attackTime;
+    ScopedPointer<MouseOverKnob> decayTime;
+    ScopedPointer<MouseOverKnob> sustainLevel;
+    ScopedPointer<MouseOverKnob> releaseTime;
+    ScopedPointer<MouseOverKnob> attackShape;
+    ScopedPointer<MouseOverKnob> decayShape;
+    ScopedPointer<MouseOverKnob> releaseShape;
+    ScopedPointer<MouseOverKnob> keyVelToEnv;
 
 
     //==============================================================================

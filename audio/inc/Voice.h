@@ -116,7 +116,6 @@ public:
     , pitchModBuffer(1, blockSize)
     , lfo1ModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
-    , filterEnvBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         for (int s = 0; s < blockSize; ++s) {
@@ -150,9 +149,9 @@ public:
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
         
+        currentVelocity = velocity;
         level = velocity * 0.15f;
         releaseCounter = -1;
-        filterReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -178,7 +177,6 @@ public:
 
         // reset attackDecayCounter
         attackDecayCounter = 0;
-        filterAttackDecayCounter = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -193,11 +191,6 @@ public:
                 // reset releaseCounter
                 releaseCounter = 0;
             }
-
-            if (filterReleaseCounter == -1)
-            {
-                filterReleaseCounter = 0;
-        }
         }
         else
         {
@@ -227,12 +220,11 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
-        const float *filterEnvMod = filterEnvBuffer.getReadPointer(0);
 
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-        modSources[2] = filterEnvMod;
+
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -253,10 +245,10 @@ public:
                 } else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                }
+                    }
                 }
 
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() * params.filterEnvRelease.get()) <= filterReleaseCounter) {
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter || static_cast<int>(getSampleRate() )) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
@@ -305,63 +297,34 @@ public:
     }
 
 protected:
-    float getFilterEnvCoeff()
-    {
-        float filterEnvCoeff;
-        float filterSustainLevel = params.filterEnvSustain.get() / static_cast<float>(getSampleRate());
-
-        //number of all samples for all phases
-        int filterAttackSamples = static_cast<int>(getSampleRate() * params.filterEnvAttack.get());
-        int filterDecaySamples = static_cast<int>(getSampleRate() * params.filterEnvDecay.get());
-        int filterReleaseSamples = static_cast<int>(getSampleRate() * params.filterEnvRelease.get());
-
-        if (filterReleaseCounter > -1)
-        {
-            filterEnvCoeff = filterValueAtRelease * interpolateLog(filterReleaseCounter, filterReleaseSamples);
-            filterReleaseCounter++;
-        }
-        else
-        {
-            if(filterAttackDecayCounter <= filterAttackSamples)
-            {
-                filterEnvCoeff = 1.0f - interpolateLog(filterAttackDecayCounter, filterAttackSamples);
-                filterValueAtRelease = filterEnvCoeff;
-                filterAttackDecayCounter++;
-            }
-            else
-            {
-                if (filterAttackDecayCounter <= filterAttackSamples + filterDecaySamples)
-                {
-                    filterEnvCoeff = interpolateLog(filterAttackDecayCounter - filterAttackSamples, filterDecaySamples) * (1.0f - filterSustainLevel) + filterSustainLevel;
-                    filterValueAtRelease = filterEnvCoeff;
-                    filterAttackDecayCounter++;
-                }
-
-                else
-                {
-                    filterEnvCoeff = filterSustainLevel;
-                }
-            }
-        
-        }
-        //jassert(isfinite(filterEnvCoeff));
-        return filterEnvCoeff;
-    }
-    
     float getEnvCoeff() 
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
 
         // number of samples for all phases
-        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
-        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
+        // if needed consider key velocity for attack and decay
+        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
+        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
         int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+
+        // get growth/shrink rate from knobs
+        float attackGrowthRate = params.envAttackShape.get();
+        float decayShrinkRate = params.envDecayShape.get();
+        float releaseShrinkRate = params.envReleaseShape.get();
 
         // release phase sets envCoeff from valueAtRelease to 0.0f
         if (releaseCounter > -1)
         {
-            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
+            if (releaseShrinkRate < 1.0f)
+            {
+                releaseShrinkRate = 1 / releaseShrinkRate;
+                envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
+            }
+            else
+            {
+                envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
+            }
             releaseCounter++;
         }
         else
@@ -369,7 +332,15 @@ protected:
             // attack phase sets envCoeff from 0.0f to 1.0f
             if (attackDecayCounter <= attackSamples)
             {
-                envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
+                if (attackGrowthRate < 1.0f)
+                {
+                    attackGrowthRate = 1 / attackGrowthRate;
+                    envCoeff = interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, true);
+                }
+                else
+                {
+                    envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, false);
+                }
                 valueAtRelease = envCoeff;
                 attackDecayCounter++;
             }
@@ -378,13 +349,22 @@ protected:
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
-                    envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
+                    if (decayShrinkRate < 1.0f)
+                    {
+                        decayShrinkRate = 1 / decayShrinkRate;
+                        envCoeff = 1 - interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
+                    }
+                    else
+                    {
+                        envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
+                    }
                     valueAtRelease = envCoeff;
                     attackDecayCounter++;
                 }
                 else // if attack and decay phase is over then sustain level
                 {
                     envCoeff = sustainLevel;
+                    valueAtRelease = envCoeff;
                 }
             }
         }
@@ -392,14 +372,22 @@ protected:
     }
 
     /**
-    * help function that interpolates logarithmically from 1.0 to 0.0f in t samples
+    * interpolate logarithmically from 1.0 to 0.0f in t samples
+    @param c counter of the specific phase
+    @param t number of samples after which the specific phase should be over
+    @param k coeff of growth/shrink, k=1 for linear
+    @param slow how fast is phase applied at the start
     */
-    float interpolateLog(int curr, int t)
+    float interpolateLog(int c, int t, float k, bool slow)
     {
-        // coeff of growth/shrink, maybe on which depends on time is better?
-        float k = std::exp(1.0f);
-
-        return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
+        if (slow)
+        {
+            return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
+        else
+    {
+            return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
     }
 
     void renderModulation(int numSamples) {
@@ -410,22 +398,15 @@ protected:
             env1Buffer.setSample(0, s, getEnvCoeff());
         }
 
-        // set the filterEnvBuffer
-        for (int s = 0; s < numSamples; ++s)
-        {
-            filterEnvBuffer.setSample(0, s, getFilterEnvCoeff());
-        }
-
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
         if (params.lfo1wave.getStep() == eLfoWaves::eLfoSine)
         {
-            for (int s = 0; s < numSamples;++s)
+            for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1sine.next()*0.5f );
             }
         }
         else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSampleHold)
@@ -433,15 +414,13 @@ protected:
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1random.next()*0.5f);
             }
         }
         else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSquare)
         {
-            for (int s = 0; s < numSamples;++s)
+            for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1square.next()*0.5f);
             }
         }
     }
@@ -519,6 +498,7 @@ private:
     int currentPitchValue;
 
     // variables for env
+    float currentVelocity;
     float valueAtRelease;
     int attackDecayCounter;
     int releaseCounter;
@@ -533,16 +513,12 @@ private:
     float lpOut2Delay;
     float lpOut3Delay;
 
-    //variables for filter env
-    float filterValueAtRelease;
-    int filterAttackDecayCounter;
-    int filterReleaseCounter;
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
-    AudioSampleBuffer filterEnvBuffer;
+
 };
 
 
