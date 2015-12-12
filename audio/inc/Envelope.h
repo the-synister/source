@@ -55,7 +55,4 @@ class Envelope{
     int freeEnv1ReleaseCounter;
 };
 
-
-
-
 #endif  // ENVELOPE_H_INCLUDED

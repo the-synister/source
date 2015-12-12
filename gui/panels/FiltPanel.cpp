@@ -60,7 +60,6 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
     modSliderCut->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     modSliderCut->addListener (this);
-    modSliderCut->setSkewFactor (0.33);
 
 
     //[UserPreSize]
@@ -196,7 +195,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="modSliderCut1" id="2596fb730a93410" memberName="modSliderCut"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="256 8 64 64"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -77,10 +77,11 @@ EnvPanel::EnvPanel (SynthParams &p)
 
     addAndMakeVisible (freeEnv1Sustain = new MouseOverKnob ("Sustain"));
     freeEnv1Sustain->setExplicitFocusOrder (1);
-    freeEnv1Sustain->setRange (0, 1, 0.01);
+    freeEnv1Sustain->setRange (0, 1, 0.001);
     freeEnv1Sustain->setSliderStyle (Slider::RotaryVerticalDrag);
     freeEnv1Sustain->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     freeEnv1Sustain->addListener (this);
+    freeEnv1Sustain->setSkewFactor (0.5);
 
     addAndMakeVisible (freeEnv1Release = new MouseOverKnob ("Release"));
     freeEnv1Release->setRange (0.001, 5, 0);
@@ -274,8 +275,8 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="c7af19e02e26db3f" memberName="freeEnv1Sustain"
           virtualName="MouseOverKnob" explicitFocusOrder="1" pos="152 200 64 64"
-          min="0" max="1" int="0.01" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          min="0" max="1" int="0.001" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Release" id="d51ee4839c4c233" memberName="freeEnv1Release"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 200 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

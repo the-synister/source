@@ -33,8 +33,8 @@ void Envelope::resetReleaseCounter()
 void Envelope::resetAllCounters()
 {
     releaseCounter = -1;
-    freeEnv1ReleaseCounter = -1;
     attackDecayCounter = 0;
+    freeEnv1ReleaseCounter = -1;
     freeEnv1AttackDecayCounter = 0;
 }
 
@@ -75,9 +75,7 @@ float Envelope::getEnv1Coeff()
                     freeEnvCoeff = sustainLevel;
                 }
             }
-        
         }
-        //jassert(isfinite(filterEnvCoeff));
         return freeEnvCoeff;
     }
     
@@ -123,7 +121,6 @@ float Envelope::getEnv1Coeff()
                 }
             }
         }
-        //std::cout << envCoeff;
         return envCoeff;
     }
 

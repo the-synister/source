@@ -137,9 +137,9 @@ public:
         outputDelay2 = 0.f;
         
         level = velocity * 0.15f;
+ 
+        // reset attackDecayCounter
         env.resetAllCounters();
-        //env.releaseCounter = -1;
-        //freeEnv1ReleaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -163,10 +163,6 @@ public:
         lfo1square.width = params.osc1pulsewidth.get();
         osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
-        // reset attackDecayCounter
-        //attackDecayCounter = 0;
-        //freeEnv1AttackDecayCounter = 0;
-        testCnt = 0;
     }
 
     void stopNote (float /*velocity*/, bool allowTailOff) override
@@ -176,10 +172,8 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (env.getReleaseCounter() == -1) // we only need to begin a tail-off if it's not already doing so - the
-            {                         // stopNote method could be called more than once.
-                // reset releaseCounter
-                //releaseCounter = 0;
+            if (env.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
+            {                                       // stopNote method could be called more than once.
                 env.resetReleaseCounter();
             }
 
@@ -257,106 +251,6 @@ public:
     }
 
 protected:
-/*    float getEnv1Coeff()
-    {
-        float freeEnvCoeff;
-        float sustainLevel = params.freeEnv1Sustain.get(); // / static_cast<float>(getSampleRate());
-
-        //number of all samples for all phases
-        int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
-        int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
-        int releaseSamples = static_cast<int>(getSampleRate() * params.freeEnv1Release.get());
-
-        if (freeEnv1ReleaseCounter > -1)
-        {
-            freeEnvCoeff = freeEnv1ValueAtRelease * interpolateLog(freeEnv1ReleaseCounter, releaseSamples);
-            freeEnv1ReleaseCounter++;
-        }
-        else
-        {
-            if(freeEnv1AttackDecayCounter <= attackSamples)
-            {
-                freeEnvCoeff = 1.0f - interpolateLog(freeEnv1AttackDecayCounter, attackSamples);
-                freeEnv1ValueAtRelease = freeEnvCoeff;
-                freeEnv1AttackDecayCounter++;
-            }
-            else
-            {
-                if (freeEnv1AttackDecayCounter <= attackSamples + decaySamples)
-                {
-                    freeEnvCoeff = interpolateLog(freeEnv1AttackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
-                    freeEnv1ValueAtRelease = freeEnvCoeff;
-                    freeEnv1AttackDecayCounter++;
-                }
-
-                else
-                {
-                    freeEnvCoeff = sustainLevel;
-                }
-            }
-        
-        }
-        //jassert(isfinite(filterEnvCoeff));
-        return freeEnvCoeff;
-    }
-    
-    float getEnvCoeff() 
-    {
-        float envCoeff;
-        float sustainLevel = Param::fromDb(params.envSustain.get());
-
-        // number of samples for all phases
-        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get());
-        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get());
-        int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
-
-        // release phase sets envCoeff from valueAtRelease to 0.0f
-        if (releaseCounter > -1)
-        {
-            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples);
-            releaseCounter++;
-        }
-        else
-        {
-            // attack phase sets envCoeff from 0.0f to 1.0f
-            if (attackDecayCounter <= attackSamples)
-            {
-                envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples);
-                valueAtRelease = envCoeff;
-                attackDecayCounter++;
-            }
-            else
-            {
-                // decay phase sets envCoeff from 1.0f to sustain level
-                if (attackDecayCounter <= attackSamples + decaySamples)
-                {
-                    envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
-                    valueAtRelease = envCoeff;
-                    attackDecayCounter++;
-                }
-
-                // if attack and decay phase is over then sustain level
-                else
-                {
-                    envCoeff = sustainLevel;
-                }
-            }
-        }
-        //std::cout << envCoeff;
-        return envCoeff;
-    }*/
-
-    /**
-    * help function that interpolates logarithmically from 1.0 to 0.0f in t samples
-    */
-    /*float interpolateLog(int curr, int t)
-    {
-        // coeff of growth/shrink, maybe on which depends on time is better?
-        float k = std::exp(1.0f);
-
-        return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
-    }*/
-
     void renderModulation(int numSamples) {
 
         // set the env1buffer - for Volume
@@ -407,34 +301,24 @@ protected:
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
-        //float value;
 
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
         float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
-        //float freqAtSustain = params.lpCutoff.getMax() * pow(params.freeEnv1Sustain.get(), 2.f);
-
-        //int attackSamples = static_cast<int>(getSampleRate() * params.freeEnv1Attack.get());
-        //int decaySamples = static_cast<int>(getSampleRate() * params.freeEnv1Decay.get());
         
         if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
         
             moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
         }
         else if (params.lpModSource.get() == 2) { // env
-            //moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue) * params.lpModAmout.get() / 100.f));
-            if (testCnt <= static_cast<int>(getSampleRate() * params.freeEnv1Attack.get()))
-            {
-                moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
-                testCnt++;
-            }
-            //else if (testCnt <= attackSamples+decaySamples)
-            else
-            {
-                // Sustain value is dependant on moddedMaxFreq ... not so cool ...
-                // and the sustain knob should be logorythmic ...
-                moddedFreq = moddedMaxFreq * modValue;
-            }
+            
+            // this opens the filter from 0 to Cutoff, no effect of lpModAmount
+            // moddedFreq = params.lpCutoff.get() * modValue;
+
+            // this opens the filter from Cutoff to Max, with effect of lpModAmount
+            // Sustain value is dependant on the moddedMaxFreq
+            // and is NOT to be regarded as a partial value of a full frequency range ...
+            moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) {
@@ -445,10 +329,6 @@ protected:
         }
 
         const float currentLowcutFreq = (moddedFreq / sRate);
-
-        //if (params.lpModAmout.get() > 0.f) {
-        //    currentLowcutFreq *= modValue;
-        //}
 
         const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
 
@@ -498,17 +378,6 @@ private:
     float level;
 
     int currentPitchValue;
-
-    // variables for env
-    //float valueAtRelease;
-    //int attackDecayCounter;
-    //int releaseCounter;
-
-    //variables for filter env
-    //float freeEnv1ValueAtRelease;
-    //int freeEnv1AttackDecayCounter;
-    //int freeEnv1ReleaseCounter;
-    int testCnt;
 
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer lfo1ModBuffer;
