@@ -18,6 +18,7 @@
 //============================================================1==================
 PluginAudioProcessor::PluginAudioProcessor() :
     delay(*this)
+	,chorus(*this)
 {
 
     addParameter(new HostParam<Param>(osc1fine));

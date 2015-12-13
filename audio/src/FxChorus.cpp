@@ -1,11 +1,12 @@
 #include "FxChorus.h"
 
+FxChorus::~FxChorus() {};
 
 void FxChorus::init(int channelsIn, double sampleRateIn)
 {
 	channels = channelsIn;
 	sampleRate = sampleRateIn;
-	chorusBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 5.0));
+	chorusBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 2.0));
 	currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate / 1000.0));
 	modSine.phase = 0.f;
 	modSine.phaseDelta = params.chorModRate.get() / sampleRate;
