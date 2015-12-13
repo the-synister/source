@@ -72,6 +72,10 @@ private:
     ScopedPointer<ComboBox> divisor;
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<MouseOverKnob> chorDryWetSlider;
+    ScopedPointer<MouseOverKnob> chorDepthSlider;
+    ScopedPointer<MouseOverKnob> chorDelayLengthSlider;
+    ScopedPointer<MouseOverKnob> chorModRateSlider;
 
 
     //==============================================================================

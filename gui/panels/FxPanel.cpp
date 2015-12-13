@@ -98,6 +98,30 @@ FxPanel::FxPanel (SynthParams &p)
     resSlider->addListener (this);
     resSlider->setSkewFactor (0.33);
 
+    addAndMakeVisible (chorDryWetSlider = new MouseOverKnob ("Chorus Dry / Wet"));
+    chorDryWetSlider->setRange (0, 100, 0);
+    chorDryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    chorDryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    chorDryWetSlider->addListener (this);
+
+    addAndMakeVisible (chorDepthSlider = new MouseOverKnob ("Chorus Depth"));
+    chorDepthSlider->setRange (1, 15, 0);
+    chorDepthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    chorDepthSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    chorDepthSlider->addListener (this);
+
+    addAndMakeVisible (chorDelayLengthSlider = new MouseOverKnob ("Chorus Width"));
+    chorDelayLengthSlider->setRange (0.02, 0.04, 0);
+    chorDelayLengthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    chorDelayLengthSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    chorDelayLengthSlider->addListener (this);
+
+    addAndMakeVisible (chorModRateSlider = new MouseOverKnob ("Chorus Rate"));
+    chorModRateSlider->setRange (0, 3, 0);
+    chorModRateSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    chorModRateSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    chorModRateSlider->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(feedbackSlider, &params.delayFeedback);
@@ -105,6 +129,12 @@ FxPanel::FxPanel (SynthParams &p)
     registerSlider(timeSlider, &params.delayTime);
     registerSlider(resSlider, &params.delayResonance);
     registerSlider(cutoffSlider, &params.delayCutoff);
+
+    registerSlider(chorDryWetSlider, &params.chorDryWet);
+    registerSlider(chorDepthSlider, &params.chorModDepth);
+    registerSlider(chorDelayLengthSlider, &params.chorDelayLength);
+    registerSlider(chorModRateSlider, &params.chorModRate);
+
     divisor->setText(String("4"));
     dividend->setText(String("1"));
     dividend->setEnabled(false);
@@ -119,6 +149,11 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->setValue(params.delayDryWet.getUI());
     timeSlider->setValue(params.delayTime.getUI());
     feedbackSlider->setValue(params.delayFeedback.getUI());
+    
+    chorDryWetSlider->setValue(params.chorDryWet.getUI());
+    chorDepthSlider->setValue(params.chorModDepth.getUI());
+    chorDelayLengthSlider->setValue(params.chorDelayLength.getUI());
+    chorModRateSlider->setValue(params.chorModRate.getUI());
 
     //[/UserPreSize]
 
@@ -142,6 +177,10 @@ FxPanel::~FxPanel()
     divisor = nullptr;
     cutoffSlider = nullptr;
     resSlider = nullptr;
+    chorDryWetSlider = nullptr;
+    chorDepthSlider = nullptr;
+    chorDelayLengthSlider = nullptr;
+    chorModRateSlider = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -173,6 +212,10 @@ void FxPanel::resized()
     divisor->setBounds (224, 56, 55, 16);
     cutoffSlider->setBounds (288, 8, 64, 64);
     resSlider->setBounds (360, 8, 64, 64);
+    chorDryWetSlider->setBounds (8, 88, 64, 64);
+    chorDepthSlider->setBounds (80, 88, 64, 64);
+    chorDelayLengthSlider->setBounds (152, 88, 64, 64);
+    chorModRateSlider->setBounds (226, 88, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -212,6 +255,30 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_resSlider] -- add your slider handling code here..
         params.delayResonance.setUI(static_cast<float>(resSlider->getValue()));
         //[/UserSliderCode_resSlider]
+    }
+    else if (sliderThatWasMoved == chorDryWetSlider)
+    {
+        //[UserSliderCode_chorDryWetSlider] -- add your slider handling code here..
+        params.chorDryWet.setUI(static_cast<float>(chorDryWetSlider->getValue()));
+        //[/UserSliderCode_chorDryWetSlider]
+    }
+    else if (sliderThatWasMoved == chorDepthSlider)
+    {
+        //[UserSliderCode_chorDepthSlider] -- add your slider handling code here..
+        params.chorModDepth.setUI(static_cast<float>(chorDepthSlider->getValue()));
+        //[/UserSliderCode_chorDepthSlider]
+    }
+    else if (sliderThatWasMoved == chorDelayLengthSlider)
+    {
+        //[UserSliderCode_chorDelayLengthSlider] -- add your slider handling code here..
+        params.chorDelayLength.setUI(static_cast<float>(chorDelayLengthSlider->getValue()));
+        //[/UserSliderCode_chorDelayLengthSlider]
+    }
+    else if (sliderThatWasMoved == chorModRateSlider)
+    {
+        //[UserSliderCode_chorModRateSlider] -- add your slider handling code here..
+        params.chorModRate.setUI(static_cast<float>(chorModRateSlider->getValue()));
+        //[/UserSliderCode_chorModRateSlider]
     }
 
     //[UsersliderValueChanged_Post]
@@ -302,7 +369,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="224 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -317,11 +384,28 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="288 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 8 64 64"
           min="-25" max="0" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+  <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 88 64 64"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 88 64 64"
+          min="1" max="15" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 88 64 64"
+          min="0.02" max="0.040000000000000001" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="226 88 64 64"
+          min="0" max="3" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

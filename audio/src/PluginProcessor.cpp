@@ -148,6 +148,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     }
     synth.clearSounds();
     delay.init(2, sRate);
+	chorus.init(2, sRate);
 
     synth.addSound(new Sound());
 }
@@ -185,6 +186,10 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
+	// chorus
+	if (chorDryWet.get() > 0.f) {
+		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+	}
 }
 
 void PluginAudioProcessor::updateHostInfo()
