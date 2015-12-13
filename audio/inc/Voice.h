@@ -149,6 +149,7 @@ public:
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
         
+        currentVelocity = velocity;
         level = velocity * 0.15f;
 
         // reset attackDecayCounter
@@ -193,7 +194,7 @@ public:
             if (env.getfreeEnv1ReleaseCounter() == -1)
             {
                 env.resetfreeEnv1ReleaseCounter();
-            }
+        }
         }
         else
         {
@@ -246,7 +247,7 @@ public:
                 } else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                }
+                    }
                 }
                 if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env.getfreeEnv1ReleaseCounter())
                 {
@@ -304,7 +305,7 @@ protected:
         for (int s = 0; s < numSamples; ++s)
             {
             env1Buffer.setSample(0, s, env.getEnvCoeff());
-            }
+                }
 
         // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)

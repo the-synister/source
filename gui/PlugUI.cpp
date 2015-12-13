@@ -40,14 +40,6 @@ PlugUI::PlugUI (SynthParams &p)
     startTimerHz (30);
     //[/Constructor_pre]
 
-    addAndMakeVisible (label = new Label ("new label",
-                                          TRANS("synth plugin")));
-    label->setFont (Font (15.00f, Font::plain));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (freq = new MouseOverKnob ("frequency"));
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -69,13 +61,11 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("master tune")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
+    savePresetButton->addListener (this);
+
+    addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
+    loadPresetButton->addListener (this);
 
     addAndMakeVisible (bpmLabel = new Label ("bpm label",
                                              TRANS("BPM:")));
@@ -92,6 +82,7 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setEditable (false, false, false);
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
@@ -112,11 +103,11 @@ PlugUI::~PlugUI()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    label = nullptr;
     freq = nullptr;
     keyboard = nullptr;
     tabs = nullptr;
-    label2 = nullptr;
+    savePresetButton = nullptr;
+    loadPresetButton = nullptr;
     bpmLabel = nullptr;
     bpmDisplay = nullptr;
 
@@ -142,14 +133,13 @@ void PlugUI::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    label->setBounds (8, 8, 150, 24);
     freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     tabs->setBounds (8, 128, 784, 416);
-    label2->setBounds (726, 8, 64, 16);
-    bpmLabel->setBounds (8, 64, 56, 24);
-    bpmDisplay->setBounds (56, 64, 150, 24);
-
+    savePresetButton->setBounds (8, 8, 88, 24);
+    loadPresetButton->setBounds (8, 40, 88, 24);
+    bpmLabel->setBounds (127, 7, 40, 24);
+    bpmDisplay->setBounds (175, 7, 64, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -168,6 +158,28 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void PlugUI::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == savePresetButton)
+    {
+        //[UserButtonCode_savePresetButton] -- add your button handler code here..
+        params.writeXMLPatchStandalone();
+        //[/UserButtonCode_savePresetButton]
+    }
+    else if (buttonThatWasClicked == loadPresetButton)
+    {
+        //[UserButtonCode_loadPresetButton] -- add your button handler code here..
+        params.readXMLPatchStandalone();
+        //[/UserButtonCode_loadPresetButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -205,11 +217,6 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
                  initialHeight="600">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <LABEL name="new label" id="dba6c74253a4dd75" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="8 8 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="synth plugin" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="728 8 64 64" min="220" max="880"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
@@ -235,18 +242,19 @@ BEGIN_JUCER_METADATA
     <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
          constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
-  <LABEL name="new label" id="9d171eeecf3cc269" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="726 8 64 16" edTextCol="ff000000"
-         edBkgCol="0" labelText="master tune" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
+  <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
+              virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
+              virtualName="" explicitFocusOrder="0" pos="8 40 88 24" buttonText="Load preset"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="8 64 56 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="127 7 40 24" edTextCol="ff000000"
          edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="56 64 150 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="175 7 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>

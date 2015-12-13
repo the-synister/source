@@ -58,16 +58,20 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> attack;
-    ScopedPointer<MouseOverKnob> decay;
-    ScopedPointer<MouseOverKnob> sustain;
-    ScopedPointer<MouseOverKnob> release;
+    ScopedPointer<MouseOverKnob> attackTime;
+    ScopedPointer<MouseOverKnob> decayTime;
+    ScopedPointer<MouseOverKnob> sustainLevel;
+    ScopedPointer<MouseOverKnob> releaseTime;
+    ScopedPointer<MouseOverKnob> attackShape;
+    ScopedPointer<MouseOverKnob> decayShape;
+    ScopedPointer<MouseOverKnob> releaseShape;
     ScopedPointer<MouseOverKnob> freeEnv1Attack;
     ScopedPointer<MouseOverKnob> freeEnv1Decay;
     ScopedPointer<MouseOverKnob> freeEnv1Sustain;
     ScopedPointer<MouseOverKnob> freeEnv1Release;
     ScopedPointer<Label> VolEnvLabel;
     ScopedPointer<Label> Env1Label;
+    ScopedPointer<MouseOverKnob> keyVelToEnv;
 
 
     //==============================================================================
