@@ -65,13 +65,13 @@ private:
     ScopedPointer<MouseOverKnob> attackShape;
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
+    ScopedPointer<MouseOverKnob> keyVelToEnv;
     ScopedPointer<MouseOverKnob> freeEnv1Attack;
     ScopedPointer<MouseOverKnob> freeEnv1Decay;
     ScopedPointer<MouseOverKnob> freeEnv1Sustain;
     ScopedPointer<MouseOverKnob> freeEnv1Release;
     ScopedPointer<Label> VolEnvLabel;
     ScopedPointer<Label> Env1Label;
-    ScopedPointer<MouseOverKnob> keyVelToEnv;
 
 
     //==============================================================================
