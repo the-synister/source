@@ -42,7 +42,7 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
-        <FILE id="PrZ2TP" name="FxClipping.cpp" compile="1" resource="0" file="../audio/inc/FxClipping.cpp"/>
+        <FILE id="DriCHg" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

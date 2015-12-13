@@ -355,7 +355,7 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\FxClipping.cpp">
+    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
