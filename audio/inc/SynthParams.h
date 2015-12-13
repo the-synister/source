@@ -4,6 +4,21 @@
 #include "Param.h"
 #include <array>
 
+enum class eLfoWaves : int {
+    eLfoSine = 0,
+    eLfoSquare = 1,
+    eLfoSampleHold = 2,
+    nSteps = 3
+    };
+
+enum class eModSource : int {
+    eNone = 0,
+    eEnv = 1,
+    nSteps = 3
+
+};
+    
+
 class SynthParams {
 public:
     SynthParams();
@@ -12,7 +27,7 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
-    Param lfo1wave; //!< lfo wave switch 0 = sine wave, 0.5 = random, or 1 = square wave
+    ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
@@ -20,7 +35,8 @@ public:
     
     Param lpCutoff;     //!< filter cutoff frequency in Hz
     Param lpResonance;  //! filter resonance in dB
-    Param lpModSource;  //! filter moduluation source
+    ParamStepped<eModSource> lpModSource; //! filter modulation source
+    //Param lpModSource;  //! filter moduluation source
     Param lpModAmout;   //! filter moduluation amount
 
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
@@ -38,6 +54,9 @@ public:
     Param freeEnv1Release;   //!< filter env release in [0.001..5]s (logarithmic scaling)
 
     Param panDir; //!< pan R/L [-100..100]
+
+    Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
+    Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
     ParamDb vol; //!< volume in [0..1]
 

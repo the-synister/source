@@ -51,8 +51,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
     modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     modSrc->addItem (TRANS("No Mod"), 1);
-    modSrc->addItem (TRANS("LFO1"), 2);
-    modSrc->addItem (TRANS("Envelope1"), 3);
+    modSrc->addItem (TRANS("Env 1"), 2);
     modSrc->addListener (this);
 
     addAndMakeVisible (modSliderCut = new MouseOverKnob ("modSliderCut1"));
@@ -151,7 +150,8 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == modSrc)
     {
         //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
-        params.lpModSource.set(static_cast<float>(modSrc->getSelectedItemIndex()));
+        //params.lpModSource.set(static_cast<float>(modSrc->getSelectedItemIndex()));
+        params.lpModSource.setStep(static_cast<eModSource>(modSrc->getSelectedItemIndex()));
         //[/UserComboBoxCode_modSrc]
     }
 
@@ -190,8 +190,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="176 32 64 16" editable="0" layout="36"
-            items="No Mod&#10;LFO1&#10;Envelope1" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
+            items="No Mod&#10;Env 1" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="modSliderCut1" id="2596fb730a93410" memberName="modSliderCut"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="256 8 64 64"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

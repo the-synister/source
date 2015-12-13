@@ -107,17 +107,20 @@ public:
     , params(p)
     , env(p, getSampleRate())
     , level (0.f)
-    , pitchModBuffer(1,blockSize)
-    , lfo1ModBuffer(1, blockSize)
+    , ladderOut(0.f)
+    , ladderInDelay(0.f)
+    , lpOut1(0.f)
+    , lpOut2(0.f)
+    , lpOut3(0.f)
+    , lpOut1Delay(0.f)
+    , lpOut2Delay(0.f)
+    , lpOut3Delay(0.f)
+    , pitchModBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
     , freeEnv1Buffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
-
-        for (int s = 0; s < blockSize; ++s) {
-            noModBuffer.setSample(0, s, 0.f);
-        }
-        
+        noModBuffer.clear();
     }
 
 
@@ -130,6 +133,16 @@ public:
     void startNote (int midiNoteNumber, float velocity,
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
+        //for ladder filter
+        ladderOut = 0.f;
+        ladderInDelay = 0.f;
+        lpOut1 = 0.f;
+        lpOut2 = 0.f;
+        lpOut3 = 0.f;
+        lpOut1Delay = 0.f;
+        lpOut2Delay = 0.f;
+        lpOut3Delay = 0.f;
+
         lastSample = 0.f;
         inputDelay1 = 0.f;
         inputDelay2 = 0.f;
@@ -137,7 +150,7 @@ public:
         outputDelay2 = 0.f;
         
         level = velocity * 0.15f;
- 
+
         // reset attackDecayCounter
         env.resetAllCounters();
 
@@ -180,7 +193,7 @@ public:
             if (env.getfreeEnv1ReleaseCounter() == -1)
             {
                 env.resetfreeEnv1ReleaseCounter();
-        }
+            }
         }
         else
         {
@@ -208,14 +221,12 @@ public:
         renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
-        const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
         const float *filterEnvMod = freeEnv1Buffer.getReadPointer(0);
 
-        std::vector<const float*> modSources(3);
+        std::vector<const float*> modSources(2);
         modSources[0] = noMod;
-        modSources[1] = lfo1Mod;
-        modSources[2] = filterEnvMod;
+        modSources[1] = filterEnvMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -224,20 +235,18 @@ public:
         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
-        if (lfo1square.isActive() || lfo1sine.isActive())
-        {
-            for (int s = 0; s < numSamples; ++s)
-            {
-                const float currentSample = biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s]) * level * env1Mod[s];
+        if (lfo1square.isActive() || lfo1sine.isActive()) {
+            for (int s = 0; s < numSamples; ++s) {
+                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s])) * level * env1Mod[s];
+
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                }
-                else 
-                {
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
+                } else {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                }
                 }
                 if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env.getfreeEnv1ReleaseCounter())
                 {
@@ -250,14 +259,52 @@ public:
         }
     }
 
+    //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
+    //naive 1 pole filters wigh a hyperbolic tangent saturator
+    float ladderFilter(float ladderIn)
+    {
+
+        const float sRate = static_cast<float>(getSampleRate());
+
+        //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
+        float currentLadderCutoffFreq = params.ladderCutoff.get();
+
+        //coeffecients and parameters
+        float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
+        float g = omega_c / 2.f;
+        float a = (1.f - g) / (1.f + g);
+        float b = g / (1.f + g);
+
+        // subtract the feedback
+        // inverse hyperbolic Sinus
+        // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // hyperbolic tangent
+        ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
+
+        // proecess through 1 pole Filters 4 times
+        lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
+        ladderInDelay = ladderIn;
+
+        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* tanh(lpOut2);
+        lpOut1Delay = lpOut1;
+
+        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* tanh(lpOut3);
+        lpOut2Delay = lpOut2;
+
+        ladderOut = b*(lpOut3 + lpOut3Delay) + a* tanh(ladderOut);
+        lpOut3Delay = lpOut3;
+
+        return ladderOut;
+    }
+
 protected:
     void renderModulation(int numSamples) {
 
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
-        {
+            {
             env1Buffer.setSample(0, s, env.getEnvCoeff());
-        }
+            }
 
         // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)
@@ -269,29 +316,25 @@ protected:
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
         const float modAmount = params.osc1lfo1depth.get();
-        if (params.lfo1wave.get() == 0) // if lfo1wave is 0, lfo is set to sine wave
+        if (params.lfo1wave.getStep() == eLfoWaves::eLfoSine)
         {
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1sine.next()*0.5f );
             }
         }
-        else if (params.lfo1wave.get() == 1) // if lfo1wave is 1, lfo is set to random wave
+        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSampleHold)
         {
             for (int s = 0; s < numSamples; ++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1random.next()*0.5f);
             }
         }
-        else if (params.lfo1wave.get() == 2)// if lfo1wave is 2, lfo is set to square wave
+        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSquare)
         {
-
             for (int s = 0; s < numSamples;++s)
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                lfo1ModBuffer.setSample(0, s, lfo1square.next()*0.5f);
             }
         }
     }
@@ -306,11 +349,8 @@ protected:
         float moddedFreq = params.lpCutoff.get();
         float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
         
-        if (params.lpModSource.get() == 1) { //bipolar (lfo) modValues
-        
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f)  );
-        }
-        else if (params.lpModSource.get() == 2) { // env
+
+        if (params.lpModSource.getStep() == eModSource::eEnv) { // env
             
             // this opens the filter from 0 to Cutoff, no effect of lpModAmount
             // moddedFreq = params.lpCutoff.get() * modValue;
@@ -379,8 +419,19 @@ private:
 
     int currentPitchValue;
 
+
+
+    //for the lader filter
+    float ladderOut;
+    float ladderInDelay;
+    float lpOut1;
+    float lpOut2;
+    float lpOut3;
+    float lpOut1Delay;
+    float lpOut2Delay;
+    float lpOut3Delay;
+
     AudioSampleBuffer pitchModBuffer;
-    AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer freeEnv1Buffer;
