@@ -148,8 +148,7 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
-        
-        currentVelocity = velocity;
+
         level = velocity * 0.15f;
 
         // reset attackDecayCounter
@@ -419,9 +418,6 @@ private:
     float level;
 
     int currentPitchValue;
-    float currentVelocity;
-
-
 
     //for the lader filter
     float ladderOut;
