@@ -10,7 +10,6 @@
 
 #include "FxClipping.h"
 
-//FxClipping::FxClipping(){};
 FxClipping::~FxClipping(){};
 
 void FxClipping::clipSignal(AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
