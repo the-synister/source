@@ -17,13 +17,14 @@
 class Envelope{
     public:
     //Constructor
-    Envelope(SynthParams &p, float sampleRate)
+    Envelope(SynthParams &p, float sampleRate, float currentVelocity)
         :params(p)
         ,releaseCounter(-1)
         ,freeEnv1ReleaseCounter(-1)
         ,attackDecayCounter(0)
         ,freeEnv1AttackDecayCounter(0)
         ,sampleRate(sampleRate)
+        ,currentVelocity(currentVelocity)
     {
         
     }
@@ -34,6 +35,7 @@ class Envelope{
     float getEnv1Coeff();
     float getEnvCoeff();
     float interpolateLog(int curr, int t);
+    float interpolateLog(int c, int t, float k, bool slow);
     void resetAllCounters();
     int getReleaseCounter();
     void resetReleaseCounter();
@@ -45,6 +47,7 @@ class Envelope{
     SynthParams &params;
 
     float sampleRate;
+    float currentVelocity;
     
     float valueAtRelease;
     int attackDecayCounter;
