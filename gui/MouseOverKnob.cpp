@@ -42,6 +42,10 @@ void MouseOverKnob::initTextBox()
     }
 }
 
+void MouseOverKnob::setName  (const String& newName) {
+    knobLabel->setText(newName, NotificationType::dontSendNotification);
+}
+
 
 /**
 * If mouse enters slider then replace label with textbox.

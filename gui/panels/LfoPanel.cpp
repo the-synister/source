@@ -39,19 +39,12 @@ LfoPanel::LfoPanel (SynthParams &p)
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     freq->addListener (this);
 
-    addAndMakeVisible (wave = new Slider ("wave switch"));
+    addAndMakeVisible (wave = new MouseOverKnob ("wave switch"));
     wave->setRange (0, 2, 1);
-    wave->setSliderStyle (Slider::LinearHorizontal);
-    wave->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    wave->setSliderStyle (Slider::RotaryVerticalDrag);
+    wave->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     wave->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Sine Wave |")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centredLeft);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (squareWaveLabel = new Label ("new label",
                                                     TRANS("Square Wave")));
@@ -69,24 +62,6 @@ LfoPanel::LfoPanel (SynthParams &p)
     sampleAndHoldLabel->setColour (TextEditor::textColourId, Colours::black);
     sampleAndHoldLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
-    tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
-    tempoSyncSwitch->addListener (this);
-
-    addAndMakeVisible (notelength = new Slider ("notelength"));
-    notelength->setRange (1, 32, 1);
-    notelength->setSliderStyle (Slider::IncDecButtons);
-    notelength->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
-    notelength->addListener (this);
-
-    addAndMakeVisible (label4 = new Label ("new label",
-                                           TRANS("Change note length 1/x")));
-    label4->setFont (Font (15.00f, Font::plain));
-    label4->setJustificationType (Justification::centredLeft);
-    label4->setEditable (false, false, false);
-    label4->setColour (TextEditor::textColourId, Colours::black);
-    label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
 
     //[UserPreSize]
     registerSlider(freq, &params.lfo1freq);
@@ -94,6 +69,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     wave->setValue(params.lfo1wave.getUI());
     tempoSyncSwitch->setToggleState(0,0);
     notelength->setValue(params.noteLength.getUI());
+    registerSlider(wave, &params.lfo1wave);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -165,7 +141,6 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == wave)
     {
         //[UserSliderCode_wave] -- add your slider handling code here..
-        params.lfo1wave.setUI(std::round(static_cast<float>(wave->getValue())));
         //[/UserSliderCode_wave]
     }
     else if (sliderThatWasMoved == notelength)
@@ -218,12 +193,12 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
-          explicitFocusOrder="0" pos="120 40 192 32" min="0" max="2" int="1"
-          style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
+          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="e7b5c6b105490306" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="88 72 80 24" edTextCol="ff000000"

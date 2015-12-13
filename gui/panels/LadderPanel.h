@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_9F090381585CF062__
-#define __JUCE_HEADER_9F090381585CF062__
+#ifndef __JUCE_HEADER_A04CC96EC550D490__
+#define __JUCE_HEADER_A04CC96EC550D490__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,14 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class LfoPanel  : public PanelBase,
-                  public SliderListener,
-                  public ButtonListener
+class LadderPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
-    LfoPanel (SynthParams &p);
-    ~LfoPanel();
+    LadderPanel (SynthParams &p);
+    ~LadderPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -51,7 +50,6 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -60,21 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> freq;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> squareWaveLabel;
-    ScopedPointer<Label> sampleAndHoldLabel;
-    ScopedPointer<ToggleButton> tempoSyncSwitch;
-    ScopedPointer<Slider> notelength;
-    ScopedPointer<Label> label4;
-    ScopedPointer<MouseOverKnob> wave;
+    ScopedPointer<MouseOverKnob> cutoff;
+    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LfoPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LadderPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_9F090381585CF062__
+#endif   // __JUCE_HEADER_A04CC96EC550D490__
