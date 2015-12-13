@@ -370,6 +370,9 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1691,6 +1694,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>plugin\Audio\inc</Filter>
