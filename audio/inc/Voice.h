@@ -419,6 +419,7 @@ private:
     float level;
 
     int currentPitchValue;
+    float currentVelocity;
 
 
 
