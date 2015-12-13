@@ -15,6 +15,7 @@
 
 #include "SynthParams.h"
 #include "FxDelay.h"
+#include "FxChorus.h"
 
 //==============================================================================
 /**
@@ -66,6 +67,7 @@ private:
     
     // FX
     FxDelay delay;
+	FxChorus chorus;
 
     void updateHostInfo();
     //==============================================================================

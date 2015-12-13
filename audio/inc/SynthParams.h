@@ -58,6 +58,11 @@ public:
     Param delayCutoff;
     Param delayResonance;
 
+	Param chorDelayLength;
+	Param chorDryWet;
+	Param chorModRate;
+	Param chorModDepth;
+
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
