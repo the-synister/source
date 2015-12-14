@@ -3,7 +3,7 @@
 
     Envelope.cpp
     Created: 11 Dec 2015 3:14:14pm
-    Author:  Anton Schmied
+    Author:  Nhat Duc Tran and Anton Schmied
 
   ==============================================================================
 */

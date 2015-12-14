@@ -3,7 +3,7 @@
 
     Envelope.h
     Created: 11 Dec 2015 3:13:56pm
-    Author:  Anton
+    Author:  Nhat Duc Tran and Anton Schmied 
 
   ==============================================================================
 */
@@ -14,9 +14,16 @@
 #include "Synthparams.h"
 #include "Param.h"
 
+//! Envelope Class: Envelope
+/*! The Envelope controls the amplitude with the AttackDecaySustainRelease principle.
+    It currently can be applied for the volume with an addition shape control
+    or for the frequency change in combination with the low pass filter,
+    however without the function of the schape control
+*/
+
 class Envelope{
     public:
-    //Constructor
+    //! Envelope constructor
     Envelope(SynthParams &p, float sampleRate)
         :params(p)
         ,releaseCounter(-1)
@@ -28,18 +35,22 @@ class Envelope{
         
     }
     
-    //Destructor
+    //! Enevelope sestructor
     ~Envelope(){}
 
     //void resetAllCounters();
-    void startEnvelope(float currentVelocity);
+    //! resets the sample counters and sets the current velocity for each new note
+    void startEnvelope(float currVel);
 
+    //! get and reset the release counters for the volume envelope
     int getReleaseCounter();
     void resetReleaseCounter();
 
+    //! get and reset the release counter for the free envelope
     int getfreeEnv1ReleaseCounter();
     void resetfreeEnv1ReleaseCounter();
 
+    //! calculation of the free enevlope coefficients (without shape control)
     const float getEnv1Coeff()
     {
         float freeEnvCoeff;
@@ -81,7 +92,7 @@ class Envelope{
         return freeEnvCoeff;
     }
     
-    
+    //! calculation of the volume envelope coefficients (with shape control)
     const float getEnvCoeff()
     {
         float envCoeff;
@@ -158,21 +169,21 @@ class Envelope{
 
     private:
 
-    SynthParams &params;
+    SynthParams &params;    //!< local params referencs
 
-    float sampleRate;
-    float currentVelocity;
+    float sampleRate;       //!< sample rate
+    float currentVelocity;  //!< current Veloctiy
     
-    float valueAtRelease;
-    int attackDecayCounter;
-    int releaseCounter;
+    float valueAtRelease;   //!< amplitude value once release phase starts
+    int attackDecayCounter; //!< sample counter during the attack and decay phase
+    int releaseCounter;     //!< sample counter during the release phase
 
-    float freeEnv1ValueAtRelease;
-    int freeEnv1AttackDecayCounter;
-    int freeEnv1ReleaseCounter;
+    float freeEnv1ValueAtRelease;   //!< amplitude value once release phase starts
+    int freeEnv1AttackDecayCounter; //!< sample counter during the attack and decay phase
+    int freeEnv1ReleaseCounter;     //!< sample counter durinf the release phase
 
-    static float interpolateLog(int curr, int t);
-    static float interpolateLog(int c, int t, float k, bool slow);
+    static float interpolateLog(int curr, int t); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (without shape control)
+    static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
 };
 
 #endif  // ENVELOPE_H_INCLUDED
