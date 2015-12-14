@@ -12,6 +12,7 @@ enum class eLfoWaves : int {
     nSteps = 3
     };
 
+
 enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
@@ -32,6 +33,13 @@ enum class eSeqModes : int
     nSteps = 3
 };
 
+enum class eModSource : int {
+    eNone = 0,
+    eLFO1 = 1,
+    nSteps = 2
+};
+
+
 class SynthParams {
 public:
     SynthParams();
@@ -47,10 +55,11 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
-    
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
     Param biquadResonance; //! filter resonance in dB
+    ParamStepped<eModSource> lpModSource;  //! filter moduluation source
+    Param lpModAmout;   //! filter moduluation amount
 
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st

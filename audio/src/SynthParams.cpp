@@ -17,6 +17,10 @@ namespace {
     static const char *biquadFilters[] = {
         "Lowpass", "Highpass", nullptr
     };
+    
+    static const char *modsourcenames[] = {
+        "None", "LFO1", nullptr
+    };
 }
 
 SynthParams::SynthParams()
@@ -24,6 +28,7 @@ SynthParams::SynthParams()
     &lfo1freq, &lfo1wave,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
+    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol, 
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
@@ -37,6 +42,8 @@ SynthParams::SynthParams()
 , lpCutoff("LP Cut", "lpCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , biquadResonance("Filter Reso", "filterResonance", "dB", -25.f, 25.f, 0.f)
 , hpCutoff("HP Cut", "hpCutoff", "Hz", 10.f, 20000.f, 10.f)
+, lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
+, lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)
 , envAttack("Attack", "envAttack", "s", 0.001f, 5.0f, 0.005f)

@@ -57,9 +57,26 @@ FiltPanel::FiltPanel (SynthParams &p)
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->addListener (this);
 
+    addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
+    modSrc->setEditableText (false);
+    modSrc->setJustificationType (Justification::centred);
+    modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    modSrc->addItem (TRANS("No Mod"), 1);
+    modSrc->addItem (TRANS("LFO 1"), 2);
+    modSrc->addListener (this);
+
+    addAndMakeVisible (modSliderCut = new Slider ("Mod"));
+    modSliderCut->setRange (0, 100, 0);
+    modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
+    modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    modSliderCut->addListener (this);
+    modSliderCut->setSkewFactor (0.33);
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
+    registerSlider(modSliderCut, &params.lpModAmout);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(cutoffSlider2, &params.hpCutoff);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -83,6 +100,8 @@ FiltPanel::~FiltPanel()
     resonanceSlider = nullptr;
     cutoffSlider2 = nullptr;
     passtype = nullptr;
+    modSrc = nullptr;
+    modSliderCut = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -106,10 +125,12 @@ void FiltPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoffSlider->setBounds (8, 8, 64, 64);
-    resonanceSlider->setBounds (80, 8, 64, 64);
-    cutoffSlider2->setBounds (8, 85, 64, 64);
-    passtype->setBounds (80, 85, 64, 64);
+    cutoffSlider->setBounds (96, 8, 64, 64);
+    resonanceSlider->setBounds (168, 8, 64, 64);
+    cutoffSlider2->setBounds (96, 104, 64, 64);
+    passtype->setBounds (8, 8, 64, 64);
+    modSrc->setBounds (96, 80, 64, 16);
+    modSliderCut->setBounds (160, 80, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -140,9 +161,31 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_passtype] -- add your slider handling code here..
         //[/UserSliderCode_passtype]
     }
+    else if (sliderThatWasMoved == modSliderCut)
+    {
+        //[UserSliderCode_modSliderCut] -- add your slider handling code here..
+        params.lpModAmout.setUI(static_cast<float>(modSliderCut->getValue()));
+        //[/UserSliderCode_modSliderCut]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == modSrc)
+    {
+        //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
+        params.lpModSource.setStep(static_cast<eModSource>(modSrc->getSelectedItemIndex()));
+        //[/UserComboBoxCode_modSrc]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -167,21 +210,28 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 85 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 104 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 85 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
+            explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
+            items="No Mod&#10;LFO 1" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
+          explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
+          style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
