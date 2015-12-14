@@ -17,14 +17,10 @@ class FxClipping
 {
 public:
     FxClipping(SynthParams& p) : params(p)
-                               , currentSample(0.f)
-                               , amplifiedSample(0.f)
                                {};
     ~FxClipping();
     
     SynthParams &params;
-    float currentSample;
-    float amplifiedSample;
     void clipSignal(AudioSampleBuffer&, int, int);
 };
 

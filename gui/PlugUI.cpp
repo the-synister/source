@@ -66,7 +66,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
