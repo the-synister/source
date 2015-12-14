@@ -149,7 +149,7 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->setValue(params.delayDryWet.getUI());
     timeSlider->setValue(params.delayTime.getUI());
     feedbackSlider->setValue(params.delayFeedback.getUI());
-    
+
     chorDryWetSlider->setValue(params.chorDryWet.getUI());
     chorDepthSlider->setValue(params.chorModDepth.getUI());
     chorDelayLengthSlider->setValue(params.chorDelayLength.getUI());
