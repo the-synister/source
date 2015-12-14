@@ -147,7 +147,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
-    delay.init(2, sRate);
+    delay.init(getNumOutputChannels(), sRate);
     synth.addSound(new Sound());
 }
 

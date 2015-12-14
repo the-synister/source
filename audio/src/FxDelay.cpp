@@ -54,7 +54,7 @@ void FxDelay::init(int channelsIn, double sampleRateIn)
 
 void FxDelay::calcTime()
 {
-    int bpmIn = static_cast<int>(params.positionInfo[params.getGUIIndex()].bpm);
+    double bpmIn = params.positionInfo[params.getGUIIndex()].bpm;
     // check for changes, re-calculate delay time - how slow is this?
     if (params.delaySync.getStep() == eOnOffToggle::eOn ||
         bpm != bpmIn ||
@@ -67,7 +67,7 @@ void FxDelay::calcTime()
             static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
 
         if (params.delayTriplet.getStep() == eOnOffToggle::eOn) {
-            params.delayTime.set(params.delayTime.get()*0.666667f);
+            params.delayTime.set(params.delayTime.get()*(2.f/3.f));
         }
 
         bpm = bpmIn;
