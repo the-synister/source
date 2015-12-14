@@ -105,7 +105,8 @@ public:
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
-    , env(p, getSampleRate(), currentVelocity)
+    , env2volume(p, getSampleRate())
+    , env2cutoff(p, getSampleRate())
     , level (0.f)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
@@ -153,7 +154,9 @@ public:
         level = velocity * 0.15f;
 
         // reset attackDecayCounter
-        env.resetAllCounters();
+        //env.resetAllCounters();
+        env2volume.startEnvelope(currentVelocity);
+        env2cutoff.startEnvelope(currentVelocity);
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -186,14 +189,14 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (env.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
+            if (env2volume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
             {                                       // stopNote method could be called more than once.
-                env.resetReleaseCounter();
+                env2volume.resetReleaseCounter();
             }
 
-            if (env.getfreeEnv1ReleaseCounter() == -1)
+            if (env2cutoff.getfreeEnv1ReleaseCounter() == -1)
             {
-                env.resetfreeEnv1ReleaseCounter();
+                env2cutoff.resetfreeEnv1ReleaseCounter();
         }
         }
         else
@@ -249,7 +252,7 @@ public:
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env.getfreeEnv1ReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env2volume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env2cutoff.getfreeEnv1ReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -304,13 +307,13 @@ protected:
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
             {
-            env1Buffer.setSample(0, s, env.getEnvCoeff());
+            env1Buffer.setSample(0, s, env2volume.getEnvCoeff());
                 }
 
         // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)
         {
-            freeEnv1Buffer.setSample(0, s, env.getEnv1Coeff());
+            freeEnv1Buffer.setSample(0, s, env2cutoff.getEnv1Coeff());
         }
 
         // add pitch wheel values
@@ -436,7 +439,8 @@ private:
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer freeEnv1Buffer;
     
-    Envelope env;
+    Envelope env2cutoff;
+    Envelope env2volume;
 };
 
 

@@ -3,7 +3,7 @@
 
     Envelope.cpp
     Created: 11 Dec 2015 3:14:14pm
-    Author:  Anton
+    Author:  Anton Schmied
 
   ==============================================================================
 */
@@ -30,15 +30,25 @@ void Envelope::resetReleaseCounter()
     releaseCounter = 0;
 }
 
-void Envelope::resetAllCounters()
+void Envelope::startEnvelope(float currVel)
 {
     releaseCounter = -1;
     attackDecayCounter = 0;
     freeEnv1ReleaseCounter = -1;
     freeEnv1AttackDecayCounter = 0;
+
+    currentVelocity = currVel;
 }
 
-float Envelope::getEnv1Coeff()
+/*void Envelope::resetAllCounters()
+{
+    releaseCounter = -1;
+    attackDecayCounter = 0;
+    freeEnv1ReleaseCounter = -1;
+    freeEnv1AttackDecayCounter = 0;
+}*/
+
+/*float Envelope::getEnv1Coeff()
 {
     float freeEnvCoeff;
     float sustainLevel = params.freeEnv1Sustain.get();
@@ -77,9 +87,9 @@ float Envelope::getEnv1Coeff()
             }
         }
         return freeEnvCoeff;
-    }
+    }*/
     
-    float Envelope::getEnvCoeff() 
+/*float Envelope::getEnvCoeff() 
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
@@ -151,35 +161,34 @@ float Envelope::getEnv1Coeff()
             }
         }
         return envCoeff;
-    }
+    }*/
 
-    /**
-    * interpolate logarithmically from 1.0 to 0.0f in t samples
-    @param c counter of the specific phase
-    @param t number of samples after which the specific phase should be over
-    @param k coeff of growth/shrink, k=1 for linear
-    @param slow how fast is phase applied at the start
-    */
-    float Envelope::interpolateLog(int c, int t, float k, bool slow)
+/**
+* interpolate logarithmically from 1.0 to 0.0f in t samples
+@param c counter of the specific phase
+@param t number of samples after which the specific phase should be over
+@param k coeff of growth/shrink, k=1 for linear
+@param slow how fast is phase applied at the start
+*/
+float Envelope::interpolateLog(int c, int t, float k, bool slow)
+{
+    if (slow)
     {
-        if (slow)
-        {
-            return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
-        }
-        else
-        {
-            return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
-        }
+        return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
     }
-
-    /**
-    * interpolate logarithmically from 1.0 to 0.0f in t samples
-    without the ADSR Shape control
-    */
-    float Envelope::interpolateLog(int curr, int t)
+    else
     {
-        // coeff of growth/shrink, maybe on which depends on time is better?
-        float k = std::exp(1.0f);
-
-        return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
+        return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
     }
+}
+
+/**
+* interpolate logarithmically from 1.0 to 0.0f in t samples
+without the ADSR Shape control
+*/
+float Envelope::interpolateLog(int curr, int t)
+{
+    // coeff of growth/shrink, maybe on which depends on time is better?
+    float k = std::exp(1.0f);
+    return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
+}
