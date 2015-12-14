@@ -5,6 +5,9 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+    static const char *onoffnames[] = {
+        "Off", "On", nullptr
+    };
 }
 
 SynthParams::SynthParams()
@@ -13,7 +16,8 @@ SynthParams::SynthParams()
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &panDir, &vol }
+    &panDir, &vol, 
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
@@ -37,6 +41,17 @@ SynthParams::SynthParams()
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
+, delayDryWet("Dry / Wet", "delWet", "%", 0.f, 1.f, 0.f)
+, delayFeedback("Feedback", "delFeed", "%", 0.f, 1.f, 0.f)
+, delayTime("Time", "delTime", "ms", 1., 5000., 1000.)
+, delaySync("Tempo Sync", "delSync", eOnOffToggle::eOff, onoffnames)
+, delayDividend("SyncDel Dividend", "delDivd", "", 1, 5, 1)
+, delayDivisor("SyncDel Divisor", "delDivs", "", 1, 32, 4)
+, delayCutoff("Cutoff", "delCut", "Hz", 10.f, 20000.f, 20000.f)
+, delayResonance("Resonance", "delRes", "dB", -25.f, 0.f, 0.f)
+, delayTriplet("Delay Triplet", "delTrip", eOnOffToggle::eOff, onoffnames)
+, delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
+, delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

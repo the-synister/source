@@ -15,9 +15,11 @@
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-//==============================================================================
-PluginAudioProcessor::PluginAudioProcessor()
+//============================================================1==================
+PluginAudioProcessor::PluginAudioProcessor() :
+    delay(*this)
 {
+
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
 
@@ -37,6 +39,9 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(envRelease));
 
     addParameter(new HostParam<Param>(panDir));
+    
+    positionInfo[0].resetToDefault();
+    positionInfo[1].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -142,6 +147,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
+    delay.init(2, sRate);
     synth.addSound(new Sound());
 }
 
@@ -172,6 +178,12 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // fx
+    // delay
+    if (delayDryWet.get() > 0.f) {
+        delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
+    }
 }
 
 void PluginAudioProcessor::updateHostInfo()

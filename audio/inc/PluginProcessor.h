@@ -14,6 +14,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "FxDelay.h"
 
 //==============================================================================
 /**
@@ -58,9 +59,13 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
 private:
     //==============================================================================
     Synthesiser synth;
+    
+    // FX
+    FxDelay delay;
 
     void updateHostInfo();
     //==============================================================================

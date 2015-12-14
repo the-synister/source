@@ -12,6 +12,12 @@ enum class eLfoWaves : int {
     nSteps = 3
     };
     
+enum class eOnOffToggle : int {
+    eOff = 0,
+    eOn = 1,
+    nSteps = 2
+};
+
 
 class SynthParams {
 public:
@@ -51,6 +57,18 @@ public:
     ParamDb vol; //!< volume in [0..1]
 
     MidiKeyboardState keyboardState;
+
+    Param delayFeedback;    //!< delay feedback amount
+    Param delayDryWet;      //!< delay wet signal
+    Param delayTime;        //!< delay time in ms
+    ParamStepped<eOnOffToggle> delaySync;        //!< sync / manual toggle
+    Param delayDividend;    //!< sync dividend
+    Param delayDivisor;     //!< sync divisor
+    Param delayCutoff;       //!< delay Cutoff Frequency
+    Param delayResonance;   //!< delay Resonance Frequency
+    ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
+    ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
+    ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
 
     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams;
