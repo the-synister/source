@@ -37,6 +37,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(envRelease));
 
     addParameter(new HostParam<Param>(panDir));
+
+	addParameter(new HostParam<ParamStepped<eOnOff>>(lowFiActivation));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -172,6 +174,27 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+	// Low fidelity effect
+	//////////////////////
+	float nBitsLowFi = 1.f;   // New bit resolution (temporary variable before the knob is added)
+
+	float coeff = 1;          // Initialization of coeff ( 2^(0)=1 )
+	for (int i = 0; i < (static_cast <int>(round(nBitsLowFi)) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
+		coeff = coeff * 2.f;
+	}
+	// If the effect is activated, the algorithm is applied
+	if (lowFiActivation.getStep() == eOnOff::eOn) {
+		//For all the outputs
+		for (int c = 0; c < buffer.getNumChannels(); ++c)
+		{
+			// Bit degradation
+			for (int s = 0; s < buffer.getNumSamples(); ++s)
+			{
+				buffer.setSample(c, s, (floor(coeff*(buffer.getSample(c, s)) + 0.5f) / coeff));
+			}
+		}
+	}
 }
 
 void PluginAudioProcessor::updateHostInfo()

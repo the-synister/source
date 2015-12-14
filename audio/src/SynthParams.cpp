@@ -7,13 +7,21 @@ namespace {
     };
 }
 
+namespace {
+	static const char *onoff[] = {
+		"On", "Off", nullptr
+	};
+}
+
 SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &panDir, &vol }
+    &panDir, &vol,
+	&lowFiActivation
+}
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
@@ -37,6 +45,7 @@ SynthParams::SynthParams()
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
+, lowFiActivation("Activation", "lowFiActivation", eOnOff::eOff, onoff)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

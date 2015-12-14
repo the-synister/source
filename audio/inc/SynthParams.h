@@ -11,6 +11,12 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
+
+enum class eOnOff : int {
+	eOn = 0,
+	eOff = 1,
+	nSteps = 2
+};
     
 
 class SynthParams {
@@ -47,6 +53,8 @@ public:
 
     Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
+
+	ParamStepped<eOnOff> lowFiActivation; //!< Activation of the low fidelity effect
 
     ParamDb vol; //!< volume in [0..1]
 
