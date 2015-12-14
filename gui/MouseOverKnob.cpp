@@ -36,9 +36,9 @@ MouseOverKnob::~MouseOverKnob()
 void MouseOverKnob::initTextBox()
 {
     if (knobLabel->isVisible()) {
-        setTextBoxStyle(MouseOverKnob::NoTextBox, false, width, 20);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     } else {
-        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -55,7 +55,7 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(false);
-        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, width, 20);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -67,7 +67,7 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
     if (e.eventComponent == this)
     {
         knobLabel->setVisible(true);
-        setTextBoxStyle(MouseOverKnob::NoTextBox, true, width, 20);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, true, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
 }
 
@@ -100,14 +100,24 @@ void MouseOverKnob::resized()
 {
     if (!this->isMouseOver())
     {
-        this->setSize(width, height - 20);
+        this->setSize(knobWidth, knobHeight - this->getTextBoxHeight());
     }
     else
     {
-        this->setSize(width, height);
+        this->setSize(knobWidth, knobHeight);
     }
 
     Slider::resized();
+}
+
+/*
+* Needed to save bounds of slider.
+*/
+void MouseOverKnob::setBounds(int x, int y, int width, int height)
+{
+    knobWidth = width;
+    knobHeight = height;
+    Slider::setBounds(x, y, width, height);
 }
 
 /**
@@ -115,12 +125,8 @@ void MouseOverKnob::resized()
 */
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
-    ignoreUnused(component);
-    ignoreUnused(wasMoved);
-    ignoreUnused(wasResized);
-
-    knobLabel->setSize(width, 20);
-    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
+    knobLabel->setSize(labelWidth, this->getTextBoxHeight());
+    knobLabel->setTopLeftPosition(this->getX() + (knobWidth- labelWidth)/2, this->getY() + this->getHeight());
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }
