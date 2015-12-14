@@ -15,10 +15,13 @@
 
 #include "SynthParams.h"
 #include "FxDelay.h"
+#include <array>
+#include "StepSequencer.h"
 
 //==============================================================================
 /**
 */
+class Sequencer;
 class PluginAudioProcessor  : public AudioProcessor, public SynthParams
 {
 public:
@@ -66,6 +69,8 @@ private:
     
     // FX
     FxDelay delay;
+
+    StepSequencer steqSeq;
 
     void updateHostInfo();
     //==============================================================================

@@ -5,8 +5,13 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+
     static const char *onoffnames[] = {
         "Off", "On", nullptr
+    };
+
+    static const char *seqModeNames[] = {
+        "Stop", "Play", "SyncHost", nullptr
     };
 }
 
@@ -52,6 +57,18 @@ SynthParams::SynthParams()
 , delayTriplet("Delay Triplet", "delTrip", eOnOffToggle::eOff, onoffnames)
 , delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
 , delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
+, seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
+, seqNumSteps("SeqNumSteps", "seqNumSteps", "steps", 1.0f, 8.0f, 4.0f)
+, seqStepSpeed("SeqSpeed", "seqSpeed", "qn", 0.125f, 4.0f, 1.0f)
+, seqStepLength("SeqNoteLength", "seqNoteLength", "qn", 0.125f, 4.0f, 1.0f)
+, seqStep1("seqNote1", "seqNote1", "", -1, 127, 60)
+, seqStep2("seqNote2", "seqNote2", "", -1, 127, 62)
+, seqStep3("seqNote3", "seqNote3", "", -1, 127, 64)
+, seqStep4("seqNote4", "seqNote4", "", -1, 127, 65)
+, seqStep5("seqNote5", "seqNote5", "", -1, 127, 67)
+, seqStep6("seqNote6", "seqNote6", "", -1, 127, 69)
+, seqStep7("seqNote7", "seqNote7", "", -1, 127, 71)
+, seqStep8("seqNote8", "seqNote8", "", -1, 127, 72)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

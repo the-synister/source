@@ -331,6 +331,9 @@
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -356,6 +359,9 @@
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1614,6 +1620,9 @@
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1642,6 +1651,12 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\HostParam.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
