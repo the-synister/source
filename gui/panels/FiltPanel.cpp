@@ -45,11 +45,26 @@ FiltPanel::FiltPanel (SynthParams &p)
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
 
+    addAndMakeVisible (cutoffSlider2 = new MouseOverKnob ("Cutoff2"));
+    cutoffSlider2->setRange (10, 20000, 1);
+    cutoffSlider2->setSliderStyle (Slider::RotaryVerticalDrag);
+    cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider2->addListener (this);
+
+    addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
+    passtype->setRange (0, 1, 1);
+    passtype->setSliderStyle (Slider::RotaryVerticalDrag);
+    passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    passtype->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
-    registerSlider(resonanceSlider, &params.lpResonance);
+    registerSlider(cutoffSlider2, &params.hpCutoff);
+    cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
+    registerSlider(resonanceSlider, &params.biquadResonance);
+    registerSlider(passtype, &params.passtype);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -66,6 +81,8 @@ FiltPanel::~FiltPanel()
 
     cutoffSlider = nullptr;
     resonanceSlider = nullptr;
+    cutoffSlider2 = nullptr;
+    passtype = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -91,6 +108,8 @@ void FiltPanel::resized()
 
     cutoffSlider->setBounds (8, 8, 64, 64);
     resonanceSlider->setBounds (80, 8, 64, 64);
+    cutoffSlider2->setBounds (8, 85, 64, 64);
+    passtype->setBounds (80, 85, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -110,6 +129,16 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
         //[/UserSliderCode_resonanceSlider]
+    }
+    else if (sliderThatWasMoved == cutoffSlider2)
+    {
+        //[UserSliderCode_cutoffSlider2] -- add your slider handling code here..
+        //[/UserSliderCode_cutoffSlider2]
+    }
+    else if (sliderThatWasMoved == passtype)
+    {
+        //[UserSliderCode_passtype] -- add your slider handling code here..
+        //[/UserSliderCode_passtype]
     }
 
     //[UsersliderValueChanged_Post]
@@ -144,6 +173,14 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
           min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 85 64 64"
+          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 85 64 64"
+          min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

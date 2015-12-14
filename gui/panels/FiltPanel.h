@@ -60,6 +60,8 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resonanceSlider;
+    ScopedPointer<MouseOverKnob> cutoffSlider2;
+    ScopedPointer<MouseOverKnob> passtype;
 
 
     //==============================================================================

@@ -207,7 +207,7 @@ public:
         // not interested in controllers in this case.
     }
 
-    void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
+    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         renderModulation(numSamples);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
@@ -223,13 +223,14 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]))) * level * env1Mod[s];
+                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), params.passtype.getStep())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                } else {
+                }
+                else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
@@ -411,27 +412,44 @@ protected:
             }
         }
     }
-    
-    float biquadLowpass(float inputSignal) {
+
+    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2, currentCutFreq, currentResonance;
 
-        const float currentLowcutFreq = params.lpCutoff.get() / sRate;
-        const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
+        currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        // coefficients for lowpass, depending on resonance and lowcut frequency
-        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
-        coeff1 = 0.5f * (1.f - k) / (1.f + k);
-        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
-        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+        if (filterType == eBiquadFilters::eLowpass) {
+            currentCutFreq = params.lpCutoff.get() / sRate;
 
-        b0 = 2.f * coeff3;
-        b1 = 2.f * 2.f * coeff3;
-        b2 = 2.f * coeff3;
-        a1 = 2.f * -coeff2;
-        a2 = 2.f * coeff1;
+            // coefficients for lowpass, depending on resonance and lowcut frequency
+            k = 0.5f * currentResonance * sin(2.f * float_Pi * currentCutFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentCutFreq);
+            coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+
+            b0 = 2.f * coeff3;
+            b1 = 2.f * 2.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = 2.f * -coeff2;
+            a2 = 2.f * coeff1;
+        } else if (filterType == eBiquadFilters::eHighpass) {
+            currentCutFreq = params.hpCutoff.get() / sRate;
+
+            // coefficients for highpass, depending on resonance and highcut frequency
+            k = 0.5f * currentResonance * sin(float_Pi * currentCutFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(float_Pi * currentCutFreq);
+            coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
+
+            b0 = 2.f * coeff3;
+            b1 = -4.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = -2.f * coeff2;
+            a2 = 2.f * coeff1;
+        }
 
         lastSample = inputSignal;
         
