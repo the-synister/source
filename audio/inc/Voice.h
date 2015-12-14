@@ -433,9 +433,8 @@ protected:
         // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
 
-        //TODO: change mod to log frequency domain
-        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq = (params.lpCutoff.get() + (20000.f * modValue * params.lpModAmout.get() / 100.f));
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range, logarithmic freq domain
+            moddedFreq = (params.lpCutoff.get() + (20000.f * std::log2(1+modValue* params.lpModAmout.get() / 100.f)) );
         }
         if (moddedFreq < params.lpCutoff.getMin()) {
             moddedFreq = params.lpCutoff.getMin();
