@@ -429,12 +429,13 @@ protected:
 
     float biquadLowpass(float inputSignal, float modValue) {
         const float sRate = static_cast<float>(getSampleRate());
-        // mod to frequency calculation
         
+        // mod to frequency calculation
         float moddedFreq = params.lpCutoff.get();
 
+        //TODO: change mod to log frequency domain
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq = (params.lpCutoff.get() + (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f));
+            moddedFreq = (params.lpCutoff.get() + (20000.f * modValue * params.lpModAmout.get() / 100.f));
         }
         if (moddedFreq < params.lpCutoff.getMin()) {
             moddedFreq = params.lpCutoff.getMin();
@@ -473,6 +474,9 @@ protected:
         outputDelay1 = inputSignal;
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
+        }
+        else if (inputSignal < -1.f) {
+            inputSignal = -1.f;
         }
 
         return inputSignal;
