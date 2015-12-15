@@ -378,7 +378,6 @@ protected:
     {
             return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
         }
-    }
         totSamples += numSamples;
     }
 
