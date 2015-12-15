@@ -22,9 +22,13 @@ public:
 protected:
     void registerSlider(Slider *slider, Param *p) {
         sliderReg[slider] = p;
-        slider->setName(p->name());
+        if(p->hasLabels()) {
+            slider->setName(p->getUIString());
+        } else {
+            slider->setName(p->name());
+            slider->setTextValueSuffix(String(" ") + p->unit());
+        }
         slider->setValue(p->getUI());
-        slider->setTextValueSuffix(String(" ") + p->unit());
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p) {
@@ -36,6 +40,9 @@ protected:
         for (auto s2p : sliderReg) {
             if (s2p.second->isUIDirty()) {
                 s2p.first->setValue(s2p.second->getUI());
+                if(s2p.second->hasLabels()) {
+                    s2p.first->setName(s2p.second->getUIString());
+                }
             }
         }
     }
@@ -44,6 +51,9 @@ protected:
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
             it->second->setUI(static_cast<float>(it->first->getValue()));
+            if(it->second->hasLabels()) {
+                it->first->setName(it->second->getUIString());
+            }
             return true;
         } else {
             return false;
