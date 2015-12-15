@@ -59,6 +59,7 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> lowFi_Active;
+    ScopedPointer<MouseOverKnob> nBits_LowFi;
 
 
     //==============================================================================

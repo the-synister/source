@@ -177,13 +177,15 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
 	// Low fidelity effect
 	//////////////////////
-	float nBitsLowFi = 1.f;   // New bit resolution (temporary variable before the knob is added)
+	int nBitsLowFidelity = static_cast <int>(nBitsLowFi.get());   // Number of bits to code each sample value
 
 	// If the effect is activated, the algorithm is applied
 	if (lowFiActivation.getStep() == eOnOff::eOn) {
 
-		float coeff = 1;          // Initialization of coeff ( 2^(0)=1 )
-		for (int i = 0; i < (static_cast <int>(round(nBitsLowFi)) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
+		float newSampleVal;
+		float coeff = 1.f;          // Initialization of coeff ( 2^(0)=1 )
+
+		for (int i = 0; i < (static_cast <int>(nBitsLowFidelity) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
 			coeff = coeff * 2.f;
 		}
 
@@ -193,7 +195,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 			// Bit degradation
 			for (int s = 0; s < buffer.getNumSamples(); ++s)
 			{
-				buffer.setSample(c, s, (floor(coeff*(buffer.getSample(c, s)) + 0.5f) / coeff));
+				//buffer.setSample(c, s, (floor(coeff*(buffer.getSample(c, s)) + 0.5f) / coeff));
+				newSampleVal = floor(coeff * (buffer.getSample(c, s)) + 0.5f) / coeff;
+				buffer.setSample(c, s, newSampleVal);
 			}
 		}
 	}

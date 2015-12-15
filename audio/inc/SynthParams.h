@@ -55,6 +55,7 @@ public:
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
 	ParamStepped<eOnOff> lowFiActivation; //!< Activation of the low fidelity effect
+	Param nBitsLowFi; //!< Bit degradation
 
     ParamDb vol; //!< volume in [0..1]
 

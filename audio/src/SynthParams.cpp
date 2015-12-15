@@ -9,7 +9,7 @@ namespace {
 
 namespace {
 	static const char *onoff[] = {
-		"On", "Off", nullptr
+		"Off", "On", nullptr
 	};
 }
 
@@ -20,7 +20,7 @@ SynthParams::SynthParams()
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol,
-	&lowFiActivation
+	&lowFiActivation, &nBitsLowFi
 }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
@@ -46,6 +46,7 @@ SynthParams::SynthParams()
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
 , lowFiActivation("Activation", "lowFiActivation", eOnOff::eOff, onoff)
+, nBitsLowFi("Bit Degradation", "nBitsLowFi", "bit", 1.f, 16.f, 16.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
