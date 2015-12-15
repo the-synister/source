@@ -87,6 +87,8 @@ public:
     Param seqStep7;
     Param seqStep8;
 
+    Param osc1WaveForm;//!< int value for defining waveform [1..3]
+
     Param panDir; //!< pan R/L [-100..100]
 
     Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz

@@ -41,7 +41,7 @@ struct Oscillator {
     float phaseDelta;
     float trngAmount;
     float width;
-    
+
     Oscillator() : phase(0.f)
         , phaseDelta(0.f)
     {}
@@ -60,7 +60,7 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-    
+
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
@@ -149,6 +149,7 @@ public:
         outputDelay2 = 0.f;
 
         currentVelocity = velocity;
+
         level = velocity * 0.15f;
         releaseCounter = -1;
 
@@ -162,20 +163,36 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
 
-        osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-        osc1.trngAmount = params.osc1trngAmount.get();
-        osc1.width = params.osc1pulsewidth.get();
-        lfo1square.width = params.osc1pulsewidth.get();
-        osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
-        // reset attackDecayCounter
-        attackDecayCounter = 0;
+        int wf = static_cast<int>(params.osc1WaveForm.get());
+        switch (wf)
+        {
+        case 1:
+        {
+            osc1Sine.phase = 0.f;
+            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+            osc1Sine.width = params.osc1pulsewidth.get();
+            lfo1square.width = params.osc1pulsewidth.get();
+            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+
+            // reset attackDecayCounter
+            attackDecayCounter = 0;
+            break;
+        }
+        case 2:
+        {
+            osc1Saw.phase = 0.f;
+            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1Saw.trngAmount = params.osc1trngAmount.get();
+            attackDecayCounter = 0;
+            break;
+        }
+        }
     }
 
     void stopNote(float /*velocity*/, bool allowTailOff) override
@@ -189,7 +206,7 @@ public:
             {                         // stopNote method could be called more than once.
                                       // reset releaseCounter
                 releaseCounter = 0;
-            }
+        }
         }
         else
         {
@@ -198,7 +215,8 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             lfo1random.reset();
-            osc1.reset();
+            osc1Sine.reset();
+            osc1Saw.reset();
         }
     }
 
@@ -234,7 +252,19 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
+                int wf = static_cast<int>(params.osc1WaveForm.get());
+                float currentSample;
+                switch (wf)
+                {
+                case 1:
+                    currentSample = (osc1Sine.next(pitchMod[s]));
+                    break;
+                case 2:
+                    currentSample = (osc1Saw.next(pitchMod[s]));
+                    break;
+                }
+
+                currentSample = ladderFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -325,9 +355,9 @@ protected:
                 envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
             }
             releaseCounter++;
-        }
-        else
-        {
+                }
+                else
+                {
             // attack phase sets envCoeff from 0.0f to 1.0f
             if (attackDecayCounter <= attackSamples)
             {
@@ -344,7 +374,7 @@ protected:
                 attackDecayCounter++;
             }
             else
-            {
+                    {
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
@@ -428,7 +458,6 @@ protected:
     }
 
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
-
         const float sRate = static_cast<float>(getSampleRate());
         // mod to frequency calculation
         
@@ -490,10 +519,11 @@ protected:
         outputDelay2 = outputDelay1;
 
         outputDelay1 = inputSignal;
+
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
-
+        
         return inputSignal;
     }
 
@@ -502,12 +532,13 @@ private:
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
     
-    Oscillator<&Waveforms::square> osc1;
+    Oscillator<&Waveforms::square> osc1Sine;
+    Oscillator<&Waveforms::saw> osc1Saw;
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
-    
+
     float level;
 
     int currentPitchValue;
