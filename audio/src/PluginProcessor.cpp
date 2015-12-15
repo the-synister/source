@@ -15,19 +15,34 @@
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-//==============================================================================
-PluginAudioProcessor::PluginAudioProcessor()
+//============================================================1==================
+PluginAudioProcessor::PluginAudioProcessor() :
+    delay(*this)
+	,chorus(*this)
 {
+
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
 
+    addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
+    addParameter(new HostParam<Param>(lpCutoff));
+    addParameter(new HostParam<Param>(lpResonance));
+
+    addParameter(new HostParam<Param>(envAttack));
+    addParameter(new HostParam<Param>(envDecay));
+    addParameter(new HostParam<Param>(envSustain));
+    addParameter(new HostParam<Param>(envRelease));
+
     addParameter(new HostParam<Param>(panDir));
+    
+    positionInfo[0].resetToDefault();
+    positionInfo[1].resetToDefault();
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -133,6 +148,9 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
+    delay.init(2, sRate);
+	chorus.init(2, sRate);
+
     synth.addSound(new Sound());
 }
 
@@ -144,6 +162,7 @@ void PluginAudioProcessor::releaseResources()
 
 void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    updateHostInfo();
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -152,7 +171,6 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // this code if your algorithm already fills all the output channels.
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
 
     // pass these messages to the keyboard state so that it can update the component
     // to show on-screen which keys are being pressed on the physical midi keyboard.
@@ -163,6 +181,31 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // fx
+    // delay
+    if (delayDryWet.get() > 0.f) {
+        delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
+    }
+	// chorus
+	if (chorDryWet.get() > 0.f) {
+		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+	}
+}
+
+void PluginAudioProcessor::updateHostInfo()
+{
+    // currentPositionInfo used for getting the bpm.
+    if (AudioPlayHead* playHead = getPlayHead())
+    {
+        if (playHead->getCurrentPosition (positionInfo[getAudioIndex()])) {
+            positionIndex.exchange(getGUIIndex());
+            return;
+        }
+    }
+
+    positionInfo[getAudioIndex()].resetToDefault();
+
 }
 
 //==============================================================================

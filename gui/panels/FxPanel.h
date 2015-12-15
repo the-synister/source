@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "FxDelay.h"
 //[/Headers]
 
 
@@ -36,8 +37,9 @@
                                                                     //[/Comments]
 */
 class FxPanel  : public PanelBase,
+                 public SliderListener,
                  public ButtonListener,
-                 public SliderListener
+                 public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -50,21 +52,30 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    void buttonClicked (Button* buttonThatWasClicked);
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ScopedPointer<FxDelay> delay;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<ToggleButton> chorusSwitch;
-    ScopedPointer<Slider> chorAmount;
-    ScopedPointer<Label> label;
-    ScopedPointer<Slider> lfoChorfreq;
-    ScopedPointer<Label> label2;
+    ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> dryWetSlider;
+    ScopedPointer<MouseOverKnob> timeSlider;
+    ScopedPointer<ToggleButton> syncToggle;
+    ScopedPointer<ComboBox> dividend;
+    ScopedPointer<ComboBox> divisor;
+    ScopedPointer<MouseOverKnob> cutoffSlider;
+    ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<MouseOverKnob> chorDryWetSlider;
+    ScopedPointer<MouseOverKnob> chorDepthSlider;
+    ScopedPointer<MouseOverKnob> chorDelayLengthSlider;
+    ScopedPointer<MouseOverKnob> chorModRateSlider;
 
 
     //==============================================================================

@@ -14,6 +14,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "FxDelay.h"
+#include "FxChorus.h"
 
 //==============================================================================
 /**
@@ -62,7 +64,12 @@ public:
 private:
     //==============================================================================
     Synthesiser synth;
+    
+    // FX
+    FxDelay delay;
+	FxChorus chorus;
 
+    void updateHostInfo();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginAudioProcessor)
 };
