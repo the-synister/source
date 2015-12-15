@@ -143,7 +143,7 @@ public:
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
         
-        level = (velocity - 1.f) * params.keyVelocityLevel.get();
+        level = Param::fromDb((velocity - 1.f) * params.keyVelocityLevel.get());
         releaseCounter = -1;
 
         currentPitchValue = currentPitchWheelPosition;
