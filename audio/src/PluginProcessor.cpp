@@ -179,12 +179,14 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 	//////////////////////
 	float nBitsLowFi = 1.f;   // New bit resolution (temporary variable before the knob is added)
 
-	float coeff = 1;          // Initialization of coeff ( 2^(0)=1 )
-	for (int i = 0; i < (static_cast <int>(round(nBitsLowFi)) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
-		coeff = coeff * 2.f;
-	}
 	// If the effect is activated, the algorithm is applied
 	if (lowFiActivation.getStep() == eOnOff::eOn) {
+
+		float coeff = 1;          // Initialization of coeff ( 2^(0)=1 )
+		for (int i = 0; i < (static_cast <int>(round(nBitsLowFi)) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
+			coeff = coeff * 2.f;
+		}
+
 		//For all the outputs
 		for (int c = 0; c < buffer.getNumChannels(); ++c)
 		{

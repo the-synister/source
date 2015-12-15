@@ -13,8 +13,8 @@ enum class eLfoWaves : int {
     };
 
 enum class eOnOff : int {
-	eOn = 0,
-	eOff = 1,
+	eOff = 0,
+	eOn = 1,
 	nSteps = 2
 };
     

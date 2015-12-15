@@ -24,6 +24,7 @@
 #include "panels/EnvPanel.h"
 #include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
+#include "panels/FxPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -57,7 +58,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, 0, false);
+    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
@@ -237,8 +238,8 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="AMP" colour="ffd3d3d3" useJucerComp="0" contentClassName="AmpPanel"
          constructorParams="params" jucerComponentFile=""/>
-    <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
-         constructorParams="" jucerComponentFile=""/>
+    <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
+         constructorParams="params" jucerComponentFile=""/>
     <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
          constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
