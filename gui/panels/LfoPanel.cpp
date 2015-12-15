@@ -91,8 +91,6 @@ void LfoPanel::resized()
 
     freq->setBounds (8, 8, 64, 64);
     wave->setBounds (80, 8, 64, 64);
-    freq->setBounds (8, 8, 64, 64);
-    wave->setBounds (120, 40, 192, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -146,12 +144,6 @@ BEGIN_JUCER_METADATA
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName=""
-          explicitFocusOrder="0" pos="120 40 192 32" min="0" max="2" int="1"
-          style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

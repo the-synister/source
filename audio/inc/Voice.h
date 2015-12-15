@@ -234,7 +234,7 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s]) * level * env1Mod[s]);
+                const float currentSample = ladderFilter(biquadFilter(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -427,32 +427,36 @@ protected:
         }
     }
 
-    float biquadLowpass(float inputSignal, float modValue) {
+    float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
+
         const float sRate = static_cast<float>(getSampleRate());
         
-        // mod to frequency calculation
-        float moddedFreq = params.lpCutoff.get();
+        float moddedFreq = filterType == eBiquadFilters::eLowpass 
+            ? params.lpCutoff.get()
+            : params.hpCutoff.get();
 
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range, logarithmic freq domain
             moddedFreq = (params.lpCutoff.get() + (20000.f * std::log2(1+modValue* params.lpModAmout.get() / 100.f)) );
         }
-        if (moddedFreq < params.lpCutoff.getMin()) {
+        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
         else if (moddedFreq > params.lpCutoff.getMax()) {
             moddedFreq = params.lpCutoff.getMax();
         }
+        moddedFreq /= sRate;
 
         //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-        const float currentLowcutFreq = (moddedFreq / sRate);
-        const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
+        const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
+
+        if (filterType == eBiquadFilters::eLowpass) {
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
-        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
+            k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);
         coeff1 = 0.5f * (1.f - k) / (1.f + k);
-        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
+            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * moddedFreq);
         coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
 
         b0 = 2.f * coeff3;
@@ -460,6 +464,20 @@ protected:
         b2 = 2.f * coeff3;
         a1 = 2.f * -coeff2;
         a2 = 2.f * coeff1;
+        } else if (filterType == eBiquadFilters::eHighpass) {
+
+            // coefficients for highpass, depending on resonance and highcut frequency
+            k = 0.5f * currentResonance * sin(float_Pi * moddedFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(float_Pi * moddedFreq);
+            coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
+
+            b0 = 2.f * coeff3;
+            b1 = -4.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = -2.f * coeff2;
+            a2 = 2.f * coeff1;
+        }
 
         lastSample = inputSignal;
 
@@ -481,13 +499,10 @@ protected:
         return inputSignal;
     }
 
-
 private:
-
+    SynthParams &params;
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-
-    SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
 
@@ -520,5 +535,3 @@ private:
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
 };
-
-
