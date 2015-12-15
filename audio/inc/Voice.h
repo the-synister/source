@@ -246,6 +246,8 @@ public:
                 }
             }
         }
+		//Update of the total samples variable
+		totSamples = totSamples + numSamples;
     }
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
@@ -396,7 +398,6 @@ protected:
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
-        const float modAmount = params.osc1lfo1depth.get();
         if (params.lfo1wave.getStep() == eLfoWaves::eLfoSine)
         {
             for (int s = 0; s < numSamples;++s)
