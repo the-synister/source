@@ -10,9 +10,9 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width)  { 
+    static float sinus(float phs, float trngAmount, float width)  {
         ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
+        return std::sin(phs);
     }
     static float square(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
@@ -71,24 +71,24 @@ template<float(*_waveform)(float, float, float)>
 struct RandomOscillator : Oscillator<&Waveforms::square>
 {
     float heldValue;
-    
+
     RandomOscillator() : Oscillator()
                        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
                       {}
-    
+
     void reset()
     {
         phase = 0.f;
         phaseDelta = 0.f;
         heldValue = 0.f;
     }
-    
+
     float next()
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
              heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
-        
+
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return heldValue;
     }
@@ -124,7 +124,7 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
-        
+
         level = velocity * 0.15f;
         releaseCounter = -1;
         totSamples = 0;
@@ -214,7 +214,7 @@ public:
                             outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                             outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                         }
-                else 
+                else
                 {
                             for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                                 outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
@@ -232,7 +232,7 @@ public:
     }
 
 protected:
-    float getEnvCoeff() 
+    float getEnvCoeff()
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
@@ -292,10 +292,10 @@ protected:
 
     void renderModulation(int numSamples) {
 
-		const float sRate = static_cast<float>(getSampleRate());  // Sample rate
+        const float sRate = static_cast<float>(getSampleRate());  // Sample rate
         float factor_fade_in_LFO = 1.f;                           // Defaut value of fade in factor is 1 (100%)
         float modAmount = params.osc1lfo1depth.get();             // Default value of modAmount is the value from the slider
-		const float samples_fade_in_LFO = params.lfo_fadein.get() * sRate;     // Length in samples of the LFO fade in
+        const float samples_fade_in_LFO = params.lfo_fadein.get() * sRate;     // Length in samples of the LFO fade in
 
         // set the env1buffer
         for (int s = 0; s < numSamples; ++s)
@@ -368,7 +368,7 @@ protected:
             }
         }
     }
-    
+
     float biquadLowpass(float inputSignal) {
         const float sRate = static_cast<float>(getSampleRate());
 
@@ -391,24 +391,24 @@ protected:
         a2 = 2.f * coeff1;
 
         lastSample = inputSignal;
-        
+
         inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-        
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
-        
+
         return inputSignal;
     }
 
 
 private:
-    
+
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-    
+
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1;
@@ -420,7 +420,7 @@ private:
     float level;
 
     int currentPitchValue;
-	int totSamples;
+    int totSamples;
 
     // variables for env
     float valueAtRelease;
@@ -430,5 +430,3 @@ private:
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
 };
-
-
