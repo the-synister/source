@@ -10,9 +10,9 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width)  { 
+    static float sinus(float phs, float trngAmount, float width)  {
         ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
+        return std::sin(phs);
     }
     static float square(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
@@ -71,24 +71,24 @@ template<float(*_waveform)(float, float, float)>
 struct RandomOscillator : Oscillator<&Waveforms::square>
 {
     float heldValue;
-    
+
     RandomOscillator() : Oscillator()
                        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
                       {}
-    
+
     void reset()
     {
         phase = 0.f;
         phaseDelta = 0.f;
         heldValue = 0.f;
     }
-    
+
     float next()
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
              heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
-        
+
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return heldValue;
     }
@@ -124,7 +124,7 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
-        
+
         level = velocity * 0.15f;
         releaseCounter = -1;
 
@@ -143,10 +143,7 @@ public:
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
 
-        osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-        osc1.trngAmount = params.osc1trngAmount.get();
-        osc1.width = params.osc1pulsewidth.get();
+
         int wf = static_cast<int>(params.osc1WaveForm.get());
         switch (wf)
         {
@@ -155,18 +152,19 @@ public:
             osc1Sine.phase = 0.f;
             osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
             osc1Sine.width = params.osc1pulsewidth.get();
-        lfo1square.width = params.osc1pulsewidth.get();
-        osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            lfo1square.width = params.osc1pulsewidth.get();
+            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
-        // reset attackDecayCounter
-        attackDecayCounter = 0;
+            // reset attackDecayCounter
+            attackDecayCounter = 0;
             break;
-		}
+        }
         case 2:
         {
             osc1Saw.phase = 0.f;
             osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
             osc1Saw.trngAmount = params.osc1trngAmount.get();
+            attackDecayCounter = 0;
             break;
         }
         }
@@ -192,7 +190,6 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             lfo1random.reset();
-            osc1.reset();
             osc1Sine.reset();
             osc1Saw.reset();
         }
@@ -232,10 +229,10 @@ public:
                         switch (wf)
                         {
                         case 1:
-                            currentSample = (osc1Sine.next(pitchMod[s])) * level * tailOff;
+                            currentSample = (osc1Sine.next(pitchMod[s])) * level;
                             break;
                         case 2:
-                            currentSample = (osc1Saw.next(pitchMod[s])) * level * tailOff;
+                            currentSample = (osc1Saw.next(pitchMod[s])) * level;
                             break;
                         }
                         //check if the output is a stereo output
@@ -243,7 +240,7 @@ public:
                             outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                             outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                         }
-                else 
+                else
                 {
                             for (int c = 0; c < outputBuffer.getNumChannels(); ++c)
                                 outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
@@ -261,7 +258,7 @@ public:
     }
 
 protected:
-    float getEnvCoeff() 
+    float getEnvCoeff()
     {
         float envCoeff;
         float sustainLevel = Param::fromDb(params.envSustain.get());
@@ -352,7 +349,7 @@ protected:
             }
         }
     }
-    
+
     float biquadLowpass(float inputSignal) {
         const float sRate = static_cast<float>(getSampleRate());
 
@@ -375,24 +372,24 @@ protected:
         a2 = 2.f * coeff1;
 
         lastSample = inputSignal;
-        
+
         inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-        
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
-        
+
         return inputSignal;
     }
 
 
 private:
-    
+
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-    
+
     SynthParams &params;
 
     Oscillator<&Waveforms::square> osc1Sine;
@@ -414,5 +411,3 @@ private:
     AudioSampleBuffer pitchModBuffer;
     AudioSampleBuffer env1Buffer;
 };
-
-
