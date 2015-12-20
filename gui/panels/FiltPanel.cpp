@@ -71,7 +71,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
     modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
     modSliderCut->addListener (this);
-    modSliderCut->setSkewFactor (0.33);
+    modSliderCut->setSkewFactor (0.5);
 
 
     //[UserPreSize]
@@ -164,7 +164,6 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
-        params.lpModAmout.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
 
@@ -231,7 +230,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

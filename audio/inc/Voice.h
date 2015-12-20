@@ -41,7 +41,7 @@ struct Oscillator {
     float phaseDelta;
     float trngAmount;
     float width;
-
+    
     Oscillator() : phase(0.f)
         , phaseDelta(0.f)
     {}
@@ -60,7 +60,7 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-
+    
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
@@ -163,7 +163,7 @@ public:
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-
+        
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
@@ -177,11 +177,11 @@ public:
             osc1Sine.phase = 0.f;
             osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
             osc1Sine.width = params.osc1pulsewidth.get();
-            lfo1square.width = params.osc1pulsewidth.get();
+        lfo1square.width = params.osc1pulsewidth.get();
             //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
-            // reset attackDecayCounter
-            attackDecayCounter = 0;
+        // reset attackDecayCounter
+        attackDecayCounter = 0;
             break;
         }
         case 2:
@@ -191,7 +191,7 @@ public:
             osc1Saw.trngAmount = params.osc1trngAmount.get();
             attackDecayCounter = 0;
             break;
-        }
+    }
         }
     }
 
@@ -206,7 +206,7 @@ public:
             {                         // stopNote method could be called more than once.
                                       // reset releaseCounter
                 releaseCounter = 0;
-        }
+            }
         }
         else
         {
@@ -355,9 +355,9 @@ protected:
                 envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
             }
             releaseCounter++;
-                }
-                else
-                {
+        }
+        else
+        {
             // attack phase sets envCoeff from 0.0f to 1.0f
             if (attackDecayCounter <= attackSamples)
             {
@@ -374,7 +374,7 @@ protected:
                 attackDecayCounter++;
             }
             else
-                    {
+            {
                 // decay phase sets envCoeff from 1.0f to sustain level
                 if (attackDecayCounter <= attackSamples + decaySamples)
                 {
@@ -459,14 +459,13 @@ protected:
 
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
-        // mod to frequency calculation
         
         float moddedFreq = filterType == eBiquadFilters::eLowpass 
             ? params.lpCutoff.get()
             : params.hpCutoff.get();
 
-        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range, logarithmic freq domain
+            moddedFreq = (params.lpCutoff.get() + (20000.f * std::log2(1+modValue* params.lpModAmout.get() / 100.f)) );
         }
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
@@ -523,7 +522,10 @@ protected:
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
-        
+        else if (inputSignal < -1.f) {
+            inputSignal = -1.f;
+        }
+
         return inputSignal;
     }
 
@@ -538,7 +540,7 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
-
+    
     float level;
 
     int currentPitchValue;
