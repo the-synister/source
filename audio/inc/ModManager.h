@@ -11,8 +11,14 @@
 #ifndef MODMANAGER_H_INCLUDED
 #define MODMANAGER_H_INCLUDED
 
+// give parameters a mod option: bipolar, unipolar (direction), none
 
+// init()
+// iterate over all mod sources and add them to the manager, sort by mod type
+// *dont forget the midi input*
 
+// convert ranges (e.g. midi -> bipolar)
 
+// connect mod source and target (dynamically)
 
 #endif  // MODMANAGER_H_INCLUDED
