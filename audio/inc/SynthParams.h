@@ -75,17 +75,25 @@ public:
     Param envReleaseShape; //!< env release shape in [0.01..10]
 
     ParamStepped<eSeqModes> seqMode; //!< 0 = pause, 1 = play, 2 = sync host
-    Param seqNumSteps; //!< number of steps for sequencer [1..8]
-    Param seqStepSpeed; //!< interval between each step in [0.125..4] quarter notes
-    Param seqStepLength; //!< length of step note in [0.125..seqStepSpeed] quarter notes
-    Param seqStep1; //!< midi note as int of step k in [-1..127]
-    Param seqStep2; //!< while -1 is indicator for playing no note
+    Param seqNumSteps;               //!< number of steps for sequencer [1..8]
+    Param seqStepSpeed;              //!< interval between each step in [0.125..4] quarter notes
+    Param seqStepLength;             //!< length of step note in [0.125..seqStepSpeed] quarter notes
+    Param seqStep1;                  //!< midi note as int of step k in [-1..127]
+    Param seqStep2;                  //!< while -1 is indicator for playing no note
     Param seqStep3;
     Param seqStep4;
     Param seqStep5;
     Param seqStep6;
     Param seqStep7;
     Param seqStep8;
+    ParamStepped<eOnOffToggle> seqStepPlay1;    //!< play/mute seqStep
+    ParamStepped<eOnOffToggle> seqStepPlay2;
+    ParamStepped<eOnOffToggle> seqStepPlay3;
+    ParamStepped<eOnOffToggle> seqStepPlay4;
+    ParamStepped<eOnOffToggle> seqStepPlay5;
+    ParamStepped<eOnOffToggle> seqStepPlay6;
+    ParamStepped<eOnOffToggle> seqStepPlay7;
+    ParamStepped<eOnOffToggle> seqStepPlay8;
 
     Param osc1WaveForm;//!< int value for defining waveform [1..3]
 

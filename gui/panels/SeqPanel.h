@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "../audio/inc/PluginProcessor.h"
 //[/Headers]
 
 
@@ -46,6 +47,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    // Timer methods
+    virtual void timerCallback();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -57,30 +60,42 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    static StepSequencer* seq;
+    std::array<ScopedPointer<MouseOverKnob>, 8> sliderArray;
+
+    int lastSeqNotePos = -1;
+    int randomMin = 0;
+    int randomMax = 127;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> seqStep1;
-    ScopedPointer<Slider> seqStep2;
-    ScopedPointer<Slider> seqStep3;
-    ScopedPointer<Slider> seqStep4;
-    ScopedPointer<Slider> seqStep5;
-    ScopedPointer<Slider> seqStep6;
-    ScopedPointer<Slider> seqStep7;
-    ScopedPointer<Slider> seqStep8;
+    ScopedPointer<MouseOverKnob> seqStep1;
+    ScopedPointer<MouseOverKnob> seqStep2;
+    ScopedPointer<MouseOverKnob> seqStep3;
+    ScopedPointer<MouseOverKnob> seqStep4;
+    ScopedPointer<MouseOverKnob> seqStep5;
+    ScopedPointer<MouseOverKnob> seqStep6;
+    ScopedPointer<MouseOverKnob> seqStep7;
+    ScopedPointer<MouseOverKnob> seqStep8;
     ScopedPointer<MouseOverKnob> seqStepSpeed;
     ScopedPointer<MouseOverKnob> seqStepLength;
     ScopedPointer<TextButton> seqPlay;
     ScopedPointer<ToggleButton> syncHost;
     ScopedPointer<MouseOverKnob> seqNumSteps;
-    ScopedPointer<Label> labelStep1;
-    ScopedPointer<Label> labelStep2;
-    ScopedPointer<Label> labelStep3;
-    ScopedPointer<Label> labelStep4;
-    ScopedPointer<Label> labelStep5;
-    ScopedPointer<Label> labelStep6;
-    ScopedPointer<Label> labelStep7;
-    ScopedPointer<Label> labelStep8;
+    ScopedPointer<TextButton> labelButton1;
+    ScopedPointer<TextButton> labelButton2;
+    ScopedPointer<TextButton> labelButton3;
+    ScopedPointer<TextButton> labelButton4;
+    ScopedPointer<TextButton> labelButton5;
+    ScopedPointer<TextButton> labelButton6;
+    ScopedPointer<TextButton> labelButton7;
+    ScopedPointer<TextButton> labelButton8;
+    ScopedPointer<TextButton> genRandom;
+    ScopedPointer<TextButton> playRandSeq;
+    ScopedPointer<TextButton> playRandomNotes;
+    ScopedPointer<Slider> randomSeq;
+    ScopedPointer<Label> randMinLabel;
+    ScopedPointer<Label> randMaxLabel;
 
 
     //==============================================================================

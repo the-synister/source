@@ -24,6 +24,14 @@ public:
     //==============================================================================
     void runSeq(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
 
+    int getCurrentSeqNote();
+
+    void setPlayRandomNotes(bool shouldPlay);
+    void setPlayRandomSeqNotes(bool shouldPlay);
+
+    bool isPlaying();
+    bool isNoteMuted(int index);
+
 private:
     //==============================================================================
     void seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
@@ -36,6 +44,8 @@ private:
     // StepSequencer gui params
     std::array<int, 8> prevMidiSeq;
     std::array<int, 8> currMidiSeq;
+    std::array<eOnOffToggle, 8> prevOnOffStep;
+    std::array<eOnOffToggle, 8> currOnOffStep;
     eSeqModes seqMode;
     int seqNumSteps;
     float seqStepSpeed;
@@ -48,5 +58,8 @@ private:
     int nextPlaySample;
     int noteOffSample;
     bool seqIsPlaying;
+
+    bool randomSeqNotes;
+    bool randomNotes;
 };
 #endif  // STEPSEQUENCER_H_INCLUDED
