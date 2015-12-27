@@ -264,7 +264,7 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
+                currentSample = ladderFilter(biquadFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], eBiquadFilters::eLowpass), modSources[static_cast<int>(params.lpModSource.get())][s], eBiquadFilters::eHighpass)) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
