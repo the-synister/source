@@ -24,6 +24,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
+	addParameter(new HostParam<ParamStepped<eLfoSyncSwitch>>(lfo1TempSync));
+	addParameter(new HostParam<Param>(noteLength));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));

@@ -5,6 +5,9 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+	static const char *lfoOnOff[] = {
+		"Off","On", nullptr
+	};
 }
 
 SynthParams::SynthParams()
@@ -37,8 +40,8 @@ SynthParams::SynthParams()
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
-, lfo1TempSync("tempoSyncSwitch", "", 0.f, 1.f, 0.f)
-, noteLength("notelength", "", 1.f, 32.f, 4.f)
+, lfo1TempSync("tempoSyncSwitch", "", eLfoSyncSwitch::eSyncOff, lfoOnOff)
+, noteLength("Note Length", "notelength", "", 1.f, 32.f, 4.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

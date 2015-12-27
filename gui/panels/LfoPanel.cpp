@@ -45,6 +45,13 @@ LfoPanel::LfoPanel (SynthParams &p)
     wave->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     wave->addListener (this);
 
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("Sine Wave |")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centredLeft);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (squareWaveLabel = new Label ("new label",
                                                     TRANS("Square Wave")));
@@ -62,6 +69,24 @@ LfoPanel::LfoPanel (SynthParams &p)
     sampleAndHoldLabel->setColour (TextEditor::textColourId, Colours::black);
     sampleAndHoldLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
+    tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
+    tempoSyncSwitch->addListener (this);
+
+    addAndMakeVisible (notelength = new Slider ("notelength"));
+    notelength->setRange (1, 32, 1);
+    notelength->setSliderStyle (Slider::IncDecButtons);
+    notelength->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    notelength->addListener (this);
+
+    addAndMakeVisible (label4 = new Label ("new label",
+                                           TRANS("Change note length 1/x")));
+    label4->setFont (Font (15.00f, Font::plain));
+    label4->setJustificationType (Justification::centredLeft);
+    label4->setEditable (false, false, false);
+    label4->setColour (TextEditor::textColourId, Colours::black);
+    label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     registerSlider(freq, &params.lfo1freq);
@@ -69,6 +94,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     wave->setValue(params.lfo1wave.getUI());
     tempoSyncSwitch->setToggleState(0,0);
     notelength->setValue(params.noteLength.getUI());
+    registerSlider(notelength, &params.noteLength);
     registerSlider(wave, &params.lfo1wave);
     //[/UserPreSize]
 
@@ -116,7 +142,7 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 8, 64, 64);
-    wave->setBounds (120, 40, 192, 32);
+    wave->setBounds (80, 8, 64, 64);
     label2->setBounds (88, 72, 80, 24);
     squareWaveLabel->setBounds (266, 72, 83, 24);
     sampleAndHoldLabel->setBounds (160, 72, 112, 24);
@@ -146,7 +172,7 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == notelength)
     {
         //[UserSliderCode_notelength] -- add your slider handling code here..
-        params.noteLength.setUI(notelength->getValue());
+        //params.noteLength.setUI(notelength->getValue());
         //[/UserSliderCode_notelength]
     }
 
@@ -193,9 +219,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
