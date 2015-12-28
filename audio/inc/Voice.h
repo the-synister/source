@@ -463,9 +463,7 @@ protected:
         if (bandwidth < 0) bandwidth = 0;
 
         const float sRate = static_cast<float>(getSampleRate());
-        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
-        }
+        // TODO how to use lfo 1 as mod source here?
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
