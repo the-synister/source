@@ -16,7 +16,8 @@ enum class eLfoWaves : int {
 enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
-    nSteps = 2
+    eBandpass = 2,
+    nSteps = 3
 };
     
 enum class eOnOffToggle : int {

@@ -264,7 +264,7 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], eBiquadFilters::eLowpass), modSources[static_cast<int>(params.lpModSource.get())][s], eBiquadFilters::eHighpass)) * level * env1Mod[s];
+                currentSample = ladderFilter(biquadBandpass(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s])) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -457,6 +457,52 @@ protected:
         }
     }
 
+    float biquadBandpass(float inputSignal, float modValue) {
+        float moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2;
+        float bandwidth = params.lpCutoff.get() - params.hpCutoff.get();
+        if (bandwidth < 0) bandwidth = 0;
+
+        const float sRate = static_cast<float>(getSampleRate());
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
+            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
+        }
+        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            moddedFreq = params.lpCutoff.getMin();
+        }
+        else if (moddedFreq > params.lpCutoff.getMax()) {
+            moddedFreq = params.lpCutoff.getMax();
+        }
+        const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
+        
+
+        float w0 = 2 * 3.14f * moddedFreq / sRate;
+        float Q = moddedFreq / (bandwidth);
+        float alpha = sin(w0) / (2 * Q);
+        float b0 = alpha;
+        float b1 = 0;
+        float b2 = -alpha;
+        float a0 = 1 + alpha;
+        float a1 = -2 * cos(w0);
+        float a2 = 1 - alpha;
+        inputSignal = (b0/a0)*inputSignal + (b1/a0)*inputDelay1 + (b2/a0)*inputDelay2 - (a1/a0)*outputDelay1 - (a2/a0)*outputDelay2;
+
+        lastSample = inputSignal;
+
+        //delaying samples
+        inputDelay2 = inputDelay1;
+        inputDelay1 = lastSample;
+        outputDelay2 = outputDelay1;
+
+        outputDelay1 = inputSignal;
+
+        if (inputSignal > 1.f) {
+            inputSignal = 1.f;
+        }
+
+        return inputSignal;
+
+    }
+
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
         // mod to frequency calculation
@@ -507,6 +553,9 @@ protected:
             b2 = 2.f * coeff3;
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
+        }
+        else if (filterType == eBiquadFilters::eBandpass) {
+            
         }
 
         lastSample = inputSignal;
