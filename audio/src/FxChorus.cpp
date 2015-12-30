@@ -48,9 +48,7 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 			chorusBuffer.clear(newLoopLength, chorusBuffer.getNumSamples() - currentDelayLength);
 		}
 
-		for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-
-			float currentSample = outputBuffer.getSample(c, startSample + i);
+		
 		// Interpolation
 			// get delayed sample index for both oscillators
 			float currentDelayMod1 = modSine1.next() * params.chorModDepth.get();
@@ -67,6 +65,9 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 			float deltaTime4 = currentDelayMod3 - floor(currentDelayMod4);
 			float deltaTime5 = currentDelayMod3 - floor(currentDelayMod5);
 
+		for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+
+			float currentSample = outputBuffer.getSample(c, startSample + i);
 			// get values for interpolation
 			// Osc 1
 			float value1_1 = chorusBuffer.getSample(c, static_cast<int>(loopPosition + params.chorDelayLength.get()*sampleRate + floor(currentDelayMod1)) % newLoopLength);
@@ -98,8 +99,20 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 			float interpValue5 = value5_1 + deltaValue5*deltaTime5;
 
 			// Amplituden anpassen und Werte in Buffer schreiben
-			outputBuffer.setSample(c, startSample + 1, currentSample * (1.f - params.chorDryWet.get()));
-			outputBuffer.addSample(c, startSample + i, interpValue1 * params.chorDryWet.get()*.2f + interpValue2 * params.chorDryWet.get()*.2f + interpValue3 * params.chorDryWet.get() * .2f + interpValue4 * params.chorDryWet.get() * .2f + interpValue5 * params.chorDryWet.get() * .2f);
+
+			float currentWetness = params.chorDryWet.get();
+
+			outputBuffer.setSample(c, startSample + i, currentSample * (1.f - currentWetness));
+
+			if (c == 1) {
+				outputBuffer.addSample(1, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.05f + interpValue3 *currentWetness * .35f + interpValue4 * currentWetness * .1f + interpValue5 * currentWetness * .3f);
+			}
+			else if (c == 2) {
+				outputBuffer.addSample(1, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.35f + interpValue3 *currentWetness * .05f + interpValue4 * currentWetness * .3f + interpValue5 * currentWetness * .1f);
+			}
+			else {
+				outputBuffer.addSample(c, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.2f + interpValue3 * currentWetness * .2f + interpValue4 * currentWetness * .2f + interpValue5 * currentWetness * .2f);
+			}
 
 			chorusBuffer.setSample(c, loopPosition, currentSample);
 
