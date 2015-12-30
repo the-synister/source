@@ -17,12 +17,13 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_7B9503E899CF8C9A__
-#define __JUCE_HEADER_7B9503E899CF8C9A__
+#ifndef __JUCE_HEADER_514EB6F5B07AB0C4__
+#define __JUCE_HEADER_514EB6F5B07AB0C4__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "FxDelay.h"
 //[/Headers]
 
 
@@ -35,14 +36,15 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FiltPanel  : public PanelBase,
-                   public SliderListener,
-                   public ComboBoxListener
+class FxPanel  : public PanelBase,
+                 public SliderListener,
+                 public ButtonListener,
+                 public ComboBoxListener
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p);
-    ~FiltPanel();
+    FxPanel (SynthParams &p);
+    ~FxPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -51,28 +53,35 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ScopedPointer<FxDelay> delay;
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> dryWetSlider;
+    ScopedPointer<MouseOverKnob> timeSlider;
+    ScopedPointer<ToggleButton> syncToggle;
+    ScopedPointer<ComboBox> dividend;
+    ScopedPointer<ComboBox> divisor;
     ScopedPointer<MouseOverKnob> cutoffSlider;
-    ScopedPointer<MouseOverKnob> resonanceSlider;
-    ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<MouseOverKnob> passtype;
-    ScopedPointer<ComboBox> modSrc;
-    ScopedPointer<Slider> modSliderCut;
+    ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<ToggleButton> tripTggl;
+    ScopedPointer<ToggleButton> filtTggl;
+    ScopedPointer<ToggleButton> revTggl;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FxPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_7B9503E899CF8C9A__
+#endif   // __JUCE_HEADER_514EB6F5B07AB0C4__
