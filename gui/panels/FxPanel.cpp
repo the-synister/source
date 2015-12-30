@@ -105,19 +105,19 @@ FxPanel::FxPanel (SynthParams &p)
     chorDryWetSlider->addListener (this);
 
     addAndMakeVisible (chorDepthSlider = new MouseOverKnob ("Chorus Depth"));
-    chorDepthSlider->setRange (1, 15, 0);
+    chorDepthSlider->setRange (5, 20, 0);
     chorDepthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDepthSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     chorDepthSlider->addListener (this);
 
     addAndMakeVisible (chorDelayLengthSlider = new MouseOverKnob ("Chorus Width"));
-    chorDelayLengthSlider->setRange (0.02, 0.04, 0);
+    chorDelayLengthSlider->setRange (0.025, 0.08, 0);
     chorDelayLengthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDelayLengthSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     chorDelayLengthSlider->addListener (this);
 
     addAndMakeVisible (chorModRateSlider = new MouseOverKnob ("Chorus Rate"));
-    chorModRateSlider->setRange (0, 3, 0);
+    chorModRateSlider->setRange (0.1, 1.5, 0);
     chorModRateSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorModRateSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     chorModRateSlider->addListener (this);
@@ -259,7 +259,7 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == chorDryWetSlider)
     {
         //[UserSliderCode_chorDryWetSlider] -- add your slider handling code here..
-        params.chorDryWet.setUI(static_cast<float>(chorDryWetSlider->getValue()));
+        params.chorDryWet.setUI(static_cast<float>(chorDryWetSlider->getValue()*0.01));
         //[/UserSliderCode_chorDryWetSlider]
     }
     else if (sliderThatWasMoved == chorDepthSlider)
@@ -395,17 +395,18 @@ BEGIN_JUCER_METADATA
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 88 64 64"
-          min="1" max="15" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="5" max="20" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 88 64 64"
-          min="0.02" max="0.040000000000000001" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          min="0.025000000000000001" max="0.080000000000000002" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="226 88 64 64"
-          min="0" max="3" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          min="0.10000000000000001" max="1.5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
