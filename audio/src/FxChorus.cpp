@@ -17,11 +17,11 @@ void FxChorus::init(int channelsIn, double sampleRateIn)
 	modSine3.phase = float_Pi;
 	modSine3.phaseDelta = params.chorModRate.get()* 0.8f / sampleRate;
 
-	modSine3.phase = 0.f;
-	modSine3.phaseDelta = params.chorModRate.get()* 0.9f / sampleRate;
+	modSine4.phase = 0.f;
+	modSine4.phaseDelta = params.chorModRate.get()* 0.9f / sampleRate;
 
-	modSine3.phase = float_Pi;
-	modSine3.phaseDelta = params.chorModRate.get()* 1.1f / sampleRate;
+	modSine5.phase = float_Pi;
+	modSine5.phaseDelta = params.chorModRate.get()* 1.1f / sampleRate;
 
 	for (int c = 0; c < channels; ++c) {
 		chorusBuffer.clear(c, 0, chorusBuffer.getNumSamples());
@@ -39,7 +39,7 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 		modSine2.phaseDelta = params.chorModRate.get()* 1.2f / sampleRate;
 		modSine3.phaseDelta = params.chorModRate.get()* .8f / sampleRate;
 		modSine4.phaseDelta = params.chorModRate.get()* .9f / sampleRate;
-		modSine3.phaseDelta = params.chorModRate.get()* 1.1f / sampleRate;
+		modSine5.phaseDelta = params.chorModRate.get()* 1.1f / sampleRate;
 
 		loopPosition %= newLoopLength;
 
