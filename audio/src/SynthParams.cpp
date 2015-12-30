@@ -83,7 +83,7 @@ SynthParams::SynthParams()
 , seqStep6("seqNote6", "seqNote6", "", -1, 127, 69)
 , seqStep7("seqNote7", "seqNote7", "", -1, 127, 71)
 , seqStep8("seqNote8", "seqNote8", "", -1, 127, 72)
-, lfo1TempSync("tempoSyncSwitch", "", eLfoSyncSwitch::eSyncOff, lfoOnOff)
+, lfo1TempSync("TempoSyncSwitch", "tempoSyncSwitch", eOnOffToggle::eOff, onoffnames)
 , noteLength("Note Length", "notelength", "", 1.f, 32.f, 4.f)
 , positionIndex(0)
 {
