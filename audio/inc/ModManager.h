@@ -7,9 +7,11 @@
 
   ==============================================================================
 */
+#pragma once
 
 #ifndef MODMANAGER_H_INCLUDED
 #define MODMANAGER_H_INCLUDED
+
 
 // give parameters a mod option: bipolar, unipolar (direction), none
 

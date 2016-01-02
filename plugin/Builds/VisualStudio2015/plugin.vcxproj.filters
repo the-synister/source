@@ -376,6 +376,9 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModManager.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1709,6 +1712,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModManager.h">
       <Filter>plugin\Audio\inc</Filter>

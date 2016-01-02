@@ -39,11 +39,12 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="D0jWIv" name="ModulationMatrix.h" compile="0" resource="0"
+              file="../audio/inc/ModulationMatrix.h"/>
         <FILE id="aUi6r0" name="ModManager.h" compile="0" resource="0" file="../audio/inc/ModManager.h"/>
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
-        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
@@ -51,6 +52,8 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
+              file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="jBawk8" name="ModManager.cpp" compile="1" resource="0" file="../audio/src/ModManager.cpp"/>
         <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="ArScIV" name="StepSequencer.cpp" compile="1" resource="0"

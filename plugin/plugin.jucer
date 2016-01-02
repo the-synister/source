@@ -46,6 +46,8 @@
     </GROUP>
     <GROUP id="{949202BF-874E-EF1D-0F32-E294A4403CF7}" name="Audio">
       <GROUP id="{B810726F-87B4-284E-870E-8BE0D67A873E}" name="inc">
+        <FILE id="ssKU2v" name="ModulationMatrix.h" compile="0" resource="0"
+              file="../audio/inc/ModulationMatrix.h"/>
         <FILE id="Z2KKaH" name="ModManager.h" compile="0" resource="0" file="../audio/inc/ModManager.h"/>
         <FILE id="eXN6xq" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="ettrMG" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
@@ -57,6 +59,8 @@
         <FILE id="zORnwQ" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
+        <FILE id="j131qu" name="ModulationMatrix.cpp" compile="1" resource="0"
+              file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="KPzSEz" name="ModManager.cpp" compile="1" resource="0" file="../audio/src/ModManager.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
