@@ -13,8 +13,7 @@
 
 #include "JuceHeader.h"
 
-
-//! Modulation Matrix
+//! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
 */
@@ -22,11 +21,13 @@
 // modulation sources
 enum class sources {
 	sNone = 0,
+
 	// midi sources
 	sMidiNote,
 	sMidiVel,
 	sMidiModW,
 	sMidiPbW,
+
 	// internal modulators
 	sLfo1,
 	sEnv1,
@@ -36,12 +37,15 @@ enum class sources {
 // modulation destinations
 enum class destinations {
 	dNone = 0,
+
 	// layer 0
 	dFilterF,
+
 	// add more layers here
 	// e.g layer 1 
 	// dLfo1F (internal mod source to internal mod source)
 	// or allLfoF (universal destinations)
+
 	maxDestinations
 };
 
@@ -58,7 +62,7 @@ enum class transform {
 	maxTransforms
 };
 
-struct ModMatrixRow
+struct modMatrixRow
 {
 	uint8 sourceIndex;
 	uint8 destinationIndex;
@@ -68,16 +72,15 @@ struct ModMatrixRow
 	bool enable;
 };
 
-// core
 
+inline modMatrixRow* createModMatrixRow(uint8 sourceIndex_,
+										uint8 destinationIndex_,
+										float* modIntensity_,
+										float* modRange_,
+										uint8 sourceTransform_,
+										bool enable_ = true) {
 
-inline ModMatrixRow* createModMatrixRow(uint8 sourceIndex_,
-	uint8 destinationIndex_,
-	float* modIntensity_,
-	float* modRange_,
-	uint8 sourceTransform_,
-	bool enable_ = true) {
-	ModMatrixRow* row = new ModMatrixRow;
+	modMatrixRow* row = new modMatrixRow;
 	row->sourceIndex = sourceIndex_;
 	row->destinationIndex = destinationIndex_;
 	row->modIntensity = modIntensity_;
@@ -88,19 +91,20 @@ inline ModMatrixRow* createModMatrixRow(uint8 sourceIndex_,
 	return row;
 }
 
+// core
 class ModulationMatrix {
 public:
 	ModulationMatrix(void);
 	~ModulationMatrix(void);
-
-	ModMatrixRow** getModMatrixCore();
-	void setModMatrixCore(ModMatrixRow**);
+	
+	modMatrixRow** getModMatrixCore();
+	void setModMatrixCore(modMatrixRow** modMatrix);
 	uint8 getMatrixSize();
 	void clearMatrix();
 	void clearSources();
 	void clearDestinations();
-	void addModMatrixRow(ModMatrixRow*);
-	bool modMatrixRowExists(ModMatrixRow*);
+	void addModMatrixRow(modMatrixRow*);
+	bool modMatrixRowExists(modMatrixRow*);
 	void createMatrixCore();
 	void deleteModMatrix();
 	void enableModMatrixRow();
@@ -109,11 +113,10 @@ public:
 
 	float sources[static_cast<uint8>(sources::maxSources)];
 	float destinations[static_cast<uint8>(destinations::maxDestinations)];
+
 protected:
-	ModMatrixRow** matrixCore;
+	modMatrixRow** matrixCore;
 	int size;
 };
-
-
 
 #endif  // MODULATIONMATRIX_H_INCLUDED
