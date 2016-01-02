@@ -83,7 +83,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
-	registerSlider(lfoFadeIn, &params.lfo_fadein);
+	registerSlider(lfoFadeIn, &params.lfoFadein);
 	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
