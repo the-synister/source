@@ -436,19 +436,19 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 // Fade in factor calculation
-                if (samplesFadeInLFO == 0.f)
+                if (samplesFadeInLFO == 0)
                 {
                     factorFadeInLFO = 1.f;         // If no decay, factor of fade in is directly 1 (100%)
                 }
                 else                                  // Otherwise the factor due to the fade in in progress is determined
                 {
-                    if (static_cast<float>(totSamples + s) > samplesFadeInLFO)  // If the fade in is reached
+                    if ( (totSamples + s) > samplesFadeInLFO)  // If the fade in is reached
                     {
                         factorFadeInLFO = 1.f;          // The factor is 1 (100%)
                     }
                     else                                   // Otherwise the factor is determined
                     {
-                        factorFadeInLFO = static_cast<float>(totSamples + s) / samplesFadeInLFO;
+                        factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
                     }
                 }
 
