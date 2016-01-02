@@ -23,7 +23,7 @@ public:
     Param lfo1freq; //!< lfo frequency in Hz
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
-    Param lfo_fadein;   // The LFOs fade in with a range of [0..10s]
+    Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st

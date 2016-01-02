@@ -9,7 +9,7 @@ namespace {
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
-    &lfo1freq, &lfo1wave, &lfo_fadein,
+    &lfo1freq, &lfo1wave, &lfoFadein,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
@@ -37,7 +37,7 @@ SynthParams::SynthParams()
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
-, lfo_fadein("Fade_in","lfo_fadein", "s", 0.f, 10.f, 0.f)
+, lfoFadein("FadeIn","lfoFadein", "s", 0.f, 10.f, 0.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

@@ -69,11 +69,11 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
 
-    addAndMakeVisible (LFOFadeIn = new MouseOverKnob ("LFO Fade In"));
-    LFOFadeIn->setRange (0, 10, 0);
-    LFOFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
-    LFOFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    LFOFadeIn->addListener (this);
+    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
+    lfoFadeIn->setRange (0, 10, 0);
+    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoFadeIn->addListener (this);
 
 
     //[UserPreSize]
@@ -83,8 +83,8 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
-	registerSlider(LFOFadeIn, &params.lfo_fadein);
-	LFOFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+	registerSlider(lfoFadeIn, &params.lfo_fadein);
+	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -105,7 +105,7 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
-    LFOFadeIn = nullptr;
+    lfoFadeIn = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -135,7 +135,7 @@ void OscPanel::resized()
     pulsewidth->setBounds (368, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
-    LFOFadeIn->setBounds (440, 8, 64, 64);
+    lfoFadeIn->setBounds (440, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -176,10 +176,10 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_ctune1] -- add your slider handling code here..
         //[/UserSliderCode_ctune1]
     }
-    else if (sliderThatWasMoved == LFOFadeIn)
+    else if (sliderThatWasMoved == lfoFadeIn)
     {
-        //[UserSliderCode_LFOFadeIn] -- add your slider handling code here..
-        //[/UserSliderCode_LFOFadeIn]
+        //[UserSliderCode_lfoFadeIn] -- add your slider handling code here..
+        //[/UserSliderCode_lfoFadeIn]
     }
 
     //[UsersliderValueChanged_Post]
@@ -232,7 +232,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="LFOFadeIn"
+  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
