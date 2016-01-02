@@ -264,7 +264,13 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadBandpass(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s])) * level * env1Mod[s];
+
+                if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
+                    currentSample = biquadBandpass(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s]);
+                } else {
+                    currentSample = biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep());
+                }
+                currentSample = ladderFilter(currentSample) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -458,12 +464,13 @@ protected:
     }
 
     float biquadBandpass(float inputSignal, float modValue) {
+        // based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
         float moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2;
         float bandwidth = params.lpCutoff.get() - params.hpCutoff.get();
         if (bandwidth < 0) bandwidth = 0;
 
         const float sRate = static_cast<float>(getSampleRate());
-        // TODO how to use lfo 1 as mod source here?
+        // TODO what about mod sources and how to use mod value? which one should it modulate?
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
@@ -471,17 +478,17 @@ protected:
             moddedFreq = params.lpCutoff.getMax();
         }
         const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
-        
+        float w0, Q, alpha, b0, b1, b2, a0, a1, a2;
 
-        float w0 = 2 * 3.14f * moddedFreq / sRate;
-        float Q = moddedFreq / (bandwidth);
-        float alpha = sin(w0) / (2 * Q);
-        float b0 = alpha;
-        float b1 = 0;
-        float b2 = -alpha;
-        float a0 = 1 + alpha;
-        float a1 = -2 * cos(w0);
-        float a2 = 1 - alpha;
+        w0 = 2 * 3.14f * moddedFreq / sRate;
+        Q = moddedFreq / bandwidth;
+        alpha = sin(w0) / (2 * Q);
+        b0 = alpha;
+        b1 = 0;
+        b2 = -alpha;
+        a0 = 1 + alpha;
+        a1 = -2 * cos(w0);
+        a2 = 1 - alpha;
         inputSignal = (b0/a0)*inputSignal + (b1/a0)*inputDelay1 + (b2/a0)*inputDelay2 - (a1/a0)*outputDelay1 - (a2/a0)*outputDelay2;
 
         lastSample = inputSignal;
@@ -490,7 +497,6 @@ protected:
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
-
         outputDelay1 = inputSignal;
 
         if (inputSignal > 1.f) {
@@ -498,7 +504,6 @@ protected:
         }
 
         return inputSignal;
-
     }
 
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
@@ -552,10 +557,6 @@ protected:
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
         }
-        else if (filterType == eBiquadFilters::eBandpass) {
-            
-        }
-
         lastSample = inputSignal;
 
         inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
