@@ -387,7 +387,7 @@ protected:
         const float sRate = static_cast<float>(getSampleRate());  // Sample rate
         float factorFadeInLFO = 1.f;                           // Defaut value of fade in factor is 1 (100%)
         float modAmount = params.osc1lfo1depth.get();             // Default value of modAmount is the value from the slider
-        const float samplesFadeInLFO = params.lfoFadein.get() * sRate;     // Length in samples of the LFO fade in
+        const int samplesFadeInLFO = static_cast<int>( params.lfoFadein.get() * sRate );     // Length in samples of the LFO fade in
 
         // set the env1buffer
         for (int s = 0; s < numSamples; ++s)
@@ -403,19 +403,19 @@ protected:
             for (int s = 0; s < numSamples;++s)
             {
                 // Fade in factor calculation
-                if (samplesFadeInLFO == 0.f)
+                if (samplesFadeInLFO == 0)
                 {
                     factorFadeInLFO = 1.f;         // If no decay, factor of fade in is directly 1 (100%)
                 }
                 else                                  // Otherwise the factor due to the fade in in progress is determined
                 {
-                    if ((static_cast<float>(totSamples + s)) > samplesFadeInLFO)  // If the fade in is reached
+                    if ( (totSamples + s) > samplesFadeInLFO)  // If the fade in is reached
                     {
                         factorFadeInLFO = 1.f;          // The factor is 1 (100%)
                     }
                     else                                   // Otherwise the factor is determined
                     {
-                        factorFadeInLFO = static_cast<float>(totSamples + s) / samplesFadeInLFO;
+                        factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
                     }
                 }
 
