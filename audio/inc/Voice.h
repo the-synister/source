@@ -99,7 +99,7 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize)
+    Voice(SynthParams &p, int blockSize, ModulationMatrix &globalModMatrix_)
         : lastSample(0.f)
         , inputDelay1(0.f)
         , inputDelay2(0.f)
@@ -115,6 +115,7 @@ public:
         , lpOut1Delay(0.f)
         , lpOut2Delay(0.f)
         , lpOut3Delay(0.f)
+        , globalModMatrix(globalModMatrix_)
         , pitchModBuffer(1, blockSize)
         , env1Buffer(1, blockSize)
         , lfo1ModBuffer(1, blockSize)
@@ -566,4 +567,6 @@ private:
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
+
+	ModulationMatrix globalModMatrix;
 };

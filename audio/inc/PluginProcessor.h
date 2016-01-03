@@ -17,6 +17,7 @@
 #include "FxDelay.h"
 #include <array>
 #include "StepSequencer.h"
+#include "ModulationMatrix.h"
 
 //==============================================================================
 /**
@@ -69,6 +70,8 @@ private:
     
     // FX
     FxDelay delay;
+
+	ModulationMatrix globalModMatrix;
 
     StepSequencer steqSeq;
 
