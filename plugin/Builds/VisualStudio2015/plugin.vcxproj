@@ -144,7 +144,6 @@
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\ModManager.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
@@ -1320,7 +1319,6 @@
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
-    <ClInclude Include="..\..\..\audio\inc\ModManager.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>

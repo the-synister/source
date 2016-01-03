@@ -2,6 +2,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "ModulationMatrix.h"
 
 class Sound : public SynthesiserSound {
 public:

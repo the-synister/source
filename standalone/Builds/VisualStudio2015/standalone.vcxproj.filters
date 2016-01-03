@@ -364,9 +364,6 @@
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModManager.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -1663,9 +1660,6 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModManager.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
