@@ -56,6 +56,7 @@ public:
 
 	ParamStepped<eOnOff> lowFiActivation; //!< Activation of the low fidelity effect
 	Param nBitsLowFi; //!< Bit degradation
+	Param freqDegFactor; //!< Frequency degradation
 
     ParamDb vol; //!< volume in [0..1]
 

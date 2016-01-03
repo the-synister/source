@@ -47,6 +47,7 @@ SynthParams::SynthParams()
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
 , lowFiActivation("Activation", "lowFiActivation", eOnOff::eOff, onoff)
 , nBitsLowFi("Bit Degradation", "nBitsLowFi", "bit", 1.f, 16.f, 16.f)
+, freqDegFactor("Frequency Degradation", "freqDegFactor", "factor", 1.f, 100.f, 1.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
