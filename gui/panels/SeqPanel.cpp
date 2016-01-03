@@ -32,7 +32,6 @@ SeqPanel::SeqPanel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    seq = PluginAudioProcessor::getSequencer();
     //[/Constructor_pre]
 
     addAndMakeVisible (seqStep1 = new MouseOverKnob ("Step 1"));
@@ -83,18 +82,6 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStep8->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     seqStep8->addListener (this);
 
-    addAndMakeVisible (seqStepSpeed = new MouseOverKnob ("Step Speed"));
-    seqStepSpeed->setRange (0.125, 4, 0.125);
-    seqStepSpeed->setSliderStyle (Slider::RotaryVerticalDrag);
-    seqStepSpeed->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    seqStepSpeed->addListener (this);
-
-    addAndMakeVisible (seqStepLength = new MouseOverKnob ("Step Length"));
-    seqStepLength->setRange (0.125, 4, 0.125);
-    seqStepLength->setSliderStyle (Slider::RotaryVerticalDrag);
-    seqStepLength->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    seqStepLength->addListener (this);
-
     addAndMakeVisible (seqPlay = new TextButton ("play sequencer"));
     seqPlay->setButtonText (TRANS("Play"));
     seqPlay->setConnectedEdges (Button::ConnectedOnLeft);
@@ -107,12 +94,6 @@ SeqPanel::SeqPanel (SynthParams &p)
     syncHost->setButtonText (TRANS("Sync with Host"));
     syncHost->addListener (this);
     syncHost->setColour (ToggleButton::textColourId, Colours::black);
-
-    addAndMakeVisible (seqNumSteps = new MouseOverKnob ("Stepnumber"));
-    seqNumSteps->setRange (1, 8, 1);
-    seqNumSteps->setSliderStyle (Slider::RotaryVerticalDrag);
-    seqNumSteps->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    seqNumSteps->addListener (this);
 
     addAndMakeVisible (labelButton1 = new TextButton ("label button 1"));
     labelButton1->setButtonText (TRANS("C3"));
@@ -175,20 +156,6 @@ SeqPanel::SeqPanel (SynthParams &p)
     genRandom->setButtonText (TRANS("Generate Sequence"));
     genRandom->addListener (this);
 
-    addAndMakeVisible (playRandSeq = new TextButton ("play random sequence"));
-    playRandSeq->setButtonText (TRANS("Play Random Seq"));
-    playRandSeq->setConnectedEdges (Button::ConnectedOnLeft);
-    playRandSeq->addListener (this);
-    playRandSeq->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
-    playRandSeq->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
-
-    addAndMakeVisible (playRandomNotes = new TextButton ("play random notes"));
-    playRandomNotes->setButtonText (TRANS("Play Random Notes"));
-    playRandomNotes->setConnectedEdges (Button::ConnectedOnLeft);
-    playRandomNotes->addListener (this);
-    playRandomNotes->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
-    playRandomNotes->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
-
     addAndMakeVisible (randomSeq = new Slider ("random sequence"));
     randomSeq->setRange (0, 127, 0);
     randomSeq->setSliderStyle (Slider::TwoValueHorizontal);
@@ -211,11 +178,86 @@ SeqPanel::SeqPanel (SynthParams &p)
     randMaxLabel->setColour (TextEditor::textColourId, Colours::black);
     randMaxLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (playUpDown = new ToggleButton ("play up down"));
+    playUpDown->setButtonText (TRANS("Play Up/Down"));
+    playUpDown->addListener (this);
+
+    addAndMakeVisible (seqStepSpeed = new ComboBox ("seq step speed"));
+    seqStepSpeed->setEditableText (false);
+    seqStepSpeed->setJustificationType (Justification::centred);
+    seqStepSpeed->setTextWhenNothingSelected (TRANS("Step Speed"));
+    seqStepSpeed->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    seqStepSpeed->addItem (TRANS("1/64"), 1);
+    seqStepSpeed->addItem (TRANS("1/32"), 2);
+    seqStepSpeed->addItem (TRANS("1/16"), 3);
+    seqStepSpeed->addItem (TRANS("1/8"), 4);
+    seqStepSpeed->addItem (TRANS("1/4"), 5);
+    seqStepSpeed->addItem (TRANS("1/2"), 6);
+    seqStepSpeed->addItem (TRANS("1/1"), 7);
+    seqStepSpeed->addListener (this);
+
+    addAndMakeVisible (seqStepLength = new ComboBox ("seq step length"));
+    seqStepLength->setEditableText (false);
+    seqStepLength->setJustificationType (Justification::centred);
+    seqStepLength->setTextWhenNothingSelected (TRANS("Step Length"));
+    seqStepLength->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    seqStepLength->addItem (TRANS("1/64"), 1);
+    seqStepLength->addItem (TRANS("1/32"), 2);
+    seqStepLength->addItem (TRANS("1/16"), 3);
+    seqStepLength->addItem (TRANS("1/8"), 4);
+    seqStepLength->addItem (TRANS("1/4"), 5);
+    seqStepLength->addItem (TRANS("1/2"), 6);
+    seqStepLength->addItem (TRANS("1/1"), 7);
+    seqStepLength->addListener (this);
+
+    addAndMakeVisible (seqNumSteps = new ComboBox ("seq num steps"));
+    seqNumSteps->setEditableText (false);
+    seqNumSteps->setJustificationType (Justification::centred);
+    seqNumSteps->setTextWhenNothingSelected (TRANS("Num Steps"));
+    seqNumSteps->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    seqNumSteps->addItem (TRANS("1"), 1);
+    seqNumSteps->addItem (TRANS("2"), 2);
+    seqNumSteps->addItem (TRANS("3"), 3);
+    seqNumSteps->addItem (TRANS("4"), 4);
+    seqNumSteps->addItem (TRANS("5"), 5);
+    seqNumSteps->addItem (TRANS("6"), 6);
+    seqNumSteps->addItem (TRANS("7"), 7);
+    seqNumSteps->addItem (TRANS("8"), 8);
+    seqNumSteps->addListener (this);
+
+    addAndMakeVisible (labelSeqSpeed = new Label ("new seq speed",
+                                                  TRANS("Step Speed")));
+    labelSeqSpeed->setFont (Font (14.00f, Font::plain));
+    labelSeqSpeed->setJustificationType (Justification::centredLeft);
+    labelSeqSpeed->setEditable (false, false, false);
+    labelSeqSpeed->setColour (TextEditor::textColourId, Colours::black);
+    labelSeqSpeed->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (labelSeqLength = new Label ("new seq length",
+                                                   TRANS("Step Length")));
+    labelSeqLength->setFont (Font (14.00f, Font::plain));
+    labelSeqLength->setJustificationType (Justification::centredLeft);
+    labelSeqLength->setEditable (false, false, false);
+    labelSeqLength->setColour (TextEditor::textColourId, Colours::black);
+    labelSeqLength->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (labelSeqStepNum = new Label ("new seq step num",
+                                                    TRANS("Num Steps")));
+    labelSeqStepNum->setFont (Font (14.00f, Font::plain));
+    labelSeqStepNum->setJustificationType (Justification::centredLeft);
+    labelSeqStepNum->setEditable (false, false, false);
+    labelSeqStepNum->setColour (TextEditor::textColourId, Colours::black);
+    labelSeqStepNum->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (playRandom = new ToggleButton ("play random"));
+    playRandom->setButtonText (TRANS("Play Random"));
+    playRandom->addListener (this);
+
 
     //[UserPreSize]
-    registerSlider(seqNumSteps, &params.seqNumSteps);
-    registerSlider(seqStepSpeed, &params.seqStepSpeed);
-    registerSlider(seqStepLength, &params.seqStepLength);
+    seq = PluginAudioProcessor::getSequencer();
+    randomSeq->setMinAndMaxValues(seq->getRandMin(), seq->getRandMax());
+
     registerSlider(seqStep1, &params.seqStep1);
     registerSlider(seqStep2, &params.seqStep2);
     registerSlider(seqStep3, &params.seqStep3);
@@ -224,6 +266,9 @@ SeqPanel::SeqPanel (SynthParams &p)
     registerSlider(seqStep6, &params.seqStep6);
     registerSlider(seqStep7, &params.seqStep7);
     registerSlider(seqStep8, &params.seqStep8);
+    seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()));
+    seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()));
+    seqNumSteps->setSelectedItemIndex(static_cast<int>(params.seqNumSteps.get()) - 1);
 
     // init as activated
     labelButton1->setToggleState(true, dontSendNotification);
@@ -235,35 +280,40 @@ SeqPanel::SeqPanel (SynthParams &p)
     labelButton7->setToggleState(true, dontSendNotification);
     labelButton8->setToggleState(true, dontSendNotification);
 
-    randomSeq->setMinAndMaxValues(0, 127);
+    seqStepArray = { seqStep1.get(),
+                     seqStep2.get(),
+                     seqStep3.get(),
+                     seqStep4.get(),
+                     seqStep5.get(),
+                     seqStep6.get(),
+                     seqStep7.get(),
+                     seqStep8.get() };
+
+    labelButtonArray = { labelButton1.get(),
+                         labelButton2.get(),
+                         labelButton3.get(),
+                         labelButton4.get(),
+                         labelButton5.get(),
+                         labelButton6.get(),
+                         labelButton7.get(),
+                         labelButton8.get() };
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-    sliderArray = {seqStep1.get(),
-                   seqStep2.get(),
-                   seqStep3.get(),
-                   seqStep4.get(),
-                   seqStep5.get(),
-                   seqStep6.get(),
-                   seqStep7.get(),
-                   seqStep8.get()};
     //[/Constructor]
 }
 
 SeqPanel::~SeqPanel()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
-    sliderArray.at(0).release();
-    sliderArray.at(1).release();
-    sliderArray.at(2).release();
-    sliderArray.at(3).release();
-    sliderArray.at(4).release();
-    sliderArray.at(5).release();
-    sliderArray.at(6).release();
-    sliderArray.at(7).release();
+    for (int i = 0; i < 8; ++i)
+    {
+        seqStepArray.at(i).release();
+        labelButtonArray.at(i).release();
+    }
     //[/Destructor_pre]
 
     seqStep1 = nullptr;
@@ -274,11 +324,8 @@ SeqPanel::~SeqPanel()
     seqStep6 = nullptr;
     seqStep7 = nullptr;
     seqStep8 = nullptr;
-    seqStepSpeed = nullptr;
-    seqStepLength = nullptr;
     seqPlay = nullptr;
     syncHost = nullptr;
-    seqNumSteps = nullptr;
     labelButton1 = nullptr;
     labelButton2 = nullptr;
     labelButton3 = nullptr;
@@ -288,11 +335,17 @@ SeqPanel::~SeqPanel()
     labelButton7 = nullptr;
     labelButton8 = nullptr;
     genRandom = nullptr;
-    playRandSeq = nullptr;
-    playRandomNotes = nullptr;
     randomSeq = nullptr;
     randMinLabel = nullptr;
     randMaxLabel = nullptr;
+    playUpDown = nullptr;
+    seqStepSpeed = nullptr;
+    seqStepLength = nullptr;
+    seqNumSteps = nullptr;
+    labelSeqSpeed = nullptr;
+    labelSeqLength = nullptr;
+    labelSeqStepNum = nullptr;
+    playRandom = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -314,32 +367,26 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    if (params.seqMode.getStep() == eSeqModes::seqSyncHost)
+    {
+        syncHost->setToggleState(true, dontSendNotification);
+    }
+    else
+    {
+        seqPlay->setToggleState(!(params.seqMode.getStep() == eSeqModes::seqStop), dontSendNotification);
+    }
 
-    // state of syncHost and play button
-    params.seqMode.getStep() == eSeqModes::seqSyncHost ? syncHost->setToggleState(true, dontSendNotification) :
-        params.seqMode.getStep() == eSeqModes::seqStop ? seqPlay->setToggleState(false, dontSendNotification) :
-            seqPlay->setToggleState(true, dontSendNotification);
+    for (int i = 0; i < 8; ++i)
+    {
+        labelButtonArray[i]->setToggleState(!seq->isNoteMuted(i), dontSendNotification);
+    }
 
-    // seqNotes muted states
-    seq->isNoteMuted(0) ? labelButton1->setToggleState(false, dontSendNotification) :
-        labelButton1->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(1) ? labelButton2->setToggleState(false, dontSendNotification) :
-        labelButton2->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(2) ? labelButton3->setToggleState(false, dontSendNotification) :
-        labelButton3->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(3) ? labelButton4->setToggleState(false, dontSendNotification) :
-        labelButton4->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(4) ? labelButton5->setToggleState(false, dontSendNotification) :
-        labelButton5->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(5) ? labelButton6->setToggleState(false, dontSendNotification) :
-        labelButton6->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(6) ? labelButton7->setToggleState(false, dontSendNotification) :
-        labelButton7->setToggleState(true, dontSendNotification);
-    seq->isNoteMuted(7) ? labelButton8->setToggleState(false, dontSendNotification) :
-        labelButton8->setToggleState(true, dontSendNotification);
-
-    // TODO other button states
-
+    seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()));
+    seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()));
+    seqNumSteps->setSelectedItemIndex(static_cast<int>(params.seqNumSteps.get()) - 1);
+    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
+    randomSeq->setMinAndMaxValues(seq->getRandMin(), seq->getRandMax());
     //[/UserPreResize]
 
     seqStep1->setBounds (336, 32, 48, 264);
@@ -350,11 +397,8 @@ void SeqPanel::resized()
     seqStep6->setBounds (616, 32, 48, 264);
     seqStep7->setBounds (672, 32, 48, 264);
     seqStep8->setBounds (728, 32, 48, 264);
-    seqStepSpeed->setBounds (20, 140, 64, 64);
-    seqStepLength->setBounds (92, 140, 64, 64);
-    seqPlay->setBounds (148, 28, 100, 24);
-    syncHost->setBounds (20, 56, 120, 24);
-    seqNumSteps->setBounds (164, 140, 64, 64);
+    seqPlay->setBounds (20, 25, 100, 24);
+    syncHost->setBounds (140, 20, 120, 24);
     labelButton1->setBounds (336, 6, 48, 24);
     labelButton2->setBounds (392, 6, 48, 24);
     labelButton3->setBounds (448, 6, 48, 24);
@@ -363,12 +407,18 @@ void SeqPanel::resized()
     labelButton6->setBounds (615, 6, 48, 24);
     labelButton7->setBounds (671, 6, 48, 24);
     labelButton8->setBounds (727, 6, 48, 24);
-    genRandom->setBounds (20, 261, 100, 24);
-    playRandSeq->setBounds (148, 56, 100, 24);
-    playRandomNotes->setBounds (148, 84, 100, 24);
-    randomSeq->setBounds (20, 292, 200, 35);
-    randMinLabel->setBounds (20, 325, 100, 24);
-    randMaxLabel->setBounds (120, 325, 100, 24);
+    genRandom->setBounds (20, 219, 100, 24);
+    randomSeq->setBounds (20, 249, 250, 35);
+    randMinLabel->setBounds (20, 279, 125, 24);
+    randMaxLabel->setBounds (145, 279, 125, 24);
+    playUpDown->setBounds (140, 50, 120, 24);
+    seqStepSpeed->setBounds (25, 155, 64, 20);
+    seqStepLength->setBounds (105, 155, 64, 20);
+    seqNumSteps->setBounds (185, 155, 64, 20);
+    labelSeqSpeed->setBounds (20, 135, 64, 20);
+    labelSeqLength->setBounds (100, 135, 64, 20);
+    labelSeqStepNum->setBounds (180, 135, 64, 20);
+    playRandom->setBounds (140, 80, 120, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -428,28 +478,13 @@ void SeqPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         labelButton8->setButtonText(MidiMessage::getMidiNoteName(newMidiValue, true, true, 3));
         //[/UserSliderCode_seqStep8]
     }
-    else if (sliderThatWasMoved == seqStepSpeed)
-    {
-        //[UserSliderCode_seqStepSpeed] -- add your slider handling code here..
-        //[/UserSliderCode_seqStepSpeed]
-    }
-    else if (sliderThatWasMoved == seqStepLength)
-    {
-        //[UserSliderCode_seqStepLength] -- add your slider handling code here..
-        //[/UserSliderCode_seqStepLength]
-    }
-    else if (sliderThatWasMoved == seqNumSteps)
-    {
-        //[UserSliderCode_seqNumSteps] -- add your slider handling code here..
-        //[/UserSliderCode_seqNumSteps]
-    }
     else if (sliderThatWasMoved == randomSeq)
     {
         //[UserSliderCode_randomSeq] -- add your slider handling code here..
         randMinLabel->setText("Min: " + MidiMessage::getMidiNoteName(static_cast<int>(randomSeq->getMinValue()), true, true, 3), dontSendNotification);
-        randomMin = static_cast<int>(randomSeq->getMinValue());
+        seq->setRandMin(static_cast<int>(randomSeq->getMinValue()));
         randMaxLabel->setText("Max: " + MidiMessage::getMidiNoteName(static_cast<int>(randomSeq->getMaxValue()), true, true, 3), dontSendNotification);
-        randomMax = static_cast<int>(randomSeq->getMaxValue());
+        seq->setRandMax(static_cast<int>(randomSeq->getMaxValue()));
         //[/UserSliderCode_randomSeq]
     }
 
@@ -618,80 +653,121 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_genRandom] -- add your button handler code here..
         Random r = Random();
-        //seqStep1->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep2->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep3->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep4->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep5->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep6->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep7->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
-        ////r.setSeedRandomly();
-        //seqStep8->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
 
         for (int i = 0; i < 8; ++i)
         {
             r.setSeedRandomly();
-            sliderArray.at(i)->setValue(r.nextDouble() * (randomMax - randomMin) + randomMin);
+            seqStepArray.at(i)->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
         }
         //[/UserButtonCode_genRandom]
     }
-    else if (buttonThatWasClicked == playRandSeq)
+    else if (buttonThatWasClicked == playUpDown)
     {
-        //[UserButtonCode_playRandSeq] -- add your button handler code here..
-        //[/UserButtonCode_playRandSeq]
+        //[UserButtonCode_playUpDown] -- add your button handler code here..
+        if (!seq->isPlayUpDown())
+        {
+            seq->setPlayUpDown(true);
+            playUpDown->setToggleState(true, dontSendNotification);
+            seq->setPlayRandom(false);
+            playRandom->setToggleState(false, dontSendNotification);
+        }
+        else
+        {
+            seq->setPlayUpDown(false);
+            playUpDown->setToggleState(false, dontSendNotification);
+        }
+        //[/UserButtonCode_playUpDown]
     }
-    else if (buttonThatWasClicked == playRandomNotes)
+    else if (buttonThatWasClicked == playRandom)
     {
-        //[UserButtonCode_playRandomNotes] -- add your button handler code here..
-        //[/UserButtonCode_playRandomNotes]
+        //[UserButtonCode_playRandom] -- add your button handler code here..
+        if (!seq->isPlayRandom())
+        {
+            seq->setPlayRandom(true);
+            playRandom->setToggleState(true, dontSendNotification);
+            seq->setPlayUpDown(false);
+            playUpDown->setToggleState(false, dontSendNotification);
+        }
+        else
+        {
+            seq->setPlayRandom(false);
+            playRandom->setToggleState(false, dontSendNotification);
+        }
+        //[/UserButtonCode_playRandom]
     }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
 }
 
+void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == seqStepSpeed)
+    {
+        //[UserComboBoxCode_seqStepSpeed] -- add your combo box handling code here..
+        params.seqStepSpeedIndex.set(static_cast<float>(comboBoxThatHasChanged->getSelectedItemIndex()));
+        //[/UserComboBoxCode_seqStepSpeed]
+    }
+    else if (comboBoxThatHasChanged == seqStepLength)
+    {
+        //[UserComboBoxCode_seqStepLength] -- add your combo box handling code here..
+        params.seqStepLengthIndex.set(static_cast<float>(comboBoxThatHasChanged->getSelectedItemIndex()));
+        //[/UserComboBoxCode_seqStepLength]
+    }
+    else if (comboBoxThatHasChanged == seqNumSteps)
+    {
+        //[UserComboBoxCode_seqNumSteps] -- add your combo box handling code here..
+        params.seqNumSteps.set(comboBoxThatHasChanged->getText().getFloatValue());
+        //[/UserComboBoxCode_seqNumSteps]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-// called periodicaly to check note position while playing
 void SeqPanel::timerCallback()
 {
-    // vllt trennen host/sync wegen current bei hostmode anzeigen
     if (seq->isPlaying())
     {
         if (lastSeqNotePos != seq->getCurrentSeqNote())
         {
-            seqStep1->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep2->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep3->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep4->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep5->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep6->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep7->setColour(Slider::trackColourId, Colour(0x7fffffff));
-            seqStep8->setColour(Slider::trackColourId, Colour(0x7fffffff));
+            // colour current playing seqNote slider
+            for (int i = 0; i < 8; ++i)
+            {
+                seqStepArray[i]->setColour(Slider::trackColourId, Colour(0x7fffffff));
+            }
+
             lastSeqNotePos = seq->getCurrentSeqNote();
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
+            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7f0000ff));
 
-            sliderArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7f0000ff));
-
-            lastSeqNotePos = seq->getCurrentSeqNote();
+            // set next random note
+            if (seq->isPlayRandom())
+            {
+                Random r = Random();
+                r.setSeedRandomly();
+                int steps = static_cast<int>(params.seqNumSteps.get());
+                seqStepArray.at((lastSeqNotePos + 1) % steps)->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
+            }
         }
     }
     else
     {
+        // reset slider colour
         if (lastSeqNotePos != -1)
         {
-            sliderArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
+            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
             lastSeqNotePos = -1;
         }
     }
-    //PanelBase::timerCallback();
+
+    PanelBase::timerCallback();
 }
 //[/MiscUserCode]
 
@@ -743,26 +819,14 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="728 32 48 264" min="0" max="127"
           int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Step Speed" id="6f57522c914edf53" memberName="seqStepSpeed"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="20 140 64 64"
-          min="0.125" max="4" int="0.125" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Step Length" id="e0d84d227ff04bc4" memberName="seqStepLength"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="92 140 64 64"
-          min="0.125" max="4" int="0.125" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TEXTBUTTON name="play sequencer" id="4552dd6439420b59" memberName="seqPlay"
-              virtualName="" explicitFocusOrder="0" pos="148 28 100 24" bgColOff="ff9a9a9a"
+              virtualName="" explicitFocusOrder="0" pos="20 25 100 24" bgColOff="ff9a9a9a"
               bgColOn="ff60ff60" textColOn="ff000000" buttonText="Play" connectedEdges="1"
               needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
-                virtualName="" explicitFocusOrder="0" pos="20 56 120 24" txtcol="ff000000"
+                virtualName="" explicitFocusOrder="0" pos="140 20 120 24" txtcol="ff000000"
                 buttonText="Sync with Host" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
-  <SLIDER name="Stepnumber" id="5a9417ec3a4f18b3" memberName="seqNumSteps"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="164 140 64 64"
-          min="1" max="8" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TEXTBUTTON name="label button 1" id="ecf21a7d0b29e004" memberName="labelButton1"
               virtualName="" explicitFocusOrder="0" pos="336 6 48 24" bgColOff="ff9a9a9a"
               bgColOn="ff60ff60" textCol="ff000000" buttonText="C3" connectedEdges="3"
@@ -796,30 +860,55 @@ BEGIN_JUCER_METADATA
               bgColOn="ff60ff60" buttonText="C4" connectedEdges="3" needsCallback="1"
               radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="20 261 100 24" buttonText="Generate Sequence"
+              virtualName="" explicitFocusOrder="0" pos="20 219 100 24" buttonText="Generate Sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <TEXTBUTTON name="play random sequence" id="7812f2e99405e440" memberName="playRandSeq"
-              virtualName="" explicitFocusOrder="0" pos="148 56 100 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="Play Random Seq" connectedEdges="1"
-              needsCallback="1" radioGroupId="0"/>
-  <TEXTBUTTON name="play random notes" id="cb741932faf16384" memberName="playRandomNotes"
-              virtualName="" explicitFocusOrder="0" pos="148 84 100 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="Play Random Notes" connectedEdges="1"
-              needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
-          virtualName="" explicitFocusOrder="0" pos="20 292 200 35" min="0"
+          virtualName="" explicitFocusOrder="0" pos="20 249 250 35" min="0"
           max="127" int="0" style="TwoValueHorizontal" textBoxPos="NoTextBox"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="random min label" id="4207acbbe3318ad" memberName="randMinLabel"
-         virtualName="" explicitFocusOrder="0" pos="20 325 100 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="20 279 125 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Min: C-2" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="16"
          bold="0" italic="0" justification="36"/>
   <LABEL name="random max label" id="b241e58f05db2570" memberName="randMaxLabel"
-         virtualName="" explicitFocusOrder="0" pos="120 325 100 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="145 279 125 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Max: G8" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="16"
          bold="0" italic="0" justification="36"/>
+  <TOGGLEBUTTON name="play up down" id="92757ac860e48d18" memberName="playUpDown"
+                virtualName="" explicitFocusOrder="0" pos="140 50 120 24" buttonText="Play Up/Down"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <COMBOBOX name="seq step speed" id="b920cb2140721231" memberName="seqStepSpeed"
+            virtualName="" explicitFocusOrder="0" pos="25 155 64 20" editable="0"
+            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            textWhenNonSelected="Step Speed" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="seq step length" id="9cc1e82a498c26a7" memberName="seqStepLength"
+            virtualName="" explicitFocusOrder="0" pos="105 155 64 20" editable="0"
+            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            textWhenNonSelected="Step Length" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="seq num steps" id="cc5278e8668913e9" memberName="seqNumSteps"
+            virtualName="" explicitFocusOrder="0" pos="185 155 64 20" editable="0"
+            layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
+            textWhenNonSelected="Num Steps" textWhenNoItems="(no choices)"/>
+  <LABEL name="new seq speed" id="af187074393a392a" memberName="labelSeqSpeed"
+         virtualName="" explicitFocusOrder="0" pos="20 135 64 20" edTextCol="ff000000"
+         edBkgCol="0" labelText="Step Speed" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="14"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="new seq length" id="52118a8deceb9da1" memberName="labelSeqLength"
+         virtualName="" explicitFocusOrder="0" pos="100 135 64 20" edTextCol="ff000000"
+         edBkgCol="0" labelText="Step Length" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="14" bold="0" italic="0" justification="33"/>
+  <LABEL name="new seq step num" id="c5b4cbd8722afa9c" memberName="labelSeqStepNum"
+         virtualName="" explicitFocusOrder="0" pos="180 135 64 20" edTextCol="ff000000"
+         edBkgCol="0" labelText="Num Steps" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="14"
+         bold="0" italic="0" justification="33"/>
+  <TOGGLEBUTTON name="play random" id="f5db190fb273c40b" memberName="playRandom"
+                virtualName="" explicitFocusOrder="0" pos="140 80 120 24" buttonText="Play Random"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -26,10 +26,12 @@ namespace {
 SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave,
-    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
+    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
+    &seqNumSteps, &seqStepSpeedIndex, &seqStepLengthIndex, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7, &seqStep8,
+    &seqStepPlay1, &seqStepPlay2, &seqStepPlay3, &seqStepPlay4, &seqStepPlay5, &seqStepPlay6, &seqStepPlay7, &seqStepPlay8,
     &panDir, &vol, 
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
@@ -73,8 +75,8 @@ SynthParams::SynthParams()
 , delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
 , seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
 , seqNumSteps("Steps", "seqNumSteps", "steps", 1.0f, 8.0f, 8.0f)
-, seqStepSpeed("Speed", "seqSpeed", "qn", 0.125f, 4.0f, 1.0f)
-, seqStepLength("Length", "seqNoteLength", "qn", 0.125f, 4.0f, 1.0f)
+, seqStepSpeedIndex("Speed", "seqStepSpeed", "qn", 0.0f, 7.0f, 4.0f)
+, seqStepLengthIndex("Length", "seqNoteLength", "qn", 0.0f, 7.0f, 4.0f)
 , seqStep1("Step 1", "seqNote1", "", 0, 127, 60)
 , seqStep2("Step 2", "seqNote2", "", 0, 127, 62)
 , seqStep3("Step 3", "seqNote3", "", 0, 127, 64)
@@ -108,6 +110,7 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch) {
     // set version of the patch
     patch->setAttribute("version", version);
 
+    // TODO: branch for seq params
     // iterate over all params and insert them into the tree
     for (auto &param : serializeParams) {
         float value = param->getUI();
@@ -155,6 +158,7 @@ void SynthParams::fillValues(XmlElement* patch) {
             "OK");
     }
 
+    // TODO: branch for seq params
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : serializeParams) {
         fillValueIfExists(patch, param->serializationTag(), *param);

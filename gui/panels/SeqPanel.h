@@ -38,7 +38,8 @@
 */
 class SeqPanel  : public PanelBase,
                   public SliderListener,
-                  public ButtonListener
+                  public ButtonListener,
+                  public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -47,25 +48,24 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    // Timer methods
-    virtual void timerCallback();
+    virtual void timerCallback() override;
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     static StepSequencer* seq;
-    std::array<ScopedPointer<MouseOverKnob>, 8> sliderArray;
+    std::array<ScopedPointer<MouseOverKnob>, 8> seqStepArray;
+    std::array<ScopedPointer<TextButton>, 8> labelButtonArray;
 
     int lastSeqNotePos = -1;
-    int randomMin = 0;
-    int randomMax = 127;
     //[/UserVariables]
 
     //==============================================================================
@@ -77,11 +77,8 @@ private:
     ScopedPointer<MouseOverKnob> seqStep6;
     ScopedPointer<MouseOverKnob> seqStep7;
     ScopedPointer<MouseOverKnob> seqStep8;
-    ScopedPointer<MouseOverKnob> seqStepSpeed;
-    ScopedPointer<MouseOverKnob> seqStepLength;
     ScopedPointer<TextButton> seqPlay;
     ScopedPointer<ToggleButton> syncHost;
-    ScopedPointer<MouseOverKnob> seqNumSteps;
     ScopedPointer<TextButton> labelButton1;
     ScopedPointer<TextButton> labelButton2;
     ScopedPointer<TextButton> labelButton3;
@@ -91,11 +88,17 @@ private:
     ScopedPointer<TextButton> labelButton7;
     ScopedPointer<TextButton> labelButton8;
     ScopedPointer<TextButton> genRandom;
-    ScopedPointer<TextButton> playRandSeq;
-    ScopedPointer<TextButton> playRandomNotes;
     ScopedPointer<Slider> randomSeq;
     ScopedPointer<Label> randMinLabel;
     ScopedPointer<Label> randMaxLabel;
+    ScopedPointer<ToggleButton> playUpDown;
+    ScopedPointer<ComboBox> seqStepSpeed;
+    ScopedPointer<ComboBox> seqStepLength;
+    ScopedPointer<ComboBox> seqNumSteps;
+    ScopedPointer<Label> labelSeqSpeed;
+    ScopedPointer<Label> labelSeqLength;
+    ScopedPointer<Label> labelSeqStepNum;
+    ScopedPointer<ToggleButton> playRandom;
 
 
     //==============================================================================

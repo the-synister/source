@@ -25,11 +25,17 @@ public:
     void runSeq(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
 
     int getCurrentSeqNote();
+    int getRandMin();
+    int getRandMax();
 
-    void setPlayRandomNotes(bool shouldPlay);
-    void setPlayRandomSeqNotes(bool shouldPlay);
+    void setPlayUpDown(bool play);
+    void setPlayRandom(bool play);
+    void setRandMin(int min);
+    void setRandMax(int max);
 
     bool isPlaying();
+    bool isPlayUpDown();
+    bool isPlayRandom();
     bool isNoteMuted(int index);
 
 private:
@@ -53,13 +59,16 @@ private:
 
     // internal StepSequencer variables
     int seqNote;
-    double seqNextStep;
-    double stopNoteTime;
+    int seqNoteAdd;
     int nextPlaySample;
     int noteOffSample;
-    bool seqIsPlaying;
+    double seqNextStep;
+    double stopNoteTime;
 
-    bool randomSeqNotes;
-    bool randomNotes;
+    bool seqIsPlaying;
+    bool playUpDown;
+    bool playRandom;
+    int randomMin;
+    int randomMax;
 };
 #endif  // STEPSEQUENCER_H_INCLUDED

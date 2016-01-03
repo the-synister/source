@@ -75,11 +75,11 @@ public:
     Param envReleaseShape; //!< env release shape in [0.01..10]
 
     ParamStepped<eSeqModes> seqMode; //!< 0 = pause, 1 = play, 2 = sync host
-    Param seqNumSteps;               //!< number of steps for sequencer [1..8]
-    Param seqStepSpeed;              //!< interval between each step in [0.125..4] quarter notes
-    Param seqStepLength;             //!< length of step note in [0.125..seqStepSpeed] quarter notes
-    Param seqStep1;                  //!< midi note as int of step k in [-1..127]
-    Param seqStep2;                  //!< while -1 is indicator for playing no note
+    Param seqNumSteps;               //!< index of number of steps combobox, results in [1..8] steps
+    Param seqStepSpeedIndex;         //!< index of step speed, results in [0.0625..4] quarter notes
+    Param seqStepLengthIndex;        //!< index of step length, results in [0.0625..seqStepSpeed] quarter notes
+    Param seqStep1;                  //!< midi note as int in [0..127]
+    Param seqStep2;                  
     Param seqStep3;
     Param seqStep4;
     Param seqStep5;
