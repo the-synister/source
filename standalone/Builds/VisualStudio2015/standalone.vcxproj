@@ -129,6 +129,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
@@ -1280,6 +1281,7 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>

@@ -183,11 +183,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 	if (lowFiActivation.getStep() == eOnOff::eOn) {
 
 		float newSampleVal;
-		float coeff = 1.f;          // Initialization of coeff ( 2^(0)=1 )
-
-		for (int i = 0; i < (static_cast <int>(nBitsLowFidelity) - 1); ++i) {    // coeff = 2^(nBitsLowFi-1)
-			coeff = coeff * 2.f;
-		}
+		float coeff = static_cast <float>( pow(2, nBitsLowFidelity - 1) );   // coeff = 2^(nBitsLowFi-1)
 
 		//For all the outputs
 		for (int c = 0; c < buffer.getNumChannels(); ++c)

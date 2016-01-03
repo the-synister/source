@@ -33,22 +33,8 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (lowFi_Active = new MouseOverKnob ("low fidelity active"));
-    lowFi_Active->setRange (0, 1, 1);
-    lowFi_Active->setSliderStyle (Slider::RotaryVerticalDrag);
-    lowFi_Active->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    lowFi_Active->addListener (this);
-
-    addAndMakeVisible (nBits_LowFi = new MouseOverKnob ("nBits Low Fi"));
-    nBits_LowFi->setRange (1, 16, 1);
-    nBits_LowFi->setSliderStyle (Slider::RotaryVerticalDrag);
-    nBits_LowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    nBits_LowFi->addListener (this);
-
 
     //[UserPreSize]
-	registerSlider(lowFi_Active, &params.lowFiActivation);
-	registerSlider(nBits_LowFi, &params.nBitsLowFi);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -63,8 +49,6 @@ FxPanel::~FxPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    lowFi_Active = nullptr;
-    nBits_LowFi = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -88,31 +72,8 @@ void FxPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    lowFi_Active->setBounds (48, 24, 64, 64);
-    nBits_LowFi->setBounds (144, 24, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
-}
-
-void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
-{
-    //[UsersliderValueChanged_Pre]
-	handleSlider(sliderThatWasMoved);
-    //[/UsersliderValueChanged_Pre]
-
-    if (sliderThatWasMoved == lowFi_Active)
-    {
-        //[UserSliderCode_lowFi_Active] -- add your slider handling code here..
-        //[/UserSliderCode_lowFi_Active]
-    }
-    else if (sliderThatWasMoved == nBits_LowFi)
-    {
-        //[UserSliderCode_nBits_LowFi] -- add your slider handling code here..
-        //[/UserSliderCode_nBits_LowFi]
-    }
-
-    //[UsersliderValueChanged_Post]
-    //[/UsersliderValueChanged_Post]
 }
 
 
@@ -136,14 +97,6 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="low fidelity active" id="221421ebd522cd9a" memberName="lowFi_Active"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="48 24 64 64"
-          min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBits_LowFi"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="144 24 64 64"
-          min="1" max="16" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

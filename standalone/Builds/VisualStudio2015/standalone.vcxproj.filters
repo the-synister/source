@@ -325,6 +325,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -1605,6 +1608,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
