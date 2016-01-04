@@ -13,11 +13,11 @@ enum class eLfoWaves : int {
     };
 
 enum class eOnOff : int {
-	eOff = 0,
-	eOn = 1,
-	nSteps = 2
+    eOff = 0,
+    eOn = 1,
+    nSteps = 2
 };
-    
+
 
 class SynthParams {
 public:
@@ -32,7 +32,7 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-    
+
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param lpResonance; //! filter resonance in dB
 
@@ -54,9 +54,9 @@ public:
     Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
-	ParamStepped<eOnOff> lowFiActivation; //!< Activation of the low fidelity effect
-	Param nBitsLowFi; //!< Bit degradation
-	Param freqDegFactor; //!< Frequency degradation
+    ParamStepped<eOnOff> lowFiActivation; //!< Activation of the low fidelity effect
+    Param nBitsLowFi; //!< Bit degradation
+    Param freqDegFactor; //!< Frequency degradation
 
     ParamDb vol; //!< volume in [0..1]
 
@@ -82,7 +82,7 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
-    
+
     int getGUIIndex();
     int getAudioIndex();
 

@@ -8,19 +8,19 @@ namespace {
 }
 
 namespace {
-	static const char *onoff[] = {
-		"Off", "On", nullptr
-	};
+    static const char *onoff[] = {
+        "Off", "On", nullptr
+    };
 }
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave,
-    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
+    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth,
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol,
-	&lowFiActivation, &nBitsLowFi
+    &lowFiActivation, &nBitsLowFi
 }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)

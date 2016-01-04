@@ -38,7 +38,7 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
 
-	addParameter(new HostParam<ParamStepped<eOnOff>>(lowFiActivation));
+    addParameter(new HostParam<ParamStepped<eOnOff>>(lowFiActivation));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -175,57 +175,57 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-	// Low fidelity effect
-	//////////////////////
-	// If the effect is activated, the algorithm is applied
-	if (lowFiActivation.getStep() == eOnOff::eOn) 
-	{
-		float coeff =  pow(2.f, nBitsLowFi.get() - 1.f);   // coeff = 2^(nBitsLowFi-1)
+    // Low fidelity effect
+    //////////////////////
+    // If the effect is activated, the algorithm is applied
+    if (lowFiActivation.getStep() == eOnOff::eOn)
+    {
+        float coeff =  pow(2.f, nBitsLowFi.get() - 1.f);   // coeff = 2^(nBitsLowFi-1)
 
-		//For all the outputs
-		for (int c = 0; c < buffer.getNumChannels(); ++c)
-		{
-			// Frequency degradation
-			if (freqDegFactor.get() > 1.f)   // If the frequency is degraded
-			{
-				float freqDegradationFactor = freqDegFactor.get();      // Sorage of frequency degradation factor
-				int numSamples = buffer.getNumSamples();                // Storage of number of samples of the buffer
-				int numDegSamples = static_cast<int>(floor(static_cast<float>(numSamples) / freqDegradationFactor));  // Number of degraded samples used to interpolate the others
-				int mod = numSamples % static_cast<int>(freqDegradationFactor); // Number of remaining samples (after the last degraded one)
-				
-			    // Interpolation between blocks of freqDegFactor samples
-				for (int i = 0; i < numDegSamples; ++i) 
-				{
-					float firstVal = buffer.getSample(c, i * static_cast<int>(freqDegradationFactor));     // First value used for interpolation
-					float lastVal = buffer.getSample(c, (i * static_cast<int>(freqDegradationFactor)) + static_cast<int>(freqDegradationFactor)); // Last value used for interpolation
-					// Linear interpolation of samples in between
-					for (int j = 0; j < static_cast<int>(freqDegradationFactor); ++j)
-					{
-						float newSampleVal = ((freqDegradationFactor - static_cast<float>(j)) / (freqDegradationFactor)) * firstVal + (static_cast<int>(j) / freqDegradationFactor) * lastVal;
-						buffer.setSample(c, (i*static_cast<int>(freqDegradationFactor))+j, newSampleVal);
-					}
-				}
+        //For all the outputs
+        for (int c = 0; c < buffer.getNumChannels(); ++c)
+        {
+            // Frequency degradation
+            if (freqDegFactor.get() > 1.f)   // If the frequency is degraded
+            {
+                float freqDegradationFactor = freqDegFactor.get();      // Sorage of frequency degradation factor
+                int numSamples = buffer.getNumSamples();                // Storage of number of samples of the buffer
+                int numDegSamples = static_cast<int>(floor(static_cast<float>(numSamples) / freqDegradationFactor));  // Number of degraded samples used to interpolate the others
+                int mod = numSamples % static_cast<int>(freqDegradationFactor); // Number of remaining samples (after the last degraded one)
 
-				// Interpolation of the remaining samples after the last degraded one
-				for (int i = mod; i > 0; --i)
-				{
-					float firstVal = buffer.getSample(c, numSamples-mod);     // First value used for interpolation
-					float lastVal = buffer.getSample(c, numSamples); // Last value used for interpolation
-					// Linear interpolation of samples in between
-					float newSampleVal = (i / mod) * firstVal + ((mod - i) / mod) * lastVal;
-					buffer.setSample(c, numSamples-i, newSampleVal);
-				}
-			}
+                // Interpolation between blocks of freqDegFactor samples
+                for (int i = 0; i < numDegSamples; ++i)
+                {
+                    float firstVal = buffer.getSample(c, i * static_cast<int>(freqDegradationFactor));     // First value used for interpolation
+                    float lastVal = buffer.getSample(c, (i * static_cast<int>(freqDegradationFactor)) + static_cast<int>(freqDegradationFactor)); // Last value used for interpolation
+                    // Linear interpolation of samples in between
+                    for (int j = 0; j < static_cast<int>(freqDegradationFactor); ++j)
+                    {
+                        float newSampleVal = ((freqDegradationFactor - static_cast<float>(j)) / (freqDegradationFactor)) * firstVal + (static_cast<int>(j) / freqDegradationFactor) * lastVal;
+                        buffer.setSample(c, (i*static_cast<int>(freqDegradationFactor))+j, newSampleVal);
+                    }
+                }
 
-			// Bit degradation
-			for (int s = 0; s < buffer.getNumSamples(); ++s)
-			{
-				float newSampleVal = floor(coeff * (buffer.getSample(c, s)) + 0.5f) / coeff;
-				buffer.setSample(c, s, newSampleVal);
-			}
+                // Interpolation of the remaining samples after the last degraded one
+                for (int i = mod; i > 0; --i)
+                {
+                    float firstVal = buffer.getSample(c, numSamples-mod);     // First value used for interpolation
+                    float lastVal = buffer.getSample(c, numSamples); // Last value used for interpolation
+                    // Linear interpolation of samples in between
+                    float newSampleVal = (i / mod) * firstVal + ((mod - i) / mod) * lastVal;
+                    buffer.setSample(c, numSamples-i, newSampleVal);
+                }
+            }
 
-		}
-	}
+            // Bit degradation
+            for (int s = 0; s < buffer.getNumSamples(); ++s)
+            {
+                float newSampleVal = floor(coeff * (buffer.getSample(c, s)) + 0.5f) / coeff;
+                buffer.setSample(c, s, newSampleVal);
+            }
+
+        }
+    }
 }
 
 void PluginAudioProcessor::updateHostInfo()
