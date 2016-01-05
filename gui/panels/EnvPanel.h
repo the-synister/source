@@ -30,9 +30,9 @@
 //==============================================================================
 /**
                                                                     //[Comments]
-    An auto-generated component, created by the Introjucer.
+An auto-generated component, created by the Introjucer.
 
-    Describe your class and how it works here!
+Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class EnvPanel  : public PanelBase,

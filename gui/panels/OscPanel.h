@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -65,7 +66,10 @@ private:
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
     ScopedPointer<MouseOverKnob> lfoFadeIn;
-
+    ScopedPointer<WaveformVisual> waveformVisual;
+    ScopedPointer<Slider> waveformSwitch;
+    ScopedPointer<Label> sawlabel;
+    ScopedPointer<Label> squarelabel;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscPanel)

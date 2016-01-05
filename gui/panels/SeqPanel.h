@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_7B9503E899CF8C9A__
-#define __JUCE_HEADER_7B9503E899CF8C9A__
+#ifndef __JUCE_HEADER_1700DD60DF66F07A__
+#define __JUCE_HEADER_1700DD60DF66F07A__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,14 +35,14 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FiltPanel  : public PanelBase,
-                   public SliderListener,
-                   public ComboBoxListener
+class SeqPanel  : public PanelBase,
+                  public SliderListener,
+                  public ButtonListener
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p);
-    ~FiltPanel();
+    SeqPanel (SynthParams &p);
+    ~SeqPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -51,7 +51,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -60,19 +60,34 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> cutoffSlider;
-    ScopedPointer<MouseOverKnob> resonanceSlider;
-    ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<MouseOverKnob> passtype;
-    ScopedPointer<ComboBox> modSrc;
-    ScopedPointer<Slider> modSliderCut;
+    ScopedPointer<Slider> seqStep1;
+    ScopedPointer<Slider> seqStep2;
+    ScopedPointer<Slider> seqStep3;
+    ScopedPointer<Slider> seqStep4;
+    ScopedPointer<Slider> seqStep5;
+    ScopedPointer<Slider> seqStep6;
+    ScopedPointer<Slider> seqStep7;
+    ScopedPointer<Slider> seqStep8;
+    ScopedPointer<MouseOverKnob> seqStepSpeed;
+    ScopedPointer<MouseOverKnob> seqStepLength;
+    ScopedPointer<TextButton> seqPlay;
+    ScopedPointer<ToggleButton> syncHost;
+    ScopedPointer<MouseOverKnob> seqNumSteps;
+    ScopedPointer<Label> labelStep1;
+    ScopedPointer<Label> labelStep2;
+    ScopedPointer<Label> labelStep3;
+    ScopedPointer<Label> labelStep4;
+    ScopedPointer<Label> labelStep5;
+    ScopedPointer<Label> labelStep6;
+    ScopedPointer<Label> labelStep7;
+    ScopedPointer<Label> labelStep8;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeqPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_7B9503E899CF8C9A__
+#endif   // __JUCE_HEADER_1700DD60DF66F07A__

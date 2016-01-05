@@ -14,10 +14,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "FxDelay.h"
+#include <array>
+#include "StepSequencer.h"
 
 //==============================================================================
 /**
 */
+class Sequencer;
 class PluginAudioProcessor  : public AudioProcessor, public SynthParams
 {
 public:
@@ -58,9 +62,15 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
 private:
     //==============================================================================
     Synthesiser synth;
+    
+    // FX
+    FxDelay delay;
+
+    StepSequencer steqSeq;
 
     void updateHostInfo();
     //==============================================================================

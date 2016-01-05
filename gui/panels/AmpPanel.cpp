@@ -33,13 +33,13 @@ AmpPanel::AmpPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (amp = new Slider ("amp"));
+    addAndMakeVisible (amp = new MouseOverKnob ("amp"));
     amp->setRange (-96, 12, 0);
     amp->setSliderStyle (Slider::LinearVertical);
     amp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     amp->addListener (this);
 
-    addAndMakeVisible (pan = new Slider ("pan"));
+    addAndMakeVisible (pan = new MouseOverKnob ("pan"));
     pan->setRange (-100, 100, 0);
     pan->setSliderStyle (Slider::RotaryVerticalDrag);
     pan->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
@@ -156,11 +156,11 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="Slider"
+  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="8 8 64 128" min="-96" max="12" int="0"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="Slider"
+  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 72 112 64" min="-100" max="100"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
