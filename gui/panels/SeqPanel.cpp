@@ -253,6 +253,15 @@ SeqPanel::SeqPanel (SynthParams &p)
     playRandom->setButtonText (TRANS("Play Random"));
     playRandom->addListener (this);
 
+    addAndMakeVisible (debugLabel = new Label ("debug label",
+                                               TRANS("Debug")));
+    debugLabel->setFont (Font (15.00f, Font::plain));
+    debugLabel->setJustificationType (Justification::centredLeft);
+    debugLabel->setEditable (false, false, false);
+    debugLabel->setColour (Label::outlineColourId, Colours::black);
+    debugLabel->setColour (TextEditor::textColourId, Colours::black);
+    debugLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     seq = PluginAudioProcessor::getSequencer();
@@ -311,8 +320,8 @@ SeqPanel::~SeqPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     for (int i = 0; i < 8; ++i)
     {
-        seqStepArray.at(i).release();
-        labelButtonArray.at(i).release();
+        seqStepArray[i].release();
+        labelButtonArray[i].release();
     }
     //[/Destructor_pre]
 
@@ -346,6 +355,7 @@ SeqPanel::~SeqPanel()
     labelSeqLength = nullptr;
     labelSeqStepNum = nullptr;
     playRandom = nullptr;
+    debugLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -367,20 +377,14 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-    if (params.seqMode.getStep() == eSeqModes::seqSyncHost)
-    {
-        syncHost->setToggleState(true, dontSendNotification);
-    }
-    else
-    {
-        seqPlay->setToggleState(!(params.seqMode.getStep() == eSeqModes::seqStop), dontSendNotification);
-    }
-
+    // reload gui states
     for (int i = 0; i < 8; ++i)
     {
         labelButtonArray[i]->setToggleState(!seq->isNoteMuted(i), dontSendNotification);
     }
 
+    syncHost->setToggleState((params.seqMode.getStep() == eSeqModes::seqSyncHost), dontSendNotification);
+    seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
     seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()));
     seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()));
     seqNumSteps->setSelectedItemIndex(static_cast<int>(params.seqNumSteps.get()) - 1);
@@ -419,6 +423,7 @@ void SeqPanel::resized()
     labelSeqLength->setBounds (100, 135, 64, 20);
     labelSeqStepNum->setBounds (180, 135, 64, 20);
     playRandom->setBounds (140, 80, 120, 24);
+    debugLabel->setBounds (16, 312, 760, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -426,8 +431,12 @@ void SeqPanel::resized()
 void SeqPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
-    handleSlider(sliderThatWasMoved);
-    int newMidiValue = static_cast<int>(sliderThatWasMoved->getValue());
+    int newMidiValue;
+    if (sliderThatWasMoved != randomSeq)
+    {
+        handleSlider(sliderThatWasMoved);
+        newMidiValue = static_cast<int>(sliderThatWasMoved->getValue());
+    }
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == seqStep1)
@@ -505,12 +514,10 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
             if (params.seqMode.getStep() == eSeqModes::seqStop)
             {
                 params.seqMode.setStep(eSeqModes::seqPlay);
-                seqPlay->setToggleState(true, dontSendNotification);
             }
             else
             {
                 params.seqMode.setStep(eSeqModes::seqStop);
-                seqPlay->setToggleState(false, dontSendNotification);
             }
         }
         //[/UserButtonCode_seqPlay]
@@ -526,7 +533,6 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         {
             params.seqMode.setStep(eSeqModes::seqStop);
         }
-        seqPlay->setToggleState(false, dontSendNotification);
         //[/UserButtonCode_syncHost]
     }
     else if (buttonThatWasClicked == labelButton1)
@@ -657,7 +663,7 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         for (int i = 0; i < 8; ++i)
         {
             r.setSeedRandomly();
-            seqStepArray.at(i)->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
+            seqStepArray[i]->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
         }
         //[/UserButtonCode_genRandom]
     }
@@ -687,6 +693,7 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
             playRandom->setToggleState(true, dontSendNotification);
             seq->setPlayUpDown(false);
             playUpDown->setToggleState(false, dontSendNotification);
+            seqNumSteps->setSelectedItemIndex(7);
         }
         else
         {
@@ -735,6 +742,7 @@ void SeqPanel::timerCallback()
 {
     if (seq->isPlaying())
     {
+        seqPlay->setToggleState(true, dontSendNotification);
         if (lastSeqNotePos != seq->getCurrentSeqNote())
         {
             // colour current playing seqNote slider
@@ -745,27 +753,32 @@ void SeqPanel::timerCallback()
 
             lastSeqNotePos = seq->getCurrentSeqNote();
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
-            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7f0000ff));
+            seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0x7f0000ff));
 
             // set next random note
             if (seq->isPlayRandom())
             {
+                seqNumSteps->setSelectedItemIndex(7);
                 Random r = Random();
                 r.setSeedRandomly();
                 int steps = static_cast<int>(params.seqNumSteps.get());
-                seqStepArray.at((lastSeqNotePos + 1) % steps)->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
+                seqStepArray[(lastSeqNotePos + 1) % steps]->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
             }
         }
     }
     else
     {
-        // reset slider colour
+        // reset gui state
+        seqPlay->setToggleState(false, dontSendNotification);
         if (lastSeqNotePos != -1)
         {
             seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
             lastSeqNotePos = -1;
         }
     }
+
+    String debugPos = " CurrPos = " + String(seq->getPos());
+    debugLabel->setText("|DEBUG| " + debugPos, dontSendNotification);
 
     PanelBase::timerCallback();
 }
@@ -909,6 +922,11 @@ BEGIN_JUCER_METADATA
   <TOGGLEBUTTON name="play random" id="f5db190fb273c40b" memberName="playRandom"
                 virtualName="" explicitFocusOrder="0" pos="140 80 120 24" buttonText="Play Random"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <LABEL name="debug label" id="1d1ce00e4e7ffaf8" memberName="debugLabel"
+         virtualName="" explicitFocusOrder="0" pos="16 312 760 32" outlineCol="ff000000"
+         edTextCol="ff000000" edBkgCol="0" labelText="Debug" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

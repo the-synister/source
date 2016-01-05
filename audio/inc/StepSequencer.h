@@ -27,6 +27,7 @@ public:
     int getCurrentSeqNote();
     int getRandMin();
     int getRandMax();
+    double getPos(); // for debug
 
     void setPlayUpDown(bool play);
     void setPlayRandom(bool play);
@@ -41,7 +42,7 @@ public:
 private:
     //==============================================================================
     void seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
-    void seqHostSync(MidiBuffer& midiMessages);
+    void seqHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
     void midiNoteChanged(MidiBuffer& midiMessages);
     void stopSeq(MidiBuffer& midiMessages);
     //==============================================================================
@@ -64,6 +65,7 @@ private:
     int noteOffSample;
     double seqNextStep;
     double stopNoteTime;
+    double currPos; // for debug
 
     bool seqIsPlaying;
     bool playUpDown;

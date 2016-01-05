@@ -71,7 +71,7 @@ private:
     // FX
     FxDelay delay;
 
-    static StepSequencer* steqSeq;
+    static StepSequencer* stepSeq;
 
     void updateHostInfo();
     //==============================================================================

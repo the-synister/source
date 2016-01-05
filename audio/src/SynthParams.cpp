@@ -52,7 +52,7 @@ SynthParams::SynthParams()
 , envDecay("Decay", "envDecay", "s", 0.001f, 5.0f, 0.05f)
 , envSustain("Sustain", "envSustain", "dB", -96.0f, 0.0f, -5.0f)
 , envRelease("Release", "envRelease", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("keyVel to Env", "", "veloToKey", 0.0f, 1.0f, 0.0f)
+, keyVelToEnv("keyVel to Env", "", "veloToKey", 0.0f, 1.0f, 0.0f) // 2nd and 3rd param swapped?
 , envAttackShape("Attack Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
@@ -110,7 +110,7 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch) {
     // set version of the patch
     patch->setAttribute("version", version);
 
-    // TODO: branch for seq params
+    // TODO: branch for seq params only?
     // iterate over all params and insert them into the tree
     for (auto &param : serializeParams) {
         float value = param->getUI();
@@ -145,6 +145,8 @@ void SynthParams::writeXMLPatchStandalone() {
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+        param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params, why?
+                                                                                                            // not tested for others yet
     }
 }
 
@@ -158,7 +160,7 @@ void SynthParams::fillValues(XmlElement* patch) {
             "OK");
     }
 
-    // TODO: branch for seq params
+    // TODO: branch for seq params only?
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : serializeParams) {
         fillValueIfExists(patch, param->serializationTag(), *param);
