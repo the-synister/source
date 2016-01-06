@@ -161,8 +161,7 @@ void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes) {
 void SynthParams::readXMLPatchStandalone() {
     // read the xml params into the synth params
     FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
-    if (openFileChooser.browseForFileToOpen())
-{
+    if (openFileChooser.browseForFileToOpen()) {
         File openedFile(openFileChooser.getResult());
         ScopedPointer<XmlElement> patch = XmlDocument::parse(openedFile);
         fillValues(patch);
