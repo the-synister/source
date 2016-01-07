@@ -52,11 +52,11 @@ public:
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
 
-    Param keyVelToEnv1;  //!< key velocity influence on env [0 ... 1]
-    Param env1Attack;    //!< env attack in [0.001..5]s
-    Param env1Decay;     //!< env decay in [0.001..5]s
-    Param env1Sustain;   //!< env sustain in [0..-96]dB
-    Param env1Release;   //!< env release in [0.001..5]s
+    Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
+    Param env1Attack;    //!< env1 attack in [0.001..5]s
+    Param env1Decay;     //!< env1 decay in [0.001..5]s
+    Param env1Sustain;   //!< env1 sustain in [0 .. 1]
+    Param env1Release;   //!< env1 release in [0.001..5]s
     Param env1AttackShape; //!< env attack shape in [0.01..10]
     Param env1DecayShape; //!< env decay shape in [0.01..10]
     Param env1ReleaseShape; //!< env release shape in [0.01..10]

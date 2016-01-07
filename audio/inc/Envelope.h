@@ -15,22 +15,19 @@
 #include "Param.h"
 
 //! Envelope Class: Envelope
-/*! The Envelope controls the amplitude with the AttackDecaySustainRelease principle.
-    It currently can be applied for the volume with an addition shape control
-    or for the frequency change in combination with the low pass filter,
-    however without the function of the schape control
+/*! An ADSR implementation with A,D and R shape control and an additional
+    feature of "Key Velocity to Envelope", which can be regulated on the 
+    corresponding Panel.
+    The Envelope is currently controling the amplitude (Env Panel) or can be
+    can be use to modulate the cutoff frequency of the lowpass filter
 */
 
 class Envelope{
     public:
-    //! Envelope constructor (SynthParams &p,) 
     Envelope(float sampleRate, Param &decay, Param &attack, Param &sustain, Param &release, 
         Param &attackShape, Param &decayShape, Param &releaseShape, Param &keyVelToEnv)
-        //:params(p)
         :releaseCounter(-1)
-        //,freeEnv1ReleaseCounter(-1)
         ,attackDecayCounter(0)
-        //,freeEnv1AttackDecayCounter(0)
         ,sampleRate(sampleRate)
         ,attack(attack)
         ,decay(decay)
@@ -47,83 +44,37 @@ class Envelope{
     //! Enevelope sestructor
     ~Envelope(){}
 
-    //void resetAllCounters();
     //! resets the sample counters and sets the current velocity for each new note
     void startEnvelope(float currVel);
 
     //! get and reset the release counters for the volume envelope
-    int getReleaseCounter();
+    int getReleaseCounter() const { return releaseCounter; } 
     void resetReleaseCounter();
 
-    //! get and reset the release counter for the free envelope
-    //int getfreeEnv1ReleaseCounter();
-    //void resetfreeEnv1ReleaseCounter();
-
-    //! calculation of the free enevlope coefficients (without shape control)
-    /*const float getEnv1Coeff()
-    {
-        float freeEnvCoeff;
-        float sustainLevel = params.freeEnv1Sustain.get();
-
-        //number of all samples for all phases
-        int attackSamples = static_cast<int>(sampleRate * params.freeEnv1Attack.get());
-        int decaySamples = static_cast<int>(sampleRate * params.freeEnv1Decay.get());
-        int releaseSamples = static_cast<int>(sampleRate * params.freeEnv1Release.get());
-
-        if (freeEnv1ReleaseCounter > -1)
-        {
-            freeEnvCoeff = freeEnv1ValueAtRelease * interpolateLog(freeEnv1ReleaseCounter, releaseSamples);
-            freeEnv1ReleaseCounter++;
-        }
-        else
-        {
-            if (freeEnv1AttackDecayCounter <= attackSamples)
-            {
-                freeEnvCoeff = 1.0f - interpolateLog(freeEnv1AttackDecayCounter, attackSamples);
-                freeEnv1ValueAtRelease = freeEnvCoeff;
-                freeEnv1AttackDecayCounter++;
-            }
-            else
-            {
-                if (freeEnv1AttackDecayCounter <= attackSamples + decaySamples)
-                {
-                    freeEnvCoeff = interpolateLog(freeEnv1AttackDecayCounter - attackSamples, decaySamples) * (1.0f - sustainLevel) + sustainLevel;
-                    freeEnv1ValueAtRelease = freeEnvCoeff;
-                    freeEnv1AttackDecayCounter++;
-                }
-
-                else
-                {
-                    freeEnvCoeff = sustainLevel;
-                }
-            }
-        }
-        return freeEnvCoeff;
-    }*/
     
     //! calculation of the volume envelope coefficients (with shape control)
-    const float getEnvCoeff()
+    const float calcEnvCoeff();
+    /*const float calcEnvCoeff()
     {
         float envCoeff;
-        //Think about not db params - conversion
-        //float sustainLevel = Param::fromDb(params.envSustain.get());
-        float sustainLevel = Param::fromDb(sustain.get());
+        float sustainLevel;
+        
+        // check the unit of the envelope
+        if (sustain.getUnit() == "dB") {
+            sustainLevel = Param::fromDb(sustain.get());
+        }
+        else {
+            sustainLevel = sustain.get();
+        }
 
         // number of samples for all phases
-        // if needed consider key velocity for attack and decay
-        //int attackSamples = static_cast<int>(sampleRate * params.envAttack.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
         int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-        //int decaySamples = static_cast<int>(sampleRate * params.envDecay.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
         int decaySamples = static_cast<int>(sampleRate * decay.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-        //int releaseSamples = static_cast<int>(sampleRate * params.envRelease.get());
         int releaseSamples = static_cast<int>(sampleRate * release.get());
 
         // get growth/shrink rate from knobs
-        //float attackGrowthRate = params.envAttackShape.get();
         float attackGrowthRate = attackShape.get();
-        //float decayShrinkRate = params.envDecayShape.get();
         float decayShrinkRate = decayShape.get();
-        //float releaseShrinkRate = params.envReleaseShape.get();
         float releaseShrinkRate = releaseShape.get();
 
         // release phase sets envCoeff from valueAtRelease to 0.0f
@@ -182,22 +133,20 @@ class Envelope{
             }
         }
         return envCoeff;
-    }
+    }*/
 
     private:
     
-    // Required Params for the envelope
-    Param &attack;
-    Param &decay;
-    Param &sustain;
-    Param &release;
-    Param &attackShape;
-    Param &decayShape;
-    Param &releaseShape;
+    //References for required Params for the envelope
+    Param &attack;          //!< attack reference
+    Param &decay;           //!< decay reference
+    Param &sustain;         //!< sustain reference
+    Param &release;         //!< release reference
+    Param &attackShape;     //!< attack shape reference
+    Param &decayShape;      //!< decay shape reference
+    Param &releaseShape;    //!< release shape reference
 
-    Param &keyVelToEnv;
-
-    //SynthParams &params;    //!< local params referencs
+    Param &keyVelToEnv;     //!< key velocity to envelope reference
 
     float sampleRate;       //!< sample rate
     float currentVelocity;  //!< current Veloctiy
@@ -206,11 +155,6 @@ class Envelope{
     int attackDecayCounter; //!< sample counter during the attack and decay phase
     int releaseCounter;     //!< sample counter during the release phase
 
-    //float freeEnv1ValueAtRelease;   //!< amplitude value once release phase starts
-    //int freeEnv1AttackDecayCounter; //!< sample counter during the attack and decay phase
-    //int freeEnv1ReleaseCounter;     //!< sample counter durinf the release phase
-
-    //static float interpolateLog(int curr, int t); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (without shape control)
     static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
 };
 

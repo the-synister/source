@@ -308,13 +308,13 @@ protected:
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
         {
-            envToVolBuffer.setSample(0, s, envToVolume.getEnvCoeff());
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
         }
 
         // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)
         {
-            envToCutoffBuffer.setSample(0, s, envToCutoff.getEnvCoeff());
+            envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
         }
 
         // add pitch wheel values

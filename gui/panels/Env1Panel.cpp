@@ -48,11 +48,12 @@ Env1Panel::Env1Panel (SynthParams &p)
     decayTime1->setSkewFactor (0.5);
 
     addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
-    sustainLevel1->setRange (-96, 0, 0);
+    sustainLevel1->setExplicitFocusOrder (1);
+    sustainLevel1->setRange (0, 1, 0.001);
     sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     sustainLevel1->addListener (this);
-    sustainLevel1->setSkewFactor (3);
+    sustainLevel1->setSkewFactor (0.5);
 
     addAndMakeVisible (releaseTime1 = new MouseOverKnob ("Release Time"));
     releaseTime1->setRange (0.001, 5, 0);
@@ -246,9 +247,9 @@ BEGIN_JUCER_METADATA
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 32 64 64"
-          min="-96" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="1" pos="152 32 64 64"
+          min="0" max="1" int="0.001" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 32 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
