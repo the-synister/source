@@ -195,6 +195,9 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
+
+    midiMessages.clear(); // NOTE: for now so debugger does not show jassert
+    // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
 }
 
 void PluginAudioProcessor::updateHostInfo()

@@ -253,15 +253,6 @@ SeqPanel::SeqPanel (SynthParams &p)
     playRandom->setButtonText (TRANS("Play Random"));
     playRandom->addListener (this);
 
-    addAndMakeVisible (debugLabel = new Label ("debug label",
-                                               TRANS("Debug")));
-    debugLabel->setFont (Font (15.00f, Font::plain));
-    debugLabel->setJustificationType (Justification::centredLeft);
-    debugLabel->setEditable (false, false, false);
-    debugLabel->setColour (Label::outlineColourId, Colours::black);
-    debugLabel->setColour (TextEditor::textColourId, Colours::black);
-    debugLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
 
     //[UserPreSize]
     seq = PluginAudioProcessor::getSequencer();
@@ -278,16 +269,8 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()));
     seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()));
     seqNumSteps->setSelectedItemIndex(static_cast<int>(params.seqNumSteps.get()) - 1);
-
-    // init as activated
-    labelButton1->setToggleState(true, dontSendNotification);
-    labelButton2->setToggleState(true, dontSendNotification);
-    labelButton3->setToggleState(true, dontSendNotification);
-    labelButton4->setToggleState(true, dontSendNotification);
-    labelButton5->setToggleState(true, dontSendNotification);
-    labelButton6->setToggleState(true, dontSendNotification);
-    labelButton7->setToggleState(true, dontSendNotification);
-    labelButton8->setToggleState(true, dontSendNotification);
+    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
 
     seqStepArray = { seqStep1.get(),
                      seqStep2.get(),
@@ -306,6 +289,11 @@ SeqPanel::SeqPanel (SynthParams &p)
                          labelButton6.get(),
                          labelButton7.get(),
                          labelButton8.get() };
+
+    for (int i = 0; i < 8; ++i)
+    {
+        labelButtonArray[i]->setToggleState(!seq->isNoteMuted(i), dontSendNotification);
+    }
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -355,7 +343,6 @@ SeqPanel::~SeqPanel()
     labelSeqLength = nullptr;
     labelSeqStepNum = nullptr;
     playRandom = nullptr;
-    debugLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -383,11 +370,13 @@ void SeqPanel::resized()
         labelButtonArray[i]->setToggleState(!seq->isNoteMuted(i), dontSendNotification);
     }
 
-    syncHost->setToggleState((params.seqMode.getStep() == eSeqModes::seqSyncHost), dontSendNotification);
+    syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
     seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
-    seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()));
-    seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()));
-    seqNumSteps->setSelectedItemIndex(static_cast<int>(params.seqNumSteps.get()) - 1);
+    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
+    seqStepSpeed->setSelectedItemIndex(static_cast<int>(params.seqStepSpeedIndex.get()), dontSendNotification);
+    seqStepLength->setSelectedItemIndex(static_cast<int>(params.seqStepLengthIndex.get()), dontSendNotification);
+    seqNumSteps->setSelectedItemIndex(seq->getNumStep() - 1, dontSendNotification);
     playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
     playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
     randomSeq->setMinAndMaxValues(seq->getRandMin(), seq->getRandMax());
@@ -423,7 +412,6 @@ void SeqPanel::resized()
     labelSeqLength->setBounds (100, 135, 64, 20);
     labelSeqStepNum->setBounds (180, 135, 64, 20);
     playRandom->setBounds (140, 80, 120, 24);
-    debugLabel->setBounds (16, 312, 760, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -431,7 +419,7 @@ void SeqPanel::resized()
 void SeqPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
-    int newMidiValue;
+    int newMidiValue = 0;
     if (sliderThatWasMoved != randomSeq)
     {
         handleSlider(sliderThatWasMoved);
@@ -509,29 +497,26 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == seqPlay)
     {
         //[UserButtonCode_seqPlay] -- add your button handler code here..
-        if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
+        if (seq->isPlaying() && !seq->isHostSynced())
         {
-            if (params.seqMode.getStep() == eSeqModes::seqStop)
-            {
-                params.seqMode.setStep(eSeqModes::seqPlay);
-            }
-            else
-            {
-                params.seqMode.setStep(eSeqModes::seqStop);
-            }
+            seq->stopPlaying();
+        }
+        else
+        {
+            seq->playNoHost();
         }
         //[/UserButtonCode_seqPlay]
     }
     else if (buttonThatWasClicked == syncHost)
     {
         //[UserButtonCode_syncHost] -- add your button handler code here..
-        if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
+        if (seq->isHostSynced())
         {
-            params.seqMode.setStep(eSeqModes::seqSyncHost);
+            seq->stopPlaying();
         }
         else
         {
-            params.seqMode.setStep(eSeqModes::seqStop);
+            seq->syncToHost();
         }
         //[/UserButtonCode_syncHost]
     }
@@ -658,13 +643,7 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == genRandom)
     {
         //[UserButtonCode_genRandom] -- add your button handler code here..
-        Random r = Random();
-
-        for (int i = 0; i < 8; ++i)
-        {
-            r.setSeedRandomly();
-            seqStepArray[i]->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
-        }
+        seq->generateRandomSeq();
         //[/UserButtonCode_genRandom]
     }
     else if (buttonThatWasClicked == playUpDown)
@@ -672,15 +651,11 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_playUpDown] -- add your button handler code here..
         if (!seq->isPlayUpDown())
         {
-            seq->setPlayUpDown(true);
-            playUpDown->setToggleState(true, dontSendNotification);
-            seq->setPlayRandom(false);
-            playRandom->setToggleState(false, dontSendNotification);
+            seq->playUpDown();
         }
-        else
+        else 
         {
-            seq->setPlayUpDown(false);
-            playUpDown->setToggleState(false, dontSendNotification);
+            seq->playSequential();
         }
         //[/UserButtonCode_playUpDown]
     }
@@ -689,16 +664,11 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_playRandom] -- add your button handler code here..
         if (!seq->isPlayRandom())
         {
-            seq->setPlayRandom(true);
-            playRandom->setToggleState(true, dontSendNotification);
-            seq->setPlayUpDown(false);
-            playUpDown->setToggleState(false, dontSendNotification);
-            seqNumSteps->setSelectedItemIndex(7);
+            seq->playRandom();
         }
         else
         {
-            seq->setPlayRandom(false);
-            playRandom->setToggleState(false, dontSendNotification);
+            seq->playSequential();
         }
         //[/UserButtonCode_playRandom]
     }
@@ -740,10 +710,10 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void SeqPanel::timerCallback()
 {
+    //TODO: refresh gui state here instead of resize -> update combobox and mutesTextButton
     if (seq->isPlaying())
     {
-        seqPlay->setToggleState(true, dontSendNotification);
-        if (lastSeqNotePos != seq->getCurrentSeqNote())
+        if (lastSeqNotePos != seq->getLastPlayedNote())
         {
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
@@ -751,14 +721,14 @@ void SeqPanel::timerCallback()
                 seqStepArray[i]->setColour(Slider::trackColourId, Colour(0x7fffffff));
             }
 
-            lastSeqNotePos = seq->getCurrentSeqNote();
+            lastSeqNotePos = seq->getLastPlayedNote();
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
             seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0x7f0000ff));
 
             // set next random note
+            // TODO: erstelle array aus params in stepSequencer.cpp
             if (seq->isPlayRandom())
             {
-                seqNumSteps->setSelectedItemIndex(7);
                 Random r = Random();
                 r.setSeedRandomly();
                 int steps = static_cast<int>(params.seqNumSteps.get());
@@ -769,7 +739,6 @@ void SeqPanel::timerCallback()
     else
     {
         // reset gui state
-        seqPlay->setToggleState(false, dontSendNotification);
         if (lastSeqNotePos != -1)
         {
             seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
@@ -777,8 +746,12 @@ void SeqPanel::timerCallback()
         }
     }
 
-    String debugPos = " CurrPos = " + String(seq->getPos());
-    debugLabel->setText("|DEBUG| " + debugPos, dontSendNotification);
+    syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
+    seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
+    seqNumSteps->setSelectedItemIndex(seq->getNumStep() - 1, dontSendNotification);
+    // TODO: für andere combobox auch später, nach neuem konzept
+    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
 
     PanelBase::timerCallback();
 }
@@ -922,11 +895,6 @@ BEGIN_JUCER_METADATA
   <TOGGLEBUTTON name="play random" id="f5db190fb273c40b" memberName="playRandom"
                 virtualName="" explicitFocusOrder="0" pos="140 80 120 24" buttonText="Play Random"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
-  <LABEL name="debug label" id="1d1ce00e4e7ffaf8" memberName="debugLabel"
-         virtualName="" explicitFocusOrder="0" pos="16 312 760 32" outlineCol="ff000000"
-         edTextCol="ff000000" edBkgCol="0" labelText="Debug" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

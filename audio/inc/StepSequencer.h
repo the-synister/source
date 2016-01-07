@@ -23,18 +23,24 @@ public:
     ~StepSequencer();
     //==============================================================================
     void runSeq(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
+    void generateRandomSeq();
 
-    int getCurrentSeqNote();
+    int getLastPlayedNote();
+    int getNumStep();
     int getRandMin();
     int getRandMax();
-    double getPos(); // for debug
 
-    void setPlayUpDown(bool play);
-    void setPlayRandom(bool play);
+    void playNoHost();
+    void syncToHost();
+    void stopPlaying();
+    void playSequential();
+    void playUpDown();
+    void playRandom();
     void setRandMin(int min);
     void setRandMax(int max);
 
     bool isPlaying();
+    bool isHostSynced();
     bool isPlayUpDown();
     bool isPlayRandom();
     bool isNoteMuted(int index);
@@ -42,7 +48,7 @@ public:
 private:
     //==============================================================================
     void seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
-    void seqHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate);
+    void seqHostSync(MidiBuffer& midiMessages);
     void midiNoteChanged(MidiBuffer& midiMessages);
     void stopSeq(MidiBuffer& midiMessages);
     //==============================================================================
@@ -54,23 +60,22 @@ private:
     std::array<eOnOffToggle, 8> prevOnOffStep;
     std::array<eOnOffToggle, 8> currOnOffStep;
     eSeqModes seqMode;
+    eSeqPlayModes seqPlayMode;
+    int randomMin;
+    int randomMax;
     int seqNumSteps;
     float seqStepSpeed;
     double seqNoteLength;
 
     // internal StepSequencer variables
     int seqNote;
+    int lastPlayedNote;
     int seqNoteAdd;
     int nextPlaySample;
     int noteOffSample;
     double seqNextStep;
     double stopNoteTime;
-    double currPos; // for debug
-
-    bool seqIsPlaying;
-    bool playUpDown;
-    bool playRandom;
-    int randomMin;
-    int randomMax;
+    bool seqStopped;
+    bool seqNoteIsPlaying;
 };
 #endif  // STEPSEQUENCER_H_INCLUDED

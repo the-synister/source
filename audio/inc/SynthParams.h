@@ -25,11 +25,19 @@ enum class eOnOffToggle : int {
     nSteps = 2
 };
 
-enum class eSeqModes : int 
+enum class eSeqModes : int
 {
     seqStop = 0,
     seqPlay = 1,
     seqSyncHost = 2,
+    nSteps = 3
+};
+
+enum class eSeqPlayModes : int
+{
+    sequential = 0,
+    upDown = 1,
+    random = 2,
     nSteps = 3
 };
 
@@ -74,11 +82,14 @@ public:
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
 
-    ParamStepped<eSeqModes> seqMode; //!< 0 = pause, 1 = play, 2 = sync host
-    Param seqNumSteps;               //!< index of number of steps combobox, results in [1..8] steps
-    Param seqStepSpeedIndex;         //!< index of step speed, results in [0.0625..4] quarter notes
-    Param seqStepLengthIndex;        //!< index of step length, results in [0.0625..seqStepSpeed] quarter notes
-    Param seqStep1;                  //!< midi note as int in [0..127]
+    ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
+    ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
+    Param seqNumSteps;                       //!< index of number of steps combobox, results in [1..8] steps
+    Param seqStepSpeedIndex;                 //!< index of step speed, results in [0.0625..4] quarter notes
+    Param seqStepLengthIndex;                //!< index of step length, results in [0.0625..seqStepSpeed] quarter notes
+    Param seqRandomMin;                      //!< randomMin value as int in [0..127]
+    Param seqRandomMax;                      //!< randomMax value as int in [0..127]
+    Param seqStep1;                          //!< midi note as int in [0..127]
     Param seqStep2;                  
     Param seqStep3;
     Param seqStep4;

@@ -17,18 +17,15 @@
 // contructer & destructer
 StepSequencer::StepSequencer(SynthParams &p)
     : params(p)
-    , seqNote(-1)
+    , seqNote(0)
+    , lastPlayedNote(1)
     , seqNoteAdd(1)
     , seqNextStep(0.0)
     , stopNoteTime(0.0)
-    , currPos(0.0)
+    , seqStopped(true)
     , nextPlaySample(0)
     , noteOffSample(0)
-    , seqIsPlaying(false)
-    , playUpDown(false)
-    , playRandom(false)
-    , randomMin(0)
-    , randomMax(127)
+    , seqNoteIsPlaying(false)
 {
     // init GUI params
     currMidiSeq[0] = static_cast<int>(params.seqStep1.get());
@@ -48,9 +45,12 @@ StepSequencer::StepSequencer(SynthParams &p)
     currOnOffStep[6] = params.seqStepPlay7.getStep();
     currOnOffStep[7] = params.seqStepPlay8.getStep();
     seqMode = params.seqMode.getStep();
+    seqPlayMode = params.seqPlayMode.getStep();
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
     seqStepSpeed = 4.0f / powf(2.0f, 6.0f - params.seqStepSpeedIndex.get());
     seqNoteLength = jmin(4.0f / powf(2.0f, 6.0f - params.seqStepLengthIndex.get()), seqStepSpeed);
+    randomMin = static_cast<int>(params.seqRandomMin.get());
+    randomMax = static_cast<int>(params.seqRandomMax.get());
 
     prevMidiSeq = currMidiSeq;
     prevOnOffStep = currOnOffStep;
@@ -84,9 +84,12 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
     currOnOffStep[6] = params.seqStepPlay7.getStep();
     currOnOffStep[7] = params.seqStepPlay8.getStep();
     seqMode = params.seqMode.getStep();
+    seqPlayMode = params.seqPlayMode.getStep();
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
-    seqStepSpeed = 4.0f / powf(2.0f, 6.0f - params.seqStepSpeedIndex.get());
+    seqStepSpeed = 4.0f / powf(2.0f, 6.0f - params.seqStepSpeedIndex.get()); // TODO: besseres konzept überlegen als indezes
     seqNoteLength = jmin(4.0f / powf(2.0f, 6.0f - params.seqStepLengthIndex.get()), seqStepSpeed);
+    randomMin = static_cast<int>(params.seqRandomMin.get());
+    randomMax = static_cast<int>(params.seqRandomMax.get());
 
     // if any note changed then send noteOff message to that note
     midiNoteChanged(midiMessages);
@@ -97,12 +100,33 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
         seqNoHostSync(midiMessages, bufferSize, sampleRate);
         break;
     case eSeqModes::seqSyncHost:
-        seqHostSync(midiMessages, bufferSize, sampleRate);
+        seqHostSync(midiMessages);
         break;
     default:
         stopSeq(midiMessages);
         break;
     }
+}
+
+void StepSequencer::generateRandomSeq()
+{
+    Random r = Random();
+    r.setSeedRandomly();
+    params.seqStep1.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep2.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep3.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep4.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep5.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep6.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep7.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
+    r.setSeedRandomly();
+    params.seqStep8.set(r.nextFloat() * static_cast<float>(randomMax - randomMin) + static_cast<float>(randomMin), true);
 }
 
 /*
@@ -111,18 +135,18 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
 void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate)
 {
     // if is playing a note then prepare sending midi noteOff message
-    if (seqIsPlaying)
+    if (seqNoteIsPlaying)
     {
         // if midi noteOff message fits into current buffer
         if (noteOffSample < bufferSize - 1)
         {
             // send midimessage into midibuffer
-            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
+            if (currOnOffStep[lastPlayedNote] == eOnOffToggle::eOn)
             {
-                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
+                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[lastPlayedNote]);
                 midiMessages.addEvent(m, noteOffSample);
             }
-            seqIsPlaying = false;
+            seqNoteIsPlaying = false;
         }
         else
         {
@@ -132,12 +156,46 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
     }
 
     // if is not playing a note then prepare sending midi noteOn message
-    if (!seqIsPlaying)
+    if (!seqNoteIsPlaying)
     {
         // if midi noteOn message fits into current buffer
         if (nextPlaySample < bufferSize - 1)
         {
-            if (playUpDown)
+            if (seqPlayMode == eSeqPlayModes::random)
+            {
+                // TOOD: set random param.step -> update GUI klappt z.B. s.u.
+                // random wie in GUI, immer note + 1 ändern
+                // wie im seqPanel array aus params erstellen
+                //params.seqStep2.set(50 + seqNote % 5, true);
+
+                //// set next random note
+                //if (seq->isPlayRandom())
+                //{
+                //    Random r = Random();
+                //    r.setSeedRandomly();
+                //    int steps = static_cast<int>(params.seqNumSteps.get());
+                //    seqStepArray[(lastSeqNotePos + 1) % steps]->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
+                //}
+            }
+
+            // emphasis on step 1
+            float seqVelocity = 0.5f; // TODO: maybe velocity for each step?
+            //if (seqNote == 0)
+            //{
+            //    seqVelocity = 0.85f;
+            //}
+
+            // send midimessage into midibuffer
+            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
+            {
+                MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
+                midiMessages.addEvent(m, nextPlaySample);
+            }
+            seqNoteIsPlaying = true;
+            lastPlayedNote = seqNote;
+
+            // calculate next seqNote to play after previous has been stopped
+            if (seqPlayMode == eSeqPlayModes::upDown)
             {
                 // if last note then play twice and then play reverse order
                 if (seqNote%seqNumSteps == seqNumSteps - 1)
@@ -174,28 +232,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
             {
                 seqNote = seqNumSteps - 1;
             }
-
             seqNote = seqNote%seqNumSteps;
-
-            // emphasis on step 1
-            float seqVelocity = 0.5f;
-            // TODO: maybe velocity for each step?
-            //if (seqNote == 0)
-            //{
-            //    seqVelocity = 0.85f;
-            //}
-
-            // send midimessage into midibuffer
-            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
-            {
-                // set param -> update GUI klappt z.B. s.u.
-                // random wie in GUI, immer note + 1 ändern
-                //params.seqStep2.set(50 + seqNote % 5, true);
-
-                MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
-                midiMessages.addEvent(m, nextPlaySample);
-                seqIsPlaying = true;
-            }
 
             // calculate noteOffSample and nextPlaySample 
             double quarterSec = 60.0 / params.positionInfo[params.getAudioIndex()].bpm;
@@ -209,84 +246,93 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
             noteOffSample -= bufferSize - 1;
         }
     }
+    seqStopped = false;
 }
 
 /*
 * Called while stepSequencer is synced with host.
 */
-void StepSequencer::seqHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate)
+void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
 {
     AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getGUIIndex()];
-    currPos = hostPlayHead.ppqPosition; // TODO: wenn aus pause wieder starten, dann playhead immer etwas vorher, auch negativ
-    if (hostPlayHead.isPlaying && (currPos >= 0.0))
+    double currPos = hostPlayHead.ppqPosition;
+
+    // if host ist playing
+    // NOTE: in Cubase 5 hostPlayHead.isPlaying is true even before actual playhead starts playing,
+    //       at the beginning currPos can be negative
+    if (hostPlayHead.isPlaying && (currPos >= 0.0)) 
     {
-        hostPlayHead.resetToDefault();
-        // time for creating corresponding noteOff event to end each step
+        // time to stop lastPlayedNote
         if (currPos >= stopNoteTime)
         {
-            // send midimessage into midibuffer
-            if (seqIsPlaying)
+            if (seqNoteIsPlaying)
             {
-                if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
+                if (currOnOffStep[lastPlayedNote] == eOnOffToggle::eOn)
                 {
-                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
+                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[lastPlayedNote]);
                     midiMessages.addEvent(m, 0);
                 }
-                seqIsPlaying = false;
+                seqNoteIsPlaying = false;
             }
         }
-        
-        // time for creating noteOn event
-        // TODO: am anfang spielt zu viel -> currPos negativ
-        // warum geht er hier rein obwohl cussPos negativ und seqNextStep positiv?
+
+        // time to play next note
         if (currPos >= seqNextStep)
         {
-            // stop note if could not stop before playing next note (important for seqNoteLength == seqStepSpeed)
-            // TODO: start fehler deswegen, aber wenn weg, dann überspringt noten wenn seqNoteLength == seqStepSpeed
-            if (seqIsPlaying)
+            // play only if note to play changed OR play same note if (playUpDown or seqNumSteps == 1)
+            if ((seqNote != lastPlayedNote) || (seqNote == lastPlayedNote && (seqPlayMode == eSeqPlayModes::upDown || (seqNumSteps == 1)))) // TODO: spielt am anfang zu viel, voriges problem
             {
-                if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
+                if (seqPlayMode == eSeqPlayModes::random)
                 {
-                    MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-                    midiMessages.addEvent(m, 0);
-                }
-                seqIsPlaying = false;
-            }
-    
-            // send midimessage into midibuffer
-            if (!seqIsPlaying)
-            {
-                // calculate the right note to play
-                seqNote = jmax(0, static_cast<int>(currPos / static_cast<double>(seqStepSpeed)) % seqNumSteps);
-                seqNote = jmin(seqNote, seqNumSteps - 1);
-    
-                if (playUpDown)
-                {
-                    // for all odd periods play reverse order
-                    int upDownSeq = jmax(0, static_cast<int>(currPos / static_cast<double>(seqNumSteps) / static_cast<double>(seqStepSpeed)) % 2);
-                    if (upDownSeq == 1)
-                    {
-                        seqNote = seqNumSteps - 1 - seqNote;
-                    }
-                }
-    
-                if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
-                {
-                    // emphasis on step 1
-                    float seqVelocity = 0.5f;
-                    //if (seqNote == 0)
+                    // TOOD: set random param.step -> update GUI klappt z.B. s.u.
+                    // random wie in GUI, immer note + 1 ändern
+                    // wie im seqPanel array aus params erstellen
+                    //params.seqStep2.set(50 + seqNote % 5, true);
+
+                    //// set next random note
+                    //if (seq->isPlayRandom())
                     //{
-                    //    seqVelocity = 0.85f;
+                    //    Random r = Random();
+                    //    r.setSeedRandomly();
+                    //    int steps = static_cast<int>(params.seqNumSteps.get());
+                    //    seqStepArray[(lastSeqNotePos + 1) % steps]->setValue(r.nextDouble() * (seq->getRandMax() - seq->getRandMin()) + seq->getRandMin());
                     //}
-    
-                    MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
-                    midiMessages.addEvent(m, 0);
                 }
 
-                seqIsPlaying = true;
-                stopNoteTime = currPos + seqNoteLength;
+                // stop note if could not stopped before playing seqNote (important for seqNoteLength == seqStepSpeed)
+                if (seqNoteIsPlaying)
+                {
+                    if (currOnOffStep[lastPlayedNote] == eOnOffToggle::eOn)
+                    {
+                        MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[lastPlayedNote]);
+                        midiMessages.addEvent(m, 0);
+                    }
+                    seqNoteIsPlaying = false;
+                }
+
+                if (!seqNoteIsPlaying)
+                {
+                    if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
+                    {
+                        // emphasis on step 1
+                        float seqVelocity = 0.5f; // TODO: maybe velocity for each step?
+                        //if (seqNote == 0)
+                        //{
+                        //    seqVelocity = 0.85f;
+                        //}
+
+                        MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
+                        midiMessages.addEvent(m, 0);
+                    }
+                    seqNoteIsPlaying = true;
+                    lastPlayedNote = jmax(0, jmin(seqNote, seqNumSteps - 1));
+
+                    // calculate upcoming stopNoteTime
+                    stopNoteTime = currPos + seqNoteLength;
+                }
             }
         }
+        seqStopped = false;
     }
     else
     {
@@ -294,102 +340,30 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages, int bufferSize, double
         stopSeq(midiMessages);
     }
 
-    // recalculate next step position in host sync mode
-    seqNextStep = jmax(0.0, currPos + fmod(jmax(0.0, currPos), static_cast<double>(seqStepSpeed)));
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // always recalculate seqNextStep and seqNote
+    if (currPos >= 0.0)
+    {
+        // calculate note to play
+        seqNote = jmax(0, static_cast<int>(currPos / static_cast<double>(seqStepSpeed)) % seqNumSteps);
+        seqNote = jmin(seqNote, seqNumSteps - 1);
 
-    //// another approach (sample), manchmal überspringt eine note aus???
-    //AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getGUIIndex()];
-    //currPos = hostPlayHead.ppqPosition;
-    //int timeInSamples = static_cast<int>(hostPlayHead.timeInSamples);
-    //double quarterSec = 60.0 / hostPlayHead.bpm;
+        // for all odd periods play in reverse order (down sequence)
+        if (seqPlayMode == eSeqPlayModes::upDown)
+        {
+            int upDownSeq = jmax(0, static_cast<int>(currPos / static_cast<double>(seqNumSteps) / static_cast<double>(seqStepSpeed)) % 2);
+            if (upDownSeq == 1)
+            {
+                seqNote = seqNumSteps - 1 - seqNote;
+            }
+        }
 
-    //if (hostPlayHead.isPlaying)
-    //{
-    //    // if midi noteOff message fits into current buffer
-    //    if (noteOffSample - timeInSamples <= bufferSize - 1)
-    //    {
-    //        // if is playing a note then prepare sending midi noteOff message
-    //        if (seqIsPlaying)
-    //        {
-    //            // send midimessage into midibuffer
-    //            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
-    //            {
-    //                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-    //                midiMessages.addEvent(m, noteOffSample - timeInSamples);
-    //            }
-    //            seqIsPlaying = false;
-    //        }
-    //    }
-
-    //    // if midi noteOn message fits into current buffer
-    //    if (nextPlaySample - timeInSamples <= bufferSize - 1)
-    //    {
-    //        // if note is still playing then send midi noteOff message
-    //        if (seqIsPlaying)
-    //        {
-    //            // send midimessage into midibuffer
-    //            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
-    //            {
-    //                MidiMessage m = MidiMessage::noteOff(1, currMidiSeq[seqNote]);
-    //                midiMessages.addEvent(m, 0);
-    //            }
-    //            seqIsPlaying = false;
-    //        }
-
-    //        // if is not playing a note then prepare sending midi noteOn message
-    //        if (!seqIsPlaying)
-    //        {
-    //            // calculate the right note to play
-    //            seqNote = jmax(0, static_cast<int>(jmax(0.0, currPos) / static_cast<double>(seqStepSpeed)) % seqNumSteps);
-    //            seqNote = jmin(seqNote, seqNumSteps - 1);
-
-    //            if (playUpDown)
-    //            {
-    //                // for all odd periods play reverse order
-    //                int upDownSeq = jmax(0, static_cast<int>(currPos / static_cast<double>(seqNumSteps) / static_cast<double>(seqStepSpeed)) % 2);
-    //                if (upDownSeq == 1)
-    //                {
-    //                    seqNote = seqNumSteps - 1 - seqNote;
-    //                }
-    //            }
-
-    //            // emphasis on step 1
-    //            float seqVelocity = 0.5f;
-    //            // TODO: maybe velocity for each step?
-    //            //if (seqNote == 0)
-    //            //{
-    //            //    seqVelocity = 0.85f;
-    //            //}
-
-    //            // send midimessage into midibuffer
-    //            if (currOnOffStep[seqNote] == eOnOffToggle::eOn)
-    //            {
-    //                MidiMessage m = MidiMessage::noteOn(1, currMidiSeq[seqNote], seqVelocity);
-    //                midiMessages.addEvent(m, nextPlaySample - timeInSamples);
-    //            }
-
-    //            // calculate noteOffSample
-    //            int diff = bufferSize - 1 - (nextPlaySample - timeInSamples);
-    //            noteOffSample = timeInSamples + static_cast<int>(quarterSec * seqNoteLength * sampleRate) - diff;
-    //            seqIsPlaying = true;
-    //        }
-    //    }
-    //}
-    //else
-    //{
-    //    // if host is not playing then stop sequencer and reset variables
-    //    stopSeq(midiMessages);
-    //}
-
-    //// calculate nextPlaySample 
-    //nextPlaySample = timeInSamples + timeInSamples%static_cast<int>(quarterSec * seqStepSpeed * sampleRate);
-    ////noteOffSample = timeInSamples + static_cast<int>(quarterSec * seqNoteLength * sampleRate) + timeInSamples%static_cast<int>(quarterSec * seqStepSpeed * sampleRate);
+        // calculate next seqNextStep while seqMode = eSeqModes::seqSyncHost; for forward, rewind or jump of hostPlayHead
+        seqNextStep = jmax(0.0, currPos) + fmod(jmax(0.0, currPos), static_cast<double>(seqStepSpeed));
+    }
 }
 
 /*
-* If any seqStepNote changed then send noteOff message for the old note.
+* If any seqStepNote changed or is muted then send noteOff message for the old note.
 */
 void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
 {
@@ -397,7 +371,7 @@ void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
     {
         if ((prevMidiSeq[i] != currMidiSeq[i]) || (prevOnOffStep[i] != currOnOffStep[i]))
         {
-            if (i == seqNote)
+            if (i == lastPlayedNote)
             {
                 MidiMessage m = MidiMessage::noteOff(1, prevMidiSeq[i]);
                 midiMessages.addEvent(m, 0);
@@ -414,16 +388,17 @@ void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
 void StepSequencer::stopSeq(MidiBuffer& midiMessages)
 {
     // stop and reset only if not already stopped
-    if (seqNote != -1)
+    if (!seqStopped)
     {
-        seqNextStep = 0.0;
-        stopNoteTime = 4.0;
-        currPos = 0.0;
-        seqIsPlaying = false;
-        seqNote = -1;
+        seqNote = 0;
+        lastPlayedNote = 1; // set different than seqNote due to hostSync
         seqNoteAdd = 1;
         nextPlaySample = 0;
         noteOffSample = 0;
+        seqNextStep = 0.0;
+        stopNoteTime = 0.0;
+        seqStopped = true;
+        seqNoteIsPlaying = false;
 
         // stop all midimessages from sequencer
         MidiMessage m = MidiMessage::allNotesOff(1);
@@ -434,9 +409,14 @@ void StepSequencer::stopSeq(MidiBuffer& midiMessages)
 /*
 * Getter for SeqPanel
 */
-int StepSequencer::getCurrentSeqNote()
+int StepSequencer::getLastPlayedNote()
 {
-    return seqNote;
+    return lastPlayedNote;
+}
+
+int StepSequencer::getNumStep()
+{
+    return seqNumSteps;
 }
 
 int StepSequencer::getRandMin()
@@ -449,33 +429,51 @@ int StepSequencer::getRandMax()
     return randomMax;
 }
 
-// for debug
-double StepSequencer::getPos()
+void StepSequencer::playNoHost()
 {
-    return currPos;
+    if (seqMode != eSeqModes::seqSyncHost)
+    {
+        params.seqMode.setStep(eSeqModes::seqPlay);
+    }
+}
+
+void StepSequencer::syncToHost()
+{
+    params.seqMode.setStep(eSeqModes::seqSyncHost);
+}
+
+void StepSequencer::stopPlaying()
+{
+    params.seqMode.setStep(eSeqModes::seqStop);
+}
+
+void StepSequencer::playSequential()
+{
+    params.seqPlayMode.setStep(eSeqPlayModes::sequential);
 }
 
 /*
 * Setter for SeqPanel
 */
-void StepSequencer::setPlayUpDown(bool play)
+void StepSequencer::playUpDown()
 {
-    playUpDown = play;
+    params.seqPlayMode.setStep(eSeqPlayModes::upDown);
 }
 
-void StepSequencer::setPlayRandom(bool play)
+void StepSequencer::playRandom()
 {
-    playRandom = play;
+    params.seqPlayMode.setStep(eSeqPlayModes::random);
+    params.seqNumSteps.set(8.0f);
 }
 
 void StepSequencer::setRandMin(int min)
 {
-    randomMin = jmin(127, jmax(0, min));
+    params.seqRandomMin.set(jmin(127.0f, jmax(0.0f, static_cast<float>(min))));
 }
 
 void StepSequencer::setRandMax(int max)
 {
-    randomMax = jmin(127, jmax(0, max));
+    params.seqRandomMax.set(jmin(127.0f, jmax(0.0f, static_cast<float>(max))));
 }
 
 
@@ -496,19 +494,24 @@ bool StepSequencer::isPlaying()
     }
 }
 
+bool StepSequencer::isHostSynced()
+{
+    return seqMode == eSeqModes::seqSyncHost;
+}
+
 bool StepSequencer::isPlayUpDown()
 {
-    return playUpDown;
+    return seqPlayMode == eSeqPlayModes::upDown;
 }
 
 bool StepSequencer::isPlayRandom()
 {
-    return playRandom;
+    return seqPlayMode == eSeqPlayModes::random;
 }
 
 bool StepSequencer::isNoteMuted(int index)
 {
-    int i = jmax(0, jmin(index, 7));
+    int i = jmax(0, jmin(index, seqNumSteps -1));
     return currOnOffStep[i] == eOnOffToggle::eOff;
 }
 //==============================================================================

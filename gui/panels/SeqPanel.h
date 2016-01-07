@@ -99,7 +99,6 @@ private:
     ScopedPointer<Label> labelSeqLength;
     ScopedPointer<Label> labelSeqStepNum;
     ScopedPointer<ToggleButton> playRandom;
-    ScopedPointer<Label> debugLabel;
 
 
     //==============================================================================

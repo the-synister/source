@@ -13,6 +13,10 @@ namespace {
     static const char *seqModeNames[] = {
         "Stop", "Play", "SyncHost", nullptr
     };
+
+    static const char *seqPlayModeNames[] = {
+        "Sequential", "Up/Down", "Random", nullptr
+    };
     
     static const char *biquadFilters[] = {
         "Lowpass", "Highpass", nullptr
@@ -30,8 +34,8 @@ SynthParams::SynthParams()
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &seqNumSteps, &seqStepSpeedIndex, &seqStepLengthIndex, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7, &seqStep8,
-    &seqStepPlay1, &seqStepPlay2, &seqStepPlay3, &seqStepPlay4, &seqStepPlay5, &seqStepPlay6, &seqStepPlay7, &seqStepPlay8,
+    &seqPlayMode, &seqNumSteps, &seqStepSpeedIndex, &seqStepLengthIndex, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7, &seqStep8,
+    &seqStepPlay1, &seqStepPlay2, &seqStepPlay3, &seqStepPlay4, &seqStepPlay5, &seqStepPlay6, &seqStepPlay7, &seqStepPlay8, &seqRandomMin, &seqRandomMax,
     &panDir, &vol, 
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
@@ -74,17 +78,20 @@ SynthParams::SynthParams()
 , delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
 , delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
 , seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
+, seqPlayMode("SeqPlayMode", "seqPlayMode", eSeqPlayModes::sequential, seqPlayModeNames)
 , seqNumSteps("Steps", "seqNumSteps", "steps", 1.0f, 8.0f, 8.0f)
 , seqStepSpeedIndex("Speed", "seqStepSpeed", "qn", 0.0f, 7.0f, 4.0f)
 , seqStepLengthIndex("Length", "seqNoteLength", "qn", 0.0f, 7.0f, 4.0f)
-, seqStep1("Step 1", "seqNote1", "", 0, 127, 60)
-, seqStep2("Step 2", "seqNote2", "", 0, 127, 62)
-, seqStep3("Step 3", "seqNote3", "", 0, 127, 64)
-, seqStep4("Step 4", "seqNote4", "", 0, 127, 65)
-, seqStep5("Step 5", "seqNote5", "", 0, 127, 67)
-, seqStep6("Step 6", "seqNote6", "", 0, 127, 69)
-, seqStep7("Step 7", "seqNote7", "", 0, 127, 71)
-, seqStep8("Step 8", "seqNote8", "", 0, 127, 72)
+, seqRandomMin("Min", "randomMin", "", 0.0f, 127.0f, 0.0f)
+, seqRandomMax("Max", "randomMax", "", 0.0f, 127.0f, 127.0f)
+, seqStep1("Step 1", "seqNote1", "", 0.0f, 127.0f, 60.0f)
+, seqStep2("Step 2", "seqNote2", "", 0.0f, 127.0f, 62.0f)
+, seqStep3("Step 3", "seqNote3", "", 0.0f, 127.0f, 64.0f)
+, seqStep4("Step 4", "seqNote4", "", 0.0f, 127.0f, 65.0f)
+, seqStep5("Step 5", "seqNote5", "", 0.0f, 127.0f, 67.0f)
+, seqStep6("Step 6", "seqNote6", "", 0.0f, 127.0f, 69.0f)
+, seqStep7("Step 7", "seqNote7", "", 0.0f, 127.0f, 71.0f)
+, seqStep8("Step 8", "seqNote8", "", 0.0f, 127.0f, 72.0f)
 , seqStepPlay1("StepPlay1", "seqNotePlay1", eOnOffToggle::eOn, onoffnames)
 , seqStepPlay2("StepPlay2", "seqNotePlay2", eOnOffToggle::eOn, onoffnames)
 , seqStepPlay3("StepPlay3", "seqNotePlay3", eOnOffToggle::eOn, onoffnames)
