@@ -253,7 +253,7 @@ public:
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter())// || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env2cutoff.getfreeEnv1ReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.env1Release.get()) <= envToCutoff.getReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();

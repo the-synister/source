@@ -33,60 +33,60 @@ Env1Panel::Env1Panel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (attackTime = new MouseOverKnob ("Attack Time"));
-    attackTime->setRange (0.001, 5, 0);
-    attackTime->setSliderStyle (Slider::RotaryVerticalDrag);
-    attackTime->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    attackTime->addListener (this);
-    attackTime->setSkewFactor (0.5);
+    addAndMakeVisible (attackTime1 = new MouseOverKnob ("Attack Time"));
+    attackTime1->setRange (0.001, 5, 0);
+    attackTime1->setSliderStyle (Slider::RotaryVerticalDrag);
+    attackTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    attackTime1->addListener (this);
+    attackTime1->setSkewFactor (0.5);
 
-    addAndMakeVisible (decayTime = new MouseOverKnob ("Decay Time"));
-    decayTime->setRange (0.001, 5, 0);
-    decayTime->setSliderStyle (Slider::RotaryVerticalDrag);
-    decayTime->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    decayTime->addListener (this);
-    decayTime->setSkewFactor (0.5);
+    addAndMakeVisible (decayTime1 = new MouseOverKnob ("Decay Time"));
+    decayTime1->setRange (0.001, 5, 0);
+    decayTime1->setSliderStyle (Slider::RotaryVerticalDrag);
+    decayTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    decayTime1->addListener (this);
+    decayTime1->setSkewFactor (0.5);
 
-    addAndMakeVisible (sustainLevel = new MouseOverKnob ("Sustain"));
-    sustainLevel->setRange (-96, 0, 0);
-    sustainLevel->setSliderStyle (Slider::RotaryVerticalDrag);
-    sustainLevel->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    sustainLevel->addListener (this);
-    sustainLevel->setSkewFactor (3);
+    addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
+    sustainLevel1->setRange (-96, 0, 0);
+    sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
+    sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    sustainLevel1->addListener (this);
+    sustainLevel1->setSkewFactor (3);
 
-    addAndMakeVisible (releaseTime = new MouseOverKnob ("Release Time"));
-    releaseTime->setRange (0.001, 5, 0);
-    releaseTime->setSliderStyle (Slider::RotaryVerticalDrag);
-    releaseTime->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    releaseTime->addListener (this);
-    releaseTime->setSkewFactor (0.5);
+    addAndMakeVisible (releaseTime1 = new MouseOverKnob ("Release Time"));
+    releaseTime1->setRange (0.001, 5, 0);
+    releaseTime1->setSliderStyle (Slider::RotaryVerticalDrag);
+    releaseTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    releaseTime1->addListener (this);
+    releaseTime1->setSkewFactor (0.5);
 
-    addAndMakeVisible (attackShape = new MouseOverKnob ("Attack Shape"));
-    attackShape->setRange (0.01, 10, 0);
-    attackShape->setSliderStyle (Slider::RotaryVerticalDrag);
-    attackShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    attackShape->addListener (this);
-    attackShape->setSkewFactor (0.3);
+    addAndMakeVisible (attackShape1 = new MouseOverKnob ("Attack Shape"));
+    attackShape1->setRange (0.01, 10, 0);
+    attackShape1->setSliderStyle (Slider::RotaryVerticalDrag);
+    attackShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    attackShape1->addListener (this);
+    attackShape1->setSkewFactor (0.3);
 
-    addAndMakeVisible (decayShape = new MouseOverKnob ("Decay Shape"));
-    decayShape->setRange (0.01, 10, 0);
-    decayShape->setSliderStyle (Slider::RotaryVerticalDrag);
-    decayShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    decayShape->addListener (this);
-    decayShape->setSkewFactor (0.3);
+    addAndMakeVisible (decayShape1 = new MouseOverKnob ("Decay Shape"));
+    decayShape1->setRange (0.01, 10, 0);
+    decayShape1->setSliderStyle (Slider::RotaryVerticalDrag);
+    decayShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    decayShape1->addListener (this);
+    decayShape1->setSkewFactor (0.3);
 
-    addAndMakeVisible (releaseShape = new MouseOverKnob ("R. Shape"));
-    releaseShape->setRange (0.01, 10, 0);
-    releaseShape->setSliderStyle (Slider::RotaryVerticalDrag);
-    releaseShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    releaseShape->addListener (this);
-    releaseShape->setSkewFactor (0.3);
+    addAndMakeVisible (releaseShape1 = new MouseOverKnob ("Release Shape"));
+    releaseShape1->setRange (0.01, 10, 0);
+    releaseShape1->setSliderStyle (Slider::RotaryVerticalDrag);
+    releaseShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    releaseShape1->addListener (this);
+    releaseShape1->setSkewFactor (0.3);
 
-    addAndMakeVisible (keyVelToEnv = new MouseOverKnob ("Vel to Env"));
-    keyVelToEnv->setRange (0, 1, 0);
-    keyVelToEnv->setSliderStyle (Slider::RotaryVerticalDrag);
-    keyVelToEnv->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    keyVelToEnv->addListener (this);
+    addAndMakeVisible (keyVelToEnv1 = new MouseOverKnob ("Vel to Env"));
+    keyVelToEnv1->setRange (0, 1, 0);
+    keyVelToEnv1->setSliderStyle (Slider::RotaryVerticalDrag);
+    keyVelToEnv1->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    keyVelToEnv1->addListener (this);
 
     addAndMakeVisible (Env1Label = new Label ("Envelope_1",
                                               TRANS("Envelope 1")));
@@ -98,14 +98,14 @@ Env1Panel::Env1Panel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime, &params.env1Attack);
-    registerSlider(decayTime, &params.env1Decay);
-    registerSlider(sustainLevel, &params.env1Sustain);
-    registerSlider(releaseTime, &params.env1Release);
-    registerSlider(attackShape, &params.env1AttackShape);
-    registerSlider(decayShape, &params.env1DecayShape);
-    registerSlider(releaseShape, &params.env1ReleaseShape);
-    registerSlider(keyVelToEnv, &params.keyVelToEnv1);
+    registerSlider(attackTime1, &params.env1Attack);
+    registerSlider(decayTime1, &params.env1Decay);
+    registerSlider(sustainLevel1, &params.env1Sustain);
+    registerSlider(releaseTime1, &params.env1Release);
+    registerSlider(attackShape1, &params.env1AttackShape);
+    registerSlider(decayShape1, &params.env1DecayShape);
+    registerSlider(releaseShape1, &params.env1ReleaseShape);
+    registerSlider(keyVelToEnv1, &params.keyVelToEnv1);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -120,14 +120,14 @@ Env1Panel::~Env1Panel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    attackTime = nullptr;
-    decayTime = nullptr;
-    sustainLevel = nullptr;
-    releaseTime = nullptr;
-    attackShape = nullptr;
-    decayShape = nullptr;
-    releaseShape = nullptr;
-    keyVelToEnv = nullptr;
+    attackTime1 = nullptr;
+    decayTime1 = nullptr;
+    sustainLevel1 = nullptr;
+    releaseTime1 = nullptr;
+    attackShape1 = nullptr;
+    decayShape1 = nullptr;
+    releaseShape1 = nullptr;
+    keyVelToEnv1 = nullptr;
     Env1Label = nullptr;
 
 
@@ -152,14 +152,14 @@ void Env1Panel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    attackTime->setBounds (8, 32, 64, 64);
-    decayTime->setBounds (80, 32, 64, 64);
-    sustainLevel->setBounds (152, 32, 64, 64);
-    releaseTime->setBounds (224, 32, 64, 64);
-    attackShape->setBounds (8, 104, 64, 64);
-    decayShape->setBounds (80, 104, 64, 64);
-    releaseShape->setBounds (224, 104, 64, 64);
-    keyVelToEnv->setBounds (296, 32, 64, 64);
+    attackTime1->setBounds (8, 32, 64, 64);
+    decayTime1->setBounds (80, 32, 64, 64);
+    sustainLevel1->setBounds (152, 32, 64, 64);
+    releaseTime1->setBounds (224, 32, 64, 64);
+    attackShape1->setBounds (8, 104, 64, 64);
+    decayShape1->setBounds (80, 104, 64, 64);
+    releaseShape1->setBounds (224, 104, 64, 64);
+    keyVelToEnv1->setBounds (296, 32, 64, 64);
     Env1Label->setBounds (8, 8, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -168,47 +168,48 @@ void Env1Panel::resized()
 void Env1Panel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == attackTime)
+    if (sliderThatWasMoved == attackTime1)
     {
-        //[UserSliderCode_attackTime] -- add your slider handling code here..
-        //[/UserSliderCode_attackTime]
+        //[UserSliderCode_attackTime1] -- add your slider handling code here..
+        //[/UserSliderCode_attackTime1]
     }
-    else if (sliderThatWasMoved == decayTime)
+    else if (sliderThatWasMoved == decayTime1)
     {
-        //[UserSliderCode_decayTime] -- add your slider handling code here..
-        //[/UserSliderCode_decayTime]
+        //[UserSliderCode_decayTime1] -- add your slider handling code here..
+        //[/UserSliderCode_decayTime1]
     }
-    else if (sliderThatWasMoved == sustainLevel)
+    else if (sliderThatWasMoved == sustainLevel1)
     {
-        //[UserSliderCode_sustainLevel] -- add your slider handling code here..
-        //[/UserSliderCode_sustainLevel]
+        //[UserSliderCode_sustainLevel1] -- add your slider handling code here..
+        //[/UserSliderCode_sustainLevel1]
     }
-    else if (sliderThatWasMoved == releaseTime)
+    else if (sliderThatWasMoved == releaseTime1)
     {
-        //[UserSliderCode_releaseTime] -- add your slider handling code here..
-        //[/UserSliderCode_releaseTime]
+        //[UserSliderCode_releaseTime1] -- add your slider handling code here..
+        //[/UserSliderCode_releaseTime1]
     }
-    else if (sliderThatWasMoved == attackShape)
+    else if (sliderThatWasMoved == attackShape1)
     {
-        //[UserSliderCode_attackShape] -- add your slider handling code here..
-        //[/UserSliderCode_attackShape]
+        //[UserSliderCode_attackShape1] -- add your slider handling code here..
+        //[/UserSliderCode_attackShape1]
     }
-    else if (sliderThatWasMoved == decayShape)
+    else if (sliderThatWasMoved == decayShape1)
     {
-        //[UserSliderCode_decayShape] -- add your slider handling code here..
-        //[/UserSliderCode_decayShape]
+        //[UserSliderCode_decayShape1] -- add your slider handling code here..
+        //[/UserSliderCode_decayShape1]
     }
-    else if (sliderThatWasMoved == releaseShape)
+    else if (sliderThatWasMoved == releaseShape1)
     {
-        //[UserSliderCode_releaseShape] -- add your slider handling code here..
-        //[/UserSliderCode_releaseShape]
+        //[UserSliderCode_releaseShape1] -- add your slider handling code here..
+        //[/UserSliderCode_releaseShape1]
     }
-    else if (sliderThatWasMoved == keyVelToEnv)
+    else if (sliderThatWasMoved == keyVelToEnv1)
     {
-        //[UserSliderCode_keyVelToEnv] -- add your slider handling code here..
-        //[/UserSliderCode_keyVelToEnv]
+        //[UserSliderCode_keyVelToEnv1] -- add your slider handling code here..
+        //[/UserSliderCode_keyVelToEnv1]
     }
 
     //[UsersliderValueChanged_Post]
@@ -236,35 +237,35 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
+  <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 32 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime"
+  <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 32 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
+  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 32 64 64"
           min="-96" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
-  <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
+  <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 32 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
+  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 104 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape"
+  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 104 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="R. Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
+  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 104 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="Vel to Env" id="595a20e744f094d5" memberName="keyVelToEnv"
+  <SLIDER name="Vel to Env" id="595a20e744f094d5" memberName="keyVelToEnv1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 32 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
