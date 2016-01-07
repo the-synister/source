@@ -105,8 +105,10 @@ public:
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
-    , env2volume(p, getSampleRate())
-    , env2cutoff(p, getSampleRate())
+    , envToVolume(getSampleRate(), params.envDecay, params.envAttack, params.envSustain, params.envRelease,
+        params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
+    , envToCutoff(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
+        params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
@@ -117,8 +119,8 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , pitchModBuffer(1, blockSize)
-    , env1Buffer(1, blockSize)
-    , freeEnv1Buffer(1, blockSize)
+    , envToVolBuffer(1, blockSize)
+    , envToCutoffBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         noModBuffer.clear();
@@ -154,9 +156,8 @@ public:
         level = velocity * 0.15f;
 
         // reset attackDecayCounter
-        //env.resetAllCounters();
-        env2volume.startEnvelope(currentVelocity);
-        env2cutoff.startEnvelope(currentVelocity);
+        envToVolume.startEnvelope(currentVelocity);
+        envToCutoff.startEnvelope(currentVelocity);
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -189,15 +190,15 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (env2volume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
+            if (envToVolume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
             {                                       // stopNote method could be called more than once.
-                env2volume.resetReleaseCounter();
+                envToVolume.resetReleaseCounter();
             }
 
-            if (env2cutoff.getfreeEnv1ReleaseCounter() == -1)
+            if (envToCutoff.getReleaseCounter() == -1)
             {
-                env2cutoff.resetfreeEnv1ReleaseCounter();
-        }
+                envToCutoff.resetReleaseCounter();
+            }
         }
         else
         {
@@ -225,12 +226,12 @@ public:
         renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
-        const float *env1Mod = env1Buffer.getReadPointer(0);
-        const float *filterEnvMod = freeEnv1Buffer.getReadPointer(0);
+        const float *envToVolMod = envToVolBuffer.getReadPointer(0);
+        const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
 
         std::vector<const float*> modSources(2);
         modSources[0] = noMod;
-        modSources[1] = filterEnvMod;
+        modSources[1] = envToCutoffMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -241,7 +242,7 @@ public:
 
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
-                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s])) * level * env1Mod[s];
+                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s])) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -252,7 +253,7 @@ public:
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= env2volume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env2cutoff.getfreeEnv1ReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter())// || static_cast<int>(getSampleRate() * params.freeEnv1Release.get()) <= env2cutoff.getfreeEnv1ReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -306,14 +307,14 @@ protected:
 
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
-            {
-            env1Buffer.setSample(0, s, env2volume.getEnvCoeff());
-                }
+        {
+            envToVolBuffer.setSample(0, s, envToVolume.getEnvCoeff());
+        }
 
         // set the filterEnvBuffer - for freeEnvelope
         for (int s = 0; s < numSamples; ++s)
         {
-            freeEnv1Buffer.setSample(0, s, env2cutoff.getEnv1Coeff());
+            envToCutoffBuffer.setSample(0, s, envToCutoff.getEnvCoeff());
         }
 
         // add pitch wheel values
@@ -355,13 +356,7 @@ protected:
         
 
         if (params.lpModSource.getStep() == eModSource::eEnv) { // env
-            
-            // this opens the filter from 0 to Cutoff, no effect of lpModAmount
-            // moddedFreq = params.lpCutoff.get() * modValue;
 
-            // this opens the filter from Cutoff to Max, with effect of lpModAmount
-            // Sustain value is dependant on the moddedMaxFreq
-            // and is NOT to be regarded as a partial value of a full frequency range ...
             moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
         }
         
@@ -435,12 +430,12 @@ private:
     float lpOut3Delay;
 
     AudioSampleBuffer pitchModBuffer;
-    AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
-    AudioSampleBuffer freeEnv1Buffer;
+    AudioSampleBuffer envToVolBuffer;
+    AudioSampleBuffer envToCutoffBuffer;
     
-    Envelope env2cutoff;
-    Envelope env2volume;
+    Envelope envToCutoff;
+    Envelope envToVolume;
 };
 
 

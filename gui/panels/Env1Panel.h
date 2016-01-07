@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_B8FE7FA7A346D8E2__
-#define __JUCE_HEADER_B8FE7FA7A346D8E2__
+#ifndef __JUCE_HEADER_935F64844A5D65A4__
+#define __JUCE_HEADER_935F64844A5D65A4__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EnvPanel  : public PanelBase,
-                  public SliderListener
+class Env1Panel  : public PanelBase,
+                   public SliderListener
 {
 public:
     //==============================================================================
-    EnvPanel (SynthParams &p);
-    ~EnvPanel();
+    Env1Panel (SynthParams &p);
+    ~Env1Panel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -66,14 +66,14 @@ private:
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
     ScopedPointer<MouseOverKnob> keyVelToEnv;
-    ScopedPointer<Label> VolEnvLabel;
+    ScopedPointer<Label> Env1Label;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Env1Panel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_B8FE7FA7A346D8E2__
+#endif   // __JUCE_HEADER_935F64844A5D65A4__

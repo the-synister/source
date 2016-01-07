@@ -16,7 +16,6 @@ enum class eModSource : int {
     eNone = 0,
     eEnv = 1,
     nSteps = 3
-
 };
     
 
@@ -53,10 +52,14 @@ public:
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
 
-    Param freeEnv1Attack;    //!< filter env attack in [0.001..5]s (logarithmic scaling)
-    Param freeEnv1Decay;     //!< filter env decay in [0.001..5]s (logarithmic scaling)
-    Param freeEnv1Sustain;   //!< filter env sustain in [0 .. 1] 
-    Param freeEnv1Release;   //!< filter env release in [0.001..5]s (logarithmic scaling)
+    Param keyVelToEnv1;  //!< key velocity influence on env [0 ... 1]
+    Param env1Attack;    //!< env attack in [0.001..5]s
+    Param env1Decay;     //!< env decay in [0.001..5]s
+    Param env1Sustain;   //!< env sustain in [0..-96]dB
+    Param env1Release;   //!< env release in [0.001..5]s
+    Param env1AttackShape; //!< env attack shape in [0.01..10]
+    Param env1DecayShape; //!< env decay shape in [0.01..10]
+    Param env1ReleaseShape; //!< env release shape in [0.01..10]
 
     Param panDir; //!< pan R/L [-100..100]
 

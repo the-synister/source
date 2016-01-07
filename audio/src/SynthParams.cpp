@@ -17,7 +17,7 @@ SynthParams::SynthParams()
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &freeEnv1Attack, &freeEnv1Decay, &freeEnv1Release, &freeEnv1Sustain,
+    &env1Attack, &env1Decay, &env1Sustain, &env1Release, &env1AttackShape, &env1DecayShape, &env1ReleaseShape, &keyVelToEnv1,
     &panDir, &vol }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
@@ -39,10 +39,16 @@ SynthParams::SynthParams()
 , envAttackShape("Attack Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
-, freeEnv1Attack("Attack", "freeEnvAttack", "s", 0.001f, 5.0f, 0.005f)
-, freeEnv1Decay("Decay","freeEnvDecay", "s", 0.001f, 5.0f, 0.05f)
-, freeEnv1Sustain("Sustain","freeEnvSustain", " ", 0.f, 1.f, 0.f)
-, freeEnv1Release("Release", "freeEnvRelease", "s", 0.001f, 5.0f, 0.5f)
+//Serialized
+, env1Attack("Attack", "envAttack", "s", 0.001f, 5.0f, 0.005f)
+, env1Decay("Decay", "envDecay", "s", 0.001f, 5.0f, 0.05f)
+, env1Sustain("Sustain", "envSustain", "dB", -96.0f, 0.0f, -5.0f)
+, env1Release("Release", "envRelease", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv1("keyVel to Env", "", "veloToKey", 0.0f, 1.0f, 0.0f)
+, env1AttackShape("Attack Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
+, env1DecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
+, env1ReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
+
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)

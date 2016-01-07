@@ -20,14 +20,14 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "EnvPanel.h"
+#include "Env1Panel.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-EnvPanel::EnvPanel (SynthParams &p)
+Env1Panel::Env1Panel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -75,7 +75,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     decayShape->addListener (this);
     decayShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (releaseShape = new MouseOverKnob ("Release Shape"));
+    addAndMakeVisible (releaseShape = new MouseOverKnob ("R. Shape"));
     releaseShape->setRange (0.01, 10, 0);
     releaseShape->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseShape->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
@@ -88,24 +88,24 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     keyVelToEnv->addListener (this);
 
-    addAndMakeVisible (VolEnvLabel = new Label ("Volume Envelope",
-                                                TRANS("Volume Envelope")));
-    VolEnvLabel->setFont (Font (15.00f, Font::plain));
-    VolEnvLabel->setJustificationType (Justification::centredLeft);
-    VolEnvLabel->setEditable (false, false, false);
-    VolEnvLabel->setColour (TextEditor::textColourId, Colours::black);
-    VolEnvLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+    addAndMakeVisible (Env1Label = new Label ("Envelope_1",
+                                              TRANS("Envelope 1")));
+    Env1Label->setFont (Font (15.00f, Font::plain));
+    Env1Label->setJustificationType (Justification::centredLeft);
+    Env1Label->setEditable (false, false, false);
+    Env1Label->setColour (TextEditor::textColourId, Colours::black);
+    Env1Label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
-    registerSlider(attackTime, &params.envAttack);
-    registerSlider(decayTime, &params.envDecay);
-    registerSlider(sustainLevel, &params.envSustain);
-    registerSlider(releaseTime, &params.envRelease);
-    registerSlider(attackShape, &params.envAttackShape);
-    registerSlider(decayShape, &params.envDecayShape);
-    registerSlider(releaseShape, &params.envReleaseShape);
-    registerSlider(keyVelToEnv, &params.keyVelToEnv);
+    registerSlider(attackTime, &params.env1Attack);
+    registerSlider(decayTime, &params.env1Decay);
+    registerSlider(sustainLevel, &params.env1Sustain);
+    registerSlider(releaseTime, &params.env1Release);
+    registerSlider(attackShape, &params.env1AttackShape);
+    registerSlider(decayShape, &params.env1DecayShape);
+    registerSlider(releaseShape, &params.env1ReleaseShape);
+    registerSlider(keyVelToEnv, &params.keyVelToEnv1);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -115,7 +115,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     //[/Constructor]
 }
 
-EnvPanel::~EnvPanel()
+Env1Panel::~Env1Panel()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
@@ -128,7 +128,7 @@ EnvPanel::~EnvPanel()
     decayShape = nullptr;
     releaseShape = nullptr;
     keyVelToEnv = nullptr;
-    VolEnvLabel = nullptr;
+    Env1Label = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -136,7 +136,7 @@ EnvPanel::~EnvPanel()
 }
 
 //==============================================================================
-void EnvPanel::paint (Graphics& g)
+void Env1Panel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
@@ -147,7 +147,7 @@ void EnvPanel::paint (Graphics& g)
     //[/UserPaint]
 }
 
-void EnvPanel::resized()
+void Env1Panel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
@@ -160,15 +160,14 @@ void EnvPanel::resized()
     decayShape->setBounds (80, 104, 64, 64);
     releaseShape->setBounds (224, 104, 64, 64);
     keyVelToEnv->setBounds (296, 32, 64, 64);
-    VolEnvLabel->setBounds (8, 8, 150, 24);
+    Env1Label->setBounds (8, 8, 150, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
 
-void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
+void Env1Panel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
-    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == attackTime)
@@ -231,9 +230,9 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
+<JUCER_COMPONENT documentType="Component" className="Env1Panel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
+                 variableInitialisers="PanelBase(p)&#10;" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
@@ -261,7 +260,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 104 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
-  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
+  <SLIDER name="R. Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 104 64 64"
           min="0.01" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.29999999999999999"/>
@@ -269,11 +268,11 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 32 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Volume Envelope" id="b3d84b49f651b0e" memberName="VolEnvLabel"
+  <LABEL name="Envelope_1" id="a3abaef13a231d86" memberName="Env1Label"
          virtualName="" explicitFocusOrder="0" pos="8 8 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Volume Envelope" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         edBkgCol="0" labelText="Envelope 1" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

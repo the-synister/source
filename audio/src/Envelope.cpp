@@ -10,15 +10,15 @@
 
 #include "Envelope.h"
 
-int Envelope::getfreeEnv1ReleaseCounter()
+/*int Envelope::getfreeEnv1ReleaseCounter()
 {
     return freeEnv1ReleaseCounter;
-}
+}*/
 
-void Envelope::resetfreeEnv1ReleaseCounter()
+/*void Envelope::resetfreeEnv1ReleaseCounter()
 {
     freeEnv1ReleaseCounter = 0;
-}
+}*/
 
 int Envelope::getReleaseCounter()
 {
@@ -34,8 +34,8 @@ void Envelope::startEnvelope(float currVel)
 {
     releaseCounter = -1;
     attackDecayCounter = 0;
-    freeEnv1ReleaseCounter = -1;
-    freeEnv1AttackDecayCounter = 0;
+    //freeEnv1ReleaseCounter = -1;
+    //freeEnv1AttackDecayCounter = 0;
 
     currentVelocity = currVel;
 }
@@ -186,9 +186,9 @@ float Envelope::interpolateLog(int c, int t, float k, bool slow)
 * interpolate logarithmically from 1.0 to 0.0f in t samples
 without the ADSR Shape control
 */
-float Envelope::interpolateLog(int curr, int t)
+/*float Envelope::interpolateLog(int curr, int t)
 {
     // coeff of growth/shrink, maybe on which depends on time is better?
     float k = std::exp(1.0f);
     return std::exp(std::log(1.0f - static_cast<float>(curr) / static_cast<float>(t)) * k);
-}
+}*/
