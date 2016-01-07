@@ -10,12 +10,6 @@
 
 #include "Envelope.h"
 
-
-/*int Envelope::getReleaseCounter()
-{
-    return releaseCounter;
-}*/
-
 void Envelope::resetReleaseCounter()
 {
     releaseCounter = 0;
@@ -28,6 +22,87 @@ void Envelope::startEnvelope(float currVel)
     currentVelocity = currVel;
 }
 
+const float Envelope::calcEnvCoeff()
+{
+    float envCoeff;
+    float sustainLevel;
+
+    // check the unit of the incoming sustain envelope [Vol is in dB]
+    if (sustain.getUnit() == "dB") {
+        sustainLevel = Param::fromDb(sustain.get());
+    }
+    else 
+    {
+        sustainLevel = sustain.get();
+    }
+
+    // number of samples for all phases
+    int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
+    int decaySamples = static_cast<int>(sampleRate * decay.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
+    int releaseSamples = static_cast<int>(sampleRate * release.get());
+
+    // get growth/shrink rate from knobs
+    float attackGrowthRate = attackShape.get();
+    float decayShrinkRate = decayShape.get();
+    float releaseShrinkRate = releaseShape.get();
+
+    // release phase sets envCoeff from valueAtRelease to 0.0f
+    if (releaseCounter > -1)
+    {
+        if (releaseShrinkRate < 1.0f)
+        {
+            releaseShrinkRate = 1 / releaseShrinkRate;
+            envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
+        }
+        else
+        {
+            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
+        }
+        releaseCounter++;
+    }
+    else
+    {
+        // attack phase sets envCoeff from 0.0f to 1.0f
+        if (attackDecayCounter <= attackSamples)
+        {
+            if (attackGrowthRate < 1.0f)
+            {
+                attackGrowthRate = 1 / attackGrowthRate;
+                envCoeff = interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, true);
+            }
+            else
+            {
+                envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, false);
+            }
+            valueAtRelease = envCoeff;
+            attackDecayCounter++;
+        }
+        else
+        {
+            // decay phase sets envCoeff from 1.0f to sustain level
+            if (attackDecayCounter <= attackSamples + decaySamples)
+            {
+                if (decayShrinkRate < 1.0f)
+                {
+                    decayShrinkRate = 1 / decayShrinkRate;
+                    envCoeff = 1 - interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
+                }
+                else
+                {
+                    envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
+                }
+                valueAtRelease = envCoeff;
+                attackDecayCounter++;
+            }
+            else // if attack and decay phase is over then sustain level
+            {
+                envCoeff = sustainLevel;
+                valueAtRelease = envCoeff;
+            }
+        }
+    }
+    return envCoeff;
+}
 
 /**
 * interpolate logarithmically from 1.0 to 0.0f in t samples

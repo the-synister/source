@@ -13,6 +13,8 @@
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
+        <FILE id="pHTWgt" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
+        <FILE id="eaQWuN" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="arXpqu" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
         <FILE id="q6cLYL" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>

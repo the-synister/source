@@ -340,6 +340,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -1656,6 +1659,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1686,13 +1692,13 @@
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">
