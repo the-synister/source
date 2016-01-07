@@ -69,6 +69,15 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
 
+    addAndMakeVisible (Osc1ModSrc = new ComboBox ("Osc1ModSrcBox"));
+    Osc1ModSrc->setEditableText (false);
+    Osc1ModSrc->setJustificationType (Justification::centred);
+    Osc1ModSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    Osc1ModSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    Osc1ModSrc->addItem (TRANS("No Mod"), 1);
+    Osc1ModSrc->addItem (TRANS("Env 1"), 2);
+    Osc1ModSrc->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
@@ -97,6 +106,7 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
+    Osc1ModSrc = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -126,6 +136,7 @@ void OscPanel::resized()
     pulsewidth->setBounds (368, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
+    Osc1ModSrc->setBounds (456, 16, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -169,6 +180,22 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == Osc1ModSrc)
+    {
+        //[UserComboBoxCode_Osc1ModSrc] -- add your combo box handling code here ...
+        params.osc1ModSource.setStep(static_cast<eModSource>(Osc1ModSrc->getSelectedItemIndex()));
+        //[/UserComboBoxCode_Osc1ModSrc]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -217,6 +244,10 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <COMBOBOX name="Osc1ModSrcBox" id="11f9848905955e67" memberName="Osc1ModSrc"
+            virtualName="" explicitFocusOrder="0" pos="456 16 64 16" editable="0"
+            layout="36" items="No Mod&#10;Env 1" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
