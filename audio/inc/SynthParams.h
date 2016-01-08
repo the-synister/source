@@ -14,7 +14,8 @@ enum class eLfoWaves : int {
     
 enum class eModSource : int {
     eNone = 0,
-    eEnv = 1,
+    eLFO1 = 1,
+    eEnv = 2,
     nSteps = 3
 };
 
@@ -38,11 +39,6 @@ enum class eSeqModes : int
     nSteps = 3
 };
 
-enum class eModSource : int {
-    eNone = 0,
-    eLFO1 = 1,
-    nSteps = 2
-};
 
 
 class SynthParams {

@@ -19,7 +19,7 @@ namespace {
     };
     
     static const char *modsourcenames[] = {
-        "None", "LFO1", "ENV", nullptr
+        "None", "LFO1", "ENV1", nullptr
     };
 }
 
@@ -32,7 +32,7 @@ SynthParams::SynthParams()
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol, 
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
     &env1Attack, &env1Decay, &env1Sustain, &env1Release, &env1AttackShape, &env1DecayShape, &env1ReleaseShape, &keyVelToEnv1 }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)

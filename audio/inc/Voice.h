@@ -122,6 +122,7 @@ public:
     , pitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
+    , lfo1ModBuffer(1,blockSize)
     , envToCutoffBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
@@ -187,7 +188,7 @@ public:
             osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
             osc1Sine.width = params.osc1pulsewidth.get();
             lfo1square.width = params.osc1pulsewidth.get();
-            osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
             break;
     }
         case 2:
@@ -246,11 +247,13 @@ public:
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
+        const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
 
-        std::vector<const float*> modSources(2);
+        std::vector<const float*> modSources(3);
         modSources[0] = noMod;
-        modSources[1] = envToCutoffMod;
+        modSources[1] = lfo1Mod;
+        modSources[2] = envToCutoffMod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();

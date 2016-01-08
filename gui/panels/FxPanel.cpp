@@ -348,7 +348,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="304 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -363,11 +363,11 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="376 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="528 8 64 64"
           min="-25" max="0" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="224 56 63 24" buttonText="Triplet"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
