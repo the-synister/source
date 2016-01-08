@@ -129,7 +129,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
@@ -139,6 +141,9 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
@@ -1281,7 +1286,9 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
@@ -1292,6 +1299,10 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
+    <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
+    <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
