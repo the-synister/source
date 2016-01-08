@@ -2,7 +2,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
-#include "Envelope.h"
+#include "ModulationMatrix.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -11,16 +11,17 @@ public:
 };
 
 struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width)  { 
+    static float sinus(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
+        return std::sin(phs);
     }
     static float square(float phs, float trngAmount, float width) {
         ignoreUnused(trngAmount, width);
         //square wave with duty cycle
         if (phs < 2.f * float_Pi * width) {
             return 1.f;
-        } else {
+        }
+        else {
             return -1.f;
         }
         //return std::copysign(1.f, float_Pi - phs);
@@ -30,7 +31,7 @@ struct Waveforms {
         ignoreUnused(width);
         //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
-        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs-trngAmount*float_Pi)); }
+        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
     }
 };
 
@@ -41,9 +42,9 @@ struct Oscillator {
     float phaseDelta;
     float trngAmount;
     float width;
-    
+
     Oscillator() : phase(0.f)
-                 , phaseDelta(0.f)
+        , phaseDelta(0.f)
     {}
 
     void reset() {
@@ -60,7 +61,7 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-    
+
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
@@ -72,24 +73,24 @@ template<float(*_waveform)(float, float, float)>
 struct RandomOscillator : Oscillator<&Waveforms::square>
 {
     float heldValue;
-    
+
     RandomOscillator() : Oscillator()
-                       , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f)
-                      {}
-    
+        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f)
+    {}
+
     void reset()
     {
         phase = 0.f;
         phaseDelta = 0.f;
         heldValue = 0.f;
     }
-    
+
     float next()
     {
         if (phase + phaseDelta > 2.0f * float_Pi) {
-             heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
-        
+
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return heldValue;
     }
@@ -98,45 +99,41 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize) 
-    : lastSample(0.f)
-    , inputDelay1(0.f)
-    , inputDelay2(0.f)
-    , outputDelay1(0.f)
-    , outputDelay2(0.f)
-    , params(p)
-    , envToVolume(getSampleRate(), params.envDecay, params.envAttack, params.envSustain, params.envRelease,
-        params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
-    , envToCutoff(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
-        params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
-    , envToPitch(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
-        params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
+    Voice(SynthParams &p, int blockSize, ModulationMatrix &globalModMatrix_)
+        : lastSample(0.f)
+        , inputDelay1(0.f)
+        , inputDelay2(0.f)
+        , outputDelay1(0.f)
+        , outputDelay2(0.f)
+        , params(p)
     , level (0.f)
-    , ladderOut(0.f)
-    , ladderInDelay(0.f)
-    , lpOut1(0.f)
-    , lpOut2(0.f)
-    , lpOut3(0.f)
-    , lpOut1Delay(0.f)
-    , lpOut2Delay(0.f)
-    , lpOut3Delay(0.f)
-    , pitchModBuffer(1, blockSize)
-    , envToVolBuffer(1, blockSize)
-    , envToCutoffBuffer(1, blockSize)
-    , noModBuffer(1, blockSize)
+        , ladderOut(0.f)
+        , ladderInDelay(0.f)
+        , lpOut1(0.f)
+        , lpOut2(0.f)
+        , lpOut3(0.f)
+        , lpOut1Delay(0.f)
+        , lpOut2Delay(0.f)
+        , lpOut3Delay(0.f)
+        , globalModMatrix(globalModMatrix_)
+        , pitchModBuffer(1, blockSize)
+        , env1Buffer(1, blockSize)
+    , totSamples(0)
+        , noModBuffer(1, blockSize)
+    , lfo1ModBuffer(1, blockSize)
     {
         noModBuffer.clear();
     }
 
 
-    bool canPlaySound (SynthesiserSound* sound) override
+    bool canPlaySound(SynthesiserSound* sound) override
     {
         ignoreUnused(sound);
         return true;
     }
 
-    void startNote (int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int currentPitchWheelPosition) override
+    void startNote(int midiNoteNumber, float velocity,
+        SynthesiserSound*, int currentPitchWheelPosition) override
     {
         //for ladder filter
         ladderOut = 0.f;
@@ -155,58 +152,65 @@ public:
         outputDelay2 = 0.f;
 
         currentVelocity = velocity;
-        level = velocity * 0.15f;
 
-        // reset attackDecayCounter
-        envToVolume.startEnvelope(currentVelocity);
-        envToCutoff.startEnvelope(currentVelocity);
-        envToPitch.startEnvelope(currentVelocity);
+        level = velocity * 0.15f;
+        releaseCounter = -1;
+        totSamples = 0;
 
         currentPitchValue = currentPitchWheelPosition;
 
         const float sRate = static_cast<float>(getSampleRate());
-        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz (midiNoteNumber, params.freq.get()));
+        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         lfo1sine.phase = 0.f;
         lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1square.phase = 0.f;
         lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
         lfo1random.phase = 0.f;
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
+        lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
 
-        osc1.phase = 0.f;
-        osc1.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-        osc1.trngAmount = params.osc1trngAmount.get();
-        osc1.width = params.osc1pulsewidth.get();
-        lfo1square.width = params.osc1pulsewidth.get();
-        osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
 
+        int wf = static_cast<int>(params.osc1WaveForm.get());
+        switch (wf)
+        {
+        case 1:
+        {
+            osc1Sine.phase = 0.f;
+            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+            osc1Sine.width = params.osc1pulsewidth.get();
+            lfo1square.width = params.osc1pulsewidth.get();
+            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+
+            // reset attackDecayCounter
+            attackDecayCounter = 0;
+            break;
+        }
+        case 2:
+        {
+            osc1Saw.phase = 0.f;
+            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1Saw.trngAmount = params.osc1trngAmount.get();
+            attackDecayCounter = 0;
+            break;
+        }
+        }
     }
 
-    void stopNote (float /*velocity*/, bool allowTailOff) override
+    void stopNote(float /*velocity*/, bool allowTailOff) override
     {
         if (allowTailOff)
         {
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (envToVolume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
-            {                                       // stopNote method could be called more than once.
-                envToVolume.resetReleaseCounter();
-            }
-
-            if (envToCutoff.getReleaseCounter() == -1)
-            {
-                envToCutoff.resetReleaseCounter();
-            }
-
-            if (envToPitch.getReleaseCounter() == -1)
-            {
-                envToPitch.resetReleaseCounter();
-            }
+            if (releaseCounter == -1) // we only need to begin a tail-off if it's not already doing so - the
+            {                         // stopNote method could be called more than once.
+                                      // reset releaseCounter
+                releaseCounter = 0;
+        }
         }
         else
         {
@@ -215,31 +219,33 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             lfo1random.reset();
-            osc1.reset();
+            osc1Sine.reset();
+            osc1Saw.reset();
         }
     }
 
-    void pitchWheelMoved (int newValue) override
+    void pitchWheelMoved(int newValue) override
     {
         currentPitchValue = newValue;
     }
 
-    void controllerMoved (int /*controllerNumber*/, int /*newValue*/) override
+    void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
     {
         // not interested in controllers in this case.
     }
 
-    void renderNextBlock (AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
+    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
+        // Modulation
         renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
-        const float *envToVolMod = envToVolBuffer.getReadPointer(0);
-        const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
+        const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
+        const float *env1Mod = env1Buffer.getReadPointer(0);
 
         std::vector<const float*> modSources(2);
         modSources[0] = noMod;
-        modSources[1] = envToCutoffMod;
+        modSources[1] = lfo1Mod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -250,19 +256,33 @@ public:
 
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
-                const float currentSample = ladderFilter(biquadLowpass(osc1.next(pitchMod[s]), modSources[static_cast<int>(params.lpModSource.get())][s])) * level * envToVolMod[s];
+                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
+                int wf = static_cast<int>(params.osc1WaveForm.get());
+                float currentSample;
+                switch (wf)
+                {
+                case 1:
+                    currentSample = (osc1Sine.next(pitchMod[s]));
+                    break;
+                case 2:
+                    currentSample = (osc1Saw.next(pitchMod[s]));
+                    break;
+                }
+
+                currentSample = ladderFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                } else {
+                }
+                else {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.env1Release.get()) <= envToCutoff.getReleaseCounter())
-                {
+
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
@@ -270,6 +290,8 @@ public:
                 }
             }
         }
+        //Update of the total samples variable
+        totSamples = totSamples + numSamples;
     }
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
@@ -311,151 +333,246 @@ public:
     }
 
 protected:
+    float getEnvCoeff()
+    {
+        float envCoeff;
+        float sustainLevel = Param::fromDb(params.envSustain.get());
+
+        // number of samples for all phases
+        // if needed consider key velocity for attack and decay
+        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
+        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
+        int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+
+        // get growth/shrink rate from knobs
+        float attackGrowthRate = params.envAttackShape.get();
+        float decayShrinkRate = params.envDecayShape.get();
+        float releaseShrinkRate = params.envReleaseShape.get();
+
+        // release phase sets envCoeff from valueAtRelease to 0.0f
+        if (releaseCounter > -1)
+        {
+            if (releaseShrinkRate < 1.0f)
+            {
+                releaseShrinkRate = 1 / releaseShrinkRate;
+                envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
+            }
+            else
+            {
+                envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
+            }
+            releaseCounter++;
+                }
+                else
+                {
+            // attack phase sets envCoeff from 0.0f to 1.0f
+            if (attackDecayCounter <= attackSamples)
+            {
+                if (attackGrowthRate < 1.0f)
+                {
+                    attackGrowthRate = 1 / attackGrowthRate;
+                    envCoeff = interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, true);
+                }
+                else
+                {
+                    envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, false);
+                }
+                valueAtRelease = envCoeff;
+                attackDecayCounter++;
+            }
+            else
+                    {
+                // decay phase sets envCoeff from 1.0f to sustain level
+                if (attackDecayCounter <= attackSamples + decaySamples)
+                {
+                    if (decayShrinkRate < 1.0f)
+                    {
+                        decayShrinkRate = 1 / decayShrinkRate;
+                        envCoeff = 1 - interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
+                    }
+                    else
+                    {
+                        envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
+                    }
+                    valueAtRelease = envCoeff;
+                    attackDecayCounter++;
+                }
+                else // if attack and decay phase is over then sustain level
+                {
+                    envCoeff = sustainLevel;
+                    valueAtRelease = envCoeff;
+                }
+            }
+        }
+        return envCoeff;
+    }
+
+    /**
+    * interpolate logarithmically from 1.0 to 0.0f in t samples
+    @param c counter of the specific phase
+    @param t number of samples after which the specific phase should be over
+    @param k coeff of growth/shrink, k=1 for linear
+    @param slow how fast is phase applied at the start
+    */
+    float interpolateLog(int c, int t, float k, bool slow)
+    {
+        if (slow)
+        {
+            return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
+        else
+        {
+            return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
+        }
+    }
+
     void renderModulation(int numSamples) {
 
-        // set the envToVolbuffer - for Volume
-        for (int s = 0; s < numSamples; ++s)
-        {
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-        }
+        const float sRate = static_cast<float>(getSampleRate());    // Sample rate
+        float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
+        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
+        const int samplesFadeInLFO = static_cast<int>( params.lfoFadein.get() * sRate );     // Length in samples of the LFO fade in
 
-        // set the filterEnvBuffer - for Filter
+        // set the env1buffer
         for (int s = 0; s < numSamples; ++s)
         {
-            envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
+            env1Buffer.setSample(0, s, getEnvCoeff());
         }
 
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
-        const float modAmount = params.osc1lfo1depth.get();
-        if (params.lfo1wave.getStep() == eLfoWaves::eLfoSine)
-        {
-            if (params.osc1ModSource.getStep() == eModSource::eEnv)
+
+            for (int s = 0; s < numSamples; ++s)
             {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
-                }
-            }
-            else
-            {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1sine.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                }
-            }
+            float lfoVal = 0.f;
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                lfoVal = lfo1sine.next();
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                lfoVal = lfo1random.next();
+                break;
+            case eLfoWaves::eLfoSquare:
+                lfoVal = lfo1square.next();
+                break;
         }
-        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSampleHold)
-        {
-            if (params.osc1ModSource.getStep() == eModSource::eEnv)
+
+            // Fade in factor calculation
+            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))  
             {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
-                }
-            }
-            else
-            {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1random.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                }
-            }
+                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
+                factorFadeInLFO = 1.f;          
         }
-        else if (params.lfo1wave.getStep() == eLfoWaves::eLfoSquare)
-        {
-            if (params.osc1ModSource.getStep() == eModSource::eEnv)
+            else                                   
             {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
-                }
+                // Otherwise the factor is determined
+                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
-            else
-            {
-                for (int s = 0; s < numSamples; ++s)
-                {
-                    pitchModBuffer.setSample(0, s, Param::fromSemi(lfo1square.next()*modAmount) * Param::fromCent(currentPitchInCents));
-                }
-            }
+
+            lfo1ModBuffer.setSample(0, s, lfoVal);
+
+            // Update of the modulation amount value
+            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
+            // Next sample modulated with the updated amount
+            pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
         }
     }
-    
-    float biquadLowpass(float inputSignal, float modValue) {
+
+    float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
-
-        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
-
-        // mod to frequency calculation
-        float moddedFreq = params.lpCutoff.get();
-        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
         
+        float moddedFreq = filterType == eBiquadFilters::eLowpass 
+            ? params.lpCutoff.get()
+            : params.hpCutoff.get();
 
-        if (params.lpModSource.getStep() == eModSource::eEnv) { // env
-
-            moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range, logarithmic freq domain
+            moddedFreq = (params.lpCutoff.get() + (20000.f * std::log2(1+modValue* params.lpModAmout.get() / 100.f)) );
         }
-        
-        if (moddedFreq < params.lpCutoff.getMin()) {
+        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
         else if (moddedFreq > params.lpCutoff.getMax()) {
             moddedFreq = params.lpCutoff.getMax();
         }
+        moddedFreq /= sRate;
 
-        const float currentLowcutFreq = (moddedFreq / sRate);
+        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
 
-        const float currentResonance = pow(10.f, -params.lpResonance.get() / 20.f);
+        const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        // coefficients for lowpass, depending on resonance and lowcut frequency
-        k = 0.5f * currentResonance * sin(2.f * float_Pi * currentLowcutFreq);
-        coeff1 = 0.5f * (1.f - k) / (1.f + k);
-        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * currentLowcutFreq);
-        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+        if (filterType == eBiquadFilters::eLowpass) {
 
-        b0 = 2.f * coeff3;
-        b1 = 2.f * 2.f * coeff3;
-        b2 = 2.f * coeff3;
-        a1 = 2.f * -coeff2;
-        a2 = 2.f * coeff1;
+            // coefficients for lowpass, depending on resonance and lowcut frequency
+            k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * moddedFreq);
+            coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+
+            b0 = 2.f * coeff3;
+            b1 = 2.f * 2.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = 2.f * -coeff2;
+            a2 = 2.f * coeff1;
+        } else if (filterType == eBiquadFilters::eHighpass) {
+
+            // coefficients for highpass, depending on resonance and highcut frequency
+            k = 0.5f * currentResonance * sin(float_Pi * moddedFreq);
+            coeff1 = 0.5f * (1.f - k) / (1.f + k);
+            coeff2 = (0.5f + coeff1) * cos(float_Pi * moddedFreq);
+            coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
+
+            b0 = 2.f * coeff3;
+            b1 = -4.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = -2.f * coeff2;
+            a2 = 2.f * coeff1;
+        }
 
         lastSample = inputSignal;
-        
+
         inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-        
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
+
         outputDelay1 = inputSignal;
-        
+
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
+        }
+        else if (inputSignal < -1.f) {
+            inputSignal = -1.f;
         }
         
         return inputSignal;
     }
 
-
 private:
-    
+    SynthParams &params;
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
     
-    SynthParams &params;
-
-    Oscillator<&Waveforms::square> osc1;
+    Oscillator<&Waveforms::square> osc1Sine;
+    Oscillator<&Waveforms::saw> osc1Saw;
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
-    
+
     float level;
 
     int currentPitchValue;
+    int totSamples;
+
+    // variables for env
     float currentVelocity;
+    float valueAtRelease;
+    int attackDecayCounter;
+    int releaseCounter;
 
     //for the lader filter
     float ladderOut;
@@ -468,13 +585,9 @@ private:
     float lpOut3Delay;
 
     AudioSampleBuffer pitchModBuffer;
+    AudioSampleBuffer lfo1ModBuffer;
+    AudioSampleBuffer env1Buffer;
     AudioSampleBuffer noModBuffer;
-    AudioSampleBuffer envToVolBuffer;
-    AudioSampleBuffer envToCutoffBuffer;
-    
-    Envelope envToCutoff;
-    Envelope envToVolume;
-    Envelope envToPitch;
+
+	ModulationMatrix globalModMatrix;
 };
-
-
