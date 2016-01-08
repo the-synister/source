@@ -131,16 +131,23 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
@@ -1301,17 +1308,22 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
+    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
+    <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
     <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>

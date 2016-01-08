@@ -5,28 +5,45 @@ namespace {
     static const char *lfowavenames[] = {
         "Sine", "Square", "Smpl+Hold", nullptr
     };
+
+    static const char *onoffnames[] = {
+        "Off", "On", nullptr
+    };
+
+    static const char *seqModeNames[] = {
+        "Stop", "Play", "SyncHost", nullptr
+    };
+    
+    static const char *biquadFilters[] = {
+        "Lowpass", "Highpass", nullptr
+    };
+    
     static const char *modsourcenames[] = {
-        "None", "ENV", nullptr
+        "None", "LFO1", "ENV", nullptr
     };
 }
 
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
-    &lfo1freq, &lfo1wave,
+    &lfo1freq, &lfo1wave, &lfoFadein,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
-    &lpCutoff, &lpResonance, &ladderCutoff, &ladderRes,
+    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
+    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &env1Attack, &env1Decay, &env1Sustain, &env1Release, &env1AttackShape, &env1DecayShape, &env1ReleaseShape, &keyVelToEnv1,
-    &panDir, &vol }
+    &panDir, &vol, 
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
+    &env1Attack, &env1Decay, &env1Sustain, &env1Release, &env1AttackShape, &env1DecayShape, &env1ReleaseShape, &keyVelToEnv1 }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
 , osc1fine("f.tune", "osc1fine", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "osc1coarse", "st", -11.f, 11.f, 0.f)
 , osc1lfo1depth("mod", "osc1lfo1depth", "st", 0.f, 12.f, 0.f)
+, passtype("Filter Type", "filterType", eBiquadFilters::eLowpass, biquadFilters)
 , lpCutoff("LP Cut", "lpCutoff", "Hz", 10.f, 20000.f, 20000.f)
-, lpResonance("LP Reso", "lpResonance", "dB", -25.f, 25.f, 0.f)
+, biquadResonance("Filter Reso", "filterResonance", "dB", -25.f, 25.f, 0.f)
+, hpCutoff("HP Cut", "hpCutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
 , lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
@@ -48,10 +65,35 @@ SynthParams::SynthParams()
 , env1DecayShape("D. Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , env1ReleaseShape("R. Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+, osc1WaveForm("Waveform", "Waveform", "int", 1.0f, 3.0f, 1.0f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
+, lfoFadein("FadeIn","lfoFadein", "s", 0.f, 10.f, 0.f)
+, delayDryWet("Dry / Wet", "delWet", "%", 0.f, 1.f, 0.f)
+, delayFeedback("Feedback", "delFeed", "%", 0.f, 1.f, 0.f)
+, delayTime("Time", "delTime", "ms", 1., 5000., 1000.)
+, delaySync("Tempo Sync", "delSync", eOnOffToggle::eOff, onoffnames)
+, delayDividend("SyncDel Dividend", "delDivd", "", 1, 5, 1)
+, delayDivisor("SyncDel Divisor", "delDivs", "", 1, 32, 4)
+, delayCutoff("Cutoff", "delCut", "Hz", 10.f, 20000.f, 20000.f)
+, delayResonance("Resonance", "delRes", "dB", -25.f, 0.f, 0.f)
+, delayTriplet("Delay Triplet", "delTrip", eOnOffToggle::eOff, onoffnames)
+, delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
+, delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
+, seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
+, seqNumSteps("SeqNumSteps", "seqNumSteps", "steps", 1.0f, 8.0f, 4.0f)
+, seqStepSpeed("SeqSpeed", "seqSpeed", "qn", 0.125f, 4.0f, 1.0f)
+, seqStepLength("SeqNoteLength", "seqNoteLength", "qn", 0.125f, 4.0f, 1.0f)
+, seqStep1("seqNote1", "seqNote1", "", -1, 127, 60)
+, seqStep2("seqNote2", "seqNote2", "", -1, 127, 62)
+, seqStep3("seqNote3", "seqNote3", "", -1, 127, 64)
+, seqStep4("seqNote4", "seqNote4", "", -1, 127, 65)
+, seqStep5("seqNote5", "seqNote5", "", -1, 127, 67)
+, seqStep6("seqNote6", "seqNote6", "", -1, 127, 69)
+, seqStep7("seqNote7", "seqNote7", "", -1, 127, 71)
+, seqStep8("seqNote8", "seqNote8", "", -1, 127, 72)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
