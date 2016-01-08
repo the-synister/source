@@ -69,6 +69,12 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
 
+    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
+    lfoFadeIn->setRange (0, 10, 0);
+    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoFadeIn->addListener (this);
+
     addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
@@ -102,6 +108,8 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
+	registerSlider(lfoFadeIn, &params.lfoFadein);
+	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -123,6 +131,7 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
+    lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
     sawlabel = nullptr;
@@ -156,6 +165,7 @@ void OscPanel::resized()
     pulsewidth->setBounds (296, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
+    lfoFadeIn->setBounds (440, 8, 64, 64);
     waveformVisual->setBounds (24, 112, 208, 96);
     waveformSwitch->setBounds (360, 128, 64, 64);
     sawlabel->setBounds (432, 152, 150, 24);
@@ -204,6 +214,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_ctune1] -- add your slider handling code here..
         //[/UserSliderCode_ctune1]
     }
+    else if (sliderThatWasMoved == lfoFadeIn)
+    {
+        //[UserSliderCode_lfoFadeIn] -- add your slider handling code here..
+        //[/UserSliderCode_lfoFadeIn]
+    }
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
@@ -213,17 +228,13 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 		switch (waveformKey)
 		{
 		case 1:
-		{
 			pulsewidth->setVisible(true);
 			osc1trngAmount->setVisible(false);
 			break;
-		}
 		case 2:
-		{
 			pulsewidth->setVisible(false);
 			osc1trngAmount->setVisible(true);
 			break;
-		}
 		}
 		waveformVisual->repaint();
 
@@ -279,6 +290,10 @@ BEGIN_JUCER_METADATA
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"

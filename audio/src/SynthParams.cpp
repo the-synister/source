@@ -25,7 +25,7 @@ namespace {
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
-    &lfo1freq, &lfo1wave,
+    &lfo1freq, &lfo1wave, &lfoFadein,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
@@ -60,6 +60,7 @@ SynthParams::SynthParams()
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
+, lfoFadein("FadeIn","lfoFadein", "s", 0.f, 10.f, 0.f)
 , delayDryWet("Dry / Wet", "delWet", "%", 0.f, 1.f, 0.f)
 , delayFeedback("Feedback", "delFeed", "%", 0.f, 1.f, 0.f)
 , delayTime("Time", "delTime", "ms", 1., 5000., 1000.)
