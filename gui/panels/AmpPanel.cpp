@@ -61,17 +61,17 @@ AmpPanel::AmpPanel (SynthParams &p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (keyVelocity = new Slider ("Key Velocity"));
-    keyVelocity->setRange (0, 96, 0);
-    keyVelocity->setSliderStyle (Slider::RotaryVerticalDrag);
-    keyVelocity->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    keyVelocity->addListener (this);
+    addAndMakeVisible (velocitySense = new MouseOverKnob ("Key Velocity"));
+    velocitySense->setRange (0, 96, 0);
+    velocitySense->setSliderStyle (Slider::RotaryVerticalDrag);
+    velocitySense->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    velocitySense->addListener (this);
 
 
     //[UserPreSize]
     registerSlider(amp, &params.vol);
     registerSlider(pan, &params.panDir);
-    registerSlider(keyVelocity, &params.keyVelocityLevel);
+    registerSlider(velocitySense, &params.keyVelocityLevel);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -90,7 +90,7 @@ AmpPanel::~AmpPanel()
     pan = nullptr;
     label2 = nullptr;
     label3 = nullptr;
-    keyVelocity = nullptr;
+    velocitySense = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -118,7 +118,7 @@ void AmpPanel::resized()
     pan->setBounds (156, 72, 112, 64);
     label2->setBounds (237, 96, 24, 24);
     label3->setBounds (166, 96, 24, 24);
-    keyVelocity->setBounds (66, 72, 112, 64);
+    velocitySense->setBounds (66, 72, 112, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -139,10 +139,10 @@ void AmpPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_pan] -- add your slider handling code here..
         //[/UserSliderCode_pan]
     }
-    else if (sliderThatWasMoved == keyVelocity)
+    else if (sliderThatWasMoved == velocitySense)
     {
-        //[UserSliderCode_keyVelocity] -- add your slider handling code here..
-        //[/UserSliderCode_keyVelocity]
+        //[UserSliderCode_velocitySense] -- add your slider handling code here..
+        //[/UserSliderCode_velocitySense]
     }
 
     //[UsersliderValueChanged_Post]
@@ -188,7 +188,7 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="L" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
-  <SLIDER name="Key Velocity" id="e08e3c952cbb37a2" memberName="keyVelocity"
+  <SLIDER name="Key Velocity" id="e08e3c952cbb37a2" memberName="velocitySense"
           virtualName="Slider" explicitFocusOrder="0" pos="66 72 112 64"
           min="0" max="96" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
