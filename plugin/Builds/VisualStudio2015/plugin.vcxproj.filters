@@ -346,16 +346,13 @@
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
-        <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
@@ -1686,16 +1683,13 @@
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
-        <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
