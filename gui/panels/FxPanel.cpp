@@ -124,7 +124,7 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="0 8 112 64"
-          min="1" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="80" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

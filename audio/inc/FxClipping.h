@@ -16,14 +16,18 @@
 class FxClipping
 {
 public:
-    FxClipping(SynthParams& p) : params(p)
-                               {};
+    FxClipping(SynthParams& p)
+    : params(p)
+    {}
+    
     ~FxClipping();
     
-    SynthParams &params;
     void clipSignal(AudioSampleBuffer&, int, int);
-};
 
+protected:
+     SynthParams &params;
+    
+};
 
 
 #endif  // FXCLIPPING_H_INCLUDED
