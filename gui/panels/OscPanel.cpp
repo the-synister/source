@@ -74,14 +74,6 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
     lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoFadeIn->addListener (this);
-    addAndMakeVisible (Osc1ModSrc = new ComboBox ("Osc1ModSrcBox"));
-    Osc1ModSrc->setEditableText (false);
-    Osc1ModSrc->setJustificationType (Justification::centred);
-    Osc1ModSrc->setTextWhenNothingSelected (TRANS("No Mod"));
-    Osc1ModSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    Osc1ModSrc->addItem (TRANS("No Mod"), 1);
-    Osc1ModSrc->addItem (TRANS("Env 1"), 2);
-    Osc1ModSrc->addListener (this);
 
     addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
@@ -107,6 +99,16 @@ OscPanel::OscPanel (SynthParams &p)
     squarelabel->setEditable (false, false, false);
     squarelabel->setColour (TextEditor::textColourId, Colours::black);
     squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (Osc1ModSrc = new ComboBox ("Osc1ModSrcBox"));
+    Osc1ModSrc->setEditableText (false);
+    Osc1ModSrc->setJustificationType (Justification::centred);
+    Osc1ModSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    Osc1ModSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    Osc1ModSrc->addItem (TRANS("No Mod"), 1);
+    Osc1ModSrc->addItem (TRANS("LFO 1"), 2);
+    Osc1ModSrc->addItem (TRANS("ENV 1"), 3);
+    Osc1ModSrc->addListener (this);
 
 
     //[UserPreSize]
@@ -179,6 +181,7 @@ void OscPanel::resized()
     waveformSwitch->setBounds (360, 128, 64, 64);
     sawlabel->setBounds (432, 152, 150, 24);
     squarelabel->setBounds (256, 152, 96, 24);
+    Osc1ModSrc->setBounds (536, 32, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -261,7 +264,7 @@ void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
     if (comboBoxThatHasChanged == Osc1ModSrc)
     {
-        //[UserComboBoxCode_Osc1ModSrc] -- add your combo box handling code here ...
+        //[UserComboBoxCode_Osc1ModSrc] -- add your combo box handling code here..
         params.osc1ModSource.setStep(static_cast<eModSource>(Osc1ModSrc->getSelectedItemIndex()));
         //[/UserComboBoxCode_Osc1ModSrc]
     }
@@ -338,8 +341,8 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="Osc1ModSrcBox" id="11f9848905955e67" memberName="Osc1ModSrc"
-            virtualName="" explicitFocusOrder="0" pos="456 16 64 16" editable="0"
-            layout="36" items="No Mod&#10;Env 1" textWhenNonSelected="No Mod"
+            virtualName="" explicitFocusOrder="0" pos="536 32 64 16" editable="0"
+            layout="36" items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
