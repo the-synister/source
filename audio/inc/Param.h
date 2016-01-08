@@ -6,12 +6,13 @@
 
 class Param {
 public:
-    Param(const String &name, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
+    Param(const String &name, const String &serializationTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
     : val_(defaultval)
     , min_(minval)
     , max_(maxval)
     , default_(defaultval)
     , name_(name)
+    , serializationTag_(serializationTag)
     , unit_(unit)
     , numSteps_(numSteps)
     {
@@ -22,15 +23,17 @@ public:
     virtual ~Param() {}
 
     const String& name() const { return name_; }
+    const String& serializationTag() const { return serializationTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
     void set(float f) { val_.store(f); }
     float get() const { return val_.load(); }
 
-    //! \todo check min/max!
+
     virtual void setUI(float f, bool notifyHost = true) {
-        set(f);
+        if (f >= min_ && f <= max_) set(f);
+        else set(default_);
         if(notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const { return get(); }
@@ -78,6 +81,7 @@ protected:
     float max_;
     float default_;
     String name_;
+    String serializationTag_;
     String unit_;
     int numSteps_;
 
@@ -89,9 +93,9 @@ class ParamDb : public Param {
 public:
     using Param::Param;
 
-    //! \todo check min/max!
     virtual void setUI(float f, bool notifyHost = true) override {
-        set(fromDb(f));
+        if (fromDb(f) >= min_ && fromDb(f) <= max_) set(fromDb(f));
+        else set(default_);
         if (notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const override { return toDb(get()); }
@@ -100,8 +104,8 @@ public:
 template<typename _enum>
 class ParamStepped : public Param {
 public:
-    ParamStepped(const String &name, _enum defaultval, const char **labels = nullptr)
-    : Param(name, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
+    ParamStepped(const String &name, const String &serializationTag, _enum defaultval, const char **labels = nullptr)
+    : Param(name, serializationTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
             static_cast<float>(defaultval),
             static_cast<int>(_enum::nSteps))
     , step_(defaultval)

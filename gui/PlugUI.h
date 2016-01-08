@@ -37,8 +37,9 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public Component,
+                private Timer,
                 public SliderListener,
-                private Timer
+                public ButtonListener
 {
 public:
     //==============================================================================
@@ -52,6 +53,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -65,11 +67,11 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> label;
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TabbedComponent> tabs;
-    ScopedPointer<Label> label2;
+    ScopedPointer<TextButton> savePresetButton;
+    ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
 
