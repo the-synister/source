@@ -189,7 +189,7 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="Key Velocity" id="e08e3c952cbb37a2" memberName="velocitySense"
-          virtualName="Slider" explicitFocusOrder="0" pos="66 72 112 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="66 72 112 64"
           min="0" max="96" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
