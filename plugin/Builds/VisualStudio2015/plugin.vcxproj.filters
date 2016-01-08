@@ -340,7 +340,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+        <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
@@ -349,16 +364,13 @@
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
@@ -369,6 +381,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
+      <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>plugin\Audio\src</Filter>
@@ -1659,19 +1677,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+        <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h">
@@ -1683,6 +1710,9 @@
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
@@ -1691,6 +1721,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\StepSequencer.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
       <Filter>plugin\Audio\inc</Filter>
