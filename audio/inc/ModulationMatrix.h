@@ -21,14 +21,12 @@
 enum sources {
 	SOURCE_NONE = 0,
 
-	SOURCE_UI_OSC1_FO,
-	SOURCE_UI_FILTER1_FC,
-
 	SOURCE_LFO1,
-	SOURCE_ENV1,
-	SOURCE_VELOCITY,
-	SOURCE_MODWHEEL,
-	SOURCE_PITCHBEND,
+
+	//SOURCE_ENV1,
+	//SOURCE_VELOCITY,
+	//SOURCE_MODWHEEL,
+	//SOURCE_PITCHBEND,
 	MAX_SOURCES
 };
 
@@ -47,8 +45,8 @@ enum destinations {
 	//     add more L0 destinations in this chunk
 	//     see CModulationMatrix::checkDestinationLayer())
 
-	DEST_LFO1_FO, // <- keep this first
-	DEST_LFO2_FO, // <- keep this last
+	DEST_FILT_FC,       // <- keep this first
+	DEST_OSC1_PITCH,    // <- keep this last
 
 				  // --- END OF LAYER 0 DESTINATIONS
 

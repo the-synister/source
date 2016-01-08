@@ -169,8 +169,8 @@ inline bool ModulationMatrix::enableModMatrixRow(uint8 sourceIndex, uint8 destin
 inline bool ModulationMatrix::checkDestinationLayer(uint8 layer, modMatrixRow * row)
 {
 	bool bLayer0 = false;
-	if (row->destinationIndex >= DEST_LFO1_FO &&
-		row->destinationIndex <= DEST_LFO2_FO)
+	if (row->destinationIndex >= DEST_FILT_FC &&
+		row->destinationIndex <= DEST_OSC1_PITCH)
 		// then, we are layer 0; see modulationmatrix.h
 		bLayer0 = true;
 

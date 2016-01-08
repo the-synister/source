@@ -253,7 +253,7 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         // Modulation
-        renderModulation(numSamples);
+        renderModulation2(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
@@ -351,11 +351,62 @@ public:
     }
 
 protected:
+    void renderModulation2(int numSamples) {
+        const float sRate = static_cast<float>(getSampleRate());    // Sample rate
+        float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
+        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
+        const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
+
+                                                                                           // set the env1buffer - for Volume
+        for (int s = 0; s < numSamples; ++s)
+        {
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
+        }
+
+        // set the filterEnvBuffer - for Filter
+        for (int s = 0; s < numSamples; ++s)
+        {
+            envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
+        }
+
+        // add pitch wheel values
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
+
+
+        for (int s = 0; s < numSamples; ++s)
+        {
+            float lfoVal = 0.f;
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                lfoVal = lfo1sine.next();
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                lfoVal = lfo1random.next();
+                break;
+            case eLfoWaves::eLfoSquare:
+                lfoVal = lfo1square.next();
+                break;
+            }
+
+            // Fade in factor calculation
+            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
+            {
+                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
+                factorFadeInLFO = 1.f;
+            }
+            else
+            {
+                // Otherwise the factor is determined
+                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
+            }
+            globalModMatrix.sources[SOURCE_LFO1] = lfoVal;
+        }
+    }
     void renderModulation(int numSamples) {
 
-        const float sRate = static_cast<float>(getSampleRate());  // Sample rate
-        float factorFadeInLFO = 1.f;                           // Defaut value of fade in factor is 1 (100%)
-        float modAmount = params.osc1lfo1depth.get();             // Default value of modAmount is the value from the slider
+        const float sRate = static_cast<float>(getSampleRate());    // Sample rate
+        float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
+        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
 
@@ -414,11 +465,15 @@ protected:
             else
             {
             pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
+            }
         }
     }
+
+    float biquadFilter2(float inputSignal, eBiquadFilters filterType) {
+
+        return inputSignal;
     }
 
-    
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
         
@@ -429,7 +484,7 @@ protected:
         float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
         
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
+            moddedFreq += (20000.f * (modValue) * params.lpModAmout.get() / 100.f);
         }
         else if (params.lpModSource.getStep() == eModSource::eEnv) { // env
 
