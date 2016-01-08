@@ -233,7 +233,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
