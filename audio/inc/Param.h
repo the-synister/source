@@ -44,6 +44,7 @@ public:
     float getMin() const { return min_; }
     float getMax() const { return max_; }
     float getDefault() const { return default_; }
+    String getUnit() const { return unit_; }
 
     void setHost(float f) {
         setUI(f, false);

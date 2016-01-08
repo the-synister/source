@@ -66,6 +66,7 @@ private:
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
     ScopedPointer<MouseOverKnob> keyVelToEnv;
+    ScopedPointer<Label> VolEnvLabel;
 
 
     //==============================================================================

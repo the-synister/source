@@ -19,9 +19,10 @@ namespace {
     };
     
     static const char *modsourcenames[] = {
-        "None", "LFO1", nullptr
+        "None", "LFO1", "ENV1", nullptr
     };
 }
+
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
@@ -31,7 +32,8 @@ SynthParams::SynthParams()
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &panDir, &vol, 
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
+    &env1Attack, &env1Decay, &env1Sustain, &env1Release, &env1AttackShape, &env1DecayShape, &env1ReleaseShape, &keyVelToEnv1 }
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
@@ -46,6 +48,7 @@ SynthParams::SynthParams()
 , lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)
+, osc1ModSource("OSC1 ModSrc", "osc1Mod", eModSource::eNone, modsourcenames)
 , envAttack("Attack", "envAttack", "s", 0.001f, 5.0f, 0.005f)
 , envDecay("Decay", "envDecay", "s", 0.001f, 5.0f, 0.05f)
 , envSustain("Sustain", "envSustain", "dB", -96.0f, 0.0f, -5.0f)
@@ -54,6 +57,14 @@ SynthParams::SynthParams()
 , envAttackShape("Attack Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
+, env1Attack("Attack", "env1Attack", "s", 0.001f, 5.0f, 0.005f)
+, env1Decay("Decay", "env1Decay", "s", 0.001f, 5.0f, 0.05f)
+, env1Sustain("Sustain", "env1Sustain", " ", 0.f, 1.f, 1.f)
+, env1Release("Release", "env1Release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv1("keyVel to Env", "veloToKey", "", 0.0f, 1.0f, 0.0f)
+, env1AttackShape("A. Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
+, env1DecayShape("D. Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
+, env1ReleaseShape("R. Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
 , osc1WaveForm("Waveform", "Waveform", "int", 1.0f, 3.0f, 1.0f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)

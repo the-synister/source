@@ -17,13 +17,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_48919873852F91A2__
-#define __JUCE_HEADER_48919873852F91A2__
+#ifndef __JUCE_HEADER_935F64844A5D65A4__
+#define __JUCE_HEADER_935F64844A5D65A4__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
-#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -36,14 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OscPanel  : public PanelBase,
-                  public SliderListener,
-                  public ComboBoxListener
+class Env1Panel  : public PanelBase,
+                   public SliderListener
 {
 public:
     //==============================================================================
-    OscPanel (SynthParams &p);
-    ~OscPanel();
+    Env1Panel (SynthParams &p);
+    ~Env1Panel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -52,7 +50,6 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -61,25 +58,22 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> ftune1;
-    ScopedPointer<MouseOverKnob> lfo1depth1;
-    ScopedPointer<MouseOverKnob> osc1trngAmount;
-    ScopedPointer<MouseOverKnob> pulsewidth;
-    ScopedPointer<MouseOverKnob> pitchRange;
-    ScopedPointer<MouseOverKnob> ctune1;
-    ScopedPointer<MouseOverKnob> lfoFadeIn;
-    ScopedPointer<WaveformVisual> waveformVisual;
-    ScopedPointer<Slider> waveformSwitch;
-    ScopedPointer<Label> sawlabel;
-    ScopedPointer<Label> squarelabel;
-    ScopedPointer<ComboBox> Osc1ModSrc;
+    ScopedPointer<MouseOverKnob> attackTime1;
+    ScopedPointer<MouseOverKnob> decayTime1;
+    ScopedPointer<MouseOverKnob> sustainLevel1;
+    ScopedPointer<MouseOverKnob> releaseTime1;
+    ScopedPointer<MouseOverKnob> attackShape1;
+    ScopedPointer<MouseOverKnob> decayShape1;
+    ScopedPointer<MouseOverKnob> releaseShape1;
+    ScopedPointer<MouseOverKnob> keyVelToEnv1;
+    ScopedPointer<Label> Env1Label;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Env1Panel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_48919873852F91A2__
+#endif   // __JUCE_HEADER_935F64844A5D65A4__

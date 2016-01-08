@@ -64,6 +64,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     modSrc->addItem (TRANS("No Mod"), 1);
     modSrc->addItem (TRANS("LFO 1"), 2);
+    modSrc->addItem (TRANS("ENV 1"), 3);
     modSrc->addListener (this);
 
     addAndMakeVisible (modSliderCut = new Slider ("Mod"));
@@ -226,7 +227,8 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
-            items="No Mod&#10;LFO 1" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"

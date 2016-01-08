@@ -16,6 +16,8 @@
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
+        <FILE id="O23HBc" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
+        <FILE id="LIhtrw" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>
         <FILE id="SyrRUI" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="W6dceW" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
@@ -44,6 +46,9 @@
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
+        <FILE id="MnxYSa" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
+        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
+        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"
@@ -56,6 +61,7 @@
         <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="ArScIV" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
+        <FILE id="E9FvPM" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="O3hys1" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

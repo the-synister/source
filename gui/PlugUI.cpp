@@ -22,6 +22,7 @@
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
+#include "panels/Env1Panel.h"
 #include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"
@@ -57,6 +58,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
     tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
+    tabs->addTab (TRANS("ENV1"), Colours::lightgrey, new Env1Panel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
@@ -235,6 +237,8 @@ BEGIN_JUCER_METADATA
     <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName="EnvPanel"
+         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="ENV1" colour="ffd3d3d3" useJucerComp="0" contentClassName="Env1Panel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FILT" colour="ffd3d3d3" useJucerComp="0" contentClassName="FiltPanel"
          constructorParams="params" jucerComponentFile=""/>

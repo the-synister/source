@@ -11,7 +11,13 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
-
+    
+enum class eModSource : int {
+    eNone = 0,
+    eLFO1 = 1,
+    eEnv = 2,
+    nSteps = 3
+};
 
 enum class eBiquadFilters : int {
     eLowpass = 0,
@@ -33,11 +39,6 @@ enum class eSeqModes : int
     nSteps = 3
 };
 
-enum class eModSource : int {
-    eNone = 0,
-    eLFO1 = 1,
-    nSteps = 2
-};
 
 
 class SynthParams {
@@ -55,7 +56,7 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-
+    
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -66,6 +67,7 @@ public:
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
+    ParamStepped<eModSource> osc1ModSource; //!< oscillator 1 modulation source
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
@@ -90,6 +92,15 @@ public:
     Param seqStep8;
 
     Param osc1WaveForm;//!< int value for defining waveform [1..3]
+
+    Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
+    Param env1Attack;    //!< env1 attack in [0.001..5]s
+    Param env1Decay;     //!< env1 decay in [0.001..5]s
+    Param env1Sustain;   //!< env1 sustain in [0 .. 1]
+    Param env1Release;   //!< env1 release in [0.001..5]s
+    Param env1AttackShape; //!< env attack shape in [0.01..10]
+    Param env1DecayShape; //!< env decay shape in [0.01..10]
+    Param env1ReleaseShape; //!< env release shape in [0.01..10]
 
     Param panDir; //!< pan R/L [-100..100]
 
