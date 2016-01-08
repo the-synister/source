@@ -32,11 +32,11 @@ public:
     
     //! Signal clipping
     /*!
-     This public function holds the actual "clipping" of the signal. 
+     It holds the actual "clipping" of the signal.
      The clipped signal will be given through 3 parameters:
-     AudioSampleBuffer& outputBuffer - instance of the AudioSampleBuffer is an output buffer, which must be the buffer where the voices had been processed and added.
-     int startSample, needed for sudden (midi) parameter changes
-     int numSamplesIn, the current block size
+     @params AudioSampleBuffer - instance of the AudioSampleBuffer is an output buffer, which must be the buffer where the voices had been processed and added.
+     @params int - needed for sudden (midi) parameter changes
+     @params int - the current block size
      */
     void clipSignal(AudioSampleBuffer&, int, int);
 
