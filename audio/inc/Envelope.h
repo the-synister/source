@@ -13,6 +13,7 @@
 
 #include "Synthparams.h"
 #include "Param.h"
+#include "ModulationMatrix.h"
 
 //! Envelope Class: Envelope
 /*! An ADSR implementation with A,D and R shape control and an additional
@@ -37,8 +38,12 @@ class Envelope{
         ,decayShape(decayShape)
         ,releaseShape(releaseShape)
         ,keyVelToEnv(keyVelToEnv)
+        ,modSourceFo(DEST_NONE)
+        ,modSourcePulseWidth(DEST_NONE)
+        ,modDestOutput1(DEST_NONE)
+        ,modDestOutput2(DEST_NONE)
+        ,modSourceAmp(DEST_NONE)
     {
-        
     }
     
     //! Enevelope sestructor
@@ -54,87 +59,7 @@ class Envelope{
     
     //! calculation of the volume envelope coefficients (with shape control)
     const float calcEnvCoeff();
-    /*const float calcEnvCoeff()
-    {
-        float envCoeff;
-        float sustainLevel;
-        
-        // check the unit of the envelope
-        if (sustain.getUnit() == "dB") {
-            sustainLevel = Param::fromDb(sustain.get());
-        }
-        else {
-            sustainLevel = sustain.get();
-        }
-
-        // number of samples for all phases
-        int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-        int decaySamples = static_cast<int>(sampleRate * decay.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-        int releaseSamples = static_cast<int>(sampleRate * release.get());
-
-        // get growth/shrink rate from knobs
-        float attackGrowthRate = attackShape.get();
-        float decayShrinkRate = decayShape.get();
-        float releaseShrinkRate = releaseShape.get();
-
-        // release phase sets envCoeff from valueAtRelease to 0.0f
-        if (releaseCounter > -1)
-        {
-            if (releaseShrinkRate < 1.0f)
-            {
-                releaseShrinkRate = 1 / releaseShrinkRate;
-                envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
-            }
-            else
-            {
-                envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
-            }
-            releaseCounter++;
-        }
-        else
-        {
-            // attack phase sets envCoeff from 0.0f to 1.0f
-            if (attackDecayCounter <= attackSamples)
-            {
-                if (attackGrowthRate < 1.0f)
-                {
-                    attackGrowthRate = 1 / attackGrowthRate;
-                    envCoeff = interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, true);
-                }
-                else
-                {
-                    envCoeff = 1.0f - interpolateLog(attackDecayCounter, attackSamples, attackGrowthRate, false);
-                }
-                valueAtRelease = envCoeff;
-                attackDecayCounter++;
-            }
-            else
-            {
-                // decay phase sets envCoeff from 1.0f to sustain level
-                if (attackDecayCounter <= attackSamples + decaySamples)
-                {
-                    if (decayShrinkRate < 1.0f)
-                    {
-                        decayShrinkRate = 1 / decayShrinkRate;
-                        envCoeff = 1 - interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
-                    }
-                    else
-                    {
-                        envCoeff = interpolateLog(attackDecayCounter - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
-                    }
-                    valueAtRelease = envCoeff;
-                    attackDecayCounter++;
-                }
-                else // if attack and decay phase is over then sustain level
-                {
-                    envCoeff = sustainLevel;
-                    valueAtRelease = envCoeff;
-                }
-            }
-        }
-        return envCoeff;
-    }*/
-
+ 
     private:
     
     //References for required Params for the envelope
@@ -156,6 +81,17 @@ class Envelope{
     int releaseCounter;     //!< sample counter during the release phase
 
     static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
+
+
+    // TODO the matrix stuff
+    ModulationMatrix* modulationMatrix;
+
+    uint8 modSourceFo;
+    uint8 modSourcePulseWidth;
+    uint8 modSourceAmp;
+
+    uint8 modDestOutput1;
+    uint8 modDestOutput2;
 };
 
 #endif  // ENVELOPE_H_INCLUDED

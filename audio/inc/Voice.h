@@ -400,6 +400,22 @@ protected:
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
             globalModMatrix.sources[SOURCE_LFO1] = lfoVal;
+
+            // TODO: repeat for all lfos
+            // value range
+            // 
+
+            // Update of the modulation amount value
+            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;
+            // Next sample modulated with the updated amount
+            if (params.osc1ModSource.getStep() == eModSource::eEnv)
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
+            }
+            else
+            {
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
+            }
         }
     }
     void renderModulation(int numSamples) {
@@ -464,7 +480,7 @@ protected:
             }
             else
             {
-            pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
             }
         }
     }
