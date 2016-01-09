@@ -132,12 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
@@ -146,6 +144,7 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
@@ -1322,6 +1321,7 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>

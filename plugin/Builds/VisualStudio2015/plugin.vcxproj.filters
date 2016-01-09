@@ -346,16 +346,13 @@
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
-        <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
@@ -381,6 +378,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
+      <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
@@ -1683,16 +1683,13 @@
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
-        <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
@@ -1721,6 +1718,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>plugin\Audio\inc</Filter>
