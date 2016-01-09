@@ -11,7 +11,8 @@
 #ifndef OSCILLATOR_H_INCLUDED
 #define OSCILLATOR_H_INCLUDED
 
-
+#include "Synthparams.h"
+#include "Param.h"
 
 
 
