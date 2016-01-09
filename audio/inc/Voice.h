@@ -108,10 +108,10 @@ public:
     , params(p)
     , envToVolume(getSampleRate(), params.envAttack, params.envDecay, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
-    , envToCutoff(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
+    , env1(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
-    , envToPitch(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
-        params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
+    //, envToPitch(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
+    //    params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
@@ -125,7 +125,8 @@ public:
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
     , lfo1ModBuffer(1,blockSize)
-    , envToCutoffBuffer(1, blockSize)
+    , env1Buffer(1, blockSize)
+    //, envToCutoffBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         noModBuffer.clear();
@@ -163,8 +164,9 @@ public:
 
         // reset attackDecayCounter
         envToVolume.startEnvelope(currentVelocity);
-        envToCutoff.startEnvelope(currentVelocity);
-        envToPitch.startEnvelope(currentVelocity);
+        env1.startEnvelope(currentVelocity);
+        //envToCutoff.startEnvelope(currentVelocity);
+        //envToPitch.startEnvelope(currentVelocity);
 
         currentPitchValue = currentPitchWheelPosition;
 
@@ -216,7 +218,12 @@ public:
                 envToVolume.resetReleaseCounter();
             }
 
-            if (envToCutoff.getReleaseCounter() == -1)
+            if (env1.getReleaseCounter() == -1)
+            {
+            env1.resetReleaseCounter();
+            }
+
+            /*if (envToCutoff.getReleaseCounter() == -1)
             {
                 envToCutoff.resetReleaseCounter();
             }
@@ -224,7 +231,7 @@ public:
             if (envToPitch.getReleaseCounter() == -1)
             {
                 envToPitch.resetReleaseCounter();
-            }
+            }*/
         }
         else
         {
@@ -256,12 +263,13 @@ public:
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
-        const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
+        const float *env1Mod = env1Buffer.getReadPointer(0);
+        //const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
 
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
-        modSources[2] = envToCutoffMod;
+        modSources[2] = env1Mod;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -297,7 +305,7 @@ public:
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.env1Release.get()) <= envToCutoff.getReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.env1Release.get()) <= env1.getReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -366,7 +374,7 @@ protected:
         // set the filterEnvBuffer - for Filter
         for (int s = 0; s < numSamples; ++s)
         {
-            envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
+            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
         }
 
         // add pitch wheel values
@@ -407,7 +415,7 @@ protected:
             // Next sample modulated with the updated amount
             if (params.osc1ModSource.getStep() == eModSource::eEnv)
             {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
+                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents)*env1.calcEnvCoeff());
             }
             else
             {
@@ -527,9 +535,11 @@ private:
     AudioSampleBuffer lfo1ModBuffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;
-    AudioSampleBuffer envToCutoffBuffer;
+    AudioSampleBuffer env1Buffer;
+    //AudioSampleBuffer envToCutoffBuffer;
     
-    Envelope envToCutoff;
     Envelope envToVolume;
-    Envelope envToPitch;
+    Envelope env1;
+    //Envelope envToCutoff;
+    //Envelope envToPitch;
 };
