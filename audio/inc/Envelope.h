@@ -24,24 +24,24 @@
 
 class Envelope{
     public:
-    Envelope(float sampleRate, Param &decay, Param &attack, Param &sustain, Param &release, 
-        Param &attackShape, Param &decayShape, Param &releaseShape, Param &keyVelToEnv)
+    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release, 
+        Param &_attackShape, Param &_decayShape, Param &_releaseShape, Param &_keyVelToEnv)
         :releaseCounter(-1)
         ,attackDecayCounter(0)
-        ,sampleRate(sampleRate)
-        ,attack(attack)
-        ,decay(decay)
-        ,sustain(sustain)
-        ,release(release)
-        ,attackShape(attackShape)
-        ,decayShape(decayShape)
-        ,releaseShape(releaseShape)
-        ,keyVelToEnv(keyVelToEnv)
+        ,sampleRate(_sampleRate)
+        ,attack(_attack)
+        ,decay(_decay)
+        ,sustain(_sustain)
+        ,release(_release)
+        ,attackShape(_attackShape)
+        ,decayShape(_decayShape)
+        ,releaseShape(_releaseShape)
+        ,keyVelToEnv(_keyVelToEnv)
     {
         
     }
     
-    //! Enevelope sestructor
+    //! Enevelope destructor
     ~Envelope(){}
 
     //! resets the sample counters and sets the current velocity for each new note

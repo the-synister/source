@@ -106,11 +106,11 @@ public:
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
-    , envToVolume(getSampleRate(), params.envDecay, params.envAttack, params.envSustain, params.envRelease,
+    , envToVolume(getSampleRate(), params.envAttack, params.envDecay, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
-    , envToCutoff(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
+    , envToCutoff(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
-    , envToPitch(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
+    , envToPitch(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
@@ -451,9 +451,9 @@ protected:
         if (filterType == eBiquadFilters::eLowpass) {
 
         // coefficients for lowpass, depending on resonance and lowcut frequency
-            k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);
+        k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);
         coeff1 = 0.5f * (1.f - k) / (1.f + k);
-            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * moddedFreq);
+        coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * moddedFreq);
         coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
 
         b0 = 2.f * coeff3;
