@@ -93,7 +93,6 @@ public:
     Param seqStep8;
 
     Param osc1WaveForm;//!< int value for defining waveform [1..3]
->>>>>>> master
 
     Param panDir; //!< pan R/L [-100..100]
 
