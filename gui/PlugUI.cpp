@@ -25,6 +25,7 @@
 #include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"
+#include "panels/SeqPanel.h"
 #include "panels/LoFiPanel.h"
 //[/Headers]
 
@@ -61,6 +62,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
+    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
     tabs->addTab (TRANS("LOFI"), Colours::lightgrey, new LoFiPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
@@ -243,6 +245,8 @@ BEGIN_JUCER_METADATA
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
+         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="LOFI" colour="ffd3d3d3" useJucerComp="0" contentClassName="LoFiPanel"
          constructorParams="params" jucerComponentFile=""/>
