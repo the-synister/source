@@ -39,7 +39,7 @@ enum class eSeqModes : int
     nSteps = 3
 };
 
-
+//TODO add enum for mod matrix: 
 
 class SynthParams {
 public:

@@ -12,6 +12,7 @@
 #define MODULATIONMATRIX_H_INCLUDED
 
 #include "JuceHeader.h"
+#include <atomic>
 
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
@@ -69,7 +70,7 @@ enum transform {
 	TRANSFORM_MIDI_SWITCH,
 	TRANSFORM_MIDI_TO_ATTENUATION,
 	TRANSFORM_NOTE_NUMBER_TO_FREQUENCY,
-	MAX_TRANSFORMS /* not needed? */
+	MAX_TRANSFORMS
 };
 
 const float midiFreqTable[128] = {
@@ -207,8 +208,8 @@ struct modMatrixRow
 {
 	uint8 sourceIndex;
 	uint8 destinationIndex;
-	double* modIntensity;
-	double* modRange;
+    float* modIntensity;
+    float* modRange;
 	uint8 sourceTransform;
 	bool enable;
 };
@@ -216,8 +217,8 @@ struct modMatrixRow
 
 inline modMatrixRow* createModMatrixRow(uint8 sourceIndex_,
 										uint8 destinationIndex_,
-										double* modIntensity_,
-										double* modRange_,
+                                        float* modIntensity_,
+                                        float* modRange_,
 										uint8 sourceTransform_,
 										bool enable_ = true) {
 
@@ -251,26 +252,26 @@ public:
 	inline void clearMatrix();
 	inline void clearSources();
 	inline void clearDestinations();
-	inline void addModMatrixRow(modMatrixRow* row);
+	void addModMatrixRow(modMatrixRow* row);
 	inline bool modMatrixRowExists(uint8 sourceIndex, uint8 destinationIndex);
-	inline bool createMatrixCore();
+    inline void createMatrixCore();
 	inline void deleteModMatrix();
 	inline bool enableModMatrixRow(uint8 sourceIndex, uint8 destinationIndex, bool enable);
 	inline bool checkDestinationLayer(uint8 layer, modMatrixRow* row);
 	inline void doModulationsMatrix(uint8 modLayer);
 
-	double sources[MAX_SOURCES];
-	double destinations[MAX_DESTINATIONS];
+    float sources[MAX_SOURCES];
+    float destinations[MAX_DESTINATIONS];
 
 protected:
-	inline double mmaMIDItoAtten(uint8 uMIDIValue);
-	inline double mmaMIDItoAtten_dB(uint8 uMIDIValue);
+	inline float mmaMIDItoAtten(uint8 uMIDIValue);
+	inline float mmaMIDItoAtten_dB(uint8 uMIDIValue);
 	inline uint8 unipolarToMIDI(float fUnipolarValue);
-	inline double midiToUnipolar(uint8 uMIDIValue);
-	inline double bipolarToUnipolar(double dValue);
-	inline double midiToPanValue(uint8 uMIDIValue);
-	inline double midiToBipolar(uint8 uMIDIValue);
-	inline double unipolarToBipolar(double dValue);
+	inline float midiToUnipolar(uint8 uMIDIValue);
+	inline float bipolarToUnipolar(float dValue);
+	inline float midiToPanValue(uint8 uMIDIValue);
+	inline float midiToBipolar(uint8 uMIDIValue);
+	inline float unipolarToBipolar(float dValue);
 
 	modMatrixRow** matrixCore;
 	uint8 size;

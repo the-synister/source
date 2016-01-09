@@ -5,6 +5,9 @@
 #include "ModulationMatrix.h"
 #include "Envelope.h"
 
+// 46.881879936465680 semitones = semitonesBetweenFrequencies(80, 18000.0)/2.0
+#define FILTER_FC_MOD_RANGE 46.881879936465680f
+
 class Sound : public SynthesiserSound {
 public:
     bool appliesToNote(int /*midiNoteNumber*/) override { return true; }
@@ -287,7 +290,7 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * envToVolMod[s];
+                currentSample = ladderFilter(biquadFilter2(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -402,8 +405,21 @@ protected:
             globalModMatrix.sources[SOURCE_LFO1] = lfoVal;
 
             // TODO: repeat for all lfos
-            // value range
-            // 
+
+            // LFO1 -> FILTER1 FC
+            //modMatrixRow = createModMatrixRow(SOURCE_LFO1,
+            //                                    DEST_FILT_FC,
+            //                                    params.lpModAmout.getPointer(),
+            //                                    &FILTER_FC_MOD_RANGE,
+            //                                    TRANSFORM_NONE,
+            //                                    true); 
+            filter1Fc = FILTER_FC_MOD_RANGE;
+            globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
+                DEST_FILT_FC,
+                params.lpModAmout.getPointer(),
+                &filter1Fc,
+                TRANSFORM_NONE,
+                true));
 
             // Update of the modulation amount value
             modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;
@@ -418,7 +434,7 @@ protected:
             }
         }
     }
-    void renderModulation(int numSamples) {
+    void renderModulation2(int numSamples) {
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
@@ -604,7 +620,9 @@ private:
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer envToCutoffBuffer;
 
-    ModulationMatrix globalModMatrix;
+    ModulationMatrix &globalModMatrix;
+    modMatrixRow* modMatrixRow;
+    float filter1Fc;
 
     Envelope envToCutoff;
     Envelope envToVolume;

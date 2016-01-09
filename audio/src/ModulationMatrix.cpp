@@ -76,7 +76,7 @@ inline void ModulationMatrix::clearSources()
 {
 	for (int i = 0; i<MAX_DESTINATIONS; i++)
 	{
-		sources[i] = 0.0;
+		sources[i] = 0.0f;
 	}
 }
 
@@ -84,11 +84,11 @@ inline void ModulationMatrix::clearDestinations()
 {
 	for (int i = 0; i<MAX_SOURCES; i++)
 	{
-		destinations[i] = 0.0;
+		destinations[i] = 0.0f;
 	}
 }
 
-inline void ModulationMatrix::addModMatrixRow(modMatrixRow * row)
+void ModulationMatrix::addModMatrixRow(modMatrixRow * row)
 {
 	if (!matrixCore)
 		createMatrixCore();
@@ -120,16 +120,14 @@ inline bool ModulationMatrix::modMatrixRowExists(uint8 sourceIndex, uint8 destin
 	return false;
 }
 
-inline bool ModulationMatrix::createMatrixCore()
+inline void ModulationMatrix::createMatrixCore()
 {
-	if (matrixCore)
-		delete[] matrixCore;
+    if (matrixCore)
+        delete[] matrixCore;
 
-	// --- dynamic allocation of matrix core
-	matrixCore = new modMatrixRow*[MAX_SOURCES *
-		MAX_DESTINATIONS];
-	memset(matrixCore, 0, MAX_SOURCES *
-		MAX_DESTINATIONS*sizeof(modMatrixRow*));
+    // --- dynamic allocation of matrix core
+    matrixCore = new modMatrixRow*[MAX_SOURCES*MAX_DESTINATIONS];
+    memset(matrixCore, 0, MAX_SOURCES*MAX_DESTINATIONS*sizeof(modMatrixRow*));
 }
 
 inline void ModulationMatrix::deleteModMatrix()
@@ -189,9 +187,9 @@ calculates the bipolar (-1 -> +1) value from a unipolar (0 -> 1) value
 
 dValue = the value to convert
 */
-inline double ModulationMatrix::unipolarToBipolar(double dValue)
+inline float ModulationMatrix::unipolarToBipolar(float dValue)
 {
-	return 2.0*dValue - 1.0;
+	return 2.0f*dValue - 1.0f;
 }
 
 /* midiToBipolar()
@@ -200,9 +198,9 @@ calculates the bipolar (-1 -> +1) value from a unipolar MIDI (0 -> 127) value
 
 uint8 uMIDIValue = the MIDI value to convert
 */
-inline double ModulationMatrix::midiToBipolar(uint8 uMIDIValue)
+inline float ModulationMatrix::midiToBipolar(uint8 uMIDIValue)
 {
-	return (2.0*static_cast<double>(uMIDIValue) / 127.0 - 1.0);
+	return (2.0f*static_cast<float>(uMIDIValue) / 127.0f - 1.0f);
 }
 
 /* midiToPanValue()
@@ -211,15 +209,15 @@ calculates the pan value (-1 -> +1) value from a unipolar MIDI (0 -> 127) value
 
 uint8 uMIDIValue = the MIDI value to convert
 */
-inline double ModulationMatrix::midiToPanValue(uint8 uMIDIValue)
+inline float ModulationMatrix::midiToPanValue(uint8 uMIDIValue)
 {
 	// see MMA DLS Level 2 Spec; controls are asymmetrical
 	if (uMIDIValue == 64)
-		return 0.0;
+		return 0.0f;
 	else if (uMIDIValue <= 1) // 0 or 1
-		return -1.0;
+		return -1.0f;
 
-	return (2.0*static_cast<double>(uMIDIValue) / 127.0 - 1.0);
+	return (2.0f*static_cast<float>(uMIDIValue) / 127.0f - 1.0f);
 }
 
 /* bipolarToUnipolar()
@@ -228,9 +226,9 @@ calculates the unipolar (0 -> 1) value from a bipolar (-1 -> +1) value
 
 dValue = the value to convert
 */
-inline double ModulationMatrix::bipolarToUnipolar(double dValue)
+inline float ModulationMatrix::bipolarToUnipolar(float dValue)
 {
-	return 0.5*dValue + 0.5;
+	return 0.5f*dValue + 0.5f;
 }
 
 /* midiToUnipolar()
@@ -239,9 +237,9 @@ calculates the unipolar (0 -> 1) value from a MIDI (0 -> 127) value
 
 dValue = the value to convert
 */
-inline double ModulationMatrix::ModulationMatrix::midiToUnipolar(uint8 uMIDIValue)
+inline float ModulationMatrix::ModulationMatrix::midiToUnipolar(uint8 uMIDIValue)
 {
-	return (double)uMIDIValue / 127.0;
+	return static_cast<float>(uMIDIValue) / 127.0f;
 }
 
 /* unipolarToMIDI()
@@ -252,7 +250,7 @@ dValue = the value to convert
 */
 inline uint8 ModulationMatrix::unipolarToMIDI(float fUnipolarValue)
 {
-	return static_cast<uint8>(fUnipolarValue*127.0);
+	return static_cast<uint8>(fUnipolarValue*127.0f);
 }
 
 /* mmaMIDItoAtten_dB()
@@ -261,12 +259,12 @@ calculates the dB of attenuation according to MMA DLS spec
 
 uMIDIValue = the MIDI (0 -> 127) value to convert
 */
-inline double ModulationMatrix::mmaMIDItoAtten_dB(uint8 uMIDIValue)
+inline float ModulationMatrix::mmaMIDItoAtten_dB(uint8 uMIDIValue)
 {
 	if (uMIDIValue == 0)
-		return -96.0; // dB floor
+		return -96.0f; // dB floor
 
-	return 20.0*log10((127.0*127.0) / ((float)uMIDIValue*(float)uMIDIValue));
+	return 20.0f*log10((127.0f*127.0f) / ((static_cast<float>(uMIDIValue)*static_cast<float>(uMIDIValue))));
 }
 
 /* mmaMIDItoAtten()
@@ -275,12 +273,12 @@ calculates the raw attenuation according to MMA DLS spec
 
 uMIDIValue = the MIDI (0 -> 127) value to convert
 */
-inline double ModulationMatrix::mmaMIDItoAtten(uint8 uMIDIValue)
+inline float ModulationMatrix::mmaMIDItoAtten(uint8 uMIDIValue)
 {
 	if (uMIDIValue == 0)
-		return 0.0; // floor
+		return 0.0f; // floor
 
-	return (static_cast<double>(uMIDIValue)*static_cast<double>(uMIDIValue)) / (127.0*127.0);
+	return (static_cast<float>(uMIDIValue)*static_cast<float>(uMIDIValue)) / (127.0f*127.0f);
 }
 
 inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
@@ -305,7 +303,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
 		if (!checkDestinationLayer(modLayer, row)) continue;
 
 		// get the source value
-		double source = sources[row->sourceIndex];
+		float source = sources[row->sourceIndex];
 
 		switch (row->sourceTransform)
 		{
@@ -326,7 +324,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
 			break;
 
 		case TRANSFORM_MIDI_SWITCH:
-			source = source > 63 ? 1.0 : 0.0;
+			source = source > 63.0f ? 1.0f : 0.0f;
 			break;
 
 		case TRANSFORM_MIDI_TO_BIPOLAR:
@@ -338,12 +336,12 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
 			break;
 
 		case TRANSFORM_MIDI_NORMALIZE:
-			source /= 127.0; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
+			source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
 			break;
 
 		case TRANSFORM_INVERT_MIDI_NORMALIZE:
-			source /= 127.0; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
-			source = 1.0 - source; // 1->0 NOTE: MMA DLS uses divide-by-128 instead!, 0.9999->0
+			source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
+			source = 1.0f - source; // 1->0 NOTE: MMA DLS uses divide-by-128 instead!, 0.9999->0
 			break;
 
 		default:
@@ -352,7 +350,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
 
 		// destination += source*intensity*range
 		//
-		double dModValue = source*(*row->modIntensity)*(*row->modRange);
+		float dModValue = source*(*row->modIntensity)*(*row->modRange);
 
 		destinations[row->destinationIndex] += dModValue;
 
