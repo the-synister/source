@@ -48,7 +48,6 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
-    Param lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
     ParamStepped<eOnOffToggle> lfo1TempSync; //!< checked or not, 0 = off, 1 = on
     Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
