@@ -94,6 +94,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     wave->setValue(params.lfo1wave.getUI());
     tempoSyncSwitch->setToggleState(0,0);
     notelength->setValue(params.noteLength.getUI());
+    registerSlider(notelength, &params.noteLength);
     registerSlider(wave, &params.lfo1wave);
     //[/UserPreSize]
 
@@ -171,7 +172,7 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == notelength)
     {
         //[UserSliderCode_notelength] -- add your slider handling code here..
-        params.noteLength.setUI(notelength->getValue());
+        //params.noteLength.setUI(notelength->getValue());
         //[/UserSliderCode_notelength]
     }
 

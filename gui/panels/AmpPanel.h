@@ -58,8 +58,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> amp;
-    ScopedPointer<Slider> pan;
+    ScopedPointer<MouseOverKnob> amp;
+    ScopedPointer<MouseOverKnob> pan;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;
 

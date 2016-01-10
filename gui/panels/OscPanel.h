@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -64,6 +65,10 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<WaveformVisual> waveformVisual;
+    ScopedPointer<Slider> waveformSwitch;
+    ScopedPointer<Label> sawlabel;
+    ScopedPointer<Label> squarelabel;
 
 
     //==============================================================================
