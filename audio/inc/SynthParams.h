@@ -12,6 +12,11 @@ enum class eLfoWaves : int {
     nSteps = 3
     };
     
+enum class eOnSwitch : int {
+	on = 1,
+	off = 0,
+	nSteps = 2
+};
 
 class SynthParams {
 public:
@@ -22,7 +27,7 @@ public:
 
     Param lfo1freq; //!< lfo frequency in Hz
     Param lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-    Param lfo1TempSync; //!< bool if checked or not
+    ParamStepped<eOnSwitch> lfo1TempSync; //!< bool if checked or not
     Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 

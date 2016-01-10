@@ -61,13 +61,13 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> freq;
+    ScopedPointer<MouseOverKnob> wave;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> squareWaveLabel;
     ScopedPointer<Label> sampleAndHoldLabel;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
     ScopedPointer<Slider> notelength;
     ScopedPointer<Label> label4;
-    ScopedPointer<MouseOverKnob> wave;
 
 
     //==============================================================================
