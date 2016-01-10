@@ -104,6 +104,8 @@ public:
         , inputDelay2(0.f)
         , outputDelay1(0.f)
         , outputDelay2(0.f)
+        , bandpassDelay1(0.f)
+        , bandpassDelay2(0.f)
         , params(p)
         , level(0.f)
         , ladderOut(0.f)
@@ -147,6 +149,9 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
+
+        bandpassDelay1 = 0.f;
+        bandpassDelay2 = 0.f;
 
         currentVelocity = velocity;
 
@@ -263,10 +268,7 @@ public:
                     currentSample = (osc1Saw.next(pitchMod[s]));
                     break;
                 }
-
-                if (params.passtype.getStep() == eBiquadFilters::eBandpass) currentSample = biquadBandpass(currentSample, 0);
-                else currentSample = biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], eBiquadFilters::eBandpass);
-
+                currentSample = biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep());
                 currentSample = ladderFilter(currentSample) * level * env1Mod[s];
 
                 //check if the output is a stereo output
@@ -460,49 +462,6 @@ protected:
         }
     }
 
-    float biquadBandpass(float inputSignal, float modValue) {
-        // based on http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
-        if (params.lpCutoff.get() <= params.hpCutoff.get()) {
-            return 0; // if no frequencies should be passed
-        }
-        float moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2;
-        const float Fs = static_cast<float>(getSampleRate());
-        // maybe TODO: what about mod sources and how to use mod value? which one should it modulate?
-
-        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            moddedFreq = params.lpCutoff.getMin();
-        } else if (moddedFreq > params.lpCutoff.getMax()) {
-            moddedFreq = params.lpCutoff.getMax();
-        }
-
-        float a0, a1, a2, b1, b2, norm;
-        float Fc = moddedFreq;
-        float K = tan(float_Pi * Fc / Fs);
-        float Q = Fc / (params.lpCutoff.get() - params.hpCutoff.get());
-    
-        norm = 1 / (1 + K / Q + K * K);
-        a0 = K / Q * norm;
-        a1 = 0;
-        a2 = -a0;
-        b1 = 2 * (K * K - 1) * norm;
-        b2 = (1 - K / Q + K * K) * norm;
-        inputSignal = a0*inputSignal + a1*inputDelay1 + a2*inputDelay2 - b1*outputDelay1 - b2*outputDelay2;
-
-        lastSample = inputSignal;
-
-        //delaying samples
-        inputDelay2 = inputDelay1;
-        inputDelay1 = lastSample;
-        outputDelay2 = outputDelay1;
-        outputDelay1 = inputSignal;
-
-        if (inputSignal > 1.f) {
-            inputSignal = 1.f;
-        }
-
-        return inputSignal;
-    }
-
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
 
@@ -532,12 +491,11 @@ protected:
             moddedFreq = params.lpCutoff.getMax();
         }
         
-        if (filterType != eBiquadFilters::eBandpass) {
-            moddedFreq /= sRate;
-        }
+        moddedFreq /= sRate;
 
-        //New Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a1, a2;
+        // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
+        // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
+        float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
 
         const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
@@ -566,58 +524,31 @@ protected:
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
         } else if (filterType == eBiquadFilters::eBandpass) {
-            if (params.lpCutoff.get() <= params.hpCutoff.get()) {
-                return 0; // if no frequencies should be passed
-            }
-            // bandpass coefficients based on http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
-            float K = tan(float_Pi * moddedFreq /sRate);
-            float Q = moddedFreq / (params.lpCutoff.get() - params.hpCutoff.get());
-            float norm = 1 / (1 + K / Q + K * K);
+            // coefficients for bandpass, depending on low- and highcut frequency
+            w0 = 2 * float_Pi*moddedFreq;
+            bw = (log2(params.lpCutoff.get() / params.hpCutoff.get())); // bandwidth in octaves
+            coeff1 = sin(w0)*sinh(log10(2) / 2 * bw * w0 / sin(w0)); // intermediate value for coefficient calc
 
-
-            b0 = K / Q * norm;
+            b0 = coeff1;
             b1 = 0;
-            b2 = -b0;
-            a1 = 2 * (K * K - 1) * norm;
-            a2 = (1 - K / Q + K * K) * norm;
-
-            ////////////////////////////////////////
-            //float a0, a1, a2, b1, b2, norm;
-            //float Fc = moddedFreq;
-            //float K = tan(float_Pi * Fc / Fs);
-            //float Q = Fc / (params.lpCutoff.get() - params.hpCutoff.get());
-
-            //norm = 1 / (1 + K / Q + K * K);
-            //a0 = K / Q * norm;
-            //a1 = 0;
-            //a2 = -a0;
-            //b1 = 2 * (K * K - 1) * norm;
-            //b2 = (1 - K / Q + K * K) * norm;
-            //inputSignal = a0*inputSignal + a1*inputDelay1 + a2*inputDelay2 - b1*outputDelay1 - b2*outputDelay2;
-
-            //lastSample = inputSignal;
-
-            ////delaying samples
-            //inputDelay2 = inputDelay1;
-            //inputDelay1 = lastSample;
-            //outputDelay2 = outputDelay1;
-            //outputDelay1 = inputSignal;
-
-            //if (inputSignal > 1.f) {
-            //    inputSignal = 1.f;
-            //}
-
-            //return inputSignal;
+            b2 = -coeff1;
+            a0 = 1 + coeff1;
+            a1 = -2 * cos(w0);
+            a2 = 1 - coeff1;
         }
-       
-
-        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
         lastSample = inputSignal;
+
+        // different biquad form for bandpass filter, it has more coefficients as well
+        if (filterType == eBiquadFilters::eBandpass) {
+            inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
+        } else {
+            inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+        }
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
-
         outputDelay1 = inputSignal;
 
         if (inputSignal > 1.f) {
@@ -630,7 +561,7 @@ protected:
 private:
     SynthParams &params;
     //New Filter Design
-    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
+    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, bandpassDelay1, bandpassDelay2;
     
     Oscillator<&Waveforms::square> osc1Sine;
     Oscillator<&Waveforms::saw> osc1Saw;
