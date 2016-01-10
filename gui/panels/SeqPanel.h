@@ -99,6 +99,9 @@ private:
     ScopedPointer<Label> labelSeqLength;
     ScopedPointer<Label> labelSeqStepNum;
     ScopedPointer<ToggleButton> playRandom;
+    ScopedPointer<ToggleButton> triplets;
+    ScopedPointer<TextButton> saveSeq;
+    ScopedPointer<TextButton> loadSeq;
 
 
     //==============================================================================

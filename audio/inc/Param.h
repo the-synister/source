@@ -34,7 +34,6 @@ public:
     }
     float get() const { return val_.load(); }
 
-
     virtual void setUI(float f, bool notifyHost = true) {
         if (f >= min_ && f <= max_) set(f);
         else set(default_);

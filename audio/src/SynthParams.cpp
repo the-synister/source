@@ -34,10 +34,12 @@ SynthParams::SynthParams()
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
-    &seqPlayMode, &seqNumSteps, &seqStepSpeedIndex, &seqStepLengthIndex, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7, &seqStep8,
-    &seqStepPlay1, &seqStepPlay2, &seqStepPlay3, &seqStepPlay4, &seqStepPlay5, &seqStepPlay6, &seqStepPlay7, &seqStepPlay8, &seqRandomMin, &seqRandomMax,
+    &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
+    &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &panDir, &vol, 
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
+, stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
+    &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax}
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
@@ -56,7 +58,7 @@ SynthParams::SynthParams()
 , envDecay("Decay", "envDecay", "s", 0.001f, 5.0f, 0.05f)
 , envSustain("Sustain", "envSustain", "dB", -96.0f, 0.0f, -5.0f)
 , envRelease("Release", "envRelease", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("keyVel to Env", "", "veloToKey", 0.0f, 1.0f, 0.0f) // 2nd and 3rd param swapped?
+, keyVelToEnv("keyVel to Env", "veloToKey", "", 0.0f, 1.0f, 0.0f)
 , envAttackShape("Attack Shape", "envAttackShape", "", 0.01f, 10.0f, 1.0f)
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
@@ -80,26 +82,27 @@ SynthParams::SynthParams()
 , seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
 , seqPlayMode("SeqPlayMode", "seqPlayMode", eSeqPlayModes::sequential, seqPlayModeNames)
 , seqNumSteps("Steps", "seqNumSteps", "steps", 1.0f, 8.0f, 8.0f)
-, seqStepSpeedIndex("Speed", "seqStepSpeed", "qn", 0.0f, 7.0f, 4.0f)
-, seqStepLengthIndex("Length", "seqNoteLength", "qn", 0.0f, 7.0f, 4.0f)
-, seqRandomMin("Min", "randomMin", "", 0.0f, 127.0f, 0.0f)
-, seqRandomMax("Max", "randomMax", "", 0.0f, 127.0f, 127.0f)
-, seqStep1("Step 1", "seqNote1", "", 0.0f, 127.0f, 60.0f)
-, seqStep2("Step 2", "seqNote2", "", 0.0f, 127.0f, 62.0f)
-, seqStep3("Step 3", "seqNote3", "", 0.0f, 127.0f, 64.0f)
-, seqStep4("Step 4", "seqNote4", "", 0.0f, 127.0f, 65.0f)
-, seqStep5("Step 5", "seqNote5", "", 0.0f, 127.0f, 67.0f)
-, seqStep6("Step 6", "seqNote6", "", 0.0f, 127.0f, 69.0f)
-, seqStep7("Step 7", "seqNote7", "", 0.0f, 127.0f, 71.0f)
-, seqStep8("Step 8", "seqNote8", "", 0.0f, 127.0f, 72.0f)
-, seqStepPlay1("StepPlay1", "seqNotePlay1", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay2("StepPlay2", "seqNotePlay2", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay3("StepPlay3", "seqNotePlay3", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay4("StepPlay4", "seqNotePlay4", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay5("StepPlay5", "seqNotePlay5", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay6("StepPlay6", "seqNotePlay6", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay7("StepPlay7", "seqNotePlay7", eOnOffToggle::eOn, onoffnames)
-, seqStepPlay8("StepPlay8", "seqNotePlay8", eOnOffToggle::eOn, onoffnames)
+, seqStepSpeed("Speed", "seqStepSpeed", "qn", 0.0625f, 4.0f, 1.0f)
+, seqStepLength("Length", "seqNoteLength", "qn", 0.0625f, 4.0f, 1.0f)
+, seqTriplets("Seq Triplets", "seqTriplets", eOnOffToggle::eOff, onoffnames)
+, seqRandomMin("Min", "seqRandomMin", "", 0.0f, 127.0f, 0.0f)
+, seqRandomMax("Max", "seqRandomMax", "", 0.0f, 127.0f, 127.0f)
+, seqStep0("Step 0", "seqNote0", "", 0.0f, 127.0f, 60.0f)
+, seqStep1("Step 1", "seqNote1", "", 0.0f, 127.0f, 62.0f)
+, seqStep2("Step 2", "seqNote2", "", 0.0f, 127.0f, 64.0f)
+, seqStep3("Step 3", "seqNote3", "", 0.0f, 127.0f, 65.0f)
+, seqStep4("Step 4", "seqNote4", "", 0.0f, 127.0f, 67.0f)
+, seqStep5("Step 5", "seqNote5", "", 0.0f, 127.0f, 69.0f)
+, seqStep6("Step 6", "seqNote6", "", 0.0f, 127.0f, 71.0f)
+, seqStep7("Step 7", "seqNote7", "", 0.0f, 127.0f, 72.0f)
+, seqStepActive0("Step 0 Active", "seqStepActive0", eOnOffToggle::eOn, onoffnames)
+, seqStepActive1("Step 1 Active", "seqStepActive1", eOnOffToggle::eOn, onoffnames)
+, seqStepActive2("Step 2 Active", "seqStepActive2", eOnOffToggle::eOn, onoffnames)
+, seqStepActive3("Step 3 Active", "seqStepActive3", eOnOffToggle::eOn, onoffnames)
+, seqStepActive4("Step 4 Active", "seqStepActive4", eOnOffToggle::eOn, onoffnames)
+, seqStepActive5("Step 5 Active", "seqStepActive5", eOnOffToggle::eOn, onoffnames)
+, seqStepActive6("Step 6 Active", "seqStepActive6", eOnOffToggle::eOn, onoffnames)
+, seqStepActive7("Step 7 Active", "seqStepActive7", eOnOffToggle::eOn, onoffnames)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
@@ -113,29 +116,34 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
     patch->addChildElement(node);
 }
 
-void SynthParams::writeXMLPatchTree(XmlElement* patch) {
+void SynthParams::writeXMLPatchTree(XmlElement* patch, bool allParams) {
     // set version of the patch
     patch->setAttribute("version", version);
 
-    // TODO: branch for seq params only?
+    std::vector<Param*> parameters = serializeParams;
+    if (!allParams)
+    {
+        parameters = stepSeqParams;
+    }
+
     // iterate over all params and insert them into the tree
-    for (auto &param : serializeParams) {
+    for (auto &param : parameters) {
         float value = param->getUI();
         addElement(patch, param->serializationTag(), value);
     }
 }
 
-void SynthParams::writeXMLPatchHost(MemoryBlock& destData) {
+void SynthParams::writeXMLPatchHost(MemoryBlock& destData, bool allParams) {
     // create an outer node of the patch
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
-    writeXMLPatchTree(patch);
+    writeXMLPatchTree(patch, allParams);
     AudioProcessor::copyXmlToBinary(*patch, destData);
 }
 
-void SynthParams::writeXMLPatchStandalone() {
+void SynthParams::writeXMLPatchStandalone(bool allParams) {
     // create an outer node of the patch
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
-    writeXMLPatchTree(patch);
+    writeXMLPatchTree(patch, allParams);
 
     // create the output
     FileChooser saveDirChooser("Please select the place you want to save!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
@@ -152,13 +160,13 @@ void SynthParams::writeXMLPatchStandalone() {
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
-        param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params, why?
-                                                                                                            // not tested for others yet
+        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params
+                                                                                                            // but then at least amp vol is not always updated; not further tested
     }
 }
 
 // set all values from xml file in params
-void SynthParams::fillValues(XmlElement* patch) {
+void SynthParams::fillValues(XmlElement* patch, bool allParams) {
     // if the versions don't align, inform the user
     if (patch == NULL) return;
     if (patch->getTagName() != "patch" || (static_cast<float>(patch->getDoubleAttribute("version"))) > version) {
@@ -167,26 +175,31 @@ void SynthParams::fillValues(XmlElement* patch) {
             "OK");
     }
 
-    // TODO: branch for seq params only?
+    std::vector<Param*> parameters = serializeParams;
+    if (!allParams)
+    {
+        parameters = stepSeqParams;
+    }
+
     // iterate over all params and set the values if they exist in the xml
-    for (auto &param : serializeParams) {
+    for (auto &param : parameters) {
         fillValueIfExists(patch, param->serializationTag(), *param);
     }
 
 }
-void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes) {
+void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes, bool allParams) {
     ScopedPointer<XmlElement> patch = AudioProcessor::getXmlFromBinary(data, sizeInBytes);
-    fillValues(patch);
+    fillValues(patch, allParams);
 }
 
-void SynthParams::readXMLPatchStandalone() {
+void SynthParams::readXMLPatchStandalone(bool allParams) {
     // read the xml params into the synth params
     FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
     if (openFileChooser.browseForFileToOpen())
 {
         File openedFile(openFileChooser.getResult());
         ScopedPointer<XmlElement> patch = XmlDocument::parse(openedFile);
-        fillValues(patch);
+        fillValues(patch, allParams);
     }
 }
 

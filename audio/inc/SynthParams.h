@@ -84,27 +84,28 @@ public:
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
-    Param seqNumSteps;                       //!< index of number of steps combobox, results in [1..8] steps
-    Param seqStepSpeedIndex;                 //!< index of step speed, results in [0.0625..4] quarter notes
-    Param seqStepLengthIndex;                //!< index of step length, results in [0.0625..seqStepSpeed] quarter notes
+    Param seqNumSteps;                       //!< number of steps in [1..8] steps
+    Param seqStepSpeed;                      //!< step speed in [0.0625..4] quarter notes
+    Param seqStepLength;                     //!< step length in [0.0625..4] quarter notes
+    ParamStepped<eOnOffToggle> seqTriplets;  //!< activate triplet tempo? 0 = no, 1 = active
     Param seqRandomMin;                      //!< randomMin value as int in [0..127]
     Param seqRandomMax;                      //!< randomMax value as int in [0..127]
-    Param seqStep1;                          //!< midi note as int in [0..127]
-    Param seqStep2;                  
+    Param seqStep0;                          //!< midi note as int in [0..127]
+    Param seqStep1;                  
+    Param seqStep2;
     Param seqStep3;
     Param seqStep4;
     Param seqStep5;
     Param seqStep6;
     Param seqStep7;
-    Param seqStep8;
-    ParamStepped<eOnOffToggle> seqStepPlay1;    //!< play/mute seqStep
-    ParamStepped<eOnOffToggle> seqStepPlay2;
-    ParamStepped<eOnOffToggle> seqStepPlay3;
-    ParamStepped<eOnOffToggle> seqStepPlay4;
-    ParamStepped<eOnOffToggle> seqStepPlay5;
-    ParamStepped<eOnOffToggle> seqStepPlay6;
-    ParamStepped<eOnOffToggle> seqStepPlay7;
-    ParamStepped<eOnOffToggle> seqStepPlay8;
+    ParamStepped<eOnOffToggle> seqStepActive0;    //!< seqStep should play? 0 = mute, 1 = active
+    ParamStepped<eOnOffToggle> seqStepActive1;
+    ParamStepped<eOnOffToggle> seqStepActive2;
+    ParamStepped<eOnOffToggle> seqStepActive3;
+    ParamStepped<eOnOffToggle> seqStepActive4;
+    ParamStepped<eOnOffToggle> seqStepActive5;
+    ParamStepped<eOnOffToggle> seqStepActive6;
+    ParamStepped<eOnOffToggle> seqStepActive7;
 
     Param osc1WaveForm;//!< int value for defining waveform [1..3]
 
@@ -131,20 +132,22 @@ public:
 
     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams;
+    // list of only stepSeq params, specified with @param allParams = false
+    std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
 
-    void writeXMLPatchHost(MemoryBlock& destData);
+    void writeXMLPatchHost(MemoryBlock& destData, bool allParams);
 
-    void writeXMLPatchStandalone();
+    void writeXMLPatchStandalone(bool allParams);
 
     void fillValueIfExists(XmlElement * patch, String paramName, Param& param);
 
-    void fillValues(XmlElement * patch);
+    void fillValues(XmlElement * patch, bool allParams);
 
-    void readXMLPatchHost(const void * data, int sizeInBytes);
+    void readXMLPatchHost(const void * data, int sizeInBytes, bool allParams);
 
-    void readXMLPatchStandalone();
+    void readXMLPatchStandalone(bool allParams);
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
@@ -156,5 +159,5 @@ public:
 protected:
 private:
     void addElement(XmlElement* patch, String name, float value); // adds an element to the XML tree
-    void writeXMLPatchTree(XmlElement * patch);
+    void writeXMLPatchTree(XmlElement * patch, bool allParams);
 };

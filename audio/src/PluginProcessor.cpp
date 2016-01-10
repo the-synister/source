@@ -196,8 +196,8 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
 
-    midiMessages.clear(); // NOTE: for now so debugger does not show jassert
-    // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
+    //midiMessages.clear(); // NOTE: for now so debugger does not complain
+                          // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
 }
 
 void PluginAudioProcessor::updateHostInfo()
@@ -227,12 +227,12 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    SynthParams::writeXMLPatchHost(destData);
+    SynthParams::writeXMLPatchHost(destData, true);
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    SynthParams::readXMLPatchHost(data, sizeInBytes);
+    SynthParams::readXMLPatchHost(data, sizeInBytes, true);
 }
 
 //==============================================================================
