@@ -27,7 +27,11 @@ public:
 private:
 	SynthParams &params;
 	AudioSampleBuffer chorusBuffer;
-	Oscillator<&Waveforms::sinus> modSine;
+	Oscillator<&Waveforms::sinus> modSine1;
+	Oscillator<&Waveforms::sinus> modSine2;
+	Oscillator<&Waveforms::sinus> modSine3;
+	Oscillator<&Waveforms::sinus> modSine4;
+	Oscillator<&Waveforms::sinus> modSine5;
 	double sampleRate;
 	int channels;
 	int currentDelayLength;
