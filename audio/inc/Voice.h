@@ -32,6 +32,10 @@ struct Waveforms {
         if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
         else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
     }
+    
+    static float whiteNoise(float phs, float trngAmount, float width) {
+        return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
+    }
 };
 
 
@@ -195,6 +199,14 @@ public:
             attackDecayCounter = 0;
             break;
         }
+            case 3:
+            {
+                osc1WhiteNoise.phase = 0.f;
+                osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                attackDecayCounter = 0;
+                break;
+
+            }
         }
     }
 
@@ -220,6 +232,7 @@ public:
             lfo1random.reset();
             osc1Sine.reset();
             osc1Saw.reset();
+            osc1WhiteNoise.reset();
         }
     }
 
@@ -260,12 +273,15 @@ public:
                 float currentSample;
                 switch (wf)
                 {
-                case 1:
-                    currentSample = (osc1Sine.next(pitchMod[s]));
-                    break;
-                case 2:
-                    currentSample = (osc1Saw.next(pitchMod[s]));
-                    break;
+                    case 1:
+                        currentSample = (osc1Sine.next(pitchMod[s]));
+                        break;
+                    case 2:
+                        currentSample = (osc1Saw.next(pitchMod[s]));
+                        break;
+                    case 3:
+                        currentSample = (osc1WhiteNoise.next(pitchMod[s]));
+                        break;
                 }
 
                 currentSample = ladderFilter(biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep())) * level * env1Mod[s];
@@ -555,7 +571,8 @@ private:
     
     Oscillator<&Waveforms::square> osc1Sine;
     Oscillator<&Waveforms::saw> osc1Saw;
-
+    Oscillator<&Waveforms::whiteNoise> osc1WhiteNoise;
+    
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;

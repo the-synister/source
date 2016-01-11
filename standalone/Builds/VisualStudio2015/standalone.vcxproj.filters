@@ -1656,12 +1656,6 @@
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\UnitTestApplication.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\UnitTests.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>

@@ -1297,8 +1297,6 @@
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
-    <ClInclude Include="..\..\..\audio\inc\UnitTestApplication.h"/>
-    <ClInclude Include="..\..\..\audio\inc\UnitTests.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
