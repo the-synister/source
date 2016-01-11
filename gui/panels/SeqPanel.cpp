@@ -500,6 +500,8 @@ void SeqPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_randomSeq] -- add your slider handling code here..
         seq->setRandMin(static_cast<int>(randomSeq->getMinValue()));
         seq->setRandMax(static_cast<int>(randomSeq->getMaxValue()));
+        randMinLabel->setText("Min: " + seq->getRandMinNoteName(true, true, 3), dontSendNotification);
+        randMaxLabel->setText("Max: " + seq->getRandMaxNoteName(true, true, 3), dontSendNotification);
         //[/UserSliderCode_randomSeq]
     }
 
@@ -516,12 +518,16 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_seqPlay] -- add your button handler code here..
         seq->playNoHost(!seq->isPlaying());
+        syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
+        seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
         //[/UserButtonCode_seqPlay]
     }
     else if (buttonThatWasClicked == syncHost)
     {
         //[UserButtonCode_syncHost] -- add your button handler code here..
         seq->syncToHost(!seq->isHostSynced());
+        syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
+        seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
         //[/UserButtonCode_syncHost]
     }
     else if (buttonThatWasClicked == labelButton1)
@@ -590,12 +596,16 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_playUpDown] -- add your button handler code here..
         seq->playUpDown(!seq->isPlayUpDown());
+        playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+        playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
         //[/UserButtonCode_playUpDown]
     }
     else if (buttonThatWasClicked == playRandom)
     {
         //[UserButtonCode_playRandom] -- add your button handler code here..
         seq->playRandom(!seq->isPlayRandom());
+        playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
+        playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
         //[/UserButtonCode_playRandom]
     }
     else if (buttonThatWasClicked == triplets)
@@ -654,16 +664,12 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 /*
-* timerCallback() is needed here to display the currently playing note step. Furthermore, some
-  setToggleState() calls are made here due to their parameter dependencies with each other (see stepSequencer).
-  randMinLabel and randMaxLabel are not updated propery if setText() is called above in sliderValueChanged().
+* timerCallback() is needed here to display the currently playing note step.
 */
 void SeqPanel::timerCallback()
 {
     if (seq->isPlaying())
     {
-        syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-        seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
         if (lastSeqNotePos != seq->getLastSeqNote())
         {
             // colour current playing seqNote slider
@@ -682,16 +688,10 @@ void SeqPanel::timerCallback()
         // reset gui state
         if (lastSeqNotePos != -1)
         {
-            syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-            seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
             seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
             lastSeqNotePos = -1;
         }
     }
-    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
-    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
-    randMinLabel->setText("Min: " + seq->getRandMinNoteName(true, true, 3), dontSendNotification);
-    randMaxLabel->setText("Max: " + seq->getRandMaxNoteName(true, true, 3), dontSendNotification);
 
     PanelBase::timerCallback();
 }

@@ -160,8 +160,8 @@ void SynthParams::writeXMLPatchStandalone(bool allParams) {
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
-        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params
-                                                                                                            // but then at least amp vol is not always updated; not further tested
+        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least 
+                                                                                                            // delay feedback and dry are bad and (ampVol sometimes); not further tested
     }
 }
 

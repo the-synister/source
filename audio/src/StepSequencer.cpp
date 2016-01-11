@@ -56,13 +56,9 @@ StepSequencer::StepSequencer(SynthParams &p)
     }
 
     // get GUI params
-    seqMode = params.seqMode.getStep();
-    seqPlayMode = params.seqPlayMode.getStep();
     seqStepSpeed = params.seqStepSpeed.get();
     seqStepLength = jmin(params.seqStepLength.get(), seqStepSpeed);
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
-    randomMin = static_cast<int>(params.seqRandomMin.get());
-    randomMax = static_cast<int>(params.seqRandomMax.get());
 }
 
 StepSequencer::~StepSequencer()
@@ -72,20 +68,17 @@ StepSequencer::~StepSequencer()
 void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sampleRate)
 {
     // get GUI params
-    seqMode = params.seqMode.getStep();
-    seqPlayMode = params.seqPlayMode.getStep();
     seqStepSpeed = params.seqStepSpeed.get();
     seqStepLength = jmin(params.seqStepLength.get(), seqStepSpeed);
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
-    randomMin = static_cast<int>(params.seqRandomMin.get());
-    randomMax = static_cast<int>(params.seqRandomMax.get());
+
     if (isTripletActive())
     {
         seqStepSpeed *= 2.0f / 3.0f;
         seqStepLength *= 2.0f / 3.0f;
     }
 
-    switch (seqMode)
+    switch (params.seqMode.getStep())
     {
     case eSeqModes::seqPlay:
         seqNoHostSync(midiMessages, bufferSize, sampleRate);
@@ -116,7 +109,7 @@ void StepSequencer::stopPlaying()
 
 void StepSequencer::playNoHost(bool play)
 {
-    if (seqMode != eSeqModes::seqSyncHost)
+    if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
     {
         if (play)
         {
@@ -175,15 +168,18 @@ void StepSequencer::generateRandomSeq()
 {
     for (int i = 0; i < 8; ++i)
     {
-        setStepRandom(i, randomMin, randomMax);
+        setStepRandom(i);
     }
 }
 
-void StepSequencer::setStepRandom(int step, int min, int max)
+void StepSequencer::setStepRandom(int step)
 {
+    float min = params.seqRandomMin.get();
+    float max = params.seqRandomMax.get();
+
     Random r = Random();
     r.setSeedRandomly();
-    currMidiStepSeq[step]->set(r.nextFloat() * static_cast<float>(max - min) + static_cast<float>(min), true);
+    currMidiStepSeq[step]->set(r.nextFloat() * (max - min) + min, true);
 }
 
 void StepSequencer::setStepActive(int step, bool active)
@@ -257,7 +253,7 @@ int StepSequencer::getLastSeqNote()
 
 int StepSequencer::getNumStep()
 {
-    return seqNumSteps;
+    return static_cast<int>(params.seqNumSteps.get());
 }
 
 int StepSequencer::getStepNoteAsInt(int step)
@@ -267,12 +263,12 @@ int StepSequencer::getStepNoteAsInt(int step)
 
 int StepSequencer::getRandMin()
 {
-    return randomMin;
+    return static_cast<int>(params.seqRandomMin.get());
 }
 
 int StepSequencer::getRandMax()
 {
-    return randomMax;
+    return static_cast<int>(params.seqRandomMax.get());
 }
 
 String StepSequencer::getStepNoteName(int step, bool sharps, bool octaveNumber, int middleC)
@@ -306,7 +302,7 @@ bool StepSequencer::isPlaying()
 {
     AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getAudioIndex()];
 
-    if ((seqMode == eSeqModes::seqPlay) || ((seqMode == eSeqModes::seqSyncHost && hostPlayHead.isPlaying)))
+    if ((params.seqMode.getStep() == eSeqModes::seqPlay) || ((params.seqMode.getStep() == eSeqModes::seqSyncHost && hostPlayHead.isPlaying)))
     {
         return true;
     }
@@ -318,17 +314,17 @@ bool StepSequencer::isPlaying()
 
 bool StepSequencer::isHostSynced()
 {
-    return seqMode == eSeqModes::seqSyncHost;
+    return params.seqMode.getStep() == eSeqModes::seqSyncHost;
 }
 
 bool StepSequencer::isPlayUpDown()
 {
-    return seqPlayMode == eSeqPlayModes::upDown;
+    return params.seqPlayMode.getStep() == eSeqPlayModes::upDown;
 }
 
 bool StepSequencer::isPlayRandom()
 {
-    return seqPlayMode == eSeqPlayModes::random;
+    return params.seqPlayMode.getStep() == eSeqPlayModes::random;
 }
 
 bool StepSequencer::isTripletActive()
@@ -357,7 +353,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
             sendMidiNoteOffMessage(midiMessages, noteOffSample);
 
             // calculate currSeqNote to play after previous has been stopped
-            if (seqPlayMode == eSeqPlayModes::upDown)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes::upDown)
             {
                 // if last note then play twice and then play reverse order
                 if (currSeqNote%seqNumSteps == seqNumSteps - 1)
@@ -410,9 +406,9 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
         if (nextPlaySample < bufferSize - 1)
         {
             // set upcoming note to play as random
-            if (seqPlayMode == eSeqPlayModes::random)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes::random)
             {
-                setStepRandom(currSeqNote, randomMin, randomMax);
+                setStepRandom(currSeqNote);
             }
 
             // if any note changed or is muted then send noteOff message to that note
@@ -472,7 +468,7 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
             currSeqNote = jmin(currSeqNote, 7);
 
             // if play upDown -> for all odd periods, play in reverse order (down sequence)
-            if (seqPlayMode == eSeqPlayModes::upDown)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes::upDown)
             {
                 int upDownSeq = jmax(0, static_cast<int>(currPos / static_cast<double>(seqNumSteps) / static_cast<double>(seqStepSpeed)) % 2);
                 if (upDownSeq == 1)
@@ -485,9 +481,9 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
             if (!seqNoteIsPlaying)
             {
                 // set note to play as random
-                if (seqPlayMode == eSeqPlayModes::random)
+                if (params.seqPlayMode.getStep() == eSeqPlayModes::random)
                 {
-                    setStepRandom(currSeqNote, randomMin, randomMax);
+                    setStepRandom(currSeqNote);
                 }
 
                 // if any note changed or is muted then send noteOff message to that note

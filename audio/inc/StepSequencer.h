@@ -79,17 +79,16 @@ public:
     void playRandom(bool play);
     //==============================================================================
     /*
-    * Generate a random sequence. The lowest and highest random note can be set with provided functions.
+    * Generate a random sequence by setting each step random.
+      The lowest and highest random note can be set with provided functions.
     */
     void generateRandomSeq();
 
     /*
-    * Set a specific step note as random.
+    * Set a specific step note as random. The lowest and highest random note can be set with provided functions.
     @param step the (step+1)th sequence note in range of [0..7]
-    @param min the lowest possible midi note value
-    @param max the highest possible midi note value
     */
-    void setStepRandom(int step, int min, int max);
+    void setStepRandom(int step);
 
     /*
     * Function to set a specific step as activated or mute.
@@ -127,8 +126,8 @@ public:
     /*
     * Set step length from a string representing note length (e.g 1/4, 1/16 ...).
     @param stepLength is assumed to be in the proper format; the function only takes the String after '/',
-    converts it to an int to use that as the denominator.
-    The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
+                      converts it to an int to use that as the denominator.
+                      The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
     void setStepLength(String stepLength);
 
@@ -192,7 +191,7 @@ public:
 
     /*
     * Get current step length as a string in format '1/denominator'
-    with denominator in {1, 2, 4, 8, 16, 32, 64}.
+      with denominator in {1, 2, 4, 8, 16, 32, 64}.
     */
     String getStepLengthAsString();
 
@@ -259,13 +258,9 @@ private:
     std::array<Param*, 8> currMidiStepSeq;
     std::array<eOnOffToggle, 8> prevStepOnOff;
     std::array<ParamStepped<eOnOffToggle>*, 8> currStepOnOff;
-    eSeqModes seqMode;
-    eSeqPlayModes seqPlayMode;
     float seqStepSpeed;
     double seqStepLength;
     int seqNumSteps;
-    int randomMin;
-    int randomMax;
 
     // internal StepSequencer variables
     int currSeqNote;
