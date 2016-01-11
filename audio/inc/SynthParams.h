@@ -53,6 +53,8 @@ public:
     Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
+    Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
+
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
@@ -72,7 +74,10 @@ public:
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
-    Param envRelease;   //!< env release in [0.001..5]s
+    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+    
+    Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
+    
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]

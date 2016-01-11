@@ -242,8 +242,6 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
          constructorParams="params" jucerComponentFile=""/>
-    <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
-         constructorParams="" jucerComponentFile=""/>
     <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
