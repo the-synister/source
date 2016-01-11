@@ -30,7 +30,7 @@ public:
     void set(float f) { val_.store(f); }
     float get() const { return val_.load(); }
 
-    float* getPointer() const { val_.load(); return value; }
+    float* getPointer() const { *value = val_.load(); return value; }
 
     virtual void setUI(float f, bool notifyHost = true) {
         if (f >= min_ && f <= max_) set(f);
