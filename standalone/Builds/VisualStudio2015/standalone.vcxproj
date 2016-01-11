@@ -139,6 +139,7 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
@@ -1292,6 +1293,7 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
