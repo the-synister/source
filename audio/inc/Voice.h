@@ -66,6 +66,12 @@ struct Oscillator {
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
+
+	float next(float pitchMod, float widthOrTrDelta) {
+		const float result = _waveform(phase, trngAmount + widthOrTrDelta, width + widthOrTrDelta);
+		phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
+		return result;
+	}
 };
 
 template<float(*_waveform)(float, float, float)>
@@ -261,10 +267,54 @@ public:
                 switch (wf)
                 {
                 case 1:
-                    currentSample = (osc1Sine.next(pitchMod[s]));
+				{
+					// In case of pulse width modulation
+					float deltaWidth = 0.f; // Maximum possible amplitude of modulation (PW must be [0,01..0,99])
+					if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
+					{
+						if (osc1Sine.width > 0.5f)
+						{
+							deltaWidth = 0.99f - osc1Sine.width;
+						}
+						else if (osc1Sine.width < 0.5f)
+						{
+							deltaWidth = osc1Sine.width - 0.01f;
+						}
+						else
+						{
+							deltaWidth = 0.49f;  // If PW is 0.5 => delta max = 0.49 (1 must not be reached)
+						}
+						deltaWidth = deltaWidth * lfo1Mod[s];  // For always max possible amplitude (not controlled by depth)
+						// To play on amplitude of modulation simply add a factor. See ex. below :
+						//deltaWidth = deltaWidth * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1], max amp for depth = 12
+					}
+					currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
+				}
                     break;
                 case 2:
-                    currentSample = (osc1Saw.next(pitchMod[s]));
+				{
+					// In case of pulse width modulation
+					float deltaTr = 0.f; // Maximum possible amplitude of modulation (Triangle must be [0,01..0,99])
+					if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
+					{
+						if (osc1Saw.trngAmount > 0.5f)
+						{
+							deltaTr = 0.99f - osc1Saw.trngAmount;
+						}
+						else if (osc1Saw.trngAmount < 0.5f)
+						{
+							deltaTr = osc1Saw.trngAmount - 0.01f;
+						}
+						else
+						{
+							deltaTr = 0.49f;  // If Triangle is 0.5 => delta max = 0.49 (1 must not be reached)
+						}
+						deltaTr = deltaTr * lfo1Mod[s];  // For always max amplitude (not controlled by depth)
+						// To play on amplitude of modulation simply add a factor. See ex. below :
+						//deltaTr = deltaTr * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1]
+					}
+					currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
+				}
                     break;
                 }
 
