@@ -40,7 +40,7 @@ FxPanel::FxPanel (SynthParams &p)
     feedbackSlider->addListener (this);
 
     addAndMakeVisible (clippingFactor = new MouseOverKnob ("Clipping Factor"));
-    clippingFactor->setRange (0, 80, 0);
+    clippingFactor->setRange (0, 25, 0);
     clippingFactor->setSliderStyle (Slider::RotaryVerticalDrag);
     clippingFactor->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     clippingFactor->addListener (this);
@@ -442,7 +442,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 152 64 64"
-          min="0" max="80" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="40" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
