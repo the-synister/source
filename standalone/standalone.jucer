@@ -41,7 +41,6 @@
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
-        <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>

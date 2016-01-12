@@ -109,7 +109,9 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch) {
     // iterate over all params and insert them into the tree
     for (auto &param : serializeParams) {
         float value = param->getUI();
-        addElement(patch, param->serializationTag(), value);
+        if (param->serializationTag() != "") {
+            addElement(patch, param->serializationTag(), value);
+        }
     }
 }
 
@@ -155,7 +157,9 @@ void SynthParams::fillValues(XmlElement* patch) {
 
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : serializeParams) {
-        fillValueIfExists(patch, param->serializationTag(), *param);
+        if (param->serializationTag() != "") {
+            fillValueIfExists(patch, param->serializationTag(), *param);
+        }
     }
 
 }
