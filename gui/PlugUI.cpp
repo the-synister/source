@@ -171,13 +171,13 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == savePresetButton)
     {
         //[UserButtonCode_savePresetButton] -- add your button handler code here..
-        params.writeXMLPatchStandalone(true);
+        params.writeXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_savePresetButton]
     }
     else if (buttonThatWasClicked == loadPresetButton)
     {
         //[UserButtonCode_loadPresetButton] -- add your button handler code here..
-        params.readXMLPatchStandalone(true);
+        params.readXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_loadPresetButton]
     }
 

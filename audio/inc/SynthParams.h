@@ -5,6 +5,11 @@
 #include <vector>
 #include <array>
 
+enum class eSerializationParams : int {
+    eAll = 0,
+    eSequencerOnly = 1
+};
+
 enum class eLfoWaves : int {
     eLfoSine = 0,
     eLfoSquare = 1,
@@ -27,17 +32,17 @@ enum class eOnOffToggle : int {
 
 enum class eSeqModes : int
 {
-    seqStop = 0,
-    seqPlay = 1,
-    seqSyncHost = 2,
+    eSeqStop = 0,
+    eSeqPlay = 1,
+    eSeqSyncHost = 2,
     nSteps = 3
 };
 
 enum class eSeqPlayModes : int
 {
-    sequential = 0,
-    upDown = 1,
-    random = 2,
+    eSequential = 0,
+    eUpDown = 1,
+    eRandom = 2,
     nSteps = 3
 };
 
@@ -84,6 +89,7 @@ public:
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
+    Param seqLastPlayedStep;                 //!< index of last played sequencer step in [0..7]
     Param seqNumSteps;                       //!< number of steps in [1..8] steps
     Param seqStepSpeed;                      //!< step speed in [0.0625..4] quarter notes
     Param seqStepLength;                     //!< step length in [0.0625..4] quarter notes
@@ -132,22 +138,52 @@ public:
 
     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams;
-    // list of only stepSeq params, specified with @param allParams = false
+    // list of only stepSeq params
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
+    
+    /**
+    * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().
+    @param destData host data
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void writeXMLPatchHost(MemoryBlock& destData, eSerializationParams paramsToSerialize);
 
-    void writeXMLPatchHost(MemoryBlock& destData, bool allParams);
+    /**
+    * Create XML file to serialize specified parameters by using writeXMLPatchTree().
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void writeXMLPatchStandalone(eSerializationParams paramsToSerialize);
 
-    void writeXMLPatchStandalone(bool allParams);
-
+    /**
+    * Set the parameters if they exist in the XML patch.
+    @param patch XML patch to work on
+    @param paramName name to check whether parameter exist in XML patch
+    @param param parameter to set
+    */
     void fillValueIfExists(XmlElement * patch, String paramName, Param& param);
 
-    void fillValues(XmlElement * patch, bool allParams);
+    /**
+    * Iterate over specified parameters and set the values in the xml by using fillValueIfExists().
+    @param patch XML patch to work on
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void fillValues(XmlElement * patch, eSerializationParams paramsToSerialize);
+    
+    /**
+    * Restore host state by converting binary data into a XML file and set serialized parameters by using fillValues().
+    @param data binary data to return to XML
+    @param sizeInBytes data size
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void readXMLPatchHost(const void * data, int sizeInBytes, eSerializationParams paramsToSerialize);
 
-    void readXMLPatchHost(const void * data, int sizeInBytes, bool allParams);
-
-    void readXMLPatchStandalone(bool allParams);
+    /**
+    * Read XML file to set serialized parameters by using fillValues().
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void readXMLPatchStandalone(eSerializationParams paramsToSerialize);
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
@@ -159,5 +195,11 @@ public:
 protected:
 private:
     void addElement(XmlElement* patch, String name, float value); // adds an element to the XML tree
-    void writeXMLPatchTree(XmlElement * patch, bool allParams);
+
+    /**
+    * Write the XML patch tree for parameters to be serialized.
+    @param patch XML patch to work on
+    @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
+    */
+    void writeXMLPatchTree(XmlElement * patch, eSerializationParams paramsToSerialize);
 };

@@ -79,8 +79,9 @@ SynthParams::SynthParams()
 , delayTriplet("Delay Triplet", "delTrip", eOnOffToggle::eOff, onoffnames)
 , delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
 , delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
-, seqMode("SeqMode", "seqMode", eSeqModes::seqStop, seqModeNames)
-, seqPlayMode("SeqPlayMode", "seqPlayMode", eSeqPlayModes::sequential, seqPlayModeNames)
+, seqMode("SeqMode", "seqMode", eSeqModes::eSeqStop, seqModeNames)
+, seqPlayMode("SeqPlayMode", "seqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
+, seqLastPlayedStep("Last Played Step", "lastPlayedStep", "", 0.0f, 7.0f, 0.0f)
 , seqNumSteps("Steps", "seqNumSteps", "steps", 1.0f, 8.0f, 8.0f)
 , seqStepSpeed("Speed", "seqStepSpeed", "qn", 0.0625f, 4.0f, 1.0f)
 , seqStepLength("Length", "seqNoteLength", "qn", 0.0625f, 4.0f, 1.0f)
@@ -116,12 +117,12 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
     patch->addChildElement(node);
 }
 
-void SynthParams::writeXMLPatchTree(XmlElement* patch, bool allParams) {
+void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // set version of the patch
     patch->setAttribute("version", version);
 
     std::vector<Param*> parameters = serializeParams;
-    if (!allParams)
+    if (paramsToSerialize == eSerializationParams::eSequencerOnly)
     {
         parameters = stepSeqParams;
     }
@@ -133,17 +134,17 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, bool allParams) {
     }
 }
 
-void SynthParams::writeXMLPatchHost(MemoryBlock& destData, bool allParams) {
+void SynthParams::writeXMLPatchHost(MemoryBlock& destData, eSerializationParams paramsToSerialize) {
     // create an outer node of the patch
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
-    writeXMLPatchTree(patch, allParams);
+    writeXMLPatchTree(patch, paramsToSerialize);
     AudioProcessor::copyXmlToBinary(*patch, destData);
 }
 
-void SynthParams::writeXMLPatchStandalone(bool allParams) {
+void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize) {
     // create an outer node of the patch
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
-    writeXMLPatchTree(patch, allParams);
+    writeXMLPatchTree(patch, paramsToSerialize);
 
     // create the output
     FileChooser saveDirChooser("Please select the place you want to save!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
@@ -166,7 +167,7 @@ void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& 
 }
 
 // set all values from xml file in params
-void SynthParams::fillValues(XmlElement* patch, bool allParams) {
+void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // if the versions don't align, inform the user
     if (patch == NULL) return;
     if (patch->getTagName() != "patch" || (static_cast<float>(patch->getDoubleAttribute("version"))) > version) {
@@ -176,7 +177,7 @@ void SynthParams::fillValues(XmlElement* patch, bool allParams) {
     }
 
     std::vector<Param*> parameters = serializeParams;
-    if (!allParams)
+    if (paramsToSerialize == eSerializationParams::eSequencerOnly)
     {
         parameters = stepSeqParams;
     }
@@ -187,19 +188,19 @@ void SynthParams::fillValues(XmlElement* patch, bool allParams) {
     }
 
 }
-void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes, bool allParams) {
+void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes, eSerializationParams paramsToSerialize) {
     ScopedPointer<XmlElement> patch = AudioProcessor::getXmlFromBinary(data, sizeInBytes);
-    fillValues(patch, allParams);
+    fillValues(patch, paramsToSerialize);
 }
 
-void SynthParams::readXMLPatchStandalone(bool allParams) {
+void SynthParams::readXMLPatchStandalone(eSerializationParams paramsToSerialize) {
     // read the xml params into the synth params
     FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
     if (openFileChooser.browseForFileToOpen())
 {
         File openedFile(openFileChooser.getResult());
         ScopedPointer<XmlElement> patch = XmlDocument::parse(openedFile);
-        fillValues(patch, allParams);
+        fillValues(patch, paramsToSerialize);
     }
 }
 

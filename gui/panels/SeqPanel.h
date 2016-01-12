@@ -48,6 +48,9 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    /**
+    * timerCallback() is needed here to display the currently playing note step.
+    */
     virtual void timerCallback() override;
     //[/UserMethods]
 

@@ -20,7 +20,6 @@
 StepSequencer::StepSequencer(SynthParams &p)
     : params(p)
     , currSeqNote(0)
-    , lastSeqNote(0)
     , lastPlayedNote(0)
     , seqNoteAdd(1)
     , seqNextStep(0.0)
@@ -80,10 +79,10 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
 
     switch (params.seqMode.getStep())
     {
-    case eSeqModes::seqPlay:
+    case eSeqModes::eSeqPlay:
         seqNoHostSync(midiMessages, bufferSize, sampleRate);
         break;
-    case eSeqModes::seqSyncHost:
+    case eSeqModes::eSeqSyncHost:
         seqHostSync(midiMessages);
         break;
     default:
@@ -94,26 +93,26 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
 
 void StepSequencer::saveSeqState()
 {
-    params.writeXMLPatchStandalone(false);
+    params.writeXMLPatchStandalone(eSerializationParams::eSequencerOnly);
 }
 
 void StepSequencer::loadSeqState()
 {
-    params.readXMLPatchStandalone(false);
+    params.readXMLPatchStandalone(eSerializationParams::eSequencerOnly);
 }
 //==============================================================================
 void StepSequencer::stopPlaying()
 {
-    params.seqMode.setStep(eSeqModes::seqStop);
+    params.seqMode.setStep(eSeqModes::eSeqStop);
 }
 
 void StepSequencer::playNoHost(bool play)
 {
-    if (params.seqMode.getStep() != eSeqModes::seqSyncHost)
+    if (params.seqMode.getStep() != eSeqModes::eSeqSyncHost)
     {
         if (play)
         {
-            params.seqMode.setStep(eSeqModes::seqPlay);
+            params.seqMode.setStep(eSeqModes::eSeqPlay);
         }
         else
         {
@@ -126,7 +125,7 @@ void StepSequencer::syncToHost(bool sync)
 {
     if (sync)
     {
-        params.seqMode.setStep(eSeqModes::seqSyncHost);
+        params.seqMode.setStep(eSeqModes::eSeqSyncHost);
     }
     else
     {
@@ -136,14 +135,14 @@ void StepSequencer::syncToHost(bool sync)
 
 void StepSequencer::playSequential()
 {
-    params.seqPlayMode.setStep(eSeqPlayModes::sequential);
+    params.seqPlayMode.setStep(eSeqPlayModes::eSequential);
 }
 
 void StepSequencer::playUpDown(bool play)
 {
     if (play)
     {
-        params.seqPlayMode.setStep(eSeqPlayModes::upDown);
+        params.seqPlayMode.setStep(eSeqPlayModes::eUpDown);
     }
     else
     {
@@ -155,7 +154,7 @@ void StepSequencer::playRandom(bool play)
 {
     if (play)
     {
-        params.seqPlayMode.setStep(eSeqPlayModes::random);
+        params.seqPlayMode.setStep(eSeqPlayModes::eRandom);
         //setNumSteps(8);
     }
     else
@@ -248,7 +247,7 @@ void StepSequencer::setRandMax(int max)
 //==============================================================================
 int StepSequencer::getLastSeqNote()
 {
-    return lastSeqNote;
+    return static_cast<int>(params.seqLastPlayedStep.get());
 }
 
 int StepSequencer::getNumStep()
@@ -302,7 +301,7 @@ bool StepSequencer::isPlaying()
 {
     AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getAudioIndex()];
 
-    if ((params.seqMode.getStep() == eSeqModes::seqPlay) || ((params.seqMode.getStep() == eSeqModes::seqSyncHost && hostPlayHead.isPlaying)))
+    if ((params.seqMode.getStep() == eSeqModes::eSeqPlay) || ((params.seqMode.getStep() == eSeqModes::eSeqSyncHost) && hostPlayHead.isPlaying))
     {
         return true;
     }
@@ -314,17 +313,17 @@ bool StepSequencer::isPlaying()
 
 bool StepSequencer::isHostSynced()
 {
-    return params.seqMode.getStep() == eSeqModes::seqSyncHost;
+    return params.seqMode.getStep() == eSeqModes::eSeqSyncHost;
 }
 
 bool StepSequencer::isPlayUpDown()
 {
-    return params.seqPlayMode.getStep() == eSeqPlayModes::upDown;
+    return params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown;
 }
 
 bool StepSequencer::isPlayRandom()
 {
-    return params.seqPlayMode.getStep() == eSeqPlayModes::random;
+    return params.seqPlayMode.getStep() == eSeqPlayModes::eRandom;
 }
 
 bool StepSequencer::isTripletActive()
@@ -339,7 +338,7 @@ bool StepSequencer::isStepActive(int step)
 //==============================================================================
 // PRIVATE
 //==============================================================================
-/*
+/**
 * Called if stepSequencer plays without host.
 */
 void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, double sampleRate)
@@ -353,7 +352,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
             sendMidiNoteOffMessage(midiMessages, noteOffSample);
 
             // calculate currSeqNote to play after previous has been stopped
-            if (params.seqPlayMode.getStep() == eSeqPlayModes::upDown)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown)
             {
                 // if last note then play twice and then play reverse order
                 if (currSeqNote%seqNumSteps == seqNumSteps - 1)
@@ -406,7 +405,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
         if (nextPlaySample < bufferSize - 1)
         {
             // set upcoming note to play as random
-            if (params.seqPlayMode.getStep() == eSeqPlayModes::random)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes:: eRandom)
             {
                 setStepRandom(currSeqNote);
             }
@@ -432,18 +431,18 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
     seqStopped = false;
 }
 
-/*
+/**
 * Called while stepSequencer is synced with host.
 */
 void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
 {
-    AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getGUIIndex()];
+    AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getAudioIndex()];
     double currPos = hostPlayHead.ppqPosition;
 
     // if host ist playing
     // NOTE: in Cubase 5 hostPlayHead.isPlaying even before actual playhead starts playing,
     //       at the beginning currPos can be negative
-    if (hostPlayHead.isPlaying && (currPos >= 0.0)) 
+    if (hostPlayHead.isPlaying && (currPos >= 0.0))
     {
         // if currPos passes stopNoteTime
         if (currPos >= stopNoteTime)
@@ -468,7 +467,7 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
             currSeqNote = jmin(currSeqNote, 7);
 
             // if play upDown -> for all odd periods, play in reverse order (down sequence)
-            if (params.seqPlayMode.getStep() == eSeqPlayModes::upDown)
+            if (params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown)
             {
                 int upDownSeq = jmax(0, static_cast<int>(currPos / static_cast<double>(seqNumSteps) / static_cast<double>(seqStepSpeed)) % 2);
                 if (upDownSeq == 1)
@@ -481,7 +480,7 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
             if (!seqNoteIsPlaying)
             {
                 // set note to play as random
-                if (params.seqPlayMode.getStep() == eSeqPlayModes::random)
+                if (params.seqPlayMode.getStep() == eSeqPlayModes::eRandom)
                 {
                     setStepRandom(currSeqNote);
                 }
@@ -509,12 +508,12 @@ void StepSequencer::seqHostSync(MidiBuffer& midiMessages)
     }
 }
 
-/*
+/**
 * Send midi note off message into buffer at given sample position.
 */
 void StepSequencer::sendMidiNoteOffMessage(MidiBuffer& midiMessages, int sample)
 {
-    if (currStepOnOff[lastSeqNote]->getStep() == eOnOffToggle::eOn)
+    if (currStepOnOff[static_cast<int>(params.seqLastPlayedStep.get())]->getStep() == eOnOffToggle::eOn)
     {
         MidiMessage m = MidiMessage::noteOff(1, lastPlayedNote);
         midiMessages.addEvent(m, sample);
@@ -522,7 +521,7 @@ void StepSequencer::sendMidiNoteOffMessage(MidiBuffer& midiMessages, int sample)
     seqNoteIsPlaying = false;
 }
 
-/*
+/**
 * Send midi note on message into buffer at given sample position.
 */
 void StepSequencer::sendMidiNoteOnMessage(MidiBuffer & midiMessages, int sample)
@@ -540,11 +539,11 @@ void StepSequencer::sendMidiNoteOnMessage(MidiBuffer & midiMessages, int sample)
         midiMessages.addEvent(m, sample);
     }
     seqNoteIsPlaying = true;
-    lastSeqNote = jmax(0, jmin(currSeqNote, 7));
+    params.seqLastPlayedStep.set(jmax(0.0f, jmin(static_cast<float>(currSeqNote), 7.0f)));
     lastPlayedNote = static_cast<int>(currMidiStepSeq[currSeqNote]->get());
 }
 
-/*
+/**
 * If any seqStepNote changed or is muted then send noteOff message for the old note.
 */
 void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
@@ -554,7 +553,7 @@ void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
         // compare with current sequence
         if ((prevMidiStepSeq[i] != static_cast<int>(currMidiStepSeq[i]->get())) || (prevStepOnOff[i] != currStepOnOff[i]->getStep()))
         {
-            if (i == lastSeqNote)
+            if (i == static_cast<int>(params.seqLastPlayedStep.get()))
             {
                 MidiMessage m = MidiMessage::noteOff(1, prevMidiStepSeq[i]);
                 midiMessages.addEvent(m, 0);
@@ -570,7 +569,7 @@ void StepSequencer::midiNoteChanged(MidiBuffer & midiMessages)
     }
 }
 
-/*
+/**
 * Stop stepSequencer and reset not GUI variables.
 */
 void StepSequencer::stopSeq(MidiBuffer& midiMessages)
@@ -578,8 +577,8 @@ void StepSequencer::stopSeq(MidiBuffer& midiMessages)
     // stop and reset only if not already stopped
     if (!seqStopped)
     {
+        params.seqLastPlayedStep.set(0.0f);
         currSeqNote = 0;
-        lastSeqNote = 0;
         lastPlayedNote = 0;
         seqNoteAdd = 1;
         nextPlaySample = 0;

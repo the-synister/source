@@ -227,12 +227,12 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    SynthParams::writeXMLPatchHost(destData, true);
+    SynthParams::writeXMLPatchHost(destData, eSerializationParams::eAll);
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    SynthParams::readXMLPatchHost(data, sizeInBytes, true);
+    SynthParams::readXMLPatchHost(data, sizeInBytes, eSerializationParams::eAll);
 }
 
 //==============================================================================

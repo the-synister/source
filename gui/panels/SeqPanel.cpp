@@ -663,15 +663,13 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-/*
-* timerCallback() is needed here to display the currently playing note step.
-*/
 void SeqPanel::timerCallback()
 {
     if (seq->isPlaying())
     {
         if (lastSeqNotePos != seq->getLastSeqNote())
         {
+            seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
             {
@@ -688,6 +686,7 @@ void SeqPanel::timerCallback()
         // reset gui state
         if (lastSeqNotePos != -1)
         {
+            seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
             seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
             lastSeqNotePos = -1;
         }
