@@ -75,7 +75,7 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1Waveform.getStep()) + 1, params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -116,16 +116,16 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
-	registerSlider(lfoFadeIn, &params.lfoFadein);
+    registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &params.osc1Waveform);
-	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+	  lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-	osc1trngAmount->setVisible(false);
+    osc1trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -204,15 +204,15 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-		waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
-		waveformVisual->repaint();
+        waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+        waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-		waveformVisual->repaint();
+        waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
+        waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)
@@ -233,24 +233,24 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
-		params.osc1Waveform.setUI(static_cast<float>(params.osc1Waveform.getStep()));
-		waveformVisual->setWaveformKey(static_cast<int>(params.osc1Waveform.getStep()) + 1);
-		switch (params.osc1Waveform.getStep())
-		{
-            case eOscWaves::eOscSquare:
-                pulsewidth->setVisible(true);
-                osc1trngAmount->setVisible(false);
-                break;
-            case eOscWaves::eOscSaw:
-                pulsewidth->setVisible(false);
-                osc1trngAmount->setVisible(true);
-                break;
-            case eOscWaves::eOscNoise:
-                pulsewidth->setVisible(false);
-                osc1trngAmount->setVisible(false);
-                break;
-		}
-		waveformVisual->repaint();
+    		params.osc1Waveform.setUI(static_cast<float>(params.osc1Waveform.getStep()));
+    		waveformVisual->setWaveformKey(params.osc1Waveform.getStep());
+    		switch (params.osc1Waveform.getStep())
+    		{
+                case eOscWaves::eOscSquare:
+                    pulsewidth->setVisible(true);
+                    osc1trngAmount->setVisible(false);
+                    break;
+                case eOscWaves::eOscSaw:
+                    pulsewidth->setVisible(false);
+                    osc1trngAmount->setVisible(true);
+                    break;
+                case eOscWaves::eOscNoise:
+                    pulsewidth->setVisible(false);
+                    osc1trngAmount->setVisible(false);
+                    break;
+    		}
+    		waveformVisual->repaint();
 
         //[/UserSliderCode_waveformSwitch]
     }
