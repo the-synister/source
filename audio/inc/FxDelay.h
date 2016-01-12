@@ -30,7 +30,7 @@ public:
         , maxDelayLength(5000)
     {}
     ~FxDelay(){}
-    
+
     void render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn);
     void init(int channelsIn, double sampleRateIn);
 

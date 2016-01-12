@@ -134,7 +134,7 @@ void StepSequencer::seqNoHostSync(MidiBuffer& midiMessages, int bufferSize, doub
                 seqIsPlaying = true;
             }
 
-            // calculate noteOffSample and nextPlaySample 
+            // calculate noteOffSample and nextPlaySample
             double quarterSec = 60.0 / params.positionInfo[params.getAudioIndex()].bpm;
             int diff = bufferSize - 1 - nextPlaySample;
             noteOffSample = static_cast<int>(quarterSec * seqNoteLength * sampleRate) - diff;

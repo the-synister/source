@@ -11,21 +11,21 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
-    
+
 
 enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
     nSteps = 2
 };
-    
+
 enum class eOnOffToggle : int {
     eOff = 0,
     eOn = 1,
     nSteps = 2
 };
 
-enum class eSeqModes : int 
+enum class eSeqModes : int
 {
     seqStop = 0,
     seqPlay = 1,
@@ -47,7 +47,7 @@ public:
 
     Param freq;  //!< master tune in Hz
 
-    Param lfo1freq; //!< lfo frequency in Hz    
+    Param lfo1freq; //!< lfo frequency in Hz
     ParamStepped<eOnOffToggle> lfo1TempSync; //!< bool if checked or not
     Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
@@ -57,7 +57,7 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-    
+
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -74,9 +74,9 @@ public:
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-    
+
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
-    
+
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
@@ -137,7 +137,7 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
-    
+
     int getGUIIndex();
     int getAudioIndex();
 

@@ -15,7 +15,7 @@
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-PluginAudioProcessor::PluginAudioProcessor() 
+PluginAudioProcessor::PluginAudioProcessor()
     : delay(*this)
     , steqSeq(*this)
 {
@@ -26,8 +26,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
-	addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
-	addParameter(new HostParam<Param>(noteLength));
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
+    addParameter(new HostParam<Param>(noteLength));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
@@ -43,7 +43,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(envRelease));
 
     addParameter(new HostParam<Param>(panDir));
-    
+
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 }

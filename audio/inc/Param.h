@@ -119,7 +119,7 @@ public:
     }
 
     //! \todo what about the set method? Make sure that no inconsistent state is created!
-    
+
     _enum getStep () const {
         return step_.load();
     }
@@ -127,7 +127,7 @@ public:
         step_.store(v);
         set(static_cast<float>(v));
     }
-    
+
     virtual void setUI(float f, bool notifyHost = true) override {
         set(f);
         int ival = static_cast<int>(std::trunc(f + .5f));
@@ -152,4 +152,3 @@ protected:
     std::array<String, static_cast<size_t>(_enum::nSteps)> labels_;
     bool labelsSet;
 };
-

@@ -108,15 +108,15 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
-	registerSlider(lfoFadeIn, &params.lfoFadein);
-	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+    registerSlider(lfoFadeIn, &params.lfoFadein);
+    lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-	osc1trngAmount->setVisible(false);
+    osc1trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -193,15 +193,15 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-		waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
-		waveformVisual->repaint();
+        waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+        waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-		waveformVisual->repaint();
+        waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
+        waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)
@@ -222,21 +222,21 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
-		int waveformKey = static_cast<int>(waveformSwitch->getValue());
-		params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
-		waveformVisual->setWaveformKey(waveformKey);
-		switch (waveformKey)
-		{
-		case 1:
-			pulsewidth->setVisible(true);
-			osc1trngAmount->setVisible(false);
-			break;
-		case 2:
-			pulsewidth->setVisible(false);
-			osc1trngAmount->setVisible(true);
-			break;
-		}
-		waveformVisual->repaint();
+        int waveformKey = static_cast<int>(waveformSwitch->getValue());
+        params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
+        waveformVisual->setWaveformKey(waveformKey);
+        switch (waveformKey)
+        {
+        case 1:
+            pulsewidth->setVisible(true);
+            osc1trngAmount->setVisible(false);
+            break;
+        case 2:
+            pulsewidth->setVisible(false);
+            osc1trngAmount->setVisible(true);
+            break;
+        }
+        waveformVisual->repaint();
 
         //[/UserSliderCode_waveformSwitch]
     }
