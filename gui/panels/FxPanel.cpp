@@ -34,7 +34,7 @@ FxPanel::FxPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (clippingFactor = new MouseOverKnob ("Clipping Factor"));
-    clippingFactor->setRange (1, 100, 0);
+    clippingFactor->setRange (0, 80, 1);
     clippingFactor->setSliderStyle (Slider::RotaryVerticalDrag);
     clippingFactor->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     clippingFactor->addListener (this);
