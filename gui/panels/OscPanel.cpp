@@ -75,11 +75,11 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1Waveform.getStep()) + 1, params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
-    waveformSwitch->setRange (1, 3, 1);
+    waveformSwitch->setRange (0, 2, 1);
     waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     waveformSwitch->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
     waveformSwitch->addListener (this);
@@ -117,6 +117,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(pulsewidth, &params.osc1pulsewidth);
     registerSlider(ctune1, &params.osc1coarse);
 	registerSlider(lfoFadeIn, &params.lfoFadein);
+    registerSlider(waveformSwitch, &params.osc1Waveform);
 	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
@@ -232,20 +233,19 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
-		int waveformKey = static_cast<int>(waveformSwitch->getValue());
-		params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
-		waveformVisual->setWaveformKey(waveformKey);
-		switch (waveformKey)
+		params.osc1Waveform.setUI(static_cast<float>(params.osc1Waveform.getStep()));
+		waveformVisual->setWaveformKey(static_cast<int>(params.osc1Waveform.getStep()) + 1);
+		switch (params.osc1Waveform.getStep())
 		{
-            case 1:
+            case eOscWaves::eOscSquare:
                 pulsewidth->setVisible(true);
                 osc1trngAmount->setVisible(false);
                 break;
-            case 2:
+            case eOscWaves::eOscSaw:
                 pulsewidth->setVisible(false);
                 osc1trngAmount->setVisible(true);
                 break;
-            case 3:
+            case eOscWaves::eOscNoise:
                 pulsewidth->setVisible(false);
                 osc1trngAmount->setVisible(false);
                 break;
@@ -313,8 +313,8 @@ BEGIN_JUCER_METADATA
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
                     class="Component" params="static_cast&lt;int&gt;(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="1"
-          max="3" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
+          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="0"
+          max="2" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
          virtualName="" explicitFocusOrder="0" pos="360 104 150 24" edTextCol="ff000000"

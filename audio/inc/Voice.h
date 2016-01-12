@@ -175,31 +175,29 @@ public:
         lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
 
-
-        int wf = static_cast<int>(params.osc1WaveForm.get());
-        switch (wf)
+        switch (params.osc1Waveform.getStep())
         {
-        case 1:
-        {
-            osc1Sine.phase = 0.f;
-            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-            osc1Sine.width = params.osc1pulsewidth.get();
-            lfo1square.width = params.osc1pulsewidth.get();
-            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-
-            // reset attackDecayCounter
-            attackDecayCounter = 0;
-            break;
-        }
-        case 2:
-        {
-            osc1Saw.phase = 0.f;
-            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-            osc1Saw.trngAmount = params.osc1trngAmount.get();
-            attackDecayCounter = 0;
-            break;
-        }
-            case 3:
+            case eOscWaves::eOscSquare:
+            {
+                osc1Sine.phase = 0.f;
+                osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+                osc1Sine.width = params.osc1pulsewidth.get();
+                lfo1square.width = params.osc1pulsewidth.get();
+                //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                
+                // reset attackDecayCounter
+                attackDecayCounter = 0;
+                break;
+            }
+            case eOscWaves::eOscSaw:
+            {
+                osc1Saw.phase = 0.f;
+                osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                osc1Saw.trngAmount = params.osc1trngAmount.get();
+                attackDecayCounter = 0;
+                break;
+            }
+            case eOscWaves::eOscNoise:
             {
                 osc1WhiteNoise.phase = 0.f;
                 osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
@@ -269,17 +267,16 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                int wf = static_cast<int>(params.osc1WaveForm.get());
                 float currentSample;
-                switch (wf)
+                switch (params.osc1Waveform.getStep())
                 {
-                    case 1:
+                    case eOscWaves::eOscSquare:
                         currentSample = (osc1Sine.next(pitchMod[s]));
                         break;
-                    case 2:
+                    case eOscWaves::eOscSaw:
                         currentSample = (osc1Saw.next(pitchMod[s]));
                         break;
-                    case 3:
+                    case eOscWaves::eOscNoise:
                         currentSample = (osc1WhiteNoise.next(pitchMod[s]));
                         break;
                 }

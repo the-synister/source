@@ -21,6 +21,10 @@ namespace {
     static const char *modsourcenames[] = {
         "None", "LFO1", nullptr
     };
+    
+    static const char *waveformNames[] = {
+        "Square", "Saw", "White-noise"
+    };
 }
 
 SynthParams::SynthParams()
@@ -43,6 +47,7 @@ SynthParams::SynthParams()
 , biquadResonance("Filter Reso", "filterResonance", "dB", -25.f, 25.f, 0.f)
 , hpCutoff("HP Cut", "hpCutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
+, osc1Waveform("Osc Waveform", "oscWaveform", eOscWaves::eOscSquare, waveformNames)
 , lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)
@@ -55,7 +60,6 @@ SynthParams::SynthParams()
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-, osc1WaveForm("Waveform", "Waveform", "int", 1.0f, 3.0f, 1.0f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)
 , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "dB", 0.f, 96.f, 0.0f)
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)

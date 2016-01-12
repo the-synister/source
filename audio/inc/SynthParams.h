@@ -10,8 +10,14 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
+};
 
+enum class eOscWaves : int {
+    eOscSquare = 0,
+    eOscSaw    = 1,
+    eOscNoise  = 2,
+    nSteps     = 3
+};
 
 enum class eBiquadFilters : int {
     eLowpass = 0,
@@ -63,6 +69,8 @@ public:
     ParamStepped<eModSource> lpModSource;  //! filter moduluation source
     Param lpModAmout;   //! filter moduluation amount
 
+    ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
+    
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
@@ -91,8 +99,6 @@ public:
     Param seqStep6;
     Param seqStep7;
     Param seqStep8;
-
-    Param osc1WaveForm;//!< int value for defining waveform [1..3]
 
     Param panDir; //!< pan R/L [-100..100]
 
