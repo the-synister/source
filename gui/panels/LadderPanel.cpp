@@ -88,8 +88,8 @@ void LadderPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoff->setBounds (40, 56, 80, 64);
-    resonance->setBounds (144, 56, 80, 64);
+    cutoff->setBounds (8, 8, 64, 64);
+    resonance->setBounds (80, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -139,11 +139,11 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="40 56 80 64" min="10" max="20000"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" min="10" max="20000" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="144 56 80 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>

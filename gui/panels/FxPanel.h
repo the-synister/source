@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "FxDelay.h"
 //[/Headers]
 
 
@@ -36,7 +37,9 @@
                                                                     //[/Comments]
 */
 class FxPanel  : public PanelBase,
-                 public SliderListener
+                 public SliderListener,
+                 public ButtonListener,
+                 public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -50,15 +53,29 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ScopedPointer<FxDelay> delay;
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> clippingFactor;
+    ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> dryWetSlider;
+    ScopedPointer<MouseOverKnob> timeSlider;
+    ScopedPointer<ToggleButton> syncToggle;
+    ScopedPointer<ComboBox> dividend;
+    ScopedPointer<ComboBox> divisor;
+    ScopedPointer<MouseOverKnob> cutoffSlider;
+    ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<ToggleButton> tripTggl;
+    ScopedPointer<ToggleButton> filtTggl;
+    ScopedPointer<ToggleButton> revTggl;
 
 
     //==============================================================================

@@ -30,9 +30,9 @@
 //==============================================================================
 /**
                                                                     //[Comments]
-    An auto-generated component, created by the Introjucer.
+An auto-generated component, created by the Introjucer.
 
-    Describe your class and how it works here!
+Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class EnvPanel  : public PanelBase,
@@ -58,10 +58,14 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> attack;
-    ScopedPointer<MouseOverKnob> decay;
-    ScopedPointer<MouseOverKnob> sustain;
-    ScopedPointer<MouseOverKnob> release;
+    ScopedPointer<MouseOverKnob> attackTime;
+    ScopedPointer<MouseOverKnob> decayTime;
+    ScopedPointer<MouseOverKnob> sustainLevel;
+    ScopedPointer<MouseOverKnob> releaseTime;
+    ScopedPointer<MouseOverKnob> attackShape;
+    ScopedPointer<MouseOverKnob> decayShape;
+    ScopedPointer<MouseOverKnob> releaseShape;
+    ScopedPointer<MouseOverKnob> keyVelToEnv;
 
 
     //==============================================================================

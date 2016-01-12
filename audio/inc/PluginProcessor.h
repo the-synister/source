@@ -15,10 +15,14 @@
 
 #include "SynthParams.h"
 #include "FxClipping.h"
+#include "FxDelay.h"
+#include <array>
+#include "StepSequencer.h"
 
 //==============================================================================
 /**
 */
+class Sequencer;
 class PluginAudioProcessor  : public AudioProcessor, public SynthParams
 {
 public:
@@ -60,10 +64,16 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    FxClipping clip;
+
 private:
     //==============================================================================
     Synthesiser synth;
+    
+    // FX
+    FxDelay delay;
+    FxClipping clip;
+    
+    StepSequencer steqSeq;
 
     void updateHostInfo();
     //==============================================================================
