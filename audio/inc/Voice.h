@@ -67,11 +67,11 @@ struct Oscillator {
         return result;
     }
 
-	float next(float pitchMod, float widthOrTrDelta) {
-		const float result = _waveform(phase, trngAmount + widthOrTrDelta, width + widthOrTrDelta);
-		phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
-		return result;
-	}
+    float next(float pitchMod, float widthOrTrDelta) {
+        const float result = _waveform(phase, trngAmount + widthOrTrDelta, width + widthOrTrDelta);
+        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
+        return result;
+    }
 };
 
 template<float(*_waveform)(float, float, float)>
@@ -154,7 +154,7 @@ public:
         inputDelay2 = 0.f;
         outputDelay1 = 0.f;
         outputDelay2 = 0.f;
-        
+
         currentVelocity = velocity;
 
         level = Param::fromDb((velocity - 1.f) * params.keyVelocityLevel.get());
@@ -267,54 +267,54 @@ public:
                 switch (wf)
                 {
                 case 1:
-				{
-					// In case of pulse width modulation
-					float deltaWidth = 0.f; // Maximum possible amplitude of modulation (PW must be [0,01..0,99])
-					if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
-					{
-						if (osc1Sine.width > 0.5f)
-						{
-							deltaWidth = 0.99f - osc1Sine.width;
-						}
-						else if (osc1Sine.width < 0.5f)
-						{
-							deltaWidth = osc1Sine.width - 0.01f;
-						}
-						else
-						{
-							deltaWidth = 0.49f;  // If PW is 0.5 => delta max = 0.49 (1 must not be reached)
-						}
-						deltaWidth = deltaWidth * lfo1Mod[s];  // For always max possible amplitude (not controlled by depth)
-						// To play on amplitude of modulation simply add a factor. See ex. below :
-						//deltaWidth = deltaWidth * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1], max amp for depth = 12
-					}
-					currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
-				}
+                {
+                    // In case of pulse width modulation
+                    float deltaWidth = 0.f; // Maximum possible amplitude of modulation (PW must be [0,01..0,99])
+                    if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
+                    {
+                        if (osc1Sine.width > 0.5f)
+                        {
+                            deltaWidth = 0.99f - osc1Sine.width;
+                        }
+                        else if (osc1Sine.width < 0.5f)
+                        {
+                            deltaWidth = osc1Sine.width - 0.01f;
+                        }
+                        else
+                        {
+                            deltaWidth = 0.49f;  // If PW is 0.5 => delta max = 0.49 (1 must not be reached)
+                        }
+                        deltaWidth = deltaWidth * lfo1Mod[s];  // For always max possible amplitude (not controlled by depth)
+                        // To play on amplitude of modulation simply add a factor. See ex. below :
+                        //deltaWidth = deltaWidth * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1], max amp for depth = 12
+                    }
+                    currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
+                }
                     break;
                 case 2:
-				{
-					// In case of pulse width modulation
-					float deltaTr = 0.f; // Maximum possible amplitude of modulation (Triangle must be [0,01..0,99])
-					if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
-					{
-						if (osc1Saw.trngAmount > 0.5f)
-						{
-							deltaTr = 0.99f - osc1Saw.trngAmount;
-						}
-						else if (osc1Saw.trngAmount < 0.5f)
-						{
-							deltaTr = osc1Saw.trngAmount - 0.01f;
-						}
-						else
-						{
-							deltaTr = 0.49f;  // If Triangle is 0.5 => delta max = 0.49 (1 must not be reached)
-						}
-						deltaTr = deltaTr * lfo1Mod[s];  // For always max amplitude (not controlled by depth)
-						// To play on amplitude of modulation simply add a factor. See ex. below :
-						//deltaTr = deltaTr * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1]
-					}
-					currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
-				}
+                {
+                    // In case of pulse width modulation
+                    float deltaTr = 0.f; // Maximum possible amplitude of modulation (Triangle must be [0,01..0,99])
+                    if (params.osc1WidthModOn.getStep() == eOnOffToggle::eOn)
+                    {
+                        if (osc1Saw.trngAmount > 0.5f)
+                        {
+                            deltaTr = 0.99f - osc1Saw.trngAmount;
+                        }
+                        else if (osc1Saw.trngAmount < 0.5f)
+                        {
+                            deltaTr = osc1Saw.trngAmount - 0.01f;
+                        }
+                        else
+                        {
+                            deltaTr = 0.49f;  // If Triangle is 0.5 => delta max = 0.49 (1 must not be reached)
+                        }
+                        deltaTr = deltaTr * lfo1Mod[s];  // For always max amplitude (not controlled by depth)
+                        // To play on amplitude of modulation simply add a factor. See ex. below :
+                        //deltaTr = deltaTr * lfo1Mod[s] * (params.osc1lfo1depth.get() / 12.f); // LFO mod has values [-1 .. 1]
+                    }
+                    currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
+                }
                     break;
                 }
 
@@ -508,12 +508,12 @@ protected:
             }
 
             // Fade in factor calculation
-            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))  
+            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
             {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                factorFadeInLFO = 1.f;          
+                factorFadeInLFO = 1.f;
             }
-            else                                   
+            else
             {
                 // Otherwise the factor is determined
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
@@ -522,7 +522,7 @@ protected:
             lfo1ModBuffer.setSample(0, s, lfoVal);
 
             // Update of the modulation amount value
-            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
+            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;
             // Next sample modulated with the updated amount
             pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
         }
@@ -531,8 +531,8 @@ protected:
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
         // mod to frequency calculation
-        
-        float moddedFreq = filterType == eBiquadFilters::eLowpass 
+
+        float moddedFreq = filterType == eBiquadFilters::eLowpass
             ? params.lpCutoff.get()
             : params.hpCutoff.get();
 
@@ -594,7 +594,7 @@ protected:
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
-        
+
         return inputSignal;
     }
 
@@ -602,7 +602,7 @@ private:
     SynthParams &params;
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2;
-    
+
     Oscillator<&Waveforms::square> osc1Sine;
     Oscillator<&Waveforms::saw> osc1Saw;
 

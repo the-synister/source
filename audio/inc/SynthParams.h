@@ -18,14 +18,14 @@ enum class eBiquadFilters : int {
     eHighpass = 1,
     nSteps = 2
 };
-    
+
 enum class eOnOffToggle : int {
     eOff = 0,
     eOn = 1,
     nSteps = 2
 };
 
-enum class eSeqModes : int 
+enum class eSeqModes : int
 {
     seqStop = 0,
     seqPlay = 1,
@@ -66,16 +66,16 @@ public:
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
-	ParamStepped<eOnOffToggle> osc1WidthModOn; //!< pulse width modulation activated
+    ParamStepped<eOnOffToggle> osc1WidthModOn; //!< pulse width modulation activated
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-    
+
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
-    
+
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
@@ -136,7 +136,7 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
-    
+
     int getGUIIndex();
     int getAudioIndex();
 
