@@ -434,7 +434,7 @@ protected:
             }
         }
     }
-    void renderModulation2(int numSamples) {
+    void renderModulation(int numSamples) {
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
