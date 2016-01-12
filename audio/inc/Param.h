@@ -6,13 +6,14 @@
 
 class Param {
 public:
-    Param(const String &name, const String &serializationTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
+    Param(const String &name, const String &serializationTag, const String &hostTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
     : val_(defaultval)
     , min_(minval)
     , max_(maxval)
     , default_(defaultval)
     , name_(name)
     , serializationTag_(serializationTag)
+    , hostTag_(hostTag)
     , unit_(unit)
     , numSteps_(numSteps)
     {
@@ -82,6 +83,7 @@ protected:
     float default_;
     String name_;
     String serializationTag_;
+    String hostTag_;
     String unit_;
     int numSteps_;
 
