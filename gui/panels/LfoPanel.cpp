@@ -191,6 +191,8 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
         params.lfo1TempSync.setUI(tempoSyncSwitch->getToggleState());
         if (tempoSyncSwitch->getToggleState()==1){
             freq->setEnabled(false);
+        }else{
+            freq->setEnabled(true);
         }
         //params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
