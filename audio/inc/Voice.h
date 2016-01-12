@@ -380,48 +380,56 @@ protected:
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
 
-
+        //if (params.osc1ModSource.getStep() != eModSource::eNone)
         for (int s = 0; s < numSamples; ++s)
         {
-            float lfoVal = 0.f;
-            switch (params.lfo1wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                lfoVal = lfo1sine.next();
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                lfoVal = lfo1random.next();
-                break;
-            case eLfoWaves::eLfoSquare:
-                lfoVal = lfo1square.next();
-                break;
-        }
+            // check modulation source
+            if (params.osc1ModSource.getStep() == eModSource::eLFO1)
+            {
+                float lfoVal = 0.f;
+                switch (params.lfo1wave.getStep()) {
+                case eLfoWaves::eLfoSine:
+                    lfoVal = lfo1sine.next();
+                    break;
+                case eLfoWaves::eLfoSampleHold:
+                    lfoVal = lfo1random.next();
+                    break;
+                case eLfoWaves::eLfoSquare:
+                    lfoVal = lfo1square.next();
+                    break;
+                }
 
-            // Fade in factor calculation
-            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))  
-            {
-                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                factorFadeInLFO = 1.f;          
-        }
-            else                                   
-            {
-                // Otherwise the factor is determined
-                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-            }
+                // Fade in factor calculation
+                if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
+                {
+                    // If the fade in is reached or no fade in is set, the factor is 1 (100%)
+                    factorFadeInLFO = 1.f;
+                }
+                else
+                {
+                    // Otherwise the factor is determined
+                    factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
+                }
 
-            lfo1ModBuffer.setSample(0, s, lfoVal);
+                lfo1ModBuffer.setSample(0, s, lfoVal);
 
-            // Update of the modulation amount value
-            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
-            // Next sample modulated with the updated amount
-            if (params.osc1ModSource.getStep() == eModSource::eEnv)
-            {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents)*env1.calcEnvCoeff());
-            }
-            else
-            {
+                // Update of the modulation amount value
+                modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;
+
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
             }
+            //check modulation source
+            else if (params.osc1ModSource.getStep() == eModSource::eEnv) {
+
+                pitchModBuffer.setSample(0, s, Param::fromSemi(modAmount*env1.calcEnvCoeff()) * Param::fromCent(currentPitchInCents));
+            }
+            //if no modulation is chosen, set buffer with standard values
+            else
+            {
+                pitchModBuffer.setSample(0, s, 1);
+            }
         }
+
     }
 
     

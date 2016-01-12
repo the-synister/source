@@ -52,7 +52,6 @@ EnvPanel::EnvPanel (SynthParams &p)
     sustainLevel->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     sustainLevel->addListener (this);
-    sustainLevel->setSkewFactor (3);
 
     addAndMakeVisible (releaseTime = new MouseOverKnob ("Release Time"));
     releaseTime->setRange (0.001, 5, 0);
@@ -248,7 +247,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 32 64 64"
           min="-96" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="3"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 32 64 64"
           min="0.001" max="5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

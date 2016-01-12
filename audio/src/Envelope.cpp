@@ -25,16 +25,16 @@ void Envelope::startEnvelope(float currVel)
 const float Envelope::calcEnvCoeff()
 {
     float envCoeff;
-    float sustainLevel;
+    float sustainLevel = sustain.get();
 
     // check the unit of the incoming sustain envelope [Vol is in dB]
-    if (sustain.getUnit() == "dB") {
+    /*if (sustain.getUnit() == "dB") {
         sustainLevel = Param::fromDb(sustain.get());
     }
     else 
     {
         sustainLevel = sustain.get();
-    }
+    }*/
 
     // number of samples for all phases
     int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));

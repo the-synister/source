@@ -72,7 +72,8 @@ public:
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
-    Param envSustain;   //!< env sustain in [0..-96]dB
+    //Param envSustain;   //!< env sustain in [0..-96]dB
+    ParamDb envSustain;   //!< env sustain in [0..1]
     Param envRelease;   //!< env release in [0.001..5]s
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
