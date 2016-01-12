@@ -325,10 +325,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
+    <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
+    <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
