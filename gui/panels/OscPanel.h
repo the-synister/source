@@ -70,6 +70,7 @@ private:
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<Label> sawlabel;
     ScopedPointer<Label> squarelabel;
+    ScopedPointer<MouseOverKnob> pWidthModOn;
 
 
     //==============================================================================

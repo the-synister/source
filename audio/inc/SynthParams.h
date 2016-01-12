@@ -65,7 +65,8 @@ public:
 
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
-    Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
+    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
+	ParamStepped<eOnOffToggle> osc1WidthModOn; //!< pulse width modulation activated
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s

@@ -100,6 +100,12 @@ OscPanel::OscPanel (SynthParams &p)
     squarelabel->setColour (TextEditor::textColourId, Colours::black);
     squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (pWidthModOn = new MouseOverKnob ("pWidth Mod On"));
+    pWidthModOn->setRange (0, 1, 1);
+    pWidthModOn->setSliderStyle (Slider::RotaryVerticalDrag);
+    pWidthModOn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pWidthModOn->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
@@ -107,6 +113,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(osc1trngAmount, &params.osc1trngAmount);
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
+	registerSlider(pWidthModOn, &params.osc1WidthModOn);
     registerSlider(ctune1, &params.osc1coarse);
 	registerSlider(lfoFadeIn, &params.lfoFadein);
 	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
@@ -136,6 +143,7 @@ OscPanel::~OscPanel()
     waveformSwitch = nullptr;
     sawlabel = nullptr;
     squarelabel = nullptr;
+    pWidthModOn = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -170,6 +178,7 @@ void OscPanel::resized()
     waveformSwitch->setBounds (360, 128, 64, 64);
     sawlabel->setBounds (432, 152, 150, 24);
     squarelabel->setBounds (256, 152, 96, 24);
+    pWidthModOn->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -239,6 +248,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 		waveformVisual->repaint();
 
         //[/UserSliderCode_waveformSwitch]
+    }
+    else if (sliderThatWasMoved == pWidthModOn)
+    {
+        //[UserSliderCode_pWidthModOn] -- add your slider handling code here..
+        //[/UserSliderCode_pWidthModOn]
     }
 
     //[UsersliderValueChanged_Post]
@@ -312,6 +326,10 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="square wave&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <SLIDER name="pWidth Mod On" id="ea500ea6791045c2" memberName="pWidthModOn"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
