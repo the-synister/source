@@ -33,11 +33,92 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
+    feedbackSlider->setRange (0, 100, 0);
+    feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    feedbackSlider->addListener (this);
+
     addAndMakeVisible (clippingFactor = new MouseOverKnob ("Clipping Factor"));
-    clippingFactor->setRange (0, 80, 1);
+    clippingFactor->setRange (0, 80, 0);
     clippingFactor->setSliderStyle (Slider::RotaryVerticalDrag);
     clippingFactor->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     clippingFactor->addListener (this);
+
+    addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
+    dryWetSlider->setRange (0, 100, 0);
+    dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    dryWetSlider->addListener (this);
+
+    addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
+    timeSlider->setRange (1, 5000, 1);
+    timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    timeSlider->addListener (this);
+    timeSlider->setSkewFactor (0.33);
+
+    addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
+    syncToggle->setButtonText (TRANS("Sync"));
+    syncToggle->addListener (this);
+
+    addAndMakeVisible (dividend = new ComboBox ("delayDividend"));
+    dividend->setTooltip (TRANS("Dividend"));
+    dividend->setEditableText (false);
+    dividend->setJustificationType (Justification::centred);
+    dividend->setTextWhenNothingSelected (TRANS("1"));
+    dividend->setTextWhenNoChoicesAvailable (TRANS("1"));
+    dividend->addItem (TRANS("1"), 1);
+    dividend->addItem (TRANS("2"), 2);
+    dividend->addItem (TRANS("3"), 3);
+    dividend->addItem (TRANS("4"), 4);
+    dividend->addItem (TRANS("5"), 5);
+    dividend->addItem (TRANS("6"), 6);
+    dividend->addItem (TRANS("7"), 7);
+    dividend->addItem (TRANS("8"), 8);
+    dividend->addListener (this);
+
+    addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
+    divisor->setTooltip (TRANS("Divisor"));
+    divisor->setEditableText (false);
+    divisor->setJustificationType (Justification::centred);
+    divisor->setTextWhenNothingSelected (TRANS("4"));
+    divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
+    divisor->addItem (TRANS("1"), 1);
+    divisor->addItem (TRANS("2"), 2);
+    divisor->addItem (TRANS("3"), 3);
+    divisor->addItem (TRANS("4"), 4);
+    divisor->addItem (TRANS("8"), 5);
+    divisor->addItem (TRANS("16"), 6);
+    divisor->addItem (TRANS("32"), 7);
+    divisor->addItem (TRANS("64"), 8);
+    divisor->addListener (this);
+
+    addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
+    cutoffSlider->setRange (1, 20000, 1);
+    cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    cutoffSlider->addListener (this);
+    cutoffSlider->setSkewFactor (0.33);
+
+    addAndMakeVisible (resSlider = new MouseOverKnob ("Resonance"));
+    resSlider->setRange (-25, 0, 1);
+    resSlider->setSliderStyle (Slider::RotaryVerticalDrag);
+    resSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    resSlider->addListener (this);
+    resSlider->setSkewFactor (0.33);
+
+    addAndMakeVisible (tripTggl = new ToggleButton ("tripTggl1"));
+    tripTggl->setButtonText (TRANS("Triplet"));
+    tripTggl->addListener (this);
+
+    addAndMakeVisible (filtTggl = new ToggleButton ("filtTggl1"));
+    filtTggl->setButtonText (TRANS("Record Cutoff"));
+    filtTggl->addListener (this);
+
+    addAndMakeVisible (revTggl = new ToggleButton ("revTggl"));
+    revTggl->setButtonText (TRANS("Reverse"));
+    revTggl->addListener (this);
 
 
     //[UserPreSize]
@@ -126,6 +207,7 @@ FxPanel::FxPanel (SynthParams &p)
 
 
     //[UserPreSize]
+    registerSlider(clippingFactor, &params.clippingFactor);
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
@@ -155,8 +237,8 @@ FxPanel::~FxPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    clippingFactor = nullptr;
     feedbackSlider = nullptr;
+    clippingFactor = nullptr;
     dryWetSlider = nullptr;
     timeSlider = nullptr;
     syncToggle = nullptr;
@@ -190,8 +272,8 @@ void FxPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    clippingFactor->setBounds (0, 8, 112, 64);
     feedbackSlider->setBounds (8, 8, 64, 64);
+    clippingFactor->setBounds (8, 152, 64, 64);
     dryWetSlider->setBounds (80, 8, 64, 64);
     timeSlider->setBounds (152, 8, 64, 64);
     syncToggle->setBounds (304, 8, 63, 24);
@@ -212,16 +294,17 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == clippingFactor)
-    {
-        //[UserSliderCode_clippingFactor] -- add your slider handling code here..
-        //[/UserSliderCode_clippingFactor]
-    }
-    else if (sliderThatWasMoved == feedbackSlider)
+    if (sliderThatWasMoved == feedbackSlider)
     {
         //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
         params.delayFeedback.setUI(static_cast<float>(feedbackSlider->getValue()*0.01));
         //[/UserSliderCode_feedbackSlider]
+    }
+    else if (sliderThatWasMoved == clippingFactor)
+    {
+        //[UserSliderCode_clippingFactor] -- add your slider handling code here..
+        params.delayFeedback.setUI(static_cast<float>(clippingFactor->getValue()));
+        //[/UserSliderCode_clippingFactor]
     }
     else if (sliderThatWasMoved == dryWetSlider)
     {
@@ -333,6 +416,7 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 }
 
 
+
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 //[/MiscUserCode]
 
@@ -352,16 +436,14 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-<<<<<<< HEAD
-  <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="0 8 112 64"
-          min="0" max="80" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-=======
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 152 64 64"
+          min="0" max="80" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
@@ -398,7 +480,6 @@ BEGIN_JUCER_METADATA
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
                 explicitFocusOrder="0" pos="304 32 63 24" buttonText="Reverse"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
->>>>>>> master
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

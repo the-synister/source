@@ -73,7 +73,7 @@ public:
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
     
-    ParamDb clippingFactor;     //!< clipping factor of the amplitude of the signal in [0..100] (percentage of the amplitude)
+    Param clippingFactor;     //!< clipping factor of the amplitude of the signal in [0..80] (percentage of the amplitude)
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
     
     Param envAttackShape; //!< env attack shape in [0.01..10]
