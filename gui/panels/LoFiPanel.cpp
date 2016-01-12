@@ -33,7 +33,7 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (lowFiActive = new MouseOverKnob ("low fidelity active"));
+    addAndMakeVisible (lowFiActive = new MouseOverKnob ("Low Fi active"));
     lowFiActive->setRange (0, 1, 1);
     lowFiActive->setSliderStyle (Slider::RotaryVerticalDrag);
     lowFiActive->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
@@ -150,7 +150,7 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
-  <SLIDER name="low fidelity active" id="221421ebd522cd9a" memberName="lowFiActive"
+  <SLIDER name="Low Fi active" id="221421ebd522cd9a" memberName="lowFiActive"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="56 40 64 64"
           min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>

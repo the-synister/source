@@ -88,8 +88,8 @@ SynthParams::SynthParams()
 , seqStep7("seqNote7", "seqNote7", "", -1, 127, 71)
 , seqStep8("seqNote8", "seqNote8", "", -1, 127, 72)
 , lowFiActivation("Activation", "lowFiActivation", eOnOffToggle::eOff, onoffnames)
-, nBitsLowFi("Bit Degradation", "nBitsLowFi", "bit", 1.f, 16.f, 16.f)
-, freqDegFactor("Frequency Degradation", "freqDegFactor", "factor", 1.f, 100.f, 1.f)
+, nBitsLowFi("Bit Degr", "nBitsLowFi", "bit", 1.f, 16.f, 16.f)
+, freqDegFactor("Freq Degr", "freqDegFactor", "factor", 1.f, 100.f, 1.f)
 , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
