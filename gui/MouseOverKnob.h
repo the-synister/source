@@ -25,10 +25,11 @@ public:
     //==============================================================================
 
     void initTextBox();
-    
+
     virtual void setName(const String& newName) override;
-    
+
     void resized() override;
+    void setBounds(int x, int y, int width, int height);
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
     void mouseEnter(const MouseEvent &e) override;
@@ -38,7 +39,9 @@ public:
 
 private:
     ScopedPointer<Label> knobLabel;
-    int width = 64, height = 64;
+    int knobWidth = 64;
+    int knobHeight = 64;
+    int labelWidth = 200;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

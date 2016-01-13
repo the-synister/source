@@ -5,13 +5,17 @@
               buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
               pluginName="plugin" pluginDesc="plugin" pluginManufacturer="qu.tu-berlin.de"
               pluginManufacturerCode="Bitq" pluginCode="MiSp" pluginChannelConfigs="{1, 1}, {2, 2}"
-              pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="0"
+              pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synth.plugin"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
+            file="../gui/WaveformVisual.cpp"/>
+      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
+            file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="T6NiX2" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="ZjJ77i" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
@@ -28,21 +32,26 @@
         <FILE id="De7pfA" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
         <FILE id="N5FVsW" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="WkkRKZ" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
+        <FILE id="LjV3LZ" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
+        <FILE id="Hl9fwP" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
       </GROUP>
+      <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
+            file="../gui/MouseOverKnob.cpp"/>
+      <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
       <FILE id="CsCI10" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
       <FILE id="dn6HHP" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
-      <FILE id="BC8NfY" name="MouseOverKnob.cpp" compile="1" resource="0"
-            file="../gui/MouseOverKnob.cpp"/>
-      <FILE id="K0EoAF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
     </GROUP>
     <GROUP id="{949202BF-874E-EF1D-0F32-E294A4403CF7}" name="Audio">
       <GROUP id="{B810726F-87B4-284E-870E-8BE0D67A873E}" name="inc">
         <FILE id="KDfjqW" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
+        <FILE id="KGYPH3" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="eXN6xq" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
+        <FILE id="ettrMG" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="P0vVMP" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
+        <FILE id="M1Xoos" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="MIapmi" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="MZRnMw" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
@@ -50,7 +59,10 @@
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
         <FILE id="kzz3ds" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
+        <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
+        <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
+              file="../audio/src/StepSequencer.cpp"/>
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>
