@@ -475,6 +475,9 @@ protected:
                 break;
             case eBiquadFilters::eBandpass:
                 moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2;
+                if (params.lpCutoff.get() < params.hpCutoff.get()){
+                    return 0;
+                }
                 break;
             default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead 
                 return 0;
@@ -482,8 +485,10 @@ protected:
 
         // possibly TODO: what should the mod amount be applied to when modulating bandpass? center freq, or both cutoffs independently?
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
+            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmount.get() / 100.f);
         }
+
+        // TODO can't this be shortened?
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }

@@ -59,8 +59,10 @@ public:
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
     Param biquadResonance; //! filter resonance in dB
-    ParamStepped<eModSource> lpModSource;  //! filter moduluation source
-    Param lpModAmout;   //! filter moduluation amount
+    ParamStepped<eModSource> lpModSource;  //! lp filter modulation source
+    Param lpModAmount;   //! lp filter modulation amount
+    ParamStepped<eModSource> hpModSource;  //! hp filter modulation source
+    Param hpModAmount;   //! hp filter modulation amount
 
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
