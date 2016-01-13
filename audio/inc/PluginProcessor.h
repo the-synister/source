@@ -68,12 +68,12 @@ public:
 private:
     //==============================================================================
     Synthesiser synth;
-    
+
     // FX
     FxDelay delay;
     FxClipping clip;
-    
-    StepSequencer steqSeq;
+
+    StepSequencer stepSeq;
 
     void updateHostInfo();
     //==============================================================================
