@@ -365,8 +365,11 @@ protected:
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
         
-        // set the env1buffer - for Volume
-        for (int s = 0; s < numSamples; ++s)
+        // sets buffer for both envelopes
+        envToVolume.render(envToVolBuffer, numSamples);
+        env1.render(env1Buffer, numSamples);
+        
+        /*for (int s = 0; s < numSamples; ++s)
         {
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
         }
@@ -375,7 +378,7 @@ protected:
         for (int s = 0; s < numSamples; ++s)
         {
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
-        }
+        }*/
 
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
@@ -424,6 +427,7 @@ protected:
                 pitchModBuffer.setSample(0, s, Param::fromSemi(modAmount*env1.calcEnvCoeff()) * Param::fromCent(currentPitchInCents));
             }
             //if no modulation is chosen, set buffer with standard values
+            //not really efficient ...
             else
             {
                 pitchModBuffer.setSample(0, s, 1);
