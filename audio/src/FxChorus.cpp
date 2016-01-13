@@ -7,7 +7,8 @@ void FxChorus::init(int channelsIn, double sampleRateIn)
 	channels = channelsIn;
 	sampleRate = sampleRateIn;
 	chorusBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 2.0));
-	currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate / 1000.0));
+	//currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate / 1000.0));
+	currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate));
 	modSine1.phase = 0.f;
 	modSine1.phaseDelta = params.chorModRate.get() / sampleRate;
 
@@ -33,7 +34,8 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 
 	for (int i = 0; i < outputBuffer.getNumSamples(); ++i)
 	{
-		newLoopLength = static_cast<int>(params.chorDelayLength.get() * (sampleRate / 1000.0));
+		//newLoopLength = static_cast<int>(params.chorDelayLength.get() * (sampleRate / 1000.0));
+		newLoopLength = static_cast<int>(params.chorDelayLength.get() * sampleRate);
 
 		modSine1.phaseDelta = params.chorModRate.get() / sampleRate;
 		modSine2.phaseDelta = params.chorModRate.get()* 1.2f / sampleRate;
@@ -50,20 +52,20 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 
 		
 		// Interpolation
-			// get delayed sample index for both oscillators
-			float currentDelayMod1 = modSine1.next() * params.chorModDepth.get();
-			float currentDelayMod2 = modSine2.next() * params.chorModDepth.get();
-			float currentDelayMod3 = modSine3.next() * params.chorModDepth.get();
-			float currentDelayMod4 = modSine4.next() * params.chorModDepth.get();
-			float currentDelayMod5 = modSine5.next() * params.chorModDepth.get();
+		// get delayed sample index for both oscillators
+		float currentDelayMod1 = modSine1.next() * params.chorModDepth.get();
+		float currentDelayMod2 = modSine2.next() * params.chorModDepth.get();
+		float currentDelayMod3 = modSine3.next() * params.chorModDepth.get();
+		float currentDelayMod4 = modSine4.next() * params.chorModDepth.get();
+		float currentDelayMod5 = modSine5.next() * params.chorModDepth.get();
 
 
-			// get "time" in samples between two samples
-			float deltaTime1 = currentDelayMod1 - floor(currentDelayMod1);
-			float deltaTime2 = currentDelayMod2 - floor(currentDelayMod2);
-			float deltaTime3 = currentDelayMod3 - floor(currentDelayMod3);
-			float deltaTime4 = currentDelayMod3 - floor(currentDelayMod4);
-			float deltaTime5 = currentDelayMod3 - floor(currentDelayMod5);
+		// get "time" in samples between two samples
+		float deltaTime1 = currentDelayMod1 - floor(currentDelayMod1);
+		float deltaTime2 = currentDelayMod2 - floor(currentDelayMod2);
+		float deltaTime3 = currentDelayMod3 - floor(currentDelayMod3);
+		float deltaTime4 = currentDelayMod4 - floor(currentDelayMod4);
+		float deltaTime5 = currentDelayMod5 - floor(currentDelayMod5);
 
 		for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
 
@@ -108,7 +110,7 @@ void FxChorus::render(AudioSampleBuffer& outputBuffer, int startSample) {
 				outputBuffer.addSample(1, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.05f + interpValue3 *currentWetness * .35f + interpValue4 * currentWetness * .1f + interpValue5 * currentWetness * .3f);
 			}
 			else if (c == 2) {
-				outputBuffer.addSample(1, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.35f + interpValue3 *currentWetness * .05f + interpValue4 * currentWetness * .3f + interpValue5 * currentWetness * .1f);
+				outputBuffer.addSample(2, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.35f + interpValue3 *currentWetness * .05f + interpValue4 * currentWetness * .3f + interpValue5 * currentWetness * .1f);
 			}
 			else {
 				outputBuffer.addSample(c, startSample + i, interpValue1 * currentWetness*.2f + interpValue2 * currentWetness*.2f + interpValue3 * currentWetness * .2f + interpValue4 * currentWetness * .2f + interpValue5 * currentWetness * .2f);
