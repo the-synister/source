@@ -103,7 +103,7 @@ public:
     converts it to an int to use that as the denominator.
     The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
-    void setStepSpeed(const String stepSpeed);
+    void setStepSpeed(const String &stepSpeed);
 
     /**
     * Set step length from a string representing note length (e.g 1/4, 1/16 ...).
@@ -111,7 +111,7 @@ public:
     converts it to an int to use that as the denominator.
     The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
-    void setStepLength(const String stepLength);
+    void setStepLength(const String &stepLength);
     //[/UserMethods]
 
     void paint (Graphics& g);

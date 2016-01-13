@@ -813,13 +813,13 @@ String SeqPanel::getStepNoteName(int step, bool sharps, bool octaveNumber, int m
     return MidiMessage::getMidiNoteName(static_cast<int>(currMidiStepSeq[jmax(0, jmin(step, 7))]->get()), sharps, octaveNumber, middleC);
 }
 
-void SeqPanel::setStepSpeed(String stepSpeed)
+void SeqPanel::setStepSpeed(const String &stepSpeed)
 {
     int denominator = stepSpeed.substring(2).getIntValue();
     params.seqStepSpeed.set(jmax(0.0625f, jmin(4.0f / static_cast<float>(denominator), 4.0f)));
 }
 
-void SeqPanel::setStepLength(String stepLength)
+void SeqPanel::setStepLength(const String &stepLength)
 {
     int denominator = stepLength.substring(2).getIntValue();
     params.seqStepLength.set(jmax(0.0625f, jmin(4.0f / static_cast<float>(denominator), 4.0f)));

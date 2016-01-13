@@ -206,7 +206,7 @@ void StepSequencer::setStepSpeed(float stepSpeed)
     params.seqStepSpeed.set(jmax(0.0625f, jmin(stepSpeed, 4.0f)));
 }
 
-void StepSequencer::setStepSpeed(String stepSpeed)
+void StepSequencer::setStepSpeed(const String &stepSpeed)
 {
     int denominator = stepSpeed.substring(2).getIntValue();
     setStepSpeed(4.0f / static_cast<float>(denominator));
@@ -217,7 +217,7 @@ void StepSequencer::setStepLength(float stepLength)
     params.seqStepLength.set(jmax(0.0625f, jmin(stepLength, 4.0f)));
 }
 
-void StepSequencer::setStepLength(String stepLength)
+void StepSequencer::setStepLength(const String &stepLength)
 {
     int denominator = stepLength.substring(2).getIntValue();
     setStepLength(4.0f / static_cast<float>(denominator));

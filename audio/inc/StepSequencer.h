@@ -115,7 +115,7 @@ public:
                      converts it to an int to use that as the denominator. 
                      The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
-    void setStepSpeed(const String stepSpeed);
+    void setStepSpeed(const String &stepSpeed);
 
     /**
     * Set step length with base 1.0f -> 1/4th note length (0.5f -> 1/8th and so on).
@@ -129,7 +129,7 @@ public:
                       converts it to an int to use that as the denominator.
                       The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
-    void setStepLength(const String stepLength);
+    void setStepLength(const String &stepLength);
 
     /**
     * Set whether triplets are activated for step speed and step length. Internally multiply with 2/3.
