@@ -311,7 +311,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
-                    class="Component" params="static_cast&lt;int&gt;(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
           virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="0"
           max="2" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
