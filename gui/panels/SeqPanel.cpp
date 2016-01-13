@@ -24,7 +24,6 @@
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
-StepSequencer *SeqPanel::seq;
 //[/MiscUserDefs]
 
 //==============================================================================
@@ -267,8 +266,6 @@ SeqPanel::SeqPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    seq = PluginAudioProcessor::getSequencer();
-
     registerSlider(seqStep1, &params.seqStep0);
     registerSlider(seqStep2, &params.seqStep1);
     registerSlider(seqStep3, &params.seqStep2);
@@ -277,6 +274,25 @@ SeqPanel::SeqPanel (SynthParams &p)
     registerSlider(seqStep6, &params.seqStep5);
     registerSlider(seqStep7, &params.seqStep6);
     registerSlider(seqStep8, &params.seqStep7);
+
+    // save some params, sliders and buttons in arrays for easier access
+    currMidiStepSeq = { &params.seqStep0,
+                        &params.seqStep1,
+                        &params.seqStep2,
+                        &params.seqStep3,
+                        &params.seqStep4,
+                        &params.seqStep5,
+                        &params.seqStep6,
+                        &params.seqStep7 };
+
+    currStepOnOff = { &params.seqStepActive0,
+                      &params.seqStepActive1,
+                      &params.seqStepActive2,
+                      &params.seqStepActive3,
+                      &params.seqStepActive4,
+                      &params.seqStepActive5,
+                      &params.seqStepActive6,
+                      &params.seqStepActive7 };
 
     seqStepArray = { seqStep1.get(),
                      seqStep2.get(),
@@ -296,21 +312,22 @@ SeqPanel::SeqPanel (SynthParams &p)
                          labelButton7.get(),
                          labelButton8.get() };
 
+    // set initial GUI states
     for (int i = 0; i < 8; ++i)
     {
-        labelButtonArray[i]->setToggleState(seq->isStepActive(i), dontSendNotification);
+        labelButtonArray[i]->setToggleState(isStepActive(i), dontSendNotification);
     }
-    syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-    seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
-    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
-    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
-    seqStepSpeed->setText(seq->getStepSpeedAsString(), dontSendNotification);
-    seqStepLength->setText(seq->getStepLengthAsString(), dontSendNotification);
-    triplets->setToggleState(seq->isTripletActive(), dontSendNotification);
-    seqNumSteps->setText(String(seq->getNumStep()), dontSendNotification);
-    randomSeq->setMinAndMaxValues(seq->getRandMin(), seq->getRandMax());
-    randMinLabel->setText("Min: " + seq->getRandMinNoteName(true, true, 3), dontSendNotification);
-    randMaxLabel->setText("Max: " + seq->getRandMaxNoteName(true, true, 3), dontSendNotification);
+    syncHost->setToggleState(params.seqMode.getStep() == eSeqModes::eSeqSyncHost, dontSendNotification);
+    seqPlay->setToggleState(isPlaying(), dontSendNotification);
+    playUpDown->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown, dontSendNotification);
+    playRandom->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eRandom, dontSendNotification);
+    seqStepSpeed->setText(getStepSpeedAsString(), dontSendNotification);
+    seqStepLength->setText(getStepLengthAsString(), dontSendNotification);
+    triplets->setToggleState(params.seqTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
+    randomSeq->setMinAndMaxValues(static_cast<int>(params.seqRandomMin.get()), static_cast<int>(params.seqRandomMax.get()));
+    randMinLabel->setText("Min: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMin.get()), true, true, 3), dontSendNotification);
+    randMaxLabel->setText("Max: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMax.get()), true, true, 3), dontSendNotification);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -384,21 +401,22 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    // reload GUI states
     for (int i = 0; i < 8; ++i)
     {
-        labelButtonArray[i]->setToggleState(seq->isStepActive(i), dontSendNotification);
+        labelButtonArray[i]->setToggleState(isStepActive(i), dontSendNotification);
     }
-    syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-    seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
-    playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
-    playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
-    seqStepSpeed->setText(seq->getStepSpeedAsString(), dontSendNotification);
-    seqStepLength->setText(seq->getStepLengthAsString(), dontSendNotification);
-    triplets->setToggleState(seq->isTripletActive(), dontSendNotification);
-    seqNumSteps->setText(String(seq->getNumStep()), dontSendNotification);
-    randomSeq->setMinAndMaxValues(seq->getRandMin(), seq->getRandMax());
-    randMinLabel->setText("Min: " + seq->getRandMinNoteName(true, true, 3), dontSendNotification);
-    randMaxLabel->setText("Max: " + seq->getRandMaxNoteName(true, true, 3), dontSendNotification);
+    syncHost->setToggleState(params.seqMode.getStep() == eSeqModes::eSeqSyncHost, dontSendNotification);
+    seqPlay->setToggleState(isPlaying(), dontSendNotification);
+    playUpDown->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown, dontSendNotification);
+    playRandom->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eRandom, dontSendNotification);
+    seqStepSpeed->setText(getStepSpeedAsString(), dontSendNotification);
+    seqStepLength->setText(getStepLengthAsString(), dontSendNotification);
+    triplets->setToggleState(params.seqTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
+    randomSeq->setMinAndMaxValues(static_cast<int>(params.seqRandomMin.get()), static_cast<int>(params.seqRandomMax.get()));
+    randMinLabel->setText("Min: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMin.get()), true, true, 3), dontSendNotification);
+    randMaxLabel->setText("Max: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMax.get()), true, true, 3), dontSendNotification);
     //[/UserPreResize]
 
     seqStep1->setBounds (336, 32, 48, 264);
@@ -450,58 +468,59 @@ void SeqPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == seqStep1)
     {
         //[UserSliderCode_seqStep1] -- add your slider handling code here..
-        labelButton1->setButtonText(seq->getStepNoteName(0, true, true, 3));
+        labelButton1->setButtonText(getStepNoteName(0, true, true, 3));
         //[/UserSliderCode_seqStep1]
     }
     else if (sliderThatWasMoved == seqStep2)
     {
         //[UserSliderCode_seqStep2] -- add your slider handling code here..
-        labelButton2->setButtonText(seq->getStepNoteName(1, true, true, 3));
+        labelButton2->setButtonText(getStepNoteName(1, true, true, 3));
         //[/UserSliderCode_seqStep2]
     }
     else if (sliderThatWasMoved == seqStep3)
     {
         //[UserSliderCode_seqStep3] -- add your slider handling code here..
-        labelButton3->setButtonText(seq->getStepNoteName(2, true, true, 3));
+        labelButton3->setButtonText(getStepNoteName(2, true, true, 3));
         //[/UserSliderCode_seqStep3]
     }
     else if (sliderThatWasMoved == seqStep4)
     {
         //[UserSliderCode_seqStep4] -- add your slider handling code here..
-        labelButton4->setButtonText(seq->getStepNoteName(3, true, true, 3));
+        labelButton4->setButtonText(getStepNoteName(3, true, true, 3));
         //[/UserSliderCode_seqStep4]
     }
     else if (sliderThatWasMoved == seqStep5)
     {
         //[UserSliderCode_seqStep5] -- add your slider handling code here..
-        labelButton5->setButtonText(seq->getStepNoteName(4, true, true, 3));
+        labelButton5->setButtonText(getStepNoteName(4, true, true, 3));
         //[/UserSliderCode_seqStep5]
     }
     else if (sliderThatWasMoved == seqStep6)
     {
         //[UserSliderCode_seqStep6] -- add your slider handling code here..
-        labelButton6->setButtonText(seq->getStepNoteName(5, true, true, 3));
+        labelButton6->setButtonText(getStepNoteName(5, true, true, 3));
         //[/UserSliderCode_seqStep6]
     }
     else if (sliderThatWasMoved == seqStep7)
     {
         //[UserSliderCode_seqStep7] -- add your slider handling code here..
-        labelButton7->setButtonText(seq->getStepNoteName(6, true, true, 3));
+        labelButton7->setButtonText(getStepNoteName(6, true, true, 3));
         //[/UserSliderCode_seqStep7]
     }
     else if (sliderThatWasMoved == seqStep8)
     {
         //[UserSliderCode_seqStep8] -- add your slider handling code here..
-        labelButton8->setButtonText(seq->getStepNoteName(7, true, true, 3));
+        labelButton8->setButtonText(getStepNoteName(7, true, true, 3));
         //[/UserSliderCode_seqStep8]
     }
     else if (sliderThatWasMoved == randomSeq)
     {
         //[UserSliderCode_randomSeq] -- add your slider handling code here..
-        seq->setRandMin(static_cast<int>(randomSeq->getMinValue()));
-        seq->setRandMax(static_cast<int>(randomSeq->getMaxValue()));
-        randMinLabel->setText("Min: " + seq->getRandMinNoteName(true, true, 3), dontSendNotification);
-        randMaxLabel->setText("Max: " + seq->getRandMaxNoteName(true, true, 3), dontSendNotification);
+        // set the random slider and refresh note name labels
+        params.seqRandomMin.set(static_cast<float>(randomSeq->getMinValue()));
+        params.seqRandomMax.set(static_cast<float>(randomSeq->getMaxValue()));
+        randMinLabel->setText("Min: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMin.get()), true, true, 3), dontSendNotification);
+        randMaxLabel->setText("Max: " + MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMax.get()), true, true, 3), dontSendNotification);
         //[/UserSliderCode_randomSeq]
     }
 
@@ -517,113 +536,151 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == seqPlay)
     {
         //[UserButtonCode_seqPlay] -- add your button handler code here..
-        seq->playNoHost(!seq->isPlaying());
-        syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-        seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
+        if (params.seqMode.getStep() != eSeqModes::eSeqSyncHost)
+        {
+            if (!isPlaying())
+            {
+                params.seqMode.setStep(eSeqModes::eSeqPlay);
+            }
+            else
+            {
+                params.seqMode.setStep(eSeqModes::eSeqStop);
+            }
+        }
+        syncHost->setToggleState(params.seqMode.getStep() == eSeqModes::eSeqSyncHost, dontSendNotification);
+        seqPlay->setToggleState(isPlaying(), dontSendNotification);
         //[/UserButtonCode_seqPlay]
     }
     else if (buttonThatWasClicked == syncHost)
     {
         //[UserButtonCode_syncHost] -- add your button handler code here..
-        seq->syncToHost(!seq->isHostSynced());
-        syncHost->setToggleState(seq->isHostSynced(), dontSendNotification);
-        seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
+        if (!(params.seqMode.getStep() == eSeqModes::eSeqSyncHost))
+        {
+            params.seqMode.setStep(eSeqModes::eSeqSyncHost);
+        }
+        else
+        {
+            params.seqMode.setStep(eSeqModes::eSeqStop);
+        }
+        syncHost->setToggleState(params.seqMode.getStep() == eSeqModes::eSeqSyncHost, dontSendNotification);
+        seqPlay->setToggleState(isPlaying(), dontSendNotification);
         //[/UserButtonCode_syncHost]
     }
     else if (buttonThatWasClicked == labelButton1)
     {
         //[UserButtonCode_labelButton1] -- add your button handler code here..
-        seq->setStepActive(0, !seq->isStepActive(0));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(0), dontSendNotification);
+        setStepActive(0, !isStepActive(0));
+        buttonThatWasClicked->setToggleState(isStepActive(0), dontSendNotification);
         //[/UserButtonCode_labelButton1]
     }
     else if (buttonThatWasClicked == labelButton2)
     {
         //[UserButtonCode_labelButton2] -- add your button handler code here..
-        seq->setStepActive(1, !seq->isStepActive(1));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(1), dontSendNotification);
+        setStepActive(1, !isStepActive(1));
+        buttonThatWasClicked->setToggleState(isStepActive(1), dontSendNotification);
         //[/UserButtonCode_labelButton2]
     }
     else if (buttonThatWasClicked == labelButton3)
     {
         //[UserButtonCode_labelButton3] -- add your button handler code here..
-        seq->setStepActive(2, !seq->isStepActive(2));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(2), dontSendNotification);
+        setStepActive(2, !isStepActive(2));
+        buttonThatWasClicked->setToggleState(isStepActive(2), dontSendNotification);
         //[/UserButtonCode_labelButton3]
     }
     else if (buttonThatWasClicked == labelButton4)
     {
         //[UserButtonCode_labelButton4] -- add your button handler code here..
-        seq->setStepActive(3, !seq->isStepActive(3));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(3), dontSendNotification);
+        setStepActive(3, !isStepActive(3));
+        buttonThatWasClicked->setToggleState(isStepActive(3), dontSendNotification);
         //[/UserButtonCode_labelButton4]
     }
     else if (buttonThatWasClicked == labelButton5)
     {
         //[UserButtonCode_labelButton5] -- add your button handler code here..
-        seq->setStepActive(4, !seq->isStepActive(4));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(4), dontSendNotification);
+        setStepActive(4, !isStepActive(4));
+        buttonThatWasClicked->setToggleState(isStepActive(4), dontSendNotification);
         //[/UserButtonCode_labelButton5]
     }
     else if (buttonThatWasClicked == labelButton6)
     {
         //[UserButtonCode_labelButton6] -- add your button handler code here..
-        seq->setStepActive(5, !seq->isStepActive(5));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(5), dontSendNotification);
+        setStepActive(5, !isStepActive(5));
+        buttonThatWasClicked->setToggleState(isStepActive(5), dontSendNotification);
         //[/UserButtonCode_labelButton6]
     }
     else if (buttonThatWasClicked == labelButton7)
     {
         //[UserButtonCode_labelButton7] -- add your button handler code here..
-        seq->setStepActive(6, !seq->isStepActive(6));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(6), dontSendNotification);
+        setStepActive(6, !isStepActive(6));
+        buttonThatWasClicked->setToggleState(isStepActive(6), dontSendNotification);
         //[/UserButtonCode_labelButton7]
     }
     else if (buttonThatWasClicked == labelButton8)
     {
         //[UserButtonCode_labelButton8] -- add your button handler code here..
-        seq->setStepActive(7, !seq->isStepActive(7));
-        buttonThatWasClicked->setToggleState(seq->isStepActive(7), dontSendNotification);
+        setStepActive(7, !isStepActive(7));
+        buttonThatWasClicked->setToggleState(isStepActive(7), dontSendNotification);
         //[/UserButtonCode_labelButton8]
     }
     else if (buttonThatWasClicked == genRandom)
     {
         //[UserButtonCode_genRandom] -- add your button handler code here..
-        seq->generateRandomSeq();
+        generateRandomSeq();
         //[/UserButtonCode_genRandom]
     }
     else if (buttonThatWasClicked == playUpDown)
     {
         //[UserButtonCode_playUpDown] -- add your button handler code here..
-        seq->playUpDown(!seq->isPlayUpDown());
-        playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
-        playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
+        if (!(params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown))
+        {
+            params.seqPlayMode.setStep(eSeqPlayModes::eUpDown);
+        }
+        else
+        {
+            params.seqPlayMode.setStep(eSeqPlayModes::eSequential);
+        }
+        playUpDown->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown, dontSendNotification);
+        playRandom->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eRandom, dontSendNotification);
         //[/UserButtonCode_playUpDown]
     }
     else if (buttonThatWasClicked == playRandom)
     {
         //[UserButtonCode_playRandom] -- add your button handler code here..
-        seq->playRandom(!seq->isPlayRandom());
-        playUpDown->setToggleState(seq->isPlayUpDown(), dontSendNotification);
-        playRandom->setToggleState(seq->isPlayRandom(), dontSendNotification);
+        if (!(params.seqPlayMode.getStep() == eSeqPlayModes::eRandom))
+        {
+            params.seqPlayMode.setStep(eSeqPlayModes::eRandom);
+        }
+        else
+        {
+            params.seqPlayMode.setStep(eSeqPlayModes::eSequential);
+        }
+        playUpDown->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eUpDown, dontSendNotification);
+        playRandom->setToggleState(params.seqPlayMode.getStep() == eSeqPlayModes::eRandom, dontSendNotification);
         //[/UserButtonCode_playRandom]
     }
     else if (buttonThatWasClicked == triplets)
     {
         //[UserButtonCode_triplets] -- add your button handler code here..
-        seq->activateTriplets(!seq->isTripletActive());
+        if (!(params.seqTriplets.getStep() == eOnOffToggle::eOn))
+        {
+            params.seqTriplets.setStep(eOnOffToggle::eOn);
+        }
+        else
+        {
+            params.seqTriplets.setStep(eOnOffToggle::eOff);
+        }
         //[/UserButtonCode_triplets]
     }
     else if (buttonThatWasClicked == saveSeq)
     {
         //[UserButtonCode_saveSeq] -- add your button handler code here..
-        seq->saveSeqState();
+        params.writeXMLPatchStandalone(eSerializationParams::eSequencerOnly);
         //[/UserButtonCode_saveSeq]
     }
     else if (buttonThatWasClicked == loadSeq)
     {
         //[UserButtonCode_loadSeq] -- add your button handler code here..
-        seq->loadSeqState();
+        params.readXMLPatchStandalone(eSerializationParams::eSequencerOnly);
         resized();
         //[/UserButtonCode_loadSeq]
     }
@@ -640,19 +697,19 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == seqStepSpeed)
     {
         //[UserComboBoxCode_seqStepSpeed] -- add your combo box handling code here..
-        seq->setStepSpeed(comboBoxThatHasChanged->getText());
+        setStepSpeed(comboBoxThatHasChanged->getText());
         //[/UserComboBoxCode_seqStepSpeed]
     }
     else if (comboBoxThatHasChanged == seqStepLength)
     {
         //[UserComboBoxCode_seqStepLength] -- add your combo box handling code here..
-        seq->setStepLength(comboBoxThatHasChanged->getText());
+        setStepLength(comboBoxThatHasChanged->getText());
         //[/UserComboBoxCode_seqStepLength]
     }
     else if (comboBoxThatHasChanged == seqNumSteps)
     {
         //[UserComboBoxCode_seqNumSteps] -- add your combo box handling code here..
-        seq->setNumSteps(comboBoxThatHasChanged->getText().getIntValue());
+        params.seqNumSteps.set(jmax(1.0f, jmin(comboBoxThatHasChanged->getText().getFloatValue(), 8.0f)));
         //[/UserComboBoxCode_seqNumSteps]
     }
 
@@ -665,18 +722,18 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void SeqPanel::timerCallback()
 {
-    if (seq->isPlaying())
+    if (isPlaying())
     {
-        if (lastSeqNotePos != seq->getLastSeqNote())
+        if (lastSeqNotePos != static_cast<int>(params.seqLastPlayedStep.get()))
         {
-            seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
+            seqPlay->setToggleState(isPlaying(), dontSendNotification);
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
             {
                 seqStepArray[i]->setColour(Slider::trackColourId, Colour(0x7fffffff));
             }
 
-            lastSeqNotePos = seq->getLastSeqNote();
+            lastSeqNotePos = static_cast<int>(params.seqLastPlayedStep.get());
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
             seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0x7f0000ff));
         }
@@ -686,13 +743,86 @@ void SeqPanel::timerCallback()
         // reset gui state
         if (lastSeqNotePos != -1)
         {
-            seqPlay->setToggleState(seq->isPlaying(), dontSendNotification);
+            seqPlay->setToggleState(isPlaying(), dontSendNotification);
             seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
             lastSeqNotePos = -1;
         }
     }
 
     PanelBase::timerCallback();
+}
+
+void SeqPanel::generateRandomSeq()
+{
+    float min = params.seqRandomMin.get();
+    float max = params.seqRandomMax.get();
+    Random r = Random();
+
+    for (int i = 0; i < 8; ++i)
+    {
+        r.setSeedRandomly();
+        currMidiStepSeq[i]->set(r.nextFloat() * (max - min) + min, true);
+    }
+}
+
+void SeqPanel::setStepActive(int step, bool active)
+{
+    if (active)
+    {
+        currStepOnOff[jmax(0, jmin(step, 7))]->setStep(eOnOffToggle::eOn);
+    }
+    else
+    {
+        currStepOnOff[jmax(0, jmin(step, 7))]->setStep(eOnOffToggle::eOff);
+    }
+}
+
+bool SeqPanel::isPlaying()
+{
+    AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getAudioIndex()];
+
+    if ((params.seqMode.getStep() == eSeqModes::eSeqPlay) || ((params.seqMode.getStep() == eSeqModes::eSeqSyncHost) && hostPlayHead.isPlaying))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool SeqPanel::isStepActive(int step)
+{
+    return currStepOnOff[jmax(0, jmin(step, 7))]->getStep() == eOnOffToggle::eOn;
+}
+
+String SeqPanel::getStepSpeedAsString()
+{
+    int denominator = static_cast<int>(4.0f * (1.0f / params.seqStepSpeed.get()));
+    return "1/" + String(denominator);
+}
+
+String SeqPanel::getStepLengthAsString()
+{
+    int denominator = static_cast<int>(4.0f * (1.0f / params.seqStepLength.get()));
+    return "1/" + String(denominator);
+}
+
+String SeqPanel::getStepNoteName(int step, bool sharps, bool octaveNumber, int middleC)
+{
+    return MidiMessage::getMidiNoteName(static_cast<int>(currMidiStepSeq[jmax(0, jmin(step, 7))]->get()), sharps, octaveNumber, middleC);
+}
+
+void SeqPanel::setStepSpeed(String stepSpeed)
+{
+    int denominator = stepSpeed.substring(2).getIntValue();
+    params.seqStepSpeed.set(jmax(0.0625f, jmin(4.0f / static_cast<float>(denominator), 4.0f)));
+}
+
+void SeqPanel::setStepLength(String stepLength)
+{
+    int denominator = stepLength.substring(2).getIntValue();
+    params.seqStepLength.set(jmax(0.0625f, jmin(4.0f / static_cast<float>(denominator), 4.0f)));
 }
 //[/MiscUserCode]
 

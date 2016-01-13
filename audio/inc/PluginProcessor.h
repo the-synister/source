@@ -41,7 +41,6 @@ public:
 
     //==============================================================================
     const String getName() const override;
-    static StepSequencer* getSequencer();
 
     const String getInputChannelName (int channelIndex) const override;
     const String getOutputChannelName (int channelIndex) const override;
@@ -71,7 +70,7 @@ private:
     // FX
     FxDelay delay;
 
-    static StepSequencer* stepSeq;
+    StepSequencer stepSeq;
 
     void updateHostInfo();
     //==============================================================================

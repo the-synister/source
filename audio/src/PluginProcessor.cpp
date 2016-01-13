@@ -15,10 +15,9 @@
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-StepSequencer *PluginAudioProcessor::stepSeq;
-
 PluginAudioProcessor::PluginAudioProcessor() 
     : delay(*this)
+    , stepSeq(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
@@ -44,8 +43,6 @@ PluginAudioProcessor::PluginAudioProcessor()
     
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
-
-    stepSeq = new StepSequencer(*this);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -61,11 +58,6 @@ const String PluginAudioProcessor::getName() const
     // standalone
     return "plugin";
 #endif
-}
-
-StepSequencer* PluginAudioProcessor::getSequencer()
-{
-    return stepSeq;
 }
 
 const String PluginAudioProcessor::getInputChannelName (int channelIndex) const
@@ -179,7 +171,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    stepSeq->runSeq(midiMessages, buffer.getNumSamples(), getSampleRate());
+    stepSeq.runSeq(midiMessages, buffer.getNumSamples(), getSampleRate());
 
     // pass these messages to the keyboard state so that it can update the component
     // to show on-screen which keys are being pressed on the physical midi keyboard.
