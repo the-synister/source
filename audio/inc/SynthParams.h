@@ -15,31 +15,35 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
+};
 
+enum class eOscWaves : int {
+    eOscSquare = 0,
+    eOscSaw    = 1,
+    eOscNoise  = 2,
+    nSteps     = 3
+};
 
 enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
     nSteps = 2
 };
-    
+
 enum class eOnOffToggle : int {
     eOff = 0,
     eOn = 1,
     nSteps = 2
 };
 
-enum class eSeqModes : int
-{
+enum class eSeqModes : int {
     eSeqStop = 0,
     eSeqPlay = 1,
     eSeqSyncHost = 2,
     nSteps = 3
 };
 
-enum class eSeqPlayModes : int
-{
+enum class eSeqPlayModes : int {
     eSequential = 0,
     eUpDown = 1,
     eRandom = 2,
@@ -61,7 +65,11 @@ public:
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
+    ParamStepped<eOnOffToggle> lfo1TempSync; //!< bool if checked or not
+    Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
+
+    Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
@@ -74,6 +82,8 @@ public:
     ParamStepped<eModSource> lpModSource;  //! filter moduluation source
     Param lpModAmout;   //! filter moduluation amount
 
+    ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
+    
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
@@ -82,7 +92,10 @@ public:
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
-    Param envRelease;   //!< env release in [0.001..5]s
+    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+
+    Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
+
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
@@ -112,8 +125,6 @@ public:
     ParamStepped<eOnOffToggle> seqStepActive5;
     ParamStepped<eOnOffToggle> seqStepActive6;
     ParamStepped<eOnOffToggle> seqStepActive7;
-
-    Param osc1WaveForm;//!< int value for defining waveform [1..3]
 
     Param panDir; //!< pan R/L [-100..100]
 
@@ -188,7 +199,7 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
-    
+
     int getGUIIndex();
     int getAudioIndex();
 

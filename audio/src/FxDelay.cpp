@@ -104,7 +104,7 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSa
             // add new material to buffer
             float currentSample = outputBuffer.getSample(c, startSample + s);
             float delayedSample = delayBuffer.getSample(c, loopPosition);
-            
+
             // reverse order
             int orderPosition;
             if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
@@ -116,7 +116,7 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSa
             if (params.delayRecordFilter.getStep() == eOnOffToggle::eOn) {
                 delayedSample = filter(delayedSample);
             }
-            
+
             delayBuffer.addSample(c, orderPosition, delayedSample * params.delayFeedback.get());
 
             if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {

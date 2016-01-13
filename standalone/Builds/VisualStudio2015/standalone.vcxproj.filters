@@ -1665,9 +1665,6 @@
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\HostParam.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>

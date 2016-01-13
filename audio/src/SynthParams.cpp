@@ -13,7 +13,7 @@ namespace {
     static const char *seqModeNames[] = {
         "Stop", "Play", "SyncHost", nullptr
     };
-
+    
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
     };
@@ -25,14 +25,18 @@ namespace {
     static const char *modsourcenames[] = {
         "None", "LFO1", nullptr
     };
+    
+    static const char *waveformNames[] = {
+        "Square", "Saw", "White-noise"
+    };
 }
 
 SynthParams::SynthParams()
 : serializeParams{ &freq,
-    &lfo1freq, &lfo1wave,
-    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth,
+    &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
+    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
-    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout,
+    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout, &keyVelocityLevel,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
@@ -42,6 +46,8 @@ SynthParams::SynthParams()
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax}
 , freq("Freq", "freq", "Hz", 220.f, 880.f, 440.f)
 , lfo1freq("Freq", "lfo1freq", "Hz", .01f, 50.f, 1.f)
+, lfo1TempSync("TempoSyncSwitch", "tempoSyncSwitch", eOnOffToggle::eOff, onoffnames)
+, noteLength("Note Length", "notelength", "", 1.f, 32.f, 4.f)
 , lfo1wave("Wave", "lfo1wave", eLfoWaves::eLfoSine, lfowavenames)
 , osc1fine("f.tune", "osc1fine", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "osc1coarse", "st", -11.f, 11.f, 0.f)
@@ -51,6 +57,7 @@ SynthParams::SynthParams()
 , biquadResonance("Filter Reso", "filterResonance", "dB", -25.f, 25.f, 0.f)
 , hpCutoff("HP Cut", "hpCutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
+, osc1Waveform("Osc Waveform", "oscWaveform", eOscWaves::eOscSquare, waveformNames)
 , lpModAmout("LP ModAmnt", "lpModAmout", "prct", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "prct", 0.0f, 1.0f, 0.0f)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)
@@ -63,11 +70,12 @@ SynthParams::SynthParams()
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-, osc1WaveForm("Waveform", "Waveform", "int", 1.0f, 3.0f, 1.0f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)
+, keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "dB", 0.f, 96.f, 0.0f)
 , vol("Vol", "vol", "dB", 0.f, 1.f, .5f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "  ", 0.f, 10.f, 0.f)
+, lfoFadein("FadeIn","lfoFadein", "s", 0.f, 10.f, 0.f)
 , delayDryWet("Dry / Wet", "delWet", "%", 0.f, 1.f, 0.f)
 , delayFeedback("Feedback", "delFeed", "%", 0.f, 1.f, 0.f)
 , delayTime("Time", "delTime", "ms", 1., 5000., 1000.)
@@ -130,8 +138,10 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
     // iterate over all params and insert them into the tree
     for (auto &param : parameters) {
         float value = param->getUI();
+        if (param->serializationTag() != "") {
         addElement(patch, param->serializationTag(), value);
     }
+}
 }
 
 void SynthParams::writeXMLPatchHost(MemoryBlock& destData, eSerializationParams paramsToSerialize) {
@@ -184,7 +194,9 @@ void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSer
 
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : parameters) {
+        if (param->serializationTag() != "") {
         fillValueIfExists(patch, param->serializationTag(), *param);
+    }
     }
 
 }

@@ -1300,7 +1300,6 @@
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
-    <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>

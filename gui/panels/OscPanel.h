@@ -65,10 +65,12 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<Label> sawlabel;
     ScopedPointer<Label> squarelabel;
+    ScopedPointer<Label> noiselabel;
 
 
     //==============================================================================
