@@ -21,12 +21,14 @@ PluginAudioProcessor::PluginAudioProcessor()
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
+    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc1Waveform));
 
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
     addParameter(new HostParam<Param>(noteLength));
+    addParameter(new HostParam<Param>(lfoFadein));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
@@ -43,6 +45,10 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
 
+    addParameter(new HostParam<Param>(delayFeedback));
+    addParameter(new HostParam<Param>(delayDryWet));
+    addParameter(new HostParam<Param>(delayTime));
+        
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 }
