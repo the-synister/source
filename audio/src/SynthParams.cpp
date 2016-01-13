@@ -26,7 +26,7 @@ namespace {
 SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,
-    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &osc1WidthModOn,
+    &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &osc1GainWidthMod,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout, &keyVelocityLevel,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
@@ -55,7 +55,7 @@ SynthParams::SynthParams()
 , envDecayShape("Decay Shape", "envDecayShape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape("Release Shape", "envReleaseShape", "", 0.01f, 10.0f, 1.0f)
 , osc1pulsewidth("Width", "osc1pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-, osc1WidthModOn("PWidth Mod", "osc1WidthModOn", eOnOffToggle::eOff, onoffnames)
+, osc1GainWidthMod("Width Mod", "osc1GainWidthMod", "gain", 0.f,1.f,0.f)
 , osc1WaveForm("Waveform", "Waveform", "int", 1.0f, 3.0f, 1.0f)
 , panDir("Pan", "panDir", "pct", -100.f, 100.f, 0.f)
 , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "dB", 0.f, 96.f, 0.0f)
