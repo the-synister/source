@@ -62,6 +62,7 @@ private:
     ScopedPointer<MouseOverKnob> pan;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;
+    ScopedPointer<MouseOverKnob> velocitySense;
 
 
     //==============================================================================

@@ -65,6 +65,7 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> clippingFactor;
     ScopedPointer<MouseOverKnob> dryWetSlider;
     ScopedPointer<MouseOverKnob> timeSlider;
     ScopedPointer<ToggleButton> syncToggle;

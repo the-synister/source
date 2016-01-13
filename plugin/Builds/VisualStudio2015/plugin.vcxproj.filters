@@ -376,6 +376,9 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1706,6 +1709,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>plugin\Audio\inc</Filter>
