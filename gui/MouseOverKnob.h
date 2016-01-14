@@ -11,9 +11,8 @@
 #ifndef MOUSEOVERKNOB_H_INCLUDED
 #define MOUSEOVERKNOB_H_INCLUDED
 
-//[Headers]
 #include "JuceHeader.h"
-//[/Headers]
+#include "CustomLookAndFeel.h"
 
 class MouseOverKnob : public Slider,
                       public ComponentListener
@@ -41,7 +40,6 @@ private:
     ScopedPointer<Label> knobLabel;
     int knobWidth = 64;
     int knobHeight = 64;
-    int labelWidth = 200;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

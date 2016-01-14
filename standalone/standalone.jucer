@@ -24,6 +24,13 @@
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
+      <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets">
+        <FILE id="lO53KO" name="knobstrip.png" compile="0" resource="1" file="../../../../Downloads/knobstrip.png"/>
+      </GROUP>
+      <FILE id="pTBLVA" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="ZIV2bd" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>

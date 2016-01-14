@@ -34,6 +34,9 @@ struct Waveforms {
     }
     
     static float whiteNoise(float phs, float trngAmount, float width) {
+        ignoreUnused(phs);
+        ignoreUnused(trngAmount);
+        ignoreUnused(width);
         return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
     }
 };
@@ -178,9 +181,9 @@ public:
             lfo1square.phase = 0.f;
             lfo1random.phase = 0.f;
 
-            lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1square.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1random.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
         else {
@@ -287,7 +290,7 @@ public:
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
-                float currentSample;
+                float currentSample = 0.0f;
                 switch (params.osc1Waveform.getStep())
                 {
                     case eOscWaves::eOscSquare:
@@ -543,7 +546,7 @@ protected:
 
         // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
+        float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
 
         const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
         
@@ -577,7 +580,7 @@ protected:
             // coefficients for bandpass, depending on low- and highcut frequency
             w0 = 2 * float_Pi*moddedFreq;
             bw = (log2(params.lpCutoff.get() / params.hpCutoff.get())); // bandwidth in octaves
-            coeff1 = sin(w0)*sinh(log10(2) / 2 * bw * w0 / sin(w0)); // intermediate value for coefficient calc
+            coeff1 = sin(w0)*static_cast<float>(sinh(log10(2)) / 2.0f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
 
             b0 = coeff1;
             b1 = 0;

@@ -68,7 +68,7 @@ LfoPanel::LfoPanel (SynthParams &p)
     registerSlider(freq, &params.lfo1freq);
     freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
     wave->setValue(params.lfo1wave.getUI());
-    tempoSyncSwitch->setToggleState(0,0);
+    tempoSyncSwitch->setToggleState(0, dontSendNotification);
     notelength->setValue(params.noteLength.getUI());
     registerSlider(notelength, &params.noteLength);
     registerSlider(wave, &params.lfo1wave);

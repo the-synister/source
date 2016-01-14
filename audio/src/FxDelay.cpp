@@ -83,6 +83,7 @@ void FxDelay::calcTime()
 
 void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn)
 {
+    ignoreUnused(numSamplesIn);
     int newLoopLength;
     calcTime();
 

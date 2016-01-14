@@ -25,6 +25,17 @@ MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
     knobLabel->addComponentListener(this);
 
     initTextBox();
+    
+    //LookAndFeel *laf = &LookAndFeel::getDefaultLookAndFeel();
+    //laf->setDefaultSansSerifTypefaceName("Arial");
+    //laf->setColour(ColourIds::rotarySliderFillColourId, Colour(0x00000000));
+
+    //LookAndFeel_V1 *laf = new LookAndFeel_V1();
+    //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
+    //LookAndFeel_V3 *laf = new LookAndFeel_V3();
+    CustomLookAndFeel *laf = new CustomLookAndFeel();
+    LookAndFeel::setDefaultLookAndFeel(laf); // set whole design
+    //this->setLookAndFeel(laf); // set only mouseOverKnobs
 }
 
 MouseOverKnob::~MouseOverKnob()
@@ -125,8 +136,8 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
 */
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
-    knobLabel->setSize(labelWidth, this->getTextBoxHeight());
-    knobLabel->setTopLeftPosition(this->getX() + (knobWidth- labelWidth)/2, this->getY() + this->getHeight());
+    knobLabel->setSize(knobWidth, this->getTextBoxHeight());
+    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }
