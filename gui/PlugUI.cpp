@@ -98,6 +98,15 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
+
+    //LookAndFeel_V1 *laf = new LookAndFeel_V1();
+    //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
+    //LookAndFeel_V3 *laf = new LookAndFeel_V3();
+
+    // set whole design from very parent GUI component
+    CustomLookAndFeel *laf = new CustomLookAndFeel();
+    LookAndFeel::setDefaultLookAndFeel(laf);
+
     //[/Constructor]
 }
 

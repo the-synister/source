@@ -25,17 +25,6 @@ MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
     knobLabel->addComponentListener(this);
 
     initTextBox();
-    
-    //LookAndFeel *laf = &LookAndFeel::getDefaultLookAndFeel();
-    //laf->setDefaultSansSerifTypefaceName("Arial");
-    //laf->setColour(ColourIds::rotarySliderFillColourId, Colour(0x00000000));
-
-    //LookAndFeel_V1 *laf = new LookAndFeel_V1();
-    //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
-    //LookAndFeel_V3 *laf = new LookAndFeel_V3();
-    CustomLookAndFeel *laf = new CustomLookAndFeel();
-    LookAndFeel::setDefaultLookAndFeel(laf); // set whole design
-    //this->setLookAndFeel(laf); // set only mouseOverKnobs
 }
 
 MouseOverKnob::~MouseOverKnob()

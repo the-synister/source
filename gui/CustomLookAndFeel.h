@@ -15,7 +15,7 @@
 #include "JuceHeader.h"
 //[/Headers]
 
-class CustomLookAndFeel : public LookAndFeel_V2
+class CustomLookAndFeel : public LookAndFeel_V2 // our default design
 {
 public:
     //==============================================================================
@@ -27,8 +27,13 @@ public:
     virtual void drawLinearSlider(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s);
 
 private:
-    // image assets to draw with g.draw(image, xPos, yPos)
+    // image assets
     Image rotarySliderImage;
+
+    // properties for our temporary knob strip
+    int numberFramesRotary = 50;
+    int widthRotary = 60;
+    int heightRotary = 60;
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED
