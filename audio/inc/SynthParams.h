@@ -72,6 +72,10 @@ public:
 
     Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
+	//Param lfoChorfreq; // delay-lfo frequency in Hz
+	//Param chorAmount; // wetness of signal [0 ... 1]
+	//Param chorSwitch; // Chorus on / off [1 / 0]
+
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
@@ -197,6 +201,11 @@ public:
     @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
     */
     void readXMLPatchStandalone(eSerializationParams paramsToSerialize);
+
+	Param chorDelayLength;
+	Param chorDryWet;
+	Param chorModRate;
+	Param chorModDepth;
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

@@ -370,6 +370,9 @@
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -1660,6 +1663,9 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">

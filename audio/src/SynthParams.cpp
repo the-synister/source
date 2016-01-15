@@ -88,6 +88,10 @@ SynthParams::SynthParams()
 , delayTriplet("Delay Triplet", "delTrip", eOnOffToggle::eOff, onoffnames)
 , delayRecordFilter("Delay Record", "delRec", eOnOffToggle::eOff, onoffnames)
 , delayReverse("Delay Reverse", "delRev", eOnOffToggle::eOff, onoffnames)
+, chorDelayLength("Chorus Width", "chorWidth", "s", .02f, .08f, .05f)
+, chorModRate("Chorus Rate", "chorRate", "Hz", 0.f, 1.5f, 0.5f)
+, chorDryWet("Chorus Dry/Wet", "ChorAmount", "%", 0.f, 1.f, 0.f)
+, chorModDepth("Chorus Depth", "ChorDepth", "ms", 1.f, 20.f, 15.f)
 , seqMode("SeqMode", "seqMode", eSeqModes::eSeqStop, seqModeNames)
 , seqPlayMode("SeqPlayMode", "seqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
 , seqLastPlayedStep("Last Played Step", "lastPlayedStep", "", 0.0f, 7.0f, 0.0f)
@@ -189,7 +193,7 @@ void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSer
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
-    {
+{
         parameters = stepSeqParams;
     }
 
