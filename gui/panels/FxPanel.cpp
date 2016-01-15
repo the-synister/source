@@ -34,9 +34,9 @@ FxPanel::FxPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
-    feedbackSlider->setRange (0, 100, 0);
+    feedbackSlider->setRange (0, 1, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     feedbackSlider->addListener (this);
 
     addAndMakeVisible (clippingFactor = new MouseOverKnob ("Clipping Factor"));
@@ -46,15 +46,15 @@ FxPanel::FxPanel (SynthParams &p)
     clippingFactor->addListener (this);
 
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
-    dryWetSlider->setRange (0, 100, 0);
+    dryWetSlider->setRange (0, 1, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
     timeSlider->setRange (1, 5000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     timeSlider->addListener (this);
     timeSlider->setSkewFactor (0.33);
 
@@ -97,92 +97,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
     cutoffSlider->setRange (1, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    cutoffSlider->addListener (this);
-    cutoffSlider->setSkewFactor (0.33);
-
-    addAndMakeVisible (resSlider = new MouseOverKnob ("Resonance"));
-    resSlider->setRange (-25, 0, 1);
-    resSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    resSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    resSlider->addListener (this);
-    resSlider->setSkewFactor (0.33);
-
-    addAndMakeVisible (tripTggl = new ToggleButton ("tripTggl1"));
-    tripTggl->setButtonText (TRANS("Triplet"));
-    tripTggl->addListener (this);
-
-    addAndMakeVisible (filtTggl = new ToggleButton ("filtTggl1"));
-    filtTggl->setButtonText (TRANS("Record Cutoff"));
-    filtTggl->addListener (this);
-
-    addAndMakeVisible (revTggl = new ToggleButton ("revTggl"));
-    revTggl->setButtonText (TRANS("Reverse"));
-    revTggl->addListener (this);
-
-
-    //[UserPreSize]
-    registerSlider(clippingFactor, &params.clippingFactor);
-
-    addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
-    feedbackSlider->setRange (0, 100, 0);
-    feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    feedbackSlider->addListener (this);
-
-    addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
-    dryWetSlider->setRange (0, 100, 0);
-    dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    dryWetSlider->addListener (this);
-
-    addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
-    timeSlider->setRange (1, 5000, 1);
-    timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    timeSlider->addListener (this);
-    timeSlider->setSkewFactor (0.33);
-
-    addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
-    syncToggle->setButtonText (TRANS("Sync"));
-    syncToggle->addListener (this);
-
-    addAndMakeVisible (dividend = new ComboBox ("delayDividend"));
-    dividend->setTooltip (TRANS("Dividend"));
-    dividend->setEditableText (false);
-    dividend->setJustificationType (Justification::centred);
-    dividend->setTextWhenNothingSelected (TRANS("1"));
-    dividend->setTextWhenNoChoicesAvailable (TRANS("1"));
-    dividend->addItem (TRANS("1"), 1);
-    dividend->addItem (TRANS("2"), 2);
-    dividend->addItem (TRANS("3"), 3);
-    dividend->addItem (TRANS("4"), 4);
-    dividend->addItem (TRANS("5"), 5);
-    dividend->addItem (TRANS("6"), 6);
-    dividend->addItem (TRANS("7"), 7);
-    dividend->addItem (TRANS("8"), 8);
-    dividend->addListener (this);
-
-    addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
-    divisor->setTooltip (TRANS("Divisor"));
-    divisor->setEditableText (false);
-    divisor->setJustificationType (Justification::centred);
-    divisor->setTextWhenNothingSelected (TRANS("4"));
-    divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
-    divisor->addItem (TRANS("1"), 1);
-    divisor->addItem (TRANS("2"), 2);
-    divisor->addItem (TRANS("3"), 3);
-    divisor->addItem (TRANS("4"), 4);
-    divisor->addItem (TRANS("8"), 5);
-    divisor->addItem (TRANS("16"), 6);
-    divisor->addItem (TRANS("32"), 7);
-    divisor->addItem (TRANS("64"), 8);
-    divisor->addListener (this);
-
-    addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
-    cutoffSlider->setRange (1, 20000, 1);
-    cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoffSlider->addListener (this);
     cutoffSlider->setSkewFactor (0.33);
 
@@ -219,10 +134,6 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->setEnabled(false);
     resSlider->setVisible(false);
     tripTggl->setEnabled(false);
-
-    dryWetSlider->setValue(params.delayDryWet.getUI());
-    timeSlider->setValue(params.delayTime.getUI());
-    feedbackSlider->setValue(params.delayFeedback.getUI());
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -297,37 +208,31 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == feedbackSlider)
     {
         //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
-        params.delayFeedback.setUI(static_cast<float>(feedbackSlider->getValue()*0.01));
         //[/UserSliderCode_feedbackSlider]
     }
     else if (sliderThatWasMoved == clippingFactor)
     {
         //[UserSliderCode_clippingFactor] -- add your slider handling code here..
-        params.delayFeedback.setUI(static_cast<float>(clippingFactor->getValue()));
         //[/UserSliderCode_clippingFactor]
     }
     else if (sliderThatWasMoved == dryWetSlider)
     {
         //[UserSliderCode_dryWetSlider] -- add your slider handling code here..
-        params.delayDryWet.setUI(static_cast<float>(dryWetSlider->getValue()*0.01));
         //[/UserSliderCode_dryWetSlider]
     }
     else if (sliderThatWasMoved == timeSlider)
     {
         //[UserSliderCode_timeSlider] -- add your slider handling code here..
-        params.delayTime.setUI(static_cast<float>(timeSlider->getValue()));
         //[/UserSliderCode_timeSlider]
     }
     else if (sliderThatWasMoved == cutoffSlider)
     {
         //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
-        params.delayCutoff.setUI(static_cast<float>(cutoffSlider->getValue()));
         //[/UserSliderCode_cutoffSlider]
     }
     else if (sliderThatWasMoved == resSlider)
     {
         //[UserSliderCode_resSlider] -- add your slider handling code here..
-        params.delayResonance.setUI(static_cast<float>(resSlider->getValue()));
         //[/UserSliderCode_resSlider]
     }
 
@@ -438,19 +343,19 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 152 64 64"
           min="0" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="100" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="1" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" min="1" max="5000" int="1"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="304 8 63 24" buttonText="Sync"
@@ -466,7 +371,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="376 8 64 64"
           min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="528 8 64 64"
           min="-25" max="0" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
