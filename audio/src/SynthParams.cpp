@@ -35,8 +35,7 @@ SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, 
-    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes,
-    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmout, &keyVelocityLevel,
+    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmount, &hpModSource, &hpModAmount, &keyVelocityLevel,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
@@ -57,9 +56,11 @@ SynthParams::SynthParams()
 , biquadResonance("Filter Reso", "filterResonance", "dB", -25.f, 25.f, 0.f)
 , hpCutoff("HP Cut", "hpCutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", eModSource::eNone, modsourcenames)
-, osc1Waveform("Osc Waveform", "oscWaveform", eOscWaves::eOscSquare, waveformNames)
-, lpModAmout("LP ModAmnt", "lpModAmout", "%", 0.f, 100.f, 0.f)
 , osc1trngAmount("Triangle", "osc1trngAmount", "%", 0.0f, 1.0f, 0.0f)
+, lpModAmount("LP ModAmnt", "lpModAmount", "%", 0.f, 100.f, 0.f)
+, hpModSource("HP ModSrc", "hpMod", eModSource::eNone, modsourcenames)
+, hpModAmount("HP ModAmnt", "hpModAmount", "%", 0.f, 100.f, 0.f)
+, osc1Waveform("Osc Waveform", "oscWaveform", eOscWaves::eOscSquare, waveformNames)
 , osc1PitchRange("Pitch", "osc1PitchRange", "st", 0.f, 12.f, 0.f)
 , envAttack("Attack", "envAttack", "s", 0.001f, 5.0f, 0.005f)
 , envDecay("Decay", "envDecay", "s", 0.001f, 5.0f, 0.05f)
