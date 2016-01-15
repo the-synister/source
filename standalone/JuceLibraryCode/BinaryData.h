@@ -9,14 +9,20 @@
 
 namespace BinaryData
 {
+    extern const char*   vertical_slider_png;
+    const int            vertical_slider_pngSize = 625;
+
     extern const char*   knobstrip_png;
     const int            knobstrip_pngSize = 160459;
+
+    extern const char*   slider_thumb_png;
+    const int            slider_thumb_pngSize = 4265;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 1;
+    const int namedResourceListSize = 3;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

@@ -1770,7 +1770,9 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\knobstrip.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\slider_thumb.png"/>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_formats\juce_module_info"/>

@@ -3074,7 +3074,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\knobstrip.png">
+    <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png">
+      <Filter>standalone\Gui\Assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
+      <Filter>standalone\Gui\Assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\slider_thumb.png">
       <Filter>standalone\Gui\Assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">

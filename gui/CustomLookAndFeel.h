@@ -29,11 +29,20 @@ public:
 private:
     // image assets
     Image rotarySliderImage;
+    Image verticalSlider;
+    Image verticalSliderThumb;
 
-    // properties for our temporary knob strip
+    // properties for our temporary assets
     int numberFramesRotary = 50;
     int widthRotary = 60;
     int heightRotary = 60;
+
+    int widthVertical = 50;
+    int heigthVertical = 265;
+
+    double widthThumb = 45.0;
+    double heigthThumb = 45.0;
+
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED

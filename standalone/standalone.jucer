@@ -25,7 +25,11 @@
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
       <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets">
-        <FILE id="lO53KO" name="knobstrip.png" compile="0" resource="1" file="../../../../Downloads/knobstrip.png"/>
+        <FILE id="ojGdMw" name="vertical_slider.png" compile="0" resource="1"
+              file="../../../../Desktop/Assets/vertical_slider.png"/>
+        <FILE id="KGlqZa" name="knobstrip.png" compile="0" resource="1" file="../../../../Desktop/Assets/knobstrip.png"/>
+        <FILE id="FmtHJv" name="slider_thumb.png" compile="0" resource="1"
+              file="../../../../Desktop/Assets/slider_thumb.png"/>
       </GROUP>
       <FILE id="pTBLVA" name="CustomLookAndFeel.cpp" compile="1" resource="0"
             file="../gui/CustomLookAndFeel.cpp"/>
