@@ -75,30 +75,14 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
-    addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
-    waveformSwitch->setRange (1, 2, 1);
+    addAndMakeVisible (waveformSwitch = new MouseOverKnob ("Waveform Switch"));
+    waveformSwitch->setRange (0, 2, 1);
     waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
-    waveformSwitch->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     waveformSwitch->addListener (this);
-
-    addAndMakeVisible (sawlabel = new Label ("Saw Label",
-                                             TRANS("saw wave")));
-    sawlabel->setFont (Font (15.00f, Font::plain));
-    sawlabel->setJustificationType (Justification::centredLeft);
-    sawlabel->setEditable (false, false, false);
-    sawlabel->setColour (TextEditor::textColourId, Colours::black);
-    sawlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (squarelabel = new Label ("Square Label",
-                                                TRANS("square wave\n")));
-    squarelabel->setFont (Font (15.00f, Font::plain));
-    squarelabel->setJustificationType (Justification::centredLeft);
-    squarelabel->setEditable (false, false, false);
-    squarelabel->setColour (TextEditor::textColourId, Colours::black);
-    squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
     amountWidthMod->setRange (0, 1, 0);
@@ -110,13 +94,14 @@ OscPanel::OscPanel (SynthParams &p)
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
-    registerSlider(osc1trngAmount, &params.osc1trngAmount);
+    registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
-    registerSlider(pulsewidth, &params.osc1pulsewidth);
+    registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
 	registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
+    registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
 	registerSlider(lfoFadeIn, &params.lfoFadein);
-	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -141,8 +126,6 @@ OscPanel::~OscPanel()
     lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
-    sawlabel = nullptr;
-    squarelabel = nullptr;
     amountWidthMod = nullptr;
 
 
@@ -176,8 +159,6 @@ void OscPanel::resized()
     lfoFadeIn->setBounds (440, 8, 64, 64);
     waveformVisual->setBounds (24, 112, 208, 96);
     waveformSwitch->setBounds (360, 128, 64, 64);
-    sawlabel->setBounds (432, 152, 150, 24);
-    squarelabel->setBounds (256, 152, 96, 24);
     amountWidthMod->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -202,15 +183,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-		waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
-		waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-		waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-		waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)
@@ -231,22 +208,6 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
-		int waveformKey = static_cast<int>(waveformSwitch->getValue());
-		params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
-		waveformVisual->setWaveformKey(waveformKey);
-		switch (waveformKey)
-		{
-		case 1:
-			pulsewidth->setVisible(true);
-			osc1trngAmount->setVisible(false);
-			break;
-		case 2:
-			pulsewidth->setVisible(false);
-			osc1trngAmount->setVisible(true);
-			break;
-		}
-		waveformVisual->repaint();
-
         //[/UserSliderCode_waveformSwitch]
     }
     else if (sliderThatWasMoved == amountWidthMod)
@@ -262,6 +223,17 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void OscPanel::updateWFShapeControls()
+{
+	int waveformKey = static_cast<int>(waveformSwitch->getValue());
+	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    params.osc1Waveform.setStep(eWaveformKey);
+    pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+	waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
+    waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+}
 //[/MiscUserCode]
 
 
@@ -311,21 +283,12 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
-                    class="Component" params="static_cast&lt;int&gt;(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="1"
-          max="2" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
-         virtualName="" explicitFocusOrder="0" pos="432 152 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="saw wave" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
-  <LABEL name="Square Label" id="390c269ec611617c" memberName="squarelabel"
-         virtualName="" explicitFocusOrder="0" pos="256 152 96 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="square wave&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 128 64 64"
+          min="0" max="2" int="1" style="RotaryHorizontalVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
