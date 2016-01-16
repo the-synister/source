@@ -204,12 +204,12 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
                 int mod = numSamples % static_cast<int>(freqDegradationFactor); // Number of remaining samples (after the last degraded one)
 
                 // Interpolation between blocks of freqDegFactor samples
-                for (int i = 0; i < numDegSamples; ++i)
+                for (int i = 0; i < numDegSamples-1; ++i)
                 {
                     float firstVal = buffer.getSample(c, i * static_cast<int>(freqDegradationFactor));     // First value used for interpolation
                     float lastVal = buffer.getSample(c, (i * static_cast<int>(freqDegradationFactor)) + static_cast<int>(freqDegradationFactor)); // Last value used for interpolation
                     // Linear interpolation of samples in between
-                    for (int j = 0; j < static_cast<int>(freqDegradationFactor); ++j)
+                    for (int j = 1; j < static_cast<int>(freqDegradationFactor); ++j)
                     {
                         float newSampleVal = ((freqDegradationFactor - static_cast<float>(j)) / (freqDegradationFactor)) * firstVal + (static_cast<int>(j) / freqDegradationFactor) * lastVal;
                         buffer.setSample(c, (i*static_cast<int>(freqDegradationFactor))+j, newSampleVal);
@@ -217,13 +217,13 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
                 }
 
                 // Interpolation of the remaining samples after the last degraded one
-                for (int i = mod; i > 0; --i)
+                for (int i = mod-1; i > 0; --i)
                 {
-                    float firstVal = buffer.getSample(c, numSamples-mod);     // First value used for interpolation
-                    float lastVal = buffer.getSample(c, numSamples); // Last value used for interpolation
+                    float firstVal = buffer.getSample(c, numSamples-mod-1);   // First value used for interpolation
+                    float lastVal = buffer.getSample(c, numSamples-1);        // Last value used for interpolation
                     // Linear interpolation of samples in between
-                    float newSampleVal = (i / mod) * firstVal + ((mod - i) / mod) * lastVal;
-                    buffer.setSample(c, numSamples-i, newSampleVal);
+                    float newSampleVal = ((static_cast<float>(mod) - static_cast<float>(i)) / static_cast<float>(mod)) * firstVal + (static_cast<float>(i) / static_cast<float>(mod)) * lastVal;
+                    buffer.setSample(c, numSamples-(mod-i), newSampleVal);
                 }
             }
 
