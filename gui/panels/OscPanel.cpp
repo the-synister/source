@@ -100,11 +100,11 @@ OscPanel::OscPanel (SynthParams &p)
     squarelabel->setColour (TextEditor::textColourId, Colours::black);
     squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (gainWidthMod = new MouseOverKnob ("Gain width mod"));
-    gainWidthMod->setRange (0, 1, 0);
-    gainWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
-    gainWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    gainWidthMod->addListener (this);
+    addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
+    amountWidthMod->setRange (0, 1, 0);
+    amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
+    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->addListener (this);
 
 
     //[UserPreSize]
@@ -113,7 +113,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(osc1trngAmount, &params.osc1trngAmount);
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth);
-	registerSlider(gainWidthMod, &params.osc1GainWidthMod);
+	registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
 	registerSlider(lfoFadeIn, &params.lfoFadein);
 	lfoFadeIn->setSkewFactorFromMidPoint(1);            // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
@@ -143,7 +143,7 @@ OscPanel::~OscPanel()
     waveformSwitch = nullptr;
     sawlabel = nullptr;
     squarelabel = nullptr;
-    gainWidthMod = nullptr;
+    amountWidthMod = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -178,7 +178,7 @@ void OscPanel::resized()
     waveformSwitch->setBounds (360, 128, 64, 64);
     sawlabel->setBounds (432, 152, 150, 24);
     squarelabel->setBounds (256, 152, 96, 24);
-    gainWidthMod->setBounds (368, 8, 64, 64);
+    amountWidthMod->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -249,10 +249,10 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
         //[/UserSliderCode_waveformSwitch]
     }
-    else if (sliderThatWasMoved == gainWidthMod)
+    else if (sliderThatWasMoved == amountWidthMod)
     {
-        //[UserSliderCode_gainWidthMod] -- add your slider handling code here..
-        //[/UserSliderCode_gainWidthMod]
+        //[UserSliderCode_amountWidthMod] -- add your slider handling code here..
+        //[/UserSliderCode_amountWidthMod]
     }
 
     //[UsersliderValueChanged_Post]
@@ -326,7 +326,7 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="square wave&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
-  <SLIDER name="Gain width mod" id="ea500ea6791045c2" memberName="gainWidthMod"
+  <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>

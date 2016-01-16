@@ -282,7 +282,7 @@ public:
                     {
                         deltaWidth = 0.49f;  // If PW is 0.5 => delta max = 0.49 (1 must not be reached)
                     }
-                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1GainWidthMod.get(); // LFO mod has values [-1 .. 1], max amp for depth = 12
+                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1AmountWidthMod.get(); // LFO mod has values [-1 .. 1], max amp for depth = 12
                     // Next sample will be fetch with the new width
                     currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
                 }
@@ -303,7 +303,7 @@ public:
                     {
                         deltaTr = 0.49f;  // If Triangle is 0.5 => delta max = 0.49 (1 must not be reached)
                     }
-                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1GainWidthMod.get(); // LFO mod has values [-1 .. 1]
+                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1AmountWidthMod.get(); // LFO mod has values [-1 .. 1]
                     // Next sample will be fetch with the new width
                     currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
                 }
