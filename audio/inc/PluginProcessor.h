@@ -69,13 +69,13 @@ public:
 private:
     //==============================================================================
     Synthesiser synth;
-    
+
     // FX
     FxDelay delay;
     FxClipping clip;
 
     StepSequencer stepSeq;
-	FxChorus chorus;
+    FxChorus chorus;
 
     void updateHostInfo();
     //==============================================================================
