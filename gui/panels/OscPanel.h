@@ -46,6 +46,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void updateWFShapeControls();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -67,9 +68,7 @@ private:
     ScopedPointer<MouseOverKnob> ctune1;
     ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<WaveformVisual> waveformVisual;
-    ScopedPointer<Slider> waveformSwitch;
-    ScopedPointer<Label> sawlabel;
-    ScopedPointer<Label> squarelabel;
+    ScopedPointer<MouseOverKnob> waveformSwitch;
 
 
     //==============================================================================

@@ -52,7 +52,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
-    passtype->setRange (0, 1, 1);
+    passtype->setRange (0, 2, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->addListener (this);
@@ -76,7 +76,7 @@ FiltPanel::FiltPanel (SynthParams &p)
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
-    registerSlider(modSliderCut, &params.lpModAmout);
+    registerSlider(modSliderCut, &params.lpModAmount);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(cutoffSlider2, &params.hpCutoff);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -164,7 +164,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
-        params.lpModAmout.setUI(static_cast<float>(modSliderCut->getValue()));
+        params.lpModAmount.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
 
@@ -223,7 +223,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="2" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"

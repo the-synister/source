@@ -15,17 +15,23 @@
 // UI header, should be hidden behind a factory
 #include <PluginEditor.h>
 
-PluginAudioProcessor::PluginAudioProcessor()
+//==============================================================================
+PluginAudioProcessor::PluginAudioProcessor() 
     : delay(*this)
-    , steqSeq(*this)
+    , stepSeq(*this)
+	, chorus(*this)
+    , clip(*this)
 {
-
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
+    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc1Waveform));
 
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
     addParameter(new HostParam<Param>(osc1lfo1depth));
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
+    addParameter(new HostParam<Param>(noteLength));
+    addParameter(new HostParam<Param>(lfoFadein));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
@@ -41,6 +47,11 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(envRelease));
 
     addParameter(new HostParam<Param>(panDir));
+    addParameter(new HostParam<Param>(clippingFactor));
+    
+    addParameter(new HostParam<Param>(delayFeedback));
+    addParameter(new HostParam<Param>(delayDryWet));
+    addParameter(new HostParam<Param>(delayTime));
     
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
@@ -152,6 +163,8 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     }
     synth.clearSounds();
     delay.init(2, sRate);
+	chorus.init(2, sRate);
+
     synth.addSound(new Sound());
 }
 
@@ -174,7 +187,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    steqSeq.runSeq(midiMessages, buffer.getNumSamples(), getSampleRate());
+    stepSeq.runSeq(midiMessages, buffer.getNumSamples(), getSampleRate());
 
     // pass these messages to the keyboard state so that it can update the component
     // to show on-screen which keys are being pressed on the physical midi keyboard.
@@ -237,11 +250,21 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         }
     }
 
+    if (clippingFactor.get() > 0.f) {
+        clip.clipSignal(buffer, 0, buffer.getNumSamples());
+    }
     // fx
     // delay
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
+	// chorus
+	if (chorDryWet.get() > 0.f) {
+		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+	}
+
+    //midiMessages.clear(); // NOTE: for now so debugger does not complain
+                          // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
 }
 
 void PluginAudioProcessor::updateHostInfo()
@@ -271,12 +294,12 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    SynthParams::writeXMLPatchHost(destData);
+    SynthParams::writeXMLPatchHost(destData, eSerializationParams::eAll);
 }
 
 void PluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    SynthParams::readXMLPatchHost(data, sizeInBytes);
+    SynthParams::readXMLPatchHost(data, sizeInBytes, eSerializationParams::eAll);
 }
 
 //==============================================================================
