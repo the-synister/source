@@ -269,41 +269,27 @@ public:
                 case 1:
                 {
                     // In case of pulse width modulation
-                    float deltaWidth = 0.f; // Maximum possible amplitude of modulation (PW must be [0,01..0,99])
-                    if (osc1Sine.width > 0.5f)
-                    {
-                        deltaWidth = 0.99f - osc1Sine.width;
-                    }
-                    else if (osc1Sine.width < 0.5f)
-                    {
-                        deltaWidth = osc1Sine.width - 0.01f;
-                    }
-                    else
-                    {
-                        deltaWidth = 0.49f;  // If PW is 0.5 => delta max = 0.49 (1 must not be reached)
-                    }
-                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1AmountWidthMod.get(); // LFO mod has values [-1 .. 1], max amp for depth = 12
-                    // Next sample will be fetch with the new width
+					float deltaWidth = osc1Sine.width > .5f
+						? params.osc1pulsewidth.getMax() - osc1Sine.width
+						: osc1Sine.width - params.osc1pulsewidth.getMin();
+					// Pulse width must not reach 0 or 1
+					if (deltaWidth > (.5f - params.osc1pulsewidth.getMin()) && deltaWidth < (.5f + params.osc1pulsewidth.getMin())) {
+						deltaWidth = .49f;
+					}
+					// LFO mod has values [-1 .. 1], max amp for amount = 1
+                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1AmountWidthMod.get(); 
+                    // Next sample will be fetched with the new width
                     currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
                 }
                     break;
                 case 2:
                 {
-                    // In case of pulse width modulation
-                    float deltaTr = 0.f; // Maximum possible amplitude of modulation (Triangle must be [0,01..0,99])
-                    if (osc1Saw.trngAmount > 0.5f)
-                    {
-                        deltaTr = 0.99f - osc1Saw.trngAmount;
-                    }
-                    else if (osc1Saw.trngAmount < 0.5f)
-                    {
-                        deltaTr = osc1Saw.trngAmount - 0.01f;
-                    }
-                    else
-                    {
-                        deltaTr = 0.49f;  // If Triangle is 0.5 => delta max = 0.49 (1 must not be reached)
-                    }
-                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1AmountWidthMod.get(); // LFO mod has values [-1 .. 1]
+                    // In case of triangle modulation
+					float deltaTr = osc1Saw.trngAmount > .5f
+						? params.osc1trngAmount.getMax() - osc1Saw.trngAmount
+						: osc1Saw.trngAmount - params.osc1trngAmount.getMin();
+					// LFO mod has values [-1 .. 1], max amp for amount = 1
+                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1AmountWidthMod.get(); 
                     // Next sample will be fetch with the new width
                     currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
                 }
