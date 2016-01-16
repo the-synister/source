@@ -269,15 +269,15 @@ public:
                 case 1:
                 {
                     // In case of pulse width modulation
-					float deltaWidth = osc1Sine.width > .5f
-						? params.osc1pulsewidth.getMax() - osc1Sine.width
-						: osc1Sine.width - params.osc1pulsewidth.getMin();
-					// Pulse width must not reach 0 or 1
-					if (deltaWidth > (.5f - params.osc1pulsewidth.getMin()) && deltaWidth < (.5f + params.osc1pulsewidth.getMin())) {
-						deltaWidth = .49f;
-					}
-					// LFO mod has values [-1 .. 1], max amp for amount = 1
-                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1AmountWidthMod.get(); 
+                    float deltaWidth = osc1Sine.width > .5f
+                        ? params.osc1pulsewidth.getMax() - osc1Sine.width
+                        : osc1Sine.width - params.osc1pulsewidth.getMin();
+                    // Pulse width must not reach 0 or 1
+                    if (deltaWidth > (.5f - params.osc1pulsewidth.getMin()) && deltaWidth < (.5f + params.osc1pulsewidth.getMin())) {
+                        deltaWidth = .49f;
+                    }
+                    // LFO mod has values [-1 .. 1], max amp for amount = 1
+                    deltaWidth = deltaWidth * lfo1Mod[s] * params.osc1AmountWidthMod.get();
                     // Next sample will be fetched with the new width
                     currentSample = (osc1Sine.next(pitchMod[s], deltaWidth));
                 }
@@ -285,11 +285,11 @@ public:
                 case 2:
                 {
                     // In case of triangle modulation
-					float deltaTr = osc1Saw.trngAmount > .5f
-						? params.osc1trngAmount.getMax() - osc1Saw.trngAmount
-						: osc1Saw.trngAmount - params.osc1trngAmount.getMin();
-					// LFO mod has values [-1 .. 1], max amp for amount = 1
-                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1AmountWidthMod.get(); 
+                    float deltaTr = osc1Saw.trngAmount > .5f
+                        ? params.osc1trngAmount.getMax() - osc1Saw.trngAmount
+                        : osc1Saw.trngAmount - params.osc1trngAmount.getMin();
+                    // LFO mod has values [-1 .. 1], max amp for amount = 1
+                    deltaTr = deltaTr * lfo1Mod[s] * params.osc1AmountWidthMod.get();
                     // Next sample will be fetch with the new width
                     currentSample = (osc1Saw.next(pitchMod[s], deltaTr));
                 }
