@@ -3,7 +3,7 @@
 
     Oscillator.h
     Created: 9 Jan 2016 8:48:22pm
-    Author:  Florian (& Anthon)
+    Author:  Florian (& Anton)
 
   ==============================================================================
 */
