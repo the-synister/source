@@ -4,6 +4,7 @@
 #include "Param.h"
 #include <vector>
 #include <array>
+#include "ModulationMatrix.h"
 
 enum class eLfoWaves : int {
     eLfoSine = 0,
@@ -146,6 +147,7 @@ public:
     
     int getGUIIndex();
     int getAudioIndex();
+    ModulationMatrix globalModMatrix;
 
 protected:
 private:

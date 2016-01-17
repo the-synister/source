@@ -17,7 +17,6 @@
 #include "FxDelay.h"
 #include <array>
 #include "StepSequencer.h"
-#include "ModulationMatrix.h"
 
 //==============================================================================
 /**
@@ -64,7 +63,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    ModulationMatrix globalModMatrix;
+    
 private:
     //==============================================================================
     Synthesiser synth;

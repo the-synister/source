@@ -13,6 +13,7 @@
 
 #include "JuceHeader.h"
 #include <atomic>
+#include "Param.h"
 
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
@@ -208,17 +209,16 @@ struct modMatrixRow
 {
 	uint8 sourceIndex;
 	uint8 destinationIndex;
-    float* modIntensity;
-    float* modRange;
+    Param* modIntensity;
+    Param* modRange;
 	uint8 sourceTransform;
 	bool enable;
 };
 
-
 inline modMatrixRow* createModMatrixRow(uint8 sourceIndex_,
 										uint8 destinationIndex_,
-                                        float* modIntensity_,
-                                        float* modRange_,
+                                        Param* modIntensity_,
+                                        Param* modRange_,
 										uint8 sourceTransform_,
 										bool enable_ = true) {
 

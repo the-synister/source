@@ -350,7 +350,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer)
 
 		// destination += source*intensity*range
 		//
-		float dModValue = source*(*row->modIntensity)*(*row->modRange);
+		float dModValue = source*(row->modIntensity->get())*(row->modRange->get());
 
 		destinations[row->destinationIndex] += dModValue;
 

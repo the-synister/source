@@ -402,24 +402,6 @@ protected:
                 // Otherwise the factor is determined
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
-            globalModMatrix.sources[SOURCE_LFO1] = lfoVal;
-
-            // TODO: repeat for all lfos
-
-            // LFO1 -> FILTER1 FC
-            //modMatrixRow = createModMatrixRow(SOURCE_LFO1,
-            //                                    DEST_FILT_FC,
-            //                                    params.lpModAmout.getPointer(),
-            //                                    &FILTER_FC_MOD_RANGE,
-            //                                    TRANSFORM_NONE,
-            //                                    true); 
-            filter1Fc = FILTER_FC_MOD_RANGE;
-            globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-                DEST_FILT_FC,
-                params.lpModAmout.getPointer(),
-                &filter1Fc,
-                TRANSFORM_NONE,
-                true));
 
             // Update of the modulation amount value
             modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;

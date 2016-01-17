@@ -19,7 +19,6 @@ PluginAudioProcessor::PluginAudioProcessor()
     : delay(*this)
     , steqSeq(*this)
 {
-
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
 
@@ -44,6 +43,13 @@ PluginAudioProcessor::PluginAudioProcessor()
     
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
+
+    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
+        DEST_FILT_FC,
+        &lpModAmout,
+        &lpCutoff, //this needs to be changed to a destination
+        TRANSFORM_NONE,
+        true));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -144,6 +150,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sRate);
     synth.clearVoices();
+
     for (int i = 8; --i >= 0;)
     {
         synth.addVoice(new Voice(*this, samplesPerBlock, globalModMatrix));
