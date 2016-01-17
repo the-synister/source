@@ -25,6 +25,7 @@
 #include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"
+#include "panels/SeqPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -60,6 +61,7 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
+    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
     tabs->setCurrentTabIndex (0);
 
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
@@ -169,13 +171,13 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == savePresetButton)
     {
         //[UserButtonCode_savePresetButton] -- add your button handler code here..
-        params.writeXMLPatchStandalone();
+        params.writeXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_savePresetButton]
     }
     else if (buttonThatWasClicked == loadPresetButton)
     {
         //[UserButtonCode_loadPresetButton] -- add your button handler code here..
-        params.readXMLPatchStandalone();
+        params.readXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_loadPresetButton]
     }
 
@@ -240,9 +242,9 @@ BEGIN_JUCER_METADATA
          constructorParams="params" jucerComponentFile=""/>
     <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
          constructorParams="params" jucerComponentFile=""/>
-    <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName=""
-         constructorParams="" jucerComponentFile=""/>
     <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
+         constructorParams="params" jucerComponentFile=""/>
+    <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
          constructorParams="params" jucerComponentFile=""/>
   </TABBEDCOMPONENT>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"

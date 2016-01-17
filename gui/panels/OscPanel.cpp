@@ -69,20 +69,39 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
 
+    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
+    lfoFadeIn->setRange (0, 10, 0);
+    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoFadeIn->addListener (this);
+
+    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    waveformVisual->setName ("Waveform Visual");
+
+    addAndMakeVisible (waveformSwitch = new MouseOverKnob ("Waveform Switch"));
+    waveformSwitch->setRange (0, 2, 1);
+    waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
+    waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    waveformSwitch->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
-    registerSlider(osc1trngAmount, &params.osc1trngAmount);
+    registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
-    registerSlider(pulsewidth, &params.osc1pulsewidth);
+    registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(ctune1, &params.osc1coarse);
+    registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(lfoFadeIn, &params.lfoFadein);
+    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
+    osc1trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -97,6 +116,9 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
+    lfoFadeIn = nullptr;
+    waveformVisual = nullptr;
+    waveformSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -123,9 +145,12 @@ void OscPanel::resized()
     ftune1->setBounds (80, 8, 64, 64);
     lfo1depth1->setBounds (224, 8, 64, 64);
     osc1trngAmount->setBounds (296, 8, 64, 64);
-    pulsewidth->setBounds (368, 8, 64, 64);
+    pulsewidth->setBounds (296, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
+    lfoFadeIn->setBounds (440, 8, 64, 64);
+    waveformVisual->setBounds (24, 112, 208, 96);
+    waveformSwitch->setBounds (360, 128, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -166,6 +191,16 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_ctune1] -- add your slider handling code here..
         //[/UserSliderCode_ctune1]
     }
+    else if (sliderThatWasMoved == lfoFadeIn)
+    {
+        //[UserSliderCode_lfoFadeIn] -- add your slider handling code here..
+        //[/UserSliderCode_lfoFadeIn]
+    }
+    else if (sliderThatWasMoved == waveformSwitch)
+    {
+        //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_waveformSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -174,6 +209,17 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void OscPanel::updateWFShapeControls()
+{
+	int waveformKey = static_cast<int>(waveformSwitch->getValue());
+	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    params.osc1Waveform.setStep(eWaveformKey);
+    pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+	waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
+    waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+}
 //[/MiscUserCode]
 
 
@@ -205,10 +251,10 @@ BEGIN_JUCER_METADATA
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
-          min="0.01" max="0.98999999999999999" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
+          min="0.010000000000000000208" max="0.98999999999999999112" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
@@ -217,6 +263,18 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
+                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+  <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 128 64 64"
+          min="0" max="2" int="1" style="RotaryHorizontalVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

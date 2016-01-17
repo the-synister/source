@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -45,6 +46,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void updateWFShapeControls();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -64,6 +66,9 @@ private:
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
+    ScopedPointer<MouseOverKnob> lfoFadeIn;
+    ScopedPointer<WaveformVisual> waveformVisual;
+    ScopedPointer<MouseOverKnob> waveformSwitch;
 
 
     //==============================================================================
