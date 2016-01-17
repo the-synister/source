@@ -3,6 +3,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "Envelope.h"
+#include "Oscillator.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -10,92 +11,7 @@ public:
     bool appliesToChannel(int /*midiChannel*/) override { return true; }
 };
 
-struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width) {
-        ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
-    }
-    static float square(float phs, float trngAmount, float width) {
-        ignoreUnused(trngAmount, width);
-        //square wave with duty cycle
-        if (phs < 2.f * float_Pi * width) {
-            return 1.f;
-        }
-        else {
-            return -1.f;
-        }
-        //return std::copysign(1.f, float_Pi - phs);
-    }
 
-    static float saw(float phs, float trngAmount, float width) {
-        ignoreUnused(width);
-        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
-        if (phs < trngAmount*float_Pi) { return (.5f - 1.f / (trngAmount*float_Pi) * phs); }
-        else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
-    }
-};
-
-
-template<float(*_waveform)(float, float, float)>
-struct Oscillator {
-    float phase;
-    float phaseDelta;
-    float trngAmount;
-    float width;
-    
-    Oscillator() : phase(0.f)
-                 , phaseDelta(0.f)
-    {}
-
-    void reset() {
-        phase = 0.f;
-        phaseDelta = 0.f;
-    }
-
-    bool isActive() const {
-        return phaseDelta > 0.f;
-    }
-
-    float next() {
-        const float result = _waveform(phase, trngAmount, width);
-        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return result;
-    }
-    
-    float next(float pitchMod) {
-        const float result = _waveform(phase, trngAmount, width);
-        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
-        return result;
-    }
-};
-
-template<float(*_waveform)(float, float, float)>
-struct RandomOscillator : Oscillator<&Waveforms::square>
-{
-    float heldValue;
-    
-    RandomOscillator() : Oscillator()
-        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f)
-                      {}
-    
-    void reset()
-    {
-        phase = 0.f;
-        phaseDelta = 0.f;
-        heldValue = 0.f;
-    }
-    
-    float next()
-    {
-        if (phase + phaseDelta > 2.0f * float_Pi) {
-            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
-        }
-        
-        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return heldValue;
-    }
-
-};
 
 class Voice : public SynthesiserVoice {
 public:
