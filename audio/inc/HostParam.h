@@ -30,7 +30,7 @@ public:
     }
 
     virtual String getName(int maximumStringLength) const override {
-        return param.name().substring(0,maximumStringLength);
+        return param.hostTag();
     }
 
     virtual String getLabel() const override {

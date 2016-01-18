@@ -25,6 +25,7 @@ public:
 
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
+    const String& hostTag() const { return hostTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
@@ -106,8 +107,8 @@ public:
 template<typename _enum>
 class ParamStepped : public Param {
 public:
-    ParamStepped(const String &name, const String &serializationTag, _enum defaultval, const char **labels = nullptr)
-    : Param(name, serializationTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
+    ParamStepped(const String &name, const String &serializationTag, const String &hostTag, _enum defaultval, const char **labels = nullptr)
+    : Param(name, serializationTag, hostTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
             static_cast<float>(defaultval),
             static_cast<int>(_enum::nSteps))
     , step_(defaultval)
