@@ -104,7 +104,7 @@ PlugUI::PlugUI (SynthParams &p)
     //LookAndFeel_V3 *laf = new LookAndFeel_V3();
 
     // set whole design from very parent GUI component
-    CustomLookAndFeel *laf = new CustomLookAndFeel();
+    CustomLookAndFeel *laf = new CustomLookAndFeel(p);
     LookAndFeel::setDefaultLookAndFeel(laf);
 
     //[/Constructor]

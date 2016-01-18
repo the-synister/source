@@ -25,6 +25,7 @@
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
       <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets">
+        <FILE id="k186AL" name="glow.png" compile="0" resource="1" file="../../../../Desktop/Assets/glow.png"/>
         <FILE id="ojGdMw" name="vertical_slider.png" compile="0" resource="1"
               file="../../../../Desktop/Assets/vertical_slider.png"/>
         <FILE id="KGlqZa" name="knobstrip.png" compile="0" resource="1" file="../../../../Desktop/Assets/knobstrip.png"/>

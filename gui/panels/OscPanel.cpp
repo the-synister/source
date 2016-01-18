@@ -64,7 +64,7 @@ OscPanel::OscPanel (SynthParams &p)
     pitchRange->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
-    ctune1->setRange (-11, 11, 1);
+    ctune1->setRange (-36, 36, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->addListener (this);
@@ -118,7 +118,10 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(ctune1, &params.osc1coarse);
     registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &params.osc1Waveform);
-	  lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+	lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+
+    // Test modSource
+    ctune1->setModSource1(&params.osc1lfo1depth);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -294,16 +297,16 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
-          min="0.010000000000000000208" max="0.98999999999999999112" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          min="0.01" max="0.98999999999999999" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
           min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="-36" max="36" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"

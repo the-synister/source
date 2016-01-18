@@ -3074,6 +3074,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\glow.png">
+      <Filter>standalone\Gui\Assets</Filter>
+    </None>
     <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png">
       <Filter>standalone\Gui\Assets</Filter>
     </None>
