@@ -44,12 +44,21 @@ PluginAudioProcessor::PluginAudioProcessor()
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
+#if 0
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
         DEST_FILT_FC,
         &lpModAmout,
         &lpCutoff, //this needs to be changed to a destination
         TRANSFORM_NONE,
         true));
+#endif
+
+    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
+                                                       DEST_OSC1_PITCH,
+                                                       &osc1PitchRange,
+                                                       nullptr, //this needs to be changed to a destination
+                                                       TRANSFORM_NONE,
+                                                       true));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

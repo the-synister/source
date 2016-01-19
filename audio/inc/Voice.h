@@ -134,6 +134,16 @@ public:
     , noModBuffer(1, blockSize)
     {
         noModBuffer.clear();
+        
+        for(float*& p : modSources) {
+            p = nullptr;
+        }
+        for(float*& p : modDestinations) {
+            p = nullptr;
+        }
+        
+        modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
 
@@ -171,7 +181,7 @@ public:
         envToCutoff.startEnvelope(currentVelocity);
         envToPitch.startEnvelope(currentVelocity);
 
-        currentPitchValue = currentPitchWheelPosition;
+        pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -245,7 +255,7 @@ public:
 
     void pitchWheelMoved(int newValue) override
     {
-        currentPitchValue = newValue;
+        pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
     void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
@@ -377,7 +387,7 @@ protected:
         }
 
         // add pitch wheel values
-        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
 
 
         for (int s = 0; s < numSamples; ++s)
@@ -432,9 +442,9 @@ protected:
 
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
-            {
+        {
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-                }
+        }
 
         // set the filterEnvBuffer - for Filter
         for (int s = 0; s < numSamples; ++s)
@@ -443,7 +453,17 @@ protected:
         }
 
         // add pitch wheel values
-        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
+        //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
+        
+        pitchModBuffer.clear();
+        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        for (int s = 0; s < numSamples; ++s) {
+            // LFOs, ENVs berechnen
+            
+            localModMatrix->doModulationsMatrix(0, modSources, modDestinations);
+            
+            ++modDestinations[DEST_OSC1_PITCH];
+        }
 
 
         for (int s = 0; s < numSamples; ++s)
@@ -475,6 +495,7 @@ protected:
 
             lfo1ModBuffer.setSample(0, s, lfoVal);
 
+#if 0
             // Update of the modulation amount value
             modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
             // Next sample modulated with the updated amount
@@ -486,6 +507,7 @@ protected:
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
             }
+#endif
         }
     }
 
@@ -601,7 +623,11 @@ private:
 
     float level;
 
-    int currentPitchValue;
+    float pitchBend;
+    
+    float* modSources[MAX_SOURCES];
+    float* modDestinations[MAX_DESTINATIONS];
+    
     int totSamples;
 
     float currentVelocity;
