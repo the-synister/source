@@ -493,12 +493,15 @@ protected:
     float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
 
-        float moddedFreq = filterType == eBiquadFilters::eLowpass
+        float currentCutoff = filterType == eBiquadFilters::eLowpass
             ? params.lpCutoff.get()
             : params.hpCutoff.get();
 
-        float testVal = localModMatrix->destinations[DEST_FILT_FC];
+        localModMatrix->destinations[DEST_FILT_FC] = currentCutoff;
+        //float testVal = localModMatrix->destinations[DEST_FILT_FC];
         //float moddedMaxFreq = params.lpCutoff.getMax() * localModMatrix->destinations[DEST_FILT_FC];
+
+        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
 
         return inputSignal;
     }
