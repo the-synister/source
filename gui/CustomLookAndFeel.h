@@ -14,21 +14,27 @@
 //[Headers]
 #include "JuceHeader.h"
 #include "../audio/inc/SynthParams.h"
+#include "MouseOverKnob.h"
 //[/Headers]
 
 class CustomLookAndFeel : public LookAndFeel_V2 // our default design
 {
 public:
     //==============================================================================
-    CustomLookAndFeel(SynthParams &p);
+    CustomLookAndFeel();
     virtual ~CustomLookAndFeel();
     //==============================================================================
     virtual void drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &slider);
 
     virtual void drawLinearSlider(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &slider);
 
+    // TODO: für toggles, buttons und dropDown (s. GUI Komponente)
+
 private:
-    SynthParams &params;
+    Param* modSource1; // TODO: nötig oder wegmachen?
+    Param* modSource2;
+
+    // TODO: tmp image properties reinigen wenn fertig
 
     // image assets
     Image rotarySliderImage;

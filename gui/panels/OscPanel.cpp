@@ -120,8 +120,9 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(waveformSwitch, &params.osc1Waveform);
 	lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
-    // Test modSource
+    // Test modSource, mod on cTune
     ctune1->setModSource1(&params.osc1lfo1depth);
+    ctune1->setModSource2(&params.osc1lfo1depth);
     //[/UserPreSize]
 
     setSize (600, 400);

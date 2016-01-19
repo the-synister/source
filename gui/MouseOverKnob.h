@@ -25,13 +25,15 @@ public:
     //==============================================================================
 
     void initTextBox();
-    void setModSource1(Param *p);
 
-    Param *getModSource1();
+    void setModSource1(Param *p);
+    void setModSource2(Param *p);
+    Param* getModSource1();
+    Param* getModSource2();
 
     virtual void setName(const String& newName) override;
 
-    void paint(Graphics &g) override;
+    void paint(Graphics &g) override; // TODO: kann weg?
     void resized() override;
     void setBounds(int x, int y, int width, int height);
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
@@ -46,7 +48,8 @@ private:
     int knobWidth = 64;
     int knobHeight = 64;
     
-    Param *modSource1;
+    Param* modSource1;
+    Param* modSource2;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

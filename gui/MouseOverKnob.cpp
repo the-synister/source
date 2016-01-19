@@ -12,7 +12,10 @@
 
 //==============================================================================
 // contructer & destructer
-MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
+MouseOverKnob::MouseOverKnob(const String& name)
+    : Slider(name)
+    , modSource1(nullptr)
+    , modSource2(nullptr)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(15.00f, Font::plain));
@@ -52,11 +55,19 @@ Param* MouseOverKnob::getModSource1()
     return modSource1;
 }
 
+void MouseOverKnob::setModSource2(Param *p)
+{
+    modSource2 = p;
+}
+
+Param* MouseOverKnob::getModSource2()
+{
+    return modSource2;
+}
 
 void MouseOverKnob::setName  (const String& newName) {
     knobLabel->setText(newName, NotificationType::dontSendNotification);
 }
-
 
 /**
 * If mouse enters slider then replace label with textbox.
@@ -104,6 +115,7 @@ void MouseOverKnob::mouseDrag(const MouseEvent &e)
     }
 }
 
+// TODO: kann weg?
 void MouseOverKnob::paint(Graphics &g) 
 {
     //int sizeSub = 10;
