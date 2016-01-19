@@ -103,7 +103,7 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize, ModulationMatrix &globalModMatrix_)
+    Voice(SynthParams &p, int blockSize, ModulationMatrix *globalModMatrix_)
     : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
@@ -125,7 +125,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
-    , globalModMatrix(globalModMatrix_)
+    , localModMatrix(globalModMatrix_) //local Matrix initialisation
     , pitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
@@ -256,7 +256,8 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         // Modulation
-        renderModulation2(numSamples);
+        //renderModulation2(numSamples);
+        renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
@@ -290,7 +291,8 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadFilter2(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
+                currentSample = ladderFilter(biquadFilter(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
+                //currentSample = ladderFilter(biquadFilter(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -354,6 +356,8 @@ public:
     }
 
 protected:
+
+#if 0
     void renderModulation2(int numSamples) {
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
@@ -416,6 +420,8 @@ protected:
             }
         }
     }
+#endif
+
     void renderModulation(int numSamples) {
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
@@ -483,11 +489,21 @@ protected:
         }
     }
 
-    float biquadFilter2(float inputSignal, eBiquadFilters filterType) {
+
+    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
+        const float sRate = static_cast<float>(getSampleRate());
+
+        float moddedFreq = filterType == eBiquadFilters::eLowpass
+            ? params.lpCutoff.get()
+            : params.hpCutoff.get();
+
+        float testVal = localModMatrix->destinations[DEST_FILT_FC];
+        //float moddedMaxFreq = params.lpCutoff.getMax() * localModMatrix->destinations[DEST_FILT_FC];
 
         return inputSignal;
     }
 
+#if 0
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
         
@@ -566,6 +582,7 @@ protected:
         
         return inputSignal;
     }
+#endif
 
 private:
     SynthParams &params;
@@ -602,8 +619,8 @@ private:
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer envToCutoffBuffer;
 
-    ModulationMatrix &globalModMatrix;
-    modMatrixRow* modMatrixRow;
+    ModulationMatrix* localModMatrix; //pointer to the global Matrix
+    //modMatrixRow* modMatrixRow;
     float filter1Fc;
 
     Envelope envToCutoff;
