@@ -145,7 +145,7 @@ public:
         /*hier werden die Referenzen an die Matrix übergeben
         in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
         modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_LFO1] = &lfoModDepth;
+        modSources[SOURCE_LFO1] = &lfoVal;
         /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
         OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
@@ -187,7 +187,9 @@ public:
         envToCutoff.startEnvelope(currentVelocity);
         envToPitch.startEnvelope(currentVelocity);
 
+        // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
+        //osc1ModAmount = params.osc1lfo1depth.get();
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -442,7 +444,7 @@ protected:
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
-        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
+        //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
 
@@ -465,6 +467,18 @@ protected:
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
         for (int s = 0; s < numSamples; ++s) {
             // LFOs, ENVs berechnen
+            lfoVal = 0.f;
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                lfoVal = lfo1sine.next();
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                lfoVal = lfo1random.next();
+                break;
+            case eLfoWaves::eLfoSquare:
+                lfoVal = lfo1square.next();
+                break;
+            }
             
             localModMatrix->doModulationsMatrix(0, modSources, modDestinations);
             
@@ -630,7 +644,7 @@ private:
     float level;
 
     float pitchBend;
-    float lfoModDepth;
+    float lfoVal;
     
     float* modSources[MAX_SOURCES];
     float* modDestinations[MAX_DESTINATIONS];

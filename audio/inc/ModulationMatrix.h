@@ -347,12 +347,16 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
         // destination += source*intensity*range
         /* an dieser Stelle muss geguckt werden wann und wo umgerechnet werden muss!!!
         ist die Stelle Sinnvoll?
+        Die Umrechnung für source MUSS woanders stattfinden!!!
+        ODER ein Source checker!?
         source liefert den Pitchbend!!!*/
 
         float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
+        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         
         *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
-        
+        *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+
         // universal connections example:
         // first check DEST_ALL types
         /*switch (row->destinationIndex)
