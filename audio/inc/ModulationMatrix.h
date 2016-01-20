@@ -21,10 +21,9 @@
 */
 
 enum sources : int {
-	SOURCE_NONE = -1,
+    SOURCE_NONE = -1,
     SOURCE_PITCHBEND = 0,
-
-	SOURCE_LFO1,
+    SOURCE_LFO1 = 1,
 
 	//SOURCE_ENV1,
 	//SOURCE_VELOCITY,
