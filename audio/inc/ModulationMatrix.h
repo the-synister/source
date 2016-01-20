@@ -346,10 +346,13 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
         }
         
         // destination += source*intensity*range
-        //
+        /* an dieser Stelle muss geguckt werden wann und wo umgerechnet werden muss!!!
+        ist die Stelle Sinnvoll?
+        Wo bleibt an dieser Stelle der Pitchbend???*/
+
         float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         
-        *(dst[row->destinationIndex]) += dModValue;
+        *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
         
         // universal connections example:
         // first check DEST_ALL types

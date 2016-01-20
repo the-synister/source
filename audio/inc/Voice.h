@@ -142,7 +142,11 @@ public:
             p = nullptr;
         }
         
+        /*hier werden die Referenzen an die Matrix übergeben
+        in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
         modSources[SOURCE_PITCHBEND] = &pitchBend;
+        /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
+        OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
