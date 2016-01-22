@@ -47,7 +47,7 @@ private:
     ScopedPointer<Label> knobLabel;
     int knobWidth = 64;
     int knobHeight = 64;
-    
+
     Param* modSource1;
     Param* modSource2;
 };

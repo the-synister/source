@@ -31,9 +31,6 @@ public:
     // TODO: für toggles, buttons und dropDown (s. GUI Komponente)
 
 private:
-    Param* modSource1; // TODO: nötig oder wegmachen?
-    Param* modSource2;
-
     // TODO: tmp image properties reinigen wenn fertig
 
     // image assets

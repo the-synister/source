@@ -193,6 +193,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);
+    repaint(); // TODO: only for now, not nice
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == ftune1)

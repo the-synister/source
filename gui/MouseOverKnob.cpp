@@ -116,7 +116,7 @@ void MouseOverKnob::mouseDrag(const MouseEvent &e)
 }
 
 // TODO: kann weg?
-void MouseOverKnob::paint(Graphics &g) 
+void MouseOverKnob::paint(Graphics &g)
 {
     //int sizeSub = 10;
     //float radius = static_cast<float>(jmin(knobWidth, knobHeight));
