@@ -56,20 +56,20 @@ public:
 
     constexpr static float MIN_DB = -96.f;
 
-    static float toDb(float linear) {return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
-    static float fromDb(float db) { return db <= MIN_DB ? 0.f : std::pow(10.f, db / 20.f); }
+    static inline float toDb(float linear) {return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
+    static inline float fromDb(float db) { return db <= MIN_DB ? 0.f : std::pow(10.f, db / 20.f); }
 
-    static float toCent(float factor) { return std::log(factor) / log(2.f)*1200.f; }
-    static float fromCent(float ct) { return std::pow(2.f, ct / 1200.f); }
+    static inline float toCent(float factor) { return std::log(factor) / log(2.f)*1200.f; }
+    static inline float fromCent(float ct) { return std::pow(2.f, ct / 1200.f); }
 
-    static float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
-    static float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
+    static inline float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
+    static inline float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
     // conversion functions from the book "Designing Software Synthesizer Plug-Ins in C++" and its template projects
-    static float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
-    static float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
-    static float midiToBipolar(int midiValue) {return 2.0f*(float)midiValue / 127.0f - 1.0f;}
-    static float midiToPanValue(int midiValue) {
+    static inline float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
+    static inline float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
+    static inline float midiToBipolar(int midiValue) {return 2.0f*(float)midiValue / 127.0f - 1.0f;}
+    static inline float midiToPanValue(int midiValue) {
         if (midiValue == 64)
             return 0.0f;
         else if (midiValue <= 1) // 0 or 1
@@ -77,8 +77,20 @@ public:
 
         return 2.0f*(float)midiValue / 127.0f - 1.0f;
     }
-    static float midiToUnipolar(int midiValue) {return (float)midiValue / 127.0f;}
-    static int unipolarToMidi(float fUnipolarValue) {return fUnipolarValue*127.0f;}
+    static inline float midiToUnipolar(int midiValue) {return (float)midiValue / 127.0f;}
+    static inline int unipolarToMidi(float fUnipolarValue) {return fUnipolarValue*127;}
+    static inline float mmaMiditoAtten_dB(int midiValue) {
+        if (midiValue == 0)
+            return -96.0f; // dB floor
+        return 20.0f*log10((127.0f*127.0f) / ((static_cast<float>(midiValue)*static_cast<float>(midiValue))));
+    }
+    static inline float mmaMiditoAtten(int midiValue)
+    {
+        if (midiValue == 0)
+            return 0.0f; // floor
+
+        return (static_cast<float>(midiValue)*static_cast<float>(midiValue)) / (127.0f*127.0f);
+    }
 
 
     class Listener {
