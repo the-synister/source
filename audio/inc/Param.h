@@ -65,7 +65,7 @@ public:
     static float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
     static float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
-    // conversion functions from TODO
+    // conversion functions from the book "Designing Software Synthesizer Plug-Ins in C++" and its template projects
     static float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
     static float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
     static float midiToBipolar(int midiValue) {return 2.0f*(float)midiValue / 127.0f - 1.0f;}
