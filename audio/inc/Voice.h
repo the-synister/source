@@ -103,7 +103,7 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize, ModulationMatrix &globalModMatrix_)
+    Voice(SynthParams &p, int blockSize, ModulationMatrix *globalModMatrix_)
     : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
@@ -125,7 +125,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
-    , globalModMatrix(globalModMatrix_)
+    , localModMatrix(globalModMatrix_) //local Matrix initialisation
     , pitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
@@ -134,6 +134,22 @@ public:
     , noModBuffer(1, blockSize)
     {
         noModBuffer.clear();
+        
+        for(float*& p : modSources) {
+            p = nullptr;
+        }
+        for(float*& p : modDestinations) {
+            p = nullptr;
+        }
+        
+        /*hier werden die Referenzen an die Matrix übergeben
+        in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
+        modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_LFO1] = &lfoVal;
+        /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
+        OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
+        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
 
@@ -171,7 +187,9 @@ public:
         envToCutoff.startEnvelope(currentVelocity);
         envToPitch.startEnvelope(currentVelocity);
 
-        currentPitchValue = currentPitchWheelPosition;
+        // Initialisieren der Parameter hier
+        pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
+        //osc1ModAmount = params.osc1lfo1depth.get();
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -245,7 +263,7 @@ public:
 
     void pitchWheelMoved(int newValue) override
     {
-        currentPitchValue = newValue;
+        pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
     void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
@@ -256,7 +274,8 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         // Modulation
-        renderModulation2(numSamples);
+        //renderModulation2(numSamples);
+        renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
@@ -290,7 +309,8 @@ public:
                     break;
                 }
 
-                currentSample = ladderFilter(biquadFilter2(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
+                currentSample = ladderFilter(biquadFilter(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
+                //currentSample = ladderFilter(biquadFilter(currentSample, params.passtype.getStep())) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -354,6 +374,8 @@ public:
     }
 
 protected:
+
+#if 0
     void renderModulation2(int numSamples) {
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
@@ -373,7 +395,7 @@ protected:
         }
 
         // add pitch wheel values
-        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
+        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
 
 
         for (int s = 0; s < numSamples; ++s)
@@ -416,19 +438,21 @@ protected:
             }
         }
     }
+#endif
+
     void renderModulation(int numSamples) {
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
-        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
+        //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
 
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
-            {
+        {
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-                }
+        }
 
         // set the filterEnvBuffer - for Filter
         for (int s = 0; s < numSamples; ++s)
@@ -437,7 +461,29 @@ protected:
         }
 
         // add pitch wheel values
-        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * ((currentPitchValue - 8192.0f) / 8192.0f);
+        //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
+        
+        pitchModBuffer.clear();
+        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        for (int s = 0; s < numSamples; ++s) {
+            // LFOs, ENVs berechnen
+            lfoVal = 0.f;
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                lfoVal = lfo1sine.next();
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                lfoVal = lfo1random.next();
+                break;
+            case eLfoWaves::eLfoSquare:
+                lfoVal = lfo1square.next();
+                break;
+            }
+            
+            localModMatrix->doModulationsMatrix(0, modSources, modDestinations);
+            
+            ++modDestinations[DEST_OSC1_PITCH];
+        }
 
 
         for (int s = 0; s < numSamples; ++s)
@@ -469,6 +515,7 @@ protected:
 
             lfo1ModBuffer.setSample(0, s, lfoVal);
 
+#if 0
             // Update of the modulation amount value
             modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
             // Next sample modulated with the updated amount
@@ -480,14 +527,28 @@ protected:
             {
                 pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
             }
+#endif
         }
     }
 
-    float biquadFilter2(float inputSignal, eBiquadFilters filterType) {
+
+    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
+        const float sRate = static_cast<float>(getSampleRate());
+
+        float currentCutoff = filterType == eBiquadFilters::eLowpass
+            ? params.lpCutoff.get()
+            : params.hpCutoff.get();
+
+        localModMatrix->destinations[DEST_FILT_FC] = currentCutoff;
+        //float testVal = localModMatrix->destinations[DEST_FILT_FC];
+        //float moddedMaxFreq = params.lpCutoff.getMax() * localModMatrix->destinations[DEST_FILT_FC];
+
+        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
 
         return inputSignal;
     }
 
+#if 0
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());
         
@@ -566,6 +627,7 @@ protected:
         
         return inputSignal;
     }
+#endif
 
 private:
     SynthParams &params;
@@ -581,7 +643,12 @@ private:
 
     float level;
 
-    int currentPitchValue;
+    float pitchBend;
+    float lfoVal;
+    
+    float* modSources[MAX_SOURCES];
+    float* modDestinations[MAX_DESTINATIONS];
+    
     int totSamples;
 
     float currentVelocity;
@@ -602,8 +669,8 @@ private:
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer envToCutoffBuffer;
 
-    ModulationMatrix &globalModMatrix;
-    modMatrixRow* modMatrixRow;
+    ModulationMatrix* localModMatrix; //pointer to the global Matrix
+    //modMatrixRow* modMatrixRow;
     float filter1Fc;
 
     Envelope envToCutoff;

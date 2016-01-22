@@ -96,6 +96,7 @@ SynthParams::SynthParams()
 , seqStep7("seqNote7", "seqNote7", "", -1, 127, 71)
 , seqStep8("seqNote8", "seqNote8", "", -1, 127, 72)
 , positionIndex(0)
+, globalModMatrix() // create core of the matrix
 {
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
