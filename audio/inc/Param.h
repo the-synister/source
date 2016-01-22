@@ -66,10 +66,9 @@ public:
     static float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
     // conversion functions from TODO
-    //static float paramToTimeCents(float dParam) {return 1200.0*65536.0*fastlog2(dParam);}
-
     static float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
-    static float midiToBipolar(int uMIDIValue) {return 2.0f*(float)uMIDIValue / 127.0f - 1.0f;}
+    static float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
+    static float midiToBipolar(int midiValue) {return 2.0f*(float)midiValue / 127.0f - 1.0f;}
     static float midiToPanValue(int midiValue) {
         if (midiValue == 64)
             return 0.0f;
@@ -78,9 +77,8 @@ public:
 
         return 2.0f*(float)midiValue / 127.0f - 1.0f;
     }
-    static float bipolarToUnipolar(float fValue) {return 0.5f*fValue + 0.5f;}
     static float midiToUnipolar(int midiValue) {return (float)midiValue / 127.0f;}
-    static int unipolarToMIDI(float fUnipolarValue) {return fUnipolarValue*127.0f;}
+    static int unipolarToMidi(float fUnipolarValue) {return fUnipolarValue*127.0f;}
 
 
     class Listener {
