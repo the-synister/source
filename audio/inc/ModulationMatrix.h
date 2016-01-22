@@ -263,15 +263,6 @@ public:
     float destinations[MAX_DESTINATIONS];
 
 protected:
-	inline float mmaMIDItoAtten(uint8 uMIDIValue);
-	inline float mmaMIDItoAtten_dB(uint8 uMIDIValue);
-	inline uint8 unipolarToMIDI(float fUnipolarValue);
-	inline float midiToUnipolar(uint8 uMIDIValue);
-	inline float bipolarToUnipolar(float dValue);
-	inline float midiToPanValue(uint8 uMIDIValue);
-	inline float midiToBipolar(uint8 uMIDIValue);
-	inline float unipolarToBipolar(float dValue);
-
 	modMatrixRow** matrixCore;
 	uint8 size;
 };
@@ -304,19 +295,19 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
         switch (row->sourceTransform)
         {
             case TRANSFORM_UNIPOLAR_TO_BIPOLAR:
-                source = unipolarToBipolar(source);
+                source = Param::unipolarToBipolar(source);
                 break;
                 
             case TRANSFORM_BIPOLAR_TO_UNIPOLAR:
-                source = bipolarToUnipolar(source);
+                source = Param::bipolarToUnipolar(source);
                 break;
                 
             case TRANSFORM_MIDI_TO_ATTENUATION:
-                source = mmaMIDItoAtten(source);
+                source = Param::mmaMiditoAtten(source);
                 break;
                 
             case TRANSFORM_MIDI_TO_PAN:
-                source = midiToPanValue(source);
+                source = Param::midiToPanValue(source);
                 break;
                 
             case TRANSFORM_MIDI_SWITCH:
@@ -324,7 +315,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
                 break;
                 
             case TRANSFORM_MIDI_TO_BIPOLAR:
-                source = midiToBipolar(source);
+                source = Param::midiToBipolar(source);
                 break;
                 
             case TRANSFORM_NOTE_NUMBER_TO_FREQUENCY:
