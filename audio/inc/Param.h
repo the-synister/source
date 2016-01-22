@@ -65,6 +65,22 @@ public:
     static float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
     static float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
+    // conversion functions from TODO
+    static float unipolarToBipolar(float fValue) {return 2.0f*dValue - 1.0f;}
+    static float midiToBipolar(int uMIDIValue) {return 2.0f*(float)uMIDIValue / 127.0f - 1.0f;}
+    static float midiToPanValue(int midiValue) {
+        if (midiValue == 64)
+            return 0.0f;
+        else if (midiValue <= 1) // 0 or 1
+            return -1.0f;
+
+        return 2.0f*(float)midiValue / 127.0f - 1.0f;
+    }
+    static float bipolarToUnipolar(float fValue) {return 0.5f*dValue + 0.5f;}
+    static float midiToUnipolar(int midiValue) {return (float)midiValue / 127.0f;}
+    static int unipolarToMIDI(float fUnipolarValue) {return fUnipolarValue*127.0f;}
+
+
     class Listener {
     public:
         virtual ~Listener(){}
