@@ -33,7 +33,6 @@ public:
 
     virtual void setName(const String& newName) override;
 
-    void paint(Graphics &g) override; // TODO: kann weg?
     void resized() override;
     void setBounds(int x, int y, int width, int height);
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;

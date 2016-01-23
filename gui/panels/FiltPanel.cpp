@@ -114,7 +114,7 @@ void FiltPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -130,7 +130,7 @@ void FiltPanel::resized()
     cutoffSlider2->setBounds (96, 104, 64, 64);
     passtype->setBounds (8, 8, 64, 64);
     modSrc->setBounds (96, 80, 64, 16);
-    modSliderCut->setBounds (160, 80, 24, 24);
+    modSliderCut->setBounds (160, 80, 22, 22);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -208,7 +208,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
@@ -229,9 +229,9 @@ BEGIN_JUCER_METADATA
             explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
             items="No Mod&#10;LFO 1" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
-          explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
+          explicitFocusOrder="0" pos="160 80 22 22" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

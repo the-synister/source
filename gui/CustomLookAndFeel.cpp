@@ -16,8 +16,7 @@ CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
     // set various things like Font and so on
-    //this->setDefaultSansSerifTypefaceName("Arial");
-    //this->setColour(ColourIds::rotarySliderFillColourId, Colour(0x00000000));
+    //this->setDefaultSansSerifTypefaceName("Calligraphic");
 
     // load assets
     rotarySliderImage = ImageCache::getFromMemory(BinaryData::knobstrip_png, BinaryData::knobstrip_pngSize);
@@ -37,186 +36,305 @@ CustomLookAndFeel::~CustomLookAndFeel()
 //==============================================================================
 
 void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &s)
-{
-    //g.fillAll(Colours::grey); // debug background fill
-    //LookAndFeel_V2::drawRotarySlider(g, x, y, width, height, sliderPosProportional, rotaryStartAngle, rotaryEndAngle, s); // default knob
-    //===============================================================================================================================================================//
+{    
+    const float centreX = x + width * 0.5f;
+    const float centreY = y + height * 0.5f;
+    //const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled(); // TODO: verwenden!
 
-    // calculate image frame for clipping image
-    double min = s.getMinimum();
-    double max = s.getMaximum();
-    double currValue = s.getValue();
-    double skewFactor = s.getSkewFactor();
+    // custom start and end angle for knob and saturn
+    rotaryStartAngle = -float_Pi + degreesToRadians(45.0f);
+    rotaryEndAngle = float_Pi - degreesToRadians(45.0f);
 
-    int frame = static_cast<int>(pow(((currValue - min) / (max - min)), skewFactor) * static_cast<double>(numberFramesRotary));
-    Rectangle<int> clipRect = { 0, jmax(0, jmin(frame, numberFramesRotary - 1)) * heightRotary, widthRotary, heightRotary };
-    
-    //const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled(); // TODO: nutzen für irgendetwas?
+    // current slider position angle in radians in range [rotaryStartAngle, rotaryEndAngle]
+    const float currAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
+
+    const float knobMargin = 0.70f; // relative knobBorder to max radius
+    const float radiusSource2 = jmin(width / 2.0f, height / 2.0f);
+    const float radiusKnob = radiusSource2 * knobMargin;
+    const float radiusSource1 = radiusKnob + (radiusSource2 - radiusKnob) / 2.0f;
+
+    Path knob, saturn;
 
     // if knob radius is bigger than 12, then downsize them for displaying possible modSource
     if (jmin(width, height) > 24)
     {
-        // for now since testslider is full circle as well
-        rotaryStartAngle = -float_Pi;
-        rotaryEndAngle = float_Pi;
+        // display modulation on slider if neccessary
+        Param* modSource1 = static_cast<MouseOverKnob&>(s).getModSource1();
+        Param* modSource2 = static_cast<MouseOverKnob&>(s).getModSource2();
 
-        const float centreX = x + width * 0.5f;
-        const float centreY = y + height * 0.5f;
-        const float currAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle); // current slider position angle in radians in range [-pi, pi]
+        // TODO: SynthParams erweitern um...
+        //       UNIPOLAR: from angle to min(endAngle, angle + amount)
+        //       BIPOLAR: from max(angle - amount/2, startAngle) to min(angle + amount/2, endAngle)
+        //       modSource ADDITIV oder MULTIPLIKATIV???
+        // TODO: wie siehts aus mit gewöhnlichem slider? -> am besten alle normalen slider weg
+        // TODO: wenn modSource vorhanden, dann draw arc outline?
 
-        float radiusSource2 = jmin(width / 2.0f, height / 2.0f); // whole bounds
-        float radiusKnob = radiusSource2 * 0.75f; // gute scale suchen (0.75 ganz gut für standard größe 64x64)
-        float radiusSource1 = radiusKnob + (radiusSource2 - radiusKnob) / 2.0f;
+        float modStartAngle, modEndAngle, modPosition1, modPosition2;
+        double afterModVal1, afterModVal2;
 
-        // display modulation on slider
+        // draw saturn 1 if modSource is in use
+        if (modSource1 != nullptr)
         {
-            Param* modSource1 = static_cast<MouseOverKnob&>(s).getModSource1(); // TODO: wie siehts aus mit gewöhnlichem slider?
-            Param* modSource2 = static_cast<MouseOverKnob&>(s).getModSource2(); //       macht source1 != NULL aber source2 == NULL, evtl. alle normalen slider weg
-
-            // TODO: SynthParams erweitern um...
-            //       UNIPOLAR: from angle to min(endAngle, angle + amount)
-            //       BIPOLAR: from max(angle - amount/2, startAngle) to min(angle + amount/2, endAngle)
-            //       modSource ADDITIV oder MULTIPLIKATIV???
-            // TODO: saturn größe und position noch mal besser berechnen, modularer an radius (und vllt. scale) angepasst
-            // TODO: mod Amounts position berechnen
-
-            ColourGradient gradient;
-            Path saturn;
-            float startAngle = rotaryStartAngle;
-            float endAngle = rotaryEndAngle;
-
-            // draw saturn 2 if modSource is in use
-            if (true)
-                if (modSource2 != nullptr)
+            // NOTE: testcase unipolar
+            // if(unipolar)
             {
-                // NOTE: testcase bipolar
-                // if(unipolar)
-                //{
-                    // unipolar
-                //}
-                //else
+                // if(additiv)
                 {
-                    double afterModVal1 = currValue;
-                    double afterModVal2 = currValue;
-                    // if(additiv)
-                    {
-                        afterModVal1 = jmax(min, jmin(currValue + modSource1->get() / 2.0f, max));
-                        afterModVal2 = jmax(min, jmin(currValue - modSource1->get() / 2.0f, max));
-                    }
-                    //else
-                    //{
-                    //// multiplicative
-                    //afterModVal = jmax(min, jmin(currValue * modSource1->get(), max));
-                    //}
-
-                    float frameMod1 = static_cast<float>(pow((afterModVal1 - min) / (max - min), skewFactor));
-                    float frameMod2 = static_cast<float>(pow((afterModVal2 - min) / (max - min), skewFactor));
-
-                    float modAngle1 = degreesToRadians(frameMod1 * 360.0f) - float_Pi; // because angle in radians in range [-pi, pi]
-                    float modAngle2 = degreesToRadians(frameMod2 * 360.0f) - float_Pi; // because angle in radians in range [-pi, pi]
-
-                    startAngle = modAngle1;
-                    endAngle = modAngle2;
-                }
-
-                //// TODO: create better glow effect
-                //gradient = ColourGradient(Colours::red, centreX, centreY, Colours::transparentWhite, centreX + radiusSource2, centreY + radiusSource2, true);
-                //g.setGradientFill(gradient);
-                g.setColour(s.isEnabled()? Colours::red : Colours::slategrey);
-
-                saturn.clear();
-                saturn.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, 
-                    jmax(-float_Pi, jmin(startAngle, float_Pi)), jmax(-float_Pi, jmin(endAngle, float_Pi)), (radiusSource1 / radiusSource2));
-                g.fillPath(saturn);
-            }
-
-            // draw saturn 1 if modSource is in use
-            if (true)
-                if (modSource1 != nullptr)
-            {
-                // NOTE: testcase unipolar
-                // if(unipolar)
-                {
-                    double afterModVal = currValue;
-                    // if(additiv)
-                    {
-                        afterModVal = jmax(min, jmin(currValue + modSource1->get(), max));
-                    }
-                    //else
-                    //{
-                        //// multiplicative
-                        //afterModVal = jmax(min, jmin(currValue * modSource1->get(), max));
-                    //}
-
-                    float frameMod = static_cast<float>(pow((afterModVal - min) / (max - min), skewFactor));
-                    
-                    float modAngle = degreesToRadians(frameMod * 360.0f) - float_Pi; // because angle in radians in range [-pi, pi]
-
-                    startAngle = currAngle;
-                    endAngle = modAngle;
+                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSource1->get(), s.getMaximum()));
                 }
                 //else
                 //{
-                    // bipolar
-                    
+                //// multiplicative
+                //afterModVal = jmax(s.getMinimum(), jmin(currValue * modSource1->get(), max));
                 //}
 
-                //// TODO: create better glow effect
-                //gradient = ColourGradient(Colours::blue, centreX, centreY, Colours::transparentWhite, centreX + radiusSource1, centreY + radiusSource1, true);
-                //g.setGradientFill(gradient);
-                g.setColour(s.isEnabled() ? Colours::blue : Colours::lightgrey);
-
-                saturn.clear();
-                saturn.addPieSegment(centreX - radiusSource1, centreY - radiusSource1, radiusSource1 * 2.0f, radiusSource1 * 2.0f, 
-                    jmax(-float_Pi, jmin(startAngle, float_Pi)), jmax(-float_Pi, jmin(endAngle, float_Pi)), (radiusKnob / radiusSource1));
-                g.fillPath(saturn);
+                modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
+                modStartAngle = currAngle;
+                modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
             }
+            //else
+            //{
+            // bipolar
+
+            //}
+
+            g.setColour(s.isEnabled() ? Colours::blue : Colours::lightgrey);
+            saturn.addPieSegment(centreX - radiusSource1, centreY - radiusSource1, radiusSource1 * 2.0f, radiusSource1 * 2.0f,
+                jmax(rotaryStartAngle, jmin(modStartAngle, rotaryEndAngle)), jmax(rotaryStartAngle, jmin(modEndAngle, rotaryEndAngle)), (radiusKnob / radiusSource1));
+            g.fillPath(saturn);
         }
 
-        // draw knob image
-        if (s.isEnabled()) // TODO: enabled nur für knob oder auch für saturns?
+        // draw saturn 2 if modSource is in use
+        if (modSource2 != nullptr)
         {
-            g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect),
-                static_cast<int>(centreX - radiusKnob), static_cast<int>(centreY - radiusKnob),
-                static_cast<int>(radiusKnob * 2.0f), static_cast<int>(radiusKnob * 2.0f),
-                RectanglePlacement::centred);
+            // NOTE: testcase bipolar
+            // if(unipolar)
+            //{
+                // unipolar
+            //}
+            //else
+            {
+                // if(additiv)
+                {
+                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSource2->get() / 2.0f, s.getMaximum()));
+                    afterModVal2 = jmax(s.getMinimum(), jmin(s.getValue() - modSource2->get() / 2.0f, s.getMaximum()));
+                }
+                //else
+                //{
+                //// multiplicative
+                //afterModVal = jmax(min, jmin(currValue * modSource1->get(), max));
+                //}
+
+                modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
+                modPosition2 = static_cast<float>(pow((afterModVal2 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
+
+                modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+                modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
+            }
+
+            g.setColour(s.isEnabled()? Colours::red : Colours::slategrey);
+            saturn.clear();
+            saturn.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, 
+                jmax(-float_Pi, jmin(modStartAngle, float_Pi)), jmax(-float_Pi, jmin(modEndAngle, float_Pi)), (radiusSource1 / radiusSource2));
+            g.fillPath(saturn);
         }
-        else
-        {
-            g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect), // TODO: grau zeichnen oder ANDERES BILD
-                static_cast<int>(centreX - radiusKnob), static_cast<int>(centreY - radiusKnob),
-                static_cast<int>(radiusKnob * 2.0f), static_cast<int>(radiusKnob * 2.0f),
-                RectanglePlacement::centred);
-        }
+
+        // draw knob
+        //int frame = static_cast<int>(sliderPosProportional * numberFramesRotary);
+        //Rectangle<int> clipRect = { 0, jmax(0, jmin(frame, numberFramesRotary - 1)) * heightRotary, widthRotary, heightRotary };
+        //g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect),
+        //    static_cast<int>(centreX - radiusKnob), static_cast<int>(centreY - radiusKnob),
+        //    static_cast<int>(radiusKnob * 2.0f), static_cast<int>(radiusKnob * 2.0f),
+        //    RectanglePlacement::centred);
+
+        // draw knob border
+        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
+        g.fillPath(knob);
+
+        // draw knob pointer
+        g.setColour(s.findColour(Slider::rotarySliderFillColourId).withAlpha(s.isEnabled()? 1.0f : 0.5f));
+        knob.clear();
+        knob.addPieSegment(centreX - radiusKnob * knobMargin, centreY - radiusKnob * knobMargin, radiusKnob * knobMargin * 2.0f, radiusKnob * knobMargin * 2.0f, // first part
+            -float_Pi, jmax(-float_Pi, jmin(currAngle - float_Pi / 18.0f, float_Pi)), 0.0f);
+        knob.addPieSegment(centreX - radiusKnob * knobMargin, centreY - radiusKnob * knobMargin, radiusKnob * knobMargin * 2.0f, radiusKnob * knobMargin * 2.0f, // second part
+            float_Pi, jmax(-float_Pi, jmin(currAngle + float_Pi / 18.0f, float_Pi)), 0.0f);
+        g.fillPath(knob);
     }
     else
     {
         // if knob radius is smaller than 12, then draw without saturn using full width and full height
-        if (s.isEnabled())
-        {
-            g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect), x, y, width, height, RectanglePlacement::centred);
-        }
-        else
-        {
-            g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect), x, y, width, height, RectanglePlacement::centred); // TODO: grau zeichnen oder ANDERES BILD
-        }
+        g.setColour(s.isEnabled()? Colours::white : Colours::grey);
+        knob.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, // first part
+            -float_Pi, jmax(-float_Pi, jmin(currAngle - float_Pi / 18.0f, float_Pi)), 0.0f);
+        knob.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, // second part
+            float_Pi, jmax(-float_Pi, jmin(currAngle + float_Pi / 18.0f, float_Pi)), 0.0f);
+        g.fillPath(knob);
     }
 }
 
 void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
-    if (style == Slider::SliderStyle::LinearVertical)
+    if (style == Slider::LinearBar || style == Slider::LinearBarVertical)
     {
-        // draw vertical slider base
-        g.drawImageWithin(verticalSlider, x, y, width, height, RectanglePlacement::centred);
-
-        // draw thumb
-        int offset = static_cast<int>(sliderPos - (static_cast<float>(thumbHeight) / 2.0) * (thumbSize / static_cast<float>(thumbHeight)));
-        g.drawImageWithin(verticalSliderThumb, x, offset, width, static_cast<int>(thumbSize), RectanglePlacement::centred);
+        // TODO: change bar into Vol and Pan
+        LookAndFeel_V2::drawLinearSlider(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
     }
     else
     {
-        // TODO: für andere styles noch, je nach dem, was verwendet wird
-        LookAndFeel_V2::drawLinearSlider(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
+        // draw linear slider
+        drawLinearSliderBackground(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
+        drawLinearSliderThumb(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
+    }
+}
+
+void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
+{
+    const float sliderRadius = (float)(jmin(20, width / 2, height / 2) - 2);
+    g.setColour(Colours::white);
+    Path indent;
+
+    if (s.isHorizontal())
+    {
+        const float iy = y + height * 0.5f - sliderRadius * 0.5f;
+        const float ih = sliderRadius;
+
+        indent.addRoundedRectangle(x - sliderRadius * 0.5f, iy,
+            width + sliderRadius, ih,
+            10.0f);
+    }
+    else
+    {
+        const float ix = x + width * 0.5f - sliderRadius * 0.5f;
+        const float iw = sliderRadius;
+
+        indent.addRoundedRectangle(ix, y - sliderRadius * 0.5f,
+            iw, height + sliderRadius,
+            10.0f);
+    }
+
+    g.fillPath(indent);
+}
+
+void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
+{
+    const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
+
+    Colour knobColour(s.findColour(Slider::thumbColourId));
+
+    const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
+
+    if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
+    {
+        float kx, ky;
+
+        if (style == Slider::LinearVertical)
+        {
+            kx = x + width * 0.5f;
+            ky = sliderPos;
+        }
+        else
+        {
+            kx = sliderPos;
+            ky = y + height * 0.5f;
+        }
+
+        g.setColour(knobColour);
+        g.fillEllipse(kx - sliderRadius, ky - sliderRadius, sliderRadius * 2.0f, sliderRadius * 2.0f);
+    }
+    else
+    {
+        // TODO: diese hier machen, falls verwendet werden, sonst egal
+        if (style == Slider::ThreeValueVertical)
+        {
+            drawGlassSphere(g, x + width * 0.5f - sliderRadius,
+                sliderPos - sliderRadius,
+                sliderRadius * 2.0f,
+                knobColour, outlineThickness);
+        }
+        else if (style == Slider::ThreeValueHorizontal)
+        {
+            drawGlassSphere(g, sliderPos - sliderRadius,
+                y + height * 0.5f - sliderRadius,
+                sliderRadius * 2.0f,
+                knobColour, outlineThickness);
+        }
+
+        if (style == Slider::TwoValueVertical || style == Slider::ThreeValueVertical)
+        {
+            const float sr = jmin(sliderRadius, width * 0.4f);
+
+            drawGlassPointer(g, jmax(0.0f, x + width * 0.5f - sliderRadius * 2.0f),
+                minSliderPos - sliderRadius,
+                sliderRadius * 2.0f, knobColour, outlineThickness, 1);
+
+            drawGlassPointer(g, jmin(x + width - sliderRadius * 2.0f, x + width * 0.5f), maxSliderPos - sr,
+                sliderRadius * 2.0f, knobColour, outlineThickness, 3);
+        }
+        else if (style == Slider::TwoValueHorizontal || style == Slider::ThreeValueHorizontal)
+        {
+            const float sr = jmin(sliderRadius, height * 0.4f);
+
+            drawGlassPointer(g, minSliderPos - sr,
+                jmax(0.0f, y + height * 0.5f - sliderRadius * 2.0f),
+                sliderRadius * 2.0f, knobColour, outlineThickness, 2);
+
+            drawGlassPointer(g, maxSliderPos - sliderRadius,
+                jmin(y + height - sliderRadius * 2.0f, y + height * 0.5f),
+                sliderRadius * 2.0f, knobColour, outlineThickness, 4);
+        }
+    }
+}
+
+void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &t, bool isMouseOverButton, bool isButtonDown)
+{
+   // LookAndFeel_V2::drawToggleButton(g, t, isMouseOverButton, isButtonDown);
+
+    if (t.hasKeyboardFocus(true))
+    {
+        g.setColour(t.findColour(TextEditor::focusedOutlineColourId));
+        g.drawRect(0, 0, t.getWidth(), t.getHeight());
+    }
+
+    float fontSize = jmin(15.0f, t.getHeight() * 0.75f);
+    const float tickWidth = fontSize * 1.1f;
+
+    drawTickBox(g, t, 4.0f, (t.getHeight() - tickWidth) * 0.5f,
+        tickWidth, tickWidth,
+        t.getToggleState(),
+        t.isEnabled(),
+        isMouseOverButton,
+        isButtonDown);
+
+    g.setColour(t.findColour(ToggleButton::textColourId));
+    g.setFont(fontSize);
+
+    if (!t.isEnabled())
+        g.setOpacity(0.5f);
+
+    const int textX = (int)tickWidth + 5;
+
+    g.drawFittedText(t.getButtonText(),
+        textX, 0,
+        t.getWidth() - textX - 2, t.getHeight(),
+        Justification::centredLeft, 10);
+}
+
+void CustomLookAndFeel::drawTickBox(Graphics &g, Component &c, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool isButtonDown)
+{
+    const float boxSize = width * 0.7f;
+    float yOffset = y + (height - boxSize) * 0.5f;
+
+    // TODO: colourgradient mit transparentwhite und transparentwhite verwenden wenn inactive
+    // wenn active dann innere farbe zu white, s.d. glow
+    // unterscheidung für mouseOver
+
+    g.setColour(isMouseOverButton? Colours::dimgrey : Colours::darkgrey);
+    g.fillEllipse(x, yOffset, boxSize, boxSize);
+
+    if (ticked)
+    {
+        g.setColour(isMouseOverButton ? Colours::white : Colours::antiquewhite);
+        g.fillEllipse(x, yOffset, boxSize, boxSize);
     }
 }

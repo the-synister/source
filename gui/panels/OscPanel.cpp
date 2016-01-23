@@ -80,8 +80,9 @@ OscPanel::OscPanel (SynthParams &p)
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
     waveformSwitch->setRange (0, 2, 1);
-    waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
+    waveformSwitch->setSliderStyle (Slider::LinearHorizontal);
     waveformSwitch->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    waveformSwitch->setColour (Slider::thumbColourId, Colour (0xff0099ff));
     waveformSwitch->addListener (this);
 
     addAndMakeVisible (sawlabel = new Label ("Saw Label",
@@ -162,7 +163,7 @@ void OscPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff0099ff));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -284,7 +285,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff0099ff"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
           min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
@@ -318,8 +319,8 @@ BEGIN_JUCER_METADATA
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
                     class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" min="0"
-          max="2" int="1" style="RotaryHorizontalVerticalDrag" textBoxPos="NoTextBox"
+          virtualName="" explicitFocusOrder="0" pos="360 128 64 64" thumbcol="ff0099ff"
+          min="0" max="2" int="1" style="LinearHorizontal" textBoxPos="NoTextBox"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
          virtualName="" explicitFocusOrder="0" pos="360 104 150 24" edTextCol="ff000000"

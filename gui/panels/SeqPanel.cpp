@@ -392,7 +392,7 @@ void SeqPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colours::grey);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -841,7 +841,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff808080"/>
   <SLIDER name="Step 1" id="1c1677034c4af23a" memberName="seqStep1" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="336 32 48 264" min="0" max="127"
           int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"

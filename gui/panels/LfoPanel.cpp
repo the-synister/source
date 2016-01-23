@@ -103,7 +103,7 @@ void LfoPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xffb16565));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -192,11 +192,11 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.010000000000000000208"
-          max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
