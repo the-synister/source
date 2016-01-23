@@ -37,7 +37,7 @@ enum destinations : int {
 	// --- GUI control layer modulation (-1)
 	DEST_UI_OSC1_FO,
 	DEST_UI_OSC2_FO,
-	DEST_UI_TO_OSC3_FO,
+	DEST_UI_OSC3_FO,
 
 	DEST_UI_FILTER1_FC,
 	DEST_UI_FILTER2_FC,
@@ -342,9 +342,11 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
         ODER ein Source checker!?
         source liefert den Pitchbend!!!*/
 
+
         float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
         float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         
+        // entscheidung wann addition/multiplikation -> der erste muss ja addieren, sonst multiplizieren wir mit 0?
         *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
         *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
 
