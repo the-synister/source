@@ -361,6 +361,9 @@
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -1660,6 +1663,9 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">

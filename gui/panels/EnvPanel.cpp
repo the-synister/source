@@ -88,6 +88,9 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     keyVelToEnv->addListener (this);
 
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envAttackShape.get(), params.envDecayShape.get(),  params.envRelease.get(), params.envReleaseShape.get()));
+    envelopeCurve->setName ("Envelope Curve");
+
 
     //[UserPreSize]
     registerSlider(attackTime, &params.envAttack);
@@ -120,6 +123,7 @@ EnvPanel::~EnvPanel()
     decayShape = nullptr;
     releaseShape = nullptr;
     keyVelToEnv = nullptr;
+    envelopeCurve = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -151,6 +155,7 @@ void EnvPanel::resized()
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (224, 80, 64, 64);
     keyVelToEnv->setBounds (296, 8, 64, 64);
+    envelopeCurve->setBounds (400, 24, 192, 80);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -265,6 +270,9 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
+                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="400 24 192 80"
+                    class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envAttackShape.get(), params.envDecayShape.get(),  params.envRelease.get(),&#10;"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
