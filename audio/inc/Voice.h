@@ -444,15 +444,13 @@ protected:
         float moddedFreq = filterType == eBiquadFilters::eLowpass 
             ? params.lpCutoff.get()
             : params.hpCutoff.get();
-
-        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
         
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
             moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmout.get() / 100.f);
         }
         else if (params.lpModSource.getStep() == eModSource::eEnv) { // env
 
-            moddedFreq = params.lpCutoff.get() + (moddedMaxFreq - params.lpCutoff.get()) * modValue;
+            moddedFreq += moddedFreq + (params.lpCutoff.getMax() - moddedFreq) * modValue * params.lpModAmout.get() / 100.f;
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
