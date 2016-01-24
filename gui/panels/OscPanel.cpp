@@ -111,6 +111,12 @@ OscPanel::OscPanel (SynthParams &p)
 
 
     //[UserPreSize]
+    ctune1->setModSource1(&params.osc1PitchRange);
+    ctune1->setModSource2(&params.osc1lfo1depth);
+
+    registerSaturn(pitchRange, ctune1);
+    registerSaturn(lfo1depth1, ctune1);
+    
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
     registerSlider(osc1trngAmount, &params.osc1trngAmount);
@@ -122,8 +128,6 @@ OscPanel::OscPanel (SynthParams &p)
 	lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     // Test modSource, mod on cTune
-    ctune1->setModSource1(&params.osc1lfo1depth);
-    ctune1->setModSource2(&params.osc1lfo1depth);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -194,7 +198,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);
-    repaint(); // TODO: only for now, not nice
+    //sliderThatWasMoved->repaint(); // TODO: only for now, not nice
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == ftune1)

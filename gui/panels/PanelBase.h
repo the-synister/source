@@ -36,6 +36,10 @@ protected:
         slider->initTextBox();
     }
 
+    void registerSaturn(Slider *source, MouseOverKnob *dest) {
+        saturnReg[source] = dest;
+    }
+    
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {
             if (s2p.second->isUIDirty()) {
@@ -44,9 +48,24 @@ protected:
                     s2p.first->setName(s2p.second->getUIString());
                 }
             }
+
         }
     }
 
+    // Callback function in case there are any dirty saturn glows
+    void updateDirtySaturns() {
+        // iterate over all the registered saturn glows
+        for (auto slider2saturn : saturnReg) {
+            // find the mod source from the slider register
+            auto modSource = sliderReg.find(slider2saturn.first);
+            
+            //if the mod source is Dirty repaint
+            if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
+                slider2saturn.second->repaint();
+            }
+        }
+    }
+    
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
@@ -54,6 +73,12 @@ protected:
             if(it->second->hasLabels()) {
                 it->first->setName(it->second->getUIString());
             }
+            
+            auto temp = saturnReg.find(sliderThatWasMoved);
+            if (temp != saturnReg.end()) {
+                temp->second->repaint();
+            }
+            
             return true;
         } else {
             return false;
@@ -61,9 +86,11 @@ protected:
     }
 
     virtual void timerCallback() override {
+        updateDirtySaturns();
         updateDirtySliders();
     }
 
     std::map<Slider*, Param*> sliderReg;
+    std::map<Slider*, MouseOverKnob*> saturnReg;
     SynthParams &params;
 };
