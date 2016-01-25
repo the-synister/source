@@ -110,11 +110,11 @@ public:
     , outputDelay1(0.f)
     , outputDelay2(0.f)
     , params(p)
-    , envToVolume(getSampleRate(), params.envDecay, params.envAttack, params.envSustain, params.envRelease,
+    , envToVolume(static_cast<float>(getSampleRate()), params.envDecay, params.envAttack, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
-    , envToCutoff(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
+    , envToCutoff(static_cast<float>(getSampleRate()), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
-    , envToPitch(getSampleRate(), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
+    , envToPitch(static_cast<float>(getSampleRate()), params.env1Decay, params.env1Attack, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
@@ -125,7 +125,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
-    , localModMatrix(globalModMatrix_) //local Matrix initialisation
+    , modMatrix(globalModMatrix_) //local Matrix initialisation
     , pitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
@@ -135,17 +135,17 @@ public:
     {
         noModBuffer.clear();
         
-        for(float*& p : modSources) {
-            p = nullptr;
+        for(float*& pSource : modSources) {
+            pSource = nullptr;
         }
-        for(float*& p : modDestinations) {
-            p = nullptr;
+        for(float*& pDest : modDestinations) {
+            pDest = nullptr;
         }
         
         /*hier werden die Referenzen an die Matrix übergeben
         in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
         modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_LFO1] = &lfoVal;
+        modSources[SOURCE_LFO1] = &lfoValue;
         /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
         OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
@@ -282,10 +282,11 @@ public:
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
 
-        std::vector<const float*> modSources(3);
-        modSources[0] = noMod;
-        modSources[1] = lfo1Mod;
-        modSources[2] = envToCutoffMod;
+        std::vector<const float*> modSourcesArray(3);
+        modSourcesArray[0] = noMod;
+        modSourcesArray[1] = lfo1Mod;
+        modSourcesArray[2] = envToCutoffMod;
+
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -298,7 +299,7 @@ public:
             for (int s = 0; s < numSamples; ++s) {
                 //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
                 int wf = static_cast<int>(params.osc1WaveForm.get());
-                float currentSample;
+                float currentSample = 0.f;
                 switch (wf)
                 {
                 case 1:
@@ -467,20 +468,20 @@ protected:
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
         for (int s = 0; s < numSamples; ++s) {
             // LFOs, ENVs berechnen
-            lfoVal = 0.f;
+            lfoValue = 0.f;
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                lfoVal = lfo1sine.next();
+                lfoValue = lfo1sine.next();
                 break;
             case eLfoWaves::eLfoSampleHold:
-                lfoVal = lfo1random.next();
+                lfoValue = lfo1random.next();
                 break;
             case eLfoWaves::eLfoSquare:
-                lfoVal = lfo1square.next();
+                lfoValue = lfo1square.next();
                 break;
             }
             
-            localModMatrix->doModulationsMatrix(0, modSources, modDestinations);
+            modMatrix->doModulationsMatrix(0, modSources, modDestinations);
             
             ++modDestinations[DEST_OSC1_PITCH];
         }
@@ -488,16 +489,16 @@ protected:
 
         for (int s = 0; s < numSamples; ++s)
         {
-            float lfoVal = 0.f;
+            lfoValue = 0.f;
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                lfoVal = lfo1sine.next();
+                lfoValue = lfo1sine.next();
                 break;
             case eLfoWaves::eLfoSampleHold:
-                lfoVal = lfo1random.next();
+                lfoValue = lfo1random.next();
                 break;
             case eLfoWaves::eLfoSquare:
-                lfoVal = lfo1square.next();
+                lfoValue = lfo1square.next();
                 break;
             }
 
@@ -513,7 +514,7 @@ protected:
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
 
-            lfo1ModBuffer.setSample(0, s, lfoVal);
+            lfo1ModBuffer.setSample(0, s, lfoValue);
 
 #if 0
             // Update of the modulation amount value
@@ -539,11 +540,11 @@ protected:
             ? params.lpCutoff.get()
             : params.hpCutoff.get();
 
-        localModMatrix->destinations[DEST_FILT_FC] = currentCutoff;
+        modMatrix->destinations[DEST_FILT_FC] = currentCutoff;
         //float testVal = localModMatrix->destinations[DEST_FILT_FC];
         //float moddedMaxFreq = params.lpCutoff.getMax() * localModMatrix->destinations[DEST_FILT_FC];
 
-        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
+        //float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
 
         return inputSignal;
     }
@@ -628,7 +629,8 @@ protected:
         return inputSignal;
     }
 #endif
-
+public:
+        
 private:
     SynthParams &params;
     //New Filter Design
@@ -644,7 +646,7 @@ private:
     float level;
 
     float pitchBend;
-    float lfoVal;
+    float lfoValue;
     
     float* modSources[MAX_SOURCES];
     float* modDestinations[MAX_DESTINATIONS];
@@ -669,7 +671,7 @@ private:
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer envToCutoffBuffer;
 
-    ModulationMatrix* localModMatrix; //pointer to the global Matrix
+    ModulationMatrix* modMatrix; //pointer to the global Matrix
     //modMatrixRow* modMatrixRow;
     float filter1Fc;
 

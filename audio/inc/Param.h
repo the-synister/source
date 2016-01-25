@@ -68,17 +68,17 @@ public:
     // conversion functions from the book "Designing Software Synthesizer Plug-Ins in C++" and its template projects
     static inline float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
     static inline float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
-    static inline float midiToBipolar(int midiValue) {return 2.0f*(float)midiValue / 127.0f - 1.0f;}
+    static inline float midiToBipolar(int midiValue) {return 2.0f*static_cast<float>(midiValue) / 127.0f - 1.0f;}
     static inline float midiToPanValue(int midiValue) {
         if (midiValue == 64)
             return 0.0f;
         else if (midiValue <= 1) // 0 or 1
             return -1.0f;
 
-        return 2.0f*(float)midiValue / 127.0f - 1.0f;
+        return 2.0f*static_cast<float>(midiValue) / 127.0f - 1.0f;
     }
-    static inline float midiToUnipolar(int midiValue) {return (float)midiValue / 127.0f;}
-    static inline int unipolarToMidi(float fUnipolarValue) {return fUnipolarValue*127;}
+    static inline float midiToUnipolar(int midiValue) {return static_cast<float>(midiValue / 127.0f);}
+    static inline int unipolarToMidi(float fUnipolarValue) {return static_cast<int>(fUnipolarValue*127.f);}
     static inline float mmaMiditoAtten_dB(int midiValue) {
         if (midiValue == 0)
             return -96.0f; // dB floor

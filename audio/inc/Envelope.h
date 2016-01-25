@@ -86,12 +86,12 @@ class Envelope{
     // TODO the matrix stuff
     ModulationMatrix* modulationMatrix;
 
-    uint8 modSourceFo;
-    uint8 modSourcePulseWidth;
-    uint8 modSourceAmp;
+    int modSourceFo;
+    int modSourcePulseWidth;
+    int modSourceAmp;
 
-    uint8 modDestOutput1;
-    uint8 modDestOutput2;
+    int modDestOutput1;
+    int modDestOutput2;
 };
 
 #endif  // ENVELOPE_H_INCLUDED

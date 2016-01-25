@@ -63,145 +63,14 @@ enum transform {
 	TRANSFORM_NONE = 0,
 	TRANSFORM_UNIPOLAR_TO_BIPOLAR,
 	TRANSFORM_BIPOLAR_TO_UNIPOLAR,
-	TRANSFORM_MIDI_NORMALIZE,
-	TRANSFORM_INVERT_MIDI_NORMALIZE,
-	TRANSFORM_MIDI_TO_BIPOLAR,
-	TRANSFORM_MIDI_TO_PAN,
-	TRANSFORM_MIDI_SWITCH,
-	TRANSFORM_MIDI_TO_ATTENUATION,
-	TRANSFORM_NOTE_NUMBER_TO_FREQUENCY,
+	//TRANSFORM_MIDI_NORMALIZE,
+	//TRANSFORM_INVERT_MIDI_NORMALIZE,
+	//TRANSFORM_MIDI_TO_BIPOLAR,
+	//TRANSFORM_MIDI_TO_PAN,
+	//TRANSFORM_MIDI_SWITCH,
+	//TRANSFORM_MIDI_TO_ATTENUATION,
+	//TRANSFORM_NOTE_NUMBER_TO_FREQUENCY,
 	MAX_TRANSFORMS
-};
-
-const float midiFreqTable[128] = {
-	8.1757993698120117,
-	8.6619567871093750,
-	9.1770238876342773,
-	9.7227182388305664,
-	10.3008613586425780,
-	10.9133825302124020,
-	11.5623254776000980,
-	12.2498569488525390,
-	12.9782714843750000,
-	13.7500000000000000,
-	14.5676174163818360,
-	15.4338531494140630,
-	16.3515987396240230,
-	17.3239135742187500,
-	18.3540477752685550,
-	19.4454364776611330,
-	20.6017227172851560,
-	21.8267650604248050,
-	23.1246509552001950,
-	24.4997138977050780,
-	25.9565429687500000,
-	27.5000000000000000,
-	29.1352348327636720,
-	30.8677062988281250,
-	32.7031974792480470,
-	34.6478271484375000,
-	36.7080955505371090,
-	38.8908729553222660,
-	41.2034454345703130,
-	43.6535301208496090,
-	46.2493019104003910,
-	48.9994277954101560,
-	51.9130859375000000,
-	55.0000000000000000,
-	58.2704696655273440,
-	61.7354125976562500,
-	65.4063949584960940,
-	69.2956542968750000,
-	73.4161911010742190,
-	77.7817459106445310,
-	82.4068908691406250,
-	87.3070602416992190,
-	92.4986038208007810,
-	97.9988555908203130,
-	103.8261718750000000,
-	110.0000000000000000,
-	116.5409393310546900,
-	123.4708251953125000,
-	130.8127899169921900,
-	138.5913085937500000,
-	146.8323822021484400,
-	155.5634918212890600,
-	164.8137817382812500,
-	174.6141204833984400,
-	184.9972076416015600,
-	195.9977111816406200,
-	207.6523437500000000,
-	220.0000000000000000,
-	233.0818786621093700,
-	246.9416503906250000,
-	261.6255798339843700,
-	277.1826171875000000,
-	293.6647644042968700,
-	311.1269836425781200,
-	329.6275634765625000,
-	349.2282409667968700,
-	369.9944152832031200,
-	391.9954223632812500,
-	415.3046875000000000,
-	440.0000000000000000,
-	466.1637573242187500,
-	493.8833007812500000,
-	523.2511596679687500,
-	554.3652343750000000,
-	587.3295288085937500,
-	622.2539672851562500,
-	659.2551269531250000,
-	698.4564819335937500,
-	739.9888305664062500,
-	783.9908447265625000,
-	830.6093750000000000,
-	880.0000000000000000,
-	932.3275146484375000,
-	987.7666015625000000,
-	1046.5023193359375000,
-	1108.7304687500000000,
-	1174.6590576171875000,
-	1244.5079345703125000,
-	1318.5102539062500000,
-	1396.9129638671875000,
-	1479.9776611328125000,
-	1567.9816894531250000,
-	1661.2187500000000000,
-	1760.0000000000000000,
-	1864.6550292968750000,
-	1975.5332031250000000,
-	2093.0046386718750000,
-	2217.4609375000000000,
-	2349.3181152343750000,
-	2489.0158691406250000,
-	2637.0205078125000000,
-	2793.8259277343750000,
-	2959.9553222656250000,
-	3135.9633789062500000,
-	3322.4375000000000000,
-	3520.0000000000000000,
-	3729.3100585937500000,
-	3951.0664062500000000,
-	4186.0092773437500000,
-	4434.9218750000000000,
-	4698.6362304687500000,
-	4978.0317382812500000,
-	5274.0410156250000000,
-	5587.6518554687500000,
-	5919.9106445312500000,
-	6271.9267578125000000,
-	6644.8750000000000000,
-	7040.0000000000000000,
-	7458.6201171875000000,
-	7902.1328125000000000,
-	8372.0185546875000000,
-	8869.8437500000000000,
-	9397.2724609375000000,
-	9956.0634765625000000,
-	10548.0820312500000000,
-	11175.3037109375000000,
-	11839.8212890625000000,
-	12543.8535156250000000
 };
 
 struct modMatrixRow
@@ -210,7 +79,7 @@ struct modMatrixRow
 	destinations destinationIndex;
     Param* modIntensity;
     Param* modRange;
-	uint8 sourceTransform;
+	int sourceTransform;
 	bool enable;
 };
 
@@ -218,7 +87,7 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 										destinations destinationIndex_,
                                         Param* modIntensity_,
                                         Param* modRange_,
-										uint8 sourceTransform_,
+										int sourceTransform_,
 										bool enable_ = true) {
 
 	modMatrixRow* row = new modMatrixRow;
@@ -247,28 +116,28 @@ public:
 	
 	modMatrixRow** getModMatrixCore();
 	void setModMatrixCore(modMatrixRow** modMatrix);
-	uint8 getMatrixSize();
+	int getMatrixSize();
 	inline void clearMatrix();
 	inline void clearSources();
 	inline void clearDestinations();
 	void addModMatrixRow(modMatrixRow* row);
-	inline bool modMatrixRowExists(uint8 sourceIndex, uint8 destinationIndex);
+	inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
     inline void createMatrixCore();
 	inline void deleteModMatrix();
-	inline bool enableModMatrixRow(uint8 sourceIndex, uint8 destinationIndex, bool enable);
-	inline bool checkDestinationLayer(uint8 layer, modMatrixRow* row);
-	inline void doModulationsMatrix(uint8 modLayer, float** src, float** dst);
+	inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
+	inline bool checkDestinationLayer(int layer, modMatrixRow* row);
+	inline void doModulationsMatrix(int modLayer, float** src, float** dst);
 
     float sources[MAX_SOURCES];
     float destinations[MAX_DESTINATIONS];
 
 protected:
 	modMatrixRow** matrixCore;
-	uint8 size;
+	int size;
 };
 
 
-inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, float** dst)
+inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, float** dst)
 {
     if (!matrixCore) return;
     
@@ -302,34 +171,34 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
                 source = Param::bipolarToUnipolar(source);
                 break;
                 
-            case TRANSFORM_MIDI_TO_ATTENUATION:
-                source = Param::mmaMiditoAtten(source);
-                break;
+            //case TRANSFORM_MIDI_TO_ATTENUATION:
+            //    source = Param::mmaMiditoAtten(source);
+            //    break;
                 
-            case TRANSFORM_MIDI_TO_PAN:
-                source = Param::midiToPanValue(source);
-                break;
+            //case TRANSFORM_MIDI_TO_PAN:
+            //    source = Param::midiToPanValue(source);
+            //    break;
                 
-            case TRANSFORM_MIDI_SWITCH:
-                source = source > 63.0f ? 1.0f : 0.0f;
-                break;
+            //case TRANSFORM_MIDI_SWITCH:
+            //    source = source > 63.0f ? 1.0f : 0.0f;
+            //    break;
                 
-            case TRANSFORM_MIDI_TO_BIPOLAR:
-                source = Param::midiToBipolar(source);
-                break;
+            //case TRANSFORM_MIDI_TO_BIPOLAR:
+            //    source = Param::midiToBipolar(source);
+            //    break;
                 
-            case TRANSFORM_NOTE_NUMBER_TO_FREQUENCY:
-                source = midiFreqTable[(uint8)source];
-                break;
-                
-            case TRANSFORM_MIDI_NORMALIZE:
-                source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
-                break;
-                
-            case TRANSFORM_INVERT_MIDI_NORMALIZE:
-                source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
-                source = 1.0f - source; // 1->0 NOTE: MMA DLS uses divide-by-128 instead!, 0.9999->0
-                break;
+            //case TRANSFORM_NOTE_NUMBER_TO_FREQUENCY:
+            //    source = midiFreqTable[(int)source];
+            //    break;
+            //    
+            //case TRANSFORM_MIDI_NORMALIZE:
+            //    source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
+            //    break;
+            //    
+            //case TRANSFORM_INVERT_MIDI_NORMALIZE:
+            //    source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
+            //    source = 1.0f - source; // 1->0 NOTE: MMA DLS uses divide-by-128 instead!, 0.9999->0
+            //    break;
                 
             default:
                 break;
@@ -344,7 +213,7 @@ inline void ModulationMatrix::doModulationsMatrix(uint8 modLayer, float** src, f
 
 
         float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
-        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
+//        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         
         // entscheidung wann addition/multiplikation -> der erste muss ja addieren, sonst multiplizieren wir mit 0?
         *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
@@ -397,7 +266,7 @@ inline void ModulationMatrix::clearDestinations()
     }
 }
 
-inline bool ModulationMatrix::modMatrixRowExists(uint8 sourceIndex, uint8 destinationIndex)
+inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinationIndex)
 {
     if (!matrixCore) return false;
     
@@ -440,7 +309,7 @@ inline void ModulationMatrix::deleteModMatrix()
     matrixCore = NULL;
 }
 
-inline bool ModulationMatrix::enableModMatrixRow(uint8 sourceIndex, uint8 destinationIndex, bool enable)
+inline bool ModulationMatrix::enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable)
 {
     if (!matrixCore) return false;
     
@@ -458,7 +327,7 @@ inline bool ModulationMatrix::enableModMatrixRow(uint8 sourceIndex, uint8 destin
     return false;
 }
 
-inline bool ModulationMatrix::checkDestinationLayer(uint8 layer, modMatrixRow * row)
+inline bool ModulationMatrix::checkDestinationLayer(int layer, modMatrixRow * row)
 {
     bool bLayer0 = false;
     if (row->destinationIndex >= DEST_FILT_FC &&

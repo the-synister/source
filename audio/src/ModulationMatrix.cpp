@@ -46,9 +46,9 @@ void ModulationMatrix::setModMatrixCore(modMatrixRow ** modMatrix)
 	size = getMatrixSize();
 }
 
-uint8 ModulationMatrix::getMatrixSize()
+int ModulationMatrix::getMatrixSize()
 {
-	uint8 nSize = 0;
+	int nSize = 0;
 	if (!matrixCore) return nSize;
 
 	for (int i = 0; i<MAX_SOURCES *
