@@ -10,6 +10,7 @@
 
 #include "../standalone/JuceLibraryCode/JuceHeader.h"
 #include "EnvelopeCurve.h"
+#include "Param.h"
 
 //==============================================================================
 
@@ -101,11 +102,12 @@ float EnvelopeCurve::getEnvCoef()
         if (decayShape_ < 1.0f)
         {
             float decayShrinkRate = 1 / decayShape_;
-            envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel_);
+            envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - (96.f + sustain_) / 96.f);
         }
         else
         {
-            envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - sustainLevel_) + sustainLevel_;
+            envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - (96.f + sustain_) / 96.f) + (96.f + sustain_) / 96.f;
+
         }
         valueAtRelease_ = envCoeff;
         attackDecayCounter_++;
@@ -113,7 +115,7 @@ float EnvelopeCurve::getEnvCoef()
     // if attack and decay phase is over then sustain level
     else if (sustainCounter_ <= sustainSamples)
     {
-        envCoeff = sustainLevel_;
+        envCoeff = (96.f + sustain_) / 96.f;
         valueAtRelease_ = envCoeff;
         sustainCounter_++;
     }
