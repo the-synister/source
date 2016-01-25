@@ -75,7 +75,7 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (static_cast<int>(params.osc1WaveForm.get()), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -235,8 +235,8 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
 		int waveformKey = static_cast<int>(waveformSwitch->getValue());
-		params.osc1WaveForm.setUI(static_cast<float>(waveformKey));
-		waveformVisual->setWaveformKey(waveformKey);
+		params.osc1Waveform.setUI(static_cast<float>(waveformKey));
+		waveformVisual->setWaveformKey(static_cast<eOscWaves>(waveformKey));
 		switch (waveformKey)
 		{
 		case 1:

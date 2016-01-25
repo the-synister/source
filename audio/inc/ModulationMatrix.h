@@ -207,7 +207,7 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         // destination += source*intensity*range
         /* an dieser Stelle muss geguckt werden wann und wo umgerechnet werden muss!!!
         ist die Stelle Sinnvoll?
-        Die Umrechnung für source MUSS woanders stattfinden!!!
+        Die Umrechnung fource MUSS woanders stattfinden!!!
         ODER ein Source checker!?
         source liefert den Pitchbend!!!*/
 

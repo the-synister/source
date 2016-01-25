@@ -325,13 +325,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
@@ -367,6 +367,9 @@
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -374,6 +377,9 @@
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1626,13 +1632,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
@@ -1667,6 +1673,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
       <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>standalone\Audio\inc</Filter>

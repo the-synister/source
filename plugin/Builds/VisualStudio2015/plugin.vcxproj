@@ -144,6 +144,8 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
@@ -1321,6 +1323,8 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
+    <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>

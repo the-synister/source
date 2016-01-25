@@ -30,15 +30,15 @@ float FxDelay::filter(float currentSample) {
     a1 = 2.f * -coeff2;
     a2 = 2.f * coeff1;
 
-    fLastSample = currentSample;
+    lastSample = currentSample;
 
-    currentSample = b0*currentSample + b1*fInputDelay1 + b2*fInputDelay2 - a1*fOutputDelay1 - a2*fOutputDelay2;
+    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
 
     //delaying samples
-    fInputDelay2 = fInputDelay1;
-    fInputDelay1 = fLastSample;
-    fOutputDelay2 = fOutputDelay1;
-    fOutputDelay1 = currentSample;
+    inputDelay2 = inputDelay1;
+    inputDelay1 = lastSample;
+    outputDelay2 = outputDelay1;
+    outputDelay1 = currentSample;
 
     return currentSample;
 }
