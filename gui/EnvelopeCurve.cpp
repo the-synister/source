@@ -23,20 +23,17 @@ void EnvelopeCurve::setSamples()
     
     float samplesSection = getWidth()/4;
     
-    attackSamples = (attack_ * samplesSection * .187f) > 0.5f ? static_cast<int>(ceil(attack_ * samplesSection * .187f)) : 1;
-    decaySamples = static_cast<int>(decay_ * samplesSection * .213f);
-    releaseSamples = (release_ * samplesSection * .187f) > 0.5f ? static_cast<int>(ceil(release_ * samplesSection * .187f)) : 1;
-    sustainSamples = static_cast<int>(sustainLevel_ * samplesSection);
+    attackSamples = (attack_ * samplesSection * .187f) > 0.5f ?
+    static_cast<int>(ceil(attack_ * samplesSection * .187f)) :
+    1;
     
-   /* if ((attackSamples + decaySamples + releaseSamples + sustainSamples) < getWidth())
-    {
-        int rest = getWidth() - (attackSamples + decaySamples + releaseSamples + sustainSamples);
-        rest = static_cast<int>(ceil(rest/4));
-        attackSamples += rest;
-        decaySamples += rest;
-        releaseSamples += rest;
-        sustainSamples += rest;
-    }*/
+    decaySamples = static_cast<int>(decay_ * samplesSection * .213f);
+    
+    releaseSamples = (release_ * samplesSection * .187f) > 0.5f ?
+    static_cast<int>(ceil(release_ * samplesSection * .187f)) :
+    1;
+    
+    sustainSamples = static_cast<int>(sustainLevel_ * samplesSection);
     
     releaseCounter_ = 0;
     attackDecayCounter_ = 0;
