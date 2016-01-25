@@ -36,8 +36,9 @@ protected:
         slider->initTextBox();
     }
 
-    void registerSaturn(Slider *source, MouseOverKnob *dest) {
-        saturnReg[source] = dest;
+    void registerSaturn(MouseOverKnob *dest, Slider *source1, Slider *source2) {
+        std::array<Slider*, 2> sources = {source1, source2};
+        saturnReg[dest] = sources;
     }
     
     void updateDirtySliders() {
@@ -55,13 +56,16 @@ protected:
     // Callback function in case there are any dirty saturn glows
     void updateDirtySaturns() {
         // iterate over all the registered saturn glows
-        for (auto slider2saturn : saturnReg) {
+        for (auto dest2saturn : saturnReg) {
             // find the mod source from the slider register
-            auto modSource = sliderReg.find(slider2saturn.first);
-            
-            //if the mod source is Dirty repaint
-            if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
-                slider2saturn.second->repaint();
+            for (int i = 0; i < 2; ++i) {
+                auto modSource = sliderReg.find(dest2saturn.second[i]);
+                
+                //if the mod source is Dirty repaint
+                if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
+                    dest2saturn.first->repaint();
+                }
+                
             }
         }
     }
@@ -74,9 +78,12 @@ protected:
                 it->first->setName(it->second->getUIString());
             }
             
-            auto temp = saturnReg.find(sliderThatWasMoved);
-            if (temp != saturnReg.end()) {
-                temp->second->repaint();
+            for (auto saturn : saturnReg) {
+                for (int i = 0; i < 2; ++i) {
+                    if (saturn.second[i] == sliderThatWasMoved) {
+                        saturn.first->repaint();
+                    }                    
+                }
             }
             
             return true;
@@ -91,6 +98,6 @@ protected:
     }
 
     std::map<Slider*, Param*> sliderReg;
-    std::map<Slider*, MouseOverKnob*> saturnReg;
+    std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
     SynthParams &params;
 };

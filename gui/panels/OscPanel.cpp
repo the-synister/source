@@ -112,10 +112,14 @@ OscPanel::OscPanel (SynthParams &p)
 
     //[UserPreSize]
     ctune1->setModSource1(&params.osc1PitchRange);
-    ctune1->setModSource2(&params.osc1lfo1depth);
+    ctune1->setModSource2(&params.lfoFadein);
 
-    registerSaturn(pitchRange, ctune1);
-    registerSaturn(lfo1depth1, ctune1);
+    lfo1depth1->setModSource1(&params.osc1PitchRange);
+    lfo1depth1->setModSource2(&params.lfoFadein);
+    
+    registerSaturn(ctune1, lfoFadeIn, pitchRange);
+    registerSaturn(lfo1depth1, lfoFadeIn, pitchRange);
+    
     
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
