@@ -28,9 +28,20 @@ public:
     , attackShape_(attackShape)
     , decayShape_(decayShape)
     , releaseShape_(releaseShape)
+    , attackDecayCounter_(0)
+    , sustainCounter_(0)
+    , releaseCounter_(0)
     {};
     ~EnvelopeCurve();
-
+    
+    void setAttack(float);
+    void setDecay(float);
+    void setRelease(float);
+    void setSustain(float);
+    void setAttackShape(float);
+    void setDecayShape(float);
+    void setReleaseShape(float);
+    
     void paint (Graphics&);
     void resized();
 
@@ -43,10 +54,23 @@ private:
     float decayShape_;
     float releaseShape_;
     float valueAtRelease_;
+    float sustainLevel_;
     int attackDecayCounter_;
     int releaseCounter_;
+    int sustainCounter_;
+    
+    
+    
+    int attackSamples;
+    int decaySamples;
+    int releaseSamples;
+    int sustainSamples;
+
     
     float getEnvCoef();
+
+    void setSamples();
+    
     float interpolateLog(int c, int t, float k, bool slow);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvelopeCurve)

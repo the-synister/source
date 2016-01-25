@@ -17,77 +17,126 @@ EnvelopeCurve::~EnvelopeCurve()
 {
 }
 
+void EnvelopeCurve::setSamples()
+{
+    sustainLevel_ = Param::fromDb(sustain_);
+    
+    float samplesSection = getWidth()/4;
+    
+    attackSamples = (attack_ * samplesSection * .187f) > 0.5f ? static_cast<int>(ceil(attack_ * samplesSection * .187f)) : 1;
+    decaySamples = static_cast<int>(decay_ * samplesSection * .213f);
+    releaseSamples = (release_ * samplesSection * .187f) > 0.5f ? static_cast<int>(ceil(release_ * samplesSection * .187f)) : 1;
+    sustainSamples = static_cast<int>(sustainLevel_ * samplesSection);
+    
+   /* if ((attackSamples + decaySamples + releaseSamples + sustainSamples) < getWidth())
+    {
+        int rest = getWidth() - (attackSamples + decaySamples + releaseSamples + sustainSamples);
+        rest = static_cast<int>(ceil(rest/4));
+        attackSamples += rest;
+        decaySamples += rest;
+        releaseSamples += rest;
+        sustainSamples += rest;
+    }*/
+    
+    releaseCounter_ = 0;
+    attackDecayCounter_ = 0;
+    sustainCounter_ = 0;
+
+}
+
+void EnvelopeCurve::setAttack(float attack)
+{
+    attack_ = attack;
+}
+
+void EnvelopeCurve::setDecay(float decay)
+{
+    decay_ = decay;
+}
+
+void EnvelopeCurve::setSustain(float sustain)
+{
+    sustain_ = sustain;
+}
+
+void EnvelopeCurve::setRelease(float release)
+{
+    release_ = release;
+}
+
+void EnvelopeCurve::setAttackShape(float attackShape)
+{
+    attackShape_ = attackShape;
+}
+
+void EnvelopeCurve::setDecayShape(float decayShape)
+{
+    decayShape_ = decayShape;
+}
+
+void EnvelopeCurve::setReleaseShape(float releaseShape)
+{
+    releaseShape_ = releaseShape;
+}
+
 float EnvelopeCurve::getEnvCoef()
 {
     float envCoeff;
-    float sustainLevel = Param::fromDb(sustain_);
     
-    // number of samples for all phases
-    // if needed consider key velocity for attack and decay
-    int attackSamples = static_cast<int>(1024 * attack_);
-    int decaySamples = static_cast<int>(1024 * decay_);
-    int releaseSamples = static_cast<int>(1024 * release_);
-    
-    // get growth/shrink rate from knobs
-    float attackGrowthRate = attackShape_;
-    float decayShrinkRate = decayShape_;
-    float releaseShrinkRate = releaseShape_;
-    
-    // release phase sets envCoeff from valueAtRelease to 0.0f
-    if (releaseCounter_ > -1)
+    // attack phase sets envCoeff from 0.0f to 1.0f
+    if (attackDecayCounter_ <= attackSamples)
     {
-        if (releaseShrinkRate < 1.0f)
+        if (attackShape_ < 1.0f)
         {
-            releaseShrinkRate = 1 / releaseShrinkRate;
+            float attackGrowthRate = 1 / attackShape_;
+            envCoeff = interpolateLog(attackDecayCounter_, attackSamples, attackGrowthRate, true);
+        }
+        else
+        {
+            envCoeff = 1.0f - interpolateLog(attackDecayCounter_, attackSamples, attackShape_, false);
+        }
+        valueAtRelease_ = envCoeff;
+        attackDecayCounter_++;
+    }
+    // decay phase sets envCoeff from 1.0f to sustain level
+    else if (attackDecayCounter_ <= attackSamples + decaySamples)
+    {
+        if (decayShape_ < 1.0f)
+        {
+            float decayShrinkRate = 1 / decayShape_;
+            envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel_);
+        }
+        else
+        {
+            envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - sustainLevel_) + sustainLevel_;
+        }
+        valueAtRelease_ = envCoeff;
+        attackDecayCounter_++;
+    }
+    // if attack and decay phase is over then sustain level
+    else if (sustainCounter_ <= sustainSamples)
+    {
+        envCoeff = sustainLevel_;
+        valueAtRelease_ = envCoeff;
+        sustainCounter_++;
+    }
+    // release phase sets envCoeff from valueAtRelease to 0.0f
+    else if (releaseCounter_ <= releaseSamples)
+    {
+        if (releaseShape_ < 1.0f)
+        {
+            float releaseShrinkRate = 1 / releaseShape_;
             envCoeff = valueAtRelease_ * (1 - interpolateLog(releaseCounter_, releaseSamples, releaseShrinkRate, true));
         }
         else
         {
-            envCoeff = valueAtRelease_ * interpolateLog(releaseCounter_, releaseSamples, releaseShrinkRate, false);
+            envCoeff = valueAtRelease_ * interpolateLog(releaseCounter_, releaseSamples, releaseShape_, false);
         }
         releaseCounter_++;
+    } else {
+        return 0.f;
     }
-    else
-    {
-        // attack phase sets envCoeff from 0.0f to 1.0f
-        if (attackDecayCounter_ <= attackSamples)
-        {
-            if (attackGrowthRate < 1.0f)
-            {
-                attackGrowthRate = 1 / attackGrowthRate;
-                envCoeff = interpolateLog(attackDecayCounter_, attackSamples, attackGrowthRate, true);
-            }
-            else
-            {
-                envCoeff = 1.0f - interpolateLog(attackDecayCounter_, attackSamples, attackGrowthRate, false);
-            }
-            valueAtRelease_ = envCoeff;
-            attackDecayCounter_++;
-        }
-        else
-        {
-            // decay phase sets envCoeff from 1.0f to sustain level
-            if (attackDecayCounter_ <= attackSamples + decaySamples)
-            {
-                if (decayShrinkRate < 1.0f)
-                {
-                    decayShrinkRate = 1 / decayShrinkRate;
-                    envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel);
-                }
-                else
-                {
-                    envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, false) * (1.0f - sustainLevel) + sustainLevel;
-                }
-                valueAtRelease_ = envCoeff;
-                attackDecayCounter_++;
-            }
-            else // if attack and decay phase is over then sustain level
-            {
-                envCoeff = sustainLevel;
-                valueAtRelease_ = envCoeff;
-            }
-        }
-    }
+    
     return envCoeff;
 
 }
@@ -116,50 +165,16 @@ void EnvelopeCurve::paint (Graphics& g)
     g.fillAll(Colours::black);
     
     Path curvePath;
-    const int startPointY = getHeight() - 5;
     const int width = getWidth();
+    setSamples();
+    curvePath.startNewSubPath(0, getHeight());
     
-    curvePath.startNewSubPath(0, startPointY);
-    
-    for (int i = 1; i < width; ++i) {
-        curvePath.lineTo(i, getEnvCoef());
+    for (float i = 1.0f; i < width; ++i) {
+        curvePath.lineTo(i, getHeight()*(1.f - getEnvCoef()));
     }
     
     g.setColour(Colours::lightgreen);
     g.strokePath(curvePath, PathStrokeType(2.5f));
- /*
-
-    Path wavePath;
-    const float centreY = getHeight() / 2.0f;
-    const float amplitude = 0.4f;
-    const int width = getWidth();
-    const float step = 4*float_Pi / width;
-    wavePath.startNewSubPath(0, centreY);
-    
-    for (float x = 1.0f; x < width; ++x) {
-        
-        float phs = x * step;
-        if (phs > (2 * float_Pi))
-            phs = phs - (2 * float_Pi);
-        
-        switch (m_iWaveformKey)
-        {
-            case eOscWaves::eOscSquare:
-                wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
-                break;
-                
-            case eOscWaves::eOscSaw:
-                wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::saw(phs, m_fTrngAmount, m_fPulseWidth));
-                break;
-                
-            case eOscWaves::eOscNoise:
-                wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::whiteNoise(phs, m_fTrngAmount, m_fPulseWidth));
-                break;
-                
-        }
-        
-    }*/
-
 }
 
 void EnvelopeCurve::resized()
