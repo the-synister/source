@@ -43,7 +43,6 @@ struct Waveforms {
     }
 };
 
-
 template<float(*_waveform)(float, float, float)>
 struct Oscillator {
     float phase;
