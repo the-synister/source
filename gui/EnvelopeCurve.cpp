@@ -20,7 +20,7 @@ EnvelopeCurve::~EnvelopeCurve()
 
 void EnvelopeCurve::setSamples()
 {
-    sustainLevel_ = Param::fromDb(sustain_);
+    sustainLevel_ = (96.f + sustain_) / 96.f;
     
     float samplesSection = getWidth()/4;
     
@@ -102,11 +102,11 @@ float EnvelopeCurve::getEnvCoef()
         if (decayShape_ < 1.0f)
         {
             float decayShrinkRate = 1 / decayShape_;
-            envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - (96.f + sustain_) / 96.f);
+            envCoeff = 1 - interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel_);
         }
         else
         {
-            envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - (96.f + sustain_) / 96.f) + (96.f + sustain_) / 96.f;
+            envCoeff = interpolateLog(attackDecayCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - sustainLevel_) + sustainLevel_;
 
         }
         valueAtRelease_ = envCoeff;
@@ -115,7 +115,7 @@ float EnvelopeCurve::getEnvCoef()
     // if attack and decay phase is over then sustain level
     else if (sustainCounter_ <= sustainSamples)
     {
-        envCoeff = (96.f + sustain_) / 96.f;
+        envCoeff = sustainLevel_;
         valueAtRelease_ = envCoeff;
         sustainCounter_++;
     }
