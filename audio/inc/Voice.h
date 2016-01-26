@@ -551,13 +551,13 @@ protected:
                 moddedFreq = params.hpCutoff.get();
                 break;
             case eBiquadFilters::eBandpass:
-                moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2;
+                moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2.f;
                 if (params.lpCutoff.get() < params.hpCutoff.get()){
-                    return 0;
+                    return 0.f;
                 }
                 break;
             default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead
-                return 0;
+                return 0.f;
         }
 
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
@@ -608,16 +608,16 @@ protected:
             a2 = 2.f * coeff1;
         } else if (filterType == eBiquadFilters::eBandpass) {
             // coefficients for bandpass, depending on low- and highcut frequency
-            w0 = 2 * float_Pi*moddedFreq;
+            w0 = 2.f * float_Pi*moddedFreq;
             bw = (log2(params.lpCutoff.get() / params.hpCutoff.get())); // bandwidth in octaves
-            coeff1 = sin(w0)*sinh(log10(2) / 2 * bw * w0 / sin(w0)); // intermediate value for coefficient calc
+            coeff1 = sin(w0)*sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
 
             b0 = coeff1;
-            b1 = 0;
+            b1 = 0.f;
             b2 = -coeff1;
-            a0 = 1 + coeff1;
-            a1 = -2 * cos(w0);
-            a2 = 1 - coeff1;
+            a0 = 1.f + coeff1;
+            a1 = -2.f * cos(w0);
+            a2 = 1.f - coeff1;
         }
 
         lastSample = inputSignal;

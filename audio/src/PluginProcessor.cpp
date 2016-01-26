@@ -160,10 +160,10 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
-    delay.init(2, sRate);
-    chorus.init(2, sRate);
-
     synth.addSound(new Sound());
+
+    delay.init(getNumOutputChannels(), sRate);
+    chorus.init(getNumOutputChannels(), sRate);
 }
 
 void PluginAudioProcessor::releaseResources()
