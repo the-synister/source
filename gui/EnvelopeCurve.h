@@ -28,9 +28,7 @@ public:
     , attackShape_(attackShape)
     , decayShape_(decayShape)
     , releaseShape_(releaseShape)
-    , attackDecayCounter_(0)
-    , sustainCounter_(0)
-    , releaseCounter_(0)
+    , samplesCounter_(0)
     {};
     ~EnvelopeCurve();
     
@@ -55,20 +53,14 @@ private:
     float releaseShape_;
     float valueAtRelease_;
     float sustainLevel_;
-    int attackDecayCounter_;
-    int releaseCounter_;
-    int sustainCounter_;
-    
-    
+    int samplesCounter_;
     
     int attackSamples;
     int decaySamples;
     int releaseSamples;
     int sustainSamples;
-
     
     float getEnvCoef();
-
     void setSamples();
     
     float interpolateLog(int c, int t, float k, bool slow);
