@@ -36,7 +36,8 @@ protected:
         slider->initTextBox();
     }
 
-    // TODO: merge it into one function
+    // NOTE: sourceNumber values 1 or 2
+    // TODO: change it to an enum? 
     void registerSaturnSource(MouseOverKnob *dest, Slider *source, Param *paramSource, int sourceNumber) {
         dest->setModSource(paramSource, sourceNumber);
         
@@ -50,20 +51,6 @@ protected:
             temp->second[sourceNumber-1] = source;
         }
     }
-    /*
-    void registerSaturnSource2(MouseOverKnob *dest, Slider *source, Param *paramSource) {
-        dest->setModSource2(paramSource);
-        
-        auto temp = saturnReg.find(dest);
-        
-        if (temp == saturnReg.end()) {
-            std::array<Slider*, 2> newSource = {nullptr};
-            newSource[1] = source;
-            saturnReg[dest] = newSource;
-        } else {
-            temp->second[1] = source;
-        }
-    }*/
     
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {

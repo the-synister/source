@@ -27,9 +27,7 @@ public:
     void initTextBox();
 
     void setModSource(Param *p, int sourceNumber);
-//    void setModSource2(Param *p);
     std::array<Param*, 2> getModSources();
-//    Param* getModSource2();
 
     virtual void setName(const String& newName) override;
 
@@ -48,7 +46,6 @@ private:
     int knobHeight = 64;
 
     std::array<Param*, 2> modSources;
-    //Param* modSource2;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

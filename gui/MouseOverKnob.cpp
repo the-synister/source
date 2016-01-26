@@ -55,16 +55,6 @@ std::array<Param*, 2> MouseOverKnob::getModSources()
     return modSources;
 }
 
-/*void MouseOverKnob::setModSource2(Param *p)
-{
-    modSource2 = p;
-}
-
-Param* MouseOverKnob::getModSource2()
-{
-    return modSource2;
-}*/
-
 void MouseOverKnob::setName  (const String& newName) {
     knobLabel->setText(newName, NotificationType::dontSendNotification);
 }

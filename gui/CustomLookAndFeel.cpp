@@ -60,7 +60,6 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     {
         // display modulation on slider if neccessary
         std::array<Param*, 2> modSources = static_cast<MouseOverKnob&>(s).getModSources();
-        //Param* modSource2 = static_cast<MouseOverKnob&>(s).getModSource2();
 
         // TODO: SynthParams erweitern um...
         //       UNIPOLAR: from angle to min(endAngle, angle + amount)
