@@ -97,10 +97,10 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-	registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
+    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
     registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
-	registerSlider(lfoFadeIn, &params.lfoFadein);
+    registerSlider(lfoFadeIn, &params.lfoFadein);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
@@ -108,7 +108,7 @@ OscPanel::OscPanel (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-	osc1trngAmount->setVisible(false);
+    osc1trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -225,12 +225,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
-	int waveformKey = static_cast<int>(waveformSwitch->getValue());
-	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    int waveformKey = static_cast<int>(waveformSwitch->getValue());
+    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
     params.osc1Waveform.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-	waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
 }

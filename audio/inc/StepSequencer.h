@@ -37,7 +37,7 @@ public:
     void saveSeqState();
 
     /**
-    * Load stepSequencer parameters by reading these from a XML patch tree. After loadSeqState() is used, 
+    * Load stepSequencer parameters by reading these from a XML patch tree. After loadSeqState() is used,
       resized() should be called to make sure that the GUI is updated properly by using provided getters for stepSequencer parameters.
     */
     void loadSeqState();
@@ -66,7 +66,7 @@ public:
 
     /**
     * Set wether the stepSequencer should play sequence in upDown order, otherwise play sequential.
-      Last and first note will be played twice. 
+      Last and first note will be played twice.
       stepSequencer can not play upDown and random simultaneously (does not make much sense).
     */
     void playUpDown(bool play);
@@ -112,7 +112,7 @@ public:
     /**
     * Set step speed from a string representing note length (e.g 1/4, 1/16 ...).
     @param stepSpeed is assumed to be in the proper format; the function only takes the String after '/',
-                     converts it to an int to use that as the denominator. 
+                     converts it to an int to use that as the denominator.
                      The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
     */
     void setStepSpeed(const String &stepSpeed);
@@ -235,7 +235,7 @@ public:
     * Is true if triplets are activated for step speed and step length.
     */
     bool isTripletActive();
-    
+
     /**
     * Is true if specific step is activated and should play.
     @param step in range [0..7]

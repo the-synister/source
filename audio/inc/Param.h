@@ -28,8 +28,8 @@ public:
     int getNumSteps() const { return numSteps_; }
 
     void set(float f) { val_.store(f); }
-    void set(float f, bool) { 
-        val_.store(f); 
+    void set(float f, bool) {
+        val_.store(f);
         uiDirty.exchange(true);
     }
     float get() const { return val_.load(); }

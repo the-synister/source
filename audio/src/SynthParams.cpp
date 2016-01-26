@@ -13,19 +13,19 @@ namespace {
     static const char *seqModeNames[] = {
         "Stop", "Play", "SyncHost", nullptr
     };
-    
+
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
     };
-    
+
     static const char *biquadFilters[] = {
         "Lowpass", "Highpass", "Bandpass", nullptr
     };
-    
+
     static const char *modsourcenames[] = {
         "None", "LFO1", nullptr
     };
-    
+
     static const char *waveformNames[] = {
         "Square", "Saw", "White-noise"
     };
@@ -39,7 +39,7 @@ SynthParams::SynthParams()
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &panDir, &vol, 
+    &panDir, &vol,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
 , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax}
@@ -178,7 +178,7 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
-        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least 
+        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
                                                                                                             // delay feedback and dry are bad and (ampVol sometimes); not further tested
     }
 }
