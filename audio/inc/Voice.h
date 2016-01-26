@@ -112,15 +112,13 @@ public:
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
-        , bandpassDelay1(0.f)
-        , bandpassDelay2(0.f)
+    , bandpassDelay1(0.f)
+    , bandpassDelay2(0.f)
     , params(p)
     , envToVolume(getSampleRate(), params.envAttack, params.envDecay, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
     , env1(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
-    //, envToPitch(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
-    //    params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
@@ -136,7 +134,6 @@ public:
     , envToVolBuffer(1, blockSize)
     , lfo1ModBuffer(1,blockSize)
     , env1Buffer(1, blockSize)
-    //, envToCutoffBuffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
         noModBuffer.clear();
@@ -197,8 +194,6 @@ public:
         // reset attackDecayCounter
         envToVolume.startEnvelope(currentVelocity);
         env1.startEnvelope(currentVelocity);
-        //envToCutoff.startEnvelope(currentVelocity);
-        //envToPitch.startEnvelope(currentVelocity);
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
@@ -212,7 +207,7 @@ public:
         if (params.lfo1TempSync.get() == 1.f) {
 
             lfo1sine.phase = .5f*float_Pi;
-        lfo1square.phase = 0.f;
+            lfo1square.phase = 0.f;
             lfo1random.phase = 0.f;
 
             lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
@@ -225,10 +220,10 @@ public:
             lfo1sine.phase = .5f*float_Pi;
             lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1square.phase = .5f*float_Pi;
-        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         
-        lfo1random.phase = 0.f;
-        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1random.phase = 0.f;
+            lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
@@ -278,16 +273,7 @@ public:
             env1.resetReleaseCounter();
             }
 
-            /*if (envToCutoff.getReleaseCounter() == -1)
-            {
-                envToCutoff.resetReleaseCounter();
-            }
-
-            if (envToPitch.getReleaseCounter() == -1)
-            {
-                envToPitch.resetReleaseCounter();
-            }*/
-            }
+        }
         else
         {
             // we're being told to stop playing immediately, so reset everything..
@@ -430,17 +416,6 @@ protected:
         // sets buffer for both envelopes
         envToVolume.render(envToVolBuffer, numSamples);
         env1.render(env1Buffer, numSamples);
-        
-        /*for (int s = 0; s < numSamples; ++s)
-        {
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-        }
-
-        // set the filterEnvBuffer - for Filter
-        for (int s = 0; s < numSamples; ++s)
-        {
-            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
-        }*/
 
         // add pitch wheel values
         float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
@@ -503,6 +478,8 @@ protected:
         env1.render(env1Buffer, numSamples);
 
 #if 0
+        // Old Version!!! the buffers are filled in the envelope class
+        //with the help of the render()-Funktion
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
         {
@@ -770,7 +747,6 @@ private:
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env1Buffer;
-    //AudioSampleBuffer envToCutoffBuffer;
     
     ModulationMatrix* modMatrix; //pointer to the global Matrix
     //modMatrixRow* modMatrixRow;
@@ -779,6 +755,4 @@ private:
     
     Envelope envToVolume;
     Envelope env1;
-    //Envelope envToCutoff;
-    //Envelope envToPitch;
 };
