@@ -17,7 +17,7 @@ enum class eLfoWaves : int {
     eLfoSampleHold = 2,
     nSteps = 3
     };
-
+    
 enum class eOscWaves : int {
     eOscSquare = 0,
     eOscSaw    = 1,
@@ -80,7 +80,7 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-
+    
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -100,6 +100,9 @@ public:
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
+    //Param envSustain;   //!< env sustain in [0..-96]dB
+    ParamDb envSustain;   //!< env sustain in [0..1]
+    Param envRelease;   //!< env release in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
     
