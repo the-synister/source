@@ -8,3 +8,4 @@ Debug/
 xcuserdata/
 project.xcworkspace/
 resources.aps
+*.opendb
