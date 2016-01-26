@@ -60,16 +60,9 @@ enum destinations : int {
 };
 
 enum transform {
-	TRANSFORM_NONE = 0,
-	TRANSFORM_UNIPOLAR_TO_BIPOLAR,
-	TRANSFORM_BIPOLAR_TO_UNIPOLAR,
-	//TRANSFORM_MIDI_NORMALIZE,
-	//TRANSFORM_INVERT_MIDI_NORMALIZE,
-	//TRANSFORM_MIDI_TO_BIPOLAR,
-	//TRANSFORM_MIDI_TO_PAN,
-	//TRANSFORM_MIDI_SWITCH,
-	//TRANSFORM_MIDI_TO_ATTENUATION,
-	//TRANSFORM_NOTE_NUMBER_TO_FREQUENCY,
+    TRANSFORM_NONE = 0,
+    TRANSFORM_TO_BIPOLAR,
+    TRANSFORM_TO_UNIPOLAR,
 	MAX_TRANSFORMS
 };
 
@@ -79,7 +72,7 @@ struct modMatrixRow
 	destinations destinationIndex;
     Param* modIntensity;
     Param* modRange;
-	int sourceTransform;
+	int intensityTransform;
 	bool enable;
 };
 
@@ -87,7 +80,7 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 										destinations destinationIndex_,
                                         Param* modIntensity_,
                                         Param* modRange_,
-										int sourceTransform_,
+										int intensityTransform_,
 										bool enable_ = true) {
 
 	modMatrixRow* row = new modMatrixRow;
@@ -95,7 +88,7 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 	row->destinationIndex = destinationIndex_;
 	row->modIntensity = modIntensity_;
 	row->modRange = modRange_;
-	row->sourceTransform = sourceTransform_;
+	row->intensityTransform = intensityTransform_;
 	row->enable = enable_;
 
 	return row;
@@ -126,6 +119,8 @@ public:
 	inline void deleteModMatrix();
 	inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
 	inline bool checkDestinationLayer(int layer, modMatrixRow* row);
+    inline float toUnipolar(float min, float max, float value);
+    inline float toBipolar(float min, float max, float value);
 	inline void doModulationsMatrix(int modLayer, float** src, float** dst);
 
     float sources[MAX_SOURCES];
@@ -158,47 +153,27 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         // --- check the mod layer
         if (!checkDestinationLayer(modLayer, row)) continue;
         
-        // get the source value
+        // get the source value & mod intensity
         float source = *(src[row->sourceIndex]);
+        float intensity = row->modIntensity->get();
+
         
-        switch (row->sourceTransform)
+        
+        switch (row->intensityTransform)
         {
-            case TRANSFORM_UNIPOLAR_TO_BIPOLAR:
-                source = Param::unipolarToBipolar(source);
+            case TRANSFORM_TO_BIPOLAR:
+                // get the mod intensity min max
+                float min = row->modIntensity->getMin();
+                float max = row->modIntensity->getMax();
+                intensity = toBipolar(min, max, intensity);
                 break;
                 
-            case TRANSFORM_BIPOLAR_TO_UNIPOLAR:
-                source = Param::bipolarToUnipolar(source);
+            case TRANSFORM_TO_UNIPOLAR:
+                // get the mod intensity min max
+                float min = row->modIntensity->getMin();
+                float max = row->modIntensity->getMax();
+                source = toUnipolar(min, max, intensity);
                 break;
-                
-            //case TRANSFORM_MIDI_TO_ATTENUATION:
-            //    source = Param::mmaMiditoAtten(source);
-            //    break;
-                
-            //case TRANSFORM_MIDI_TO_PAN:
-            //    source = Param::midiToPanValue(source);
-            //    break;
-                
-            //case TRANSFORM_MIDI_SWITCH:
-            //    source = source > 63.0f ? 1.0f : 0.0f;
-            //    break;
-                
-            //case TRANSFORM_MIDI_TO_BIPOLAR:
-            //    source = Param::midiToBipolar(source);
-            //    break;
-                
-            //case TRANSFORM_NOTE_NUMBER_TO_FREQUENCY:
-            //    source = midiFreqTable[(int)source];
-            //    break;
-            //    
-            //case TRANSFORM_MIDI_NORMALIZE:
-            //    source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
-            //    break;
-            //    
-            //case TRANSFORM_INVERT_MIDI_NORMALIZE:
-            //    source /= 127.0f; // 0->1 NOTE: MMA DLS uses divide-by-128 instead!, 0->0.9999
-            //    source = 1.0f - source; // 1->0 NOTE: MMA DLS uses divide-by-128 instead!, 0.9999->0
-            //    break;
                 
             default:
                 break;
@@ -343,6 +318,11 @@ inline bool ModulationMatrix::checkDestinationLayer(int layer, modMatrixRow * ro
     
     return false;
 }
+
+inline float ModulationMatrix::toUnipolar(float min, float max, float value) { return (value - min) / max - min;}
+
+inline float ModulationMatrix::toBipolar(float min, float max, float value) { return (2.0f*(value-min) / max-min) - 1.0f;}
+
 
 
 #endif  // MODULATIONMATRIX_H_INCLUDED
