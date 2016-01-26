@@ -59,8 +59,8 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     if (jmin(width, height) > 24)
     {
         // display modulation on slider if neccessary
-        Param* modSource1 = static_cast<MouseOverKnob&>(s).getModSource1();
-        Param* modSource2 = static_cast<MouseOverKnob&>(s).getModSource2();
+        std::array<Param*, 2> modSources = static_cast<MouseOverKnob&>(s).getModSources();
+        //Param* modSource2 = static_cast<MouseOverKnob&>(s).getModSource2();
 
         // TODO: SynthParams erweitern um...
         //       UNIPOLAR: from angle to min(endAngle, angle + amount)
@@ -73,39 +73,40 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
         double afterModVal1, afterModVal2;
 
         // draw saturn 1 if modSource is in use
-        if (modSource1 != nullptr)
-        {
-            // NOTE: testcase unipolar
-            // if(unipolar)
+        
+            if (modSources[0] != nullptr)
             {
-                // if(additiv)
+                // NOTE: testcase unipolar
+                // if(unipolar)
                 {
-                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSource1->get(), s.getMaximum()));
+                    // if(additiv)
+                    {
+                        afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSources[0]->get(), s.getMaximum()));
+                    }
+                    //else
+                    //{
+                    //// multiplicative
+                    //afterModVal = jmax(s.getMinimum(), jmin(currValue * modSource1->get(), max));
+                    //}
+                    
+                    modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
+                    modStartAngle = currAngle;
+                    modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
                 }
                 //else
                 //{
-                //// multiplicative
-                //afterModVal = jmax(s.getMinimum(), jmin(currValue * modSource1->get(), max));
+                // bipolar
+                
                 //}
-
-                modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
-                modStartAngle = currAngle;
-                modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+                
+                g.setColour(s.isEnabled() ? Colours::blue : Colours::lightgrey);
+                saturn.addPieSegment(centreX - radiusSource1, centreY - radiusSource1, radiusSource1 * 2.0f, radiusSource1 * 2.0f,
+                                     jmax(rotaryStartAngle, jmin(modStartAngle, rotaryEndAngle)), jmax(rotaryStartAngle, jmin(modEndAngle, rotaryEndAngle)), (radiusKnob / radiusSource1));
+                g.fillPath(saturn);
             }
-            //else
-            //{
-            // bipolar
-
-            //}
-
-            g.setColour(s.isEnabled() ? Colours::blue : Colours::lightgrey);
-            saturn.addPieSegment(centreX - radiusSource1, centreY - radiusSource1, radiusSource1 * 2.0f, radiusSource1 * 2.0f,
-                jmax(rotaryStartAngle, jmin(modStartAngle, rotaryEndAngle)), jmax(rotaryStartAngle, jmin(modEndAngle, rotaryEndAngle)), (radiusKnob / radiusSource1));
-            g.fillPath(saturn);
-        }
 
         // draw saturn 2 if modSource is in use
-        if (modSource2 != nullptr)
+        if (modSources[1] != nullptr)
         {
             // NOTE: testcase bipolar
             // if(unipolar)
@@ -116,8 +117,8 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
             {
                 // if(additiv)
                 {
-                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSource2->get() / 2.0f, s.getMaximum()));
-                    afterModVal2 = jmax(s.getMinimum(), jmin(s.getValue() - modSource2->get() / 2.0f, s.getMaximum()));
+                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSources[1]->get() / 2.0f, s.getMaximum()));
+                    afterModVal2 = jmax(s.getMinimum(), jmin(s.getValue() - modSources[1]->get() / 2.0f, s.getMaximum()));
                 }
                 //else
                 //{

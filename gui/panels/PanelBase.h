@@ -37,20 +37,20 @@ protected:
     }
 
     // TODO: merge it into one function
-    void registerSaturnSource1(MouseOverKnob *dest, Slider *source, Param *paramSource) {
-        dest->setModSource1(paramSource);
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, Param *paramSource, int sourceNumber) {
+        dest->setModSource(paramSource, sourceNumber);
         
         auto temp = saturnReg.find(dest);
         
         if (temp == saturnReg.end()) {
             std::array<Slider*, 2> newSource = {nullptr};
-            newSource[0] = source;
+            newSource[sourceNumber-1] = source;
             saturnReg[dest] = newSource;
         } else {
-            temp->second[0] = source;
+            temp->second[sourceNumber-1] = source;
         }
     }
-    
+    /*
     void registerSaturnSource2(MouseOverKnob *dest, Slider *source, Param *paramSource) {
         dest->setModSource2(paramSource);
         
@@ -63,7 +63,7 @@ protected:
         } else {
             temp->second[1] = source;
         }
-    }
+    }*/
     
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {

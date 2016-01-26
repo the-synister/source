@@ -14,8 +14,8 @@
 // contructer & destructer
 MouseOverKnob::MouseOverKnob(const String& name)
     : Slider(name)
-    , modSource1(nullptr)
-    , modSource2(nullptr)
+    , modSources({nullptr})
+//    , modSource2(nullptr)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(18.00f, Font::plain));
@@ -45,17 +45,17 @@ void MouseOverKnob::initTextBox()
     }
 }
 
-void MouseOverKnob::setModSource1(Param *p)
+void MouseOverKnob::setModSource(Param *p, int sourceNumber)
 {
-    modSource1 = p;
+    modSources[sourceNumber - 1] = p;
 }
 
-Param* MouseOverKnob::getModSource1()
+std::array<Param*, 2> MouseOverKnob::getModSources()
 {
-    return modSource1;
+    return modSources;
 }
 
-void MouseOverKnob::setModSource2(Param *p)
+/*void MouseOverKnob::setModSource2(Param *p)
 {
     modSource2 = p;
 }
@@ -63,7 +63,7 @@ void MouseOverKnob::setModSource2(Param *p)
 Param* MouseOverKnob::getModSource2()
 {
     return modSource2;
-}
+}*/
 
 void MouseOverKnob::setName  (const String& newName) {
     knobLabel->setText(newName, NotificationType::dontSendNotification);
