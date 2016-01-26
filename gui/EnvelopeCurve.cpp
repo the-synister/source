@@ -20,6 +20,8 @@ EnvelopeCurve::~EnvelopeCurve()
 
 void EnvelopeCurve::setSamples()
 {
+    
+    //TODO: responsive design
     sustainLevel_ = (96.f + sustain_) / 96.f;
     
     float samplesSection = getWidth()/4;
@@ -30,11 +32,11 @@ void EnvelopeCurve::setSamples()
     
     decaySamples = static_cast<int>(decay_ * samplesSection * .213f);
     
-    releaseSamples = (release_ * samplesSection * .187f) > 0.5f ?
-    static_cast<int>(ceil(release_ * samplesSection * .187f)) :
+    releaseSamples = (release_ * samplesSection) > 0.5f ?
+    static_cast<int>(ceil(release_ * samplesSection)) :
     1;
     
-    sustainSamples = static_cast<int>(sustainLevel_ * samplesSection);
+    sustainSamples = getWidth() - (attackSamples + decaySamples + releaseSamples);
     
     releaseCounter_ = 0;
     attackDecayCounter_ = 0;
