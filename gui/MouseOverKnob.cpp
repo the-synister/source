@@ -18,11 +18,10 @@ MouseOverKnob::MouseOverKnob(const String& name)
     , modSource2(nullptr)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
-    knobLabel->setFont(Font(15.00f, Font::plain));
+    knobLabel->setFont(Font(18.00f, Font::plain));
     knobLabel->setJustificationType(Justification::centred);
     knobLabel->setEditable(false, false, false);
-    knobLabel->setColour(TextEditor::textColourId, Colours::black);
-    knobLabel->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+    knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
 
     knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
@@ -32,6 +31,7 @@ MouseOverKnob::MouseOverKnob(const String& name)
 
 MouseOverKnob::~MouseOverKnob()
 {
+    // TODO: release pointer
     knobLabel = nullptr;
 }
 //==============================================================================

@@ -16,13 +16,13 @@ CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
     // set various things like Font and so on
-    //this->setDefaultSansSerifTypefaceName("Calligraphic");
+    this->setDefaultSansSerifTypefaceName("Bauhaus 93");
 
     // load assets
-    rotarySliderImage = ImageCache::getFromMemory(BinaryData::knobstrip_png, BinaryData::knobstrip_pngSize);
-    verticalSlider = ImageCache::getFromMemory(BinaryData::vertical_slider_png, BinaryData::vertical_slider_pngSize);
-    verticalSliderThumb = ImageCache::getFromMemory(BinaryData::slider_thumb_png, BinaryData::slider_thumb_pngSize);
-    glow = ImageCache::getFromMemory(BinaryData::glow_png, BinaryData::glow_pngSize);
+    //rotarySliderImage = ImageCache::getFromMemory(BinaryData::knobstrip_png, BinaryData::knobstrip_pngSize);
+    //verticalSlider = ImageCache::getFromMemory(BinaryData::vertical_slider_png, BinaryData::vertical_slider_pngSize);
+    //verticalSliderThumb = ImageCache::getFromMemory(BinaryData::slider_thumb_png, BinaryData::slider_thumb_pngSize);
+    //glow = ImageCache::getFromMemory(BinaryData::glow_png, BinaryData::glow_pngSize);
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
@@ -36,7 +36,7 @@ CustomLookAndFeel::~CustomLookAndFeel()
 //==============================================================================
 
 void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &s)
-{    
+{
     const float centreX = x + width * 0.5f;
     const float centreY = y + height * 0.5f;
     //const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled(); // TODO: verwenden!
@@ -134,7 +134,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
 
             g.setColour(s.isEnabled()? Colours::red : Colours::slategrey);
             saturn.clear();
-            saturn.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, 
+            saturn.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f,
                 jmax(-float_Pi, jmin(modStartAngle, float_Pi)), jmax(-float_Pi, jmin(modEndAngle, float_Pi)), (radiusSource1 / radiusSource2));
             g.fillPath(saturn);
         }
@@ -191,7 +191,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
     const float sliderRadius = (float)(jmin(20, width / 2, height / 2) - 2);
-    g.setColour(Colours::white);
+    g.setColour(s.findColour(Slider::trackColourId));
     Path indent;
 
     if (s.isHorizontal())
@@ -322,19 +322,37 @@ void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &t, bool isMo
 
 void CustomLookAndFeel::drawTickBox(Graphics &g, Component &c, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool isButtonDown)
 {
-    const float boxSize = width * 0.7f;
-    float yOffset = y + (height - boxSize) * 0.5f;
+    float centreX = x + width * 0.85f / 2.0f;
+    float centreY = y + height / 2.0f;
+    Colour c1, c2;
 
     // TODO: colourgradient mit transparentwhite und transparentwhite verwenden wenn inactive
     // wenn active dann innere farbe zu white, s.d. glow
     // unterscheidung für mouseOver
-
-    g.setColour(isMouseOverButton? Colours::dimgrey : Colours::darkgrey);
-    g.fillEllipse(x, yOffset, boxSize, boxSize);
-
-    if (ticked)
+    if (!ticked)
     {
-        g.setColour(isMouseOverButton ? Colours::white : Colours::antiquewhite);
-        g.fillEllipse(x, yOffset, boxSize, boxSize);
+        float boxSize = width * 0.7f;
+
+        c1 = isMouseOverButton ? Colours::grey : Colours::lightgrey;
+        c2 = Colours::black;
+
+        ColourGradient gradient(c1, centreX, centreY, c2, centreX + boxSize / 2.0f, centreX + boxSize / 2.0f, true);
+        gradient.addColour(0.1f, c1);
+        g.setGradientFill(gradient);
+
+        g.fillEllipse(centreX - boxSize / 2.0f, centreY - boxSize / 2.0f, boxSize, boxSize);
+    }
+    else
+    {
+        float glowSize = width * 0.9f;
+
+        c1 = isMouseOverButton ? Colours::white : Colours::whitesmoke;
+        c2 = Colours::transparentWhite;
+
+        ColourGradient gradient(c1, centreX, centreY, c2, centreX + (glowSize * 0.75f) / 2.0f, centreX + (glowSize * 0.75f) / 2.0f, true);
+        gradient.addColour(0.4f, c1);
+        g.setGradientFill(gradient);
+
+        g.fillEllipse(centreX - glowSize / 2.0f, centreY - glowSize / 2.0f, glowSize, glowSize);
     }
 }
