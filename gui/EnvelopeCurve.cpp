@@ -26,17 +26,18 @@ void EnvelopeCurve::setSamples()
     
     float samplesSection = getWidth()/4;
     
-    attackSamples = (attack_ * samplesSection * .187f) > 0.5f ?
-    static_cast<int>(ceil(attack_ * samplesSection * .187f)) :
+    attackSamples = (attack_ * samplesSection/5) > 0.5f ?
+    static_cast<int>(ceil(attack_ * samplesSection/5)) :
     1;
     
-    decaySamples = static_cast<int>(decay_ * samplesSection * .213f);
+    decaySamples = static_cast<int>(decay_ * samplesSection/5);
     
-    releaseSamples = (release_ * samplesSection) > 0.5f ?
-    static_cast<int>(ceil(release_ * samplesSection)) :
+    releaseSamples = (release_ * (samplesSection)/5 ) > 0.5f ?
+    static_cast<int>(ceil(release_ * samplesSection/5)) :
     1;
     
-    sustainSamples = getWidth() - (attackSamples + decaySamples + releaseSamples);
+    // NOTE: the 2 at the end are responsible for the ending of the curve
+    sustainSamples = getWidth() - (attackSamples + decaySamples + releaseSamples + 2);
     
     releaseCounter_ = 0;
     attackDecayCounter_ = 0;
@@ -115,26 +116,28 @@ float EnvelopeCurve::getEnvCoef()
         attackDecayCounter_++;
     }
     // if attack and decay phase is over then sustain level
-    else if (sustainCounter_ <= sustainSamples)
+    else if (attackDecayCounter_ <= attackSamples + decaySamples + sustainSamples)
     {
         envCoeff = sustainLevel_;
         valueAtRelease_ = envCoeff;
-        sustainCounter_++;
+        attackDecayCounter_++;
     }
     // release phase sets envCoeff from valueAtRelease to 0.0f
-    else if (releaseCounter_ <= releaseSamples)
+    else if (attackDecayCounter_ <= attackSamples + decaySamples + sustainSamples + releaseSamples)
     {
         if (releaseShape_ < 1.0f)
         {
             float releaseShrinkRate = 1 / releaseShape_;
-            envCoeff = valueAtRelease_ * (1 - interpolateLog(releaseCounter_, releaseSamples, releaseShrinkRate, true));
+            envCoeff = valueAtRelease_ * (1 - interpolateLog(attackDecayCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShrinkRate, true));
         }
         else
         {
-            envCoeff = valueAtRelease_ * interpolateLog(releaseCounter_, releaseSamples, releaseShape_, false);
+            envCoeff = valueAtRelease_ * interpolateLog(attackDecayCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShape_, false);
         }
-        releaseCounter_++;
-    } else {
+        attackDecayCounter_++;
+    }
+    else
+    {
         return 0.f;
     }
     
