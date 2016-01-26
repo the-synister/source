@@ -115,7 +115,7 @@ void AmpPanel::resized()
     //[/UserPreResize]
 
     amp->setBounds (8, 8, 64, 128);
-    pan->setBounds (156, 72, 112, 64);
+    pan->setBounds (155, 72, 112, 64);
     label2->setBounds (237, 96, 24, 24);
     label3->setBounds (166, 96, 24, 24);
     velocitySense->setBounds (66, 72, 112, 64);
@@ -175,7 +175,7 @@ BEGIN_JUCER_METADATA
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="80 72 112 64" min="-100" max="100"
+          explicitFocusOrder="0" pos="155 72 112 64" min="-100" max="100"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="R label" id="38f0a446950aca39" memberName="label2" virtualName=""

@@ -65,6 +65,7 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> feedbackSlider;
+    ScopedPointer<MouseOverKnob> clippingFactor;
     ScopedPointer<MouseOverKnob> dryWetSlider;
     ScopedPointer<MouseOverKnob> timeSlider;
     ScopedPointer<ToggleButton> syncToggle;
@@ -72,6 +73,10 @@ private:
     ScopedPointer<ComboBox> divisor;
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resSlider;
+    ScopedPointer<MouseOverKnob> chorDryWetSlider;
+    ScopedPointer<MouseOverKnob> chorDepthSlider;
+    ScopedPointer<MouseOverKnob> chorDelayLengthSlider;
+    ScopedPointer<MouseOverKnob> chorModRateSlider;
     ScopedPointer<ToggleButton> tripTggl;
     ScopedPointer<ToggleButton> filtTggl;
     ScopedPointer<ToggleButton> revTggl;

@@ -14,9 +14,11 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "SynthParams.h"
+#include "FxClipping.h"
 #include "FxDelay.h"
 #include <array>
 #include "StepSequencer.h"
+#include "FxChorus.h"
 
 //==============================================================================
 /**
@@ -63,14 +65,17 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+
 private:
     //==============================================================================
     Synthesiser synth;
-    
+
     // FX
     FxDelay delay;
+    FxClipping clip;
 
-    StepSequencer steqSeq;
+    StepSequencer stepSeq;
+    FxChorus chorus;
 
     void updateHostInfo();
     //==============================================================================

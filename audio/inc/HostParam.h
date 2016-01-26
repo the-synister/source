@@ -36,7 +36,7 @@ public:
     virtual String getLabel() const override {
         return param.unit();
     }
-    
+
     virtual int getNumSteps() const override {
         return param.getNumSteps();
     }
