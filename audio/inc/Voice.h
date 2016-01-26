@@ -352,8 +352,9 @@ public:
                         currentSample = (osc1WhiteNoise.next(pitchMod[s]));
                         break;
                 }
+
                 currentSample = biquadFilter(currentSample, params.passtype.getStep());
-                currentSample = ladderFilter(currentSample) * level * envToCutoffMod[s];
+                currentSample = ladderFilter(currentSample) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -497,7 +498,11 @@ protected:
         //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
+        // sets buffer for both envelopes
+        envToVolume.render(envToVolBuffer, numSamples);
+        env1.render(env1Buffer, numSamples);
 
+#if 0
         // set the env1buffer - for Volume
         for (int s = 0; s < numSamples; ++s)
         {
@@ -509,6 +514,7 @@ protected:
         {
             envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
         }
+#endif
 
         // add pitch wheel values
         //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
