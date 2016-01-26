@@ -36,9 +36,33 @@ protected:
         slider->initTextBox();
     }
 
-    void registerSaturn(MouseOverKnob *dest, Slider *source1, Slider *source2) {
-        std::array<Slider*, 2> sources = {source1, source2};
-        saturnReg[dest] = sources;
+    // TODO: merge it into one function
+    void registerSaturnSource1(MouseOverKnob *dest, Slider *source, Param *paramSource) {
+        dest->setModSource1(paramSource);
+        
+        auto temp = saturnReg.find(dest);
+        
+        if (temp == saturnReg.end()) {
+            std::array<Slider*, 2> newSource = {nullptr};
+            newSource[0] = source;
+            saturnReg[dest] = newSource;
+        } else {
+            temp->second[0] = source;
+        }
+    }
+    
+    void registerSaturnSource2(MouseOverKnob *dest, Slider *source, Param *paramSource) {
+        dest->setModSource2(paramSource);
+        
+        auto temp = saturnReg.find(dest);
+        
+        if (temp == saturnReg.end()) {
+            std::array<Slider*, 2> newSource = {nullptr};
+            newSource[1] = source;
+            saturnReg[dest] = newSource;
+        } else {
+            temp->second[1] = source;
+        }
     }
     
     void updateDirtySliders() {
