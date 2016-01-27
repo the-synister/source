@@ -4,7 +4,7 @@
 #include "SynthParams.h"
 #include "ModulationMatrix.h"
 #include "Envelope.h"
-
+#include "vld.h"
 
 // 46.881879936465680 semitones = semitonesBetweenFrequencies(80, 18000.0)/2.0
 #define FILTER_FC_MOD_RANGE 46.881879936465680f

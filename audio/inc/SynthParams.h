@@ -101,8 +101,8 @@ public:
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
-    Param envSustain;   //!< env sustain in [0..-96]dB
-    //ParamDb envSustain;   //!< env sustain in [0..1]
+    //Param envSustain;   //!< env sustain in [0..-96]dB
+    ParamDb envSustain;   //!< env sustain in [0..1]
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
     
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
