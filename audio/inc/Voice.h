@@ -5,6 +5,7 @@
 #include "ModulationMatrix.h"
 #include "Envelope.h"
 
+
 // 46.881879936465680 semitones = semitonesBetweenFrequencies(80, 18000.0)/2.0
 #define FILTER_FC_MOD_RANGE 46.881879936465680f
 
@@ -148,11 +149,11 @@ public:
         /*hier werden die Referenzen an die Matrix übergeben
         in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
         modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_LFO1] = &lfoValue;
+        //modSources[SOURCE_LFO1] = &lfoValue;
         /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
         OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
-        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        //modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
 
@@ -188,7 +189,7 @@ public:
 
         level = Param::fromDb((velocity - 1.f) * params.keyVelocityLevel.get());
 
-        releaseCounter = -1;
+        //releaseCounter = -1;
         totSamples = 0;
 
         // reset attackDecayCounter
@@ -249,7 +250,7 @@ public:
             {
                 osc1WhiteNoise.phase = 0.f;
                 osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-                attackDecayCounter = 0;
+                //attackDecayCounter = 0;
                 break;
 
         }
@@ -270,7 +271,7 @@ public:
 
             if (env1.getReleaseCounter() == -1)
             {
-            env1.resetReleaseCounter();
+                env1.resetReleaseCounter();
             }
 
         }
@@ -307,7 +308,6 @@ public:
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
         const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
-        //const float *envToCutoffMod = envToCutoffBuffer.getReadPointer(0);
 
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
@@ -466,7 +466,9 @@ protected:
     }
 #endif
 
-    void renderModulation(int numSamples) {
+void renderModulation(int numSamples) {
+
+        _CrtDumpMemoryLeaks();
 
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
@@ -476,22 +478,6 @@ protected:
         // sets buffer for both envelopes
         envToVolume.render(envToVolBuffer, numSamples);
         env1.render(env1Buffer, numSamples);
-
-#if 0
-        // Old Version!!! the buffers are filled in the envelope class
-        //with the help of the render()-Funktion
-        // set the env1buffer - for Volume
-        for (int s = 0; s < numSamples; ++s)
-        {
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-        }
-
-        // set the filterEnvBuffer - for Filter
-        for (int s = 0; s < numSamples; ++s)
-        {
-            envToCutoffBuffer.setSample(0, s, envToCutoff.calcEnvCoeff());
-        }
-#endif
 
         // add pitch wheel values
         //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
@@ -518,9 +504,8 @@ protected:
             ++modDestinations[DEST_OSC1_PITCH];
         }
 
-
-        for (int s = 0; s < numSamples; ++s)
-        {
+#if 0
+        for (int s = 0; s < numSamples; ++s){
             lfoValue = 0.f;
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
@@ -532,14 +517,15 @@ protected:
             case eLfoWaves::eLfoSquare:
                 lfoValue = lfo1square.next();
                 break;
-        }
+            }
+
 
             // Fade in factor calculation
             if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))  
             {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                 factorFadeInLFO = 1.f;          
-        }
+            }
             else                                   
             {
                 // Otherwise the factor is determined
@@ -548,7 +534,7 @@ protected:
 
             lfo1ModBuffer.setSample(0, s, lfoValue);
 
-#if 0
+
             // Update of the modulation amount value
             modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
 
@@ -565,18 +551,18 @@ protected:
             {
                 pitchModBuffer.setSample(0, s, 1);
             }
-#endif
-        }
 
-    }
+        }
+#endif
+}
 
     
-    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
-        const float sRate = static_cast<float>(getSampleRate());
+float biquadFilter(float inputSignal, eBiquadFilters filterType) {
+    const float sRate = static_cast<float>(getSampleRate());
 
-        float currentCutoff = filterType == eBiquadFilters::eLowpass
-            ? params.lpCutoff.get()
-            : params.hpCutoff.get();
+    float currentCutoff = filterType == eBiquadFilters::eLowpass
+        ? params.lpCutoff.get()
+        : params.hpCutoff.get();
 
         modMatrix->destinations[DEST_FILT_FC] = currentCutoff;
         //float testVal = localModMatrix->destinations[DEST_FILT_FC];
@@ -585,7 +571,7 @@ protected:
         //float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
 
         return inputSignal;
-    }
+}
 
 #if 0
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
@@ -727,9 +713,9 @@ private:
     // variables for env
 
     float currentVelocity;
-    float valueAtRelease;
-    int attackDecayCounter;
-    int releaseCounter;
+    //float valueAtRelease;
+    //int attackDecayCounter;
+    //int releaseCounter;
 
 
     //for the lader filter

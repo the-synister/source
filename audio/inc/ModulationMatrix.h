@@ -212,7 +212,7 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         
         // entscheidung wann addition/multiplikation -> der erste muss ja addieren, sonst multiplizieren wir mit 0?
         *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
-        *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+        //*(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
 
         // universal connections example:
         // first check DEST_ALL types
