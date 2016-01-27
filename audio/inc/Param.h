@@ -6,13 +6,14 @@
 
 class Param {
 public:
-    Param(const String &name, const String &serializationTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
+    Param(const String &name, const String &serializationTag, const String &hostTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
     : val_(defaultval)
     , min_(minval)
     , max_(maxval)
     , default_(defaultval)
     , name_(name)
     , serializationTag_(serializationTag)
+    , hostTag_(hostTag)
     , unit_(unit)
     , numSteps_(numSteps)
     {
@@ -24,12 +25,13 @@ public:
 
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
+    const String& hostTag() const { return hostTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
     void set(float f) { val_.store(f); }
-    void set(float f, bool) { 
-        val_.store(f); 
+    void set(float f, bool) {
+        val_.store(f);
         uiDirty.exchange(true);
     }
     float get() const { return val_.load(); }
@@ -85,6 +87,7 @@ protected:
     float default_;
     String name_;
     String serializationTag_;
+    String hostTag_;
     String unit_;
     int numSteps_;
 
@@ -107,8 +110,8 @@ public:
 template<typename _enum>
 class ParamStepped : public Param {
 public:
-    ParamStepped(const String &name, const String &serializationTag, _enum defaultval, const char **labels = nullptr)
-    : Param(name, serializationTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
+    ParamStepped(const String &name, const String &serializationTag, const String &hostTag, _enum defaultval, const char **labels = nullptr)
+    : Param(name, serializationTag, hostTag, "", 0.f, static_cast<float>(_enum::nSteps)-1.f,
             static_cast<float>(defaultval),
             static_cast<int>(_enum::nSteps))
     , step_(defaultval)

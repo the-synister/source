@@ -15,7 +15,7 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-};
+    };
 
 enum class eOscWaves : int {
     eOscSquare = 0,
@@ -72,9 +72,9 @@ public:
 
     Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
-	//Param lfoChorfreq; // delay-lfo frequency in Hz
-	//Param chorAmount; // wetness of signal [0 ... 1]
-	//Param chorSwitch; // Chorus on / off [1 / 0]
+    //Param lfoChorfreq; // delay-lfo frequency in Hz
+    //Param chorAmount; // wetness of signal [0 ... 1]
+    //Param chorSwitch; // Chorus on / off [1 / 0]
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
@@ -90,17 +90,18 @@ public:
     Param hpModAmount;   //! hp filter modulation amount
 
     ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
-    
+
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
-    Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
+    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
+    Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
     Param envSustain;   //!< env sustain in [0..-96]dB
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-    
+
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
@@ -118,7 +119,7 @@ public:
     Param seqRandomMin;                      //!< randomMin value as int in [0..127]
     Param seqRandomMax;                      //!< randomMax value as int in [0..127]
     Param seqStep0;                          //!< midi note as int in [0..127]
-    Param seqStep1;                  
+    Param seqStep1;
     Param seqStep2;
     Param seqStep3;
     Param seqStep4;
@@ -161,7 +162,7 @@ public:
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
-    
+
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().
     @param destData host data
@@ -189,7 +190,7 @@ public:
     @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
     */
     void fillValues(XmlElement * patch, eSerializationParams paramsToSerialize);
-    
+
     /**
     * Restore host state by converting binary data into a XML file and set serialized parameters by using fillValues().
     @param data binary data to return to XML
@@ -204,10 +205,10 @@ public:
     */
     void readXMLPatchStandalone(eSerializationParams paramsToSerialize);
 
-	Param chorDelayLength;
-	Param chorDryWet;
-	Param chorModRate;
-	Param chorModDepth;
+    Param chorDelayLength;
+    Param chorDryWet;
+    Param chorModRate;
+    Param chorModDepth;
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

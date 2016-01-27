@@ -16,10 +16,10 @@
 #include <PluginEditor.h>
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor() 
+PluginAudioProcessor::PluginAudioProcessor()
     : delay(*this)
     , stepSeq(*this)
-	, chorus(*this)
+    , chorus(*this)
     , clip(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
@@ -52,7 +52,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(delayFeedback));
     addParameter(new HostParam<Param>(delayDryWet));
     addParameter(new HostParam<Param>(delayTime));
-    
+
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 }
@@ -160,9 +160,10 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
+    synth.addSound(new Sound());
+
     delay.init(getNumOutputChannels(), sRate);
     chorus.init(getNumOutputChannels(), sRate);
-    synth.addSound(new Sound());
 }
 
 void PluginAudioProcessor::releaseResources()
@@ -203,10 +204,10 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
-	// chorus
-	if (chorDryWet.get() > 0.f) {
-		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
-	}
+    // chorus
+    if (chorDryWet.get() > 0.f) {
+        chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+    }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
                           // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
