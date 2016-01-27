@@ -55,7 +55,8 @@ enum class eSeqPlayModes : int {
 enum class eModSource : int {
     eNone = 0,
     eLFO1 = 1,
-    nSteps = 2
+    eEnv = 2,
+    nSteps = 3
 };
 
 

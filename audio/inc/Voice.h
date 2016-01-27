@@ -468,8 +468,6 @@ protected:
 
 void renderModulation(int numSamples) {
 
-        _CrtDumpMemoryLeaks();
-
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
@@ -556,7 +554,7 @@ void renderModulation(int numSamples) {
 #endif
 }
 
-    
+
 float biquadFilter(float inputSignal, eBiquadFilters filterType) {
     const float sRate = static_cast<float>(getSampleRate());
 
@@ -595,14 +593,14 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
                 return 0.f;
         }
 
-        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
+        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmount.get() / 100.f;
         
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue) * params.lpModAmout.get() / 100.f);
+            moddedFreq += (20000.f * (modValue) * params.lpModAmount.get() / 100.f);
         }
         else if (params.lpModSource.getStep() == eModSource::eEnv) { // env
 
-            moddedFreq += moddedFreq + (params.lpCutoff.getMax() - moddedFreq) * modValue * params.lpModAmout.get() / 100.f;
+            moddedFreq += moddedFreq + (params.lpCutoff.getMax() - moddedFreq) * modValue * params.lpModAmount.get() / 100.f;
         }
         
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
@@ -684,7 +682,8 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         
         return inputSignal;
     }
-#endif
+#endif 
+
 public:
 
 private:
@@ -710,12 +709,8 @@ private:
     
     int totSamples;
 
-    // variables for env
-
+    // variable for env
     float currentVelocity;
-    //float valueAtRelease;
-    //int attackDecayCounter;
-    //int releaseCounter;
 
 
     //for the lader filter
