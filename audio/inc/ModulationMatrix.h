@@ -20,14 +20,24 @@
 "Designing Software Synthesizer Plug-Ins in C++"
 */
 
+
 enum sources : int {
     SOURCE_NONE = -1,
-    SOURCE_PITCHBEND = 0,
-    SOURCE_LFO1 = 1,
+    SOURCE_PITCHBEND,
+    SOURCE_MODWHEEL,
+    SOURCE_VELOCITY,
+    // SOURCE_UI_FILTER,
 
-	//SOURCE_ENV1,
-	//SOURCE_VELOCITY,
-	//SOURCE_MODWHEEL,
+    // SOURCE_LFO_FADER,
+    SOURCE_LFO1,
+    SOURCE_LFO2,
+    SOURCE_LFO3,
+
+    // SOURCE_VOL_ENV,
+    SOURCE_ENV1,
+    SOURCE_ENV2,
+    SOURCE_ENV3,
+
 	MAX_SOURCES
 };
 
@@ -66,13 +76,36 @@ enum transform {
 	MAX_TRANSFORMS
 };
 
+inline bool isUnipolar(sources source) {
+    switch (source) {
+    case (SOURCE_ENV1) :
+    case (SOURCE_ENV2) :
+    case (SOURCE_ENV3) :
+        return true;
+        break;
+    case (SOURCE_LFO1) :
+    case (SOURCE_LFO2) :
+    case (SOURCE_LFO3) :
+    case (SOURCE_PITCHBEND) :
+        return false;
+        break;
+
+        // yet to be completed not sure about the following yet
+        // case (SOURCE_VELOCITY) :
+        // case (SOURCE_MODWHEEL) :
+        // case (SOURCE_UI_FILTER) :
+        // case (SOURCE_LFO_FADER) :
+        // case (SOURCE_VOL_ENV) : 
+    }
+    return false; // when the function is complete with all sources, this code should be unreachable
+}
+
 struct modMatrixRow
 {
 	sources sourceIndex;
 	destinations destinationIndex;
     Param* modIntensity;
     Param* modRange;
-	int intensityTransform;
 	bool enable;
 };
 
@@ -80,7 +113,6 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 										destinations destinationIndex_,
                                         Param* modIntensity_,
                                         Param* modRange_,
-										int intensityTransform_,
 										bool enable_ = true) {
 
 	modMatrixRow* row = new modMatrixRow;
@@ -88,7 +120,6 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 	row->destinationIndex = destinationIndex_;
 	row->modIntensity = modIntensity_;
 	row->modRange = modRange_;
-	row->intensityTransform = intensityTransform_;
 	row->enable = enable_;
 
 	return row;
@@ -160,19 +191,12 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         // get the min max values for the intensity for transformation
         float min = row->modIntensity->getMin();
         float max = row->modIntensity->getMax();
-        
-        switch (row->intensityTransform)
-        {
-            case TRANSFORM_TO_BIPOLAR:
-                intensity = toBipolar(min, max, intensity);
-                break;
-                
-            case TRANSFORM_TO_UNIPOLAR:
-                intensity = toUnipolar(min, max, intensity);
-                break;
-                
-            default:
-                break;
+
+        if (isUnipolar(row->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
+            intensity = toBipolar(min, max, intensity);
+        }
+        else { // else the source is bipolar, transform the intensity to unipolar
+            intensity = toUnipolar(min, max, intensity);
         }
         
         // destination += source*intensity*range
