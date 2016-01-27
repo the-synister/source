@@ -167,8 +167,8 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
 {
     if (!matrixCore) return;
     
-    // clear dest registers
-    clearDestinations();
+    // clear dest registers --- why!? this seems to destroy the set connections!!!
+    // clearDestinations();
     
     for (int i = 0; i<size; i++)
     {
@@ -198,21 +198,18 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         else { // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
-        
-        // destination += source*intensity*range
-        /* an dieser Stelle muss geguckt werden wann und wo umgerechnet werden muss!!!
-        ist die Stelle Sinnvoll?
-        Die Umrechnung fource MUSS woanders stattfinden!!!
-        ODER ein Source checker!?
-        source liefert den Pitchbend!!!*/
 
-
-        float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
-//        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
+        //Pitchbend to Oscillator
+        //float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
         
-        // entscheidung wann addition/multiplikation -> der erste muss ja addieren, sonst multiplizieren wir mit 0?
-        *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
-        //*(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+        //Lfo to Oscillator
+        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
+        
+        //what should be added and what should be multiplied?
+        //Pitchbend to oscillator
+        //*(dst[row->destinationIndex]) += Param::fromCent(dModValue);
+        //Lfo to oscillator
+        *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
 
         // universal connections example:
         // first check DEST_ALL types

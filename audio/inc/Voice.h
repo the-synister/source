@@ -4,7 +4,9 @@
 #include "SynthParams.h"
 #include "ModulationMatrix.h"
 #include "Envelope.h"
-#include "vld.h"
+/*the following is for the leak detector, vld must be installed on the computer
+    and path must be added to library path!!*/
+//#include "vld.h"
 
 // 46.881879936465680 semitones = semitonesBetweenFrequencies(80, 18000.0)/2.0
 #define FILTER_FC_MOD_RANGE 46.881879936465680f
@@ -84,7 +86,7 @@ struct RandomOscillator : Oscillator<&Waveforms::square>
     
     RandomOscillator() : Oscillator()
         , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f)
-                      {}
+    {}
     
     void reset()
     {
@@ -141,19 +143,17 @@ public:
         
         for(float*& pSource : modSources) {
             pSource = nullptr;
-    }
+        }
         for(float*& pDest : modDestinations) {
             pDest = nullptr;
         }
 
-        /*hier werden die Referenzen an die Matrix übergeben
-        in diesem Fall Pitchbend, was den Wert des PitchWheelsübergibt [0.0 ... 1.0]*/
-        modSources[SOURCE_PITCHBEND] = &pitchBend;
-        //modSources[SOURCE_LFO1] = &lfoValue;
-        /*die Destination ist das WAS verändert werden soll. Da wir den Pitch des
-        OSC1 verändern wollen, wird der entsprechende Buffer übergeben*/
+        //set connection bewtween source and matrix here
+        //modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_LFO1] = &lfoValue;
+        
+        //set connection between destination and matrix here
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
-        //modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
 
@@ -189,7 +189,6 @@ public:
 
         level = Param::fromDb((velocity - 1.f) * params.keyVelocityLevel.get());
 
-        //releaseCounter = -1;
         totSamples = 0;
 
         // reset attackDecayCounter
@@ -231,29 +230,28 @@ public:
         switch (params.osc1Waveform.getStep())
         {
             case eOscWaves::eOscSquare:
-        {
-            osc1Sine.phase = 0.f;
-            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-            osc1Sine.width = params.osc1pulsewidth.get();
-            lfo1square.width = params.osc1pulsewidth.get();
-            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-            break;
-    }
+            {
+                osc1Sine.phase = 0.f;
+                osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+                osc1Sine.width = params.osc1pulsewidth.get();
+                lfo1square.width = params.osc1pulsewidth.get();
+                //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                break;
+            }
             case eOscWaves::eOscSaw:
-        {
-            osc1Saw.phase = 0.f;
-            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-            osc1Saw.trngAmount = params.osc1trngAmount.get();
-            break;
-        }
+            {
+                osc1Saw.phase = 0.f;
+                osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                osc1Saw.trngAmount = params.osc1trngAmount.get();
+                break;
+            }
             case eOscWaves::eOscNoise:
             {
                 osc1WhiteNoise.phase = 0.f;
                 osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
                 //attackDecayCounter = 0;
                 break;
-
-        }
+            }
         }
     }
 
@@ -328,15 +326,15 @@ public:
                 float currentSample;
                 switch (params.osc1Waveform.getStep())
                 {
-                    case eOscWaves::eOscSquare:
+                case eOscWaves::eOscSquare:
                     currentSample = (osc1Sine.next(pitchMod[s]));
                     break;
-                    case eOscWaves::eOscSaw:
+                case eOscWaves::eOscSaw:
                     currentSample = (osc1Saw.next(pitchMod[s]));
                     break;
-                    case eOscWaves::eOscNoise:
-                        currentSample = (osc1WhiteNoise.next(pitchMod[s]));
-                        break;
+                case eOscWaves::eOscNoise:
+                    currentSample = (osc1WhiteNoise.next(pitchMod[s]));
+                    break;
                 }
 
                 currentSample = biquadFilter(currentSample, params.passtype.getStep());
@@ -347,7 +345,8 @@ public:
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
-                else {
+                else 
+                {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
@@ -369,7 +368,6 @@ public:
     //naive 1 pole filters wigh a hyperbolic tangent saturator
     float ladderFilter(float ladderIn)
     {
-
         const float sRate = static_cast<float>(getSampleRate());
 
         //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
@@ -483,7 +481,8 @@ void renderModulation(int numSamples) {
         pitchModBuffer.clear();
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
         for (int s = 0; s < numSamples; ++s) {
-            // LFOs, ENVs berechnen
+            
+            // calculate lfoValue
             lfoValue = 0.f;
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
