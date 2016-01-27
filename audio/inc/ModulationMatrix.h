@@ -157,22 +157,18 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         float source = *(src[row->sourceIndex]);
         float intensity = row->modIntensity->get();
 
-        
+        // get the min max values for the intensity for transformation
+        float min = row->modIntensity->getMin();
+        float max = row->modIntensity->getMax();
         
         switch (row->intensityTransform)
         {
             case TRANSFORM_TO_BIPOLAR:
-                // get the mod intensity min max
-                float min = row->modIntensity->getMin();
-                float max = row->modIntensity->getMax();
                 intensity = toBipolar(min, max, intensity);
                 break;
                 
             case TRANSFORM_TO_UNIPOLAR:
-                // get the mod intensity min max
-                float min = row->modIntensity->getMin();
-                float max = row->modIntensity->getMax();
-                source = toUnipolar(min, max, intensity);
+                intensity = toUnipolar(min, max, intensity);
                 break;
                 
             default:
