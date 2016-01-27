@@ -25,28 +25,23 @@
 
 class Envelope{
     public:
-    Envelope(float sampleRate, Param &decay, Param &attack, Param &sustain, Param &release, 
-        Param &attackShape, Param &decayShape, Param &releaseShape, Param &keyVelToEnv)
+    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release, 
+        Param &_attackShape, Param &_decayShape, Param &_releaseShape, Param &_keyVelToEnv)
         :releaseCounter(-1)
         ,attackDecayCounter(0)
-        ,sampleRate(sampleRate)
-        ,attack(attack)
-        ,decay(decay)
-        ,sustain(sustain)
-        ,release(release)
-        ,attackShape(attackShape)
-        ,decayShape(decayShape)
-        ,releaseShape(releaseShape)
-        ,keyVelToEnv(keyVelToEnv)
-        ,modSourceFo(DEST_NONE)
-        ,modSourcePulseWidth(DEST_NONE)
-        ,modDestOutput1(DEST_NONE)
-        ,modDestOutput2(DEST_NONE)
-        ,modSourceAmp(DEST_NONE)
+        ,sampleRate(_sampleRate)
+        ,attack(_attack)
+        ,decay(_decay)
+        ,sustain(_sustain)
+        ,release(_release)
+        ,attackShape(_attackShape)
+        ,decayShape(_decayShape)
+        ,releaseShape(_releaseShape)
+        ,keyVelToEnv(_keyVelToEnv)
     {
     }
     
-    //! Enevelope sestructor
+    //! Enevelope destructor
     ~Envelope(){}
 
     //! resets the sample counters and sets the current velocity for each new note
@@ -59,7 +54,10 @@ class Envelope{
     
     //! calculation of the volume envelope coefficients (with shape control)
     const float calcEnvCoeff();
- 
+
+    //! sets the passed buffer for the modulation depending on calculated coefficients
+    void render(AudioSampleBuffer &buffer, int numSamples);
+
     private:
     
     //References for required Params for the envelope
@@ -81,17 +79,6 @@ class Envelope{
     int releaseCounter;     //!< sample counter during the release phase
 
     static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
-
-
-    // TODO the matrix stuff
-    ModulationMatrix* modulationMatrix;
-
-    int modSourceFo;
-    int modSourcePulseWidth;
-    int modSourceAmp;
-
-    int modDestOutput1;
-    int modDestOutput2;
 };
 
 #endif  // ENVELOPE_H_INCLUDED
