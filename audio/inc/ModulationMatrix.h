@@ -15,6 +15,8 @@
 #include <atomic>
 #include "Param.h"
 
+using namespace std;
+
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
@@ -125,30 +127,17 @@ inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 	return row;
 }
 
-inline modMatrixRow** createModMatrixCore()
-{
-	modMatrixRow** core = new modMatrixRow*[MAX_SOURCES * MAX_DESTINATIONS];
-	memset(core, 0, MAX_SOURCES * MAX_DESTINATIONS * sizeof(modMatrixRow*));
-	return core;
-}
-
 // core
 class ModulationMatrix {
 public:
-	ModulationMatrix(void);
-	~ModulationMatrix(void);
+	ModulationMatrix();
+	~ModulationMatrix();
 	
-	modMatrixRow** getModMatrixCore();
-	void setModMatrixCore(modMatrixRow** modMatrix);
-	int getMatrixSize();
-	inline void clearMatrix();
 	inline void clearSources();
 	inline void clearDestinations();
-	void addModMatrixRow(modMatrixRow* row);
 	inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
-    inline void createMatrixCore();
-	inline void deleteModMatrix();
 	inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
+    void addModMatrixRow(modMatrixRow * row);
 	inline bool checkDestinationLayer(int layer, modMatrixRow* row);
     inline float toUnipolar(float min, float max, float value);
     inline float toBipolar(float min, float max, float value);
@@ -156,27 +145,24 @@ public:
 
     float sources[MAX_SOURCES];
     float destinations[MAX_DESTINATIONS];
-
-protected:
-	modMatrixRow** matrixCore;
-	int size;
+    vector<modMatrixRow*> matrixCore;
 };
 
 
 inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, float** dst)
 {
-    if (!matrixCore) return;
     
     // clear dest registers
-    clearDestinations();
-    
-    for (int i = 0; i<size; i++)
+    //clearDestinations();
+
+
+    for (unsigned int i = 0; i < matrixCore.size(); ++i)
     {
         // get the row
         modMatrixRow* row = matrixCore[i];
         
         // --- this should never happen!
-        if (!row) continue;
+        if (row == nullptr) continue;
         
         // --- if disabled, skip row
         if (!row->enable) continue;
@@ -235,19 +221,10 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
 }
 
 // config changes
-inline void ModulationMatrix::clearMatrix()
-{
-    if (!matrixCore) return;
-    
-    for (int i = 0; i<(MAX_SOURCES*MAX_DESTINATIONS); i++)
-    {
-        matrixCore[i] = NULL;
-    }
-}
 
 inline void ModulationMatrix::clearSources()
 {
-    for (int i = 0; i<MAX_DESTINATIONS; i++)
+    for (int i = 0; i<MAX_DESTINATIONS; ++i)
     {
         sources[i] = 0.0f;
     }
@@ -255,7 +232,7 @@ inline void ModulationMatrix::clearSources()
 
 inline void ModulationMatrix::clearDestinations()
 {
-    for (int i = 0; i<MAX_SOURCES; i++)
+    for (int i = 0; i<MAX_SOURCES; ++i)
     {
         destinations[i] = 0.0f;
     }
@@ -263,9 +240,8 @@ inline void ModulationMatrix::clearDestinations()
 
 inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinationIndex)
 {
-    if (!matrixCore) return false;
     
-    for (int i = 0; i<size; i++)
+    for (unsigned int i = 0; i<matrixCore.size(); ++i)
     {
         modMatrixRow* row = matrixCore[i];
         
@@ -278,37 +254,9 @@ inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinatio
     return false;
 }
 
-inline void ModulationMatrix::createMatrixCore()
-{
-    if (matrixCore)
-        delete[] matrixCore;
-    
-    // --- dynamic allocation of matrix core
-    matrixCore = new modMatrixRow*[MAX_SOURCES*MAX_DESTINATIONS];
-    memset(matrixCore, 0, MAX_SOURCES*MAX_DESTINATIONS*sizeof(modMatrixRow*));
-}
-
-inline void ModulationMatrix::deleteModMatrix()
-{
-    if (!matrixCore) return;
-    
-    for (int i = 0; i<size; i++)
-    {
-        // delete pointer
-        modMatrixRow* row = matrixCore[i];
-        delete row;
-        size--;
-    }
-    size = 0;
-    delete[] matrixCore;
-    matrixCore = NULL;
-}
-
 inline bool ModulationMatrix::enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable)
 {
-    if (!matrixCore) return false;
-    
-    for (int i = 0; i<size; i++)
+    for (unsigned int i = 0; i<matrixCore.size(); ++i)
     {
         modMatrixRow* row = matrixCore[i];
         
