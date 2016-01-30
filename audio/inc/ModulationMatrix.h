@@ -42,38 +42,41 @@ enum sources : int {
 };
 
 enum destinations : int {
-	DEST_NONE = -1,
 
-	// --- GUI control layer modulation (-1)
-	DEST_UI_OSC1_FO,
-	DEST_UI_OSC2_FO,
-	DEST_UI_OSC3_FO,
+    DEST_NONE = -1,
 
-	DEST_UI_FILTER1_FC,
-	DEST_UI_FILTER2_FC,
+    // --- GUI control layer modulation (-1)
+    DEST_UI_OSC1_FO,
+    DEST_UI_OSC2_FO,
+    DEST_UI_OSC3_FO,
 
-	// --- LAYER 0 DESTINATIONS 
-	//     add more L0 destinations in this chunk
-	//     see CModulationMatrix::checkDestinationLayer())
+    DEST_UI_FILTER1_FC, 
+    DEST_UI_FILTER2_FC,
 
-	DEST_FILT_FC,       // <- keep this first
-	DEST_OSC1_PITCH,    // <- keep this last
+    // --- LAYER 0 DESTINATIONS 
+    //     add more L0 destinations in this chunk
+    //     see CModulationMatrix::checkDestinationLayer())
 
-				  // --- END OF LAYER 0 DESTINATIONS
+    DEST_FILT_FC,       // <- keep this first
+    DEST_LFO1_BUF,
+    DEST_ENV1_BUF,
+    DEST_PITCH_BUF,    // <- keep this last
 
-				  // --- LAYER 1 DESTINATIONS 
-				  //	DEST_OSC1_PULSEWIDTH,
+                        // --- END OF LAYER 0 DESTINATIONS
 
-				  // --- END OF LAYER 1 DESTINATIONS
+                       // --- LAYER 1 DESTINATIONS 
+                       //    DEST_OSC1_PULSEWIDTH,
 
-	MAX_DESTINATIONS
+                        // --- END OF LAYER 1 DESTINATIONS
+
+    MAX_DESTINATIONS
 };
 
 enum transform {
     TRANSFORM_NONE = 0,
     TRANSFORM_TO_BIPOLAR,
     TRANSFORM_TO_UNIPOLAR,
-	MAX_TRANSFORMS
+    MAX_TRANSFORMS
 };
 
 inline bool isUnipolar(sources source) {
@@ -102,64 +105,64 @@ inline bool isUnipolar(sources source) {
 
 struct modMatrixRow
 {
-	sources sourceIndex;
-	destinations destinationIndex;
+    sources sourceIndex;
+    destinations destinationIndex;
     Param* modIntensity;
     Param* modRange;
-	bool enable;
+    bool enable;
 };
 
 inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
-										destinations destinationIndex_,
+                                        destinations destinationIndex_,
                                         Param* modIntensity_,
                                         Param* modRange_,
-										bool enable_ = true) {
+                                        bool enable_ = true) {
 
-	modMatrixRow* row = new modMatrixRow;
-	row->sourceIndex = sourceIndex_;
-	row->destinationIndex = destinationIndex_;
-	row->modIntensity = modIntensity_;
-	row->modRange = modRange_;
-	row->enable = enable_;
+    modMatrixRow* row = new modMatrixRow;
+    row->sourceIndex = sourceIndex_;
+    row->destinationIndex = destinationIndex_;
+    row->modIntensity = modIntensity_;
+    row->modRange = modRange_;
+    row->enable = enable_;
 
-	return row;
+    return row;
 }
 
 inline modMatrixRow** createModMatrixCore()
 {
-	modMatrixRow** core = new modMatrixRow*[MAX_SOURCES * MAX_DESTINATIONS];
-	memset(core, 0, MAX_SOURCES * MAX_DESTINATIONS * sizeof(modMatrixRow*));
-	return core;
+    modMatrixRow** core = new modMatrixRow*[MAX_SOURCES * MAX_DESTINATIONS];
+    memset(core, 0, MAX_SOURCES * MAX_DESTINATIONS * sizeof(modMatrixRow*));
+    return core;
 }
 
 // core
 class ModulationMatrix {
 public:
-	ModulationMatrix(void);
-	~ModulationMatrix(void);
-	
-	modMatrixRow** getModMatrixCore();
-	void setModMatrixCore(modMatrixRow** modMatrix);
-	int getMatrixSize();
-	inline void clearMatrix();
-	inline void clearSources();
-	inline void clearDestinations();
-	void addModMatrixRow(modMatrixRow* row);
-	inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
+    ModulationMatrix(void);
+    ~ModulationMatrix(void);
+
+    modMatrixRow** getModMatrixCore();
+    void setModMatrixCore(modMatrixRow** modMatrix);
+    int getMatrixSize();
+    inline void clearMatrix();
+    inline void clearSources();
+    inline void clearDestinations();
+    void addModMatrixRow(modMatrixRow* row);
+    inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
     inline void createMatrixCore();
-	inline void deleteModMatrix();
-	inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
-	inline bool checkDestinationLayer(int layer, modMatrixRow* row);
+    inline void deleteModMatrix();
+    inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
+    inline bool checkDestinationLayer(int layer, modMatrixRow* row);
     inline float toUnipolar(float min, float max, float value);
     inline float toBipolar(float min, float max, float value);
-	inline void doModulationsMatrix(int modLayer, float** src, float** dst);
+    inline void doModulationsMatrix(int modLayer, float** src, float** dst);
 
     float sources[MAX_SOURCES];
     float destinations[MAX_DESTINATIONS];
 
 protected:
-	modMatrixRow** matrixCore;
-	int size;
+    modMatrixRow** matrixCore;
+    int size;
 };
 
 
@@ -209,7 +212,11 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         //Pitchbend to oscillator
         //*(dst[row->destinationIndex]) += Param::fromCent(dModValue);
         //Lfo to oscillator
-        *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+        //*(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+        
+        /*we are just adding the modified values into the predefined buffers
+         the conversion and application is apllied outside of the matrix*/
+        *(dst[row->destinationIndex]) += dModValue;
 
         // universal connections example:
         // first check DEST_ALL types
@@ -323,7 +330,7 @@ inline bool ModulationMatrix::checkDestinationLayer(int layer, modMatrixRow * ro
 {
     bool bLayer0 = false;
     if (row->destinationIndex >= DEST_FILT_FC &&
-        row->destinationIndex <= DEST_OSC1_PITCH)
+        row->destinationIndex <= DEST_PITCH_BUF)
         // then, we are layer 0; see modulationmatrix.h
         bLayer0 = true;
     

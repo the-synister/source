@@ -149,11 +149,14 @@ public:
         }
 
         //set connection bewtween source and matrix here
-        //modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_LFO1] = &lfoValue;
+        modSources[SOURCE_ENV1] = &env1Coeff;
         
         //set connection between destination and matrix here
-        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_LFO1_BUF] = lfo1ModBuffer.getWritePointer(0);
+        modDestinations[DEST_ENV1_BUF] = env1Buffer.getWritePointer(0);
     }
 
 
@@ -478,8 +481,16 @@ void renderModulation(int numSamples) {
         // add pitch wheel values
         //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
         
+        //clear the buffers
         pitchModBuffer.clear();
-        modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
+        lfo1ModBuffer.clear();
+        env1Buffer.clear();
+
+        //set the write point in the buffers
+        modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_LFO1_BUF] = lfo1ModBuffer.getWritePointer(0);
+        modDestinations[DEST_ENV1_BUF] = env1Buffer.getWritePointer(0);
+        
         for (int s = 0; s < numSamples; ++s) {
             
             // calculate lfoValue
@@ -496,9 +507,36 @@ void renderModulation(int numSamples) {
                 break;
             }
             
+            // Fade in factor calculation
+            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
+            {
+                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
+                factorFadeInLFO = 1.f;
+            }
+            else
+            {
+                // Otherwise the factor is determined
+                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
+            }
+
+            // Calculate current Envelope Coefficient
+            env1Coeff = 0.f;
+            env1Coeff = env1.calcEnvCoeff();
+            
             modMatrix->doModulationsMatrix(0, modSources, modDestinations);
             
-            ++modDestinations[DEST_OSC1_PITCH];
+            //increment index in the buffer
+            ++modDestinations[DEST_PITCH_BUF];
+            ++modDestinations[DEST_LFO1_BUF];
+            ++modDestinations[DEST_ENV1_BUF];
+        }
+
+        //case example: LFO and PitchBend have influence on the pitch
+        for (int s = 0; s < numSamples; ++s) {
+        /*Carefull!!! the output is crazy since all buffers are being calculated!!! :D */
+            pitchModBuffer.setSample(0, s, Param::fromCent(pitchModBuffer.getSample(0,s) * 100.f) 
+                                         * Param::fromSemi(lfo1ModBuffer.getSample(0, s) * env1Buffer.getSample(0,s) * factorFadeInLFO));
+        
         }
 
 #if 0
@@ -702,6 +740,7 @@ private:
 
     float pitchBend;
     float lfoValue;
+    float env1Coeff;
     
     float* modSources[MAX_SOURCES];
     float* modDestinations[MAX_DESTINATIONS];

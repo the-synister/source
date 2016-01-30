@@ -69,17 +69,27 @@ PluginAudioProcessor::PluginAudioProcessor()
     /*Create ModMatrixRows here*/
     // Source Pitchbend, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
-                                                       DEST_OSC1_PITCH,
+                                                       DEST_PITCH_BUF,
                                                        &osc1PitchRange,
-                                                       nullptr, //this needs to be changed to a destination
-                                                       false));
+                                                       nullptr,
+                                                       true));
 
     // Let'S try this: Source LFO1, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-                                                       DEST_OSC1_PITCH,
+                                                       DEST_LFO1_BUF,
                                                        &osc1lfo1depth,
                                                        nullptr,
                                                        true));
+
+    // Now let's add an envelope for the pitch
+    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
+                                                       DEST_ENV1_BUF,
+                                                       &osc1lfo1depth,
+                                                       nullptr,
+                                                       true));
+
+    // now let's add an envelope for the filter
+    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,))
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
