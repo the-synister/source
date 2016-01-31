@@ -329,7 +329,7 @@ inline bool ModulationMatrix::checkDestinationLayer(int layer, modMatrixRow * ro
 {
     bool bLayer0 = false;
     if (row->destinationIndex >= DEST_FILT_FC &&
-        row->destinationIndex <= DEST_PITCH_BUF)
+        row->destinationIndex <= DEST_OSC1_PITCH)
         // then, we are layer 0; see modulationmatrix.h
         bLayer0 = true;
     

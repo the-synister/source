@@ -476,7 +476,6 @@ void renderModulation(int numSamples) {
 
         //case example: LFO/Envelope and PitchBend have influence on the pitch
         for (int s = 0; s < numSamples; ++s) {
-
             osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
         }
 }
