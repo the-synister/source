@@ -490,11 +490,6 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         ? params.lpCutoff.get()
         : params.hpCutoff.get();
 
-        modMatrix->destinations[DEST_FILT_FC] = currentCutoff;
-        //float testVal = localModMatrix->destinations[DEST_FILT_FC];
-        //float moddedMaxFreq = params.lpCutoff.getMax() * localModMatrix->destinations[DEST_FILT_FC];
-
-        //float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmout.get() / 100.f;
 
         return inputSignal;
 }
@@ -521,7 +516,7 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
                 return 0.f;
         }
 
-        float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmount.get() / 100.f;
+        //float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmount.get() / 100.f;
         
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
             moddedFreq += (20000.f * (modValue) * params.lpModAmount.get() / 100.f);
@@ -662,7 +657,7 @@ private:
     
     ModulationMatrix* modMatrix; //pointer to the global Matrix
     //modMatrixRow* modMatrixRow;
-    float filter1Fc;
+    //float filter1Fc;
 
     // Envelopes 
     Envelope envToVolume;
