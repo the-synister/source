@@ -13,7 +13,6 @@
 
 #include "Synthparams.h"
 #include "Param.h"
-#include "ModulationMatrix.h"
 
 //! Envelope Class: Envelope
 /*! An ADSR implementation with A,D and R shape control and an additional
