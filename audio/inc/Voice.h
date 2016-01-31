@@ -132,7 +132,7 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modMatrix(globalModMatrix_) //local Matrix initialisation
-    , pitchModBuffer(1, blockSize)
+    , osc1PitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
     , lfo1Buffer(1,blockSize)
@@ -149,14 +149,11 @@ public:
         }
 
         //set connection bewtween source and matrix here
-        // modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
         
         //set connection between destination and matrix here
-        modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
-        //modDestinations[DEST_LFO1_MOD] = lfo1ModBuffer.getWritePointer(0);
-        //modDestinations[DEST_ENV1_MOD] = env1Buffer.getWritePointer(0);
+        modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
     }
 
 
@@ -200,7 +197,6 @@ public:
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
-        //osc1ModAmount = params.osc1lfo1depth.get();
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -252,7 +248,6 @@ public:
             {
                 osc1WhiteNoise.phase = 0.f;
                 osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-                //attackDecayCounter = 0;
                 break;
             }
         }
@@ -302,20 +297,23 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         // Modulation
-        //renderModulation2(numSamples);
         renderModulation(numSamples);
         const float *noMod = noModBuffer.getReadPointer(0);
-        const float *pitchMod = pitchModBuffer.getReadPointer(0);
+        const float *osc1PitchMod = osc1PitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
+        
+        // Not using the following in the same manner as before, everything is part of the pitchmod now!
         //const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
-        const float *env1Mod = env1Buffer.getReadPointer(0);
+        //const float *env1Mod = env1Buffer.getReadPointer(0);
 
 #if 0
+        // this probably will be obsolete ...
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
         modSources[2] = env1Mod;
 #endif
+
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
 
@@ -331,17 +329,17 @@ public:
                 switch (params.osc1Waveform.getStep())
                 {
                 case eOscWaves::eOscSquare:
-                    currentSample = (osc1Sine.next(pitchMod[s]));
+                    currentSample = (osc1Sine.next(osc1PitchMod[s]));
                     break;
                 case eOscWaves::eOscSaw:
-                    currentSample = (osc1Saw.next(pitchMod[s]));
+                    currentSample = (osc1Saw.next(osc1PitchMod[s]));
                     break;
                 case eOscWaves::eOscNoise:
-                    currentSample = (osc1WhiteNoise.next(pitchMod[s]));
+                    currentSample = (osc1WhiteNoise.next(osc1PitchMod[s]));
                     break;
                 }
 
-                //currentSample = biquadFilter(currentSample, params.passtype.getStep());
+                currentSample = biquadFilter(currentSample, params.passtype.getStep());
                 currentSample = ladderFilter(currentSample) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
@@ -407,88 +405,20 @@ public:
 
 protected:
 
-#if 0
-    void renderModulation2(int numSamples) {
-        const float sRate = static_cast<float>(getSampleRate());    // Sample rate
-        float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
-        float modAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
-        const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
-
-        
-        // sets buffer for both envelopes
-        envToVolume.render(envToVolBuffer, numSamples);
-        env1.render(env1Buffer, numSamples);
-
-        // add pitch wheel values
-        float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
-
-        //if (params.osc1ModSource.getStep() != eModSource::eNone)
-        for (int s = 0; s < numSamples; ++s)
-        {
-            // check modulation source
-            if (params.osc1ModSource.getStep() == eModSource::eLFO1)
-            {
-            float lfoVal = 0.f;
-            switch (params.lfo1wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                lfoVal = lfo1sine.next();
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                lfoVal = lfo1random.next();
-                break;
-            case eLfoWaves::eLfoSquare:
-                lfoVal = lfo1square.next();
-                break;
-                }
-
-            // Fade in factor calculation
-            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
-                {
-                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                factorFadeInLFO = 1.f;
-            }
-            else
-                    {
-                // Otherwise the factor is determined
-                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-                    }
-
-            // Update of the modulation amount value
-            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;
-            // Next sample modulated with the updated amount
-            if (params.osc1ModSource.getStep() == eModSource::eEnv)
-    {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents)*envToPitch.calcEnvCoeff());
-        }
-        else
-        {
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
-        }
-    }
-    }
-#endif
-
 void renderModulation(int numSamples) {
 
+        // LFO Fade IN Variables
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
-        //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
-        // sets buffer for both envelopes -- don't need this really ...
-        //envToVolume.render(envToVolBuffer, numSamples);
-        //env1.render(env1Buffer, numSamples);
-
-        // add pitch wheel values
-        // float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
-        
         //clear the buffers
-        pitchModBuffer.clear();
+        osc1PitchModBuffer.clear();
         lfo1Buffer.clear();
         env1Buffer.clear();
 
         //set the write point in the buffers
-        modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         
@@ -533,7 +463,7 @@ void renderModulation(int numSamples) {
         
             modMatrix->doModulationsMatrix(0, modSources, modDestinations);
 
-            ++modDestinations[DEST_PITCH_BUF];
+            ++modDestinations[DEST_OSC1_PITCH];
             ++modSources[SOURCE_ENV1];
             ++modSources[SOURCE_LFO1];
         }
@@ -542,60 +472,9 @@ void renderModulation(int numSamples) {
         //case example: LFO/Envelope and PitchBend have influence on the pitch
         for (int s = 0; s < numSamples; ++s) {
 
-            pitchModBuffer.setSample(0, s, Param::fromSemi(pitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
+            osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
         
         }
-
-#if 0
-        for (int s = 0; s < numSamples; ++s){
-            lfoValue = 0.f;
-            switch (params.lfo1wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                lfoValue = lfo1sine.next();
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                lfoValue = lfo1random.next();
-                break;
-            case eLfoWaves::eLfoSquare:
-                lfoValue = lfo1square.next();
-                break;
-            }
-
-
-            // Fade in factor calculation
-            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))  
-            {
-                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                factorFadeInLFO = 1.f;          
-            }
-            else                                   
-            {
-                // Otherwise the factor is determined
-                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-            }
-
-            lfo1ModBuffer.setSample(0, s, lfoValue);
-
-
-            // Update of the modulation amount value
-            modAmount = params.osc1lfo1depth.get() * factorFadeInLFO;      
-
-                pitchModBuffer.setSample(0, s, Param::fromSemi(lfoVal*modAmount) * Param::fromCent(currentPitchInCents));
-            }
-            //check modulation source
-            else if (params.osc1ModSource.getStep() == eModSource::eEnv) {
-
-                pitchModBuffer.setSample(0, s, Param::fromSemi(modAmount*env1.calcEnvCoeff()) * Param::fromCent(currentPitchInCents));
-            }
-            //if no modulation is chosen, set buffer with standard values
-            //not really efficient ...
-            else
-            {
-                pitchModBuffer.setSample(0, s, 1);
-            }
-
-        }
-#endif
 }
 
 
@@ -769,8 +648,7 @@ private:
     float lpOut3Delay;
 
     // Buffers
-    AudioSampleBuffer pitchModBuffer;
-    AudioSampleBuffer cutoffModBuffer;
+    AudioSampleBuffer osc1PitchModBuffer;
     AudioSampleBuffer lfo1Buffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;

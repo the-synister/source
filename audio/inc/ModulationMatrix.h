@@ -58,7 +58,7 @@ enum destinations : int {
     //     see CModulationMatrix::checkDestinationLayer())
 
     DEST_FILT_FC,       // <- keep this first
-    DEST_PITCH_BUF,    // <- keep this last
+    DEST_OSC1_PITCH,    // <- keep this last
 
                         // --- END OF LAYER 0 DESTINATIONS
 
