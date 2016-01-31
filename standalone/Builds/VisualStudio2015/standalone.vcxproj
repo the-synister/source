@@ -1307,6 +1307,7 @@
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h" />
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h" />
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h" />
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h" />
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h" />
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h" />
     <ClInclude Include="..\..\..\audio\inc\HostParam.h" />

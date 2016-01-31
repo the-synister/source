@@ -4,6 +4,7 @@
 #include "SynthParams.h"
 #include "ModulationMatrix.h"
 #include "Envelope.h"
+#include "Oscillator.h"
 /*the following is for the leak detector, vld must be installed on the computer
     and path must be added to library path!!*/
 //#include "vld.h"
@@ -14,101 +15,7 @@ public:
     bool appliesToChannel(int /*midiChannel*/) override { return true; }
 };
 
-struct Waveforms {
-    static float sinus(float phs, float trngAmount, float width) {
-        ignoreUnused(trngAmount, width);
-        return std::sin(phs); 
-    }
-    static float square(float phs, float trngAmount, float width) {
-        ignoreUnused(trngAmount, width);
-        //square wave with duty cycle
-        if (phs < 2.f * float_Pi * width) {
-            return 1.f;
-        }
-        else {
-            return -1.f;
-        }
-        //return std::copysign(1.f, float_Pi - phs);
-    }
-
-    static float saw(float phs, float trngAmount, float width) {
-        ignoreUnused(width);
-        //return (1 - trngAmount) * phs / (float_Pi*2.f) - .5f + trngAmount * (-abs(float_Pi - phs))*(1 / float_Pi) + .5f;
-        if (phs < trngAmount*float_Pi) { return (1.f - 2.f / (trngAmount*float_Pi) * phs); }
-        else { return (-1.f + 2.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
-    }
     
-    static float whiteNoise(float phs, float trngAmount, float width) {
-        return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
-    }
-};
-
-template<float(*_waveform)(float, float, float)>
-struct Oscillator {
-    float phase;
-    float phaseDelta;
-    float trngAmount;
-    float width;
-    
-    Oscillator() : phase(0.f)
-                 , phaseDelta(0.f)
-    {}
-
-    void reset() {
-        phase = 0.f;
-        phaseDelta = 0.f;
-    }
-
-    bool isActive() const {
-        return phaseDelta > 0.f;
-    }
-
-    float next() {
-        const float result = _waveform(phase, trngAmount, width);
-        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return result;
-    }
-    
-    float next(float pitchMod) {
-        const float result = _waveform(phase, trngAmount, width);
-        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
-        return result;
-    }
-
-    float next(float pitchMod, float widthOrTrDelta) {
-        const float result = _waveform(phase, trngAmount + widthOrTrDelta, width + widthOrTrDelta);
-        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
-        return result;
-    }
-};
-
-template<float(*_waveform)(float, float, float)>
-struct RandomOscillator : Oscillator<&Waveforms::square>
-{
-    float heldValue;
-    
-    RandomOscillator() : Oscillator()
-        , heldValue(static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f)
-    {}
-    
-    void reset()
-    {
-        phase = 0.f;
-        phaseDelta = 0.f;
-        heldValue = 0.f;
-    }
-    
-    float next()
-    {
-        if (phase + phaseDelta > 2.0f * float_Pi) {
-            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
-        }
-        
-        phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
-        return heldValue;
-    }
-
-};
 
 class Voice : public SynthesiserVoice {
 public:
@@ -147,7 +54,7 @@ public:
         
         for(float*& pSource : modSources) {
             pSource = nullptr;
-        }
+    }
         for(float*& pDest : modDestinations) {
             pDest = nullptr;
         }
@@ -225,29 +132,29 @@ public:
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         
-            lfo1random.phase = 0.f;
-            lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+        lfo1random.phase = 0.f;
+        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
         switch (params.osc1Waveform.getStep())
         {
             case eOscWaves::eOscSquare:
-            {
-                osc1Sine.phase = 0.f;
-                osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-                osc1Sine.width = params.osc1pulsewidth.get();
-                lfo1square.width = params.osc1pulsewidth.get();
-                //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-                break;
-            }
+        {
+            osc1Sine.phase = 0.f;
+            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
+            osc1Sine.width = params.osc1pulsewidth.get();
+            lfo1square.width = params.osc1pulsewidth.get();
+            //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            break;
+    }
             case eOscWaves::eOscSaw:
-            {
-                osc1Saw.phase = 0.f;
-                osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-                osc1Saw.trngAmount = params.osc1trngAmount.get();
-                break;
-            }
+        {
+            osc1Saw.phase = 0.f;
+            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1Saw.trngAmount = params.osc1trngAmount.get();
+            break;
+        }
             case eOscWaves::eOscNoise:
             {
                 osc1WhiteNoise.phase = 0.f;
@@ -351,7 +258,7 @@ public:
                     //currentSample = (osc1Sine.next(osc1PitchMod[s]));
                     break;
                 case eOscWaves::eOscSaw:
-                    {
+                {
                         // In case of triangle modulation
                         float deltaTr = osc1Saw.trngAmount > .5f
                             ? params.osc1trngAmount.getMax() - osc1Saw.trngAmount
@@ -434,8 +341,8 @@ public:
 
 protected:
 
-void renderModulation(int numSamples) {
-        
+    void renderModulation(int numSamples) {
+
         // LFO Fade IN Variables
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
@@ -457,15 +364,15 @@ void renderModulation(int numSamples) {
 
             // Fade in factor calculation
             if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
-                {
+        {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                 factorFadeInLFO = 1.f;
-            }
+        }
             else
-                    {
+        {
                 // Otherwise the factor is determined
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-                    }
+        }
 
             // calculate lfo values and fill the buffers
             // lfoValue = 0.f;
@@ -482,7 +389,7 @@ void renderModulation(int numSamples) {
                 // lfoValue = lfo1square.next();
                 lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
                 break;
-            }
+        }
 
             // Calculate the Envelope coefficients and fill the buffers
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
@@ -505,21 +412,21 @@ void renderModulation(int numSamples) {
         for (int s = 0; s < numSamples; ++s) {
             osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
         }
-}
+    }
 
-
+//
 float biquadFilter(float inputSignal, eBiquadFilters filterType) {
     
-    const float sRate = static_cast<float>(getSampleRate());
+        const float sRate = static_cast<float>(getSampleRate());
 
     float currentCutoff = filterType == eBiquadFilters::eLowpass
-        ? params.lpCutoff.get()
-        : params.hpCutoff.get();
+            ? params.lpCutoff.get()
+            : params.hpCutoff.get();
 
 
         return inputSignal;
 }
-
+        
 #if 0
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
         const float sRate = static_cast<float>(getSampleRate());

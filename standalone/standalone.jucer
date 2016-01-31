@@ -45,6 +45,7 @@
         <FILE id="Nve2qm" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="D0jWIv" name="ModulationMatrix.h" compile="0" resource="0"
               file="../audio/inc/ModulationMatrix.h"/>
+        <FILE id="BmexyK" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
@@ -61,6 +62,7 @@
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="H1vwFf" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
+        <FILE id="MpmMNj" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="ArScIV" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
