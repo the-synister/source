@@ -58,8 +58,6 @@ enum destinations : int {
     //     see CModulationMatrix::checkDestinationLayer())
 
     DEST_FILT_FC,       // <- keep this first
-    DEST_LFO1_BUF,
-    DEST_ENV1_BUF,
     DEST_PITCH_BUF,    // <- keep this last
 
                         // --- END OF LAYER 0 DESTINATIONS
@@ -197,7 +195,7 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
 
         if (isUnipolar(row->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
             intensity = toBipolar(min, max, intensity);
-        }
+        }   
         else { // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
@@ -206,8 +204,9 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         //float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
         
         //Lfo to Oscillator
-        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
-        
+        //float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
+        float dModValue = source*intensity;
+
         //what should be added and what should be multiplied?
         //Pitchbend to oscillator
         //*(dst[row->destinationIndex]) += Param::fromCent(dModValue);

@@ -135,7 +135,7 @@ public:
     , pitchModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
-    , lfo1ModBuffer(1,blockSize)
+    , lfo1Buffer(1,blockSize)
     , env1Buffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
@@ -149,14 +149,14 @@ public:
         }
 
         //set connection bewtween source and matrix here
-        modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_LFO1] = &lfoValue;
-        modSources[SOURCE_ENV1] = &env1Coeff;
+        // modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
+        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
         
         //set connection between destination and matrix here
         modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
-        modDestinations[DEST_LFO1_BUF] = lfo1ModBuffer.getWritePointer(0);
-        modDestinations[DEST_ENV1_BUF] = env1Buffer.getWritePointer(0);
+        //modDestinations[DEST_LFO1_MOD] = lfo1ModBuffer.getWritePointer(0);
+        //modDestinations[DEST_ENV1_MOD] = env1Buffer.getWritePointer(0);
     }
 
 
@@ -307,14 +307,15 @@ public:
         const float *noMod = noModBuffer.getReadPointer(0);
         const float *pitchMod = pitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
-        const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
+        //const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         const float *env1Mod = env1Buffer.getReadPointer(0);
 
+#if 0
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
         modSources[1] = lfo1Mod;
         modSources[2] = env1Mod;
-
+#endif
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
 
@@ -340,7 +341,7 @@ public:
                     break;
                 }
 
-                currentSample = biquadFilter(currentSample, params.passtype.getStep());
+                //currentSample = biquadFilter(currentSample, params.passtype.getStep());
                 currentSample = ladderFilter(currentSample) * level * envToVolMod[s];
 
                 //check if the output is a stereo output
@@ -474,39 +475,25 @@ void renderModulation(int numSamples) {
         //osc1ModAmount = params.osc1lfo1depth.get();               // Default value of modAmount is the value from the slider
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
-        // sets buffer for both envelopes
-        envToVolume.render(envToVolBuffer, numSamples);
-        env1.render(env1Buffer, numSamples);
+        // sets buffer for both envelopes -- don't need this really ...
+        //envToVolume.render(envToVolBuffer, numSamples);
+        //env1.render(env1Buffer, numSamples);
 
         // add pitch wheel values
-        //float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
+        // float currentPitchInCents = (params.osc1PitchRange.get() * 100) * pitchBend;
         
         //clear the buffers
         pitchModBuffer.clear();
-        lfo1ModBuffer.clear();
+        lfo1Buffer.clear();
         env1Buffer.clear();
 
         //set the write point in the buffers
         modDestinations[DEST_PITCH_BUF] = pitchModBuffer.getWritePointer(0);
-        modDestinations[DEST_LFO1_BUF] = lfo1ModBuffer.getWritePointer(0);
-        modDestinations[DEST_ENV1_BUF] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         
         for (int s = 0; s < numSamples; ++s) {
-            
-            // calculate lfoValue
-            lfoValue = 0.f;
-            switch (params.lfo1wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                lfoValue = lfo1sine.next();
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                lfoValue = lfo1random.next();
-                break;
-            case eLfoWaves::eLfoSquare:
-                lfoValue = lfo1square.next();
-                break;
-            }
-            
+
             // Fade in factor calculation
             if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
             {
@@ -519,23 +506,43 @@ void renderModulation(int numSamples) {
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
 
-            // Calculate current Envelope Coefficient
-            env1Coeff = 0.f;
-            env1Coeff = env1.calcEnvCoeff();
-            
-            modMatrix->doModulationsMatrix(0, modSources, modDestinations);
-            
-            //increment index in the buffer
-            ++modDestinations[DEST_PITCH_BUF];
-            ++modDestinations[DEST_LFO1_BUF];
-            ++modDestinations[DEST_ENV1_BUF];
+            // calculate lfo values and fill the buffers
+            // lfoValue = 0.f;
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                // lfoValue = lfo1sine.next();
+                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                // lfoValue = lfo1random.next();
+                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
+                break;
+            case eLfoWaves::eLfoSquare:
+                // lfoValue = lfo1square.next();
+                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
+                break;
+            }
+
+            // Calculate the Envelope coefficients and fill the buffers
+            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
         }
 
-        //case example: LFO and PitchBend have influence on the pitch
+        //calculate modulation values for the buffers
         for (int s = 0; s < numSamples; ++s) {
-        /*Carefull!!! the output is crazy since all buffers are being calculated!!! :D */
-            pitchModBuffer.setSample(0, s, Param::fromCent(pitchModBuffer.getSample(0,s) * 100.f) 
-                                         * Param::fromSemi(lfo1ModBuffer.getSample(0, s) * env1Buffer.getSample(0,s) * factorFadeInLFO));
+        
+            modMatrix->doModulationsMatrix(0, modSources, modDestinations);
+
+            ++modDestinations[DEST_PITCH_BUF];
+            ++modSources[SOURCE_ENV1];
+            ++modSources[SOURCE_LFO1];
+        }
+
+
+        //case example: LFO/Envelope and PitchBend have influence on the pitch
+        for (int s = 0; s < numSamples; ++s) {
+
+            pitchModBuffer.setSample(0, s, Param::fromSemi(pitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
         
         }
 
@@ -739,8 +746,9 @@ private:
     float level;
 
     float pitchBend;
-    float lfoValue;
-    float env1Coeff;
+    //float currentPitchInCents;
+    //float lfoValue;
+    //float env1Coeff;
     
     float* modSources[MAX_SOURCES];
     float* modDestinations[MAX_DESTINATIONS];
@@ -749,7 +757,6 @@ private:
 
     // variable for env
     float currentVelocity;
-
 
     //for the lader filter
     float ladderOut;
@@ -761,8 +768,10 @@ private:
     float lpOut2Delay;
     float lpOut3Delay;
 
+    // Buffers
     AudioSampleBuffer pitchModBuffer;
-    AudioSampleBuffer lfo1ModBuffer;
+    AudioSampleBuffer cutoffModBuffer;
+    AudioSampleBuffer lfo1Buffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env1Buffer;
@@ -771,7 +780,7 @@ private:
     //modMatrixRow* modMatrixRow;
     float filter1Fc;
 
-    
+    // Envelopes 
     Envelope envToVolume;
     Envelope env1;
 };
