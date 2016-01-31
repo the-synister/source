@@ -80,14 +80,14 @@ PluginAudioProcessor::PluginAudioProcessor()
                                                        DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
                                                        nullptr,
-                                                       true));
+                                                       false));
 
     // Now let's add an envelope for the pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
                                                        nullptr,
-                                                       false));
+                                                       true));
 
     // Add LFO1 and ENV1 to DEST_FILT_FC with
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
@@ -219,10 +219,10 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock, &globalModMatrix)); //Reference of the gloabl Matrix is passed to each voice
     }
     synth.clearSounds();
-    delay.init(2, sRate);
-	chorus.init(2, sRate);
-
     synth.addSound(new Sound());
+
+    delay.init(getNumOutputChannels(), sRate);
+    chorus.init(getNumOutputChannels(), sRate);
 }
 
 void PluginAudioProcessor::releaseResources()
@@ -263,10 +263,10 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
-	// chorus
-	if (chorDryWet.get() > 0.f) {
-		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
-	}
+    // chorus
+    if (chorDryWet.get() > 0.f) {
+        chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+    }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
                           // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?

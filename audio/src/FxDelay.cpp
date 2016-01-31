@@ -30,15 +30,15 @@ float FxDelay::filter(float currentSample) {
     a1 = 2.f * -coeff2;
     a2 = 2.f * coeff1;
 
-    lastSample = currentSample;
+    fLastSample = currentSample;
 
-    currentSample = b0*currentSample + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+    currentSample = b0*currentSample + b1*fInputDelay1 + b2*fInputDelay2 - a1*fOutputDelay1 - a2*fOutputDelay2;
 
     //delaying samples
-    inputDelay2 = inputDelay1;
-    inputDelay1 = lastSample;
-    outputDelay2 = outputDelay1;
-    outputDelay1 = currentSample;
+    fInputDelay2 = fInputDelay1;
+    fInputDelay1 = fLastSample;
+    fOutputDelay2 = fOutputDelay1;
+    fOutputDelay1 = currentSample;
 
     return currentSample;
 }
@@ -106,7 +106,7 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSa
             // get current samples
             float currentSample = outputBuffer.getSample(c, startSample + s);
             float delayedSample = delayBuffer.getSample(c, loopPosition);
-            
+
             // calc index for loop direction (reverse mode)
             int orderPosition;
 
@@ -120,7 +120,7 @@ void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSa
             if (params.delayRecordFilter.getStep() == eOnOffToggle::eOn) {
                 delayedSample = filter(delayedSample);
             }
-            
+
             delayBuffer.addSample(c, orderPosition, delayedSample * params.delayFeedback.get());
 
             if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {

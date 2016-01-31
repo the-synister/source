@@ -69,6 +69,7 @@ private:
     ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<MouseOverKnob> waveformSwitch;
+    ScopedPointer<MouseOverKnob> amountWidthMod;
 
 
     //==============================================================================

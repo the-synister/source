@@ -16,8 +16,8 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
-    
+};
+
 enum class eOscWaves : int {
     eOscSquare = 0,
     eOscSaw    = 1,
@@ -31,7 +31,7 @@ enum class eBiquadFilters : int {
     eBandpass = 2,
     nSteps = 3
 };
-    
+
 enum class eOnOffToggle : int {
     eOff = 0,
     eOn = 1,
@@ -81,7 +81,7 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-    
+
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -95,7 +95,8 @@ public:
     
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
-    Param osc1pulsewidth;//!< pulse width in [0,01..0,99]
+    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
+    Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
     ParamStepped<eModSource> osc1ModSource; //!< oscillator 1 modulation source
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
@@ -175,7 +176,7 @@ public:
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
-
+    
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().
     @param destData host data
@@ -226,7 +227,7 @@ public:
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 
     std::atomic<int> positionIndex;
-    
+
     int getGUIIndex();
     int getAudioIndex();
 

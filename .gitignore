@@ -8,4 +8,4 @@ Debug/
 xcuserdata/
 project.xcworkspace/
 resources.aps
-/standalone/Builds/VisualStudio2015/*.opendb
+*.opendb

@@ -1,20 +1,20 @@
 /*
-==============================================================================
+  ==============================================================================
 
-This is an automatically generated GUI class created by the Introjucer!
+  This is an automatically generated GUI class created by the Introjucer!
 
-Be careful when adding custom code to these files, as only the code within
-the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-and re-saved.
+  Be careful when adding custom code to these files, as only the code within
+  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
+  and re-saved.
 
-Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 3.2.0
 
-------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
-The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-Copyright (c) 2015 - ROLI Ltd.
+  The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
+  Copyright (c) 2015 - ROLI Ltd.
 
-==============================================================================
+  ==============================================================================
 */
 
 //[Headers] You can add your own extra header files here...
@@ -84,6 +84,12 @@ OscPanel::OscPanel(SynthParams &p)
     waveformSwitch->setTextBoxStyle(Slider::TextBoxBelow, true, 80, 20);
     waveformSwitch->addListener(this);
 
+    addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
+    amountWidthMod->setRange (0, 1, 0);
+    amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
+    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
@@ -91,11 +97,12 @@ OscPanel::OscPanel(SynthParams &p)
     registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
     registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
-                                             //[/UserPreSize]
+    //[/UserPreSize]
 
     setSize(600, 400);
 
@@ -119,6 +126,7 @@ OscPanel::~OscPanel()
     lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
+    amountWidthMod = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -142,15 +150,16 @@ void OscPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    ftune1->setBounds(80, 8, 64, 64);
-    lfo1depth1->setBounds(224, 8, 64, 64);
-    osc1trngAmount->setBounds(296, 8, 64, 64);
-    pulsewidth->setBounds(296, 8, 64, 64);
-    pitchRange->setBounds(152, 8, 64, 64);
-    ctune1->setBounds(8, 8, 64, 64);
-    lfoFadeIn->setBounds(440, 8, 64, 64);
-    waveformVisual->setBounds(24, 112, 208, 96);
-    waveformSwitch->setBounds(360, 128, 64, 64);
+    ftune1->setBounds (80, 8, 64, 64);
+    lfo1depth1->setBounds (224, 8, 64, 64);
+    osc1trngAmount->setBounds (296, 8, 64, 64);
+    pulsewidth->setBounds (296, 8, 64, 64);
+    pitchRange->setBounds (152, 8, 64, 64);
+    ctune1->setBounds (8, 8, 64, 64);
+    lfoFadeIn->setBounds (440, 8, 64, 64);
+    waveformVisual->setBounds (24, 112, 208, 96);
+    waveformSwitch->setBounds (360, 128, 64, 64);
+    amountWidthMod->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -201,6 +210,11 @@ void OscPanel::sliderValueChanged(Slider* sliderThatWasMoved)
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
         //[/UserSliderCode_waveformSwitch]
     }
+    else if (sliderThatWasMoved == amountWidthMod)
+    {
+        //[UserSliderCode_amountWidthMod] -- add your slider handling code here..
+        //[/UserSliderCode_amountWidthMod]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -211,12 +225,12 @@ void OscPanel::sliderValueChanged(Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
-    int waveformKey = static_cast<int>(waveformSwitch->getValue());
-    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+	int waveformKey = static_cast<int>(waveformSwitch->getValue());
+	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
     params.osc1Waveform.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-    waveformVisual->setWaveformKey(eWaveformKey);
+	waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
 }
@@ -227,54 +241,58 @@ void OscPanel::updateWFShapeControls()
 #if 0
 /*  -- Introjucer information section --
 
-This is where the Introjucer stores the metadata that describe this GUI layout, so
-make changes in here at your peril!
+    This is where the Introjucer stores the metadata that describe this GUI layout, so
+    make changes in here at your peril!
 
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscPanel" componentName=""
-parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
-initialHeight="400">
-<BACKGROUND backgroundColour="ffffffff"/>
-<SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
-min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
-min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
-min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
-min="0.010000000000000000208" max="0.98999999999999999112" int="0"
-style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
-min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"
-min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-<GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
-class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
-<SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 128 64 64"
-min="0" max="2" int="1" style="RotaryHorizontalVerticalDrag"
-textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-textBoxHeight="20" skewFactor="1"/>
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
+                 initialHeight="400">
+  <BACKGROUND backgroundColour="ffffffff"/>
+  <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
+          min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
+          min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
+          min="0.010000000000000000208" max="0.98999999999999999112" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 8 64 64"
+          min="0" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          min="-11" max="11" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="440 8 64 64"
+          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
+                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+  <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="360 128 64 64"
+          min="0" max="2" int="1" style="RotaryHorizontalVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
