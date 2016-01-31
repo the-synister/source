@@ -16,7 +16,7 @@
 #include <PluginEditor.h>
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor() 
+PluginAudioProcessor::PluginAudioProcessor()
     : delay(*this)
     , stepSeq(*this)
     , chorus(*this)
@@ -48,11 +48,11 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));
-    
+
     addParameter(new HostParam<Param>(delayFeedback));
     addParameter(new HostParam<Param>(delayDryWet));
     addParameter(new HostParam<Param>(delayTime));
-    
+
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
@@ -70,28 +70,24 @@ PluginAudioProcessor::PluginAudioProcessor()
     // Source Pitchbend, Destination OSC1 Pitch
 #if 0
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
-                                                       DEST_PITCH_BUF,
-                                                       &osc1PitchRange,
-                                                       nullptr,
-                                                       true));
+        DEST_PITCH_BUF,
+        &osc1PitchRange,
+        nullptr,
+        true));
 #endif
     // Let'S try this: Source LFO1, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-                                                       DEST_PITCH_BUF,
+                                                       DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
                                                        nullptr,
                                                        true));
 
     // Now let's add an envelope for the pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
-                                                       DEST_PITCH_BUF,
+                                                       DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
                                                        nullptr,
                                                        false));
-#if 0
-    // now let's add an envelope for the filter
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,))
-#endif
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
