@@ -56,27 +56,17 @@ PluginAudioProcessor::PluginAudioProcessor()
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
-#if 0
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-        DEST_FILT_FC,
-        &lpModAmout,
-        &lpCutoff, //this needs to be changed to a destination
-        TRANSFORM_NONE,
-        true));
-#endif
     /*Create ModMatrixRows here*/
     // Source Pitchbend, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
                                                        DEST_OSC1_PITCH,
                                                        &osc1PitchRange,
-        &osc1PitchRange, //this needs to be changed to a destination
                                                        true));
 
     // Let'S try this: Source LFO1, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
                                                        DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
-        &osc1PitchRange,
                                                        true));
 }
 

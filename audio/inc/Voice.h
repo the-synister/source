@@ -155,7 +155,6 @@ public:
         modDestinations[DEST_OSC1_PITCH] = pitchModBuffer.getWritePointer(0);
     }
 
-
     bool canPlaySound(SynthesiserSound* sound) override
     {
         ignoreUnused(sound);
@@ -721,7 +720,7 @@ private:
     
     float* modSources[MAX_SOURCES];
     float* modDestinations[MAX_DESTINATIONS];
-    
+
     int totSamples;
 
     // variables for env

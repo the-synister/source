@@ -107,21 +107,20 @@ struct modMatrixRow
 	sources sourceIndex;
 	destinations destinationIndex;
     Param* modIntensity;
-    Param* modRange;
+    //Param* modRange;
 	bool enable;
 };
 
 inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
 										destinations destinationIndex_,
                                         Param* modIntensity_,
-                                        Param* modRange_,
 										bool enable_ = true) {
 
-	modMatrixRow* row = new modMatrixRow;
+    modMatrixRow* row = new modMatrixRow;
 	row->sourceIndex = sourceIndex_;
 	row->destinationIndex = destinationIndex_;
 	row->modIntensity = modIntensity_;
-	row->modRange = modRange_;
+	//row->modRange = modRange_;
 	row->enable = enable_;
 
 	return row;
@@ -158,27 +157,24 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
 
     for (unsigned int i = 0; i < matrixCore.size(); ++i)
     {
-        // get the row
-        modMatrixRow* row = matrixCore[i];
-        
         // --- this should never happen!
-        if (row == nullptr) continue;
+        if (matrixCore[i] == nullptr) continue;
         
         // --- if disabled, skip row
-        if (!row->enable) continue;
+        if (!matrixCore[i]->enable) continue;
         
         // --- check the mod layer
-        if (!checkDestinationLayer(modLayer, row)) continue;
+        if (!checkDestinationLayer(modLayer, matrixCore[i])) continue;
         
         // get the source value & mod intensity
-        float source = *(src[row->sourceIndex]);
-        float intensity = row->modIntensity->get();
+        float source = *(src[matrixCore[i]->sourceIndex]);
+        float intensity = matrixCore[i]->modIntensity->get();
 
         // get the min max values for the intensity for transformation
-        float min = row->modIntensity->getMin();
-        float max = row->modIntensity->getMax();
+        float min = matrixCore[i]->modIntensity->getMin();
+        float max = matrixCore[i]->modIntensity->getMax();
 
-        if (isUnipolar(row->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
+        if (isUnipolar(matrixCore[i]->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
             intensity = toBipolar(min, max, intensity);
         }
         else { // else the source is bipolar, transform the intensity to unipolar
@@ -193,12 +189,12 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         source liefert den Pitchbend!!!*/
 
 
-        float dModValue = source*100.f*(row->modIntensity->get()); //*(row->modRange->get());
+        float dModValue = source*100.f*(matrixCore[i]->modIntensity->get()); //*(row->modRange->get());
 //        float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         
         // entscheidung wann addition/multiplikation -> der erste muss ja addieren, sonst multiplizieren wir mit 0?
-        *(dst[row->destinationIndex]) += Param::fromCent(dModValue);
-        *(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
+        *(dst[matrixCore[i]->destinationIndex]) += Param::fromCent(dModValue);
+        //*(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
 
         // universal connections example:
         // first check DEST_ALL types
@@ -242,11 +238,9 @@ inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinatio
 {
     
     for (unsigned int i = 0; i<matrixCore.size(); ++i)
-    {
-        modMatrixRow* row = matrixCore[i];
-        
+    {        
         // find matching source/destination pairs
-        if (row->sourceIndex == sourceIndex && row->destinationIndex == destinationIndex)
+        if (matrixCore[i]->sourceIndex == sourceIndex && matrixCore[i]->destinationIndex == destinationIndex)
         {
             return true;
         }
@@ -257,13 +251,11 @@ inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinatio
 inline bool ModulationMatrix::enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable)
 {
     for (unsigned int i = 0; i<matrixCore.size(); ++i)
-    {
-        modMatrixRow* row = matrixCore[i];
-        
+    {    
         // find matching source/destination pairs
-        if (row->sourceIndex == sourceIndex && row->destinationIndex == destinationIndex)
+        if (matrixCore[i]->sourceIndex == sourceIndex && matrixCore[i]->destinationIndex == destinationIndex)
         {
-            row->enable = enable;
+            matrixCore[i]->enable = enable;
             return true; // found it
         }
     }
