@@ -40,43 +40,43 @@ enum sources : int {
     SOURCE_ENV2,
     SOURCE_ENV3,
 
-	MAX_SOURCES
+    MAX_SOURCES
 };
 
 enum destinations : int {
 
-	DEST_NONE = -1,
+    DEST_NONE = -1,
 
-	// --- GUI control layer modulation (-1)
-	DEST_UI_OSC1_FO,
-	DEST_UI_OSC2_FO,
-	DEST_UI_OSC3_FO,
+    // --- GUI control layer modulation (-1)
+    DEST_UI_OSC1_FO,
+    DEST_UI_OSC2_FO,
+    DEST_UI_OSC3_FO,
 
-	DEST_UI_FILTER1_FC,
-	DEST_UI_FILTER2_FC,
+    DEST_UI_FILTER1_FC,
+    DEST_UI_FILTER2_FC,
 
-	// --- LAYER 0 DESTINATIONS 
-	//     add more L0 destinations in this chunk
-	//     see CModulationMatrix::checkDestinationLayer())
+    // --- LAYER 0 DESTINATIONS 
+    //     add more L0 destinations in this chunk
+    //     see CModulationMatrix::checkDestinationLayer())
 
-	DEST_FILT_FC,       // <- keep this first
-	DEST_OSC1_PITCH,    // <- keep this last
+    DEST_FILT_FC,       // <- keep this first
+    DEST_OSC1_PITCH,    // <- keep this last
 
-				  // --- END OF LAYER 0 DESTINATIONS
+                        // --- END OF LAYER 0 DESTINATIONS
 
-				  // --- LAYER 1 DESTINATIONS 
-                       //    DEST_OSC1_PULSEWIDTH,
+                        // --- LAYER 1 DESTINATIONS 
+                        //    DEST_OSC1_PULSEWIDTH,
 
-				  // --- END OF LAYER 1 DESTINATIONS
+                        // --- END OF LAYER 1 DESTINATIONS
 
-	MAX_DESTINATIONS
+    MAX_DESTINATIONS
 };
 
 enum transform {
     TRANSFORM_NONE = 0,
     TRANSFORM_TO_BIPOLAR,
     TRANSFORM_TO_UNIPOLAR,
-	MAX_TRANSFORMS
+    MAX_TRANSFORMS
 };
 
 inline bool isUnipolar(sources source) {
@@ -105,43 +105,43 @@ inline bool isUnipolar(sources source) {
 
 struct modMatrixRow
 {
-	sources sourceIndex;
-	destinations destinationIndex;
+    sources sourceIndex;
+    destinations destinationIndex;
     Param* modIntensity;
     //Param* modRange;
-	bool enable;
+    bool enable;
 };
 
 inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
-										destinations destinationIndex_,
+                                        destinations destinationIndex_,
                                         Param* modIntensity_,
-										bool enable_ = true) {
+                                        bool enable_ = true) {
 
-	modMatrixRow* row = new modMatrixRow;
-	row->sourceIndex = sourceIndex_;
-	row->destinationIndex = destinationIndex_;
-	row->modIntensity = modIntensity_;
-	//row->modRange = modRange_;
-	row->enable = enable_;
+    modMatrixRow* row = new modMatrixRow;
+    row->sourceIndex = sourceIndex_;
+    row->destinationIndex = destinationIndex_;
+    row->modIntensity = modIntensity_;
+    //row->modRange = modRange_;
+    row->enable = enable_;
 
-	return row;
+    return row;
 }
 
 // core
 class ModulationMatrix {
 public:
-	ModulationMatrix();
-	~ModulationMatrix();
-	
-	inline void clearSources();
-	inline void clearDestinations();
-	inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
-	inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
+    ModulationMatrix();
+    ~ModulationMatrix();
+
+    inline void clearSources();
+    inline void clearDestinations();
+    inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
+    inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
     void addModMatrixRow(modMatrixRow * row);
-	inline bool checkDestinationLayer(int layer, modMatrixRow* row);
+    inline bool checkDestinationLayer(int layer, modMatrixRow* row);
     inline float toUnipolar(float min, float max, float value);
     inline float toBipolar(float min, float max, float value);
-	inline void doModulationsMatrix(int modLayer, float** src, float** dst);
+    inline void doModulationsMatrix(int modLayer, float** src, float** dst);
 
     float sources[MAX_SOURCES];
     float destinations[MAX_DESTINATIONS];
@@ -151,11 +151,10 @@ public:
 
 inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, float** dst)
 {
-    
+
     // clear dest registers
     //clearDestinations();
-    
-        
+
     for (unsigned int i = 0; i < matrixCore.size(); ++i)
     {
         // --- this should never happen!

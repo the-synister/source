@@ -12,8 +12,8 @@
 
 ModulationMatrix::ModulationMatrix()
 {
-	clearSources();
-	clearDestinations();
+    clearSources();
+    clearDestinations();
 }
 
 ModulationMatrix::~ModulationMatrix()

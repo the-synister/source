@@ -42,11 +42,11 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modMatrix(globalModMatrix_) //local Matrix initialisation
-        , osc1PitchModBuffer(1, blockSize)
-        , filterModBuffer(1, blockSize)
+    , osc1PitchModBuffer(1, blockSize)
+    , filterModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
-        , lfo1Buffer(1,blockSize)
+    , lfo1Buffer(1,blockSize)
     , env1Buffer(1, blockSize)
     , noModBuffer(1, blockSize)
     {
@@ -54,7 +54,7 @@ public:
         
         for(float*& pSource : modSources) {
             pSource = nullptr;
-    }
+        }
         for(float*& pDest : modDestinations) {
             pDest = nullptr;
         }
@@ -125,7 +125,7 @@ public:
             lfo1random.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
-        else {
+        else{
 
             lfo1sine.phase = .5f*float_Pi;
             lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
@@ -147,7 +147,7 @@ public:
             lfo1square.width = params.osc1pulsewidth.get();
             //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
             break;
-    }
+        }
             case eOscWaves::eOscSaw:
         {
             osc1Saw.phase = 0.f;
@@ -589,8 +589,6 @@ private:
     AudioSampleBuffer env1Buffer;
     
     ModulationMatrix* modMatrix; //pointer to the global Matrix
-    //modMatrixRow* modMatrixRow;
-    //float filter1Fc;
     
     // Envelopes 
     Envelope envToVolume;
