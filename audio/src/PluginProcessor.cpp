@@ -16,7 +16,7 @@
 #include <PluginEditor.h>
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor()
+PluginAudioProcessor::PluginAudioProcessor() 
     : delay(*this)
     , stepSeq(*this)
     , chorus(*this)
@@ -48,70 +48,54 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));
-
+    
     addParameter(new HostParam<Param>(delayFeedback));
     addParameter(new HostParam<Param>(delayDryWet));
     addParameter(new HostParam<Param>(delayTime));
-
+    
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
-
-#if 0
-    //this was the first tryout
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-        DEST_FILT_FC,
-        &lpModAmout,
-        &lpCutoff, //this needs to be changed to a destination
-        TRANSFORM_NONE,
-        true));
-#endif
 
     /*Create ModMatrixRows here*/
     // Source Pitchbend, Destination OSC1 Pitch
 #if 0
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
-        DEST_PITCH_BUF,
-        &osc1PitchRange,
-        nullptr,
-        true));
+                                                       DEST_OSC1_PITCH,
+                                                       &osc1PitchRange,
+                                                       true));
 #endif
+
     // Let'S try this: Source LFO1, Destination OSC1 Pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
                                                        DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
-                                                       nullptr,
                                                        false));
 
     // Now let's add an envelope for the pitch
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_OSC1_PITCH,
                                                        &osc1lfo1depth,
-                                                       nullptr,
-                                                       true));
+                                                       false));
 
     // Add LFO1 and ENV1 to DEST_FILT_FC with
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
                                                        DEST_FILT_FC,
                                                        &lpModAmount,
-                                                       nullptr,
                                                        false));
 
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
                                                        DEST_FILT_FC,
                                                        &hpModAmount,
-                                                       nullptr,
                                                        false));
 
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_FILT_FC,
                                                        &lpModAmount,
-                                                       nullptr,
                                                        false));
 
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_FILT_FC,
                                                        &hpModAmount,
-                                                       nullptr,
                                                        false));
 }
 
@@ -263,10 +247,10 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
-    // chorus
-    if (chorDryWet.get() > 0.f) {
-        chorus.render(buffer, 0); // adds the chorus to the outputBuffer
-    }
+	// chorus
+	if (chorDryWet.get() > 0.f) {
+		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+	}
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
                           // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?
