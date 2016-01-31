@@ -3074,6 +3074,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\berlin_sans_demi_bold.ttf">
+      <Filter>standalone\Gui\Assets</Filter>
+    </None>
     <None Include="..\..\..\..\..\..\Desktop\Assets\glow.png">
       <Filter>standalone\Gui\Assets</Filter>
     </None>

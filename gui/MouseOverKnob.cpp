@@ -15,7 +15,6 @@
 MouseOverKnob::MouseOverKnob(const String& name)
     : Slider(name)
     , modSources({nullptr})
-//    , modSource2(nullptr)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(18.00f, Font::plain));
@@ -31,7 +30,6 @@ MouseOverKnob::MouseOverKnob(const String& name)
 
 MouseOverKnob::~MouseOverKnob()
 {
-    // TODO: release pointer
     knobLabel = nullptr;
 }
 //==============================================================================
@@ -130,6 +128,20 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
     knobWidth = width;
     knobHeight = height;
     Slider::setBounds(x, y, width, height);
+}
+
+void MouseOverKnob::enablementChanged()
+{
+    Slider::enablementChanged();
+
+    if (this->isEnabled())
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
+    }
+    else
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white.withAlpha(0.5f));
+    }
 }
 
 /**

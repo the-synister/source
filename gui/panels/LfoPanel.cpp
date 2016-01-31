@@ -37,12 +37,15 @@ LfoPanel::LfoPanel (SynthParams &p)
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     freq->addListener (this);
 
-    addAndMakeVisible (wave = new MouseOverKnob ("wave switch"));
+    addAndMakeVisible (wave = new Slider ("wave switch"));
     wave->setRange (0, 2, 1);
-    wave->setSliderStyle (Slider::RotaryVerticalDrag);
-    wave->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    wave->setSliderStyle (Slider::LinearHorizontal);
+    wave->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    wave->setColour (Slider::thumbColourId, Colour (0xff855050));
+    wave->setColour (Slider::trackColourId, Colours::white);
     wave->addListener (this);
 
     addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
@@ -62,6 +65,33 @@ LfoPanel::LfoPanel (SynthParams &p)
     label4->setEditable (false, false, false);
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (sineLabel = new Label ("sine label",
+                                              TRANS("Sine")));
+    sineLabel->setFont (Font (15.00f, Font::plain));
+    sineLabel->setJustificationType (Justification::centredLeft);
+    sineLabel->setEditable (false, false, false);
+    sineLabel->setColour (Label::textColourId, Colours::white);
+    sineLabel->setColour (TextEditor::textColourId, Colours::black);
+    sineLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (squareLabel = new Label ("square label",
+                                                TRANS("Square")));
+    squareLabel->setFont (Font (15.00f, Font::plain));
+    squareLabel->setJustificationType (Justification::centredLeft);
+    squareLabel->setEditable (false, false, false);
+    squareLabel->setColour (Label::textColourId, Colours::white);
+    squareLabel->setColour (TextEditor::textColourId, Colours::black);
+    squareLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (sampleHoldLabel2 = new Label ("sample and hold label",
+                                                     TRANS("Smp+Hold")));
+    sampleHoldLabel2->setFont (Font (15.00f, Font::plain));
+    sampleHoldLabel2->setJustificationType (Justification::centredLeft);
+    sampleHoldLabel2->setEditable (false, false, false);
+    sampleHoldLabel2->setColour (Label::textColourId, Colours::white);
+    sampleHoldLabel2->setColour (TextEditor::textColourId, Colours::black);
+    sampleHoldLabel2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
 
     //[UserPreSize]
@@ -91,6 +121,9 @@ LfoPanel::~LfoPanel()
     tempoSyncSwitch = nullptr;
     notelength = nullptr;
     label4 = nullptr;
+    sineLabel = nullptr;
+    squareLabel = nullptr;
+    sampleHoldLabel2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -115,10 +148,13 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 8, 64, 64);
-    wave->setBounds (80, 8, 64, 64);
+    wave->setBounds (192, 32, 64, 64);
     tempoSyncSwitch->setBounds (82, 113, 150, 24);
     notelength->setBounds (168, 152, 150, 24);
     label4->setBounds (8, 152, 150, 24);
+    sineLabel->setBounds (136, 48, 80, 24);
+    squareLabel->setBounds (200, 16, 80, 24);
+    sampleHoldLabel2->setBounds (272, 48, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -194,13 +230,14 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="0.01" max="50" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="80 8 64 64" min="0" max="2" int="1"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" rotarysliderfill="ff855050"
+          min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
+          explicitFocusOrder="0" pos="192 32 64 64" thumbcol="ff855050"
+          trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
                 virtualName="" explicitFocusOrder="0" pos="82 113 150 24" buttonText="Tempo Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -211,6 +248,21 @@ BEGIN_JUCER_METADATA
   <LABEL name="new label" id="22b737542921a599" memberName="label4" virtualName=""
          explicitFocusOrder="0" pos="8 152 150 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Change note length 1/x" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="sine label" id="b40cd065bdc2086c" memberName="sineLabel"
+         virtualName="" explicitFocusOrder="0" pos="136 48 80 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Sine" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="square label" id="5adc08b39551a18d" memberName="squareLabel"
+         virtualName="" explicitFocusOrder="0" pos="200 16 80 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Square" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="sample and hold label" id="f2be9ba7b41efda2" memberName="sampleHoldLabel2"
+         virtualName="" explicitFocusOrder="0" pos="272 48 80 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Smp+Hold" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>

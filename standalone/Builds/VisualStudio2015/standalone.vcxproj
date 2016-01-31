@@ -1770,6 +1770,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\berlin_sans_demi_bold.ttf"/>
     <None Include="..\..\..\..\..\..\Desktop\Assets\glow.png"/>
     <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png"/>
     <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png"/>

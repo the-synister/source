@@ -33,6 +33,7 @@ public:
 
     void resized() override;
     void setBounds(int x, int y, int width, int height);
+    void enablementChanged() override;
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
     void mouseEnter(const MouseEvent &e) override;
@@ -42,6 +43,7 @@ public:
 
 private:
     ScopedPointer<Label> knobLabel;
+
     int knobWidth = 64;
     int knobHeight = 64;
 

@@ -37,12 +37,12 @@ protected:
     }
 
     // NOTE: sourceNumber values 1 or 2
-    // TODO: change it to an enum? 
+    // TODO: change it to an enum?
     void registerSaturnSource(MouseOverKnob *dest, Slider *source, Param *paramSource, int sourceNumber) {
         dest->setModSource(paramSource, sourceNumber);
-        
+
         auto temp = saturnReg.find(dest);
-        
+
         if (temp == saturnReg.end()) {
             std::array<Slider*, 2> newSource = {nullptr};
             newSource[sourceNumber-1] = source;
@@ -51,7 +51,7 @@ protected:
             temp->second[sourceNumber-1] = source;
         }
     }
-    
+
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {
             if (s2p.second->isUIDirty()) {
@@ -71,16 +71,16 @@ protected:
             // find the mod source from the slider register
             for (int i = 0; i < 2; ++i) {
                 auto modSource = sliderReg.find(dest2saturn.second[i]);
-                
+
                 //if the mod source is Dirty repaint
                 if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
                     dest2saturn.first->repaint();
                 }
-                
+
             }
         }
     }
-    
+
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
@@ -88,15 +88,15 @@ protected:
             if(it->second->hasLabels()) {
                 it->first->setName(it->second->getUIString());
             }
-            
+
             for (auto saturn : saturnReg) {
                 for (int i = 0; i < 2; ++i) {
                     if (saturn.second[i] == sliderThatWasMoved) {
                         saturn.first->repaint();
-                    }                    
+                    }
                 }
             }
-            
+
             return true;
         } else {
             return false;

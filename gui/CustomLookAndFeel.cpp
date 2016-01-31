@@ -15,7 +15,6 @@
 CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
-    // set various things like Font and so on
     this->setDefaultSansSerifTypefaceName("Bauhaus 93");
 
     // load assets
@@ -27,33 +26,32 @@ CustomLookAndFeel::CustomLookAndFeel()
 
 CustomLookAndFeel::~CustomLookAndFeel()
 {
-    // TODO: release ressources
-    //rotarySliderImage.~Image();
-    //verticalSlider.~Image();
-    //verticalSliderThumb.~Image();
-    //glow.~Image();
+
 }
 //==============================================================================
-
+/**
+* Draw Rotary Slider with saturns if neccessary.
+*/
 void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &s)
 {
     const float centreX = x + width * 0.5f;
     const float centreY = y + height * 0.5f;
-    //const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled(); // TODO: verwenden!
+    const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
 
     // custom start and end angle for knob and saturn
-    rotaryStartAngle = -float_Pi + degreesToRadians(45.0f);
-    rotaryEndAngle = float_Pi - degreesToRadians(45.0f);
+    rotaryStartAngle = -float_Pi + degreesToRadians(30.0f);
+    rotaryEndAngle = float_Pi - degreesToRadians(30.0f);
 
     // current slider position angle in radians in range [rotaryStartAngle, rotaryEndAngle]
     const float currAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
-
-    const float knobMargin = 0.70f; // relative knobBorder to max radius
+    const float knobMargin = 0.7f; // relative knobBorder to max radius
     const float radiusSource2 = jmin(width / 2.0f, height / 2.0f);
     const float radiusKnob = radiusSource2 * knobMargin;
     const float radiusSource1 = radiusKnob + (radiusSource2 - radiusKnob) / 2.0f;
 
-    Path knob, saturn;
+    Path knob;
+    Colour baseColour(s.findColour(Slider::rotarySliderFillColourId));
+    float r;
 
     // if knob radius is bigger than 12, then downsize them for displaying possible modSource
     if (jmin(width, height) > 24)
@@ -61,124 +59,138 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
         // display modulation on slider if neccessary
         std::array<Param*, 2> modSources = static_cast<MouseOverKnob&>(s).getModSources();
 
-        // TODO: SynthParams erweitern um...
-        //       UNIPOLAR: from angle to min(endAngle, angle + amount)
-        //       BIPOLAR: from max(angle - amount/2, startAngle) to min(angle + amount/2, endAngle)
-        //       modSource ADDITIV oder MULTIPLIKATIV???
-        // TODO: wie siehts aus mit gewöhnlichem slider? -> am besten alle normalen slider weg
-        // TODO: wenn modSource vorhanden, dann draw arc outline?
-
-        float modStartAngle, modEndAngle, modPosition1, modPosition2;
-        double afterModVal1, afterModVal2;
-
         // draw saturn 1 if modSource is in use
-        
-            if (modSources[0] != nullptr)
-            {
-                // NOTE: testcase unipolar
-                // if(unipolar)
-                {
-                    // if(additiv)
-                    {
-                        afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSources[0]->get(), s.getMaximum()));
-                    }
-                    //else
-                    //{
-                    //// multiplicative
-                    //afterModVal = jmax(s.getMinimum(), jmin(currValue * modSource1->get(), max));
-                    //}
-                    
-                    modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
-                    modStartAngle = currAngle;
-                    modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
-                }
-                //else
-                //{
-                // bipolar
-                
-                //}
-                
-                g.setColour(s.isEnabled() ? Colours::blue : Colours::lightgrey);
-                saturn.addPieSegment(centreX - radiusSource1, centreY - radiusSource1, radiusSource1 * 2.0f, radiusSource1 * 2.0f,
-                                     jmax(rotaryStartAngle, jmin(modStartAngle, rotaryEndAngle)), jmax(rotaryStartAngle, jmin(modEndAngle, rotaryEndAngle)), (radiusKnob / radiusSource1));
-                g.fillPath(saturn);
-            }
+        if (modSources[0] != nullptr)
+        {
+            drawModSource(g, s, modSources[0]->get(), true, centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
+        }
 
         // draw saturn 2 if modSource is in use
         if (modSources[1] != nullptr)
         {
-            // NOTE: testcase bipolar
-            // if(unipolar)
-            //{
-                // unipolar
-            //}
-            //else
-            {
-                // if(additiv)
-                {
-                    afterModVal1 = jmax(s.getMinimum(), jmin(s.getValue() + modSources[1]->get() / 2.0f, s.getMaximum()));
-                    afterModVal2 = jmax(s.getMinimum(), jmin(s.getValue() - modSources[1]->get() / 2.0f, s.getMaximum()));
-                }
-                //else
-                //{
-                //// multiplicative
-                //afterModVal = jmax(min, jmin(currValue * modSource1->get(), max));
-                //}
-
-                modPosition1 = static_cast<float>(pow((afterModVal1 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
-                modPosition2 = static_cast<float>(pow((afterModVal2 - s.getMinimum()) / (s.getMaximum() - s.getMinimum()), s.getSkewFactor()));
-
-                modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
-                modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
-            }
-
-            g.setColour(s.isEnabled()? Colours::red : Colours::slategrey);
-            saturn.clear();
-            saturn.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f,
-                jmax(-float_Pi, jmin(modStartAngle, float_Pi)), jmax(-float_Pi, jmin(modEndAngle, float_Pi)), (radiusSource1 / radiusSource2));
-            g.fillPath(saturn);
+            drawModSource(g, s, modSources[1]->get(), false, centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
         }
-
-        // draw knob
-        //int frame = static_cast<int>(sliderPosProportional * numberFramesRotary);
-        //Rectangle<int> clipRect = { 0, jmax(0, jmin(frame, numberFramesRotary - 1)) * heightRotary, widthRotary, heightRotary };
-        //g.drawImageWithin(rotarySliderImage.getClippedImage(clipRect),
-        //    static_cast<int>(centreX - radiusKnob), static_cast<int>(centreY - radiusKnob),
-        //    static_cast<int>(radiusKnob * 2.0f), static_cast<int>(radiusKnob * 2.0f),
-        //    RectanglePlacement::centred);
 
         // draw knob border
         g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
         knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
         g.fillPath(knob);
 
-        // draw knob pointer
-        g.setColour(s.findColour(Slider::rotarySliderFillColourId).withAlpha(s.isEnabled()? 1.0f : 0.5f));
+        g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         knob.clear();
-        knob.addPieSegment(centreX - radiusKnob * knobMargin, centreY - radiusKnob * knobMargin, radiusKnob * knobMargin * 2.0f, radiusKnob * knobMargin * 2.0f, // first part
-            -float_Pi, jmax(-float_Pi, jmin(currAngle - float_Pi / 18.0f, float_Pi)), 0.0f);
-        knob.addPieSegment(centreX - radiusKnob * knobMargin, centreY - radiusKnob * knobMargin, radiusKnob * knobMargin * 2.0f, radiusKnob * knobMargin * 2.0f, // second part
-            float_Pi, jmax(-float_Pi, jmin(currAngle + float_Pi / 18.0f, float_Pi)), 0.0f);
-        g.fillPath(knob);
+        r = radiusKnob * knobMargin;
     }
     else
     {
-        // if knob radius is smaller than 12, then draw without saturn using full width and full height
-        g.setColour(s.isEnabled()? Colours::white : Colours::grey);
-        knob.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, // first part
-            -float_Pi, jmax(-float_Pi, jmin(currAngle - float_Pi / 18.0f, float_Pi)), 0.0f);
-        knob.addPieSegment(centreX - radiusSource2, centreY - radiusSource2, radiusSource2 * 2.0f, radiusSource2 * 2.0f, // second part
-            float_Pi, jmax(-float_Pi, jmin(currAngle + float_Pi / 18.0f, float_Pi)), 0.0f);
-        g.fillPath(knob);
+        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        r = radiusSource2;
     }
+
+    // draw first part of value pointer
+    knob.addPieSegment(centreX - r, centreY - r, r * 2.0f, r * 2.0f, -float_Pi, currAngle - float_Pi / 18.0f, 0.0f);
+    // draw second part of value pointer
+    knob.addPieSegment(centreX - r, centreY - r, r * 2.0f, r * 2.0f, float_Pi, currAngle + float_Pi / 18.0f, 0.0f);
+    g.fillPath(knob);
 }
 
+/**
+* Draw modSource as Saturn.
+* TODO: später statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar/bipolar und evtl. Colour
+*/
+void CustomLookAndFeel::drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar,
+    float centreX, float centreY, float radius, float innerCircleSize,
+    float currAngle, float rotaryStartAngle, float rotaryEndAngle)
+{
+    const float val = static_cast<float>(s.getValue());
+    const float min = static_cast<float>(s.getMinimum());
+    const float max = static_cast<float>(s.getMaximum());
+    const float skew = static_cast<float>(s.getSkewFactor());
+
+    float modStartAngle, modEndAngle, modPosition1, modPosition2;
+    float afterModVal1, afterModVal2;
+
+    // TODO: SynthParams erweitern um...
+    //       UNIPOLAR: from angle to min(endAngle, angle + amount)
+    //       BIPOLAR: from max(angle - amount/2, startAngle) to min(angle + amount/2, endAngle)
+    //       modSource ADDITIV oder MULTIPLIKATIV???
+    // TODO: sourceValue generisch machen im bereich [0..1.f] als % mod amount
+
+    if (unipolar)
+    {
+        afterModVal1 = jmax(min, jmin(val + sourceValue, max));
+        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+
+        modStartAngle = currAngle;
+        modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+    }
+    else
+    {
+        afterModVal1 = jmax(min, jmin(val + sourceValue / 2.0f, max));
+        afterModVal2 = jmax(min, jmin(val - sourceValue / 2.0f, max));
+        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
+
+        modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+        modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
+    }
+
+    Path saturn;
+    g.setColour(s.isEnabled() ? Colours::yellow : Colours::lightgrey); // TODO: mod specific colour verwenden
+    saturn.addPieSegment(centreX - radius, centreY - radius, radius * 2.0f, radius * 2.0f, modStartAngle, modEndAngle, innerCircleSize * 1.03f);
+    g.fillPath(saturn);
+}
+
+/**
+* Draw Custom linear Slider.
+*/
 void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
+    // use bar slider to draw vol and pan instead
     if (style == Slider::LinearBar || style == Slider::LinearBarVertical)
     {
-        // TODO: change bar into Vol and Pan
-        LookAndFeel_V2::drawLinearSlider(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
+        const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
+        const float c = 0.0f; // instead of always using static cast
+
+        Path path;
+        Colour baseColour(s.findColour(Slider::trackColourId));
+        g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
+
+        // draw bipolar triangle bars for pan
+        if (s.getMinimum() == -s.getMaximum())
+        {
+            const float thumbWidthHalf = 2.0f;
+
+            // fill left side
+            path.addTriangle(x + c, y + c, x + c, y + height + c, x + width / 2.0f, y + height + c);
+
+            // fill right side
+            path.addTriangle(x + +width / 2.0f, y + height + c, x + width + c, y + height + c, x + width + c, y + c);
+            g.fillPath(path);
+
+            // TODO: richtiges konzept für pan fragen
+            path.clear();
+            g.setColour(s.findColour(Slider::thumbColourId));
+
+            path.addQuadrilateral(x + sliderPos - thumbWidthHalf, y + height + c,
+                                  x + sliderPos + thumbWidthHalf, y + height + c,
+                                  x + sliderPos + thumbWidthHalf, y + c,
+                                  x + sliderPos - thumbWidthHalf, y + c);
+            g.fillPath(path);
+        }
+        // draw unipolar triangle bar for vol
+        else
+        {
+            float offSet = height - height * (x + sliderPos) / (x + width);
+
+            // fill triangle
+            path.addTriangle(x + c, y + height + c, x + sliderPos, y + height + c, x + sliderPos, y + offSet);
+            g.fillPath(path);
+
+            // draw outline
+            path.clear();
+            path.addTriangle(x + width + c, y + c, x + c, y + height + c, x + width + c, y + height + c);
+            g.strokePath(path, PathStrokeType::PathStrokeType(isMouseOver ? 1.5f : 1.0f));
+        }
     }
     else
     {
@@ -188,6 +200,9 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
     }
 }
 
+/**
+* Draw linear slider background.
+*/
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
     const float sliderRadius = (float)(jmin(20, width / 2, height / 2) - 2);
@@ -216,143 +231,257 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
     g.fillPath(indent);
 }
 
+/**
+* Draw linear slider thumb.
+*/
 void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
     const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
-
-    Colour knobColour(s.findColour(Slider::thumbColourId));
-
     const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
+    float centreX, centreY;
 
+    Colour baseColour(s.findColour(Slider::thumbColourId));
+
+    // draw thumb at curretn position
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
     {
-        float kx, ky;
+        g.setColour(s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour);
+        centreX = style == Slider::LinearVertical ? (x + width / 2.0f) : sliderPos;
+        centreY = style == Slider::LinearVertical ? sliderPos : (y + height / 2.0f);
 
-        if (style == Slider::LinearVertical)
-        {
-            kx = x + width * 0.5f;
-            ky = sliderPos;
-        }
-        else
-        {
-            kx = sliderPos;
-            ky = y + height * 0.5f;
-        }
-
-        g.setColour(knobColour);
-        g.fillEllipse(kx - sliderRadius, ky - sliderRadius, sliderRadius * 2.0f, sliderRadius * 2.0f);
+        g.fillEllipse(centreX - sliderRadius, centreY - sliderRadius, sliderRadius * 2.0f, sliderRadius * 2.0f);
     }
     else
     {
-        // TODO: diese hier machen, falls verwendet werden, sonst egal
-        if (style == Slider::ThreeValueVertical)
+        // we only need TwoValueHorizontal as alternativ linear slider
+        if (style == Slider::TwoValueHorizontal)
         {
-            drawGlassSphere(g, x + width * 0.5f - sliderRadius,
-                sliderPos - sliderRadius,
-                sliderRadius * 2.0f,
-                knobColour, outlineThickness);
+            const float cornerSize = 10.0f;
+            const float r = (float)(jmin(20, width / 2, height / 2) - cornerSize);
+            const float yOffset = y + height * 0.5f - r * 0.5f;
+            centreY = y + height / 2.0f;
+
+            // fill inner track
+            g.setColour(s.findColour(Slider::rotarySliderFillColourId));
+            g.fillRect(minSliderPos - cornerSize / 2.0f, yOffset, maxSliderPos - minSliderPos + cornerSize, r);
+
+            // draw min slider thumb
+            g.setColour(s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour);
+            centreX = minSliderPos;
+            g.fillEllipse(centreX - sliderRadius, centreY - sliderRadius, sliderRadius * 2.0f, sliderRadius * 2.0f);
+
+            // draw max slider thumb
+            centreX = maxSliderPos;
+            g.fillEllipse(centreX - sliderRadius, centreY - sliderRadius, sliderRadius * 2.0f, sliderRadius * 2.0f);
         }
-        else if (style == Slider::ThreeValueHorizontal)
+        else
         {
-            drawGlassSphere(g, sliderPos - sliderRadius,
-                y + height * 0.5f - sliderRadius,
-                sliderRadius * 2.0f,
-                knobColour, outlineThickness);
-        }
-
-        if (style == Slider::TwoValueVertical || style == Slider::ThreeValueVertical)
-        {
-            const float sr = jmin(sliderRadius, width * 0.4f);
-
-            drawGlassPointer(g, jmax(0.0f, x + width * 0.5f - sliderRadius * 2.0f),
-                minSliderPos - sliderRadius,
-                sliderRadius * 2.0f, knobColour, outlineThickness, 1);
-
-            drawGlassPointer(g, jmin(x + width - sliderRadius * 2.0f, x + width * 0.5f), maxSliderPos - sr,
-                sliderRadius * 2.0f, knobColour, outlineThickness, 3);
-        }
-        else if (style == Slider::TwoValueHorizontal || style == Slider::ThreeValueHorizontal)
-        {
-            const float sr = jmin(sliderRadius, height * 0.4f);
-
-            drawGlassPointer(g, minSliderPos - sr,
-                jmax(0.0f, y + height * 0.5f - sliderRadius * 2.0f),
-                sliderRadius * 2.0f, knobColour, outlineThickness, 2);
-
-            drawGlassPointer(g, maxSliderPos - sliderRadius,
-                jmin(y + height - sliderRadius * 2.0f, y + height * 0.5f),
-                sliderRadius * 2.0f, knobColour, outlineThickness, 4);
+            LookAndFeel_V2::drawLinearSliderThumb(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
         }
     }
 }
 
-void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &t, bool isMouseOverButton, bool isButtonDown)
+/**
+* Set Slider Layout. Needed for mouseOverKnob with barSlider to not set textBoxPosition into bar slider. TODO: oder vllt. doch?
+*/
+Slider::SliderLayout CustomLookAndFeel::getSliderLayout(Slider& s)
 {
-   // LookAndFeel_V2::drawToggleButton(g, t, isMouseOverButton, isButtonDown);
+    // 1. compute the actually visible textBox size from the slider textBox size and some additional constraints
+    int minXSpace = 0;
+    int minYSpace = 0;
 
-    if (t.hasKeyboardFocus(true))
+    Slider::TextEntryBoxPosition textBoxPos = s.getTextBoxPosition();
+
+    if (textBoxPos == Slider::TextBoxLeft || textBoxPos == Slider::TextBoxRight)
+        minXSpace = 30;
+    else
+        minYSpace = 15;
+
+    Rectangle<int> localBounds = s.getLocalBounds();
+
+    const int textBoxWidth = jmax(0, jmin(s.getTextBoxWidth(), localBounds.getWidth() - minXSpace));
+    const int textBoxHeight = jmax(0, jmin(s.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
+
+    Slider::SliderLayout layout;
+
+    // 2. set the textBox bounds
+    if (textBoxPos != Slider::NoTextBox)
     {
-        g.setColour(t.findColour(TextEditor::focusedOutlineColourId));
-        g.drawRect(0, 0, t.getWidth(), t.getHeight());
+        layout.textBoxBounds.setWidth(textBoxWidth);
+        layout.textBoxBounds.setHeight(textBoxHeight);
+
+        if (textBoxPos == Slider::TextBoxLeft)           layout.textBoxBounds.setX(0);
+        else if (textBoxPos == Slider::TextBoxRight)     layout.textBoxBounds.setX(localBounds.getWidth() - textBoxWidth);
+        else /* above or below -> centre horizontally */ layout.textBoxBounds.setX((localBounds.getWidth() - textBoxWidth) / 2);
+
+        if (textBoxPos == Slider::TextBoxAbove)          layout.textBoxBounds.setY(0);
+        else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight);
+        else /* left or right -> centre vertically */    layout.textBoxBounds.setY((localBounds.getHeight() - textBoxHeight) / 2);
     }
 
-    float fontSize = jmin(15.0f, t.getHeight() * 0.75f);
+    // 3. set the slider bounds
+    layout.sliderBounds = localBounds;
+
+    if (s.isBar())
+    {
+        layout.sliderBounds.reduce(1, 1);   // bar border
+
+        if (s.isMouseOverOrDragging())
+        {
+            layout.sliderBounds.setHeight(layout.sliderBounds.getHeight() - textBoxHeight);
+        }
+    }
+    else
+    {
+        if (textBoxPos == Slider::TextBoxLeft)       layout.sliderBounds.removeFromLeft(textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxRight) layout.sliderBounds.removeFromRight(textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxAbove) layout.sliderBounds.removeFromTop(textBoxHeight);
+        else if (textBoxPos == Slider::TextBoxBelow) layout.sliderBounds.removeFromBottom(textBoxHeight);
+
+        const int thumbIndent = getSliderThumbRadius(s);
+
+        if (s.isHorizontal())    layout.sliderBounds.reduce(thumbIndent, 0);
+        else if (s.isVertical()) layout.sliderBounds.reduce(0, thumbIndent);
+    }
+
+    return layout;
+}
+
+
+/**
+* Draw button background.
+*/
+void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colour& c, bool isMouseOverButton, bool isButtonDown)
+{
+    const int width = b.getWidth();
+    const int height = b.getHeight();
+    const float cornerSize = 7.0f;
+    const float outlineThickness = 2.2f;
+    const float halfThickness = outlineThickness * 0.5f;
+
+    // background colour
+    g.setColour(b.isEnabled() ? (isMouseOverButton ? c.brighter(0.1f) : c) : Colours::grey);
+    g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
+
+    // draw outline
+    g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
+    g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+}
+
+
+/*
+* Draw toggle button. Needed to delete the hasKeyboardFocus() rectangle sorrounding toggle.
+*/
+void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &b, bool isMouseOverButton, bool isButtonDown)
+{
+    float fontSize = jmin(15.0f, b.getHeight() * 0.75f);
     const float tickWidth = fontSize * 1.1f;
 
-    drawTickBox(g, t, 4.0f, (t.getHeight() - tickWidth) * 0.5f,
+    drawTickBox(g, b, 4.0f, (b.getHeight() - tickWidth) * 0.5f,
         tickWidth, tickWidth,
-        t.getToggleState(),
-        t.isEnabled(),
+        b.getToggleState(),
+        b.isEnabled(),
         isMouseOverButton,
         isButtonDown);
 
-    g.setColour(t.findColour(ToggleButton::textColourId));
+    g.setColour(b.findColour(ToggleButton::textColourId));
     g.setFont(fontSize);
 
-    if (!t.isEnabled())
+    if (!b.isEnabled())
         g.setOpacity(0.5f);
 
     const int textX = (int)tickWidth + 5;
 
-    g.drawFittedText(t.getButtonText(),
+    g.drawFittedText(b.getButtonText(),
         textX, 0,
-        t.getWidth() - textX - 2, t.getHeight(),
+        b.getWidth() - textX - 2, b.getHeight(),
         Justification::centredLeft, 10);
 }
 
-void CustomLookAndFeel::drawTickBox(Graphics &g, Component &c, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool isButtonDown)
+/**
+* Draw toggle tick box.
+*/
+void CustomLookAndFeel::drawTickBox(Graphics &g, Component &/*c*/, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool /*isButtonDown*/)
 {
-    float centreX = x + width * 0.85f / 2.0f;
-    float centreY = y + height / 2.0f;
+    const float centreX = x + width * 0.85f / 2.0f;
+    const float centreY = y + height / 2.0f;
+    float boxSize = width;
+    float gradientScale = 1.0f;
     Colour c1, c2;
 
-    // TODO: colourgradient mit transparentwhite und transparentwhite verwenden wenn inactive
-    // wenn active dann innere farbe zu white, s.d. glow
-    // unterscheidung für mouseOver
-    if (!ticked)
+    if (!ticked || !isEnabled)
     {
-        float boxSize = width * 0.7f;
-
-        c1 = isMouseOverButton ? Colours::grey : Colours::lightgrey;
+        boxSize *= 0.7f;
+        c1 = isEnabled ? (isMouseOverButton ? Colours::grey.brighter(0.45f) : Colours::grey.brighter(0.35f)) : Colours::grey;
         c2 = Colours::black;
-
-        ColourGradient gradient(c1, centreX, centreY, c2, centreX + boxSize / 2.0f, centreX + boxSize / 2.0f, true);
-        gradient.addColour(0.1f, c1);
-        g.setGradientFill(gradient);
-
-        g.fillEllipse(centreX - boxSize / 2.0f, centreY - boxSize / 2.0f, boxSize, boxSize);
     }
     else
     {
-        float glowSize = width * 0.9f;
-
-        c1 = isMouseOverButton ? Colours::white : Colours::whitesmoke;
+        // if ticked, set colour as glow
+        gradientScale = 0.75f;
+        c1 = Colours::white;
         c2 = Colours::transparentWhite;
-
-        ColourGradient gradient(c1, centreX, centreY, c2, centreX + (glowSize * 0.75f) / 2.0f, centreX + (glowSize * 0.75f) / 2.0f, true);
-        gradient.addColour(0.4f, c1);
-        g.setGradientFill(gradient);
-
-        g.fillEllipse(centreX - glowSize / 2.0f, centreY - glowSize / 2.0f, glowSize, glowSize);
     }
+
+    ColourGradient gradient(c1, centreX, centreY, c2, centreX + boxSize * gradientScale / 2.0f, centreX + boxSize * gradientScale / 2.0f, true);
+    gradient.addColour(0.4f, c1);
+    g.setGradientFill(gradient);
+
+    g.fillEllipse(centreX - boxSize / 2.0f, centreY - boxSize / 2.0f, boxSize, boxSize);
+}
+
+/**
+* Draw how combo box is displayed on GUI without selection box.
+*/
+void CustomLookAndFeel::drawComboBox(Graphics &g, int width, int height, bool /*isButtonDown*/, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox &c)
+{
+    const float cornerSize = 5.0f;
+    const float outlineThickness = c.isEnabled() ? (c.hasKeyboardFocus(true) ? 2.4f : 2.2f) : 1.7f;
+    const float halfThickness = outlineThickness * 0.5f;
+    Colour baseColour(c.isEnabled() ? Colours::white : Colours::grey);
+
+    // set background colour as transparent
+    g.fillAll(Colours::transparentWhite);
+
+    // draw outline
+    g.setColour(baseColour);
+    g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+
+    // draw arrow background rectangle on right side
+    g.fillRoundedRectangle(static_cast<float>(buttonX), static_cast<float>(buttonY), static_cast<float>(buttonW), static_cast<float>(buttonH), cornerSize);
+
+    // draw arrow
+    if (c.isEnabled())
+    {
+        const float arrowX = 0.1f;
+        const float arrowH = 0.4f;
+
+        Path p;
+        p.addTriangle(buttonX + buttonW * 0.5f, buttonY + buttonH * (0.35f + arrowH),
+            buttonX + buttonW * (1.0f - arrowX), buttonY + buttonH * 0.35f,
+            buttonX + buttonW * arrowX, buttonY + buttonH * 0.35f);
+
+        g.setColour(Colours::darkgrey);
+        g.fillPath(p);
+    }
+}
+
+/**
+* Get combo box font. Needed to change font properties.
+*/
+Font CustomLookAndFeel::getComboBoxFont(ComboBox& c)
+{
+    Font font(jmin(20.0f, c.getHeight() * 0.85f));
+    return font;
+}
+
+/**
+* Position combo box text. Needed to change label properties.
+*/
+void CustomLookAndFeel::positionComboBoxText(ComboBox& c, Label& l)
+{
+    l.setColour(Label::ColourIds::textColourId, Colours::white);
+    l.setBounds(1, 1, c.getWidth() + 3 - c.getHeight(), c.getHeight() - 2);
+
+    l.setFont(getComboBoxFont(c));
 }

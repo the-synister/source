@@ -275,6 +275,7 @@
 		3B2DA760AFF33E97F0508FA8 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_LookAndFeel_V2.cpp"; path = "../../../juce/modules/juce_gui_basics/lookandfeel/juce_LookAndFeel_V2.cpp"; sourceTree = "SOURCE_ROOT"; };
 		3B3E3EEAE21F020C585B0152 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DirectShowComponent.h"; path = "../../../juce/modules/juce_video/playback/juce_DirectShowComponent.h"; sourceTree = "SOURCE_ROOT"; };
 		3BFD92D75BCDA39E22874952 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_TableListBox.cpp"; path = "../../../juce/modules/juce_gui_basics/widgets/juce_TableListBox.cpp"; sourceTree = "SOURCE_ROOT"; };
+		3C21DB837706746ED28D0E37 = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "berlin_sans_demi_bold.ttf"; path = "../../../../../../Desktop/Assets/berlin_sans_demi_bold.ttf"; sourceTree = "SOURCE_ROOT"; };
 		3C25E3F5DF572A70D2CC0772 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_MidiMessage.cpp"; path = "../../../juce/modules/juce_audio_basics/midi/juce_MidiMessage.cpp"; sourceTree = "SOURCE_ROOT"; };
 		3C52891A9D5FB669B4DCC1F5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_OpenGLHelpers.cpp"; path = "../../../juce/modules/juce_opengl/opengl/juce_OpenGLHelpers.cpp"; sourceTree = "SOURCE_ROOT"; };
 		3CA64BE86298AD6DBDE9902F = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_InterprocessConnectionServer.cpp"; path = "../../../juce/modules/juce_events/interprocess/juce_InterprocessConnectionServer.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -1021,6 +1022,7 @@
 					DFE02E065F32D9F317733954,
 					1A281D6829318B5C9C90FD66, ); name = panels; sourceTree = "<group>"; };
 		58D71A9A7B7F6F537A59D9DB = {isa = PBXGroup; children = (
+					3C21DB837706746ED28D0E37,
 					2680C1F9DD872A69AAA98638,
 					18005046AB9312190DFED6B1,
 					A0F11980679BF1D2967F2AA3,

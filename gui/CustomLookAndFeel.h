@@ -30,32 +30,19 @@ public:
     virtual void drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s);
     virtual void drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s);
 
-    // TODO: für toggles, buttons und dropDown (s. GUI Komponente)
-    virtual void drawToggleButton(Graphics &g, ToggleButton &t, bool isMouseOverButton, bool isButtonDown);
+    virtual Slider::SliderLayout getSliderLayout(Slider& s);
+
+    virtual void drawButtonBackground(Graphics &g, Button &b, const Colour& c, bool isMouseOverButton, bool isButtonDown);
+
+    virtual void drawToggleButton(Graphics &g, ToggleButton &b, bool isMouseOverButton, bool isButtonDown);
     virtual void drawTickBox(Graphics &g, Component &c, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool isButtonDown);
 
+    virtual void drawComboBox(Graphics &g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox &c);
+    virtual Font getComboBoxFont(ComboBox &c);
+    virtual void positionComboBoxText(ComboBox &c, Label &l);
+
 private:
-    // TODO: tmp image properties reinigen wenn fertig
-
-    // image assets
-    Image rotarySliderImage;
-    Image verticalSlider;
-    Image verticalSliderThumb;
-    Image glow;
-
-    // properties of our temporary assets
-    int numberFramesRotary = 50;
-    int widthRotary = 60;
-    int heightRotary = 60;
-
-    int widthVertical = 50;
-    int heigthVertical = 290;
-
-    int thumbWidth = 45;
-    int thumbHeight = 45;
-
-    // size of thumb to be displayed
-    float thumbSize = 15.0;
+    void drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED
