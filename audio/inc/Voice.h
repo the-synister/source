@@ -133,6 +133,7 @@ public:
     , lpOut3Delay(0.f)
     , modMatrix(globalModMatrix_) //local Matrix initialisation
     , osc1PitchModBuffer(1, blockSize)
+    , filterModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
     , lfo1Buffer(1,blockSize)
@@ -154,6 +155,7 @@ public:
         
         //set connection between destination and matrix here
         modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_FILT_FC] = filterModBuffer.getWritePointer(0);
     }
 
 
@@ -414,11 +416,13 @@ void renderModulation(int numSamples) {
 
         //clear the buffers
         osc1PitchModBuffer.clear();
+        filterModBuffer.clear();
         lfo1Buffer.clear();
         env1Buffer.clear();
 
         //set the write point in the buffers
         modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
+        modDestinations[DEST_FILT_FC] = filterModBuffer.getWritePointer(0);
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         
@@ -464,6 +468,7 @@ void renderModulation(int numSamples) {
             modMatrix->doModulationsMatrix(0, modSources, modDestinations);
 
             ++modDestinations[DEST_OSC1_PITCH];
+            ++modDestinations[DEST_FILT_FC];
             ++modSources[SOURCE_ENV1];
             ++modSources[SOURCE_LFO1];
         }
@@ -473,12 +478,12 @@ void renderModulation(int numSamples) {
         for (int s = 0; s < numSamples; ++s) {
 
             osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
-        
         }
 }
 
 
 float biquadFilter(float inputSignal, eBiquadFilters filterType) {
+    
     const float sRate = static_cast<float>(getSampleRate());
 
     float currentCutoff = filterType == eBiquadFilters::eLowpass
@@ -649,6 +654,7 @@ private:
 
     // Buffers
     AudioSampleBuffer osc1PitchModBuffer;
+    AudioSampleBuffer filterModBuffer;
     AudioSampleBuffer lfo1Buffer;
     AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;
