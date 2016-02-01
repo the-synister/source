@@ -21,6 +21,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     , stepSeq(*this)
     , chorus(*this)
     , clip(*this)
+	, lowFi(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
@@ -201,22 +202,8 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // Low fidelity effect
     //////////////////////
     // If the effect is activated, the algorithm is applied
-    if (lowFiActivation.getStep() == eOnOffToggle::eOn)
-    {
-		// coeff = 2^(nBitsLowFi-1)
-        float coeff =  pow(2.f, nBitsLowFi.get() - 1.f);   
-
-        //For all the outputs
-        for (int c = 0; c < buffer.getNumChannels(); ++c)
-        {
-            // Bit degradation
-            for (int s = 0; s < buffer.getNumSamples(); ++s)
-            {
-                float newSampleVal = floor(coeff * (buffer.getSample(c, s)) + 0.5f) / coeff;
-                buffer.setSample(c, s, newSampleVal);
-            }
-
-        }
+    if (lowFiActivation.getStep() == eOnOffToggle::eOn) {
+		lowFi.bitReduction(buffer);
     }
 
     if (clippingFactor.get() > 0.f) {
