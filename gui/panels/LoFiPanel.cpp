@@ -45,17 +45,10 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     nBitsLowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     nBitsLowFi->addListener (this);
 
-    addAndMakeVisible (freqDegradationFactor = new MouseOverKnob ("frequence degradation factor"));
-    freqDegradationFactor->setRange (1, 100, 1);
-    freqDegradationFactor->setSliderStyle (Slider::RotaryVerticalDrag);
-    freqDegradationFactor->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    freqDegradationFactor->addListener (this);
-
 
     //[UserPreSize]
 	registerSlider(lowFiActive, &params.lowFiActivation);
 	registerSlider(nBitsLowFi, &params.nBitsLowFi);
-	registerSlider(freqDegradationFactor, &params.freqDegFactor);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -72,7 +65,6 @@ LoFiPanel::~LoFiPanel()
 
     lowFiActive = nullptr;
     nBitsLowFi = nullptr;
-    freqDegradationFactor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -98,7 +90,6 @@ void LoFiPanel::resized()
 
     lowFiActive->setBounds (56, 40, 64, 64);
     nBitsLowFi->setBounds (160, 40, 64, 64);
-    freqDegradationFactor->setBounds (264, 40, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -118,11 +109,6 @@ void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_nBitsLowFi] -- add your slider handling code here..
         //[/UserSliderCode_nBitsLowFi]
-    }
-    else if (sliderThatWasMoved == freqDegradationFactor)
-    {
-        //[UserSliderCode_freqDegradationFactor] -- add your slider handling code here..
-        //[/UserSliderCode_freqDegradationFactor]
     }
 
     //[UsersliderValueChanged_Post]
@@ -157,10 +143,6 @@ BEGIN_JUCER_METADATA
   <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="160 40 64 64"
           min="1" max="16" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="frequence degradation factor" id="f348cef5609c6b1c" memberName="freqDegradationFactor"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="264 40 64 64"
-          min="1" max="100" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

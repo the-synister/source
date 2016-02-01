@@ -60,7 +60,6 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> lowFiActive;
     ScopedPointer<MouseOverKnob> nBitsLowFi;
-    ScopedPointer<MouseOverKnob> freqDegradationFactor;
 
 
     //==============================================================================
