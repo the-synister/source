@@ -13,9 +13,7 @@ class Sound : public SynthesiserSound {
 public:
     bool appliesToNote(int /*midiNoteNumber*/) override { return true; }
     bool appliesToChannel(int /*midiChannel*/) override { return true; }
-};
-
-    
+}; 
 
 class Voice : public SynthesiserVoice {
 public:
@@ -132,8 +130,8 @@ public:
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
         
-        lfo1random.phase = 0.f;
-        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1random.phase = 0.f;
+            lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
@@ -218,13 +216,10 @@ public:
         //const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         //const float *env1Mod = env1Buffer.getReadPointer(0);
 
-#if 0
         // this probably will be obsolete ...
         std::vector<const float*> modSources(3);
         modSources[0] = noMod;
-        modSources[1] = lfo1Mod;
-        modSources[2] = env1Mod;
-#endif
+        modSources[1] = lfo1;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -235,7 +230,6 @@ public:
 
         if (lfo1square.isActive() || lfo1sine.isActive()) {
             for (int s = 0; s < numSamples; ++s) {
-                //const float currentSample = (osc1.next(pitchMod[s])) * level * tailOff * currentAmp;
                 
                 float currentSample;
                 switch (params.osc1Waveform.getStep())
@@ -268,7 +262,6 @@ public:
                         // Next sample will be fetch with the new width
                         currentSample = (osc1Saw.next(osc1PitchMod[s], deltaTr));
                     }
-                    //currentSample = (osc1Saw.next(osc1PitchMod[s]));
                     break;
                 case eOscWaves::eOscNoise:
                     currentSample = (osc1WhiteNoise.next(osc1PitchMod[s]));
@@ -414,24 +407,25 @@ protected:
         }
     }
 
-//
-float biquadFilter(float inputSignal, eBiquadFilters filterType) {
-    
-        const float sRate = static_cast<float>(getSampleRate());
-
-    float currentCutoff = filterType == eBiquadFilters::eLowpass
-            ? params.lpCutoff.get()
-            : params.hpCutoff.get();
-
-
-        return inputSignal;
-}
-        
 #if 0
+    float biquadFilter(float inputSignal, eBiquadFilters filterType) {
+    
+            const float sRate = static_cast<float>(getSampleRate());
+
+        float currentCutoff = filterType == eBiquadFilters::eLowpass
+                ? params.lpCutoff.get()
+                : params.hpCutoff.get();
+
+
+            return inputSignal;
+    }
+#endif  
+
     float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
+
         const float sRate = static_cast<float>(getSampleRate());
-        
         float moddedFreq;
+
         switch (filterType) {
             case eBiquadFilters::eLowpass:
                 moddedFreq = params.lpCutoff.get();
@@ -448,9 +442,11 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
             default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead 
                 return 0.f;
         }
-
-        //float moddedMaxFreq = params.lpCutoff.getMax() * params.lpModAmount.get() / 100.f;
         
+        // get modVal from matrix
+        // check polarity
+        // modVal -> freq
+
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
             moddedFreq += (20000.f * (modValue) * params.lpModAmount.get() / 100.f);
         }
@@ -538,7 +534,7 @@ float biquadFilter(float inputSignal, eBiquadFilters filterType) {
         
         return inputSignal;
     }
-#endif 
+
 
 public:
 

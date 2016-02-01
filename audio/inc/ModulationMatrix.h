@@ -108,20 +108,18 @@ struct modMatrixRow
     sources sourceIndex;
     destinations destinationIndex;
     Param* modIntensity;
-    //Param* modRange;
     bool enable;
 };
 
 inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
                                         destinations destinationIndex_,
                                         Param* modIntensity_,
-                                        bool enable_ = true) {
+                                        bool enable_ = false) {
 
     modMatrixRow* row = new modMatrixRow;
     row->sourceIndex = sourceIndex_;
     row->destinationIndex = destinationIndex_;
     row->modIntensity = modIntensity_;
-    //row->modRange = modRange_;
     row->enable = enable_;
 
     return row;
