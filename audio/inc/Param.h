@@ -97,8 +97,19 @@ public:
 
         return (static_cast<float>(midiValue)*static_cast<float>(midiValue)) / (127.0f*127.0f);
     }
-
-
+    static inline bool isUnipolar(eModSource source) {
+        switch (source) {
+        case (eModSource::eEnv) :
+            //todo: add all unipolar modulators
+            return true;
+            break;
+        case (eModSource::eLFO1) :
+            //todo: add all unipolar modulators
+            return false;
+            break;
+        }
+        return false; // when the function is complete with all sources, this code should be unreachable
+    }
     class Listener {
     public:
         virtual ~Listener(){}
@@ -108,7 +119,6 @@ public:
 
     void addListener(Listener *newListener) { listener.add(newListener); }
     void removeListener(Listener *aListener) { listener.remove(aListener); }
-
     
 protected:
     ScopedPointer<float> value;

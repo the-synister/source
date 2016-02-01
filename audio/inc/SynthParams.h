@@ -59,7 +59,6 @@ enum class eModSource : int {
     nSteps = 3
 };
 
-
 class SynthParams {
 public:
     SynthParams();
@@ -230,7 +229,6 @@ public:
 
     int getGUIIndex();
     int getAudioIndex();
-
 
 protected:
 private:

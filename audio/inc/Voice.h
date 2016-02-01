@@ -5,6 +5,7 @@
 #include "ModulationMatrix.h"
 #include "Envelope.h"
 #include "Oscillator.h"
+
 /*the following is for the leak detector, vld must be installed on the computer
     and path must be added to library path!!*/
 //#include "vld.h"
@@ -170,7 +171,7 @@ public:
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
             if (envToVolume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
-            {                                       // stopNote method could be called more than once.
+            {                                               // stopNote method could be called more than once.
                 envToVolume.resetReleaseCounter();
             }
 
@@ -268,8 +269,10 @@ public:
                     break;
                 }
 
-                currentSample = biquadFilter(currentSample, params.passtype.getStep());
-                currentSample = ladderFilter(currentSample) * level * envToVolMod[s];
+                // apply modulation
+                currentSample = biquadFilter(currentSample, filterModBuffer[s]);
+                currentSample = ladderFilter(currentSample);
+                currentSample *= level * envToVolMod[s];
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -282,7 +285,8 @@ public:
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || static_cast<int>(getSampleRate() * params.env1Release.get()) <= env1.getReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || 
+                    static_cast<int>(getSampleRate() * params.env1Release.get()) <= env1.getReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -367,27 +371,25 @@ protected:
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
         }
 
-            // calculate lfo values and fill the buffers
-            // lfoValue = 0.f;
-            switch (params.lfo1wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                // lfoValue = lfo1sine.next();
-                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                // lfoValue = lfo1random.next();
-                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
-                break;
-            case eLfoWaves::eLfoSquare:
-                // lfoValue = lfo1square.next();
-                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
-                break;
+        // calculate lfo values and fill the buffers
+        switch (params.lfo1wave.getStep()) {
+        case eLfoWaves::eLfoSine:
+            // lfoValue = lfo1sine.next();
+            lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
+            break;
+        case eLfoWaves::eLfoSampleHold:
+            // lfoValue = lfo1random.next();
+            lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
+            break;
+        case eLfoWaves::eLfoSquare:
+            // lfoValue = lfo1square.next();
+            lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
+            break;
         }
-
             // Calculate the Envelope coefficients and fill the buffers
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-            }
+        }
 
         //calculate modulation values for the buffers
         for (int s = 0; s < numSamples; ++s) {
@@ -398,9 +400,11 @@ protected:
             ++modDestinations[DEST_FILT_FC];
             ++modSources[SOURCE_ENV1];
             ++modSources[SOURCE_LFO1];
-            }
+        }
 
-
+        // multiplicative values: 
+        // modulator(*cc) -> destination
+        // modulator1(*modulator2) -> destination
         //case example: LFO/Envelope and PitchBend have influence on the pitch
         for (int s = 0; s < numSamples; ++s) {
             osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
@@ -421,12 +425,13 @@ protected:
     }
 #endif  
 
-    float biquadFilter(float inputSignal, float modValue, eBiquadFilters filterType) {
+    float biquadFilter(float inputSignal, float modValue) {
 
         const float sRate = static_cast<float>(getSampleRate());
         float moddedFreq;
 
-        switch (filterType) {
+        // get mod frequency from active filter type
+        switch (params.passtype.getStep()) {
             case eBiquadFilters::eLowpass:
                 moddedFreq = params.lpCutoff.get();
                 break;
@@ -443,18 +448,14 @@ protected:
                 return 0.f;
         }
         
-        // get modVal from matrix
-        // check polarity
-        // modVal -> freq
-
-        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue) * params.lpModAmount.get() / 100.f);
+        // check polarity and calculate modFreq from modValue
+        if (Param::isUnipolar(params.lpModSource.getStep())) {
+            moddedFreq += (20000.f * (modValue)* params.lpModAmount.get() / 100.f);
         }
-        else if (params.lpModSource.getStep() == eModSource::eEnv) { // env
-
+        else {
             moddedFreq += moddedFreq + (params.lpCutoff.getMax() - moddedFreq) * modValue * params.lpModAmount.get() / 100.f;
         }
-        
+
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
@@ -470,20 +471,21 @@ protected:
 
         const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        if (filterType == eBiquadFilters::eLowpass) {
+        if (params.passtype.getStep() == eBiquadFilters::eLowpass) {
 
-        // coefficients for lowpass, depending on resonance and lowcut frequency
+            // coefficients for lowpass, depending on resonance and lowcut frequency
             k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);
-        coeff1 = 0.5f * (1.f - k) / (1.f + k);
+                coeff1 = 0.5f * (1.f - k) / (1.f + k);
             coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * moddedFreq);
-        coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
+                    coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
 
-        b0 = 2.f * coeff3;
-        b1 = 2.f * 2.f * coeff3;
-        b2 = 2.f * coeff3;
-        a1 = 2.f * -coeff2;
-        a2 = 2.f * coeff1;
-        } else if (filterType == eBiquadFilters::eHighpass) {
+            b0 = 2.f * coeff3;
+            b1 = 2.f * 2.f * coeff3;
+            b2 = 2.f * coeff3;
+            a1 = 2.f * -coeff2;
+            a2 = 2.f * coeff1;
+
+        } else if (params.passtype.getStep() == eBiquadFilters::eHighpass) {
 
             // coefficients for highpass, depending on resonance and highcut frequency
             k = 0.5f * currentResonance * sin(float_Pi * moddedFreq);
@@ -496,7 +498,9 @@ protected:
             b2 = 2.f * coeff3;
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
-        } else if (filterType == eBiquadFilters::eBandpass) {
+
+        } else if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
+
             // coefficients for bandpass, depending on low- and highcut frequency
             w0 = 2.f * float_Pi*moddedFreq;
             bw = (log2(params.lpCutoff.get() / params.hpCutoff.get())); // bandwidth in octaves
@@ -513,10 +517,10 @@ protected:
         lastSample = inputSignal;
         
         // different biquad form for bandpass filter, it has more coefficients as well
-        if (filterType == eBiquadFilters::eBandpass) {
+        if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
             inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
         } else {
-        inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
+            inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
         }
         
         //delaying samples
@@ -531,10 +535,8 @@ protected:
         else if (inputSignal < -1.f) {
             inputSignal = -1.f;
         }
-        
         return inputSignal;
     }
-
 
 public:
 

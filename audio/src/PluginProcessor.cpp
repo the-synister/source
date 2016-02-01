@@ -83,19 +83,9 @@ PluginAudioProcessor::PluginAudioProcessor()
                                                        &lpModAmount,
                                                        false));
 
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
-                                                       DEST_FILT_FC,
-                                                       &hpModAmount,
-                                                       false));
-
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_FILT_FC,
                                                        &lpModAmount,
-                                                       false));
-
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
-                                                       DEST_FILT_FC,
-                                                       &hpModAmount,
                                                        false));
 }
 

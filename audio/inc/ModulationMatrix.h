@@ -22,7 +22,6 @@ using namespace std;
 "Designing Software Synthesizer Plug-Ins in C++"
 */
 
-
 enum sources : int {
     SOURCE_NONE = -1,
     SOURCE_PITCHBEND,
@@ -149,10 +148,6 @@ public:
 
 inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, float** dst)
 {
-
-    // clear dest registers
-    //clearDestinations();
-
     for (unsigned int i = 0; i < matrixCore.size(); ++i)
     {
         // --- this should never happen!
@@ -178,45 +173,13 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         else { // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
-
-        // destination += source*intensity*range
-        /* an dieser Stelle muss geguckt werden wann und wo umgerechnet werden muss!!!
-        ist die Stelle Sinnvoll?
-        Die Umrechnung fource MUSS woanders stattfinden!!!
-        ODER ein Source checker!?
-        source liefert den Pitchbend!!!*/
-        
+      
         //Lfo to Oscillator
-        //float dModValue = source*(row->modIntensity->get()); //*(row->modRange->get());
         float dModValue = source*intensity;
-        
-        //what should be added and what should be multiplied?
-        //Pitchbend to oscillator
-        //*(dst[row->destinationIndex]) += Param::fromCent(dModValue);
-        //Lfo to oscillator
-        //*(dst[row->destinationIndex]) += Param::fromSemi(dModValue);
-        
+                
         /*we are just adding the modified values into the predefined buffers
          the conversion and application is apllied outside of the matrix*/
         *(dst[matrixCore[i]->destinationIndex]) += dModValue;
-
-        // universal connections example:
-        // first check DEST_ALL types
-        /*switch (row->destinationIndex)
-         {
-         
-         case DEST_ALL_OSC_FO:
-         m_dDestinations[DEST_OSC1_FO] += dModValue;
-         m_dDestinations[DEST_OSC2_FO] += dModValue;
-         m_dDestinations[DEST_OSC3_FO] += dModValue;
-         m_dDestinations[DEST_OSC4_FO] += dModValue;
-         m_dDestinations[DEST_ALL_OSC_FO] += dModValue;
-         break;
-         
-         // for all "single" source/dest, this is the modulation
-         default:
-         destinations[row->destinationIndex] += dModValue;
-         }*/
     }
 }
 
