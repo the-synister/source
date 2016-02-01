@@ -33,6 +33,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
 
+    addParameter(new HostParam<Param>(vol));
+
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
