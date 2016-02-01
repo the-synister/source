@@ -20,25 +20,25 @@
 class LowFidelity
 {
 public:
-	//! LowFidelity constructor.
-	LowFidelity(SynthParams& p)
-		: params(p)
-	{}
+    //! LowFidelity constructor.
+    LowFidelity(SynthParams& p)
+        : params(p)
+    {}
 
-	//! LowFidelity destructor.
-	~LowFidelity();
+    //! LowFidelity destructor.
+    ~LowFidelity();
 
-	//! Bit reduction
-	/*!
-	A sample is usually coded with 16 bits.
+    //! Bit reduction
+    /*!
+    A sample is usually coded with 16 bits.
     The bit degradation enables reducing this value (1 bit per sample minimum)
-	1 parameters:
-	@params AudioSampleBuffer - instance of the AudioSampleBuffer is an output buffer, which must be the buffer where the voices had been processed and added.
-	*/
-	void bitReduction(AudioSampleBuffer&);
+    1 parameters:
+    @params AudioSampleBuffer - instance of the AudioSampleBuffer is an output buffer, which must be the buffer where the voices had been processed and added.
+    */
+    void bitReduction(AudioSampleBuffer&);
 
 protected:
-	SynthParams &params; //!< local params reference
+    SynthParams &params; //!< local params reference
 
 };
 

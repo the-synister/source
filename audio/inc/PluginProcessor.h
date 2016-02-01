@@ -75,7 +75,7 @@ private:
     FxDelay delay;
     FxClipping clip;
 
-	LowFidelity lowFi;
+    LowFidelity lowFi;
 
     StepSequencer stepSeq;
     FxChorus chorus;

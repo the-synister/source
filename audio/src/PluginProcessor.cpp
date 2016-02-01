@@ -21,7 +21,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     , stepSeq(*this)
     , chorus(*this)
     , clip(*this)
-	, lowFi(*this)
+    , lowFi(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
@@ -163,10 +163,10 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
         synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
-    delay.init(2, sRate);
-    chorus.init(2, sRate);
-
     synth.addSound(new Sound());
+
+    delay.init(getNumOutputChannels(), sRate);
+    chorus.init(getNumOutputChannels(), sRate);
 }
 
 void PluginAudioProcessor::releaseResources()
@@ -203,7 +203,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     //////////////////////
     // If the effect is activated, the algorithm is applied
     if (lowFiActivation.getStep() == eOnOffToggle::eOn) {
-		lowFi.bitReduction(buffer);
+        lowFi.bitReduction(buffer);
     }
 
     if (clippingFactor.get() > 0.f) {
