@@ -81,12 +81,14 @@ PluginAudioProcessor::PluginAudioProcessor()
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_LFO1,
                                                        DEST_FILT_FC,
                                                        &lpModAmount,
-                                                       false));
+                                                        false));
+
+    //dont forget to change the params.lpModSource for testing
 
     globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_ENV1,
                                                        DEST_FILT_FC,
                                                        &lpModAmount,
-                                                       false));
+                                                        true));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

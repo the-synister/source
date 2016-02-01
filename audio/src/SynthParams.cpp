@@ -31,7 +31,6 @@ namespace {
     };
 }
 
-
 SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
@@ -57,7 +56,7 @@ SynthParams::SynthParams()
 , biquadResonance("Filter Reso", "filterResonance", "Filter resonance",  "dB", -25.f, 25.f, 0.f)
 , hpCutoff("HP Cut", "hpCutoff", "HP filter cutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", "LP mod source", eModSource::eNone, modsourcenames)
-, lpModAmount("LP ModAmnt", "lpModAmout", "LP mod amount", "prct", 0.f, 100.f, 0.f)
+, lpModAmount("LP ModAmnt", "lpModAmout", "LP mod amount", "prct", -1.f, 1.f, 0.f)
 , hpModSource("HP ModSrc", "hpMod", "HP mod source", eModSource::eNone, modsourcenames)
 , hpModAmount("HP ModAmnt", "hpModAmount", "HP mod amount", "%", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)

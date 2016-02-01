@@ -212,15 +212,18 @@ public:
         const float *osc1PitchMod = osc1PitchModBuffer.getReadPointer(0);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
         const float *lfo1 = lfo1Buffer.getReadPointer(0);
+        const float *filterMod = filterModBuffer.getReadPointer(0);
+        const float *env1Test = env1Buffer.getReadPointer(0);
 
         // Not using the following in the same manner as before, everything is part of the pitchmod now!
         //const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
         //const float *env1Mod = env1Buffer.getReadPointer(0);
 
-        // this probably will be obsolete ...
-        std::vector<const float*> modSources(3);
-        modSources[0] = noMod;
-        modSources[1] = lfo1;
+        // this selection method will be changed (matrixRow->enabled)
+        std::vector<const float*> modSourcesSelector(3);
+        modSourcesSelector[0] = noMod;
+        modSourcesSelector[1] = lfo1;
+        modSourcesSelector[2] = env1Test;
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -270,7 +273,7 @@ public:
                 }
 
                 // apply modulation
-                currentSample = biquadFilter(currentSample, filterModBuffer[s]);
+                currentSample = biquadFilter(currentSample, filterMod[s]);
                 currentSample = ladderFilter(currentSample);
                 currentSample *= level * envToVolMod[s];
 
@@ -428,18 +431,23 @@ protected:
     float biquadFilter(float inputSignal, float modValue) {
 
         const float sRate = static_cast<float>(getSampleRate());
-        float moddedFreq;
+        float cutoffFreq; // input frequency from knob
+        float moddedFreq; // output frequency to be used in the filter
+        float modAmount; // from mod knob
 
         // get mod frequency from active filter type
         switch (params.passtype.getStep()) {
             case eBiquadFilters::eLowpass:
-                moddedFreq = params.lpCutoff.get();
+                cutoffFreq = params.lpCutoff.get();
+                modAmount = params.lpModAmount.get();
                 break;
             case eBiquadFilters::eHighpass:
-                moddedFreq = params.hpCutoff.get();
+                cutoffFreq = params.hpCutoff.get();
+                modAmount = (params.hpModAmount.get() / 100.f);
                 break;
             case eBiquadFilters::eBandpass:
-                moddedFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2.f;
+                cutoffFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2.f;
+                //todo: add bandpass modAmount when it is added
                 if (params.lpCutoff.get() < params.hpCutoff.get()){
                     return 0.f;
                 }
@@ -449,13 +457,15 @@ protected:
         }
         
         // check polarity and calculate modFreq from modValue
-        if (Param::isUnipolar(params.lpModSource.getStep())) {
-            moddedFreq += (20000.f * (modValue)* params.lpModAmount.get() / 100.f);
+        if (bool x = Param::isUnipolar(params.lpModSource.getStep())) {
+            //moddedFreq = cutoffFreq + (params.lpCutoff.getMax() - cutoffFreq) * modValue * params.lpModAmount.get() / 100.f;
+            moddedFreq = Param::unipolarToFreq(modValue, cutoffFreq, modAmount);
         }
         else {
-            moddedFreq += moddedFreq + (params.lpCutoff.getMax() - moddedFreq) * modValue * params.lpModAmount.get() / 100.f;
+            moddedFreq = Param::bipolarToFreq(modValue, cutoffFreq, modAmount);
         }
 
+        // check range
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             moddedFreq = params.lpCutoff.getMin();
         }
@@ -471,7 +481,7 @@ protected:
 
         const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
 
-        if (params.passtype.getStep() == eBiquadFilters::eLowpass) {
+        if (static_cast<eBiquadFilters>(params.passtype.getStep()) == eBiquadFilters::eLowpass) {
 
             // coefficients for lowpass, depending on resonance and lowcut frequency
             k = 0.5f * currentResonance * sin(2.f * float_Pi * moddedFreq);

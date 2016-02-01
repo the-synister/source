@@ -4,6 +4,14 @@
 
 #include "JuceHeader.h"
 
+//
+enum class eModSource : int {
+    eNone = 0,
+    eLFO1 = 1,
+    eEnv = 2,
+    nSteps = 3
+};
+
 class Param {
 public:
     Param(const String &name, const String &serializationTag, const String &hostTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
@@ -71,33 +79,20 @@ public:
     static inline float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
     static inline float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
-    // conversion functions from the book "Designing Software Synthesizer Plug-Ins in C++" and its template projects
-    static inline float unipolarToBipolar(float fValue) {return 2.0f*fValue - 1.0f;}
-    static inline float bipolarToUnipolar(float fValue) { return 0.5f*fValue + 0.5f; }
-    static inline float midiToBipolar(int midiValue) {return 2.0f*static_cast<float>(midiValue) / 127.0f - 1.0f;}
-    static inline float midiToPanValue(int midiValue) {
-        if (midiValue == 64)
-            return 0.0f;
-        else if (midiValue <= 1) // 0 or 1
-            return -1.0f;
+    //todo: booth these toFreq - functions need to be changed to work with a bipolar modAmount-knob
 
-        return 2.0f*static_cast<float>(midiValue) / 127.0f - 1.0f;
+    static inline float bipolarToFreq(float modValue, float fInput, float modAmount) {
+        if (modValue < 0.f) {
+            modValue /= 2.f;
+        }
+        return fInput + (fInput * modValue * (log2(1.f + modAmount)));
     }
-    static inline float midiToUnipolar(int midiValue) {return static_cast<float>(midiValue / 127.0f);}
-    static inline int unipolarToMidi(float fUnipolarValue) {return static_cast<int>(fUnipolarValue*127.f);}
-    static inline float mmaMiditoAtten_dB(int midiValue) {
-        if (midiValue == 0)
-            return -96.0f; // dB floor
-        return 20.0f*log10((127.0f*127.0f) / ((static_cast<float>(midiValue)*static_cast<float>(midiValue))));
-    }
-    static inline float mmaMiditoAtten(int midiValue)
-    {
-        if (midiValue == 0)
-            return 0.0f; // floor
 
-        return (static_cast<float>(midiValue)*static_cast<float>(midiValue)) / (127.0f*127.0f);
+    static inline float unipolarToFreq(float modValue, float fInput, float modAmount) {
+        return fInput + (fInput * modAmount * (log2(1.f + modValue))); //todo test!
     }
-    static inline bool isUnipolar(eModSource source) {
+
+    static bool isUnipolar(eModSource source) {
         switch (source) {
         case (eModSource::eEnv) :
             //todo: add all unipolar modulators
@@ -108,7 +103,6 @@ public:
             return false;
             break;
         }
-        return false; // when the function is complete with all sources, this code should be unreachable
     }
     class Listener {
     public:

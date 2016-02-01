@@ -166,14 +166,14 @@ inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, flo
         // get the min max values for the intensity for transformation
         float min = matrixCore[i]->modIntensity->getMin();
         float max = matrixCore[i]->modIntensity->getMax();
-
+        
         if (isUnipolar(matrixCore[i]->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
             intensity = toBipolar(min, max, intensity);
         }
         else { // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
-      
+
         //Lfo to Oscillator
         float dModValue = source*intensity;
                 

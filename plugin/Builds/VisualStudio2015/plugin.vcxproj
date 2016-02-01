@@ -144,10 +144,10 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
