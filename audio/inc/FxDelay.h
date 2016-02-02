@@ -39,24 +39,24 @@ public:
     {}
     //! FxDelay destructor.
     ~FxDelay(){}
-
+    
     //! delay rendering.
     /*!
     The public function render can be called to add a delay to a processed audio block.
     This functions calls calcTime(), to determine the delay length, adds the (filtered)
-    signal to the delay and output buffer and takes care of the current position and
+    signal to the delay and output buffer and takes care of the current position and 
     direction inside the ring buffer (feedback loop).
-    @param outputBuffer, a reference to the current block. the delay gets added to it.
-    @param startSample, needed for sudden (midi) parameter changes
-    @param numSamplesIn, the current block size
+    @param outputBuffer a reference to the current block. the delay gets added to it
+    @param startSample needed for sudden (midi) parameter changes
+    @param numSamplesIn the current block size
     */
     void render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn);
 
     //! delay initialization.
     /*!
     The init function sets up the audio buffer size, sample rate, maximum length and channels.
-    @param channelsIn, the amount of audio channels
-    @param sampleRateIn, the current sample rate
+    @param channelsIn the amount of audio channels 
+    @param sampleRateIn the current sample rate
     */
     void init(int channelsIn, double sampleRateIn);
 
@@ -67,14 +67,14 @@ private:
     of the host tempo or user input.
     */
     void calcTime();
-
+    
     //! delay filter.
     /*!
     The private filter function add the possibility to apply a lowpass filter
     to the delayed signal. The cutoff frequency can be set by the user.
     The filter changes can be applied to the feedback while reading: realtime,
     or while writing to the buffer. This "records" changes into the delay.
-    @param inputSignal, the current input sample
+    @param inputSignal the current input sample
     returns the filtered inputSignal
     */
     float filter(float inputSignal);

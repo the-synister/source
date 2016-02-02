@@ -16,11 +16,12 @@
 #include <PluginEditor.h>
 
 //==============================================================================
-PluginAudioProcessor::PluginAudioProcessor() 
+PluginAudioProcessor::PluginAudioProcessor()
     : delay(*this)
     , stepSeq(*this)
     , chorus(*this)
     , clip(*this)
+    , lowFi(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
@@ -32,6 +33,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
+
+    addParameter(new HostParam<Param>(vol));
 
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
@@ -48,13 +51,15 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));
-    
+
     addParameter(new HostParam<Param>(delayFeedback));
     addParameter(new HostParam<Param>(delayDryWet));
     addParameter(new HostParam<Param>(delayTime));
-    
+
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
     // Source Pitchbend, Destination OSC1 Pitch
@@ -215,6 +220,13 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
+    // Low fidelity effect
+    //////////////////////
+    // If the effect is activated, the algorithm is applied
+    if (lowFiActivation.getStep() == eOnOffToggle::eOn) {
+        lowFi.bitReduction(buffer);
+    }
+
     if (clippingFactor.get() > 0.f) {
         clip.clipSignal(buffer, 0, buffer.getNumSamples());
     }
@@ -223,10 +235,10 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     if (delayDryWet.get() > 0.f) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
-	// chorus
-	if (chorDryWet.get() > 0.f) {
-		chorus.render(buffer, 0); // adds the chorus to the outputBuffer
-	}
+    // chorus
+    if (chorDryWet.get() > 0.f) {
+        chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+    }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
                           // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?

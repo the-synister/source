@@ -62,7 +62,7 @@ AmpPanel::AmpPanel (SynthParams &p)
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (velocitySense = new MouseOverKnob ("Key Velocity"));
-    velocitySense->setRange (0, 96, 0);
+    velocitySense->setRange (0, 1, 0);
     velocitySense->setSliderStyle (Slider::RotaryVerticalDrag);
     velocitySense->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     velocitySense->addListener (this);
@@ -190,7 +190,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="33"/>
   <SLIDER name="Key Velocity" id="e08e3c952cbb37a2" memberName="velocitySense"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="66 72 112 64"
-          min="0" max="96" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

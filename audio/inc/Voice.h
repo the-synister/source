@@ -206,7 +206,6 @@ public:
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
             const float *lfo1 = lfo1Buffer.getReadPointer(0);
             const float *filterMod = modDestBuffer.getReadPointer(DEST_FILT_FC);
-            const float *env1Test = env1Buffer.getReadPointer(0);
 
             const float currentAmp = params.vol.get();
             const float currentPan = params.panDir.get();

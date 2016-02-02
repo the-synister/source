@@ -145,6 +145,9 @@ public:
     Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
+    ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
+    Param nBitsLowFi; //!< Bit degradation
+
     ParamDb vol; //!< volume in [0..1]
 
     ModulationMatrix globalModMatrix;

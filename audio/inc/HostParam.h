@@ -46,9 +46,8 @@ public:
         return text.getFloatValue();
     }
 
-    //! \todo implement getText
     virtual String getText (float value, int maximumStringLength) const override {
-        return param.getUIString(value).substring(0, maximumStringLength);
+        return param.getUIString(hostToEngine(value)).substring(0, maximumStringLength);
     }
 
     virtual void paramUIChanged() override {

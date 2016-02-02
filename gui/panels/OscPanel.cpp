@@ -27,62 +27,62 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscPanel::OscPanel(SynthParams &p)
+OscPanel::OscPanel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible(ftune1 = new MouseOverKnob("fine tune 1"));
-    ftune1->setRange(-100, 100, 0);
-    ftune1->setSliderStyle(Slider::RotaryVerticalDrag);
-    ftune1->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    ftune1->addListener(this);
+    addAndMakeVisible (ftune1 = new MouseOverKnob ("fine tune 1"));
+    ftune1->setRange (-100, 100, 0);
+    ftune1->setSliderStyle (Slider::RotaryVerticalDrag);
+    ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    ftune1->addListener (this);
 
-    addAndMakeVisible(lfo1depth1 = new MouseOverKnob("LFO depth 1"));
-    lfo1depth1->setRange(0, 12, 0);
-    lfo1depth1->setSliderStyle(Slider::RotaryVerticalDrag);
-    lfo1depth1->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    lfo1depth1->addListener(this);
+    addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
+    lfo1depth1->setRange (0, 12, 0);
+    lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfo1depth1->addListener (this);
 
-    addAndMakeVisible(osc1trngAmount = new MouseOverKnob("Osc1 Triangle Amount"));
-    osc1trngAmount->setRange(0, 1, 0);
-    osc1trngAmount->setSliderStyle(Slider::RotaryVerticalDrag);
-    osc1trngAmount->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    osc1trngAmount->addListener(this);
+    addAndMakeVisible (osc1trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
+    osc1trngAmount->setRange (0, 1, 0);
+    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    osc1trngAmount->addListener (this);
 
-    addAndMakeVisible(pulsewidth = new MouseOverKnob("Pulse Width"));
-    pulsewidth->setRange(0.01, 0.99, 0);
-    pulsewidth->setSliderStyle(Slider::RotaryVerticalDrag);
-    pulsewidth->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    pulsewidth->addListener(this);
+    addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
+    pulsewidth->setRange (0.01, 0.99, 0);
+    pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
+    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pulsewidth->addListener (this);
 
-    addAndMakeVisible(pitchRange = new MouseOverKnob("pitch range"));
-    pitchRange->setRange(0, 12, 0);
-    pitchRange->setSliderStyle(Slider::RotaryVerticalDrag);
-    pitchRange->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    pitchRange->addListener(this);
+    addAndMakeVisible (pitchRange = new MouseOverKnob ("pitch range"));
+    pitchRange->setRange (0, 12, 0);
+    pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
+    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pitchRange->addListener (this);
 
-    addAndMakeVisible(ctune1 = new MouseOverKnob("coarse tune 1"));
-    ctune1->setRange(-11, 11, 1);
-    ctune1->setSliderStyle(Slider::RotaryVerticalDrag);
-    ctune1->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    ctune1->addListener(this);
+    addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
+    ctune1->setRange (-11, 11, 1);
+    ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
+    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    ctune1->addListener (this);
 
-    addAndMakeVisible(lfoFadeIn = new MouseOverKnob("LFO Fade In"));
-    lfoFadeIn->setRange(0, 10, 0);
-    lfoFadeIn->setSliderStyle(Slider::RotaryVerticalDrag);
-    lfoFadeIn->setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
-    lfoFadeIn->addListener(this);
+    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
+    lfoFadeIn->setRange (0, 10, 0);
+    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoFadeIn->addListener (this);
 
-    addAndMakeVisible(waveformVisual = new WaveformVisual(params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
-    waveformVisual->setName("Waveform Visual");
+    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    waveformVisual->setName ("Waveform Visual");
 
-    addAndMakeVisible(waveformSwitch = new MouseOverKnob("Waveform Switch"));
-    waveformSwitch->setRange(0, 2, 1);
-    waveformSwitch->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
-    waveformSwitch->setTextBoxStyle(Slider::TextBoxBelow, true, 80, 20);
-    waveformSwitch->addListener(this);
+    addAndMakeVisible (waveformSwitch = new MouseOverKnob ("Waveform Switch"));
+    waveformSwitch->setRange (0, 2, 1);
+    waveformSwitch->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
+    waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    waveformSwitch->addListener (this);
 
     addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
     amountWidthMod->setRange (0, 1, 0);
@@ -104,7 +104,7 @@ OscPanel::OscPanel(SynthParams &p)
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
-    setSize(600, 400);
+    setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -134,12 +134,12 @@ OscPanel::~OscPanel()
 }
 
 //==============================================================================
-void OscPanel::paint(Graphics& g)
+void OscPanel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll(Colours::white);
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -164,7 +164,7 @@ void OscPanel::resized()
     //[/UserResized]
 }
 
-void OscPanel::sliderValueChanged(Slider* sliderThatWasMoved)
+void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);

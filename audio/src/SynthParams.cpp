@@ -13,19 +13,19 @@ namespace {
     static const char *seqModeNames[] = {
         "Stop", "Play", "SyncHost", nullptr
     };
-    
+
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
     };
-    
+
     static const char *biquadFilters[] = {
         "Lowpass", "Highpass", "Bandpass", nullptr
     };
-    
+
     static const char *modsourcenames[] = {
         "None", "LFO1", "ENV1", nullptr
     };
-    
+
     static const char *waveformNames[] = {
         "Square", "Saw", "White-noise"
     };
@@ -39,8 +39,9 @@ SynthParams::SynthParams()
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &panDir, &vol, 
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse }
+    &panDir, &vol,
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
+    &lowFiActivation, &nBitsLowFi }
 , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax}
 , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
@@ -64,7 +65,7 @@ SynthParams::SynthParams()
 
 , envAttack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
 , envDecay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
-, envSustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, .5f)
+, envSustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 , envRelease("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
 , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
 , envAttackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
@@ -85,7 +86,7 @@ SynthParams::SynthParams()
 , osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
 , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
 , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
-, vol("Vol", "vol", "Vol", "dB", 0.f, 1.f, .5f)
+, vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
 , ladderCutoff("LadderFreq", "ladderCutoff", "Ladder cutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "Ladder res", "  ", 0.f, 10.f, 0.f)
 , lfoFadein("FadeIn","lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
@@ -100,11 +101,13 @@ SynthParams::SynthParams()
 , delayTriplet("Delay Triplet", "delTrip", "Delay triplet",  eOnOffToggle::eOff, onoffnames)
 , delayRecordFilter("Delay Record", "delRec", "Delay record filter",  eOnOffToggle::eOff, onoffnames)
 , delayReverse("Delay Reverse", "delRev", "Delay reverse",  eOnOffToggle::eOff, onoffnames)
+, lowFiActivation("Activation", "lowFiActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
+, nBitsLowFi("Bit Degr", "nBitsLowFi", "Number Bits", "bit", 1.f, 16.f, 16.f)
 , chorDelayLength("Width", "chorWidth", "Chorus Width", "s", .02f, .08f, .05f)
 , chorModRate("Rate", "chorRate", "Chorus Rate", "Hz", 0.f, 1.5f, 0.5f)
 , chorDryWet("Dry/Wet", "ChorAmount", "Chorus Dry/Wet","%", 0.f, 1.f, 0.f)
 , chorModDepth("Depth", "ChorDepth", "Chorus Depth", "ms", 1.f, 20.f, 15.f)
-, clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 30.f, 0.0f)
+, clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 25.f, 0.0f)
 , seqMode("SeqMode", "seqMode", "SeqMode", eSeqModes::eSeqStop, seqModeNames)
 , seqPlayMode("SeqPlayMode", "seqPlayMode", "SeqPlayMode",eSeqPlayModes::eSequential, seqPlayModeNames)
 , seqLastPlayedStep("Last Played Step", "lastPlayedStep", "Last Played Step", "", 0.0f, 7.0f, 0.0f)
@@ -190,7 +193,7 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
-        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least 
+        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
                                                                                                             // delay feedback and dry are bad and (ampVol sometimes); not further tested
     }
 }
