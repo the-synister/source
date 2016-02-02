@@ -71,13 +71,6 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
-enum transform {
-    TRANSFORM_NONE = 0,
-    TRANSFORM_TO_BIPOLAR,
-    TRANSFORM_TO_UNIPOLAR,
-    MAX_TRANSFORMS
-};
-
 inline bool isUnipolar(sources source) {
     switch (source) {
     case (SOURCE_ENV1) :
@@ -102,27 +95,7 @@ inline bool isUnipolar(sources source) {
     return false; // when the function is complete with all sources, this code should be unreachable
 }
 
-struct modMatrixRow
-{
-    sources sourceIndex;
-    destinations destinationIndex;
-    Param* modIntensity;
-    bool enable;
-};
 
-inline modMatrixRow* createModMatrixRow(sources sourceIndex_,
-                                        destinations destinationIndex_,
-                                        Param* modIntensity_,
-                                        bool enable_ = false) {
-
-    modMatrixRow* row = new modMatrixRow;
-    row->sourceIndex = sourceIndex_;
-    row->destinationIndex = destinationIndex_;
-    row->modIntensity = modIntensity_;
-    row->enable = enable_;
-
-    return row;
-}
 
 // core
 class ModulationMatrix {
@@ -130,84 +103,77 @@ public:
     ModulationMatrix();
     ~ModulationMatrix();
 
-    inline void clearSources();
-    inline void clearDestinations();
-    inline bool modMatrixRowExists(int sourceIndex, int destinationIndex);
-    inline bool enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable);
-    void addModMatrixRow(modMatrixRow * row);
-    inline bool checkDestinationLayer(int layer, modMatrixRow* row);
-    inline float toUnipolar(float min, float max, float value);
-    inline float toBipolar(float min, float max, float value);
-    inline void doModulationsMatrix(int modLayer, float** src, float** dst);
+    inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
+    inline bool enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable);
 
-    float sources[MAX_SOURCES];
-    float destinations[MAX_DESTINATIONS];
-    vector<modMatrixRow*> matrixCore;
+    inline void addModMatrixRow(sources s, destinations d, Param *intensity, bool b = false);
+
+    inline void doModulationsMatrix(float** src, float** dst) const;
+
+protected:
+    static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
+    static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
+
+private:
+    struct ModMatrixRow
+    {
+        sources sourceIndex;
+        destinations destinationIndex;
+        Param* modIntensity;
+        bool enable;
+
+        ModMatrixRow(sources s, destinations d, Param *intensity, bool b = false)
+            : sourceIndex(s)
+            , destinationIndex(d)
+            , modIntensity(intensity)
+            , enable(b)
+        {}
+    };
+
+    vector<ModMatrixRow> matrixCore;
 };
 
 
-inline void ModulationMatrix::doModulationsMatrix(int modLayer, float** src, float** dst)
+inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) const
 {
-    for (unsigned int i = 0; i < matrixCore.size(); ++i)
-    {
-        // --- this should never happen!
-        if (matrixCore[i] == nullptr) continue;
-        
+    for (const ModMatrixRow &row : matrixCore)
+    {        
         // --- if disabled, skip row
-        if (!matrixCore[i]->enable) continue;
-        
-        // --- check the mod layer
-        if (!checkDestinationLayer(modLayer, matrixCore[i])) continue;
-        
+        if (!row.enable) continue;
+                
         // get the source value & mod intensity
-        float source = *(src[matrixCore[i]->sourceIndex]);
-        float intensity = matrixCore[i]->modIntensity->get();
+        float source = *(src[row.sourceIndex]);
+        float intensity = row.modIntensity->get();
 
         // get the min max values for the intensity for transformation
-        float min = matrixCore[i]->modIntensity->getMin();
-        float max = matrixCore[i]->modIntensity->getMax();
+        float min = row.modIntensity->getMin();
+        float max = row.modIntensity->getMax();
         
-        if (isUnipolar(matrixCore[i]->sourceIndex)) { // if the source is unipolar, transform the intensity to bipolar
+        if (isUnipolar(row.sourceIndex)) { 
+            // if the source is unipolar, transform the intensity to bipolar
             intensity = toBipolar(min, max, intensity);
         }
-        else { // else the source is bipolar, transform the intensity to unipolar
+        else { 
+            // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
 
-        //Lfo to Oscillator
         float dModValue = source*intensity;
                 
         /*we are just adding the modified values into the predefined buffers
          the conversion and application is apllied outside of the matrix*/
-        *(dst[matrixCore[i]->destinationIndex]) += dModValue;
+        *(dst[row.destinationIndex]) += dModValue;
     }
 }
 
 // config changes
 
-inline void ModulationMatrix::clearSources()
+inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const
 {
-    for (int i = 0; i<MAX_DESTINATIONS; ++i)
-    {
-        sources[i] = 0.0f;
-    }
-}
-
-inline void ModulationMatrix::clearDestinations()
-{
-    for (int i = 0; i<MAX_SOURCES; ++i)
-    {
-        destinations[i] = 0.0f;
-    }
-}
-
-inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinationIndex)
-{
-    
-    for (unsigned int i = 0; i<matrixCore.size(); ++i)
+    for (const ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (matrixCore[i]->sourceIndex == sourceIndex && matrixCore[i]->destinationIndex == destinationIndex)
+        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
         {
             return true;
         }
@@ -215,41 +181,27 @@ inline bool ModulationMatrix::modMatrixRowExists(int sourceIndex, int destinatio
     return false;
 }
 
-inline bool ModulationMatrix::enableModMatrixRow(int sourceIndex, int destinationIndex, bool enable)
+inline bool ModulationMatrix::enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable)
 {
-    for (unsigned int i = 0; i<matrixCore.size(); ++i)
+    for (ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (matrixCore[i]->sourceIndex == sourceIndex && matrixCore[i]->destinationIndex == destinationIndex)
+        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
         {
-            matrixCore[i]->enable = enable;
+            row.enable = enable;
             return true; // found it
         }
     }
     return false;
 }
 
-inline bool ModulationMatrix::checkDestinationLayer(int layer, modMatrixRow * row)
+inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, bool b)
 {
-    bool bLayer0 = false;
-    if (row->destinationIndex >= DEST_FILT_FC &&
-        row->destinationIndex <= DEST_OSC1_PITCH)
-        // then, we are layer 0; see modulationmatrix.h
-        bLayer0 = true;
-    
-    if (layer == 0)
-        return bLayer0;
-    
-    if (layer == 1)
-        return !bLayer0;
-    
-    return false;
+    // add if not already existing
+    if (!modMatrixRowExists(s, d))
+    {
+        matrixCore.push_back(ModMatrixRow(s,d,intensity,b));
+    }
 }
-
-inline float ModulationMatrix::toUnipolar(float min, float max, float value) { return (value - min) / max - min;}
-
-inline float ModulationMatrix::toBipolar(float min, float max, float value) { return (2.0f*(value-min) / max-min) - 1.0f;}
-
-
 
 #endif  // MODULATIONMATRIX_H_INCLUDED

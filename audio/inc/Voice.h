@@ -51,14 +51,11 @@ public:
     {
         noModBuffer.clear();
         
-        for(float*& pSource : modSources) {
-            pSource = nullptr;
-        }
-        for(float*& pDest : modDestinations) {
-            pDest = nullptr;
-        }
+        std::fill(modSources.begin(), modSources.end(), nullptr);
+        std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
+        modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
 
@@ -364,40 +361,36 @@ protected:
 
             // Fade in factor calculation
             if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
-        {
+            {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                 factorFadeInLFO = 1.f;
-        }
+            }
             else
-        {
+            {
                 // Otherwise the factor is determined
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-        }
+            }
 
-        // calculate lfo values and fill the buffers
-        switch (params.lfo1wave.getStep()) {
-        case eLfoWaves::eLfoSine:
-            // lfoValue = lfo1sine.next();
-            lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
-            break;
-        case eLfoWaves::eLfoSampleHold:
-            // lfoValue = lfo1random.next();
-            lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
-            break;
-        case eLfoWaves::eLfoSquare:
-            // lfoValue = lfo1square.next();
-            lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
-            break;
-        }
+            // calculate lfo values and fill the buffers
+            switch (params.lfo1wave.getStep()) {
+            case eLfoWaves::eLfoSine:
+                // lfoValue = lfo1sine.next();
+                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
+                break;
+            case eLfoWaves::eLfoSampleHold:
+                // lfoValue = lfo1random.next();
+                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
+                break;
+            case eLfoWaves::eLfoSquare:
+                // lfoValue = lfo1square.next();
+                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
+                break;
+            }
             // Calculate the Envelope coefficients and fill the buffers
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-        }
 
-        //calculate modulation values for the buffers
-        for (int s = 0; s < numSamples; ++s) {
-
-            modMatrix->doModulationsMatrix(0, modSources, modDestinations);
+            modMatrix->doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
             ++modDestinations[DEST_OSC1_PITCH];
             ++modDestinations[DEST_FILT_FC];
@@ -405,12 +398,10 @@ protected:
             ++modSources[SOURCE_LFO1];
         }
 
-        // multiplicative values: 
-        // modulator(*cc) -> destination
-        // modulator1(*modulator2) -> destination
-        //case example: LFO/Envelope and PitchBend have influence on the pitch
+        //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
+        //! \todo check whether this should be at the place where the values are actually used
         for (int s = 0; s < numSamples; ++s) {
-            osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f) * Param::fromCent(params.osc1PitchRange.get() * 100 * pitchBend));
+            osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f));
         }
     }
 
@@ -569,9 +560,9 @@ private:
     //float currentPitchInCents;
     //float lfoValue;
     //float env1Coeff;
-    
-    float* modSources[MAX_SOURCES];
-    float* modDestinations[MAX_DESTINATIONS];
+
+    std::array<float*, MAX_SOURCES> modSources;
+    std::array<float*, MAX_DESTINATIONS> modDestinations;
     
     int totSamples;
 

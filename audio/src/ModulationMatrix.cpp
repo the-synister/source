@@ -12,22 +12,9 @@
 
 ModulationMatrix::ModulationMatrix()
 {
-    clearSources();
-    clearDestinations();
 }
 
 ModulationMatrix::~ModulationMatrix()
 {
-    for (unsigned int i = 0; i < matrixCore.size(); ++i) {
-        delete matrixCore[i];
-    }
 }
 
-void ModulationMatrix::addModMatrixRow(modMatrixRow * row)
-{
-    // add if not already existing
-    if (!modMatrixRowExists(row->sourceIndex, row->destinationIndex))
-    {
-        matrixCore.push_back(row);
-    }
-}

@@ -94,15 +94,14 @@ public:
 
     static bool isUnipolar(eModSource source) {
         switch (source) {
-        case (eModSource::eEnv) :
+        case eModSource::eEnv:
             //todo: add all unipolar modulators
             return true;
-            break;
-        case (eModSource::eLFO1) :
+        case eModSource::eLFO1:
             //todo: add all unipolar modulators
             return false;
-            break;
         }
+        return false;
     }
     class Listener {
     public:
