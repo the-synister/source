@@ -74,18 +74,8 @@ PluginAudioProcessor::PluginAudioProcessor()
                                     &osc1lfo1depth,
                                     false);
 
-    // Add LFO1 and ENV1 to DEST_FILT_FC with
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1,
-                                    DEST_FILT_FC,
-                                    &lpModAmount,
-                                    false);
-
-    //dont forget to change the params.lpModSource for testing
-
-    globalModMatrix.addModMatrixRow(SOURCE_ENV1,
-                                    DEST_FILT_FC,
-                                    &lpModAmount,
-                                    true);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILT_FC, &lpModAmount, false);
+    globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_FILT_FC, &lpModAmount, true);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

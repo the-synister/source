@@ -6,10 +6,6 @@
 #include "Envelope.h"
 #include "Oscillator.h"
 
-/*the following is for the leak detector, vld must be installed on the computer
-    and path must be added to library path!!*/
-//#include "vld.h"
-
 class Sound : public SynthesiserSound {
 public:
     bool appliesToNote(int /*midiNoteNumber*/) override { return true; }
@@ -447,6 +443,10 @@ protected:
                 return 0.f;
         }
         
+#if 1
+        //! \todo mod range must come from somewhere else
+        moddedFreq = Param::bipolarToFreq(modValue, cutoffFreq, 5.f);
+#else
         // check polarity and calculate modFreq from modValue
         if (bool x = Param::isUnipolar(params.lpModSource.getStep())) {
             //moddedFreq = cutoffFreq + (params.lpCutoff.getMax() - cutoffFreq) * modValue * params.lpModAmount.get() / 100.f;
@@ -455,6 +455,7 @@ protected:
         else {
             moddedFreq = Param::bipolarToFreq(modValue, cutoffFreq, modAmount);
         }
+#endif
 
         // check range
         if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters

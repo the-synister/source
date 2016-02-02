@@ -68,7 +68,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     modSrc->addListener (this);
 
     addAndMakeVisible (modSliderCut = new Slider ("Mod"));
-    modSliderCut->setRange (-1, 1, 0);
+    modSliderCut->setRange (0, 8, 0);
     modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
     modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
     modSliderCut->addListener (this);
@@ -230,7 +230,7 @@ BEGIN_JUCER_METADATA
             items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
-          explicitFocusOrder="0" pos="160 80 24 24" min="-1" max="1" int="0"
+          explicitFocusOrder="0" pos="160 80 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>

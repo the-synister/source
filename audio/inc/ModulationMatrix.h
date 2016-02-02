@@ -15,8 +15,6 @@
 #include <atomic>
 #include "Param.h"
 
-using namespace std;
-
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
@@ -130,7 +128,7 @@ private:
         {}
     };
 
-    vector<ModMatrixRow> matrixCore;
+    std::vector<ModMatrixRow> matrixCore;
 };
 
 

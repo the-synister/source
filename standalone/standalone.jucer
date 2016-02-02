@@ -50,8 +50,6 @@
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="MnxYSa" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
-        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
-        <FILE id="YVkVhk" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="LyR6Sz" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
         <FILE id="Oxjdmq" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="pYGYQL" name="PluginProcessor.h" compile="0" resource="0"

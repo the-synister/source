@@ -81,15 +81,15 @@ public:
 
     //todo: booth these toFreq - functions need to be changed to work with a bipolar modAmount-knob
 
-    static inline float bipolarToFreq(float modValue, float fInput, float modAmount) {
-        if (modValue < 0.f) {
-            modValue /= 2.f;
-        }
-        return fInput + (fInput * modValue * (log2(1.f + modAmount)));
+    /**
+    * @param modRange max modulation in octaves
+    */
+    static inline float bipolarToFreq(float modValue, float fInput, float modRange) {
+        return fInput * std::pow(2.f, modValue * modRange);
     }
 
     static inline float unipolarToFreq(float modValue, float fInput, float modAmount) {
-        return fInput + (fInput * modAmount * (log2(1.f + modValue))); //todo test!
+        return fInput + (fInput * modAmount * (std::log2(1.f + modValue))); //todo test!
     }
 
     static bool isUnipolar(eModSource source) {
