@@ -14,7 +14,7 @@ public:
 
 class Voice : public SynthesiserVoice {
 public:
-    Voice(SynthParams &p, int blockSize, ModulationMatrix *globalModMatrix_)
+    Voice(SynthParams &p, int blockSize)
     : lastSample(0.f)
     , inputDelay1(0.f)
     , inputDelay2(0.f)
@@ -36,7 +36,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
-    , modMatrix(globalModMatrix_) //local Matrix initialisation
+    , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
@@ -375,7 +375,7 @@ protected:
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
 
-            modMatrix->doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
+            modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
@@ -547,7 +547,7 @@ private:
 
     AudioSampleBuffer modDestBuffer;
     
-    ModulationMatrix* modMatrix; //pointer to the global Matrix
+    ModulationMatrix& modMatrix; 
     
     // Envelopes 
     Envelope envToVolume;

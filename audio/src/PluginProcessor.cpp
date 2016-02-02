@@ -176,7 +176,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
 
     for (int i = 8; --i >= 0;)
     {
-        synth.addVoice(new Voice(*this, samplesPerBlock, &globalModMatrix)); //Reference of the gloabl Matrix is passed to each voice
+        synth.addVoice(new Voice(*this, samplesPerBlock));
     }
     synth.clearSounds();
     synth.addSound(new Sound());
