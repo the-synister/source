@@ -19,6 +19,7 @@
 #include <array>
 #include "StepSequencer.h"
 #include "FxChorus.h"
+#include "LowFidelity.h"
 
 //==============================================================================
 /**
@@ -73,6 +74,8 @@ private:
     // FX
     FxDelay delay;
     FxClipping clip;
+
+    LowFidelity lowFi;
 
     StepSequencer stepSeq;
     FxChorus chorus;

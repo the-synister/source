@@ -37,8 +37,12 @@ public:
     float get() const { return val_.load(); }
 
     virtual void setUI(float f, bool notifyHost = true) {
-        if (f >= min_ && f <= max_) set(f);
-        else set(default_);
+        if (f >= min_ && f <= max_) {
+            set(f);
+        } else {
+            jassertfalse;
+            //set(default_);
+        }
         if(notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const { return get(); }
@@ -97,7 +101,9 @@ protected:
 
 class ParamDb : public Param {
 public:
-    using Param::Param;
+    ParamDb(const String &name, const String &serializationTag, const String &hostTag, const String &unit, float minval, float maxval, float defaultval)
+        : Param(name, serializationTag, hostTag, unit, minval, maxval, fromDb(defaultval))
+    {}
 
     virtual void setUI(float f, bool notifyHost = true) override {
         if (fromDb(f) >= min_ && fromDb(f) <= max_) set(fromDb(f));
