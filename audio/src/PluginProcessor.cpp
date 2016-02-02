@@ -21,6 +21,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     , stepSeq(*this)
     , chorus(*this)
     , clip(*this)
+    , lowFi(*this)
 {
     addParameter(new HostParam<Param>(osc1fine));
     addParameter(new HostParam<Param>(osc1coarse));
@@ -57,6 +58,8 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -197,6 +200,13 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 
     // and now get the synth to process the midi events and generate its output.
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    // Low fidelity effect
+    //////////////////////
+    // If the effect is activated, the algorithm is applied
+    if (lowFiActivation.getStep() == eOnOffToggle::eOn) {
+        lowFi.bitReduction(buffer);
+    }
 
     if (clippingFactor.get() > 0.f) {
         clip.clipSignal(buffer, 0, buffer.getNumSamples());

@@ -6,6 +6,8 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="mRa6CJ" name="LoFiPanel.cpp" compile="1" resource="0" file="../gui/panels/LoFiPanel.cpp"/>
+        <FILE id="YXSAmF" name="LoFiPanel.h" compile="0" resource="0" file="../gui/panels/LoFiPanel.h"/>
         <FILE id="ypZ5Om" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
         <FILE id="Yr6zTA" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="JKipUS" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
