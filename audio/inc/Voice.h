@@ -37,16 +37,13 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modMatrix(globalModMatrix_) //local Matrix initialisation
-    , osc1PitchModBuffer(1, blockSize)
     , filterModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
     , lfo1Buffer(1,blockSize)
     , env1Buffer(1, blockSize)
-    , noModBuffer(1, blockSize)
-    {
-        noModBuffer.clear();
-        
+    , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
+    {        
         std::fill(modSources.begin(), modSources.end(), nullptr);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
@@ -56,8 +53,9 @@ public:
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
-        modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
-        modDestinations[DEST_FILT_FC] = filterModBuffer.getWritePointer(0);
+        for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
+            modDestinations[u] = modDestBuffer.getWritePointer(u);
+        }
     }
 
     bool canPlaySound(SynthesiserSound* sound) override
@@ -199,33 +197,24 @@ public:
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
-        // Modulation
-        renderModulation(numSamples);
-        const float *noMod = noModBuffer.getReadPointer(0);
-        const float *osc1PitchMod = osc1PitchModBuffer.getReadPointer(0);
-        const float *envToVolMod = envToVolBuffer.getReadPointer(0);
-        const float *lfo1 = lfo1Buffer.getReadPointer(0);
-        const float *filterMod = filterModBuffer.getReadPointer(0);
-        const float *env1Test = env1Buffer.getReadPointer(0);
-
-        // Not using the following in the same manner as before, everything is part of the pitchmod now!
-        //const float *lfo1Mod = lfo1ModBuffer.getReadPointer(0);
-        //const float *env1Mod = env1Buffer.getReadPointer(0);
-
-        // this selection method will be changed (matrixRow->enabled)
-        std::vector<const float*> modSourcesSelector(3);
-        modSourcesSelector[0] = noMod;
-        modSourcesSelector[1] = lfo1;
-        modSourcesSelector[2] = env1Test;
-
-        const float currentAmp = params.vol.get();
-        const float currentPan = params.panDir.get();
-
-        // Pan Influence
-        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
-        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-
+        // if voice active
         if (lfo1square.isActive() || lfo1sine.isActive()) {
+
+            // Modulation
+            renderModulation(numSamples);
+            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PITCH);
+            const float *envToVolMod = envToVolBuffer.getReadPointer(0);
+            const float *lfo1 = lfo1Buffer.getReadPointer(0);
+            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILT_FC);
+            const float *env1Test = env1Buffer.getReadPointer(0);
+
+            const float currentAmp = params.vol.get();
+            const float currentPan = params.panDir.get();
+
+            // Pan Influence
+            const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+            const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+
             for (int s = 0; s < numSamples; ++s) {
                 
                 float currentSample;
@@ -342,14 +331,14 @@ protected:
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
 
         //clear the buffers
-        osc1PitchModBuffer.clear();
-        filterModBuffer.clear();
+        modDestBuffer.clear();
         lfo1Buffer.clear();
         env1Buffer.clear();
         
         //set the write point in the buffers
-        modDestinations[DEST_OSC1_PITCH] = osc1PitchModBuffer.getWritePointer(0);
-        modDestinations[DEST_FILT_FC] = filterModBuffer.getWritePointer(0);
+        for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
+            modDestinations[u] = modDestBuffer.getWritePointer(u);
+        }
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
 
@@ -388,8 +377,9 @@ protected:
 
             modMatrix->doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
-            ++modDestinations[DEST_OSC1_PITCH];
-            ++modDestinations[DEST_FILT_FC];
+            for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
+                ++modDestinations[u];
+            }
             ++modSources[SOURCE_ENV1];
             ++modSources[SOURCE_LFO1];
         }
@@ -397,7 +387,7 @@ protected:
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
         //! \todo check whether this should be at the place where the values are actually used
         for (int s = 0; s < numSamples; ++s) {
-            osc1PitchModBuffer.setSample(0, s, Param::fromSemi(osc1PitchModBuffer.getSample(0,s) * 12.f));
+            modDestBuffer.setSample(DEST_OSC1_PITCH, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PITCH,s) * 12.f));
         }
     } 
 
@@ -550,12 +540,12 @@ private:
     float lpOut3Delay;
 
     // Buffers
-    AudioSampleBuffer osc1PitchModBuffer;
     AudioSampleBuffer filterModBuffer;
     AudioSampleBuffer lfo1Buffer;
-    AudioSampleBuffer noModBuffer;
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env1Buffer;
+
+    AudioSampleBuffer modDestBuffer;
     
     ModulationMatrix* modMatrix; //pointer to the global Matrix
     
