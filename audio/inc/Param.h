@@ -79,17 +79,11 @@ public:
     static inline float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
     static inline float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
 
-    //todo: booth these toFreq - functions need to be changed to work with a bipolar modAmount-knob
-
     /**
     * @param modRange max modulation in octaves
     */
     static inline float bipolarToFreq(float modValue, float fInput, float modRange) {
         return fInput * std::pow(2.f, modValue * modRange);
-    }
-
-    static inline float unipolarToFreq(float modValue, float fInput, float modAmount) {
-        return fInput + (fInput * modAmount * (std::log2(1.f + modValue))); //todo test!
     }
 
     static bool isUnipolar(eModSource source) {
@@ -103,6 +97,7 @@ public:
         }
         return false;
     }
+
     class Listener {
     public:
         virtual ~Listener(){}
