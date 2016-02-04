@@ -11,8 +11,7 @@
 #ifndef ENVELOPECURVE_H_INCLUDED
 #define ENVELOPECURVE_H_INCLUDED
 
-#include "../standalone/JuceLibraryCode/JuceHeader.h"
-#include "Voice.h"
+#include "JuceHeader.h"
 
 //==============================================================================
 /*
