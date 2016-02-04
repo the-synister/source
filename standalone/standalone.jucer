@@ -24,14 +24,6 @@
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
-<<<<<<< HEAD
-=======
-      <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets"/>
-      <FILE id="pTBLVA" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="../gui/CustomLookAndFeel.cpp"/>
-      <FILE id="ZIV2bd" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="../gui/CustomLookAndFeel.h"/>
->>>>>>> d687dcc... envelope curve
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>

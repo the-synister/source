@@ -1016,7 +1016,6 @@
 					F10C7727430FA1C2D460F8DD,
 					DFE02E065F32D9F317733954,
 					1A281D6829318B5C9C90FD66, ); name = panels; sourceTree = "<group>"; };
-		58D71A9A7B7F6F537A59D9DB = {isa = PBXGroup; children = (  ); name = Assets; sourceTree = "<group>"; };
 		959CBC4C3F0A0259B6A0EBD9 = {isa = PBXGroup; children = (
 					09B0D5FE7E49E7607B436EF7,
 					998B00077599547E2903FAAA,
