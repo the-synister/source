@@ -22,15 +22,15 @@ void WaveformVisual::paint(Graphics &g)
             case eOscWaves::eOscSquare:
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
-                
+
             case eOscWaves::eOscSaw:
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::saw(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
-                
+
             case eOscWaves::eOscNoise:
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::whiteNoise(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
-                
+
 		}
 
     }

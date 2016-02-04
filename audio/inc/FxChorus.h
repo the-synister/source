@@ -9,34 +9,34 @@
 class FxChorus
 {
 public:
-	FxChorus(SynthParams &p)
-		: params(p)
-		, loopPosition(0)
-		//, chorDelayLength(.02f)
-		//, modulationDepth(.01f)
-		//, modulationRate(.5f)
-		//, chorDryWet(.8)
-	{
-	
-	}
-	~FxChorus();
+    FxChorus(SynthParams &p)
+        : params(p)
+        , loopPosition(0)
+        //, chorDelayLength(.02f)
+        //, modulationDepth(.01f)
+        //, modulationRate(.5f)
+        //, chorDryWet(.8)
+    {
 
-	void init(int channelsIn, double sampleRateIn);
-	void render(AudioSampleBuffer& outputBuffer, int startSample);
+    }
+    ~FxChorus();
+
+    void init(int channelsIn, double sampleRateIn);
+    void render(AudioSampleBuffer& outputBuffer, int startSample);
 
 private:
-	SynthParams &params;
-	AudioSampleBuffer chorusBuffer;
-	Oscillator<&Waveforms::sinus> modSine1;
-	Oscillator<&Waveforms::sinus> modSine2;
-	Oscillator<&Waveforms::sinus> modSine3;
-	Oscillator<&Waveforms::sinus> modSine4;
-	Oscillator<&Waveforms::sinus> modSine5;
-	double sampleRate;
-	int channels;
-	int currentDelayLength;
-	int loopPosition;
-	
+    SynthParams &params;
+    AudioSampleBuffer chorusBuffer;
+    Oscillator<&Waveforms::sinus> modSine1;
+    Oscillator<&Waveforms::sinus> modSine2;
+    Oscillator<&Waveforms::sinus> modSine3;
+    Oscillator<&Waveforms::sinus> modSine4;
+    Oscillator<&Waveforms::sinus> modSine5;
+    double sampleRate;
+    int channels;
+    int currentDelayLength;
+    int loopPosition;
+
 };
 
 

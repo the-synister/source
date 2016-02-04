@@ -84,6 +84,12 @@ OscPanel::OscPanel (SynthParams &p)
     waveformSwitch->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     waveformSwitch->addListener (this);
 
+    addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
+    amountWidthMod->setRange (0, 1, 0);
+    amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
+    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
@@ -91,6 +97,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
     registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
     registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
@@ -119,6 +126,7 @@ OscPanel::~OscPanel()
     lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
+    amountWidthMod = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -151,6 +159,7 @@ void OscPanel::resized()
     lfoFadeIn->setBounds (440, 8, 64, 64);
     waveformVisual->setBounds (24, 112, 208, 96);
     waveformSwitch->setBounds (360, 128, 64, 64);
+    amountWidthMod->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -201,6 +210,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
         //[/UserSliderCode_waveformSwitch]
     }
+    else if (sliderThatWasMoved == amountWidthMod)
+    {
+        //[UserSliderCode_amountWidthMod] -- add your slider handling code here..
+        //[/UserSliderCode_amountWidthMod]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -211,12 +225,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
-	int waveformKey = static_cast<int>(waveformSwitch->getValue());
-	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    int waveformKey = static_cast<int>(waveformSwitch->getValue());
+    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
     params.osc1Waveform.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-	waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
 }
@@ -275,6 +289,10 @@ BEGIN_JUCER_METADATA
           min="0" max="2" int="1" style="RotaryHorizontalVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
