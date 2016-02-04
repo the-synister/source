@@ -12,6 +12,13 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="HOocEB" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="iKZTgI" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="SZMqFo" name="EnvelopeCurve.cpp" compile="1" resource="0"
+            file="../gui/EnvelopeCurve.cpp"/>
+      <FILE id="PDGxLR" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
       <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
             file="../gui/WaveformVisual.cpp"/>
       <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
