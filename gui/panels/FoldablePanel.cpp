@@ -52,9 +52,7 @@ struct FoldablePanel::SectionComponent  : public Component
     {
         for (int i = 0; i < getNumChildComponents(); ++i ) {
             Component* c = getChildComponent(i);
-            c->setBounds((isOpen ?
-                          c->getLocalBounds().withTop(titleHeight) :
-                          c->getLocalBounds().removeFromTop(titleHeight)));
+            c->setBounds(c->getLocalBounds().withTop(titleHeight));
             c->resized();
         }
 /*
@@ -140,14 +138,14 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     
     void paint (Graphics& g) override
     {
-        for (int i = 0; i < sections.size(); ++i)
+        /*for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
             
-            Rectangle<int> content (section->getLocalBounds().withTop(22 /*make a getter helper*/));
+            Rectangle<int> content (section->getLocalBounds().withTop(22 /*make a getter helper*//*));
             g.reduceClipRegion (content);
             g.fillAll (section->getSectionColour()); // Colour getColour() //TODO: change for something more suitable
-        }
+        }*/
     }
     
     // probably unneeded
@@ -211,6 +209,7 @@ FoldablePanel::FoldablePanel (const String& name)  : Component (name)
 
 void FoldablePanel::init()
 {
+    startTimerHz(60);
     messageWhenEmpty = TRANS("(nothing selected)");
     
     addAndMakeVisible (panelHolderComponent = new PanelHolderComponent());
@@ -239,7 +238,7 @@ void FoldablePanel::resized()
     Rectangle<int> content (getLocalBounds());
     
     panelHolderComponent->setBounds (content);
-    panelHolderComponent->updateLayout(getWidth());
+    panelHolderComponent->updateLayout (getWidth());
 //    for (int i = sections.size(); --i >= 0;)
   //      if (Component* c = contentComponents.getReference(i))
     //        c->setBounds (content);
@@ -295,6 +294,11 @@ void FoldablePanel::addSection (const String& sectionTitle,
 void FoldablePanel::updatePropHolderLayout() const
 {
     panelHolderComponent->updateLayout (getWidth());
+}
+
+void FoldablePanel::timerCallback()
+{
+    updatePropHolderLayout();
 }
 
 void FoldablePanel::refreshAll() const

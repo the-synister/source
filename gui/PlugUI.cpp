@@ -65,9 +65,9 @@ PlugUI::PlugUI (SynthParams &p)
     tabs->setCurrentTabIndex (0);
     
     addAndMakeVisible (foldable = new FoldablePanel ("try1"));
-    foldable->addSection(TRANS("OSC"), new OscPanel (params), Colour(0xff0099ff), 300, true, 0);
-    foldable->addSection(TRANS("ENV"), new EnvPanel (params), Colour(0xffcbca63), 250, true, 1);
-    foldable->addSection(TRANS("LFO"), new LfoPanel (params), Colour(0xffb16565), 200, true, 2);
+    foldable->addSection(TRANS("OSC"), new OscPanel (params), Colour(0xff0099ff), 200, true, 0);
+    foldable->addSection(TRANS("ENV"), new EnvPanel (params), Colour(0xffcbca63), 200, false, 1);
+    foldable->addSection(TRANS("LFO"), new LfoPanel (params), Colour(0xffb16565), 200, false, 2);
     
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
     savePresetButton->addListener (this);
@@ -152,7 +152,7 @@ void PlugUI::resized()
     freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
     //tabs->setBounds (8, 128, 784, 416);
-    foldable->setBounds (8, 128, 784, 416);
+    foldable->setBounds (8, 88, 784, 416);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (8, 40, 88, 24);
     bpmLabel->setBounds (127, 7, 40, 24);

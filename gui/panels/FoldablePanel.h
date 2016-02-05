@@ -27,7 +27,8 @@ struct PanelComponent : public Component
     int preferredHeight;
 };
 
-class FoldablePanel : public Component
+class FoldablePanel : public Component,
+                      private Timer
 {
 public:
     //==============================================================================
@@ -149,7 +150,6 @@ public:
     
 private:
     // set constructor color
-    Viewport viewport;
     struct SectionComponent;
     struct PanelHolderComponent;
     PanelHolderComponent* panelHolderComponent;
@@ -157,6 +157,7 @@ private:
     Array<WeakReference<Component>> sections;
     
     void init();
+    void timerCallback() override;
     void updatePropHolderLayout() const;
     void updatePropHolderLayout (int width) const;
     
