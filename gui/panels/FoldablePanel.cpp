@@ -65,23 +65,15 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
+            
             for (int i = 0; i < getNumChildComponents(); ++i ) {
                 Component* c = getChildComponent(i);
                 c->setVisible(open);
             }
-           //if (PropertyPanel* const pp = findParentComponentOfClass<PropertyPanel>())
-             //   pp->resized();
+            
+           if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>())
+               pp->resized();
         }
-    }
-    
-    // TODO: Remove
-    void refreshAll() const
-    {
-        /*for (int i = panels.size(); --i >= 0;) {
-            panels.getUnchecked (i)->refresh();
-        }*/
-        Component* c = getParentComponent();
-        c->repaint();
     }
     
     void mouseUp (const MouseEvent& e) override
@@ -156,18 +148,11 @@ struct FoldablePanel::PanelHolderComponent  : public Component
         for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
-            
             section->setBounds (0, y, width, section->getSectionHeight());
             y = section->getBottom();
         }
+        
         repaint();
-    }
-    
-    //probably unneeded
-    void refreshAll() const
-    {
-        for (int i = 0; i < sections.size(); ++i)
-            sections.getUnchecked(i)->refreshAll();
     }
     
     void insertSection (int indexToInsertAt, SectionComponent* newSection)
@@ -209,7 +194,6 @@ FoldablePanel::FoldablePanel (const String& name)  : Component (name)
 
 void FoldablePanel::init()
 {
-    startTimerHz(60);
     messageWhenEmpty = TRANS("(nothing selected)");
     
     addAndMakeVisible (panelHolderComponent = new PanelHolderComponent());
@@ -294,16 +278,6 @@ void FoldablePanel::addSection (const String& sectionTitle,
 void FoldablePanel::updatePropHolderLayout() const
 {
     panelHolderComponent->updateLayout (getWidth());
-}
-
-void FoldablePanel::timerCallback()
-{
-    updatePropHolderLayout();
-}
-
-void FoldablePanel::refreshAll() const
-{
-    panelHolderComponent->refreshAll();
 }
 
 //==============================================================================

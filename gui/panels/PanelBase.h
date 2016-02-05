@@ -12,7 +12,7 @@ class PanelBase : public Component, protected Timer
 public:
     PanelBase(SynthParams &p)
         : params(p)
-    , preferredHeight(30){
+    {
         startTimerHz(60);
     }
 
@@ -112,5 +112,4 @@ protected:
     std::map<Slider*, Param*> sliderReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
     SynthParams &params;
-    int preferredHeight;
 };

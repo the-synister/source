@@ -27,8 +27,7 @@ struct PanelComponent : public Component
     int preferredHeight;
 };
 
-class FoldablePanel : public Component,
-                      private Timer
+class FoldablePanel : public Component
 {
 public:
     //==============================================================================
@@ -157,7 +156,6 @@ private:
     Array<WeakReference<Component>> sections;
     
     void init();
-    void timerCallback() override;
     void updatePropHolderLayout() const;
     void updatePropHolderLayout (int width) const;
     
