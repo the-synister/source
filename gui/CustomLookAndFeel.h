@@ -13,6 +13,7 @@
 
 //[Headers]
 #include "JuceHeader.h"
+#include "SynthParams.h"
 #include "MouseOverKnob.h"
 //[/Headers]
 
@@ -67,6 +68,10 @@ public:
     */
     virtual void drawTickBox(Graphics &g, Component &c, float x, float y, float width, float height, bool ticked, bool isEnabled, bool isMouseOverButton, bool isButtonDown);
 
+    /**
+    * Get text button font. Needed to change text button text font properties.
+    */
+    virtual Font getTextButtonFont(TextButton&, int buttonHeight);
     //==============================================================================
 
     /**

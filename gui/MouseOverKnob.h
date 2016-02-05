@@ -12,8 +12,7 @@
 #define MOUSEOVERKNOB_H_INCLUDED
 
 #include "JuceHeader.h"
-#include "CustomLookAndFeel.h"
-#include "../audio/inc/SynthParams.h"
+#include "SynthParams.h"
 
 class MouseOverKnob : public Slider,
                       public ComponentListener

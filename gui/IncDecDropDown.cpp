@@ -47,7 +47,7 @@ void IncDecDropDown::paint(Graphics &g)
     g.drawRect(rect, outlineThickness);
 
     // set font size and style
-    g.setFont(Font(16, Font::plain));
+    g.setFont(Font(jmin(20.0f, this->getHeight() * 0.85f), Font::plain));
 
     // draw inc and dec text
     int cornerSizeHalf = static_cast<int>(cornerSize / 2.f);

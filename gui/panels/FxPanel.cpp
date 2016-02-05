@@ -66,7 +66,7 @@ FxPanel::FxPanel (SynthParams &p)
     syncToggle->setButtonText (TRANS("Sync"));
     syncToggle->addListener (this);
 
-    addAndMakeVisible (dividend = new ComboBox ("delayDividend"));
+    addAndMakeVisible (dividend = new IncDecDropDown ("delayDividend"));
     dividend->setTooltip (TRANS("Dividend"));
     dividend->setEditableText (false);
     dividend->setJustificationType (Justification::centred);
@@ -82,7 +82,7 @@ FxPanel::FxPanel (SynthParams &p)
     dividend->addItem (TRANS("8"), 8);
     dividend->addListener (this);
 
-    addAndMakeVisible (divisor = new ComboBox ("delayDivisor"));
+    addAndMakeVisible (divisor = new IncDecDropDown ("delayDivisor"));
     divisor->setTooltip (TRANS("Divisor"));
     divisor->setEditableText (false);
     divisor->setJustificationType (Justification::centred);
@@ -125,6 +125,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (revTggl = new ToggleButton ("revTggl"));
     revTggl->setButtonText (TRANS("Reverse"));
     revTggl->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(clippingFactor, &params.clippingFactor);
@@ -378,12 +379,12 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="304 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
-            virtualName="" explicitFocusOrder="0" pos="224 12 64 16" tooltip="Dividend"
-            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="224 12 64 16"
+            tooltip="Dividend" editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
             textWhenNonSelected="1" textWhenNoItems="1"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
-            virtualName="" explicitFocusOrder="0" pos="224 37 64 16" tooltip="Divisor"
-            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16&#10;32&#10;64"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="224 37 64 16"
+            tooltip="Divisor" editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16&#10;32&#10;64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="376 8 64 64"

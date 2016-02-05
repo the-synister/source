@@ -12,9 +12,8 @@
 #define INCDECDROPDOWN_H_INCLUDED
 
 #include "JuceHeader.h"
+#include "SynthParams.h"
 #include "CustomLookAndFeel.h"
-#include "../audio/inc/SynthParams.h"
-
 
 /**
 * Custom transparent Combobox with additional increment and decrement button for selecting item.

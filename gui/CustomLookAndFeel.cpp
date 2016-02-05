@@ -9,7 +9,6 @@
 */
 
 #include "CustomLookAndFeel.h"
-#include "SynthParams.h"
 
 //==============================================================================
 // contructer & destructer
@@ -20,7 +19,6 @@ CustomLookAndFeel::CustomLookAndFeel()
     this->setDefaultSansSerifTypefaceName("Bauhaus 93");
 }
 
-// TODO: irgendwo gibt es ein leak
 CustomLookAndFeel::~CustomLookAndFeel()
 {
     // release ressources
@@ -418,6 +416,11 @@ void CustomLookAndFeel::drawTickBox(Graphics &g, Component &/*c*/, float x, floa
     g.setGradientFill(gradient);
 
     g.fillEllipse(centreX - boxSize / 2.0f, centreY - boxSize / 2.0f, boxSize, boxSize);
+}
+
+Font CustomLookAndFeel::getTextButtonFont(TextButton& /*t*/, int buttonHeight)
+{
+    return Font(jmin(20.0f, buttonHeight * 0.85f));
 }
 
 //==============================================================================

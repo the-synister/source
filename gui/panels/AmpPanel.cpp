@@ -58,22 +58,6 @@ AmpPanel::AmpPanel (SynthParams &p)
     pan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pan->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("R label",
-                                           TRANS("R")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centredLeft);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (label3 = new Label ("L label",
-                                           TRANS("L")));
-    label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centredLeft);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (velocitySense = new MouseOverKnob ("Key Velocity"));
     velocitySense->setRange (0, 96, 0);
     velocitySense->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -106,8 +90,6 @@ AmpPanel::~AmpPanel()
 
     amp = nullptr;
     pan = nullptr;
-    label2 = nullptr;
-    label3 = nullptr;
     velocitySense = nullptr;
 
 
@@ -132,11 +114,9 @@ void AmpPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    amp->setBounds (48, 152, 200, 60);
-    pan->setBounds (296, 128, 125, 60);
-    label2->setBounds (237, 96, 24, 24);
-    label3->setBounds (166, 96, 24, 24);
-    velocitySense->setBounds (66, 72, 112, 64);
+    amp->setBounds (8, 8, 200, 60);
+    pan->setBounds (272, 8, 125, 60);
+    velocitySense->setBounds (16, 88, 112, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -189,29 +169,19 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="ff6c788c"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="48 152 200 60" bkgcol="ffffff" thumbcol="ff808080"
+          explicitFocusOrder="0" pos="8 8 200 60" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="296 128 125 60" thumbcol="ff6c788c"
+          explicitFocusOrder="0" pos="272 8 125 60" thumbcol="ff6c788c"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="R label" id="38f0a446950aca39" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="237 96 24 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="R" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
-  <LABEL name="L label" id="fb5b8372200665a9" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="166 96 24 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="L" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
   <SLIDER name="Key Velocity" id="e08e3c952cbb37a2" memberName="velocitySense"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="66 72 112 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="16 88 112 64"
           rotarysliderfill="ff6c788c" min="0" max="96" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
