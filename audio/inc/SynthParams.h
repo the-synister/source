@@ -137,7 +137,7 @@ public:
 
     Param panDir; //!< pan R/L [-100..100]
 
-    Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
+    //Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect

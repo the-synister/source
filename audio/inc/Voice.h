@@ -362,7 +362,7 @@ public:
         const float sRate = static_cast<float>(getSampleRate());
 
         //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
-        float currentLadderCutoffFreq = params.ladderCutoff.get();
+        float currentLadderCutoffFreq = params.lpCutoff.get();
 
         //coeffecients and parameters
         float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
@@ -578,7 +578,8 @@ protected:
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
 
-        const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
+        /*const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);*/
+        const float currentResonance = params.ladderRes.get();
 
         if (filterType == eBiquadFilters::eLowpass) {
 
