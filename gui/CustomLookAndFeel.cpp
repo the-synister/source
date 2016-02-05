@@ -9,6 +9,7 @@
 */
 
 #include "CustomLookAndFeel.h"
+#include "SynthParams.h"
 
 //==============================================================================
 // contructer & destructer

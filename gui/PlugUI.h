@@ -65,6 +65,8 @@ private:
     float lastBpmInfo;
     void timerCallback() override;
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+
+    ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]
 
     //==============================================================================

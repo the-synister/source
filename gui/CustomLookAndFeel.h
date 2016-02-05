@@ -13,7 +13,6 @@
 
 //[Headers]
 #include "JuceHeader.h"
-#include "../audio/inc/SynthParams.h"
 #include "MouseOverKnob.h"
 //[/Headers]
 
