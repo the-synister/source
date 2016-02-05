@@ -76,7 +76,6 @@ private:
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
     ScopedPointer<FoldablePanel> foldable;
-    Array<PanelComponent*> panels;
 
 
     //==============================================================================

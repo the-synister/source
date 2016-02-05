@@ -41,8 +41,6 @@ struct FoldablePanel::SectionComponent  : public Component
     
     void paint (Graphics& g) override
     {
-     //   g.fillAll(Colours::darkblue);
-        
         if (titleHeight > 0)
             //implement
             getLookAndFeel().drawPropertyPanelSectionHeader (g, getName(), isOpen, getWidth(), titleHeight);
@@ -55,9 +53,6 @@ struct FoldablePanel::SectionComponent  : public Component
             c->setBounds(c->getLocalBounds().withTop(titleHeight));
             c->resized();
         }
-/*
-        //y = 10; //TODO: Change //pec->getBottom();
-         */
     }
     
     void setOpen (const bool open)
@@ -119,10 +114,7 @@ struct FoldablePanel::SectionComponent  : public Component
 /* 
     TODO: Make it unfoldable
     - colors go crazy
-    - move the bounds
-    - create a instanciable class
     - be able to hold more than one control panel
-    -
 */
 struct FoldablePanel::PanelHolderComponent  : public Component
 {
@@ -130,17 +122,18 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     
     void paint (Graphics& g) override
     {
-        /*for (int i = 0; i < sections.size(); ++i)
+        int y = 0;
+        for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
             
-            Rectangle<int> content (section->getLocalBounds().withTop(22 /*make a getter helper*//*));
-            g.reduceClipRegion (content);
-            g.fillAll (section->getSectionColour()); // Colour getColour() //TODO: change for something more suitable
-        }*/
+            Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - 22);
+            y = section->getBottom();
+            g.setColour(section->getSectionColour());
+            g.fillRect (content); // Colour getColour() //TODO: change for something more suitable
+        }
     }
     
-    // probably unneeded
     void updateLayout (int width)
     {
         int y = 0;
@@ -180,8 +173,6 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     JUCE_DECLARE_NON_COPYABLE (PanelHolderComponent)
 };
 
-
-//==============================================================================
 FoldablePanel::FoldablePanel()
 {
     init();
@@ -204,7 +195,6 @@ FoldablePanel::~FoldablePanel()
     clear();
 }
 
-//==============================================================================
 void FoldablePanel::paint (Graphics& g)
 {
     if (isEmpty())
@@ -216,17 +206,12 @@ void FoldablePanel::paint (Graphics& g)
     }
 }
 
-// TODO: Have a closer look to the tabs.
 void FoldablePanel::resized()
 {
     Rectangle<int> content (getLocalBounds());
     
     panelHolderComponent->setBounds (content);
     panelHolderComponent->updateLayout (getWidth());
-//    for (int i = sections.size(); --i >= 0;)
-  //      if (Component* c = contentComponents.getReference(i))
-    //        c->setBounds (content);
-
 }
 
 //==============================================================================
@@ -235,7 +220,7 @@ void FoldablePanel::clear()
     if (! isEmpty())
     {
         panelHolderComponent->sections.clear();
-        //updatePropHolderLayout();
+        updateLayout();
     }
 }
 
@@ -249,15 +234,6 @@ int FoldablePanel::getTotalContentHeight() const
     return panelHolderComponent->getHeight();
 }
 
-void FoldablePanel::addPanel(const Component* newPanel)
-{
-    if (isEmpty())
-        repaint();
-    
-//    panelHolderComponent->insertSection (-1, new SectionComponent (String::empty, newPanel, true));
-    //updatePropHolderLayout();
-}
-
 void FoldablePanel::addSection (const String& sectionTitle,
                                 Component* const newPanel,
                                 const Colour sectionColour,
@@ -267,33 +243,18 @@ void FoldablePanel::addSection (const String& sectionTitle,
 {
     jassert (sectionTitle.isNotEmpty());
     
-    if (isEmpty())
+    if (isEmpty()) {
         repaint();
-    //sections.insert(indexToInsertAt, new SectionComponent(sectionTitle, newPanel, shouldBeOpen));
-    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
-    resized();
-    updatePropHolderLayout();
-}
-
-void FoldablePanel::updatePropHolderLayout() const
-{
-    panelHolderComponent->updateLayout (getWidth());
-}
-
-//==============================================================================
-StringArray FoldablePanel::getSectionNames() const
-{
-    StringArray s;
-    
-    for (int i = 0; i < panelHolderComponent->sections.size(); ++i)
-    {
-        SectionComponent* const section = panelHolderComponent->sections.getUnchecked(i);
-        
-        if (section->getName().isNotEmpty())
-            s.add (section->getName());
     }
     
-    return s;
+    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
+    resized();
+    updateLayout();
+}
+
+void FoldablePanel::updateLayout() const
+{
+    panelHolderComponent->updateLayout (getWidth());
 }
 
 bool FoldablePanel::isSectionOpen (const int sectionIndex) const
@@ -316,13 +277,18 @@ void FoldablePanel::setSectionEnabled (const int sectionIndex, const bool should
         s->setEnabled (shouldBeEnabled);
 }
 
-void FoldablePanel::removeSection (int sectionIndex)
+StringArray FoldablePanel::getSectionNames() const
 {
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
+    StringArray s;
+    
+    for (int i = 0; i < panelHolderComponent->sections.size(); ++i)
     {
-        panelHolderComponent->sections.removeObject (s);
-        updatePropHolderLayout();
+        SectionComponent* const section = panelHolderComponent->sections.getUnchecked(i);
+            if (section->getName().isNotEmpty())
+                s.add (section->getName());
     }
+
+    return s;
 }
 
 //==============================================================================

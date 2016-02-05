@@ -13,20 +13,6 @@
 
 #include "JuceHeader.h"
 
-struct PanelComponent : public Component
-{
-    PanelComponent() : preferredHeight(25)
-    {};
-    
-    void refresh() { return; }
-    
-    int getPreferredHeight() const noexcept                 { return preferredHeight; }
-    
-    void setPreferredHeight (int newHeight) noexcept        { preferredHeight = newHeight; }
-    
-    int preferredHeight;
-};
-
 class FoldablePanel : public Component
 {
 public:
@@ -156,8 +142,7 @@ private:
     Array<WeakReference<Component>> sections;
     
     void init();
-    void updatePropHolderLayout() const;
-    void updatePropHolderLayout (int width) const;
+    void updateLayout() const;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FoldablePanel)
 };
