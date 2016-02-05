@@ -25,11 +25,12 @@ struct FoldablePanel::SectionComponent  : public Component
                       const int sectionHeight,
                       const bool sectionIsOpen)
     : Component (sectionTitle),
-    titleHeight (sectionTitle.isNotEmpty() ? 22 : 0),
+    titleHeight (22),
     isOpen (sectionIsOpen),
     _sectionColour(sectionColour),
-    _sectionHeight(sectionHeight)
+    _sectionHeight(sectionHeight + titleHeight)
     {
+        jassert(sectionTitle.isNotEmpty());
         addAndMakeVisible (newPanel);
     }
     
@@ -66,7 +67,10 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
-            setVisible(open);
+            for (int i = 0; i < getNumChildComponents(); ++i ) {
+                Component* c = getChildComponent(i);
+                c->setVisible(open);
+            }
            //if (PropertyPanel* const pp = findParentComponentOfClass<PropertyPanel>())
              //   pp->resized();
         }
@@ -103,6 +107,11 @@ struct FoldablePanel::SectionComponent  : public Component
         return _sectionColour;
     }
     
+    bool getIsOpen()
+    {
+        return isOpen;
+    }
+    
     int getSectionHeight()
     {
         return (isOpen ? _sectionHeight : titleHeight);
@@ -117,11 +126,11 @@ struct FoldablePanel::SectionComponent  : public Component
 };
 
 //==============================================================================
-/* TODO: Remove this struct and create a direct connection from foldable panel to the section component!
-   Things to think about:
-    - height
-    - color
-    - create a instanciable class 
+/* 
+    TODO: Make it unfoldable
+    - colors go crazy
+    - move the bounds
+    - create a instanciable class
     - be able to hold more than one control panel
     -
 */
@@ -153,8 +162,6 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             section->setBounds (0, y, width, section->getSectionHeight());
             y = section->getBottom();
         }
-        
-        setSize (width, y);
         repaint();
     }
     
