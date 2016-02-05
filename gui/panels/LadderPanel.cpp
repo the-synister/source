@@ -37,12 +37,14 @@ LadderPanel::LadderPanel (SynthParams &p)
     cutoff->setRange (10, 20000, 0);
     cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoff->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     cutoff->addListener (this);
 
     addAndMakeVisible (resonance = new MouseOverKnob ("Resonance"));
     resonance->setRange (0, 10, 0);
     resonance->setSliderStyle (Slider::RotaryVerticalDrag);
     resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    resonance->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     resonance->addListener (this);
 
 
@@ -77,7 +79,7 @@ void LadderPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::lightgrey);
+    g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -137,15 +139,16 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffd3d3d3"/>
+  <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" min="10" max="20000" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="8 8 64 64" rotarysliderfill="ff2b3240"
+          min="10" max="20000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
-          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff2b3240" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

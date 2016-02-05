@@ -37,57 +37,73 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStep1->setRange (0, 127, 1);
     seqStep1->setSliderStyle (Slider::LinearVertical);
     seqStep1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep1->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep1->setColour (Slider::trackColourId, Colours::white);
     seqStep1->addListener (this);
 
     addAndMakeVisible (seqStep2 = new MouseOverKnob ("Step 2"));
     seqStep2->setRange (0, 127, 1);
     seqStep2->setSliderStyle (Slider::LinearVertical);
     seqStep2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep2->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep2->setColour (Slider::trackColourId, Colours::white);
     seqStep2->addListener (this);
 
     addAndMakeVisible (seqStep3 = new MouseOverKnob ("Step 3"));
     seqStep3->setRange (0, 127, 1);
     seqStep3->setSliderStyle (Slider::LinearVertical);
     seqStep3->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep3->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep3->setColour (Slider::trackColourId, Colours::white);
     seqStep3->addListener (this);
 
     addAndMakeVisible (seqStep4 = new MouseOverKnob ("Step 4"));
     seqStep4->setRange (0, 127, 1);
     seqStep4->setSliderStyle (Slider::LinearVertical);
     seqStep4->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep4->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep4->setColour (Slider::trackColourId, Colours::white);
     seqStep4->addListener (this);
 
     addAndMakeVisible (seqStep5 = new MouseOverKnob ("Step 5"));
     seqStep5->setRange (0, 127, 1);
     seqStep5->setSliderStyle (Slider::LinearVertical);
     seqStep5->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep5->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep5->setColour (Slider::trackColourId, Colours::white);
     seqStep5->addListener (this);
 
     addAndMakeVisible (seqStep6 = new MouseOverKnob ("Step 6"));
     seqStep6->setRange (0, 127, 1);
     seqStep6->setSliderStyle (Slider::LinearVertical);
     seqStep6->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep6->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep6->setColour (Slider::trackColourId, Colours::white);
     seqStep6->addListener (this);
 
     addAndMakeVisible (seqStep7 = new MouseOverKnob ("Step 7"));
     seqStep7->setRange (0, 127, 1);
     seqStep7->setSliderStyle (Slider::LinearVertical);
     seqStep7->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep7->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep7->setColour (Slider::trackColourId, Colours::white);
     seqStep7->addListener (this);
 
     addAndMakeVisible (seqStep8 = new MouseOverKnob ("Step 8"));
     seqStep8->setRange (0, 127, 1);
     seqStep8->setSliderStyle (Slider::LinearVertical);
     seqStep8->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    seqStep8->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    seqStep8->setColour (Slider::trackColourId, Colours::white);
     seqStep8->addListener (this);
 
     addAndMakeVisible (seqPlay = new TextButton ("play sequencer"));
     seqPlay->setButtonText (TRANS("Play"));
-    seqPlay->setConnectedEdges (Button::ConnectedOnLeft);
     seqPlay->addListener (this);
     seqPlay->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     seqPlay->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
-    seqPlay->setColour (TextButton::textColourOffId, Colours::black);
+    seqPlay->setColour (TextButton::textColourOnId, Colours::white);
+    seqPlay->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (syncHost = new ToggleButton ("Sync Host"));
     syncHost->setButtonText (TRANS("Sync with Host"));
@@ -96,69 +112,83 @@ SeqPanel::SeqPanel (SynthParams &p)
 
     addAndMakeVisible (labelButton1 = new TextButton ("label button 1"));
     labelButton1->setButtonText (TRANS("C3"));
-    labelButton1->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton1->addListener (this);
     labelButton1->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton1->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
-    labelButton1->setColour (TextButton::textColourOnId, Colours::black);
+    labelButton1->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton1->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton2 = new TextButton ("label button 2"));
     labelButton2->setButtonText (TRANS("D3"));
-    labelButton2->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton2->addListener (this);
     labelButton2->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton2->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton2->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton2->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton3 = new TextButton ("label button 3"));
     labelButton3->setButtonText (TRANS("E3"));
-    labelButton3->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton3->addListener (this);
     labelButton3->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton3->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton3->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton3->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton4 = new TextButton ("label button 4"));
     labelButton4->setButtonText (TRANS("F3"));
-    labelButton4->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton4->addListener (this);
     labelButton4->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton4->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton4->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton4->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton5 = new TextButton ("label button 5"));
     labelButton5->setButtonText (TRANS("G3"));
-    labelButton5->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton5->addListener (this);
     labelButton5->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton5->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton5->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton5->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton6 = new TextButton ("label button 6"));
     labelButton6->setButtonText (TRANS("A3"));
-    labelButton6->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton6->addListener (this);
     labelButton6->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton6->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton6->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton6->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton7 = new TextButton ("label button 7"));
     labelButton7->setButtonText (TRANS("B3"));
-    labelButton7->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton7->addListener (this);
     labelButton7->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton7->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton7->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton7->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (labelButton8 = new TextButton ("label button 8"));
     labelButton8->setButtonText (TRANS("C4"));
-    labelButton8->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     labelButton8->addListener (this);
     labelButton8->setColour (TextButton::buttonColourId, Colour (0xff9a9a9a));
     labelButton8->setColour (TextButton::buttonOnColourId, Colour (0xff60ff60));
+    labelButton8->setColour (TextButton::textColourOnId, Colours::white);
+    labelButton8->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (genRandom = new TextButton ("generate random"));
     genRandom->setButtonText (TRANS("Generate Sequence"));
     genRandom->addListener (this);
+    genRandom->setColour (TextButton::buttonColourId, Colour (0x00ffffff));
+    genRandom->setColour (TextButton::buttonOnColourId, Colour (0x00ffffff));
+    genRandom->setColour (TextButton::textColourOnId, Colours::white);
+    genRandom->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (randomSeq = new Slider ("random sequence"));
     randomSeq->setRange (0, 127, 0);
     randomSeq->setSliderStyle (Slider::TwoValueHorizontal);
     randomSeq->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    randomSeq->setColour (Slider::thumbColourId, Colour (0xff564c43));
+    randomSeq->setColour (Slider::trackColourId, Colours::black);
+    randomSeq->setColour (Slider::rotarySliderFillColourId, Colours::white);
     randomSeq->addListener (this);
 
     addAndMakeVisible (randMinLabel = new Label ("random min label",
@@ -181,7 +211,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     playUpDown->setButtonText (TRANS("Play Up/Down"));
     playUpDown->addListener (this);
 
-    addAndMakeVisible (seqStepSpeed = new ComboBox ("seq step speed"));
+    addAndMakeVisible (seqStepSpeed = new IncDecDropDown ("seq step speed"));
     seqStepSpeed->setEditableText (false);
     seqStepSpeed->setJustificationType (Justification::centred);
     seqStepSpeed->setTextWhenNothingSelected (TRANS("Step Speed"));
@@ -195,7 +225,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStepSpeed->addItem (TRANS("1/1"), 7);
     seqStepSpeed->addListener (this);
 
-    addAndMakeVisible (seqStepLength = new ComboBox ("seq step length"));
+    addAndMakeVisible (seqStepLength = new IncDecDropDown ("seq step length"));
     seqStepLength->setEditableText (false);
     seqStepLength->setJustificationType (Justification::centred);
     seqStepLength->setTextWhenNothingSelected (TRANS("Step Length"));
@@ -209,7 +239,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStepLength->addItem (TRANS("1/1"), 7);
     seqStepLength->addListener (this);
 
-    addAndMakeVisible (seqNumSteps = new ComboBox ("seq num steps"));
+    addAndMakeVisible (seqNumSteps = new IncDecDropDown ("seq num steps"));
     seqNumSteps->setEditableText (false);
     seqNumSteps->setJustificationType (Justification::centred);
     seqNumSteps->setTextWhenNothingSelected (TRANS("Num Steps"));
@@ -229,6 +259,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     labelSeqSpeed->setFont (Font (14.00f, Font::plain));
     labelSeqSpeed->setJustificationType (Justification::centredLeft);
     labelSeqSpeed->setEditable (false, false, false);
+    labelSeqSpeed->setColour (Label::textColourId, Colours::white);
     labelSeqSpeed->setColour (TextEditor::textColourId, Colours::black);
     labelSeqSpeed->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -237,6 +268,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     labelSeqLength->setFont (Font (14.00f, Font::plain));
     labelSeqLength->setJustificationType (Justification::centredLeft);
     labelSeqLength->setEditable (false, false, false);
+    labelSeqLength->setColour (Label::textColourId, Colours::white);
     labelSeqLength->setColour (TextEditor::textColourId, Colours::black);
     labelSeqLength->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -245,6 +277,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     labelSeqStepNum->setFont (Font (14.00f, Font::plain));
     labelSeqStepNum->setJustificationType (Justification::centredLeft);
     labelSeqStepNum->setEditable (false, false, false);
+    labelSeqStepNum->setColour (Label::textColourId, Colours::white);
     labelSeqStepNum->setColour (TextEditor::textColourId, Colours::black);
     labelSeqStepNum->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -259,10 +292,18 @@ SeqPanel::SeqPanel (SynthParams &p)
     addAndMakeVisible (saveSeq = new TextButton ("save button"));
     saveSeq->setButtonText (TRANS("Save Seq"));
     saveSeq->addListener (this);
+    saveSeq->setColour (TextButton::buttonColourId, Colour (0x00ffffff));
+    saveSeq->setColour (TextButton::buttonOnColourId, Colour (0x00ffffff));
+    saveSeq->setColour (TextButton::textColourOnId, Colours::white);
+    saveSeq->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (loadSeq = new TextButton ("load button"));
     loadSeq->setButtonText (TRANS("Load Seq"));
     loadSeq->addListener (this);
+    loadSeq->setColour (TextButton::buttonColourId, Colour (0x00ffffff));
+    loadSeq->setColour (TextButton::buttonOnColourId, Colour (0x00ffffff));
+    loadSeq->setColour (TextButton::textColourOnId, Colours::white);
+    loadSeq->setColour (TextButton::textColourOffId, Colours::white);
 
 
     //[UserPreSize]
@@ -392,7 +433,7 @@ void SeqPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::grey);
+    g.fillAll (Colour (0xff564c43));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -437,19 +478,19 @@ void SeqPanel::resized()
     labelButton6->setBounds (615, 6, 48, 24);
     labelButton7->setBounds (671, 6, 48, 24);
     labelButton8->setBounds (727, 6, 48, 24);
-    genRandom->setBounds (20, 219, 100, 24);
-    randomSeq->setBounds (20, 249, 250, 35);
+    genRandom->setBounds (48, 224, 200, 24);
+    randomSeq->setBounds (20, 245, 250, 48);
     randMinLabel->setBounds (20, 279, 125, 24);
     randMaxLabel->setBounds (145, 279, 125, 24);
     playUpDown->setBounds (140, 50, 120, 24);
-    seqStepSpeed->setBounds (25, 140, 64, 20);
-    seqStepLength->setBounds (105, 140, 64, 20);
-    seqNumSteps->setBounds (185, 140, 64, 20);
-    labelSeqSpeed->setBounds (20, 120, 64, 20);
-    labelSeqLength->setBounds (100, 120, 64, 20);
-    labelSeqStepNum->setBounds (180, 120, 64, 20);
+    seqStepSpeed->setBounds (17, 140, 87, 24);
+    seqStepLength->setBounds (121, 140, 87, 24);
+    seqNumSteps->setBounds (225, 140, 87, 24);
+    labelSeqSpeed->setBounds (12, 120, 64, 20);
+    labelSeqLength->setBounds (112, 120, 64, 20);
+    labelSeqStepNum->setBounds (220, 120, 64, 20);
     playRandom->setBounds (140, 80, 120, 24);
-    triplets->setBounds (25, 165, 100, 25);
+    triplets->setBounds (24, 184, 100, 25);
     saveSeq->setBounds (25, 315, 100, 24);
     loadSeq->setBounds (145, 315, 100, 24);
     //[UserResized] Add your own custom resize handling here..
@@ -730,12 +771,12 @@ void SeqPanel::timerCallback()
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
             {
-                seqStepArray[i]->setColour(Slider::trackColourId, Colour(0x7fffffff));
+                seqStepArray[i]->setColour(Slider::trackColourId, Colours::white);
             }
 
             lastSeqNotePos = static_cast<int>(params.seqLastPlayedStep.get());
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
-            seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0x7f0000ff));
+            seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colours::olive);
         }
     }
     else
@@ -744,7 +785,7 @@ void SeqPanel::timerCallback()
         if (lastSeqNotePos != -1)
         {
             seqPlay->setToggleState(isPlaying(), dontSendNotification);
-            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colour(0x7fffffff));
+            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colours::white);
             lastSeqNotePos = -1;
         }
     }
@@ -841,86 +882,96 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ff808080"/>
+  <BACKGROUND backgroundColour="ff564c43"/>
   <SLIDER name="Step 1" id="1c1677034c4af23a" memberName="seqStep1" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="336 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="336 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 2" id="e3931793046ce084" memberName="seqStep2" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="392 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="392 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 3" id="5e31094656fb49f9" memberName="seqStep3" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="448 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="448 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 4" id="7025db78c8ff10d4" memberName="seqStep4" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="504 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="504 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 5" id="9eba062111540687" memberName="seqStep5" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="560 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="560 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 6" id="6a53245b0ddd1528" memberName="seqStep6" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="616 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="616 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 7" id="96cbc5e8f38bf170" memberName="seqStep7" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="672 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="672 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Step 8" id="ee7a391120a49428" memberName="seqStep8" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="728 32 48 264" min="0" max="127"
-          int="1" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="728 32 48 264" thumbcol="ff564c43"
+          trackcol="ffffffff" min="0" max="127" int="1" style="LinearVertical"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <TEXTBUTTON name="play sequencer" id="4552dd6439420b59" memberName="seqPlay"
               virtualName="" explicitFocusOrder="0" pos="20 25 100 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" textColOn="ff000000" buttonText="Play" connectedEdges="1"
-              needsCallback="1" radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="Play"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
                 virtualName="" explicitFocusOrder="0" pos="140 20 120 24" txtcol="ff000000"
                 buttonText="Sync with Host" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TEXTBUTTON name="label button 1" id="ecf21a7d0b29e004" memberName="labelButton1"
               virtualName="" explicitFocusOrder="0" pos="336 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" textCol="ff000000" buttonText="C3" connectedEdges="3"
-              needsCallback="1" radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="C3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 2" id="f176b3ba0f847a7b" memberName="labelButton2"
               virtualName="" explicitFocusOrder="0" pos="392 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="D3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="D3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 3" id="ed69d74dab8d903d" memberName="labelButton3"
               virtualName="" explicitFocusOrder="0" pos="448 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="E3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="E3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 4" id="c0408fb512684153" memberName="labelButton4"
               virtualName="" explicitFocusOrder="0" pos="504 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="F3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="F3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 5" id="f0140e4ed4b41b2a" memberName="labelButton5"
               virtualName="" explicitFocusOrder="0" pos="559 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="G3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="G3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 6" id="15c066479eacbaf" memberName="labelButton6"
               virtualName="" explicitFocusOrder="0" pos="615 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="A3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="A3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 7" id="eb21806a70e68ca" memberName="labelButton7"
               virtualName="" explicitFocusOrder="0" pos="671 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="B3" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="B3"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="label button 8" id="5cecbbfbc28cd4a8" memberName="labelButton8"
               virtualName="" explicitFocusOrder="0" pos="727 6 48 24" bgColOff="ff9a9a9a"
-              bgColOn="ff60ff60" buttonText="C4" connectedEdges="3" needsCallback="1"
-              radioGroupId="0"/>
+              bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="C4"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="20 219 100 24" buttonText="Generate Sequence"
+              virtualName="" explicitFocusOrder="0" pos="48 224 200 24" bgColOff="ffffff"
+              bgColOn="ffffff" textCol="ffffffff" textColOn="ffffffff" buttonText="Generate Sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
-          virtualName="" explicitFocusOrder="0" pos="20 249 250 35" min="0"
-          max="127" int="0" style="TwoValueHorizontal" textBoxPos="NoTextBox"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="20 245 250 48" thumbcol="ff564c43"
+          trackcol="ff000000" rotarysliderfill="ffffffff" min="0" max="127"
+          int="0" style="TwoValueHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="random min label" id="4207acbbe3318ad" memberName="randMinLabel"
          virtualName="" explicitFocusOrder="0" pos="20 279 125 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Min: C-2" editableSingleClick="0" editableDoubleClick="0"
@@ -935,43 +986,45 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="140 50 120 24" buttonText="Play Up/Down"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="seq step speed" id="b920cb2140721231" memberName="seqStepSpeed"
-            virtualName="" explicitFocusOrder="0" pos="25 140 64 20" editable="0"
-            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="17 140 87 24"
+            editable="0" layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
             textWhenNonSelected="Step Speed" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="seq step length" id="9cc1e82a498c26a7" memberName="seqStepLength"
-            virtualName="" explicitFocusOrder="0" pos="105 140 64 20" editable="0"
-            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="121 140 87 24"
+            editable="0" layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
             textWhenNonSelected="Step Length" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="seq num steps" id="cc5278e8668913e9" memberName="seqNumSteps"
-            virtualName="" explicitFocusOrder="0" pos="185 140 64 20" editable="0"
-            layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="225 140 87 24"
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
             textWhenNonSelected="Num Steps" textWhenNoItems="(no choices)"/>
   <LABEL name="new seq speed" id="af187074393a392a" memberName="labelSeqSpeed"
-         virtualName="" explicitFocusOrder="0" pos="20 120 64 20" edTextCol="ff000000"
-         edBkgCol="0" labelText="Step Speed" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="14"
-         bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="12 120 64 20" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Step Speed" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="14" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq length" id="52118a8deceb9da1" memberName="labelSeqLength"
-         virtualName="" explicitFocusOrder="0" pos="100 120 64 20" edTextCol="ff000000"
-         edBkgCol="0" labelText="Step Length" editableSingleClick="0"
+         virtualName="" explicitFocusOrder="0" pos="112 120 64 20" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Step Length" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="14" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq step num" id="c5b4cbd8722afa9c" memberName="labelSeqStepNum"
-         virtualName="" explicitFocusOrder="0" pos="180 120 64 20" edTextCol="ff000000"
-         edBkgCol="0" labelText="Num Steps" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="14"
-         bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="220 120 64 20" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Num Steps" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="14" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="play random" id="f5db190fb273c40b" memberName="playRandom"
                 virtualName="" explicitFocusOrder="0" pos="140 80 120 24" buttonText="Play Random"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="25 165 100 25" buttonText="Triplets"
+                explicitFocusOrder="0" pos="24 184 100 25" buttonText="Triplets"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
-              virtualName="" explicitFocusOrder="0" pos="25 315 100 24" buttonText="Save Seq"
+              virtualName="" explicitFocusOrder="0" pos="25 315 100 24" bgColOff="ffffff"
+              bgColOn="ffffff" textCol="ffffffff" textColOn="ffffffff" buttonText="Save Seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="load button" id="aa37b372c2030ee9" memberName="loadSeq"
-              virtualName="" explicitFocusOrder="0" pos="145 315 100 24" buttonText="Load Seq"
+              virtualName="" explicitFocusOrder="0" pos="145 315 100 24" bgColOff="ffffff"
+              bgColOn="ffffff" textCol="ffffffff" textColOn="ffffffff" buttonText="Load Seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 

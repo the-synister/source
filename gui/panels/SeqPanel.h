@@ -157,9 +157,9 @@ private:
     ScopedPointer<Label> randMinLabel;
     ScopedPointer<Label> randMaxLabel;
     ScopedPointer<ToggleButton> playUpDown;
-    ScopedPointer<ComboBox> seqStepSpeed;
-    ScopedPointer<ComboBox> seqStepLength;
-    ScopedPointer<ComboBox> seqNumSteps;
+    ScopedPointer<IncDecDropDown> seqStepSpeed;
+    ScopedPointer<IncDecDropDown> seqStepLength;
+    ScopedPointer<IncDecDropDown> seqNumSteps;
     ScopedPointer<Label> labelSeqSpeed;
     ScopedPointer<Label> labelSeqLength;
     ScopedPointer<Label> labelSeqStepNum;

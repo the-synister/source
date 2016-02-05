@@ -12,8 +12,7 @@
 #define MOUSEOVERKNOB_H_INCLUDED
 
 #include "JuceHeader.h"
-#include "CustomLookAndFeel.h"
-#include "../audio/inc/SynthParams.h"
+#include "SynthParams.h"
 
 class MouseOverKnob : public Slider,
                       public ComponentListener
@@ -33,15 +32,18 @@ public:
 
     void resized() override;
     void setBounds(int x, int y, int width, int height);
+    void enablementChanged() override;
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
     void mouseEnter(const MouseEvent &e) override;
     void mouseExit(const MouseEvent &e) override;
+    void mouseDown(const MouseEvent &e) override;
     void mouseDoubleClick(const MouseEvent &e) override;
     void mouseDrag(const MouseEvent &e) override;
 
 private:
     ScopedPointer<Label> knobLabel;
+
     int knobWidth = 64;
     int knobHeight = 64;
 

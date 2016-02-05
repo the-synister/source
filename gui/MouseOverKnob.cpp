@@ -15,7 +15,6 @@
 MouseOverKnob::MouseOverKnob(const String& name)
     : Slider(name)
     , modSources({nullptr})
-//    , modSource2(nullptr)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(18.00f, Font::plain));
@@ -31,8 +30,8 @@ MouseOverKnob::MouseOverKnob(const String& name)
 
 MouseOverKnob::~MouseOverKnob()
 {
-    // TODO: release pointer
     knobLabel = nullptr;
+    modSources = {nullptr};
 }
 //==============================================================================
 
@@ -84,6 +83,49 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 }
 
 /**
+* Right click popup menu.
+*/
+void MouseOverKnob::mouseDown(const MouseEvent &e)
+{
+    // TODO: erben von synthparams und dann hier setzen
+    // mouseOverKnob mit dem amount verbinden über registerSaturn, danach hierüber nur noch params ändern
+    if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
+    {
+        PopupMenu main, sub;
+        sub.addItem(3, "set min");
+        sub.addItem(4, "set max");
+
+        main.addSectionHeader("Test Popup Menu");
+        main.addItem(1, "set 0.0");
+        main.addItem(2, "change colour to red");
+        main.addSubMenu("sub item", sub);
+        const int result = main.show();
+        if (result == 0)
+        {
+            // user dismissed the menu without picking anything
+        }
+        else if (result == 1)
+        {
+            this->setValue(0.0);
+        }
+        else if (result == 2)
+        {
+            this->setColour(Slider::ColourIds::rotarySliderFillColourId, Colours::red);
+        }
+        else if (result == 3)
+        {
+            this->setValue(this->getMinimum());
+        }
+        else if (result == 4)
+        {
+            this->setValue(this->getMaximum());
+        }
+    }
+
+    Slider::mouseDown(e);
+}
+
+/**
 * If slider is double clicked then values can be edited manually.
 */
 void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
@@ -130,6 +172,20 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
     knobWidth = width;
     knobHeight = height;
     Slider::setBounds(x, y, width, height);
+}
+
+void MouseOverKnob::enablementChanged()
+{
+    Slider::enablementChanged();
+
+    if (this->isEnabled())
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
+    }
+    else
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white.withAlpha(0.5f));
+    }
 }
 
 /**

@@ -69,8 +69,8 @@ private:
     ScopedPointer<MouseOverKnob> dryWetSlider;
     ScopedPointer<MouseOverKnob> timeSlider;
     ScopedPointer<ToggleButton> syncToggle;
-    ScopedPointer<ComboBox> dividend;
-    ScopedPointer<ComboBox> divisor;
+    ScopedPointer<IncDecDropDown> dividend;
+    ScopedPointer<IncDecDropDown> divisor;
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resSlider;
     ScopedPointer<ToggleButton> tripTggl;

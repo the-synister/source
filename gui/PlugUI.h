@@ -25,6 +25,7 @@
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
 #include "panels/FoldablePanel.h"
+#include "IncDecDropDown.h"
 //[/Headers]
 
 
@@ -65,6 +66,8 @@ private:
     float lastBpmInfo;
     void timerCallback() override;
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+
+    ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]
 
     //==============================================================================
