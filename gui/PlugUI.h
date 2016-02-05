@@ -70,12 +70,11 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
-    ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
-    ScopedPointer<FoldablePanel> foldable;
+    ScopedPointer<FoldablePanel> foldableComponent;
 
 
     //==============================================================================

@@ -6,9 +6,6 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
-        <FILE id="jz5A0M" name="FoldablePanel.cpp" compile="1" resource="0"
-              file="../gui/panels/FoldablePanel.cpp"/>
-        <FILE id="QkWn8Q" name="FoldablePanel.h" compile="0" resource="0" file="../gui/panels/FoldablePanel.h"/>
         <FILE id="ypZ5Om" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
         <FILE id="Yr6zTA" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="JKipUS" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
@@ -27,6 +24,13 @@
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
+      <FILE id="K2xEp1" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="hGuamh" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="jz5A0M" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/panels/FoldablePanel.cpp"/>
+      <FILE id="QkWn8Q" name="FoldablePanel.h" compile="0" resource="0" file="../gui/panels/FoldablePanel.h"/>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>

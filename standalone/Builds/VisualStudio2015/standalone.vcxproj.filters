@@ -325,9 +325,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\panels\FoldablePanel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -351,6 +348,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\FoldablePanel.cpp">
+      <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
@@ -1623,9 +1626,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\panels\FoldablePanel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1652,6 +1652,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
       <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\FoldablePanel.h">
+      <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
