@@ -9,13 +9,7 @@
 */
 
 #include "FoldablePanel.h"
-/**
- General thoughts to have:
-   - is this the best approach
-   - make from tabs component and property panel one
-   - make the mvp (just one panel, fold and unfold must work) -> extend it to two panels and so on -> last step find a way to instantiate all the panels into one section (maybe create another class "panel" which has width or smthing like that)
-   - define child numbers
- */
+
 struct FoldablePanel::SectionComponent  : public Component
 {
     // TODO: add color and height of component
@@ -31,28 +25,25 @@ struct FoldablePanel::SectionComponent  : public Component
     _sectionHeight(sectionHeight + titleHeight)
     {
         jassert(sectionTitle.isNotEmpty());
-        addAndMakeVisible (newPanel);
+        addAndMakeVisible (panel = newPanel);
     }
     
     ~SectionComponent()
     {
-        //panel->clear();
+        panel = nullptr;
     }
     
     void paint (Graphics& g) override
     {
         if (titleHeight > 0)
-            //implement
+            //TODO: implement the property bar.
             getLookAndFeel().drawPropertyPanelSectionHeader (g, getName(), isOpen, getWidth(), titleHeight);
     }
     
     void resized() override
     {
-        for (int i = 0; i < getNumChildComponents(); ++i ) {
-            Component* c = getChildComponent(i);
-            c->setBounds(c->getLocalBounds().withTop(titleHeight));
-            c->resized();
-        }
+        panel->setBounds(panel->getLocalBounds().withTop(titleHeight));
+        panel->resized();
     }
     
     void setOpen (const bool open)
@@ -60,11 +51,7 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
-            
-            for (int i = 0; i < getNumChildComponents(); ++i ) {
-                Component* c = getChildComponent(i);
-                c->setVisible(open);
-            }
+            panel->setVisible(open);
             
            if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>())
                pp->resized();
@@ -92,16 +79,12 @@ struct FoldablePanel::SectionComponent  : public Component
         return _sectionColour;
     }
     
-    bool getIsOpen()
-    {
-        return isOpen;
-    }
-    
     int getSectionHeight()
     {
         return (isOpen ? _sectionHeight : titleHeight);
     }
     
+    WeakReference<Component> panel;
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
@@ -113,7 +96,6 @@ struct FoldablePanel::SectionComponent  : public Component
 //==============================================================================
 /* 
     TODO: Make it unfoldable
-    - colors go crazy
     - be able to hold more than one control panel
 */
 struct FoldablePanel::PanelHolderComponent  : public Component
@@ -130,7 +112,7 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - 22);
             y = section->getBottom();
             g.setColour(section->getSectionColour());
-            g.fillRect (content); // Colour getColour() //TODO: change for something more suitable
+            g.fillRect (content);
         }
     }
     
@@ -173,20 +155,8 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     JUCE_DECLARE_NON_COPYABLE (PanelHolderComponent)
 };
 
-FoldablePanel::FoldablePanel()
-{
-    init();
-}
-
 FoldablePanel::FoldablePanel (const String& name)  : Component (name)
 {
-    init();
-}
-
-void FoldablePanel::init()
-{
-    messageWhenEmpty = TRANS("(nothing selected)");
-    
     addAndMakeVisible (panelHolderComponent = new PanelHolderComponent());
 }
 
@@ -197,13 +167,6 @@ FoldablePanel::~FoldablePanel()
 
 void FoldablePanel::paint (Graphics& g)
 {
-    if (isEmpty())
-    {
-        g.setColour (Colours::black.withAlpha (0.5f));
-        g.setFont (14.0f);
-        g.drawText (messageWhenEmpty, getLocalBounds().withHeight (30),
-                    Justification::centred, true);
-    }
 }
 
 void FoldablePanel::resized()
@@ -214,7 +177,11 @@ void FoldablePanel::resized()
     panelHolderComponent->updateLayout (getWidth());
 }
 
-//==============================================================================
+bool FoldablePanel::isEmpty() const
+{
+    return (panelHolderComponent->sections.size() == 0);
+}
+
 void FoldablePanel::clear()
 {
     if (! isEmpty())
@@ -222,16 +189,6 @@ void FoldablePanel::clear()
         panelHolderComponent->sections.clear();
         updateLayout();
     }
-}
-
-bool FoldablePanel::isEmpty() const
-{
-    return panelHolderComponent->sections.size() == 0;
-}
-
-int FoldablePanel::getTotalContentHeight() const
-{
-    return panelHolderComponent->getHeight();
 }
 
 void FoldablePanel::addSection (const String& sectionTitle,
@@ -259,8 +216,9 @@ void FoldablePanel::updateLayout() const
 
 bool FoldablePanel::isSectionOpen (const int sectionIndex) const
 {
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
+    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex)) {
         return s->isOpen;
+    }
     
     return false;
 }
@@ -291,7 +249,6 @@ StringArray FoldablePanel::getSectionNames() const
     return s;
 }
 
-//==============================================================================
 XmlElement* FoldablePanel::getOpennessState() const
 {
     XmlElement* const xml = new XmlElement ("PROPERTYPANELSTATE");
@@ -324,19 +281,4 @@ void FoldablePanel::restoreOpennessState (const XmlElement& xml)
         }
         
     }
-}
-
-//==============================================================================
-void FoldablePanel::setMessageWhenEmpty (const String& newMessage)
-{
-    if (messageWhenEmpty != newMessage)
-    {
-        messageWhenEmpty = newMessage;
-        repaint();
-    }
-}
-
-const String& FoldablePanel::getMessageWhenEmpty() const noexcept
-{
-    return messageWhenEmpty;
 }
