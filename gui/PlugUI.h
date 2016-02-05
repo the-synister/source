@@ -24,6 +24,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
+#include "panels/FoldablePanel.h"
 //[/Headers]
 
 
@@ -74,6 +75,8 @@ private:
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
+    ScopedPointer<FoldablePanel> foldable;
+    Array<PanelComponent*> panels;
 
 
     //==============================================================================

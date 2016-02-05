@@ -11,9 +11,6 @@
     <Filter Include="standalone\Gui\panels">
       <UniqueIdentifier>{D5C93014-E216-5B63-13D7-D61533B35694}</UniqueIdentifier>
     </Filter>
-    <Filter Include="standalone\Gui\Assets">
-      <UniqueIdentifier>{BD9A04FA-3BCD-FD83-BEDE-CF90525C61A8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="standalone\Audio">
       <UniqueIdentifier>{FEDEC6AC-FAE9-2EA8-033E-6EB7D773507C}</UniqueIdentifier>
     </Filter>
@@ -328,6 +325,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\FoldablePanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -351,9 +351,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
-      <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
@@ -1582,9 +1579,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>Juce Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\juce_audio_basics.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1629,6 +1623,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\FoldablePanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1655,9 +1652,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
       <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
-      <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
@@ -3066,26 +3060,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>Juce Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\glow.png">
-      <Filter>standalone\Gui\Assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png">
-      <Filter>standalone\Gui\Assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
-      <Filter>standalone\Gui\Assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\slider_thumb.png">
-      <Filter>standalone\Gui\Assets</Filter>
-    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>

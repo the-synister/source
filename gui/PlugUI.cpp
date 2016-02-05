@@ -54,16 +54,19 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (tabs = new TabbedComponent (TabbedButtonBar::TabsAtTop));
     tabs->setTabBarDepth (30);
-    tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
+    /*tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
     tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
     tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
     tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
     tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
     tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
     tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
-    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
+    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);*/
     tabs->setCurrentTabIndex (0);
-
+    
+    addAndMakeVisible (foldable = new FoldablePanel ("try1"));
+    foldable->addSection(TRANS("OSC"), new OscPanel (params), true);
+    
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
     savePresetButton->addListener (this);
 
@@ -146,7 +149,8 @@ void PlugUI::resized()
 
     freq->setBounds (728, 8, 64, 64);
     keyboard->setBounds (8, 552, 784, 40);
-    tabs->setBounds (8, 128, 784, 416);
+    //tabs->setBounds (8, 128, 784, 416);
+    foldable->setBounds (8, 128, 784, 416);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (8, 40, 88, 24);
     bpmLabel->setBounds (127, 7, 40, 24);
