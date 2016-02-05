@@ -192,7 +192,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     playUpDown->setButtonText (TRANS("Play Up/Down"));
     playUpDown->addListener (this);
 
-    addAndMakeVisible (seqStepSpeed = new ComboBox ("seq step speed"));
+    addAndMakeVisible (seqStepSpeed = new IncDecDropDown ("seq step speed"));
     seqStepSpeed->setEditableText (false);
     seqStepSpeed->setJustificationType (Justification::centred);
     seqStepSpeed->setTextWhenNothingSelected (TRANS("Step Speed"));
@@ -206,7 +206,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStepSpeed->addItem (TRANS("1/1"), 7);
     seqStepSpeed->addListener (this);
 
-    addAndMakeVisible (seqStepLength = new ComboBox ("seq step length"));
+    addAndMakeVisible (seqStepLength = new IncDecDropDown ("seq step length"));
     seqStepLength->setEditableText (false);
     seqStepLength->setJustificationType (Justification::centred);
     seqStepLength->setTextWhenNothingSelected (TRANS("Step Length"));
@@ -220,7 +220,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqStepLength->addItem (TRANS("1/1"), 7);
     seqStepLength->addListener (this);
 
-    addAndMakeVisible (seqNumSteps = new ComboBox ("seq num steps"));
+    addAndMakeVisible (seqNumSteps = new IncDecDropDown ("seq num steps"));
     seqNumSteps->setEditableText (false);
     seqNumSteps->setJustificationType (Justification::centred);
     seqNumSteps->setTextWhenNothingSelected (TRANS("Num Steps"));
@@ -453,14 +453,14 @@ void SeqPanel::resized()
     randMinLabel->setBounds (20, 279, 125, 24);
     randMaxLabel->setBounds (145, 279, 125, 24);
     playUpDown->setBounds (140, 50, 120, 24);
-    seqStepSpeed->setBounds (25, 140, 64, 20);
-    seqStepLength->setBounds (105, 140, 64, 20);
-    seqNumSteps->setBounds (185, 140, 64, 20);
+    seqStepSpeed->setBounds (25, 140, 80, 24);
+    seqStepLength->setBounds (121, 140, 80, 24);
+    seqNumSteps->setBounds (217, 140, 80, 24);
     labelSeqSpeed->setBounds (20, 120, 64, 20);
-    labelSeqLength->setBounds (100, 120, 64, 20);
-    labelSeqStepNum->setBounds (180, 120, 64, 20);
+    labelSeqLength->setBounds (112, 120, 64, 20);
+    labelSeqStepNum->setBounds (212, 120, 64, 20);
     playRandom->setBounds (140, 80, 120, 24);
-    triplets->setBounds (25, 165, 100, 25);
+    triplets->setBounds (24, 184, 100, 25);
     saveSeq->setBounds (25, 315, 100, 24);
     loadSeq->setBounds (145, 315, 100, 24);
     //[UserResized] Add your own custom resize handling here..
@@ -955,16 +955,16 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="140 50 120 24" buttonText="Play Up/Down"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="seq step speed" id="b920cb2140721231" memberName="seqStepSpeed"
-            virtualName="" explicitFocusOrder="0" pos="25 140 64 20" editable="0"
-            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="25 140 80 24"
+            editable="0" layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
             textWhenNonSelected="Step Speed" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="seq step length" id="9cc1e82a498c26a7" memberName="seqStepLength"
-            virtualName="" explicitFocusOrder="0" pos="105 140 64 20" editable="0"
-            layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="121 140 80 24"
+            editable="0" layout="36" items="1/64&#10;1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
             textWhenNonSelected="Step Length" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="seq num steps" id="cc5278e8668913e9" memberName="seqNumSteps"
-            virtualName="" explicitFocusOrder="0" pos="185 140 64 20" editable="0"
-            layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="217 140 80 24"
+            editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
             textWhenNonSelected="Num Steps" textWhenNoItems="(no choices)"/>
   <LABEL name="new seq speed" id="af187074393a392a" memberName="labelSeqSpeed"
          virtualName="" explicitFocusOrder="0" pos="20 120 64 20" edTextCol="ff000000"
@@ -972,12 +972,12 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="14"
          bold="0" italic="0" justification="33"/>
   <LABEL name="new seq length" id="52118a8deceb9da1" memberName="labelSeqLength"
-         virtualName="" explicitFocusOrder="0" pos="100 120 64 20" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="112 120 64 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Step Length" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="14" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq step num" id="c5b4cbd8722afa9c" memberName="labelSeqStepNum"
-         virtualName="" explicitFocusOrder="0" pos="180 120 64 20" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="212 120 64 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Num Steps" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="14"
          bold="0" italic="0" justification="33"/>
@@ -985,7 +985,7 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="140 80 120 24" buttonText="Play Random"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="25 165 100 25" buttonText="Triplets"
+                explicitFocusOrder="0" pos="24 184 100 25" buttonText="Triplets"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
               virtualName="" explicitFocusOrder="0" pos="25 315 100 24" buttonText="Save Seq"

@@ -126,8 +126,9 @@ OscPanel::OscPanel (SynthParams &p)
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, pitchRange, &params.osc1PitchRange, 1);
     registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
+    registerSaturnSource(ctune1, pitchRange, &params.osc1PitchRange, 2);
+    registerSaturnSource(ctune1, lfo1depth1, &params.osc1lfo1depth, 1);
 
     registerSaturnSource(lfo1depth1, pitchRange, &params.osc1PitchRange, 1);
     registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);

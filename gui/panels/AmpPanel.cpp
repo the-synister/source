@@ -36,22 +36,25 @@ AmpPanel::AmpPanel (SynthParams &p)
     addAndMakeVisible (amp = new MouseOverKnob ("amp"));
     amp->setRange (-96, 12, 0);
     amp->setSliderStyle (Slider::LinearBar);
-    amp->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amp->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
     amp->setColour (Slider::backgroundColourId, Colour (0x00ffffff));
     amp->setColour (Slider::thumbColourId, Colours::grey);
     amp->setColour (Slider::trackColourId, Colours::white);
-    amp->setColour (Slider::rotarySliderFillColourId, Colour (0x7fceb122));
+    amp->setColour (Slider::rotarySliderFillColourId, Colours::blue);
     amp->setColour (Slider::textBoxTextColourId, Colours::white);
+    amp->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     amp->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     amp->addListener (this);
 
     addAndMakeVisible (pan = new MouseOverKnob ("pan"));
     pan->setRange (-100, 100, 0);
     pan->setSliderStyle (Slider::LinearBar);
-    pan->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    pan->setColour (Slider::thumbColourId, Colours::grey);
+    pan->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    pan->setColour (Slider::thumbColourId, Colour (0xff6c788c));
     pan->setColour (Slider::trackColourId, Colours::white);
+    pan->setColour (Slider::rotarySliderFillColourId, Colours::blue);
     pan->setColour (Slider::textBoxTextColourId, Colours::white);
+    pan->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     pan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pan->addListener (this);
 
@@ -83,6 +86,10 @@ AmpPanel::AmpPanel (SynthParams &p)
     registerSlider(amp, &params.vol);
     registerSlider(pan, &params.panDir);
     registerSlider(velocitySense, &params.keyVelocityLevel);
+
+    // TODO: vllt ohne textbox und stattdessen mit popup
+    //amp->setPopupDisplayEnabled(true, this);
+    //pan->setPopupDisplayEnabled(true, this);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -183,15 +190,16 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff6c788c"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="48 152 200 60" bkgcol="ffffff" thumbcol="ff808080"
-          trackcol="ffffffff" rotarysliderfill="7fceb122" textboxtext="ffffffff"
-          textboxoutline="ffffff" min="-96" max="12" int="0" style="LinearBar"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
+          textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
+          int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="296 128 125 60" thumbcol="ff808080"
-          trackcol="ffffffff" textboxtext="ffffffff" textboxoutline="ffffff"
-          min="-100" max="100" int="0" style="LinearBar" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="296 128 125 60" thumbcol="ff6c788c"
+          trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
+          textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
+          int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="R label" id="38f0a446950aca39" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="237 96 24 24" edTextCol="ff000000"
          edBkgCol="0" labelText="R" editableSingleClick="0" editableDoubleClick="0"

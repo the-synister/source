@@ -24,16 +24,7 @@
         <FILE id="XHdYo1" name="OscPanel.h" compile="0" resource="0" file="../gui/panels/OscPanel.h"/>
         <FILE id="OwWrpe" name="PanelBase.h" compile="0" resource="0" file="../gui/panels/PanelBase.h"/>
       </GROUP>
-      <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets">
-        <FILE id="uI9T4y" name="berlin_sans_demi_bold.ttf" compile="0" resource="1"
-              file="../../../../Desktop/Assets/berlin_sans_demi_bold.ttf"/>
-        <FILE id="k186AL" name="glow.png" compile="0" resource="1" file="../../../../Desktop/Assets/glow.png"/>
-        <FILE id="ojGdMw" name="vertical_slider.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/vertical_slider.png"/>
-        <FILE id="KGlqZa" name="knobstrip.png" compile="0" resource="1" file="../../../../Desktop/Assets/knobstrip.png"/>
-        <FILE id="FmtHJv" name="slider_thumb.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/slider_thumb.png"/>
-      </GROUP>
+      <GROUP id="{C17CCEF0-237A-C02E-6490-4575628D0AAB}" name="Assets"/>
       <FILE id="pTBLVA" name="CustomLookAndFeel.cpp" compile="1" resource="0"
             file="../gui/CustomLookAndFeel.cpp"/>
       <FILE id="ZIV2bd" name="CustomLookAndFeel.h" compile="0" resource="0"
@@ -41,6 +32,10 @@
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="XjxRvX" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="MLqvoy" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
       <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>

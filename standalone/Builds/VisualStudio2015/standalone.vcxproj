@@ -139,6 +139,7 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
@@ -1270,7 +1271,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_devices\juce_audio_devices.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_formats\juce_audio_formats.cpp"/>
@@ -1298,6 +1298,7 @@
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
@@ -1766,15 +1767,9 @@
     <ClInclude Include="..\..\..\juce\modules\juce_video\capture\juce_CameraDevice.h"/>
     <ClInclude Include="..\..\..\juce\modules\juce_video\juce_video.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h"/>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\berlin_sans_demi_bold.ttf"/>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\glow.png"/>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\vertical_slider.png"/>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png"/>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\slider_thumb.png"/>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_formats\juce_module_info"/>

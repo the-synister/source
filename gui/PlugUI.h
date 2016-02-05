@@ -24,6 +24,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
+#include "IncDecDropDown.h"
 //[/Headers]
 
 

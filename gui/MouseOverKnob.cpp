@@ -31,6 +31,7 @@ MouseOverKnob::MouseOverKnob(const String& name)
 MouseOverKnob::~MouseOverKnob()
 {
     knobLabel = nullptr;
+    modSources = {nullptr};
 }
 //==============================================================================
 
@@ -79,6 +80,49 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
         knobLabel->setVisible(true);
         setTextBoxStyle(MouseOverKnob::NoTextBox, true, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
+}
+
+/**
+* Right click popup menu.
+*/
+void MouseOverKnob::mouseDown(const MouseEvent &e)
+{
+    // TODO: erben von synthparams und dann hier setzen
+    // mouseOverKnob mit dem amount verbinden über registerSaturn, danach hierüber nur noch params ändern
+    if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
+    {
+        PopupMenu main, sub;
+        sub.addItem(3, "set min");
+        sub.addItem(4, "set max");
+
+        main.addSectionHeader("Test Popup Menu");
+        main.addItem(1, "set 0.0");
+        main.addItem(2, "change colour to red");
+        main.addSubMenu("sub item", sub);
+        const int result = main.show();
+        if (result == 0)
+        {
+            // user dismissed the menu without picking anything
+        }
+        else if (result == 1)
+        {
+            this->setValue(0.0);
+        }
+        else if (result == 2)
+        {
+            this->setColour(Slider::ColourIds::rotarySliderFillColourId, Colours::red);
+        }
+        else if (result == 3)
+        {
+            this->setValue(this->getMinimum());
+        }
+        else if (result == 4)
+        {
+            this->setValue(this->getMaximum());
+        }
+    }
+
+    Slider::mouseDown(e);
 }
 
 /**
