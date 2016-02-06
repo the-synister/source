@@ -150,7 +150,7 @@ void PlugUI::resized()
     loadPresetButton->setBounds (8, 40, 88, 24);
     bpmLabel->setBounds (127, 7, 40, 24);
     bpmDisplay->setBounds (175, 7, 64, 24);
-    foldableComponent->setBounds (8, 80, 760, 472);
+    foldableComponent->setBounds (0, 80, 800, 470);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -252,7 +252,7 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
-                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="8 80 760 472"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 80 800 470"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
 </JUCER_COMPONENT>
 

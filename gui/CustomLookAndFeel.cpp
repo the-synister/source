@@ -31,8 +31,8 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
 
     // custom start and end angle for knob and saturn
-    rotaryStartAngle = -float_Pi + degreesToRadians(30.0f);
-    rotaryEndAngle = float_Pi - degreesToRadians(30.0f);
+    rotaryStartAngle = -float_Pi + degreesToRadians(45.0f);
+    rotaryEndAngle = float_Pi - degreesToRadians(45.0f);
 
     // current slider position angle in radians in range [rotaryStartAngle, rotaryEndAngle]
     const float currAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
@@ -310,7 +310,7 @@ Slider::SliderLayout CustomLookAndFeel::getSliderLayout(Slider& s)
         else /* above or below -> centre horizontally */ layout.textBoxBounds.setX((localBounds.getWidth() - textBoxWidth) / 2);
 
         if (textBoxPos == Slider::TextBoxAbove)          layout.textBoxBounds.setY(0);
-        else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight);
+        else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight - 5);
         else /* left or right -> centre vertically */    layout.textBoxBounds.setY((localBounds.getHeight() - textBoxHeight) / 2);
     }
 
@@ -498,3 +498,24 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
         | BubbleComponent::left
         | BubbleComponent::right;
 }
+
+//==============================================================================
+
+void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& name,
+    bool isOpen, int width, int height)
+{
+    g.setColour(Colours::red);
+    g.fillRect(0,0, width, height);
+
+    const float buttonSize = height * 0.75f;
+    const float buttonIndent = (height - buttonSize) * 0.5f;
+
+    drawTreeviewPlusMinusBox(g, Rectangle<float>(buttonIndent, buttonIndent, buttonSize, buttonSize), Colours::white, isOpen, false);
+
+    const int textX = (int)(buttonIndent * 2.0f + buttonSize + 2.0f);
+
+    g.setColour(Colours::black);
+    g.setFont(Font(height * 0.7f, Font::bold));
+    g.drawText(name, textX, 0, width - textX - 4, height, Justification::centredLeft, true);
+}
+

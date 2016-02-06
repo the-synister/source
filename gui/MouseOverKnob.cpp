@@ -194,7 +194,7 @@ void MouseOverKnob::enablementChanged()
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
     knobLabel->setSize(knobWidth, this->getTextBoxHeight());
-    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
+    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight() - 5);
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }
