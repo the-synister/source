@@ -117,6 +117,10 @@ public:
     */
     virtual int getSliderPopupPlacement(Slider &s);
 
+    //==============================================================================
+    
+    void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height);
+
 //==============================================================================
 private:
     /**

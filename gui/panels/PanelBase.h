@@ -130,6 +130,24 @@ protected:
         updateDirtySliders();
     }
 
+    /**
+    * 
+    */
+    void drawGroupBorder(Graphics &g, const String &/*name*/, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, Colour &c)
+    {
+
+        // draw white groupborder
+        Rectangle<float> rect = { static_cast<float>(x), static_cast<float>(y), 
+                                  static_cast<float>(x + width), static_cast<float>(y + height) };
+        g.setColour(Colours::white);
+        g.fillRoundedRectangle(rect, cornerSize);
+
+        //rect = { static_cast<float>(x) + borderThickness, static_cast<float>(y) + headHeight,
+        //         static_cast<float>(x + width) - borderThickness * 2.0f, static_cast<float>(y + height) - headHeight * 2 - borderThickness };
+        //g.setColour(c);
+        //g.fillRoundedRectangle(rect, cornerSize);
+    }
+
     std::map<Slider*, Param*> sliderReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
     std::map<Slider*, tHookFn> postUpdateHook;
