@@ -4,14 +4,6 @@
 
 #include "JuceHeader.h"
 
-#if 0
-enum class eModSource : int {
-    eNone = 0,
-    eLFO1 = 1,
-    eEnv = 2,
-    nSteps = 3
-};
-#endif
 
 class Param {
 public:
@@ -91,6 +83,7 @@ public:
         return fInput * std::pow(2.f, modValue * modRange);
     }
 
+#if 0
     static bool isUnipolar(eModSource source) {
         switch (source) {
         case eModSource::eEnv:
@@ -102,6 +95,7 @@ public:
         }
         return false;
     }
+#endif
 
     class Listener {
     public:
