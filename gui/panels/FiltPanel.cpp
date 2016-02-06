@@ -40,7 +40,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider->addListener (this);
 
     addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
-    resonanceSlider->setRange (-25, 25, 0);
+    resonanceSlider->setRange (1, 10, 0);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
@@ -52,7 +52,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
-    passtype->setRange (0, 2, 1);
+    passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->addListener (this);
@@ -215,7 +215,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
-          min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="1" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 104 64 64"
@@ -223,7 +223,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="0" max="2" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="3" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
@@ -231,7 +231,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

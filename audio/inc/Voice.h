@@ -328,8 +328,19 @@ public:
                         currentSample = (osc1WhiteNoise.next(pitchMod[s]));
                         break;
                 }
-                currentSample = biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep());
-                currentSample = ladderFilter(currentSample) * level * env1Mod[s];
+
+                /* !!!SOLUTIONFOR THE MASTER!!! 
+                check filter passtype - this will change, since the ladder should be also "modulatable"*/
+                if(params.passtype.getStep() == eBiquadFilters::eLadder)
+                {
+                    currentSample = ladderFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s]);
+                }
+                else
+                {
+                    currentSample = biquadFilter(currentSample, modSources[static_cast<int>(params.lpModSource.get())][s], params.passtype.getStep());
+                }
+
+                currentSample *= (level * env1Mod[s]);
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -356,25 +367,39 @@ public:
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
     //naive 1 pole filters wigh a hyperbolic tangent saturator
-    float ladderFilter(float ladderIn)
+    float ladderFilter(float ladderIn, float modValue)
     {
 
         const float sRate = static_cast<float>(getSampleRate());
+        
 
-        //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
-        float currentLadderCutoffFreq = params.lpCutoff.get();
+        float moddedFreq = params.lpCutoff.get();
+        float currentResonance = params.biquadResonance.get();
+
+        //apply modulation, as used in the biquadfilter
+        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
+            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmount.get() / 100.f);
+        }
+
+        // TODO can't this be shortened?
+        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            moddedFreq = params.lpCutoff.getMin();
+        }
+        else if (moddedFreq > params.lpCutoff.getMax()) {
+            moddedFreq = params.lpCutoff.getMax();
+        }
 
         //coeffecients and parameters
-        float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
+        float omega_c = 2.f * float_Pi * moddedFreq / sRate;
         float g = omega_c / 2.f;
         float a = (1.f - g) / (1.f + g);
         float b = g / (1.f + g);
 
         // subtract the feedback
         // inverse hyperbolic Sinus
-        // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // ladderIn = tanh(ladderIn) - asinh(currentResonance * ladderOut);
         // hyperbolic tangent
-        ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
+        ladderIn = tanh(ladderIn) - tanh(currentResonance * ladderOut);
 
         // proecess through 1 pole Filters 4 times
         lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
@@ -579,7 +604,7 @@ protected:
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
 
         /*const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);*/
-        const float currentResonance = params.ladderRes.get();
+        const float currentResonance = params.biquadResonance.get();
 
         if (filterType == eBiquadFilters::eLowpass) {
 
