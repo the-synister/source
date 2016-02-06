@@ -371,7 +371,6 @@ public:
     {
 
         const float sRate = static_cast<float>(getSampleRate());
-        
 
         float moddedFreq = params.lpCutoff.get();
         float currentResonance = params.biquadResonance.get();
