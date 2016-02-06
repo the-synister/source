@@ -69,7 +69,7 @@ OscPanel::OscPanel (SynthParams &p)
     pitchRange->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
-    ctune1->setRange (-36, 36, 1);
+    ctune1->setRange (-11, 11, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
@@ -303,7 +303,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="-36" max="36" int="1" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
