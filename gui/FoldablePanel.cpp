@@ -130,7 +130,7 @@ struct FoldablePanel::PanelHolderComponent  : public Component
         float boxSize = getWidth();
         float gradientScale = 1.0f;
         Colour c1 = Colours::black;
-        Colour c2 = Colours::white;
+        Colour c2 = Colours::grey;
         
         int y = 0;
 
@@ -139,14 +139,13 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             SectionComponent* const section = sections.getUnchecked(i);
             const float centreY = (y + titleHeight) / 2.0f;
             
-            ColourGradient gradient(c1, 0, y, c2, 0, y + 33, false);
-            gradient.addColour(0.4f, c1);
+            ColourGradient gradient(c2, 0, y, c1, 0, y+9, false);
             g.setGradientFill(gradient);
             
             g.fillRect(0, y, getWidth(), titleHeight);
             getLookAndFeel().drawTreeviewPlusMinusBox (g, Rectangle<float> (buttonIndent, y + buttonIndent, buttonSize, buttonSize), Colours::white, section->isOpen, false);
             g.setColour(section->getSectionColour());
-            g.setFont (Font (titleHeight * 0.7f, Font::bold));
+            g.setFont (Font (titleHeight * 0.7f));
             g.drawText (section->getName(), textX, y, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
             
             Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - titleHeight);

@@ -149,7 +149,7 @@ void EnvPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     int padding = 5;
-    drawGroupBorder(g, "Vol Env", 0 + padding, 0 + padding, this->getWidth() - 3 * padding, this->getHeight() - 2 * padding, 20.0f, 10.0f, 5.0f, Colour(0xffcbca63));
+   // drawGroupBorder(g, "Vol Env", 0 + padding, 0 + padding, this->getWidth() - 3 * padding, this->getHeight() - 2 * padding, 20.0f, 10.0f, 5.0f, Colour(0xffcbca63));
     //[/UserPaint]
 }
 
