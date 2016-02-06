@@ -26,6 +26,7 @@
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"
 #include "panels/SeqPanel.h"
+#include "panels/LoFiPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -89,14 +90,15 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params), Colour (0xff0099ff), 200, true, 0);
+    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params), Colour (0xff6c788c), 200, true, 0);
     foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), Colour (0xffcbca63), 200, true, 1);
     foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params), Colour (0xffb16565), 200, true, 2);
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 200, true, 3);
-    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colours::lightgrey, 200, true, 4);
-    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colours::lightgrey, 200, true, 5);
-    foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colours::lightgrey, 200, true, 6);
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colours::grey, 200, true, 7);
+    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, true, 4);
+    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, true, 5);
+    foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colour (0xff2b3240), 200, true, 6);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 200, true, 7);
+    foldableComponent->addSection (TRANS("LOFI"), new LoFiPanel (params), Colour (0xff2b3240), 200, true, 8);
     //LookAndFeel_V1 *laf = new LookAndFeel_V1();
     //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
     //LookAndFeel_V3 *laf = new LookAndFeel_V3();

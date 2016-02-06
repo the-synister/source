@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "EnvelopeCurve.h"
 //[/Headers]
 
 
@@ -66,6 +67,7 @@ private:
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
     ScopedPointer<MouseOverKnob> keyVelToEnv;
+    ScopedPointer<EnvelopeCurve> envelopeCurve;
 
 
     //==============================================================================

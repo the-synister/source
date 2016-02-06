@@ -18,10 +18,12 @@ public:
     {
     }
 
+    void setWaveformKey(eOscWaves waveformKey) { m_iWaveformKey = waveformKey; repaint(); }
+    void setPulseWidth(float pulseWidth) { m_fPulseWidth = pulseWidth; repaint(); }
+    void setTrngAmount(float trngAmount) { m_fTrngAmount = trngAmount; repaint(); }
+
+protected:
     void paint(Graphics &g);
-    void setWaveformKey(eOscWaves waveformKey) { m_iWaveformKey = waveformKey; }
-    void setPulseWidth(float pulseWidth) { m_fPulseWidth = pulseWidth; }
-    void setTrngAmount(float trngAmount) { m_fTrngAmount = trngAmount; }
 
 private:
     eOscWaves m_iWaveformKey;

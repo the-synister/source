@@ -80,7 +80,7 @@ FiltPanel::FiltPanel (SynthParams &p)
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &params.lpCutoff);
-    registerSlider(modSliderCut, &params.lpModAmout);
+    registerSlider(modSliderCut, &params.lpModAmount);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
     registerSlider(cutoffSlider2, &params.hpCutoff);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -168,7 +168,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
-        params.lpModAmout.setUI(static_cast<float>(modSliderCut->getValue()));
+        params.lpModAmount.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
 
