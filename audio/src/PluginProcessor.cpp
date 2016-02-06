@@ -71,12 +71,12 @@ PluginAudioProcessor::PluginAudioProcessor()
 #endif
 
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PITCH, &osc1lfo1depth, false);
-    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PITCH, &osc1PitchRange, true);
+    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PITCH, &osc1PitchRange, false);
 
     // Now let's add an envelope for the pitch
-    globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_OSC1_PITCH, &osc1lfo1depth, true);
+    globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_OSC1_PITCH, &osc1lfo1depth, false);
 
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILT_FC, &lpModAmount, false);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILT_FC, &lpModAmount, true);
     globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_FILT_FC, &lpModAmount, false);
 }
 

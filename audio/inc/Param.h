@@ -4,13 +4,14 @@
 
 #include "JuceHeader.h"
 
-//
+#if 0
 enum class eModSource : int {
     eNone = 0,
     eLFO1 = 1,
     eEnv = 2,
     nSteps = 3
 };
+#endif
 
 class Param {
 public:

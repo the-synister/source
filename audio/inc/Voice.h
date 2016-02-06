@@ -262,8 +262,9 @@ public:
                 {
                     currentSample = biquadFilter(currentSample, filterMod[s]);
                 }
-
+                
                 currentSample *= (level * envToVolMod[s]);
+
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
@@ -294,9 +295,27 @@ public:
     float ladderFilter(float ladderIn, float modValue)
     {
         const float sRate = static_cast<float>(getSampleRate());
+        float cutoffFreq = params.lpCutoff.get();
+        float currentResonance = params.biquadResonance.get();
 
+        //! \todo mod range must come from somewhere else
+        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
+
+        // check range
+        if (cutoffFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            cutoffFreq = params.lpCutoff.getMin();
+        }
+        else if (cutoffFreq > params.lpCutoff.getMax()) {
+            cutoffFreq = params.lpCutoff.getMax();
+        }
+
+        cutoffFreq /= sRate;
+
+#if 0
+        //this is old ...
         float moddedFreq = params.lpCutoff.get();
         float currentResonance = params.biquadResonance.get();
+
 
         //apply modulation, as used in the biquadfilter - this must be changed!!!!
         if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
@@ -310,9 +329,10 @@ public:
         else if (moddedFreq > params.lpCutoff.getMax()) {
             moddedFreq = params.lpCutoff.getMax();
         }
+#endif
 
         //coeffecients and parameters
-        float omega_c = 2.f * float_Pi * moddedFreq / sRate;
+        float omega_c = 2.f * float_Pi * cutoffFreq;
         float g = omega_c / 2.f;
         float a = (1.f - g) / (1.f + g);
         float b = g / (1.f + g);
