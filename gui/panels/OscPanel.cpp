@@ -95,34 +95,7 @@ OscPanel::OscPanel (SynthParams &p)
     waveformSwitch->setColour (Slider::thumbColourId, Colour (0xff6c788c));
     waveformSwitch->setColour (Slider::trackColourId, Colours::white);
     waveformSwitch->addListener (this);
-
-    addAndMakeVisible (sawlabel = new Label ("Saw Label",
-                                             TRANS("Saw wave")));
-    sawlabel->setFont (Font (15.00f, Font::plain));
-    sawlabel->setJustificationType (Justification::centredLeft);
-    sawlabel->setEditable (false, false, false);
-    sawlabel->setColour (Label::textColourId, Colours::white);
-    sawlabel->setColour (TextEditor::textColourId, Colours::black);
-    sawlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (squarelabel = new Label ("Square Label",
-                                                TRANS("Square wave\n")));
-    squarelabel->setFont (Font (15.00f, Font::plain));
-    squarelabel->setJustificationType (Justification::centredLeft);
-    squarelabel->setEditable (false, false, false);
-    squarelabel->setColour (Label::textColourId, Colours::white);
-    squarelabel->setColour (TextEditor::textColourId, Colours::black);
-    squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (noiselabel = new Label ("Noise label",
-                                               TRANS("White noise")));
-    noiselabel->setFont (Font (15.00f, Font::plain));
-    noiselabel->setJustificationType (Justification::centredLeft);
-    noiselabel->setEditable (false, false, false);
-    noiselabel->setColour (Label::textColourId, Colours::white);
-    noiselabel->setColour (TextEditor::textColourId, Colours::black);
-    noiselabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
+ 
     addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
     amountWidthMod->setRange (0, 1, 0);
     amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
