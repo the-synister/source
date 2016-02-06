@@ -14,6 +14,7 @@
 #include "JuceHeader.h"
 #include <atomic>
 #include "Param.h"
+#include "..\gui\panels\PanelBase.h"
 
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
@@ -114,10 +115,24 @@ public:
     ModulationMatrix();
     ~ModulationMatrix();
 
-    inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
-    inline bool enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable);
+    struct ModMatrixRow
+    {
+        sources sourceIndex;
+        destinations destinationIndex;
+        Param* modIntensity;
 
-    inline void addModMatrixRow(sources s, destinations d, Param *intensity, bool b = false);
+        ModMatrixRow(sources s, destinations d, Param *intensity)
+            : sourceIndex(s)
+            , destinationIndex(d)
+            , modIntensity(intensity)
+        {}
+    };
+
+
+    inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
+    void changeSource(ModulationMatrix::ModMatrixRow* row, sources source);
+
+    inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
 
     inline void doModulationsMatrix(float** src, float** dst) const;
 
@@ -126,20 +141,6 @@ protected:
     static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
 private:
-    struct ModMatrixRow
-    {
-        sources sourceIndex;
-        destinations destinationIndex;
-        Param* modIntensity;
-        bool enable;
-
-        ModMatrixRow(sources s, destinations d, Param *intensity, bool b = false)
-            : sourceIndex(s)
-            , destinationIndex(d)
-            , modIntensity(intensity)
-            , enable(b)
-        {}
-    };
 
     std::vector<ModMatrixRow> matrixCore;
 };
@@ -149,9 +150,7 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
 {
     for (const ModMatrixRow &row : matrixCore)
     {        
-        // --- if disabled, skip row
-        if (!row.enable) continue;
-                
+
         // get the source value & mod intensity
         float source = *(src[row.sourceIndex]);
         float intensity = row.modIntensity->get();
@@ -192,27 +191,22 @@ inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinatio
     return false;
 }
 
-inline bool ModulationMatrix::enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable)
-{
-    for (ModMatrixRow &row : matrixCore)
-    {
-        // find matching source/destination pairs
-        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
-        {
-            row.enable = enable;
-            return true; // found it
-        }
-    }
-    return false;
+
+inline void ModulationMatrix::changeSource(ModulationMatrix::ModMatrixRow* row, sources source) {
+    row->sourceIndex = static_cast<sources>(source);
 }
 
-inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, bool b)
+
+inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName)
 {
     // add if not already existing
     if (!modMatrixRowExists(s, d))
     {
-        matrixCore.push_back(ModMatrixRow(s,d,intensity,b));
+        matrixCore.push_back(ModMatrixRow(s, d, intensity));
+        ModMatrixRow* rowPointer = &matrixCore.back();
+        return rowPointer;
     }
+    return NULL;
 }
 
 #endif  // MODULATIONMATRIX_H_INCLUDED

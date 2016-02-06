@@ -50,7 +50,7 @@ public:
         //set connection bewtween source and matrix here
         modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_VOL_ENV] = env1Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -202,10 +202,10 @@ public:
 
             // Modulation
             renderModulation(numSamples);
-            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PITCH);
+            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
             const float *lfo1 = lfo1Buffer.getReadPointer(0);
-            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILT_FC);
+            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
             const float currentAmp = params.vol.get();
             const float currentPan = params.panDir.get();
@@ -338,7 +338,7 @@ protected:
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
-        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_VOL_ENV] = env1Buffer.getWritePointer(0);
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
 
         for (int s = 0; s < numSamples; ++s) {
@@ -379,14 +379,14 @@ protected:
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
             }
-            ++modSources[SOURCE_ENV1];
+            ++modSources[SOURCE_VOL_ENV];
             ++modSources[SOURCE_LFO1];
         }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
         //! \todo check whether this should be at the place where the values are actually used
         for (int s = 0; s < numSamples; ++s) {
-            modDestBuffer.setSample(DEST_OSC1_PITCH, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PITCH,s) * 12.f));
+            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
     } 
 
