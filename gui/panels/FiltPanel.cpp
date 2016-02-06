@@ -37,24 +37,28 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider->setRange (10, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider->addListener (this);
 
     addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
     resonanceSlider->setRange (1, 10, 0);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    resonanceSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     resonanceSlider->addListener (this);
 
     addAndMakeVisible (cutoffSlider2 = new MouseOverKnob ("Cutoff2"));
     cutoffSlider2->setRange (10, 20000, 1);
     cutoffSlider2->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider2->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
     passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    passtype->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     passtype->addListener (this);
 
     addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
@@ -114,7 +118,7 @@ void FiltPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -130,7 +134,7 @@ void FiltPanel::resized()
     cutoffSlider2->setBounds (96, 104, 64, 64);
     passtype->setBounds (8, 8, 64, 64);
     modSrc->setBounds (96, 80, 64, 16);
-    modSliderCut->setBounds (160, 80, 24, 24);
+    modSliderCut->setBounds (160, 80, 22, 22);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -208,28 +212,32 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
-          min="1" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="-25" max="25" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 104 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="0" max="3" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="0" max="2" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
             explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
             items="No Mod&#10;LFO 1" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
-          explicitFocusOrder="0" pos="160 80 24 24" min="0" max="100" int="0"
+          explicitFocusOrder="0" pos="160 80 22 22" min="0" max="100" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
 </JUCER_COMPONENT>

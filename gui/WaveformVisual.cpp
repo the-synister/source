@@ -37,3 +37,5 @@ void WaveformVisual::paint(Graphics &g)
     g.setColour(Colours::lightgreen);
     g.strokePath(wavePath, PathStrokeType(2.5f));
 }
+
+

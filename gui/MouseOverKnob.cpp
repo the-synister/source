@@ -12,14 +12,15 @@
 
 //==============================================================================
 // contructer & destructer
-MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
+MouseOverKnob::MouseOverKnob(const String& name)
+    : Slider(name)
+    , modSources({nullptr})
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
-    knobLabel->setFont(Font(15.00f, Font::plain));
+    knobLabel->setFont(Font(18.00f, Font::plain));
     knobLabel->setJustificationType(Justification::centred);
     knobLabel->setEditable(false, false, false);
-    knobLabel->setColour(TextEditor::textColourId, Colours::black);
-    knobLabel->setColour(TextEditor::backgroundColourId, Colour(0x00000000));
+    knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
 
     knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
@@ -30,6 +31,7 @@ MouseOverKnob::MouseOverKnob(const String& name): Slider(name)
 MouseOverKnob::~MouseOverKnob()
 {
     knobLabel = nullptr;
+    modSources = {nullptr};
 }
 //==============================================================================
 
@@ -42,10 +44,19 @@ void MouseOverKnob::initTextBox()
     }
 }
 
+void MouseOverKnob::setModSource(Param *p, int sourceNumber)
+{
+    modSources[sourceNumber - 1] = p;
+}
+
+std::array<Param*, 2> MouseOverKnob::getModSources()
+{
+    return modSources;
+}
+
 void MouseOverKnob::setName  (const String& newName) {
     knobLabel->setText(newName, NotificationType::dontSendNotification);
 }
-
 
 /**
 * If mouse enters slider then replace label with textbox.
@@ -69,6 +80,49 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
         knobLabel->setVisible(true);
         setTextBoxStyle(MouseOverKnob::NoTextBox, true, this->getTextBoxWidth(), this->getTextBoxHeight());
     }
+}
+
+/**
+* Right click popup menu.
+*/
+void MouseOverKnob::mouseDown(const MouseEvent &e)
+{
+    // TODO: erben von synthparams und dann hier setzen
+    // mouseOverKnob mit dem amount verbinden über registerSaturn, danach hierüber nur noch params ändern
+    if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
+    {
+        PopupMenu main, sub;
+        sub.addItem(3, "set min");
+        sub.addItem(4, "set max");
+
+        main.addSectionHeader("Test Popup Menu");
+        main.addItem(1, "set 0.0");
+        main.addItem(2, "change colour to red");
+        main.addSubMenu("sub item", sub);
+        const int result = main.show();
+        if (result == 0)
+        {
+            // user dismissed the menu without picking anything
+        }
+        else if (result == 1)
+        {
+            this->setValue(0.0);
+        }
+        else if (result == 2)
+        {
+            this->setColour(Slider::ColourIds::rotarySliderFillColourId, Colours::red);
+        }
+        else if (result == 3)
+        {
+            this->setValue(this->getMinimum());
+        }
+        else if (result == 4)
+        {
+            this->setValue(this->getMaximum());
+        }
+    }
+
+    Slider::mouseDown(e);
 }
 
 /**
@@ -120,13 +174,27 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
     Slider::setBounds(x, y, width, height);
 }
 
+void MouseOverKnob::enablementChanged()
+{
+    Slider::enablementChanged();
+
+    if (this->isEnabled())
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
+    }
+    else
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white.withAlpha(0.5f));
+    }
+}
+
 /**
 * Always set label below slider.
 */
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
-    knobLabel->setSize(labelWidth, this->getTextBoxHeight());
-    knobLabel->setTopLeftPosition(this->getX() + (knobWidth- labelWidth)/2, this->getY() + this->getHeight());
+    knobLabel->setSize(knobWidth, this->getTextBoxHeight());
+    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }
