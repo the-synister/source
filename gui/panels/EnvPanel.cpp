@@ -166,7 +166,7 @@ void EnvPanel::resized()
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (224, 80, 64, 64);
     keyVelToEnv->setBounds (296, 8, 64, 64);
-    envelopeCurve->setBounds (376, 32, 200, 96);
+    envelopeCurve->setBounds (400, 24, 312, 136);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -298,7 +298,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
-                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="376 32 200 96"
+                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="400 24 312 136"
                     class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()&#10;"/>
 </JUCER_COMPONENT>
 
