@@ -41,7 +41,7 @@ OscPanel::OscPanel (SynthParams &p)
     ftune1->addListener (this);
 
     addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
-    lfo1depth1->setRange (0, 36, 0);
+    lfo1depth1->setRange (0, 12, 0);
     lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
     lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lfo1depth1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
@@ -282,7 +282,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 8 64 64"
-          rotarysliderfill="ff6c788c" min="0" max="36" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff6c788c" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
@@ -315,7 +315,6 @@ BEGIN_JUCER_METADATA
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
                     class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-<<<<<<< HEAD
           virtualName="" explicitFocusOrder="0" pos="360 128 64 64" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
