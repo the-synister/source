@@ -22,18 +22,24 @@
 
 enum sources : int {
     SOURCE_NONE = -1,
-    SOURCE_PITCHBEND,
-    SOURCE_MODWHEEL,
-    SOURCE_VELOCITY,
-    // SOURCE_UI_FILTER,
 
-    // SOURCE_LFO_FADER,
+    // Midi
+    SOURCE_AFTERTOUCH,
+    SOURCE_KEY_BIPOLAR,
+    SOURCE_INVERTED_VELOCITY,
+    SOURCE_VELOCITY,
+    SOURCE_FOOT,
+    SOURCE_EXPPEDAL,
+    SOURCE_MODWHEEL,
+    SOURCE_PITCHBEND,
+
+    // LFOs
     SOURCE_LFO1,
     SOURCE_LFO2,
     SOURCE_LFO3,
 
-    // SOURCE_VOL_ENV,
-    SOURCE_ENV1,
+    // Envelopes
+    SOURCE_VOL_ENV,
     SOURCE_ENV2,
     SOURCE_ENV3,
 
@@ -41,58 +47,65 @@ enum sources : int {
 };
 
 enum destinations : int {
-
     DEST_NONE = -1,
 
-    // --- GUI control layer modulation (-1)
-    DEST_UI_OSC1_FO,
-    DEST_UI_OSC2_FO,
-    DEST_UI_OSC3_FO,
+    // Filters
+    DEST_FILTER_LC,
+    DEST_FILTER_HC,
+    DEST_FILTER_RES,
 
-    DEST_UI_FILTER1_FC,
-    DEST_UI_FILTER2_FC,
+    // Oscillators
+    DEST_AMP,
+    DEST_PAN,
+    DEST_OSC1_PI,
+    DEST_OSC2_PI,
+    DEST_OSC3_PI,
+    DEST_OSC1_PW,
+    DEST_OSC2_PW,
+    DEST_OSC3_PW,
 
-    // --- LAYER 0 DESTINATIONS 
-    //     add more L0 destinations in this chunk
-    //     see CModulationMatrix::checkDestinationLayer())
+    // LFOs
+    DEST_LFO1_FREQ,
+    DEST_LFO2_FREQ,
+    DEST_LFO3_FREQ,
+    DEST_LFO1_GAIN,
+    DEST_LFO2_GAIN,
+    DEST_LFO3_GAIN,
 
-    DEST_FILT_FC,       // <- keep this first
-    DEST_OSC1_PITCH,    // <- keep this last
-
-                        // --- END OF LAYER 0 DESTINATIONS
-
-                        // --- LAYER 1 DESTINATIONS 
-                        //    DEST_OSC1_PULSEWIDTH,
-
-                        // --- END OF LAYER 1 DESTINATIONS
+    // Envelopes
+    DEST_VOL_ENV_SPEED,
+    DEST_ENV2_SPEED,
+    DEST_ENV3_SPEED,
 
     MAX_DESTINATIONS
 };
 
 inline bool isUnipolar(sources source) {
     switch (source) {
-    case (SOURCE_ENV1) :
-    case (SOURCE_ENV2) :
-    case (SOURCE_ENV3) :
+    case SOURCE_VOL_ENV:
+    case SOURCE_ENV2:
+    case SOURCE_ENV3:
+    case SOURCE_AFTERTOUCH:
+    case SOURCE_MODWHEEL:
+    case SOURCE_VELOCITY:
+    case SOURCE_INVERTED_VELOCITY:
+    case SOURCE_FOOT:
+    case SOURCE_EXPPEDAL:
         return true;
         break;
-    case (SOURCE_LFO1) :
-    case (SOURCE_LFO2) :
-    case (SOURCE_LFO3) :
-    case (SOURCE_PITCHBEND) :
+    case SOURCE_LFO1:
+    case SOURCE_LFO2:
+    case SOURCE_LFO3:
+    case SOURCE_PITCHBEND:
+    case SOURCE_KEY_BIPOLAR:
         return false;
         break;
 
-        // yet to be completed not sure about the following yet
-        // case (SOURCE_VELOCITY) :
-        // case (SOURCE_MODWHEEL) :
-        // case (SOURCE_UI_FILTER) :
-        // case (SOURCE_LFO_FADER) :
-        // case (SOURCE_VOL_ENV) : 
-    }
-    return false; // when the function is complete with all sources, this code should be unreachable
-}
 
+    }
+    // when the function is complete with all sources, this code should be unreachable
+    return false;
+}
 
 
 // core
