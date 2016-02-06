@@ -99,6 +99,27 @@ struct FoldablePanel::PanelHolderComponent  : public Component
 {
     PanelHolderComponent() {}
     
+    /**
+     const int rectSize = jmin (getWidth(), getHeight()) / 2 - 20;
+     
+     g.setColour (colour1.withAlpha (getAlpha()));
+     g.fillRect (-rectSize, -rectSize, rectSize, rectSize);
+     
+     g.setGradientFill (ColourGradient (colour1, 10.0f, (float) -rectSize,
+     colour2, 10.0f + rectSize, 0.0f, false));
+     g.setOpacity (getAlpha());
+     g.fillRect (10, -rectSize, rectSize, rectSize);
+     
+     g.setGradientFill (ColourGradient (colour1, rectSize * -0.5f, 10.0f + rectSize * 0.5f,
+     colour2, 0, 10.0f + rectSize, true));
+     g.setOpacity (getAlpha());
+     g.fillRect (-rectSize, 10, rectSize, rectSize);
+     
+     g.setGradientFill (ColourGradient (colour1, 10.0f, 10.0f,
+     colour2, 10.0f + rectSize, 10.0f + rectSize, false));
+     g.setOpacity (getAlpha());
+     g.drawRect (10, 10, rectSize, rectSize, 5);*/
+    
     void paint (Graphics& g) override
     {
         const int titleHeight = 22;
@@ -118,7 +139,7 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             SectionComponent* const section = sections.getUnchecked(i);
             const float centreY = (y + titleHeight) / 2.0f;
             
-            ColourGradient gradient(c1, centreX, centreY, c2, centreX + boxSize * gradientScale / 2.0f, centreY + boxSize * gradientScale / 2.0f, true);
+            ColourGradient gradient(c1, 0, y, c2, 0, y + 33, false);
             gradient.addColour(0.4f, c1);
             g.setGradientFill(gradient);
             
