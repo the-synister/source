@@ -29,7 +29,8 @@ enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
     eBandpass = 2,
-    nSteps = 3
+    eLadder = 3,
+    nSteps = 4
 };
 
 enum class eOnOffToggle : int {
@@ -77,6 +78,7 @@ public:
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
+    //Param biquadResonance; //! filter resonance [0,01 .. 10]
     Param biquadResonance; //! filter resonance in dB
     ParamStepped<eModSource> lpModSource;  //! lp filter modulation source
     Param lpModAmount;   //! lp filter modulation amount
@@ -142,7 +144,7 @@ public:
 
     Param panDir; //!< pan R/L [-100..100]
 
-    Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
+    //Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
     Param ladderRes; //< resonance gain for the ladder Filter [0...1]
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
