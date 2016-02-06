@@ -14,7 +14,7 @@
 #include "JuceHeader.h"
 #include <atomic>
 #include "Param.h"
-#include "..\gui\panels\PanelBase.h"
+//#include "..\gui\panels\PanelBase.h"
 
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
