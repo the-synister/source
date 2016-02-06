@@ -52,6 +52,13 @@ enum class eSeqPlayModes : int {
     nSteps = 3
 };
 
+enum class eModSource : int {
+    eNone = 0,
+    eLFO1 = 1,
+    eEnv = 2,
+    nSteps = 3
+};
+
 class SynthParams {
 public:
     SynthParams();

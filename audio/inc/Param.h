@@ -4,14 +4,6 @@
 
 #include "JuceHeader.h"
 
-//
-enum class eModSource : int {
-    eNone = 0,
-    eLFO1 = 1,
-    eEnv = 2,
-    nSteps = 3
-};
-
 class Param {
 public:
     Param(const String &name, const String &serializationTag, const String &hostTag, const String &unit, float minval, float maxval, float defaultval, int numSteps=0)
@@ -88,18 +80,6 @@ public:
     */
     static inline float bipolarToFreq(float modValue, float fInput, float modRange) {
         return fInput * std::pow(2.f, modValue * modRange);
-    }
-
-    static bool isUnipolar(eModSource source) {
-        switch (source) {
-        case eModSource::eEnv:
-            //todo: add all unipolar modulators
-            return true;
-        case eModSource::eLFO1:
-            //todo: add all unipolar modulators
-            return false;
-        }
-        return false;
     }
 
     class Listener {
