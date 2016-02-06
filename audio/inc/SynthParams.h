@@ -54,9 +54,28 @@ enum class eSeqPlayModes : int {
 
 enum class eModSource : int {
     eNone = 0,
-    eLFO1 = 1,
-    eEnv = 2,
-    nSteps = 3
+
+    // Midi
+    eAftertouch = 1,
+    eKeyBipolar = 2,
+    eInvertedVelocity = 3,
+    eVelocity = 4,
+    eFoot = 5,
+    eExpPedal = 6,
+    eModwheel = 7,
+    ePitchbend = 8,
+
+    // LFOs
+    eLFO1 = 9,
+    eLFO2 = 10,
+    eLFO3 = 11,
+
+    // Envelopes
+    eVolEnv = 12,
+    eEnv2 = 13,
+    eEnv3 = 14,
+
+    nSteps = 15
 };
 
 class SynthParams {
