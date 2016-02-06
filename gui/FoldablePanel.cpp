@@ -35,14 +35,11 @@ struct FoldablePanel::SectionComponent  : public Component
     
     void paint (Graphics& g) override
     {
-        if (titleHeight > 0)
-            //TODO: implement the property bar.
-            getLookAndFeel().drawPropertyPanelSectionHeader (g, getName(), isOpen, getWidth(), titleHeight);
     }
     
     void resized() override
     {
-        panel->setBounds(panel->getLocalBounds().withTop(titleHeight));
+        panel->setBounds(panel->getBoundsInParent().withTop(titleHeight));
         panel->resized();
     }
     
@@ -104,13 +101,36 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     
     void paint (Graphics& g) override
     {
+        const int titleHeight = 22;
+        const float buttonSize = titleHeight * 0.75f;
+        const float buttonIndent = (titleHeight - buttonSize) * 0.5f;
+        const int textX = (int) (buttonIndent * 2.0f + buttonSize + 2.0f);
+        const float centreX = getWidth() * 0.85f / 2.0f;
+        float boxSize = getWidth();
+        float gradientScale = 1.0f;
+        Colour c1 = Colours::black;
+        Colour c2 = Colours::white;
+        
         int y = 0;
+
         for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
+            const float centreY = (y + titleHeight) / 2.0f;
             
-            Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - 22);
+            ColourGradient gradient(c1, centreX, centreY, c2, centreX + boxSize * gradientScale / 2.0f, centreY + boxSize * gradientScale / 2.0f, true);
+            gradient.addColour(0.4f, c1);
+            g.setGradientFill(gradient);
+            
+            g.fillRect(0, y, getWidth(), titleHeight);
+            getLookAndFeel().drawTreeviewPlusMinusBox (g, Rectangle<float> (buttonIndent, y + buttonIndent, buttonSize, buttonSize), Colours::white, section->isOpen, false);
+            g.setColour(section->getSectionColour());
+            g.setFont (Font (titleHeight * 0.7f, Font::bold));
+            g.drawText (section->getName(), textX, y, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
+            
+            Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - titleHeight);
             y = section->getBottom();
+            
             g.setColour(section->getSectionColour());
             g.fillRect (content);
         }
