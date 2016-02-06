@@ -18,8 +18,6 @@ EnvelopeCurve::~EnvelopeCurve()
 
 void EnvelopeCurve::setSamples()
 {
-    
-    //TODO: responsive design
     sustainLevel_ = (96.f + sustain_) / 96.f;
     
     float samplesSection = getWidth()/4;
