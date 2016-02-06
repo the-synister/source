@@ -12,6 +12,17 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="PuVkTD" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="NCCbRA" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
+      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
       <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
             file="../gui/WaveformVisual.cpp"/>
       <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"

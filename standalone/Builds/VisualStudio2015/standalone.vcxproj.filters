@@ -352,7 +352,10 @@
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\FoldablePanel.cpp">
+    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
@@ -1656,7 +1659,10 @@
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\FoldablePanel.h">
+    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">

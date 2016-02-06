@@ -28,9 +28,13 @@
             file="../gui/CustomLookAndFeel.cpp"/>
       <FILE id="hGuamh" name="CustomLookAndFeel.h" compile="0" resource="0"
             file="../gui/CustomLookAndFeel.h"/>
-      <FILE id="jz5A0M" name="FoldablePanel.cpp" compile="1" resource="0"
-            file="../gui/panels/FoldablePanel.cpp"/>
-      <FILE id="QkWn8Q" name="FoldablePanel.h" compile="0" resource="0" file="../gui/panels/FoldablePanel.h"/>
+      <FILE id="eaGaOV" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="AbO68Z" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
+      <FILE id="grcrKc" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="A7CmiH" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>

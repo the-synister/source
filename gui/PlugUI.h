@@ -24,7 +24,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
-#include "panels/FoldablePanel.h"
+#include "FoldablePanel.h"
 #include "IncDecDropDown.h"
 //[/Headers]
 
