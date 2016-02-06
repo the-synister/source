@@ -2,6 +2,7 @@
 #pragma once
 
 #include <map>
+#include <functional>
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
@@ -11,6 +12,7 @@
 class PanelBase : public Component, protected Timer
 {
 public:
+
     PanelBase(SynthParams &p)
         : params(p) {
         startTimerHz(60);
@@ -21,8 +23,13 @@ public:
     }
 
 protected:
-    void registerSlider(Slider *slider, Param *p) {
+    typedef std::function<void()> tHookFn;
+
+    void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn()) {
         sliderReg[slider] = p;
+        if (hook) {
+            postUpdateHook[slider] = hook;
+        }
         if(p->hasLabels()) {
             slider->setName(p->getUIString());
         } else {
@@ -32,8 +39,11 @@ protected:
         slider->setValue(p->getUI());
     }
 
-    void registerSlider(MouseOverKnob *slider, Param *p) {
+    void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
         registerSlider(static_cast<Slider*>(slider), p);
+        if (hook) {
+            postUpdateHook[slider] = hook;
+        }
         slider->initTextBox();
     }
 
@@ -59,6 +69,11 @@ protected:
                 s2p.first->setValue(s2p.second->getUI());
                 if(s2p.second->hasLabels()) {
                     s2p.first->setName(s2p.second->getUIString());
+                }
+
+                auto itHook = postUpdateHook.find(s2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
                 }
             }
 
@@ -98,6 +113,11 @@ protected:
                 }
             }
 
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+
             return true;
         } else {
             return false;
@@ -111,5 +131,6 @@ protected:
 
     std::map<Slider*, Param*> sliderReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
+    std::map<Slider*, tHookFn> postUpdateHook;
     SynthParams &params;
 };

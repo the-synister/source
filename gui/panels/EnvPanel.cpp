@@ -96,6 +96,10 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     keyVelToEnv->addListener (this);
 
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
+                                                          ));
+    envelopeCurve->setName ("Envelope Curve");
+
 
     //[UserPreSize]
     registerSlider(attackTime, &params.envAttack);
@@ -128,6 +132,7 @@ EnvPanel::~EnvPanel()
     decayShape = nullptr;
     releaseShape = nullptr;
     keyVelToEnv = nullptr;
+    envelopeCurve = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -159,6 +164,7 @@ void EnvPanel::resized()
     decayShape->setBounds (80, 80, 64, 64);
     releaseShape->setBounds (224, 80, 64, 64);
     keyVelToEnv->setBounds (296, 8, 64, 64);
+    envelopeCurve->setBounds (400, 24, 312, 136);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -172,36 +178,50 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == attackTime)
     {
         //[UserSliderCode_attackTime] -- add your slider handling code here..
+        envelopeCurve->setAttack(attackTime->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_attackTime]
     }
     else if (sliderThatWasMoved == decayTime)
     {
         //[UserSliderCode_decayTime] -- add your slider handling code here..
+        envelopeCurve->setDecay(decayTime->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_decayTime]
     }
     else if (sliderThatWasMoved == sustainLevel)
     {
         //[UserSliderCode_sustainLevel] -- add your slider handling code here..
+        envelopeCurve->setSustain(sustainLevel->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_sustainLevel]
     }
     else if (sliderThatWasMoved == releaseTime)
     {
         //[UserSliderCode_releaseTime] -- add your slider handling code here..
+        envelopeCurve->setRelease(releaseTime->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_releaseTime]
     }
     else if (sliderThatWasMoved == attackShape)
     {
         //[UserSliderCode_attackShape] -- add your slider handling code here..
+        envelopeCurve->setAttackShape(attackShape->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_attackShape]
     }
     else if (sliderThatWasMoved == decayShape)
     {
         //[UserSliderCode_decayShape] -- add your slider handling code here..
+        envelopeCurve->setDecayShape(decayShape->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_decayShape]
     }
     else if (sliderThatWasMoved == releaseShape)
     {
         //[UserSliderCode_releaseShape] -- add your slider handling code here..
+        envelopeCurve->setReleaseShape(releaseShape->getValue());
+        envelopeCurve->repaint();
         //[/UserSliderCode_releaseShape]
     }
     else if (sliderThatWasMoved == keyVelToEnv)
@@ -275,6 +295,9 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ffbfa65a" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
+  <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
+                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="400 24 312 136"
+                    class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()&#10;"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

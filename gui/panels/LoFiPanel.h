@@ -17,13 +17,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_48919873852F91A2__
-#define __JUCE_HEADER_48919873852F91A2__
+#ifndef __JUCE_HEADER_BA96E244105871EC__
+#define __JUCE_HEADER_BA96E244105871EC__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
-#include "WaveformVisual.h"
 //[/Headers]
 
 
@@ -36,17 +35,16 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OscPanel  : public PanelBase,
-                  public SliderListener
+class LoFiPanel  : public PanelBase,
+                   public SliderListener
 {
 public:
     //==============================================================================
-    OscPanel (SynthParams &p);
-    ~OscPanel();
+    LoFiPanel (SynthParams &p);
+    ~LoFiPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void updateWFShapeControls();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -60,23 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> ftune1;
-    ScopedPointer<MouseOverKnob> lfo1depth1;
-    ScopedPointer<MouseOverKnob> osc1trngAmount;
-    ScopedPointer<MouseOverKnob> pulsewidth;
-    ScopedPointer<MouseOverKnob> pitchRange;
-    ScopedPointer<MouseOverKnob> ctune1;
-    ScopedPointer<MouseOverKnob> lfoFadeIn;
-    ScopedPointer<WaveformVisual> waveformVisual;
-    ScopedPointer<MouseOverKnob> waveformSwitch;
-    ScopedPointer<MouseOverKnob> amountWidthMod;
+    ScopedPointer<MouseOverKnob> lowFiActive;
+    ScopedPointer<MouseOverKnob> nBitsLowFi;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LoFiPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_48919873852F91A2__
+#endif   // __JUCE_HEADER_BA96E244105871EC__

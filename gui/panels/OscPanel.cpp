@@ -88,7 +88,7 @@ OscPanel::OscPanel (SynthParams &p)
     addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
-    addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
+    addAndMakeVisible (waveformSwitch = new MouseOverKnob ("Waveform Switch"));
     waveformSwitch->setRange (0, 2, 1);
     waveformSwitch->setSliderStyle (Slider::LinearHorizontal);
     waveformSwitch->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
@@ -123,6 +123,12 @@ OscPanel::OscPanel (SynthParams &p)
     noiselabel->setColour (TextEditor::textColourId, Colours::black);
     noiselabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
+    amountWidthMod->setRange (0, 1, 0);
+    amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
+    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->addListener (this);
+
 
     //[UserPreSize]
     // NOTE: test wise
@@ -135,15 +141,16 @@ OscPanel::OscPanel (SynthParams &p)
 
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
-    registerSlider(osc1trngAmount, &params.osc1trngAmount);
+    registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &params.osc1PitchRange);
-    registerSlider(pulsewidth, &params.osc1pulsewidth);
+    registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
+    registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &params.osc1Waveform);
 	lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
-    // Test modSource, mod on cTune
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -168,9 +175,7 @@ OscPanel::~OscPanel()
     lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
-    sawlabel = nullptr;
-    squarelabel = nullptr;
-    noiselabel = nullptr;
+    amountWidthMod = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -203,9 +208,7 @@ void OscPanel::resized()
     lfoFadeIn->setBounds (440, 8, 64, 64);
     waveformVisual->setBounds (24, 112, 208, 96);
     waveformSwitch->setBounds (360, 128, 64, 64);
-    sawlabel->setBounds (360, 104, 150, 24);
-    squarelabel->setBounds (256, 152, 96, 24);
-    noiselabel->setBounds (433, 152, 80, 24);
+    amountWidthMod->setBounds (368, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -230,15 +233,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == osc1trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-        waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
-        waveformVisual->repaint();
         //[/UserSliderCode_osc1trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
-        waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-        waveformVisual->repaint();
         //[/UserSliderCode_pulsewidth]
     }
     else if (sliderThatWasMoved == pitchRange)
@@ -259,26 +258,12 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == waveformSwitch)
     {
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
-    		params.osc1Waveform.setUI(static_cast<float>(params.osc1Waveform.getStep()));
-    		waveformVisual->setWaveformKey(params.osc1Waveform.getStep());
-    		switch (params.osc1Waveform.getStep())
-    		{
-                case eOscWaves::eOscSquare:
-                    pulsewidth->setVisible(true);
-                    osc1trngAmount->setVisible(false);
-                    break;
-                case eOscWaves::eOscSaw:
-                    pulsewidth->setVisible(false);
-                    osc1trngAmount->setVisible(true);
-                    break;
-                case eOscWaves::eOscNoise:
-                    pulsewidth->setVisible(false);
-                    osc1trngAmount->setVisible(false);
-                    break;
-    		}
-    		waveformVisual->repaint();
-
         //[/UserSliderCode_waveformSwitch]
+    }
+    else if (sliderThatWasMoved == amountWidthMod)
+    {
+        //[UserSliderCode_amountWidthMod] -- add your slider handling code here..
+        //[/UserSliderCode_amountWidthMod]
     }
 
     //[UsersliderValueChanged_Post]
@@ -288,6 +273,17 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void OscPanel::updateWFShapeControls()
+{
+    int waveformKey = static_cast<int>(waveformSwitch->getValue());
+    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    params.osc1Waveform.setStep(eWaveformKey);
+    pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+    waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
+    waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+}
 //[/MiscUserCode]
 
 
@@ -346,6 +342,7 @@ BEGIN_JUCER_METADATA
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
                     class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
+<<<<<<< HEAD
           virtualName="" explicitFocusOrder="0" pos="360 128 64 64" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
@@ -365,6 +362,10 @@ BEGIN_JUCER_METADATA
          edTextCol="ff000000" edBkgCol="0" labelText="White noise" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

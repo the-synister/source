@@ -26,10 +26,10 @@ public:
     FxClipping(SynthParams& p)
     : params(p)
     {}
-    
+
     //! FxDelay destructor.
     ~FxClipping();
-    
+
     //! Signal clipping
     /*!
      It holds the actual "clipping" of the signal.
@@ -42,7 +42,7 @@ public:
 
 protected:
      SynthParams &params; //!< local params reference
-    
+
 };
 
 

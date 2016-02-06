@@ -18,6 +18,8 @@
 #include "FxDelay.h"
 #include <array>
 #include "StepSequencer.h"
+#include "FxChorus.h"
+#include "LowFidelity.h"
 
 //==============================================================================
 /**
@@ -63,7 +65,7 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    
+
 
 private:
     //==============================================================================
@@ -73,7 +75,10 @@ private:
     FxDelay delay;
     FxClipping clip;
 
+    LowFidelity lowFi;
+
     StepSequencer stepSeq;
+    FxChorus chorus;
 
     void updateHostInfo();
     //==============================================================================
