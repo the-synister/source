@@ -41,6 +41,7 @@ protected:
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
+        slider->setDefaultValue(p->getDefault());
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;
@@ -131,21 +132,29 @@ protected:
     }
 
     /**
-    * 
+    * Draw white group border with group name alligned right.
     */
-    void drawGroupBorder(Graphics &g, const String &/*name*/, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, Colour &c)
+    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, Colour c)
     {
+        float posX = static_cast<float>(x) + padding;
+        float posY = static_cast<float>(y) + padding;
+        float boxWidth = static_cast<float>(width) - 2.0f * padding;
+        float boxHeight = static_cast<float>(height) - 2.0f * padding;
 
         // draw white groupborder
-        Rectangle<float> rect = { static_cast<float>(x), static_cast<float>(y), 
-                                  static_cast<float>(x + width), static_cast<float>(y + height) };
+        Rectangle<float> rect = { posX, posY, boxWidth, boxHeight };
         g.setColour(Colours::white);
         g.fillRoundedRectangle(rect, cornerSize);
 
-        //rect = { static_cast<float>(x) + borderThickness, static_cast<float>(y) + headHeight,
-        //         static_cast<float>(x + width) - borderThickness * 2.0f, static_cast<float>(y + height) - headHeight * 2 - borderThickness };
-        //g.setColour(c);
-        //g.fillRoundedRectangle(rect, cornerSize);
+        rect = { posX + borderThickness, posY + headHeight, boxWidth - borderThickness * 2.0f, boxHeight - headHeight - borderThickness };
+        g.setColour(c);
+        g.fillRoundedRectangle(rect, cornerSize);
+
+        // draw group name text 
+        int offset = 2 * static_cast<int>(cornerSize);
+        g.setFont(headHeight * 0.85f);
+        g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY), 
+            width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);
     }
 
     std::map<Slider*, Param*> sliderReg;

@@ -68,6 +68,7 @@ private:
     ScopedPointer<MouseOverKnob> releaseShape;
     ScopedPointer<MouseOverKnob> keyVelToEnv;
     ScopedPointer<EnvelopeCurve> envelopeCurve;
+    ScopedPointer<Label> label;
 
 
     //==============================================================================

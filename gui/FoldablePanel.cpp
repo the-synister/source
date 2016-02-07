@@ -33,8 +33,21 @@ struct FoldablePanel::SectionComponent  : public Component
         panel = nullptr;
     }
     
-    void paint (Graphics& g) override
+    void paint(Graphics& g) override
     {
+        if (titleHeight > 0)
+        {
+            getLookAndFeel().drawPropertyPanelSectionHeader(g, getName(), isOpen, getWidth(), titleHeight);
+
+            const float buttonSize = titleHeight * 0.65f;
+            const float buttonIndent = (titleHeight - buttonSize) * 0.5f;
+
+            // draw section header text
+            const int textX = (int)(buttonIndent * 4.0f + buttonSize);
+            g.setColour(getSectionColour());
+            g.setFont(Font(titleHeight * 0.85f, Font::plain));
+            g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
+        }
     }
     
     void resized() override
@@ -123,31 +136,13 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     void paint (Graphics& g) override
     {
         const int titleHeight = 22;
-        const float buttonSize = titleHeight * 0.75f;
-        const float buttonIndent = (titleHeight - buttonSize) * 0.5f;
-        const int textX = (int) (buttonIndent * 2.0f + buttonSize + 2.0f);
-        const float centreX = getWidth() * 0.85f / 2.0f;
-        float boxSize = getWidth();
-        float gradientScale = 1.0f;
-        Colour c1 = Colours::black;
-        Colour c2 = Colours::white;
-        
         int y = 0;
 
+        // TODO: at each panel some space is cutoff at bottom of original panel
+        // see NOTE in PlugUI.cpp
         for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
-            const float centreY = (y + titleHeight) / 2.0f;
-            
-            ColourGradient gradient(c1, 0, y, c2, 0, y + 33, false);
-            gradient.addColour(0.4f, c1);
-            g.setGradientFill(gradient);
-            
-            g.fillRect(0, y, getWidth(), titleHeight);
-            getLookAndFeel().drawTreeviewPlusMinusBox (g, Rectangle<float> (buttonIndent, y + buttonIndent, buttonSize, buttonSize), Colours::white, section->isOpen, false);
-            g.setColour(section->getSectionColour());
-            g.setFont (Font (titleHeight * 0.7f, Font::bold));
-            g.drawText (section->getName(), textX, y, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
             
             Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - titleHeight);
             y = section->getBottom();
@@ -206,7 +201,7 @@ FoldablePanel::~FoldablePanel()
     clear();
 }
 
-void FoldablePanel::paint (Graphics& g)
+void FoldablePanel::paint (Graphics& /*g*/)
 {
 }
 

@@ -28,6 +28,8 @@ public:
     void setModSource(Param *p, int sourceNumber);
     std::array<Param*, 2> getModSources();
 
+    void setDefaultValue(float val);
+
     virtual void setName(const String& newName) override;
 
     void resized() override;
@@ -46,6 +48,7 @@ private:
 
     int knobWidth = 64;
     int knobHeight = 64;
+    double defaultValue = 0.0;
 
     std::array<Param*, 2> modSources;
 };

@@ -501,21 +501,39 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
 
 //==============================================================================
 
-void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& name,
-    bool isOpen, int width, int height)
+void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& /*name*/, bool isOpen, int width, int height)
 {
-    g.setColour(Colours::red);
-    g.fillRect(0,0, width, height);
+    // background colour
+    ColourGradient gradient(Colours::darkgrey, 0.0f, 0.0f, Colours::black, 0.0f, static_cast<float>(height), false);
+    g.setGradientFill(gradient);
+    g.fillRect(0, 0, width, height);
 
-    const float buttonSize = height * 0.75f;
+    // draw arrow
+    const float buttonSize = height * 0.65f;
     const float buttonIndent = (height - buttonSize) * 0.5f;
+    const float x = buttonIndent * 2.0f;
+    const float y = (height - buttonSize) * 0.5f;
+    const float arrowThickness = buttonIndent * 2.0f;
 
-    drawTreeviewPlusMinusBox(g, Rectangle<float>(buttonIndent, buttonIndent, buttonSize, buttonSize), Colours::white, isOpen, false);
+    Path arrow;
+    if (isOpen)
+    {
+        arrow.addQuadrilateral(x, y,
+                               x + buttonSize * 0.5f, y + buttonSize - arrowThickness,
+                               x + buttonSize, y,
+                               x + buttonSize * 0.5f, y + buttonSize);
+    }
+    else
+    {
+        arrow.addQuadrilateral(x, y,
+                               x + buttonSize - arrowThickness, y + buttonSize * 0.5f,
+                               x, y + buttonSize,
+                               x + buttonSize, y + buttonSize * 0.5f);
+    }
 
-    const int textX = (int)(buttonIndent * 2.0f + buttonSize + 2.0f);
+    g.setColour(Colours::grey);
+    g.fillPath(arrow);
 
-    g.setColour(Colours::black);
-    g.setFont(Font(height * 0.7f, Font::bold));
-    g.drawText(name, textX, 0, width - textX - 4, height, Justification::centredLeft, true);
+    // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
 }
 
