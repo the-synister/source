@@ -25,7 +25,7 @@ public:
     , params(p)
     , envToVolume(getSampleRate(), params.envAttack, params.envDecay, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
-    , env1(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
+    , env2(getSampleRate(), params.env1Attack, params.env1Decay, params.env1Sustain, params.env1Release,
         params.env1AttackShape, params.env1DecayShape, params.env1ReleaseShape, params.keyVelToEnv1)
     , level (0.f)
     , ladderOut(0.f)
@@ -96,7 +96,7 @@ public:
 
         // reset attackDecayCounter
         envToVolume.startEnvelope(currentVelocity);
-        env1.startEnvelope(currentVelocity);
+        env2.startEnvelope(currentVelocity);
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
@@ -171,9 +171,9 @@ public:
                 envToVolume.resetReleaseCounter();
         }
 
-            if (env1.getReleaseCounter() == -1)
+            if (env2.getReleaseCounter() == -1)
             {
-                env1.resetReleaseCounter();
+                env2.resetReleaseCounter();
         }
 
         }
@@ -210,10 +210,10 @@ public:
 
         // Modulation
         renderModulation(numSamples);
-            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
-            const float *envToVolMod = envToVolBuffer.getReadPointer(0);
-            const float *lfo1 = lfo1Buffer.getReadPointer(0);
-            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
+        const float *envToVolMod = envToVolBuffer.getReadPointer(0);
+        const float *lfo1 = lfo1Buffer.getReadPointer(0);
+        const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
+        const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -285,7 +285,7 @@ public:
                     }
                 }
                 if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || 
-                    static_cast<int>(getSampleRate() * params.env1Release.get()) <= env1.getReleaseCounter())
+                    static_cast<int>(getSampleRate() * params.env1Release.get()) <= env2.getReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();
@@ -418,7 +418,7 @@ protected:
                 break;
             }
             // Calculate the Envelope coefficients and fill the buffers
-            env2Buffer.setSample(0, s, env1.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
 
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
@@ -597,5 +597,5 @@ private:
     
     // Envelopes 
     Envelope envToVolume;
-    Envelope env1;
+    Envelope env2;
 };
