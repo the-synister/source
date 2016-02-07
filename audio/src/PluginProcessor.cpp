@@ -72,7 +72,8 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, false);
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_RES, )
+    globalModMatrix.addModMatrixRow()
+    //globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_RES, )
 
     //Volume Envelope
     //globalModMatrix.addModMatrixRow(SOURCE_VOL_ENV, DEST_AMP, nullptr, true);
