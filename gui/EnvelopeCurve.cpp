@@ -19,7 +19,6 @@ EnvelopeCurve::~EnvelopeCurve()
 void EnvelopeCurve::setSamples()
 {
     
-    //TODO: responsive design
     sustainLevel_ = (96.f + sustain_) / 96.f;
     
     float samplesSection = getWidth()/4;
@@ -156,13 +155,11 @@ float EnvelopeCurve::interpolateLog(int c, int t, float k, bool slow)
 
 void EnvelopeCurve::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-    g.fillAll(Colours::black);
+    // TODO: gradient for less than 1 samples
+    FillType backgroundFill = FillType(Colour(116, 101, 60));
+    backgroundFill.setOpacity(1.0f);
+    g.setFillType(backgroundFill);
+    g.fillAll();
     
     Path curvePath;
     const int width = getWidth();
@@ -170,10 +167,11 @@ void EnvelopeCurve::paint (Graphics& g)
     curvePath.startNewSubPath(0, getHeight());
     
     for (float i = 1.0f; i < width; ++i) {
-        curvePath.lineTo(i, getHeight()*(1.f - getEnvCoef()));
+        curvePath.lineTo(i, (getHeight())*(1.013f - getEnvCoef()));
     }
     
-    g.setColour(Colours::lightgreen);
+    
+    g.setColour(Colour(216, 202, 155));
     g.strokePath(curvePath, PathStrokeType(2.5f));
 }
 

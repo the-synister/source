@@ -3,7 +3,11 @@
 
 void WaveformVisual::paint(Graphics &g)
 {
-    g.fillAll(Colours::black);
+    FillType backgroundFill = FillType(Colour(85, 93, 104));
+    backgroundFill.setOpacity(1.0f);
+    g.setFillType(backgroundFill);
+    g.fillAll();
+    
     Path wavePath;
     const float centreY = getHeight() / 2.0f;
     const float amplitude = 0.4f;
@@ -11,7 +15,7 @@ void WaveformVisual::paint(Graphics &g)
     const float step = 4*float_Pi / width;
     wavePath.startNewSubPath(0, centreY);
 
-    for (float x = 1.0f; x < width; ++x) {
+    for (float x = 0.0f; x < width; ++x) {
 
         float phs = x * step;
         if (phs > (2 * float_Pi))
@@ -34,8 +38,11 @@ void WaveformVisual::paint(Graphics &g)
 		}
 
     }
-    g.setColour(Colours::lightgreen);
+    g.setColour(Colour (185, 189, 190));
     g.strokePath(wavePath, PathStrokeType(2.5f));
+    g.drawRect(getLocalBounds(), 4);
+    g.setColour(Colours::darkgrey);
+    g.drawRect(getLocalBounds(), 1);
 }
 
 

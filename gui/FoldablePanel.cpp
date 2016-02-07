@@ -47,7 +47,7 @@ struct FoldablePanel::SectionComponent  : public Component
             g.setColour(getSectionColour());
             g.setFont(Font(titleHeight * 0.85f, Font::plain));
             g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
-    }
+        }
     }
     
     void resized() override
@@ -111,27 +111,6 @@ struct FoldablePanel::SectionComponent  : public Component
 struct FoldablePanel::PanelHolderComponent  : public Component
 {
     PanelHolderComponent() {}
-    
-    /**
-     const int rectSize = jmin (getWidth(), getHeight()) / 2 - 20;
-     
-     g.setColour (colour1.withAlpha (getAlpha()));
-     g.fillRect (-rectSize, -rectSize, rectSize, rectSize);
-     
-     g.setGradientFill (ColourGradient (colour1, 10.0f, (float) -rectSize,
-     colour2, 10.0f + rectSize, 0.0f, false));
-     g.setOpacity (getAlpha());
-     g.fillRect (10, -rectSize, rectSize, rectSize);
-     
-     g.setGradientFill (ColourGradient (colour1, rectSize * -0.5f, 10.0f + rectSize * 0.5f,
-     colour2, 0, 10.0f + rectSize, true));
-     g.setOpacity (getAlpha());
-     g.fillRect (-rectSize, 10, rectSize, rectSize);
-     
-     g.setGradientFill (ColourGradient (colour1, 10.0f, 10.0f,
-     colour2, 10.0f + rectSize, 10.0f + rectSize, false));
-     g.setOpacity (getAlpha());
-     g.drawRect (10, 10, rectSize, rectSize, 5);*/
     
     void paint (Graphics& g) override
     {
