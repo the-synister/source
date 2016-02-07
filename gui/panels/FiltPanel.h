@@ -1,20 +1,20 @@
 /*
-==============================================================================
+  ==============================================================================
 
-This is an automatically generated GUI class created by the Introjucer!
+  This is an automatically generated GUI class created by the Introjucer!
 
-Be careful when adding custom code to these files, as only the code within
-the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-and re-saved.
+  Be careful when adding custom code to these files, as only the code within
+  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
+  and re-saved.
 
-Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 3.2.0
 
-------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
-The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
-Copyright (c) 2015 - ROLI Ltd.
+  The Introjucer is part of the JUCE library - "Jules' Utility Class Extensions"
+  Copyright (c) 2015 - ROLI Ltd.
 
-==============================================================================
+  ==============================================================================
 */
 
 #ifndef __JUCE_HEADER_7B9503E899CF8C9A__
@@ -29,29 +29,29 @@ Copyright (c) 2015 - ROLI Ltd.
 
 //==============================================================================
 /**
-//[Comments]
+                                                                    //[Comments]
 An auto-generated component, created by the Introjucer.
 
 Describe your class and how it works here!
-//[/Comments]
+                                                                    //[/Comments]
 */
-class FiltPanel : public PanelBase,
-    public SliderListener,
-    public ComboBoxListener
+class FiltPanel  : public PanelBase,
+                   public SliderListener,
+                   public ComboBoxListener
 {
 public:
     //==============================================================================
-    FiltPanel(SynthParams &p);
+    FiltPanel (SynthParams &p);
     ~FiltPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     //[/UserMethods]
 
-    void paint(Graphics& g);
+    void paint (Graphics& g);
     void resized();
-    void sliderValueChanged(Slider* sliderThatWasMoved);
-    void comboBoxChanged(ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -74,7 +74,7 @@ private:
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FiltPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
 };
 
 //[EndFile] You can add extra defines here...
