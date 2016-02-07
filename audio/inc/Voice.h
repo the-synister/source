@@ -20,8 +20,8 @@ public:
     , inputDelay2(0.f)
     , outputDelay1(0.f)
     , outputDelay2(0.f)
-        , bandpassDelay1(0.f)
-        , bandpassDelay2(0.f)
+    , bandpassDelay1(0.f)
+    , bandpassDelay2(0.f)
     , params(p)
     , envToVolume(getSampleRate(), params.envAttack, params.envDecay, params.envSustain, params.envRelease,
         params.envAttackShape, params.envDecayShape, params.envReleaseShape, params.keyVelToEnv)
@@ -36,6 +36,7 @@ public:
     , lpOut1Delay(0.f)
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
+    , modWheelValue(0.f)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , totSamples(0)
@@ -49,6 +50,7 @@ public:
 
         //set connection bewtween source and matrix here
         modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_MODWHEEL] = &modWheelValue;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
 
@@ -98,6 +100,9 @@ public:
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
+
+        // Initialization of modulation wheel value
+        modWheelValue = 0.f;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -190,9 +195,12 @@ public:
         pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
-    void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
+    void controllerMoved(int controllerNumber, int newValue) override
     {
-        // not interested in controllers in this case.
+        if (controllerNumber == 1)    // If modulation wheel is moved, the value is updated
+        {
+            modWheelValue = static_cast<float>(newValue)/127.f;
+        }
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
@@ -384,15 +392,15 @@ protected:
 
             // Fade in factor calculation
             if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
-        {
+            {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                 factorFadeInLFO = 1.f;
-        }
-        else
-        {
+            }
+            else
+            {
                 // Otherwise the factor is determined
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
-        }
+            }
 
             // calculate lfo values and fill the buffers
             switch (params.lfo1wave.getStep()) {
@@ -556,9 +564,8 @@ private:
     float level;
 
     float pitchBend;
-    //float currentPitchInCents;
-    //float lfoValue;
-    //float env1Coeff;
+    float modWheelValue;
+    
 
     std::array<float*, MAX_SOURCES> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
