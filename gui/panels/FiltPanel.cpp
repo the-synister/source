@@ -57,15 +57,12 @@ FiltPanel::FiltPanel (SynthParams &p)
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->addListener (this);
 
-    addAndMakeVisible (modSrc = new ComboBox ("modSrcBox"));
-    modSrc->setEditableText (false);
-    modSrc->setJustificationType (Justification::centred);
-    modSrc->setTextWhenNothingSelected (TRANS("No Mod"));
-    modSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    modSrc->addItem (TRANS("No Mod"), 1);
-    modSrc->addItem (TRANS("LFO 1"), 2);
-    modSrc->addItem (TRANS("ENV 1"), 3);
-    modSrc->addListener (this);
+    addAndMakeVisible (lp1CutModSrc1 = new ComboBox ("lp1CutModSrc1Box"));
+    lp1CutModSrc1->setEditableText (false);
+    lp1CutModSrc1->setJustificationType (Justification::centred);
+    lp1CutModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    lp1CutModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lp1CutModSrc1->addListener (this);
 
     addAndMakeVisible (modSliderCut = new Slider ("Mod"));
     modSliderCut->setRange (0, 8, 0);
@@ -100,7 +97,7 @@ FiltPanel::~FiltPanel()
     resonanceSlider = nullptr;
     cutoffSlider2 = nullptr;
     passtype = nullptr;
-    modSrc = nullptr;
+    lp1CutModSrc1 = nullptr;
     modSliderCut = nullptr;
 
 
@@ -129,7 +126,7 @@ void FiltPanel::resized()
     resonanceSlider->setBounds (168, 8, 64, 64);
     cutoffSlider2->setBounds (96, 104, 64, 64);
     passtype->setBounds (8, 8, 64, 64);
-    modSrc->setBounds (96, 80, 64, 16);
+    lp1CutModSrc1->setBounds (96, 80, 64, 16);
     modSliderCut->setBounds (160, 80, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -177,11 +174,11 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == modSrc)
+    if (comboBoxThatHasChanged == lp1CutModSrc1)
     {
-        //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
-        params.lp1CutModSrc1.setStep(static_cast<eModSource>(modSrc->getSelectedItemIndex()));
-        //[/UserComboBoxCode_modSrc]
+        //[UserComboBoxCode_lp1CutModSrc1] -- add your combo box handling code here..
+        params.lp1CutModSrc1.setStep(static_cast<eModSource>(lp1CutModSrc1->getSelectedItemIndex()+1));
+        //[/UserComboBoxCode_lp1CutModSrc1]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -225,10 +222,9 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
           min="0" max="2" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
-            explicitFocusOrder="0" pos="96 80 64 16" editable="0" layout="36"
-            items="No Mod&#10;LFO 1&#10;ENV 1" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lp1CutModSrc1Box" id="11f9848905955e67" memberName="lp1CutModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="96 80 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="160 80 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"

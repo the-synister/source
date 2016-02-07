@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    ModulationMatrix.h
-    Created: 2 Jan 2016 9:16:56pm
-    Author:  nj
+ModulationMatrix.h
+Created: 2 Jan 2016 9:16:56pm
+Author:  nj
 
-  ==============================================================================
+==============================================================================
 */
 
 #ifndef MODULATIONMATRIX_H_INCLUDED
@@ -14,12 +14,14 @@
 #include "JuceHeader.h"
 #include <atomic>
 #include "Param.h"
+#include <map>
 //#include "..\gui\panels\PanelBase.h"
 
 //! Modulation Matrix 
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
 */
+
 
 enum sources : int {
     SOURCE_NONE = -1,
@@ -108,12 +110,13 @@ inline bool isUnipolar(sources source) {
     return false;
 }
 
-
 // core
 class ModulationMatrix {
 public:
     ModulationMatrix();
     ~ModulationMatrix();
+
+
 
     struct ModMatrixRow
     {
@@ -128,19 +131,21 @@ public:
         {}
     };
 
+    std::map<String, ModulationMatrix::ModMatrixRow*> boxnameToMatrixRow;
 
     inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
-    void changeSource(ModulationMatrix::ModMatrixRow* row, sources source);
-
-    inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
-
+    inline void updateRow(String modSourceBoxName);
+    inline void changeSource(String comboboxName, sources source);
+    inline ModulationMatrix::ModMatrixRow* addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
+
 
 protected:
     static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
     static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
 private:
+
 
     std::vector<ModMatrixRow> matrixCore;
 };
@@ -149,8 +154,7 @@ private:
 inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) const
 {
     for (const ModMatrixRow &row : matrixCore)
-    {        
-
+    {
         // get the source value & mod intensity
         float source = *(src[row.sourceIndex]);
         float intensity = row.modIntensity->get();
@@ -158,20 +162,20 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
         // get the min max values for the intensity for transformation
         float min = row.modIntensity->getMin();
         float max = row.modIntensity->getMax();
-        
-        if (isUnipolar(row.sourceIndex)) { 
+
+        if (isUnipolar(row.sourceIndex)) {
             // if the source is unipolar, transform the intensity to bipolar
             intensity = toBipolar(min, max, intensity);
         }
-        else { 
+        else {
             // else the source is bipolar, transform the intensity to unipolar
             intensity = toUnipolar(min, max, intensity);
         }
 
         float dModValue = source*intensity;
-                
+
         /*we are just adding the modified values into the predefined buffers
-         the conversion and application is apllied outside of the matrix*/
+        the conversion and application is apllied outside of the matrix*/
         *(dst[row.destinationIndex]) += dModValue;
     }
 }
@@ -191,9 +195,8 @@ inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinatio
     return false;
 }
 
-
-inline void ModulationMatrix::changeSource(ModulationMatrix::ModMatrixRow* row, sources source) {
-    row->sourceIndex = static_cast<sources>(source);
+inline void ModulationMatrix::changeSource(String comboboxName, sources source) {
+    boxnameToMatrixRow[comboboxName]->sourceIndex = static_cast<sources>(source);
 }
 
 
@@ -204,7 +207,7 @@ inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources
     {
         matrixCore.push_back(ModMatrixRow(s, d, intensity));
         ModMatrixRow* rowPointer = &matrixCore.back();
-        return rowPointer;
+        ModulationMatrix::boxnameToMatrixRow[comboboxName] = rowPointer;
     }
     return NULL;
 }

@@ -64,7 +64,7 @@ private:
     ScopedPointer<MouseOverKnob> resonanceSlider;
     ScopedPointer<MouseOverKnob> cutoffSlider2;
     ScopedPointer<MouseOverKnob> passtype;
-    ScopedPointer<ComboBox> modSrc;
+    ScopedPointer<ComboBox> lp1CutModSrc1;
     ScopedPointer<Slider> modSliderCut;
 
 
