@@ -47,7 +47,7 @@ struct FoldablePanel::SectionComponent  : public Component
             g.setColour(getSectionColour());
             g.setFont(Font(titleHeight * 0.85f, Font::plain));
             g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
-        }
+    }
     }
     
     void resized() override
