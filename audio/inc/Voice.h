@@ -42,7 +42,7 @@ public:
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
     , lfo1Buffer(1,blockSize)
-    , env1Buffer(1, blockSize)
+    , env2Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         std::fill(modSources.begin(), modSources.end(), nullptr);
@@ -52,7 +52,7 @@ public:
         modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_MODWHEEL] = &modWheelValue;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -210,10 +210,10 @@ public:
 
         // Modulation
         renderModulation(numSamples);
-            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PITCH);
+            const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
             const float *lfo1 = lfo1Buffer.getReadPointer(0);
-            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILT_FC);
+            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
         const float currentAmp = params.vol.get();
         const float currentPan = params.panDir.get();
@@ -379,13 +379,13 @@ protected:
         //clear the buffers
         modDestBuffer.clear();
         lfo1Buffer.clear();
-        env1Buffer.clear();
+        env2Buffer.clear();
         
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
     }
-        modSources[SOURCE_ENV1] = env1Buffer.getWritePointer(0);
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
 
         for (int s = 0; s < numSamples; ++s) {
@@ -418,7 +418,7 @@ protected:
                 break;
             }
             // Calculate the Envelope coefficients and fill the buffers
-            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env1.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
 
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
@@ -426,14 +426,14 @@ protected:
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
             }
-            ++modSources[SOURCE_ENV1];
+            ++modSources[SOURCE_ENV2];
             ++modSources[SOURCE_LFO1];
             }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
         //! \todo check whether this should be at the place where the values are actually used
         for (int s = 0; s < numSamples; ++s) {
-            modDestBuffer.setSample(DEST_OSC1_PITCH, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PITCH,s) * 12.f));
+            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
     }
 
@@ -589,7 +589,7 @@ private:
     AudioSampleBuffer filterModBuffer;
     AudioSampleBuffer lfo1Buffer;
     AudioSampleBuffer envToVolBuffer;
-    AudioSampleBuffer env1Buffer;
+    AudioSampleBuffer env2Buffer;
 
     AudioSampleBuffer modDestBuffer;
     
