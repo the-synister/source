@@ -39,9 +39,9 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(osc1trngAmount));
     addParameter(new HostParam<Param>(osc1pulsewidth));
 
-    addParameter(new HostParam<Param>(lpCutoff));
-    addParameter(new HostParam<Param>(hpCutoff));
-    addParameter(new HostParam<Param>(biquadResonance));
+    addParameter(new HostParam<Param>(lp1Cutoff));
+    addParameter(new HostParam<Param>(hp1Cutoff));
+    addParameter(new HostParam<Param>(filter1Resonance));
     addParameter(new HostParam<Param>(passtype));
 
     addParameter(new HostParam<Param>(envAttack));
@@ -70,14 +70,14 @@ PluginAudioProcessor::PluginAudioProcessor()
                                                        true));
 #endif
 
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PITCH, &osc1lfo1depth, false);
-    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PITCH, &osc1PitchRange, false);
-    globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_OSC1_PITCH, &osc1lfo1depth, true);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, false);
+    globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_OSC1_PI, &osc1lfo1depth, true);
 
-    globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_OSC1_PITCH, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_OSC1_PI, &osc1lfo1depth, false);
 
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILT_FC, &lpModAmount, true);
-    globalModMatrix.addModMatrixRow(SOURCE_ENV1, DEST_FILT_FC, &lpModAmount, false);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, true);
+    globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_FILTER_LC, &lp1ModAmount1, false);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
