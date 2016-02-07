@@ -68,7 +68,10 @@ private:
     ScopedPointer<MouseOverKnob> ctune1;
     ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<WaveformVisual> waveformVisual;
-    ScopedPointer<MouseOverKnob> waveformSwitch;
+    ScopedPointer<Slider> waveformSwitch;
+    ScopedPointer<Label> sawlabel;
+    ScopedPointer<Label> squarelabel;
+    ScopedPointer<Label> noiselabel;
     ScopedPointer<MouseOverKnob> amountWidthMod;
 
 

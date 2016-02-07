@@ -40,7 +40,7 @@ void WaveformVisual::paint(Graphics &g)
     }
     g.setColour(Colour (185, 189, 190));
     g.strokePath(wavePath, PathStrokeType(2.5f));
-    g.drawRect(getLocalBounds(), 4);
+    g.drawRect(getLocalBounds(), 3);
     g.setColour(Colours::darkgrey);
     g.drawRect(getLocalBounds(), 1);
 }

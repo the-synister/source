@@ -504,7 +504,7 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
 void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& /*name*/, bool isOpen, int width, int height)
 {
     // background colour
-    ColourGradient gradient(Colours::darkgrey, 0.0f, 0.0f, Colours::black, 0.0f, static_cast<float>(height), false);
+    ColourGradient gradient(Colour (77, 77, 79), 0.0f, 0.0f, Colour (45, 43, 44), 0.0f, static_cast<float>(height), false);
     g.setGradientFill(gradient);
     g.fillRect(0, 0, width, height);
 

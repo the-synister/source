@@ -90,10 +90,10 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-    
+
     // NOTE: preferred sectionHeight should be set (introjucer's panelHeight - 22) due to section header
     // see env panel. introjucer height is set to 252
-    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params), Colour (0xff6c788c), 200, true, 0);
+    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params), Colour (0xff6c788c), 230, true, 0);
     foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), Colour (0xffcbca63), 230, true, 1);
     foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params), Colour (0xffb16565), 200, true, 2);
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 200, true, 3);
@@ -145,12 +145,12 @@ void PlugUI::resized()
     //[/UserPreResize]
 
     freq->setBounds (728, 8, 64, 64);
-    keyboard->setBounds (8, 552, 784, 40);
+    keyboard->setBounds (1, 560, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (8, 40, 88, 24);
     bpmLabel->setBounds (127, 7, 40, 24);
     bpmDisplay->setBounds (175, 7, 64, 24);
-    foldableComponent->setBounds (0, 80, 800, 470);
+    foldableComponent->setBounds (0, 72, 800, 480);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -233,7 +233,7 @@ BEGIN_JUCER_METADATA
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
-                    virtualName="" explicitFocusOrder="0" pos="8 552 784 40" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="1 560 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
               virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
@@ -252,7 +252,7 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
-                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 80 800 470"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 480"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
 </JUCER_COMPONENT>
 
