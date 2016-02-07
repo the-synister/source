@@ -230,39 +230,44 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == lp1ModSrc1)
     {
         //[UserComboBoxCode_lpModSrc1] -- add your combo box handling code here..
-        params.lp1CutModSrc1.setStep(static_cast<eModSource>(lp1ModSrc1->getSelectedItemIndex() - 1));
-        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(lp1ModSrc1->getSelectedItemIndex() - 1));
+        // eModsource starts at 0, sources at -1 and the IDs at 1, so we gotta subtract 1 and 2 to match them to the right ones
+        params.lp1CutModSrc1.setStep(static_cast<eModSource>(lp1ModSrc1->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(lp1ModSrc1->getSelectedId() - 2));
         //[/UserComboBoxCode_lpModSrc1]
     }
     else if (comboBoxThatHasChanged == hp1ModSrc1)
     {
         //[UserComboBoxCode_hpModSrc1] -- add your combo box handling code here..
-        params.hp1CutModSrc1.setStep(static_cast<eModSource>(hp1ModSrc1->getSelectedItemIndex() - 1));
-        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(hp1ModSrc1->getSelectedItemIndex() - 1));
+        params.hp1CutModSrc1.setStep(static_cast<eModSource>(hp1ModSrc1->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(hp1ModSrc1->getSelectedId() - 2));
         //[/UserComboBoxCode_hpModSrc1]
     }
     else if (comboBoxThatHasChanged == lp1ModSrc2)
     {
         //[UserComboBoxCode_lpModSrc2] -- add your combo box handling code here..
-        params.lp1CutModSrc2.setStep(static_cast<eModSource>(lp1ModSrc2->getSelectedItemIndex() - 1));
+        params.lp1CutModSrc2.setStep(static_cast<eModSource>(lp1ModSrc2->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(lp1ModSrc2->getSelectedId() - 2));
         //[/UserComboBoxCode_lpModSrc2]
     }
     else if (comboBoxThatHasChanged == hp1ModSrc2)
     {
         //[UserComboBoxCode_hpModSrc2] -- add your combo box handling code here..
-        params.hp1CutModSrc2.setStep(static_cast<eModSource>(hp1ModSrc2->getSelectedItemIndex() - 1));
+        params.hp1CutModSrc2.setStep(static_cast<eModSource>(hp1ModSrc2->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(hp1ModSrc2->getSelectedId() - 2));
         //[/UserComboBoxCode_hpModSrc2]
     }
     else if (comboBoxThatHasChanged == res1ModSrc1)
     {
         //[UserComboBoxCode_resModSrc1] -- add your combo box handling code here..
-        params.filter1ResonanceModSrc1.setStep(static_cast<eModSource>(res1ModSrc1->getSelectedItemIndex() - 1));
+        params.filter1ResonanceModSrc1.setStep(static_cast<eModSource>(res1ModSrc1->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(res1ModSrc1->getSelectedId() - 2));
         //[/UserComboBoxCode_resModSrc1]
     }
     else if (comboBoxThatHasChanged == res1ModSrc2)
     {
         //[UserComboBoxCode_resModSrc2] -- add your combo box handling code here..
-        params.filter1ResonanceModSrc2.setStep(static_cast<eModSource>(res1ModSrc2->getSelectedItemIndex() - 1));
+        params.filter1ResonanceModSrc2.setStep(static_cast<eModSource>(res1ModSrc2->getSelectedId() - 1));
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(res1ModSrc2->getSelectedId() - 2));
         //[/UserComboBoxCode_resModSrc2]
     }
 

@@ -131,10 +131,9 @@ public:
         {}
     };
 
-    std::map<String, ModulationMatrix::ModMatrixRow*> boxnameToMatrixRow;
+
 
     inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
-    inline void updateRow(String modSourceBoxName);
     inline void changeSource(String comboboxName, sources source);
     inline ModulationMatrix::ModMatrixRow* addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
@@ -145,8 +144,7 @@ protected:
     static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
 private:
-
-
+    std::map<String, ModulationMatrix::ModMatrixRow*> boxnameToMatrixRow;
     std::vector<ModMatrixRow> matrixCore;
 };
 
@@ -211,7 +209,6 @@ inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources
         ModMatrixRow* rowPointer = &matrixCore.back();
         ModulationMatrix::boxnameToMatrixRow[comboboxName] = rowPointer;
     }
-    return NULL;
 }
 
 #endif  // MODULATIONMATRIX_H_INCLUDED

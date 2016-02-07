@@ -23,7 +23,8 @@ namespace {
     };
 
     static const char *modsourcenames[] = {
-        "None", "LFO1", "ENV1", nullptr
+        "None", "Aftertouch", "KeyBipolar", "InvertedVelocity", "Velocity", "Foot", "ExpPedal", "Modwheel", "Pitchbend",
+        "LFO1", "LFO2", "LFO3", "VolEnvelope", "Envelope2", "Envelope3", nullptr
     };
 
     static const char *waveformNames[] = {
