@@ -85,7 +85,7 @@ SynthParams::SynthParams()
     , hp1CutModSrc2("HP1 Cut ModSrc2", "hp1CutModSrc2", "HP1 cut modSrc2", eModSource::eNone, modsourcenames)
     , hp1ModAmount1("HP1 ModAmnt1", "hp1ModAmount1", "HP1 mod amount1", "oct", 0.f, 8.f, 0.f)
     , hp1ModAmount2("HP1 ModAmnt2", "hp1ModAmount2", "HP1 mod amount2", "oct", 0.f, 8.f, 0.f)
-    , filter1Resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", "dB", -25.f, 25.f, 0.f)
+    , filter1Resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", " ", 1.f, 10.f, 1.f)
     , filter1ResonanceModSrc1("Filter1 Res ModSrc1", "filter1ResModSrc1", "Filter1 resonance modSrc1", eModSource::eNone, modsourcenames)
     , filter1ResonanceModSrc2("Filter1 Res ModSrc2", "filter1ResModSrc2", "Filter1 resonance modSrc2", eModSource::eNone, modsourcenames)
     //Volume Envelope
