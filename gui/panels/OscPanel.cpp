@@ -97,7 +97,7 @@ OscPanel::OscPanel (SynthParams &p)
     waveformSwitch->addListener (this);
 
     addAndMakeVisible (sawlabel = new Label ("Saw Label",
-                                             TRANS("Saw wave")));
+                                             TRANS("Saw")));
     sawlabel->setFont (Font (15.00f, Font::plain));
     sawlabel->setJustificationType (Justification::centredLeft);
     sawlabel->setEditable (false, false, false);
@@ -106,7 +106,8 @@ OscPanel::OscPanel (SynthParams &p)
     sawlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (squarelabel = new Label ("Square Label",
-                                                TRANS("Square wave\n")));
+                                                TRANS("Square\n"
+                                                "\n")));
     squarelabel->setFont (Font (15.00f, Font::plain));
     squarelabel->setJustificationType (Justification::centredLeft);
     squarelabel->setEditable (false, false, false);
@@ -217,9 +218,9 @@ void OscPanel::resized()
     lfoFadeIn->setBounds (172, 91, 64, 64);
     waveformVisual->setBounds (79, 152, 127, 64);
     waveformSwitch->setBounds (192, 162, 54, 46);
-    sawlabel->setBounds (228, 179, 150, 24);
-    squarelabel->setBounds (205, 147, 96, 24);
-    noiselabel->setBounds (204, 208, 80, 24);
+    sawlabel->setBounds (228, 174, 60, 24);
+    squarelabel->setBounds (208, 200, 96, 24);
+    noiselabel->setBounds (206, 149, 74, 24);
     amountWidthMod->setBounds (172, 32, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -359,17 +360,17 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
-         virtualName="" explicitFocusOrder="0" pos="228 179 150 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Saw wave" editableSingleClick="0"
+         virtualName="" explicitFocusOrder="0" pos="228 174 60 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Saw" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="Square Label" id="390c269ec611617c" memberName="squarelabel"
-         virtualName="" explicitFocusOrder="0" pos="205 147 96 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Square wave&#10;"
+         virtualName="" explicitFocusOrder="0" pos="208 200 96 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Square&#10;&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="Noise label" id="b40cd065bdc2086c" memberName="noiselabel"
-         virtualName="" explicitFocusOrder="0" pos="204 208 80 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="206 149 74 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="White noise" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
