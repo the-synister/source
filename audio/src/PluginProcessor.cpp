@@ -70,7 +70,7 @@ PluginAudioProcessor::PluginAudioProcessor()
                                                        true));
 #endif
 
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, "");
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
     //globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, true);
 
     //// Now let's add an envelope for the pitch

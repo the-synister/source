@@ -8,6 +8,11 @@
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
 
+static const char *comboBoxModSrces[] = {
+    "None", "Aftertouch", "KeyBipolar", "InvertedVelocity", "Velocity", "Foot", "ExpPedal", "Modwheel", "Pitchbend",
+    "LFO1", "LFO2", "LFO3", "VolEnvelope", "Envelope2", "Envelope3", nullptr
+};
+
 class PanelBase : public Component, protected Timer
 {
 public:
@@ -21,6 +26,7 @@ public:
         stopTimer();
     }
 
+
 protected:
     typedef std::function<void()> tHookFn;
 
@@ -29,9 +35,10 @@ protected:
         if (hook) {
             postUpdateHook[slider] = hook;
         }
-        if(p->hasLabels()) {
+        if (p->hasLabels()) {
             slider->setName(p->getUIString());
-        } else {
+        }
+        else {
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
@@ -50,7 +57,7 @@ protected:
         for (auto s2p : sliderReg) {
             if (s2p.second->isUIDirty()) {
                 s2p.first->setValue(s2p.second->getUI());
-                if(s2p.second->hasLabels()) {
+                if (s2p.second->hasLabels()) {
                     s2p.first->setName(s2p.second->getUIString());
                 }
 
@@ -66,7 +73,7 @@ protected:
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
             it->second->setUI(static_cast<float>(it->first->getValue()));
-            if(it->second->hasLabels()) {
+            if (it->second->hasLabels()) {
                 it->first->setName(it->second->getUIString());
             }
 
@@ -75,8 +82,16 @@ protected:
                 itHook->second();
             }
             return true;
-        } else {
+        }
+        else {
             return false;
+        }
+    }
+
+    void fillModsourceBox(ComboBox* box) {
+
+        for (int i = 0; i < 15; i++) {
+            box->addItem(comboBoxModSrces[i], i + 1);
         }
     }
 

@@ -196,7 +196,9 @@ inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinatio
 }
 
 inline void ModulationMatrix::changeSource(String comboboxName, sources source) {
-    boxnameToMatrixRow[comboboxName]->sourceIndex = static_cast<sources>(source);
+
+    boxnameToMatrixRow[comboboxName]->sourceIndex = source;
+
 }
 
 

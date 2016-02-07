@@ -231,7 +231,7 @@ void FiltPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
     {
         //[UserComboBoxCode_lpModSrc1] -- add your combo box handling code here..
         params.lp1CutModSrc1.setStep(static_cast<eModSource>(lp1ModSrc1->getSelectedItemIndex()-1));
-
+        params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(lp1ModSrc1->getSelectedItemIndex() - 1));
         //[/UserComboBoxCode_lpModSrc1]
     }
     else if (comboBoxThatHasChanged == hp1ModSrc1)
