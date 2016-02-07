@@ -42,11 +42,11 @@ public:
     , modMatrix(p.globalModMatrix)
     , totSamples(0)
     , lfo1Buffer(1,blockSize)
-    , lfo2Buffer(1, blockSize)              /*not yet in use*/
-    , lfo3Buffer(1, blockSize)              /*not yet in use*/
+    //, lfo2Buffer(1, blockSize)              /*not yet in use*/
+    //, lfo3Buffer(1, blockSize)              /*not yet in use*/
     , envToVolBuffer(1, blockSize)
     , env2Buffer(1, blockSize)
-    , env3Buffer(1, blockSize)              /*not yet in use*/
+    //, env3Buffer(1, blockSize)              /*not yet in use*/
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         std::fill(modSources.begin(), modSources.end(), nullptr);
@@ -58,10 +58,10 @@ public:
         modSources[SOURCE_FOOT] = &footControlValue;
         modSources[SOURCE_EXPPEDAL] = &expPedalValue;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
-        modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
         modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);    
-        modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -206,6 +206,7 @@ public:
         pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
+    //Midi Control
     void controllerMoved(int controllerNumber, int newValue) override
     {
         switch(controllerNumber)
@@ -241,8 +242,8 @@ public:
         renderModulation(numSamples);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
         const float *lfo1 = lfo1Buffer.getReadPointer(0);
-        const float *lfo2 = lfo2Buffer.getReadPointer(0);           /*not yet in use*/
-        const float *lfo3 = lfo3Buffer.getReadPointer(0);           /*not yet in use*/
+        //const float *lfo2 = lfo2Buffer.getReadPointer(0);           /*not yet in use*/
+        //const float *lfo3 = lfo3Buffer.getReadPointer(0);           /*not yet in use*/
         const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
         const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
@@ -350,26 +351,6 @@ public:
 
         cutoffFreq /= sRate;
 
-#if 0
-        //this is old ...
-        float moddedFreq = params.lpCutoff.get();
-        float currentResonance = params.biquadResonance.get();
-
-
-        //apply modulation, as used in the biquadfilter - this must be changed!!!!
-        if (params.lpModSource.getStep() == eModSource::eLFO1) { // bipolar, full range
-            moddedFreq += (20000.f * (modValue - 0.5f) * params.lpModAmount.get() / 100.f);
-        }
-
-        // TODO can't this be shortened?
-        if (moddedFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            moddedFreq = params.lpCutoff.getMin();
-        }
-        else if (moddedFreq > params.lpCutoff.getMax()) {
-            moddedFreq = params.lpCutoff.getMax();
-        }
-#endif
-
         //coeffecients and parameters
         float omega_c = 2.f * float_Pi * cutoffFreq;
         float g = omega_c / 2.f;
@@ -410,10 +391,10 @@ protected:
         //clear the buffers
         modDestBuffer.clear();
         lfo1Buffer.clear();
-        lfo2Buffer.clear();         /*not yet in use*/
-        lfo3Buffer.clear();         /*not yet in use*/
+        //lfo2Buffer.clear();         /*not yet in use*/
+        //lfo3Buffer.clear();         /*not yet in use*/
         env2Buffer.clear();
-        env3Buffer.clear();         /*not yet in use*/
+        //env3Buffer.clear();         /*not yet in use*/
         
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -421,10 +402,10 @@ protected:
         }
 
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
-        modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
         modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
-        modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
         
         for (int s = 0; s < numSamples; ++s) {
 
@@ -465,11 +446,10 @@ protected:
                 ++modDestinations[u];
             }
             ++modSources[SOURCE_LFO1];
+            ++modSources[SOURCE_LFO2];      /*not yet in use*/
+            ++modSources[SOURCE_LFO3];      /*not yet in use*/
             ++modSources[SOURCE_ENV2];
-            /*not yet in use*/
-            ++modSources[SOURCE_LFO2];
-            ++modSources[SOURCE_LFO3];
-            ++modSources[SOURCE_ENV3];
+            ++modSources[SOURCE_ENV3];      /*not yet in use*/
             }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
@@ -635,11 +615,11 @@ private:
 
     // Buffers
     AudioSampleBuffer lfo1Buffer;
-    AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
-    AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
+    //AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
+    //AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env2Buffer;
-    AudioSampleBuffer env3Buffer;       /*not yet in use*/
+    //AudioSampleBuffer env3Buffer;       /*not yet in use*/
 
     AudioSampleBuffer modDestBuffer;
     

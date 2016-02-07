@@ -88,6 +88,8 @@ SynthParams::SynthParams()
     , filter1Resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", " ", 1.f, 10.f, 1.f)
     , filter1ResonanceModSrc1("Filter1 Res ModSrc1", "filter1ResModSrc1", "Filter1 resonance modSrc1", eModSource::eNone, modsourcenames)
     , filter1ResonanceModSrc2("Filter1 Res ModSrc2", "filter1ResModSrc2", "Filter1 resonance modSrc2", eModSource::eNone, modsourcenames)
+    , res1ModAmount1("RES1 Modamount1", "res1ModAmount1", "RES1 mod amount1", " ", 0.f, 1.f, 0.f)
+    , res1ModAmount2("RES2 Modamount1", "res2ModAmount1", "RES2 mod amount1", " ", 0.f, 1.f, 0.f)
     //Volume Envelope
     , envAttack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
     , envDecay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
@@ -164,7 +166,8 @@ SynthParams::SynthParams()
     , seqStepActive5("Step 5 Active", "seqStepActive5", "Step 5 Active", eOnOffToggle::eOn, onoffnames)
     , seqStepActive6("Step 6 Active", "seqStepActive6", "Step 6 Active", eOnOffToggle::eOn, onoffnames)
     , seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
-    , oneHelper(" ", " ", " ", " ", 1.f, 1.f, 1.f)
+    //Others
+    , oneHelper(" ", " ", " ", " ", 0.f, 1.f, 1.f)
     , positionIndex(0)
 {
     positionInfo[0].resetToDefault();

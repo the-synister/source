@@ -78,8 +78,6 @@ PluginAudioProcessor::PluginAudioProcessor()
     globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, false);
     globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_LFO1_GAIN, &oneHelper, false);
 
-    
-   
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
