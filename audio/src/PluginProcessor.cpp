@@ -62,26 +62,21 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-    // Source Pitchbend, Destination OSC1 Pitch
-#if 0
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
-                                                       DEST_OSC1_PITCH,
-                                                       &osc1PitchRange,
-                                                       true));
-#endif
-
+    //SOURCE: LFO1
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, false);
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
-    globalModMatrix.addModMatrixRow()
-    //globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_RES, )
 
-    //Volume Envelope
-    //globalModMatrix.addModMatrixRow(SOURCE_VOL_ENV, DEST_AMP, nullptr, true);
+    //SOURCE: LFO2
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
+
+    //SOURCE: ENV2
     globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_OSC1_PI, &osc1lfo1depth, false);
     globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_FILTER_LC, &lp1ModAmount1, false);
 
+    //SOURCE: VARIOUS MIDI
     globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, false);
-    globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_LFO1_GAIN, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_LFO1_GAIN, &oneHelper, false);
 
     
    

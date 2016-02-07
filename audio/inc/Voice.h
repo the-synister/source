@@ -37,12 +37,16 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modWheelValue(0.f)
+    , expPedalValue(0.f)
+    , footControlValue(0.f)
     , modMatrix(p.globalModMatrix)
-    , filterModBuffer(1, blockSize)
     , totSamples(0)
-    , envToVolBuffer(1, blockSize)
     , lfo1Buffer(1,blockSize)
+    , lfo2Buffer(1, blockSize)              /*not yet in use*/
+    , lfo3Buffer(1, blockSize)              /*not yet in use*/
+    , envToVolBuffer(1, blockSize)
     , env2Buffer(1, blockSize)
+    , env3Buffer(1, blockSize)              /*not yet in use*/
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         std::fill(modSources.begin(), modSources.end(), nullptr);
@@ -51,8 +55,13 @@ public:
         //set connection bewtween source and matrix here
         modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_MODWHEEL] = &modWheelValue;
+        modSources[SOURCE_FOOT] = &footControlValue;
+        modSources[SOURCE_EXPPEDAL] = &expPedalValue;
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
+        modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
+        modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);    
+        modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -101,8 +110,10 @@ public:
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
-        // Initialization of modulation wheel value
+        // Initialization of midi values
         modWheelValue = 0.f;
+        footControlValue = 0.f;
+        expPedalValue = 0.f;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -120,15 +131,15 @@ public:
             lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
-        else{
-
+        else
+        {
             lfo1sine.phase = .5f*float_Pi;
-        lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1square.phase = .5f*float_Pi;
-        lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
 
-        lfo1random.phase = 0.f;
-        lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1random.phase = 0.f;
+            lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
@@ -197,10 +208,28 @@ public:
 
     void controllerMoved(int controllerNumber, int newValue) override
     {
+        switch(controllerNumber)
+        {
+        //Modwheel
+        case 1:
+            modWheelValue = static_cast<float>(newValue) / 127.f;
+            break;
+        //Foot Controller
+        case 4:
+            footControlValue = static_cast<float>(newValue) / 127.f;
+            break;
+        //Expression Control
+        case 11:
+            expPedalValue = static_cast<float>(newValue) / 127.f;
+            break;
+        }
+#if 0
         if (controllerNumber == 1)    // If modulation wheel is moved, the value is updated
         {
             modWheelValue = static_cast<float>(newValue)/127.f;
         }
+#endif
+
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
@@ -212,6 +241,8 @@ public:
         renderModulation(numSamples);
         const float *envToVolMod = envToVolBuffer.getReadPointer(0);
         const float *lfo1 = lfo1Buffer.getReadPointer(0);
+        const float *lfo2 = lfo2Buffer.getReadPointer(0);           /*not yet in use*/
+        const float *lfo3 = lfo3Buffer.getReadPointer(0);           /*not yet in use*/
         const float *osc1PitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI);
         const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
@@ -379,15 +410,22 @@ protected:
         //clear the buffers
         modDestBuffer.clear();
         lfo1Buffer.clear();
+        lfo2Buffer.clear();         /*not yet in use*/
+        lfo3Buffer.clear();         /*not yet in use*/
         env2Buffer.clear();
+        env3Buffer.clear();         /*not yet in use*/
         
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
-    }
-        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
-        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
+        }
 
+        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
+        modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
+        modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
+        modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
+        
         for (int s = 0; s < numSamples; ++s) {
 
             // Fade in factor calculation
@@ -418,16 +456,20 @@ protected:
                 break;
             }
             // Calculate the Envelope coefficients and fill the buffers
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
 
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
             }
-            ++modSources[SOURCE_ENV2];
             ++modSources[SOURCE_LFO1];
+            ++modSources[SOURCE_ENV2];
+            /*not yet in use*/
+            ++modSources[SOURCE_LFO2];
+            ++modSources[SOURCE_LFO3];
+            ++modSources[SOURCE_ENV3];
             }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
@@ -492,8 +534,9 @@ protected:
             b2 = 2.f * coeff3;
             a1 = 2.f * -coeff2;
             a2 = 2.f * coeff1;
-
-        } else if (params.passtype.getStep() == eBiquadFilters::eHighpass) {
+        } 
+        else if (params.passtype.getStep() == eBiquadFilters::eHighpass) 
+        {
 
             // coefficients for highpass, depending on resonance and highcut frequency
             k = 0.5f * currentResonance * sin(float_Pi * cutoffFreq);
@@ -507,7 +550,9 @@ protected:
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
 
-        } else if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
+        } 
+        else if (params.passtype.getStep() == eBiquadFilters::eBandpass) 
+        {
 
             // coefficients for bandpass, depending on low- and highcut frequency
             w0 = 2.f * float_Pi*cutoffFreq;
@@ -564,8 +609,11 @@ private:
     float level;
 
     float pitchBend;
-    float modWheelValue;
     
+    //Midi Inputs
+    float modWheelValue;
+    float footControlValue;
+    float expPedalValue;
 
     std::array<float*, MAX_SOURCES> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
@@ -586,10 +634,12 @@ private:
     float lpOut3Delay;
 
     // Buffers
-    AudioSampleBuffer filterModBuffer;
     AudioSampleBuffer lfo1Buffer;
+    AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
+    AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env2Buffer;
+    AudioSampleBuffer env3Buffer;       /*not yet in use*/
 
     AudioSampleBuffer modDestBuffer;
     
