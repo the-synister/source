@@ -290,7 +290,7 @@ public:
         const float sRate = static_cast<float>(getSampleRate());
 
         //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
-        float currentLadderCutoffFreq = params.ladderCutoff.get();
+        float currentLadderCutoffFreq = params.lp1Cutoff.get();
 
         //coeffecients and parameters
         float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
@@ -302,7 +302,7 @@ public:
         // inverse hyperbolic Sinus
         // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
         // hyperbolic tangent
-        ladderIn = tanh(ladderIn) - tanh(params.ladderRes.get() * ladderOut);
+        ladderIn = tanh(ladderIn) - tanh(params.filter1Resonance.get() * ladderOut);
 
         // proecess through 1 pole Filters 4 times
         lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
@@ -396,14 +396,14 @@ protected:
         float cutoffFreq;
         switch (params.passtype.getStep()) {
             case eBiquadFilters::eLowpass:
-                cutoffFreq = params.lpCutoff.get();
+                cutoffFreq = params.lp1Cutoff.get();
                 break;
             case eBiquadFilters::eHighpass:
-                cutoffFreq = params.hpCutoff.get();
+                cutoffFreq = params.hp1Cutoff.get();
                 break;
             case eBiquadFilters::eBandpass:
-                cutoffFreq = (params.lpCutoff.get() + params.hpCutoff.get()) / 2.f;
-                if (params.lpCutoff.get() < params.hpCutoff.get()){
+                cutoffFreq = (params.lp1Cutoff.get() + params.hp1Cutoff.get()) / 2.f;
+                if (params.lp1Cutoff.get() < params.hp1Cutoff.get()){
                     return 0.f;
                 }
                 break;
@@ -415,11 +415,11 @@ protected:
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
 
         // check range
-        if (cutoffFreq < params.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            cutoffFreq = params.lpCutoff.getMin();
+        if (cutoffFreq < params.lp1Cutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            cutoffFreq = params.lp1Cutoff.getMin();
         }
-        else if (cutoffFreq > params.lpCutoff.getMax()) {
-            cutoffFreq = params.lpCutoff.getMax();
+        else if (cutoffFreq > params.lp1Cutoff.getMax()) {
+            cutoffFreq = params.lp1Cutoff.getMax();
         }
         
         const float sRate = static_cast<float>(getSampleRate());
@@ -429,7 +429,7 @@ protected:
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
 
-        const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);
+        const float currentResonance = pow(10.f, -params.filter1Resonance.get() / 20.f);
 
         if (static_cast<eBiquadFilters>(params.passtype.getStep()) == eBiquadFilters::eLowpass) {
 
@@ -463,7 +463,7 @@ protected:
 
             // coefficients for bandpass, depending on low- and highcut frequency
             w0 = 2.f * float_Pi*cutoffFreq;
-            bw = (log2(params.lpCutoff.get() / params.hpCutoff.get())); // bandwidth in octaves
+            bw = (log2(params.lp1Cutoff.get() / params.hp1Cutoff.get())); // bandwidth in octaves
             coeff1 = sin(w0)*sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
 
             b0 = coeff1;

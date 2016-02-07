@@ -75,12 +75,12 @@ FiltPanel::FiltPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(cutoffSlider, &params.lpCutoff);
-    registerSlider(modSliderCut, &params.lpModAmount);
+    registerSlider(cutoffSlider, &params.lp1Cutoff);
+    registerSlider(modSliderCut, &params.lp1ModAmount1);
     cutoffSlider->setSkewFactorFromMidPoint (1000.0);
-    registerSlider(cutoffSlider2, &params.hpCutoff);
+    registerSlider(cutoffSlider2, &params.hp1Cutoff);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
-    registerSlider(resonanceSlider, &params.biquadResonance);
+    registerSlider(resonanceSlider, &params.filter1Resonance);
     registerSlider(passtype, &params.passtype);
     //[/UserPreSize]
 
@@ -164,7 +164,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
-        params.lpModAmount.setUI(static_cast<float>(modSliderCut->getValue()));
+        params.lp1ModAmount1.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
 
@@ -180,7 +180,7 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == modSrc)
     {
         //[UserComboBoxCode_modSrc] -- add your combo box handling code here..
-        params.lpModSource.setStep(static_cast<eModSource>(modSrc->getSelectedItemIndex()));
+        params.lp1CutModSrc1.setStep(static_cast<eModSource>(modSrc->getSelectedItemIndex()));
         //[/UserComboBoxCode_modSrc]
     }
 

@@ -47,8 +47,8 @@ LadderPanel::LadderPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(cutoff, &params.ladderCutoff);
-    registerSlider(resonance, &params.ladderRes);
+    registerSlider(cutoff, &params.lp1Cutoff);
+    registerSlider(resonance, &params.filter1Resonance);
     //[/UserPreSize]
 
     setSize (600, 400);

@@ -83,6 +83,7 @@ public:
     SynthParams();
     ~SynthParams();
 
+
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
@@ -90,46 +91,65 @@ public:
     Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
     ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
 
+    ParamStepped<eModSource> lfo1freqModSrc1; //!< lfo1 frequency mod source
+    ParamStepped<eModSource> lfo1freqModSrc2; //!< lfo2 frequency mod source
+    ParamStepped<eModSource> lfo1gainModSrc1; //!< lfo1 gain mod source
+    ParamStepped<eModSource> lfo1gainModSrc2; //!< lfo2 gain mod source
+
+
     Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
-	//Param lfoChorfreq; // delay-lfo frequency in Hz
-	//Param chorAmount; // wetness of signal [0 ... 1]
-	//Param chorSwitch; // Chorus on / off [1 / 0]
+                       //Param lfoChorfreq; // delay-lfo frequency in Hz
+                       //Param chorAmount; // wetness of signal [0 ... 1]
+                       //Param chorSwitch; // Chorus on / off [1 / 0]
 
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
-    Param lpCutoff; //!< filter cutoff frequency in Hz
-    Param hpCutoff; //!< filter cutoff frequency in Hz
-    Param biquadResonance; //! filter resonance in dB
-    ParamStepped<eModSource> lpModSource;  //! lp filter modulation source
-    Param lpModAmount;   //! lp filter modulation amount
-    ParamStepped<eModSource> hpModSource;  //! hp filter modulation source
-    Param hpModAmount;   //! hp filter modulation amount
+    Param lp1Cutoff; //!< filter cutoff frequency in Hz
+    Param hp1Cutoff; //!< filter cutoff frequency in Hz
+    Param filter1Resonance; //! filter resonance in dB
+
+    ParamStepped<eModSource> lp1CutModSrc1;  //! lp filter modulation source
+    Param lp1ModAmount1;   //! lp filter modulation amount
+    ParamStepped<eModSource> hp1CutModSrc1;  //! hp filter modulation source
+    Param hp1ModAmount1;   //! hp filter modulation amount
+    ParamStepped<eModSource> filter1ResonanceModSrc1;  //! biquad filter resonance modulation source
+    ParamStepped<eModSource> lp1CutModSrc2;  //! lp filter modulation source
+    Param lp1ModAmount2;   //! lp filter modulation amount
+    ParamStepped<eModSource> hp1CutModSrc2;  //! hp filter modulation source
+    Param hp1ModAmount2;   //! hp filter modulation amount
+    ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
+
 
     ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
-    
     Param osc1trngAmount; //Triangle Amount [0 ... 1]
     Param osc1PitchRange; //!< range in [0..12] st
     Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
     Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
-    ParamStepped<eModSource> osc1ModSource; //!< oscillator 1 modulation source
+
+    ParamStepped<eModSource> osc1PWModSrc1; //!< oscillator 1 pulse width modulation source
+    ParamStepped<eModSource> osc1PiModSrc1; //!< oscillator 1 pitch modulation source
+    ParamStepped<eModSource> osc1PWModSrc2; //!< oscillator 1 pulse width modulation source
+    ParamStepped<eModSource> osc1PiModSrc2; //!< oscillator 1 pitch modulation source
+
 
     Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
     Param envAttack;    //!< env attack in [0.001..5]s
     Param envDecay;     //!< env decay in [0.001..5]s
-    //Param envSustain;   //!< env sustain in [0..-96]dB
+                        //Param envSustain;   //!< env sustain in [0..-96]dB
     ParamDb envSustain;   //!< env sustain in [0..1]
     Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-    
+
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
+
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
@@ -141,7 +161,7 @@ public:
     Param seqRandomMin;                      //!< randomMin value as int in [0..127]
     Param seqRandomMax;                      //!< randomMax value as int in [0..127]
     Param seqStep0;                          //!< midi note as int in [0..127]
-    Param seqStep1;                  
+    Param seqStep1;
     Param seqStep2;
     Param seqStep3;
     Param seqStep4;
@@ -166,15 +186,21 @@ public:
     Param env1DecayShape; //!< env decay shape in [0.01..10]
     Param env1ReleaseShape; //!< env release shape in [0.01..10]
 
-    Param panDir; //!< pan R/L [-100..100]
+    ParamStepped<eModSource> envVolSpeedModSrc1; //!< Volume envelope speed mod source
+    ParamStepped<eModSource> env2SpeedModSrc1; //!< Envelope 2 speed mod source
+    ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
+    ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
 
-    Param ladderCutoff; //!< Cutoff frequency for the ladder Filter [0...20K] Hz
-    Param ladderRes; //< resonance gain for the ladder Filter [0...1]
+    Param panDir; //!< pan R/L [-100..100]
+    ParamStepped<eModSource> panModSrc1;
+    ParamStepped<eModSource> panModSrc2;
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation
 
     ParamDb vol; //!< volume in [0..1]
+    ParamStepped<eModSource> volModSrc1; //!< volume modulation source
+    ParamStepped<eModSource> volModSrc2; //!< volume modulation source
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;
@@ -191,9 +217,9 @@ public:
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
 
-    // list of current params, just add your new param here if you want it to be serialized
-    std::vector<Param*> serializeParams;
-    // list of only stepSeq params
+                                                    // list of current params, just add your new param here if you want it to be serialized
+    std::vector<Param*> serializeParams; //!< vector of params to be serialized
+                                         // list of only stepSeq params
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
