@@ -111,7 +111,7 @@ public:
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         // Initialization of midi values
-        modWheelValue = 0.f;
+        //modWheelValue = 0.f;
         footControlValue = 0.f;
         expPedalValue = 0.f;
 
@@ -256,6 +256,8 @@ public:
 
             for (int s = 0; s < numSamples; ++s) {
                 
+                float modValue = Param::fromSemi(osc1PitchMod[s] * params.osc1lfo1depth.getMax());
+                
                 float currentSample;
                 switch (params.osc1Waveform.getStep())
                 {
@@ -272,7 +274,8 @@ public:
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
                         deltaWidth = deltaWidth * lfo1[s] * params.osc1AmountWidthMod.get();
                         // Next sample will be fetched with the new width
-                        currentSample = (osc1Sine.next(osc1PitchMod[s], deltaWidth));
+                        // currentSample = (osc1Sine.next(osc1PitchMod[s], deltaWidth));
+                        currentSample = (osc1Sine.next(modValue, deltaWidth));
                     }
                     //currentSample = (osc1Sine.next(osc1PitchMod[s]));
                     break;
@@ -285,11 +288,13 @@ public:
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
                         deltaTr = deltaTr * lfo1[s] * params.osc1AmountWidthMod.get();
                         // Next sample will be fetch with the new width
-                        currentSample = (osc1Saw.next(osc1PitchMod[s], deltaTr));
+                        // currentSample = (osc1Saw.next(osc1PitchMod[s], deltaTr));
+                        currentSample = (osc1Saw.next(modValue, deltaTr));
                     }
                     break;
                     case eOscWaves::eOscNoise:
-                    currentSample = (osc1WhiteNoise.next(osc1PitchMod[s]));
+                    //currentSample = (osc1WhiteNoise.next(osc1PitchMod[s]));
+                    currentSample = (osc1WhiteNoise.next(modValue));
                         break;
                 }
 
@@ -453,13 +458,13 @@ protected:
             ++modSources[SOURCE_ENV2];
             //++modSources[SOURCE_ENV3];      /*not yet in use*/
             }
-
+#if 0
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
         //! \todo check whether this should be at the place where the values are actually used
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
-
+#endif
         //Apply GainFactors here - not really working like it should!!!
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
