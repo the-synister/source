@@ -92,6 +92,8 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 */
 void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
+    Slider::mouseDown(e);
+
     if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
     {
         PopupMenu main;
@@ -118,8 +120,6 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
             this->setValue(this->getMaximum());
         }
     }
-
-    Slider::mouseDown(e);
 }
 
 /**

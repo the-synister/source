@@ -101,7 +101,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, false, 4);
     foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, false, 5);
     foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colour (0xff2b3240), 200, false, 6);
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 200, false, 7);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 347, false, 7);
     foldableComponent->addSection (TRANS("LOFI"), new LoFiPanel (params), Colour (0xff2b3240), 200, false, 8);
 
     // set whole design from very parent GUI component

@@ -93,16 +93,6 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ctune1->addListener (this);
 
-    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
-    lfoFadeIn->setRange (0, 10, 0);
-    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
-    lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    lfoFadeIn->setColour (Slider::textBoxTextColourId, Colours::white);
-    lfoFadeIn->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfoFadeIn->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    lfoFadeIn->addListener (this);
-
     addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
@@ -113,34 +103,6 @@ OscPanel::OscPanel (SynthParams &p)
     waveformSwitch->setColour (Slider::thumbColourId, Colour (0xff6c788c));
     waveformSwitch->setColour (Slider::trackColourId, Colours::white);
     waveformSwitch->addListener (this);
-
-    addAndMakeVisible (sawlabel = new Label ("Saw Label",
-                                             TRANS("Saw")));
-    sawlabel->setFont (Font (15.00f, Font::plain));
-    sawlabel->setJustificationType (Justification::centredLeft);
-    sawlabel->setEditable (false, false, false);
-    sawlabel->setColour (Label::textColourId, Colours::white);
-    sawlabel->setColour (TextEditor::textColourId, Colours::black);
-    sawlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (squarelabel = new Label ("Square Label",
-                                                TRANS("Square\n"
-                                                "\n")));
-    squarelabel->setFont (Font (15.00f, Font::plain));
-    squarelabel->setJustificationType (Justification::centredLeft);
-    squarelabel->setEditable (false, false, false);
-    squarelabel->setColour (Label::textColourId, Colours::white);
-    squarelabel->setColour (TextEditor::textColourId, Colours::black);
-    squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (noiselabel = new Label ("Noise label",
-                                               TRANS("noise")));
-    noiselabel->setFont (Font (15.00f, Font::plain));
-    noiselabel->setJustificationType (Justification::centredLeft);
-    noiselabel->setEditable (false, false, false);
-    noiselabel->setColour (Label::textColourId, Colours::white);
-    noiselabel->setColour (TextEditor::textColourId, Colours::black);
-    noiselabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
     amountWidthMod->setRange (0, 1, 0);
@@ -155,12 +117,9 @@ OscPanel::OscPanel (SynthParams &p)
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
     registerSaturnSource(ctune1, pitchRange, &params.osc1PitchRange, 2);
     registerSaturnSource(ctune1, lfo1depth1, &params.osc1lfo1depth, 1);
-
     registerSaturnSource(lfo1depth1, pitchRange, &params.osc1PitchRange, 1);
-    registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);
 
     registerSlider(ftune1, &params.osc1fine);
     registerSlider(lfo1depth1, &params.osc1lfo1depth);
@@ -170,11 +129,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
     registerSlider(ctune1, &params.osc1coarse);
     registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &params.osc1Waveform);
-    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
-
-    waveformSwitch->setAlwaysOnTop(true);
     //[/UserPreSize]
 
     setSize (800, 272);
@@ -182,6 +137,7 @@ OscPanel::OscPanel (SynthParams &p)
 
     //[Constructor] You can add your own custom stuff here..
     osc1trngAmount->setVisible(false);
+    waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
     //[/Constructor]
 }
 
@@ -196,12 +152,8 @@ OscPanel::~OscPanel()
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
-    lfoFadeIn = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
-    sawlabel = nullptr;
-    squarelabel = nullptr;
-    noiselabel = nullptr;
     amountWidthMod = nullptr;
 
 
@@ -224,6 +176,14 @@ void OscPanel::paint (Graphics& g)
                     this->getWidth() / 3, this->getHeight(), 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
     drawGroupBorder(g, "osc 3", this->getWidth() / 3 * 2, 0,
                     this->getWidth() / 3, this->getHeight(), 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
+
+    // draw waveform symbols
+    int centerX = waveformSwitch->getX() + waveformSwitch->getWidth() / 2;
+    int centerY = waveformSwitch->getY() + waveformSwitch->getHeight() / 2;
+
+    g.drawImageWithin(waveforms.getClippedImage(noiseFrame), centerX - 15, waveformSwitch->getY() - 20, 30, 20, RectanglePlacement::centred);
+    g.drawImageWithin(waveforms.getClippedImage(sawFrame), waveformSwitch->getX() + waveformSwitch->getWidth() / 2 + 10, centerY - 10, 30, 20, RectanglePlacement::centred);
+    g.drawImageWithin(waveforms.getClippedImage(squareFrame), centerX - 15, waveformSwitch->getY() + waveformSwitch->getHeight() - 2, 30, 20, RectanglePlacement::centred);
     //[/UserPaint]
 }
 
@@ -238,12 +198,8 @@ void OscPanel::resized()
     pulsewidth->setBounds (84, 97, 64, 64);
     pitchRange->setBounds (8, 31, 64, 64);
     ctune1->setBounds (8, 97, 64, 64);
-    lfoFadeIn->setBounds (172, 97, 64, 64);
-    waveformVisual->setBounds (77, 170, 108, 64);
-    waveformSwitch->setBounds (178, 178, 48, 48);
-    sawlabel->setBounds (208, 195, 44, 16);
-    squarelabel->setBounds (185, 225, 56, 18);
-    noiselabel->setBounds (185, 165, 48, 16);
+    waveformVisual->setBounds (75, 160, 123, 72);
+    waveformSwitch->setBounds (198, 169, 40, 54);
     amountWidthMod->setBounds (172, 30, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -285,11 +241,6 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_ctune1] -- add your slider handling code here..
         //[/UserSliderCode_ctune1]
-    }
-    else if (sliderThatWasMoved == lfoFadeIn)
-    {
-        //[UserSliderCode_lfoFadeIn] -- add your slider handling code here..
-        //[/UserSliderCode_lfoFadeIn]
     }
     else if (sliderThatWasMoved == waveformSwitch)
     {
@@ -374,35 +325,14 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 97 64 64"
-          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
-          textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="77 170 108 64"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 160 123 72"
                     class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="178 178 48 48" thumbcol="ff6c788c"
+          virtualName="" explicitFocusOrder="0" pos="198 169 40 54" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
-         virtualName="" explicitFocusOrder="0" pos="208 195 44 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Saw" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
-  <LABEL name="Square Label" id="390c269ec611617c" memberName="squarelabel"
-         virtualName="" explicitFocusOrder="0" pos="185 225 56 18" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Square&#10;&#10;"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
-  <LABEL name="Noise label" id="b40cd065bdc2086c" memberName="noiselabel"
-         virtualName="" explicitFocusOrder="0" pos="185 165 48 16" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="noise" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 30 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"

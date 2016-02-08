@@ -93,6 +93,16 @@ LfoPanel::LfoPanel (SynthParams &p)
     sampleHoldLabel2->setColour (TextEditor::textColourId, Colours::black);
     sampleHoldLabel2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
+    lfoFadeIn->setRange (0, 10, 0);
+    lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
+    lfoFadeIn->setColour (Slider::textBoxTextColourId, Colours::white);
+    lfoFadeIn->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    lfoFadeIn->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    lfoFadeIn->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(freq, &params.lfo1freq);
@@ -102,6 +112,8 @@ LfoPanel::LfoPanel (SynthParams &p)
     notelength->setValue(params.noteLength.getUI());
     registerSlider(notelength, &params.noteLength);
     registerSlider(wave, &params.lfo1wave);
+    registerSlider(lfoFadeIn, &params.lfoFadein);
+    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -124,6 +136,7 @@ LfoPanel::~LfoPanel()
     sineLabel = nullptr;
     squareLabel = nullptr;
     sampleHoldLabel2 = nullptr;
+    lfoFadeIn = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -155,6 +168,7 @@ void LfoPanel::resized()
     sineLabel->setBounds (128, 56, 64, 24);
     squareLabel->setBounds (200, 24, 64, 24);
     sampleHoldLabel2->setBounds (272, 56, 80, 24);
+    lfoFadeIn->setBounds (384, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -180,6 +194,11 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_notelength] -- add your slider handling code here..
         //params.noteLength.setUI(notelength->getValue());
         //[/UserSliderCode_notelength]
+    }
+    else if (sliderThatWasMoved == lfoFadeIn)
+    {
+        //[UserSliderCode_lfoFadeIn] -- add your slider handling code here..
+        //[/UserSliderCode_lfoFadeIn]
     }
 
     //[UsersliderValueChanged_Post]
@@ -265,6 +284,12 @@ BEGIN_JUCER_METADATA
          edTextCol="ff000000" edBkgCol="0" labelText="Smp+Hold" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
+  <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="384 8 64 64"
+          rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

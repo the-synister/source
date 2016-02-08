@@ -124,7 +124,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    std::array<ScopedPointer<MouseOverKnob>, 8> seqStepArray;
+    std::array<ScopedPointer<Slider>, 8> seqStepArray;
     std::array<ScopedPointer<TextButton>, 8> labelButtonArray;
 
     std::array<Param*, 8> currMidiStepSeq;
@@ -134,14 +134,14 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> seqStep1;
-    ScopedPointer<MouseOverKnob> seqStep2;
-    ScopedPointer<MouseOverKnob> seqStep3;
-    ScopedPointer<MouseOverKnob> seqStep4;
-    ScopedPointer<MouseOverKnob> seqStep5;
-    ScopedPointer<MouseOverKnob> seqStep6;
-    ScopedPointer<MouseOverKnob> seqStep7;
-    ScopedPointer<MouseOverKnob> seqStep8;
+    ScopedPointer<Slider> seqStep1;
+    ScopedPointer<Slider> seqStep2;
+    ScopedPointer<Slider> seqStep3;
+    ScopedPointer<Slider> seqStep4;
+    ScopedPointer<Slider> seqStep5;
+    ScopedPointer<Slider> seqStep6;
+    ScopedPointer<Slider> seqStep7;
+    ScopedPointer<Slider> seqStep8;
     ScopedPointer<TextButton> seqPlay;
     ScopedPointer<ToggleButton> syncHost;
     ScopedPointer<TextButton> labelButton1;

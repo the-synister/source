@@ -68,6 +68,7 @@ private:
     ScopedPointer<Label> sineLabel;
     ScopedPointer<Label> squareLabel;
     ScopedPointer<Label> sampleHoldLabel2;
+    ScopedPointer<MouseOverKnob> lfoFadeIn;
 
 
     //==============================================================================
