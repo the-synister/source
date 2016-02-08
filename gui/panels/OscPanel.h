@@ -37,7 +37,8 @@ Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class OscPanel  : public PanelBase,
-                  public SliderListener
+                  public SliderListener,
+                  public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -52,6 +53,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -70,6 +72,8 @@ private:
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<MouseOverKnob> waveformSwitch;
     ScopedPointer<MouseOverKnob> amountWidthMod;
+    ScopedPointer<ComboBox> osc1FreqModSrc1;
+    ScopedPointer<ComboBox> osc1FreqModSrc2;
 
 
     //==============================================================================

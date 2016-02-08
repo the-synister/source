@@ -90,6 +90,20 @@ OscPanel::OscPanel (SynthParams &p)
     amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     amountWidthMod->addListener (this);
 
+    addAndMakeVisible (osc1FreqModSrc1 = new ComboBox ("osc1FreqModSrcBox1"));
+    osc1FreqModSrc1->setEditableText (false);
+    osc1FreqModSrc1->setJustificationType (Justification::centred);
+    osc1FreqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    osc1FreqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    osc1FreqModSrc1->addListener (this);
+
+    addAndMakeVisible (osc1FreqModSrc2 = new ComboBox ("osc1FreqModSrcBox2"));
+    osc1FreqModSrc2->setEditableText (false);
+    osc1FreqModSrc2->setJustificationType (Justification::centred);
+    osc1FreqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    osc1FreqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    osc1FreqModSrc2->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(ftune1, &params.osc1fine);
@@ -127,6 +141,8 @@ OscPanel::~OscPanel()
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
     amountWidthMod = nullptr;
+    osc1FreqModSrc1 = nullptr;
+    osc1FreqModSrc2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -160,6 +176,8 @@ void OscPanel::resized()
     waveformVisual->setBounds (24, 112, 208, 96);
     waveformSwitch->setBounds (360, 128, 64, 64);
     amountWidthMod->setBounds (368, 8, 64, 64);
+    osc1FreqModSrc1->setBounds (248, 88, 64, 16);
+    osc1FreqModSrc2->setBounds (320, 88, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -218,6 +236,26 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == osc1FreqModSrc1)
+    {
+        //[UserComboBoxCode_osc1FreqModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_osc1FreqModSrc1]
+    }
+    else if (comboBoxThatHasChanged == osc1FreqModSrc2)
+    {
+        //[UserComboBoxCode_osc1FreqModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_osc1FreqModSrc2]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -293,6 +331,12 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="248 88 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="osc1FreqModSrcBox2" id="58dc64c4649ad205" memberName="osc1FreqModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="320 88 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

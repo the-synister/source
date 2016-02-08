@@ -95,6 +95,20 @@ EnvPanel::EnvPanel (SynthParams &p)
     VolEnvLabel->setColour (TextEditor::textColourId, Colours::black);
     VolEnvLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (volEnvSpeedModSrc1 = new ComboBox ("volEnvSpeedModSrcBox1"));
+    volEnvSpeedModSrc1->setEditableText (false);
+    volEnvSpeedModSrc1->setJustificationType (Justification::centred);
+    volEnvSpeedModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    volEnvSpeedModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    volEnvSpeedModSrc1->addListener (this);
+
+    addAndMakeVisible (volEnvSpeedModSrc2 = new ComboBox ("volEnvSpeedModSrcBox2"));
+    volEnvSpeedModSrc2->setEditableText (false);
+    volEnvSpeedModSrc2->setJustificationType (Justification::centred);
+    volEnvSpeedModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    volEnvSpeedModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    volEnvSpeedModSrc2->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(attackTime, &params.envAttack);
@@ -128,6 +142,8 @@ EnvPanel::~EnvPanel()
     releaseShape = nullptr;
     keyVelToEnv = nullptr;
     VolEnvLabel = nullptr;
+    volEnvSpeedModSrc1 = nullptr;
+    volEnvSpeedModSrc2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -160,6 +176,8 @@ void EnvPanel::resized()
     releaseShape->setBounds (224, 104, 64, 64);
     keyVelToEnv->setBounds (296, 32, 64, 64);
     VolEnvLabel->setBounds (8, 8, 150, 24);
+    volEnvSpeedModSrc1->setBounds (8, 192, 64, 16);
+    volEnvSpeedModSrc2->setBounds (80, 192, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -213,6 +231,26 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void EnvPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == volEnvSpeedModSrc1)
+    {
+        //[UserComboBoxCode_volEnvSpeedModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_volEnvSpeedModSrc1]
+    }
+    else if (comboBoxThatHasChanged == volEnvSpeedModSrc2)
+    {
+        //[UserComboBoxCode_volEnvSpeedModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_volEnvSpeedModSrc2]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -279,6 +317,12 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Volume Envelope" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <COMBOBOX name="volEnvSpeedModSrcBox1" id="6dae6bde5fbe8153" memberName="volEnvSpeedModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="8 192 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="volEnvSpeedModSrcBox2" id="401dffa72d979c97" memberName="volEnvSpeedModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="80 192 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -97,6 +97,20 @@ Env1Panel::Env1Panel (SynthParams &p)
     Env1Label->setColour (TextEditor::textColourId, Colours::black);
     Env1Label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (env2SpeedModSrc1 = new ComboBox ("env2SpeedModSrcBox1"));
+    env2SpeedModSrc1->setEditableText (false);
+    env2SpeedModSrc1->setJustificationType (Justification::centred);
+    env2SpeedModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    env2SpeedModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    env2SpeedModSrc1->addListener (this);
+
+    addAndMakeVisible (env2SpeedModSrc2 = new ComboBox ("env2SpeedModSrcBox2"));
+    env2SpeedModSrc2->setEditableText (false);
+    env2SpeedModSrc2->setJustificationType (Justification::centred);
+    env2SpeedModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    env2SpeedModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    env2SpeedModSrc2->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(attackTime1, &params.env1Attack);
@@ -130,6 +144,8 @@ Env1Panel::~Env1Panel()
     releaseShape1 = nullptr;
     keyVelToEnv1 = nullptr;
     Env1Label = nullptr;
+    env2SpeedModSrc1 = nullptr;
+    env2SpeedModSrc2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -162,6 +178,8 @@ void Env1Panel::resized()
     releaseShape1->setBounds (224, 104, 64, 64);
     keyVelToEnv1->setBounds (296, 32, 64, 64);
     Env1Label->setBounds (8, 8, 150, 24);
+    env2SpeedModSrc1->setBounds (9, 184, 64, 16);
+    env2SpeedModSrc2->setBounds (81, 184, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -215,6 +233,26 @@ void Env1Panel::sliderValueChanged (Slider* sliderThatWasMoved)
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void Env1Panel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == env2SpeedModSrc1)
+    {
+        //[UserComboBoxCode_env2SpeedModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_env2SpeedModSrc1]
+    }
+    else if (comboBoxThatHasChanged == env2SpeedModSrc2)
+    {
+        //[UserComboBoxCode_env2SpeedModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_env2SpeedModSrc2]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
@@ -282,6 +320,12 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Envelope 1" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
+  <COMBOBOX name="env2SpeedModSrcBox1" id="6dae6bde5fbe8153" memberName="env2SpeedModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="9 184 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="env2SpeedModSrcBox2" id="401dffa72d979c97" memberName="env2SpeedModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="81 184 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

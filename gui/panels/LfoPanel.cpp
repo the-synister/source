@@ -63,6 +63,27 @@ LfoPanel::LfoPanel (SynthParams &p)
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (lfo1FreqModSrc1 = new ComboBox ("lfo1FreqModSrcBox1"));
+    lfo1FreqModSrc1->setEditableText (false);
+    lfo1FreqModSrc1->setJustificationType (Justification::centred);
+    lfo1FreqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    lfo1FreqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lfo1FreqModSrc1->addListener (this);
+
+    addAndMakeVisible (lfo1FreqModSrc2 = new ComboBox ("lfo1FreqModSrcBox2"));
+    lfo1FreqModSrc2->setEditableText (false);
+    lfo1FreqModSrc2->setJustificationType (Justification::centred);
+    lfo1FreqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    lfo1FreqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lfo1FreqModSrc2->addListener (this);
+
+    addAndMakeVisible (lfo1GainModSrc = new ComboBox ("lfo1GainModSrcBox"));
+    lfo1GainModSrc->setEditableText (false);
+    lfo1GainModSrc->setJustificationType (Justification::centred);
+    lfo1GainModSrc->setTextWhenNothingSelected (TRANS("No Mod"));
+    lfo1GainModSrc->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lfo1GainModSrc->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(freq, &params.lfo1freq);
@@ -91,6 +112,9 @@ LfoPanel::~LfoPanel()
     tempoSyncSwitch = nullptr;
     notelength = nullptr;
     label4 = nullptr;
+    lfo1FreqModSrc1 = nullptr;
+    lfo1FreqModSrc2 = nullptr;
+    lfo1GainModSrc = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -119,6 +143,9 @@ void LfoPanel::resized()
     tempoSyncSwitch->setBounds (82, 113, 150, 24);
     notelength->setBounds (168, 152, 150, 24);
     label4->setBounds (8, 152, 150, 24);
+    lfo1FreqModSrc1->setBounds (9, 80, 64, 16);
+    lfo1FreqModSrc2->setBounds (9, 104, 64, 16);
+    lfo1GainModSrc->setBounds (9, 184, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -172,6 +199,31 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == lfo1FreqModSrc1)
+    {
+        //[UserComboBoxCode_lfo1FreqModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lfo1FreqModSrc1]
+    }
+    else if (comboBoxThatHasChanged == lfo1FreqModSrc2)
+    {
+        //[UserComboBoxCode_lfo1FreqModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lfo1FreqModSrc2]
+    }
+    else if (comboBoxThatHasChanged == lfo1GainModSrc)
+    {
+        //[UserComboBoxCode_lfo1GainModSrc] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lfo1GainModSrc]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -213,6 +265,15 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Change note length 1/x" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <COMBOBOX name="lfo1FreqModSrcBox1" id="401dffa72d979c97" memberName="lfo1FreqModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="9 80 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lfo1FreqModSrcBox2" id="4e9e1857f51fc7f4" memberName="lfo1FreqModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="9 104 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lfo1GainModSrcBox" id="f444ac4970710c6d" memberName="lfo1GainModSrc"
+            virtualName="" explicitFocusOrder="0" pos="9 184 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

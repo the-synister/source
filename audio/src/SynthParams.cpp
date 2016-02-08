@@ -32,6 +32,10 @@ namespace {
     };
 }
 
+static const char* getModSrcName(eModSource eSrc) { 
+    if(eSrc >= eModSource::eNone && eSrc < eModSource::nSteps) return modsourcenames[static_cast<int>(eSrc)];
+};
+
 SynthParams::SynthParams()
     : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,

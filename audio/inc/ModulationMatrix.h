@@ -135,7 +135,7 @@ public:
 
     inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
     inline void changeSource(String comboboxName, sources source);
-    inline ModulationMatrix::ModMatrixRow* addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
+    inline void addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
 
 
@@ -200,7 +200,7 @@ inline void ModulationMatrix::changeSource(String comboboxName, sources source) 
 }
 
 
-inline ModulationMatrix::ModMatrixRow* ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName)
+inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName)
 {
     // add if not already existing
     if (!modMatrixRowExists(s, d))

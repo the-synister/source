@@ -83,7 +83,7 @@ public:
     SynthParams();
     ~SynthParams();
 
-
+    static const char* getModSrcName(eModSource eSrc);
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
@@ -130,9 +130,11 @@ public:
     Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
     Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
 
+    //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
+    //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
     ParamStepped<eModSource> osc1PWModSrc1; //!< oscillator 1 pulse width modulation source
-    ParamStepped<eModSource> osc1PiModSrc1; //!< oscillator 1 pitch modulation source
     ParamStepped<eModSource> osc1PWModSrc2; //!< oscillator 1 pulse width modulation source
+    ParamStepped<eModSource> osc1PiModSrc1; //!< oscillator 1 pitch modulation source
     ParamStepped<eModSource> osc1PiModSrc2; //!< oscillator 1 pitch modulation source
 
 
