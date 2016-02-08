@@ -222,7 +222,7 @@ public:
         {
         //Modwheel
         case 1:
-            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f);
+            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f); // TODO: this is ugly (but does the trick)
             modWheelValue = static_cast<float>(newValue) / 127.f;
             break;
         //Foot Controller
@@ -231,7 +231,7 @@ public:
             break;
         //Pan
         case 10:
-            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200);
+            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200); // only works while voice is active
             break;
         //Expression Control
         case 11:
@@ -444,13 +444,13 @@ protected:
             // calculate lfo values and fill the buffers
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO * lfo1Gain[0]);
                 break;
             case eLfoWaves::eLfoSampleHold:
-                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO * lfo1Gain[0]);
                 break;
             case eLfoWaves::eLfoSquare:
-                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfo1Gain[0]);
                 break;
             }
 
@@ -477,9 +477,9 @@ protected:
         }
 #endif
         //Apply GainFactors here - not really working like it should!!!
-        for (int s = 0; s < numSamples; ++s) {
-            modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
-        }
+        //for (int s = 0; s < numSamples; ++s) {
+        //    modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
+        //}
     }
 
     float biquadFilter(float inputSignal, float modValue) {
