@@ -83,7 +83,8 @@ public:
     SynthParams();
     ~SynthParams();
 
-    static const char* getModSrcName(eModSource eSrc);
+    const char * SynthParams::getModSrcName(int index);
+
     Param freq;  //!< master tune in Hz
 
     Param lfo1freq; //!< lfo frequency in Hz
@@ -132,6 +133,8 @@ public:
 
     //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
     //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
+    //ParamStepped<eModSource> osc1panModSrc1; //!< osc1 pan mod source
+    //ParamStepped<eModSource> osc1panModSrc2; //!< osc2 pan mod source
     ParamStepped<eModSource> osc1PWModSrc1; //!< oscillator 1 pulse width modulation source
     ParamStepped<eModSource> osc1PWModSrc2; //!< oscillator 1 pulse width modulation source
     ParamStepped<eModSource> osc1PiModSrc1; //!< oscillator 1 pitch modulation source
@@ -194,15 +197,11 @@ public:
     ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
 
     Param panDir; //!< pan R/L [-100..100]
-    ParamStepped<eModSource> panModSrc1;
-    ParamStepped<eModSource> panModSrc2;
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation
 
     ParamDb vol; //!< volume in [0..1]
-    ParamStepped<eModSource> volModSrc1; //!< volume modulation source
-    ParamStepped<eModSource> volModSrc2; //!< volume modulation source
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;

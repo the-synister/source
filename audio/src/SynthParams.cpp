@@ -32,10 +32,6 @@ namespace {
     };
 }
 
-static const char* getModSrcName(eModSource eSrc) { 
-    if(eSrc >= eModSource::eNone && eSrc < eModSource::nSteps) return modsourcenames[static_cast<int>(eSrc)];
-};
-
 SynthParams::SynthParams()
     : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
@@ -47,7 +43,7 @@ SynthParams::SynthParams()
     &env2SpeedModSrc1, &env2SpeedModSrc2,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &panDir, &panModSrc1, &panModSrc2, &vol, &volModSrc1, &volModSrc2,
+    &panDir, &vol,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
     &lowFiActivation, &nBitsLowFi }
     , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
@@ -111,12 +107,8 @@ SynthParams::SynthParams()
     , osc1AmountWidthMod("Width Mod", "osc1AmountWidthMod", "OSC1 PWM", "", 0.f, 1.f, 0.f)
     , osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
     , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
-    , panModSrc1("Pan ModSrc1", "panModSrc1", "Pan modSrc1", eModSource::eNone, modsourcenames)
-    , panModSrc2("Pan ModSrc2", "panModSrc2", "Pan modSrc2", eModSource::eNone, modsourcenames)
     , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
     , vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
-    , volModSrc1("Vol ModSrc1", "volModSrc1", "Vol modSrc1", eModSource::eNone, modsourcenames)
-    , volModSrc2("Vol ModSrc2", "volModSrc2", "Vol modSrc2", eModSource::eNone, modsourcenames)
 
     , lfoFadein("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
     , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "%", 0.f, 1.f, 0.f)
@@ -167,8 +159,6 @@ SynthParams::SynthParams()
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 }
-
-
 
 void SynthParams::addElement(XmlElement* patch, String name, float value) {
     XmlElement* node = new XmlElement(name);
@@ -267,6 +257,11 @@ void SynthParams::readXMLPatchStandalone(eSerializationParams paramsToSerialize)
 }
 
 SynthParams::~SynthParams() {
+}
+
+const char * SynthParams::getModSrcName(int index)
+{
+    if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) return modsourcenames[index];
 }
 
 int SynthParams::getAudioIndex()
