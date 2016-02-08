@@ -43,6 +43,7 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="lwktuO" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="faRDeB" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="Nve2qm" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="D0jWIv" name="ModulationMatrix.h" compile="0" resource="0"
@@ -59,6 +60,7 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="ueeyj2" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="H1vwFf" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>

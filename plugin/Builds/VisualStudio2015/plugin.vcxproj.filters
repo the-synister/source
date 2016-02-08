@@ -379,6 +379,9 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1727,6 +1730,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
+      <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>plugin\Audio\inc</Filter>

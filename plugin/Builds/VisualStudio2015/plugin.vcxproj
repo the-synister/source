@@ -144,6 +144,7 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
@@ -1324,6 +1325,7 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
