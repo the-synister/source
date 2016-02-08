@@ -27,12 +27,12 @@ struct FoldablePanel::SectionComponent  : public Component
         jassert(sectionTitle.isNotEmpty());
         addAndMakeVisible (panel = newPanel);
     }
-    
+
     ~SectionComponent()
     {
         panel = nullptr;
     }
-    
+
     void paint(Graphics& g) override
     {
         if (titleHeight > 0)
@@ -49,25 +49,25 @@ struct FoldablePanel::SectionComponent  : public Component
             g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
         }
     }
-    
+
     void resized() override
     {
         panel->setBounds(panel->getBoundsInParent().withTop(titleHeight));
         panel->resized();
     }
-    
+
     void setOpen (const bool open)
     {
         if (isOpen != open)
         {
             isOpen = open;
             panel->setVisible(open);
-            
+
            if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>())
                pp->resized();
         }
     }
-    
+
     void mouseUp (const MouseEvent& e) override
     {
         if (e.getMouseDownX() < titleHeight
@@ -75,43 +75,43 @@ struct FoldablePanel::SectionComponent  : public Component
             && e.getNumberOfClicks() != 2)
             mouseDoubleClick (e);
     }
-    
+
     void mouseDoubleClick (const MouseEvent& e) override
     {
         if (e.y < titleHeight) {
             setOpen (! isOpen);
         }
-        
+
     }
-    
+
     Colour getSectionColour()
     {
         return _sectionColour;
     }
-    
+
     int getSectionHeight()
     {
         return (isOpen ? _sectionHeight : titleHeight);
     }
-    
+
     WeakReference<Component> panel;
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
     const Colour _sectionColour;
-    
+
     JUCE_DECLARE_NON_COPYABLE (SectionComponent)
 };
 
 //==============================================================================
-/* 
+/*
     TODO: Make it unfoldable
     - be able to hold more than one control panel
 */
 struct FoldablePanel::PanelHolderComponent  : public Component
 {
     PanelHolderComponent() {}
-    
+
     void paint (Graphics& g) override
     {
         const int titleHeight = 22;
@@ -122,51 +122,51 @@ struct FoldablePanel::PanelHolderComponent  : public Component
         for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
-            
+
             Rectangle<int> content (0, y + 22, getWidth(), section->getSectionHeight() - titleHeight);
             y = section->getBottom();
-            
+
             g.setColour(section->getSectionColour());
             g.fillRect (content);
         }
     }
-    
+
     void updateLayout (int width)
     {
         int y = 0;
-        
+
         for (int i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked(i);
             section->setBounds (0, y, width, section->getSectionHeight());
             y = section->getBottom();
         }
-        
+
         repaint();
     }
-    
+
     void insertSection (int indexToInsertAt, SectionComponent* newSection)
     {
         sections.insert (indexToInsertAt, newSection);
         addAndMakeVisible (newSection, 0);
     }
-    
+
     SectionComponent* getSectionWithNonEmptyName (const int targetIndex) const noexcept
     {
         for (int index = 0, i = 0; i < sections.size(); ++i)
         {
             SectionComponent* const section = sections.getUnchecked (i);
-            
+
             if (section->getName().isNotEmpty())
                 if (index++ == targetIndex)
                     return section;
         }
-        
+
         return nullptr;
     }
-    
+
     OwnedArray<SectionComponent> sections;
-    
+
     JUCE_DECLARE_NON_COPYABLE (PanelHolderComponent)
 };
 
@@ -187,7 +187,7 @@ void FoldablePanel::paint (Graphics& /*g*/)
 void FoldablePanel::resized()
 {
     Rectangle<int> content (getLocalBounds());
-    
+
     panelHolderComponent->setBounds (content);
     panelHolderComponent->updateLayout (getWidth());
 }
@@ -214,11 +214,11 @@ void FoldablePanel::addSection (const String& sectionTitle,
                                 const int indexToInsertAt)
 {
     jassert (sectionTitle.isNotEmpty());
-    
+
     if (isEmpty()) {
         repaint();
     }
-    
+
     panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
     resized();
     updateLayout();
@@ -234,7 +234,7 @@ bool FoldablePanel::isSectionOpen (const int sectionIndex) const
     if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex)) {
         return s->isOpen;
     }
-    
+
     return false;
 }
 
@@ -253,7 +253,7 @@ void FoldablePanel::setSectionEnabled (const int sectionIndex, const bool should
 StringArray FoldablePanel::getSectionNames() const
 {
     StringArray s;
-    
+
     for (int i = 0; i < panelHolderComponent->sections.size(); ++i)
     {
         SectionComponent* const section = panelHolderComponent->sections.getUnchecked(i);
@@ -267,9 +267,9 @@ StringArray FoldablePanel::getSectionNames() const
 XmlElement* FoldablePanel::getOpennessState() const
 {
     XmlElement* const xml = new XmlElement ("PROPERTYPANELSTATE");
-    
+
     const StringArray sections (getSectionNames());
-    
+
     for (int i = 0; i < sections.size(); ++i)
     {
         if (sections[i].isNotEmpty())
@@ -279,7 +279,7 @@ XmlElement* FoldablePanel::getOpennessState() const
             e->setAttribute ("open", isSectionOpen (i) ? 1 : 0);
         }
     }
-    
+
     return xml;
 }
 
@@ -288,12 +288,12 @@ void FoldablePanel::restoreOpennessState (const XmlElement& xml)
     if (xml.hasTagName ("PROPERTYPANELSTATE"))
     {
         const StringArray sections (getSectionNames());
-        
+
         forEachXmlChildElementWithTagName (xml, e, "SECTION")
         {
             setSectionOpen (sections.indexOf (e->getStringAttribute ("name")),
                             e->getBoolAttribute ("open"));
         }
-        
+
     }
 }

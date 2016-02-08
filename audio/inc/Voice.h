@@ -345,7 +345,7 @@ public:
                     }
                 }
 
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= releaseCounter) {
+                if (static_cast<int>(getSampleRate() * params.envRelease1.get()) <= releaseCounter) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
@@ -399,18 +399,18 @@ protected:
     float getEnvCoeff()
     {
         float envCoeff;
-        float sustainLevel = Param::fromDb(params.envSustain.get());
+        float sustainLevel = Param::fromDb(params.envSustain1.get());
 
         // number of samples for all phases
         // if needed consider key velocity for attack and decay
-        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
-        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay.get() * (1.0f - currentVelocity * params.keyVelToEnv.get()));
-        int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease.get());
+        int attackSamples = static_cast<int>(getSampleRate() * params.envAttack1.get() * (1.0f - currentVelocity * params.keyVelToEnv1.get()));
+        int decaySamples = static_cast<int>(getSampleRate() * params.envDecay1.get() * (1.0f - currentVelocity * params.keyVelToEnv1.get()));
+        int releaseSamples = static_cast<int>(getSampleRate() * params.envRelease1.get());
 
         // get growth/shrink rate from knobs
-        float attackGrowthRate = params.envAttackShape.get();
-        float decayShrinkRate = params.envDecayShape.get();
-        float releaseShrinkRate = params.envReleaseShape.get();
+        float attackGrowthRate = params.envAttackShape1.get();
+        float decayShrinkRate = params.envDecayShape1.get();
+        float releaseShrinkRate = params.envReleaseShape1.get();
 
         // release phase sets envCoeff from valueAtRelease to 0.0f
         if (releaseCounter > -1)

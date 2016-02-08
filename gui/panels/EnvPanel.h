@@ -59,16 +59,36 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> attackTime;
-    ScopedPointer<MouseOverKnob> decayTime;
-    ScopedPointer<MouseOverKnob> sustainLevel;
-    ScopedPointer<MouseOverKnob> releaseTime;
-    ScopedPointer<MouseOverKnob> attackShape;
-    ScopedPointer<MouseOverKnob> decayShape;
-    ScopedPointer<MouseOverKnob> releaseShape;
-    ScopedPointer<MouseOverKnob> keyVelToEnv;
-    ScopedPointer<EnvelopeCurve> envelopeCurve;
-    ScopedPointer<Label> label;
+    ScopedPointer<MouseOverKnob> attackTime1;
+    ScopedPointer<MouseOverKnob> decayTime1;
+    ScopedPointer<MouseOverKnob> sustainLevel1;
+    ScopedPointer<MouseOverKnob> releaseTime1;
+    ScopedPointer<MouseOverKnob> attackShape1;
+    ScopedPointer<MouseOverKnob> decayShape1;
+    ScopedPointer<MouseOverKnob> releaseShape1;
+    ScopedPointer<MouseOverKnob> keyVelToEnv1;
+    ScopedPointer<EnvelopeCurve> envelopeCurve1;
+    ScopedPointer<Label> shapeLabel1;
+    ScopedPointer<MouseOverKnob> attackTime2;
+    ScopedPointer<MouseOverKnob> decayTime2;
+    ScopedPointer<MouseOverKnob> sustainLevel2;
+    ScopedPointer<MouseOverKnob> releaseTime2;
+    ScopedPointer<MouseOverKnob> attackShape2;
+    ScopedPointer<MouseOverKnob> decayShape2;
+    ScopedPointer<MouseOverKnob> releaseShape2;
+    ScopedPointer<MouseOverKnob> keyVelToEnv2;
+    ScopedPointer<EnvelopeCurve> envelopeCurve2;
+    ScopedPointer<Label> shapeLabel2;
+    ScopedPointer<MouseOverKnob> attackTime3;
+    ScopedPointer<MouseOverKnob> decayTime3;
+    ScopedPointer<MouseOverKnob> sustainLevel3;
+    ScopedPointer<MouseOverKnob> releaseTime3;
+    ScopedPointer<MouseOverKnob> attackShape3;
+    ScopedPointer<MouseOverKnob> decayShape3;
+    ScopedPointer<MouseOverKnob> releaseShape3;
+    ScopedPointer<MouseOverKnob> keyVelToEnv3;
+    ScopedPointer<EnvelopeCurve> envelopeCurve3;
+    ScopedPointer<Label> shapeLabel3;
 
 
     //==============================================================================

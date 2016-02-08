@@ -107,7 +107,10 @@ public:
     virtual void drawPopupMenuItem(Graphics &g, const Rectangle< int > &area, bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
         const String &text, const String &shortcutKeyText, const Drawable *icon, const Colour *textColour);
 
-    // TODO: draw bubble for popup value
+    /**
+    * Draw custom popup bubble for slider drag.
+    */
+    virtual void drawBubble(Graphics& g, BubbleComponent& comp, const Point<float>& tip, const Rectangle<float>& body);
 
     /*
     * For changing Font of value popup.

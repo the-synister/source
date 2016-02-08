@@ -22,7 +22,7 @@ public:
     ~PanelBase() {
         stopTimer();
     }
-    
+
 protected:
     typedef std::function<void()> tHookFn;
 
@@ -150,10 +150,10 @@ protected:
         g.setColour(c);
         g.fillRoundedRectangle(rect, cornerSize);
 
-        // draw group name text 
+        // draw group name text
         int offset = 2 * static_cast<int>(cornerSize);
         g.setFont(headHeight * 0.85f);
-        g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY), 
+        g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY),
             width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);
     }
 

@@ -44,10 +44,20 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(biquadResonance));
     addParameter(new HostParam<Param>(passtype));
 
-    addParameter(new HostParam<Param>(envAttack));
-    addParameter(new HostParam<Param>(envDecay));
-    addParameter(new HostParam<Param>(envSustain));
-    addParameter(new HostParam<Param>(envRelease));
+    addParameter(new HostParam<Param>(envAttack1));
+    addParameter(new HostParam<Param>(envDecay1));
+    addParameter(new HostParam<Param>(envSustain1));
+    addParameter(new HostParam<Param>(envRelease1));
+
+    addParameter(new HostParam<Param>(envAttack2));
+    addParameter(new HostParam<Param>(envDecay2));
+    addParameter(new HostParam<Param>(envSustain2));
+    addParameter(new HostParam<Param>(envRelease2));
+
+    addParameter(new HostParam<Param>(envAttack3));
+    addParameter(new HostParam<Param>(envDecay3));
+    addParameter(new HostParam<Param>(envSustain3));
+    addParameter(new HostParam<Param>(envRelease3));
 
     addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));

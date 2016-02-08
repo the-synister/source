@@ -96,18 +96,35 @@ public:
     Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
     Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
 
-    Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
-    Param envAttack;    //!< env attack in [0.001..5]s
-    Param envDecay;     //!< env decay in [0.001..5]s
-    Param envSustain;   //!< env sustain in [0..-96]dB
-    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+    Param keyVelToEnv1;  //!< key velocity influence on env [0 ... 1]
+    Param envAttack1;    //!< env attack in [0.001..5]s
+    Param envDecay1;     //!< env decay in [0.001..5]s
+    Param envSustain1;   //!< env sustain in [0..-96]dB
+    Param envRelease1;   //!< env release in [0.001..5]s (logarithmic scaling)
+    Param keyVelToEnv2;  //!< key velocity influence on env [0 ... 1]
+    Param envAttack2;    //!< env attack in [0.001..5]s
+    Param envDecay2;     //!< env decay in [0.001..5]s
+    Param envSustain2;   //!< env sustain
+    Param envRelease2;   //!< env release in [0.001..5]s (logarithmic scaling)
+    Param keyVelToEnv3;  //!< key velocity influence on env [0 ... 1]
+    Param envAttack3;    //!< env attack in [0.001..5]s
+    Param envDecay3;     //!< env decay in [0.001..5]s
+    Param envSustain3;   //!< env sustain
+    Param envRelease3;   //!< env release in [0.001..5]s (logarithmic scaling)
+
+    Param envAttackShape1; //!< env attack shape in [0.01..10]
+    Param envDecayShape1; //!< env decay shape in [0.01..10]
+    Param envReleaseShape1; //!< env release shape in [0.01..10]
+    Param envAttackShape2; //!< env attack shape in [0.01..10]
+    Param envDecayShape2; //!< env decay shape in [0.01..10]
+    Param envReleaseShape2; //!< env release shape in [0.01..10]
+    Param envAttackShape3; //!< env attack shape in [0.01..10]
+    Param envDecayShape3; //!< env decay shape in [0.01..10]
+    Param envReleaseShape3; //!< env release shape in [0.01..10]
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
     Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
-    Param envAttackShape; //!< env attack shape in [0.01..10]
-    Param envDecayShape; //!< env decay shape in [0.01..10]
-    Param envReleaseShape; //!< env release shape in [0.01..10]
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random

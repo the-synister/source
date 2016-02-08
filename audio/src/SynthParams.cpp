@@ -36,7 +36,9 @@ SynthParams::SynthParams()
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &osc1AmountWidthMod,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmount, &hpModSource, &hpModAmount, &keyVelocityLevel,
-    &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
+    &envAttack1, &envDecay1, &envSustain1, &envRelease1, &envAttackShape1, &envDecayShape1, &envReleaseShape1, &keyVelToEnv1,
+    &envAttack2, &envDecay2, &envSustain2, &envRelease2, &envAttackShape2, &envDecayShape2, &envReleaseShape2, &keyVelToEnv2,
+    &envAttack3, &envDecay3, &envSustain3, &envRelease3, &envAttackShape3, &envDecayShape3, &envReleaseShape3, &keyVelToEnv3,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &panDir, &vol, 
@@ -61,15 +63,33 @@ SynthParams::SynthParams()
 , hpModSource("HP ModSrc", "hpMod", "HP mod source", eModSource::eNone, modsourcenames)
 , hpModAmount("HP ModAmnt", "hpModAmount", "HP mod amount", "%", 0.f, 100.f, 0.f)
 , osc1trngAmount("trianlge", "osc1trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+
 , osc1PitchRange("Pitch", "osc1PitchRange", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
-, envAttack("att.", "envAttack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
-, envDecay("dec.", "envDecay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
-, envSustain("sust.", "envSustain", "Env1 sustain", "dB", -96.0f, 0.0f, -5.0f)
-, envRelease("rel.", "envRelease", "Env1 release", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("vel2env", "", "Key velocity to env", "veloToKey", 0.0f, 1.0f, 0.0f)
-, envAttackShape("Attack Shape", "envAttackShape", "Env attack shape", "", 0.01f, 10.0f, 1.0f)
-, envDecayShape("Decay Shape", "envDecayShape", "Env decay shape", "", 0.01f, 10.0f, 1.0f)
-, envReleaseShape("Release Shape", "envReleaseShape", "Env release shape", "", 0.01f, 10.0f, 1.0f)
+, envAttack1("att.", "envAttack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
+, envDecay1("dec.", "envDecay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
+, envSustain1("sust.", "envSustain", "Env1 sustain", "dB", -96.0f, 0.0f, -5.0f)
+, envRelease1("rel.", "envRelease", "Env1 release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv1("vel2env", "", "Key velocity to env", "", 0.0f, 1.0f, 0.0f)
+, envAttackShape1("Attack Shape", "envAttackShape", "Env attack shape", "", 0.01f, 10.0f, 1.0f)
+, envDecayShape1("Decay Shape", "envDecayShape", "Env decay shape", "", 0.01f, 10.0f, 1.0f)
+, envReleaseShape1("Release Shape", "envReleaseShape", "Env release shape", "", 0.01f, 10.0f, 1.0f)
+, envAttack2("att.", "envAttack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
+, envDecay2("dec.", "envDecay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
+, envSustain2("sust.", "envSustain", "Env1 sustain", "dB", -96.0f, 0.0f, -5.0f)
+, envRelease2("rel.", "envRelease", "Env1 release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv2("vel2env", "", "Key velocity to env", "", 0.0f, 1.0f, 0.0f)
+, envAttackShape2("Attack Shape", "envAttackShape", "Env attack shape", "", 0.01f, 10.0f, 1.0f)
+, envDecayShape2("Decay Shape", "envDecayShape", "Env decay shape", "", 0.01f, 10.0f, 1.0f)
+, envReleaseShape2("Release Shape", "envReleaseShape", "Env release shape", "", 0.01f, 10.0f, 1.0f)
+, envAttack3("att.", "envAttack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
+, envDecay3("dec.", "envDecay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
+, envSustain3("sust.", "envSustain", "Env1 sustain", "dB", -96.0f, 0.0f, -5.0f)
+, envRelease3("rel.", "envRelease", "Env1 release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv3("vel2env", "", "Key velocity to env", "", 0.0f, 1.0f, 0.0f)
+, envAttackShape3("Attack Shape", "envAttackShape", "Env attack shape", "", 0.01f, 10.0f, 1.0f)
+, envDecayShape3("Decay Shape", "envDecayShape", "Env decay shape", "", 0.01f, 10.0f, 1.0f)
+, envReleaseShape3("Release Shape", "envReleaseShape", "Env release shape", "", 0.01f, 10.0f, 1.0f)
+
 , osc1pulsewidth("Width", "osc1pulsewidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
 , osc1AmountWidthMod("Width Mod", "osc1AmountWidthMod", "OSC1 PWM", "", 0.f, 1.f, 0.f)
 , osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)

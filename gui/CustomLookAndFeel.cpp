@@ -216,7 +216,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
         indent.addRoundedRectangle(x - sliderRadius * 0.5f, iy,
             width + sliderRadius, ih,
-            10.0f);
+            sliderRadius * 0.5f);
     }
     else
     {
@@ -225,7 +225,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
         indent.addRoundedRectangle(ix, y - sliderRadius * 0.5f,
             iw, height + sliderRadius,
-            10.0f);
+            sliderRadius * 0.5f);
     }
 
     g.fillPath(indent);
@@ -233,7 +233,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
 void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
+    const float sliderRadius = (float)(jmin(10, width / 4, height / 4) - 2);
     const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
     float centreX, centreY;
 
@@ -486,6 +486,19 @@ void CustomLookAndFeel::drawPopupMenuItem(Graphics &g, const Rectangle< int > &a
     LookAndFeel_V2::drawPopupMenuItem(g, area, isSeparator, isActive, isHighlighted, isTicked, hasSubMenu, text, shortcutKeyText, icon, textColour);
 }
 
+void CustomLookAndFeel::drawBubble(Graphics& g, BubbleComponent& comp, const Point<float>& tip, const Rectangle<float>& body)
+{
+    Path p;
+    p.addBubble(body.reduced(0.5f), body.getUnion(Rectangle<float>(tip.x, tip.y, 1.0f, 1.0f)),
+        tip, 5.0f, jmin(15.0f, body.getWidth() * 0.2f, body.getHeight() * 0.2f));
+
+    g.setColour(Colours::white);
+    g.fillPath(p);
+
+    g.setColour(comp.findColour(BubbleComponent::outlineColourId));
+    g.strokePath(p, PathStrokeType(2.5f));
+}
+
 Font CustomLookAndFeel::getSliderPopupFont(Slider &/*s*/)
 {
     return Font(15.0f, Font::plain);
@@ -536,4 +549,3 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
 
     // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
 }
-

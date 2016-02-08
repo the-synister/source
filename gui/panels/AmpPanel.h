@@ -58,8 +58,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> amp;
-    ScopedPointer<MouseOverKnob> pan;
+    ScopedPointer<Slider> amp;
+    ScopedPointer<Slider> pan;
     ScopedPointer<MouseOverKnob> velocitySense;
 
 

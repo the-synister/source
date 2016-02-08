@@ -38,13 +38,19 @@ OscPanel::OscPanel (SynthParams &p)
     ftune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     ftune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    ftune1->setColour (Slider::textBoxTextColourId, Colours::white);
+    ftune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    ftune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ftune1->addListener (this);
 
     addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
     lfo1depth1->setRange (0, 12, 0);
     lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
     lfo1depth1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    lfo1depth1->setColour (Slider::textBoxTextColourId, Colours::white);
+    lfo1depth1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    lfo1depth1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfo1depth1->addListener (this);
 
     addAndMakeVisible (osc1trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
@@ -52,26 +58,35 @@ OscPanel::OscPanel (SynthParams &p)
     osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
     osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     osc1trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    osc1trngAmount->setColour (Slider::textBoxTextColourId, Colours::white);
+    osc1trngAmount->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    osc1trngAmount->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     osc1trngAmount->addListener (this);
 
     addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
     pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
-    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
     pulsewidth->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    pulsewidth->setColour (Slider::textBoxTextColourId, Colours::white);
+    pulsewidth->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    pulsewidth->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pulsewidth->addListener (this);
 
     addAndMakeVisible (pitchRange = new MouseOverKnob ("pitch range"));
     pitchRange->setRange (0, 12, 0);
     pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
-    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
     pitchRange->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    pitchRange->setColour (Slider::textBoxTextColourId, Colours::white);
+    pitchRange->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    pitchRange->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pitchRange->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
     ctune1->setRange (-11, 11, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
-    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     ctune1->setColour (Slider::textBoxTextColourId, Colours::white);
     ctune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -81,8 +96,11 @@ OscPanel::OscPanel (SynthParams &p)
     addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
     lfoFadeIn->setRange (0, 10, 0);
     lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
     lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    lfoFadeIn->setColour (Slider::textBoxTextColourId, Colours::white);
+    lfoFadeIn->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    lfoFadeIn->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfoFadeIn->addListener (this);
 
     addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
@@ -116,7 +134,7 @@ OscPanel::OscPanel (SynthParams &p)
     squarelabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (noiselabel = new Label ("Noise label",
-                                               TRANS("White noise")));
+                                               TRANS("noise")));
     noiselabel->setFont (Font (15.00f, Font::plain));
     noiselabel->setJustificationType (Justification::centredLeft);
     noiselabel->setEditable (false, false, false);
@@ -127,7 +145,11 @@ OscPanel::OscPanel (SynthParams &p)
     addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
     amountWidthMod->setRange (0, 1, 0);
     amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
-    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    amountWidthMod->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    amountWidthMod->setColour (Slider::textBoxTextColourId, Colours::white);
+    amountWidthMod->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    amountWidthMod->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     amountWidthMod->addListener (this);
 
 
@@ -152,9 +174,10 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(waveformSwitch, &params.osc1Waveform);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
+    waveformSwitch->setAlwaysOnTop(true);
     //[/UserPreSize]
 
-    setSize (800, 252);
+    setSize (800, 272);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -209,19 +232,19 @@ void OscPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    ftune1->setBounds (8, 152, 64, 64);
-    lfo1depth1->setBounds (84, 32, 64, 64);
-    osc1trngAmount->setBounds (84, 91, 64, 64);
-    pulsewidth->setBounds (84, 91, 64, 64);
-    pitchRange->setBounds (8, 33, 64, 64);
-    ctune1->setBounds (8, 93, 64, 64);
-    lfoFadeIn->setBounds (172, 91, 64, 64);
-    waveformVisual->setBounds (79, 152, 127, 64);
-    waveformSwitch->setBounds (192, 162, 54, 46);
-    sawlabel->setBounds (228, 174, 60, 24);
-    squarelabel->setBounds (208, 200, 96, 24);
-    noiselabel->setBounds (206, 149, 74, 24);
-    amountWidthMod->setBounds (172, 32, 64, 64);
+    ftune1->setBounds (8, 170, 64, 64);
+    lfo1depth1->setBounds (84, 30, 64, 64);
+    osc1trngAmount->setBounds (84, 97, 64, 64);
+    pulsewidth->setBounds (84, 97, 64, 64);
+    pitchRange->setBounds (8, 31, 64, 64);
+    ctune1->setBounds (8, 97, 64, 64);
+    lfoFadeIn->setBounds (172, 97, 64, 64);
+    waveformVisual->setBounds (77, 170, 108, 64);
+    waveformSwitch->setBounds (178, 178, 48, 48);
+    sawlabel->setBounds (208, 195, 44, 16);
+    squarelabel->setBounds (185, 225, 56, 18);
+    noiselabel->setBounds (185, 165, 48, 16);
+    amountWidthMod->setBounds (172, 30, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -313,71 +336,79 @@ BEGIN_JUCER_METADATA
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="800"
-                 initialHeight="252">
+                 initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 152 64 64"
-          rotarysliderfill="ff6c788c" min="-100" max="100" int="0" style="RotaryVerticalDrag"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 170 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="-100" max="100" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 32 64 64"
-          rotarysliderfill="ff6c788c" min="0" max="12" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 30 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 91 64 64"
-          rotarysliderfill="ff6c788c" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 97 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 91 64 64"
-          rotarysliderfill="ff6c788c" min="0.010000000000000000208" max="0.98999999999999999112"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 97 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 33 64 64"
-          rotarysliderfill="ff6c788c" min="0" max="12" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 31 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 93 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 97 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 91 64 64"
-          rotarysliderfill="ff6c788c" min="0" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 97 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="79 152 127 64"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="77 170 108 64"
                     class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="192 162 54 46" thumbcol="ff6c788c"
+          virtualName="" explicitFocusOrder="0" pos="178 178 48 48" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Saw Label" id="ae7ee66ce3b9c1ef" memberName="sawlabel"
-         virtualName="" explicitFocusOrder="0" pos="228 174 60 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="208 195 44 16" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Saw" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="Square Label" id="390c269ec611617c" memberName="squarelabel"
-         virtualName="" explicitFocusOrder="0" pos="208 200 96 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="185 225 56 18" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Square&#10;&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="Noise label" id="b40cd065bdc2086c" memberName="noiselabel"
-         virtualName="" explicitFocusOrder="0" pos="206 149 74 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="White noise" editableSingleClick="0"
+         virtualName="" explicitFocusOrder="0" pos="185 165 48 16" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="noise" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 32 64 64"
-          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 30 64 64"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

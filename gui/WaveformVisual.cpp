@@ -7,7 +7,7 @@ void WaveformVisual::paint(Graphics &g)
     backgroundFill.setOpacity(1.0f);
     g.setFillType(backgroundFill);
     g.fillAll();
-    
+
     Path wavePath;
     const float centreY = getHeight() / 2.0f;
     const float amplitude = 0.4f;
@@ -44,5 +44,3 @@ void WaveformVisual::paint(Graphics &g)
     g.setColour(Colours::darkgrey);
     g.drawRect(getLocalBounds(), 1);
 }
-
-
