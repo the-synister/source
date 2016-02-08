@@ -204,6 +204,7 @@ public:
     ParamStepped<eOnOffToggle> seqStepActive7;
     //Others
     Param oneHelper; //!< Helper Param with Value = 1
+    Param modWheelAmount;
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;

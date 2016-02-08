@@ -111,7 +111,7 @@ public:
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         // Initialization of midi values
-        modWheelValue = 0.f;
+        modWheelValue = params.modWheelAmount.get();
         footControlValue = 0.f;
         expPedalValue = 0.f;
 
@@ -213,6 +213,7 @@ public:
         {
         //Modwheel
         case 1:
+            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f);
             modWheelValue = static_cast<float>(newValue) / 127.f;
             break;
         //Foot Controller
@@ -393,7 +394,6 @@ protected:
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
         const float *lfo1Gain = modDestBuffer.getReadPointer(DEST_LFO1_GAIN);              //Check Lfo1 Gain
-
 
         //clear the buffers
         modDestBuffer.clear();

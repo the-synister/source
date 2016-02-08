@@ -62,6 +62,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
+
     //SOURCE: LFO1
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, true);
     globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
@@ -75,7 +76,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_FILTER_LC, &lp1ModAmount1, false);
 
     //SOURCE: VARIOUS MIDI
-    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, false);
+    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, true);
     globalModMatrix.addModMatrixRow(SOURCE_MODWHEEL, DEST_LFO1_GAIN, &oneHelper, true);
 
 }
