@@ -111,7 +111,7 @@ public:
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         // Initialization of midi values
-        //modWheelValue = 0.f;
+        modWheelValue = 0.f;
         footControlValue = 0.f;
         expPedalValue = 0.f;
 
