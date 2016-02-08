@@ -222,20 +222,20 @@ public:
         {
         //Modwheel
         case 1:
-            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f); // TODO: this is ugly (but does the trick)
+            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f); // TODO: this is ugly (but does the trick to get out of the voice scope)
             modWheelValue = static_cast<float>(newValue) / 127.f;
             break;
         //Foot Controller
         case 4:
-            footControlValue = (static_cast<float>(newValue) / 127.f);
+            footControlValue = (static_cast<float>(newValue) / 127.f); //TODO: test
             break;
         //Pan
         case 10:
-            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200); // only works while voice is active
+            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200); // TODO: only works while voice is active, should only be used for pan mod here!
             break;
         //Expression Control
         case 11:
-            expPedalValue = static_cast<float>(newValue) / 127.f;
+            expPedalValue = static_cast<float>(newValue) / 127.f; //TODO: test
             break;
         }
 #if 0
