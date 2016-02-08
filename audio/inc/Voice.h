@@ -37,6 +37,8 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modWheelValue(0.f)
+    , midiPan(0.f)
+    , afterTouch(0.f)
     , expPedalValue(0.f)
     , footControlValue(0.f)
     , modMatrix(p.globalModMatrix)
@@ -53,10 +55,14 @@ public:
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
+        //MIDI
         modSources[SOURCE_PITCHBEND] = &pitchBend;
         modSources[SOURCE_MODWHEEL] = &modWheelValue;
         modSources[SOURCE_FOOT] = &footControlValue;
         modSources[SOURCE_EXPPEDAL] = &expPedalValue;
+        modSources[SOURCE_PAN] = &midiPan;
+        modSources[SOURCE_AFTERTOUCH] = &afterTouch;
+        //INTERNAL
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
         //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
@@ -114,6 +120,7 @@ public:
         modWheelValue = params.modWheelAmount.get();
         footControlValue = 0.f;
         expPedalValue = 0.f;
+        afterTouch = 0.f;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -200,6 +207,9 @@ public:
             osc1WhiteNoise.reset();
         }
     }
+    void aftertouchChanged(int newValue) override {
+        afterTouch = static_cast<float>(newValue) / 127.f;
+    }
 
     void pitchWheelMoved(int newValue) override
     {
@@ -218,7 +228,11 @@ public:
             break;
         //Foot Controller
         case 4:
-            footControlValue = static_cast<float>(newValue) / 127.f;
+            footControlValue = (static_cast<float>(newValue) / 127.f);
+            break;
+        //Pan
+        case 10:
+            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200);
             break;
         //Expression Control
         case 11:
@@ -445,8 +459,6 @@ protected:
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
             env2Buffer.setSample(0, s, env2.calcEnvCoeff());
 
-
-
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -469,7 +481,6 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
         }
-
     }
 
     float biquadFilter(float inputSignal, float modValue) {
@@ -607,6 +618,8 @@ private:
     float modWheelValue;
     float footControlValue;
     float expPedalValue;
+    float afterTouch;
+    float midiPan;
 
     std::array<float*, MAX_SOURCES> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
