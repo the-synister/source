@@ -38,7 +38,7 @@ public:
     , lpOut3Delay(0.f)
     , modWheelValue(0.f)
     , midiPan(0.f)
-    , afterTouch(0.f)
+    , channelAfterTouch(0.f)
     , expPedalValue(0.f)
     , footControlValue(0.f)
     , modMatrix(p.globalModMatrix)
@@ -61,7 +61,7 @@ public:
         modSources[SOURCE_FOOT] = &footControlValue;
         modSources[SOURCE_EXPPEDAL] = &expPedalValue;
         modSources[SOURCE_PAN] = &midiPan;
-        modSources[SOURCE_AFTERTOUCH] = &afterTouch;
+        modSources[SOURCE_AFTERTOUCH] = &channelAfterTouch;
         //INTERNAL
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
@@ -120,7 +120,7 @@ public:
         modWheelValue = params.modWheelAmount.get();
         footControlValue = 0.f;
         expPedalValue = 0.f;
-        afterTouch = 0.f;
+        channelAfterTouch = 0.f;
 
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
@@ -207,12 +207,11 @@ public:
             osc1WhiteNoise.reset();
         }
     }
-    void aftertouchChanged(int newValue) override {
-        afterTouch = static_cast<float>(newValue) / 127.f;
+    void channelPressureChanged(int newValue) override {
+        channelAfterTouch = static_cast<float>(newValue) / 127.f;
     }
 
-    void pitchWheelMoved(int newValue) override
-    {
+    void pitchWheelMoved(int newValue) override {
         pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
@@ -618,7 +617,7 @@ private:
     float modWheelValue;
     float footControlValue;
     float expPedalValue;
-    float afterTouch;
+    float channelAfterTouch;
     float midiPan;
 
     std::array<float*, MAX_SOURCES> modSources;
