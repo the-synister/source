@@ -41,7 +41,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider->addListener (this);
 
     addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
-    resonanceSlider->setRange (-25, 25, 0);
+    resonanceSlider->setRange (1, 10, 0);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
@@ -55,7 +55,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
-    passtype->setRange (0, 2, 1);
+    passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));

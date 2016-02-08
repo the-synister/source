@@ -19,7 +19,7 @@ namespace {
     };
     
     static const char *biquadFilters[] = {
-        "Lowpass", "Highpass", "Bandpass", nullptr
+        "Lowpass", "Highpass", "Bandpass", "Ladder", nullptr
     };
     
     static const char *modsourcenames[] = {
@@ -35,7 +35,7 @@ SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &osc1AmountWidthMod,
-    &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmount, &hpModSource, &hpModAmount, &keyVelocityLevel,
+    &lpCutoff, &biquadResonance, &lpModSource, &lpModAmount, &hpModSource, &hpModAmount, &keyVelocityLevel,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
@@ -54,7 +54,7 @@ SynthParams::SynthParams()
 , osc1lfo1depth("mod", "osc1lfo1depth", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
 , passtype("Filter Type", "filterType", "Filter type", eBiquadFilters::eLowpass, biquadFilters)
 , lpCutoff("LP Cut", "lpCutoff", "LP filter cutoff",  "Hz", 10.f, 20000.f, 20000.f)
-, biquadResonance("Filter Reso", "filterResonance", "Filter resonance",  "dB", -25.f, 25.f, 0.f)
+, biquadResonance("Filter Reso", "filterResonance", "Filter resonance", " ", 1.f, 10.f, 1.f)
 , hpCutoff("HP Cut", "hpCutoff", "HP filter cutoff", "Hz", 10.f, 20000.f, 10.f)
 , lpModSource("LP ModSrc", "lpMod", "LP mod source", eModSource::eNone, modsourcenames)
 , lpModAmount("LP ModAmnt", "lpModAmout", "LP mod amount", "prct", 0.f, 100.f, 0.f)
@@ -76,7 +76,6 @@ SynthParams::SynthParams()
 , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
 , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 , vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
-, ladderCutoff("LadderFreq", "ladderCutoff", "Ladder cutoff", "Hz", 10.f, 20000.f, 20000.f)
 , ladderRes("LadderRes", "ladderRes", "Ladder res", "  ", 0.f, 10.f, 0.f)
 , lfoFadein("FadeIn","lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
 , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "%", 0.f, 1.f, 0.f)
