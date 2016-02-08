@@ -387,6 +387,8 @@ protected:
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
+        const float *lfo1Gain = modDestBuffer.getReadPointer(DEST_LFO1_GAIN);              //Check Lfo1 Gain
+
 
         //clear the buffers
         modDestBuffer.clear();
@@ -395,7 +397,7 @@ protected:
         //lfo3Buffer.clear();         /*not yet in use*/
         env2Buffer.clear();
         //env3Buffer.clear();         /*not yet in use*/
-        
+
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
@@ -424,21 +426,21 @@ protected:
             // calculate lfo values and fill the buffers
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                // lfoValue = lfo1sine.next();
                 lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
                 break;
             case eLfoWaves::eLfoSampleHold:
-                // lfoValue = lfo1random.next();
                 lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
                 break;
             case eLfoWaves::eLfoSquare:
-                // lfoValue = lfo1square.next();
                 lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
                 break;
             }
+
             // Calculate the Envelope coefficients and fill the buffers
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
             env2Buffer.setSample(0, s, env2.calcEnvCoeff());
+
+
 
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
@@ -446,10 +448,10 @@ protected:
                 ++modDestinations[u];
             }
             ++modSources[SOURCE_LFO1];
-            ++modSources[SOURCE_LFO2];      /*not yet in use*/
-            ++modSources[SOURCE_LFO3];      /*not yet in use*/
+            //++modSources[SOURCE_LFO2];      /*not yet in use*/
+            //++modSources[SOURCE_LFO3];      /*not yet in use*/
             ++modSources[SOURCE_ENV2];
-            ++modSources[SOURCE_ENV3];      /*not yet in use*/
+            //++modSources[SOURCE_ENV3];      /*not yet in use*/
             }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
@@ -457,6 +459,12 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
+
+        //Apply GainFactors here - not really working like it should!!!
+        for (int s = 0; s < numSamples; ++s) {
+            modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
+        }
+
     }
 
     float biquadFilter(float inputSignal, float modValue) {
