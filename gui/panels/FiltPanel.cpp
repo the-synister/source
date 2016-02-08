@@ -261,7 +261,11 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         params.filter1ResonanceModSrc1.setStep(static_cast<eModSource>(res1ModSrc1->getSelectedId() - 1));
         params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(res1ModSrc1->getSelectedId() - 2));
         //[/UserComboBoxCode_res1ModSrc1]
-  aedId() - 1));
+    }
+    else if (comboBoxThatHasChanged == res1ModSrc2)
+    {
+        //[UserComboBoxCode_res1ModSrc2] -- add your combo box handling code here..
+        params.filter1ResonanceModSrc2.setStep(static_cast<eModSource>(res1ModSrc2->getSelectedId() - 1));
         params.globalModMatrix.changeSource(comboBoxThatHasChanged->getName(), static_cast<sources>(res1ModSrc2->getSelectedId() - 2));
         //[/UserComboBoxCode_res1ModSrc2]
     }
