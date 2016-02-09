@@ -34,7 +34,7 @@ FxPanel::FxPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
-    feedbackSlider->setRange (0, 100, 0);
+    feedbackSlider->setRange (0, 1, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     feedbackSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -48,7 +48,7 @@ FxPanel::FxPanel (SynthParams &p)
     clippingFactor->addListener (this);
 
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
-    dryWetSlider->setRange (0, 100, 0);
+    dryWetSlider->setRange (0, 1, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     dryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -408,7 +408,7 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          rotarysliderfill="ff2b3240" min="0" max="100" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff2b3240" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
@@ -418,7 +418,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" rotarysliderfill="ff2b3240"
-          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" rotarysliderfill="ff2b3240"
