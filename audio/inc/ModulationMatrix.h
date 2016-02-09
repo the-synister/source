@@ -22,7 +22,7 @@ Author:  nj
 
 enum eModSource : int {
     eNone = 0,
-    
+
     // Midi
     eAftertouch,
     eKeyBipolar,
@@ -32,17 +32,17 @@ enum eModSource : int {
     eExpPedal,
     eModwheel,
     ePitchbend,
-    
+
     // LFOs
     eLFO1,
     eLFO2,
     eLFO3,
-    
+
     // Envelopes
     eVolEnv,
     eEnv2,
     eEnv3,
-    
+
     nSteps
 };
 

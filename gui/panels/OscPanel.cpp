@@ -167,7 +167,7 @@ OscPanel::OscPanel (SynthParams &p)
 
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
-    
+
     registerCombobox(osc1FreqModSrc1, &params.osc1PiModSrc1);
     registerCombobox(osc1FreqModSrc2, &params.osc1PiModSrc2);
     //[/UserPreSize]
