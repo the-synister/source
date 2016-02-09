@@ -62,22 +62,10 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-    // Source Pitchbend, Destination OSC1 Pitch
-#if 0
-    globalModMatrix.addModMatrixRow(createModMatrixRow(SOURCE_PITCHBEND,
-                                                       DEST_OSC1_PITCH,
-                                                       &osc1PitchRange,
-                                                       true));
-#endif
 
-    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
-    //globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, true);
+    globalModMatrix.addModMatrixRow(SOURCE_NONE, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
+    globalModMatrix.addModMatrixRow(SOURCE_NONE, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
 
-    //// Now let's add an envelope for the pitch
-    //globalModMatrix.addModMatrixRow(SOURCE_VOL_ENV, DEST_OSC1_PI, &osc1lfo1depth, false);
-
-    //globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lpModAmount, false);
-    //globalModMatrix.addModMatrixRow(SOURCE_VOL_ENV, DEST_FILTER_LC, &lpModAmount, false);
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

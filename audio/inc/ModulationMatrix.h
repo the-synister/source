@@ -157,7 +157,8 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
     for (const ModMatrixRow &row : matrixCore)
     {
         // get the source value & mod intensity
-        if (row.sourceIndex > SOURCE_NONE && row.sourceIndex < MAX_SOURCES) {
+        if (row.sourceIndex > SOURCE_NONE && row.sourceIndex < MAX_SOURCES
+            && row.destinationIndex > DEST_NONE && row.destinationIndex < MAX_DESTINATIONS) {
             float source = *(src[row.sourceIndex]);
             float intensity = row.modIntensity->get();
 
@@ -213,11 +214,7 @@ inline void ModulationMatrix::changeSource(String comboboxName, sources source) 
 
 inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String boxname)
 {
-    // add if not already existing
-    if (!modMatrixRowExists(s, d))
-    {
-        matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
-    }
+    matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
 }
 
 #endif  // MODULATIONMATRIX_H_INCLUDED

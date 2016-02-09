@@ -71,6 +71,7 @@ private:
     ScopedPointer<ComboBox> hp1ModSrc2;
     ScopedPointer<ComboBox> res1ModSrc1;
     ScopedPointer<ComboBox> res1ModSrc2;
+    ScopedPointer<Slider> modSliderCut2;
 
 
     //==============================================================================
