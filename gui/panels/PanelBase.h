@@ -103,7 +103,7 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + 1);
-                
+
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();

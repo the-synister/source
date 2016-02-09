@@ -17,7 +17,7 @@ Author:  nj
 #include <map>
 //#include "..\gui\panels\PanelBase.h"
 
-//! Modulation Matrix 
+//! Modulation Matrix
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
 */

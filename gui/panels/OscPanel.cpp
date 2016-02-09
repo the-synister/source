@@ -163,7 +163,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &params.osc1Waveform);
-	lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     //[/UserPreSize]
 
@@ -319,12 +319,12 @@ void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
-	int waveformKey = static_cast<int>(waveformSwitch->getValue());
-	eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    int waveformKey = static_cast<int>(waveformSwitch->getValue());
+    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
     params.osc1Waveform.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-	waveformVisual->setWaveformKey(eWaveformKey);
+    waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
 }

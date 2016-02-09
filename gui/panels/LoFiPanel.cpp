@@ -47,8 +47,8 @@ LoFiPanel::LoFiPanel (SynthParams &p)
 
 
     //[UserPreSize]
-	registerSlider(lowFiActive, &params.lowFiActivation);
-	registerSlider(nBitsLowFi, &params.nBitsLowFi);
+    registerSlider(lowFiActive, &params.lowFiActivation);
+    registerSlider(nBitsLowFi, &params.nBitsLowFi);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -97,7 +97,7 @@ void LoFiPanel::resized()
 void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
-	handleSlider(sliderThatWasMoved);
+    handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == lowFiActive)

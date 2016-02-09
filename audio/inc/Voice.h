@@ -123,7 +123,7 @@ public:
             lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
-        
+
             lfo1random.phase = 0.f;
             lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
@@ -271,13 +271,13 @@ public:
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
-                else 
+                else
                 {
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() || 
+                if (static_cast<int>(getSampleRate() * params.envRelease.get()) <= envToVolume.getReleaseCounter() ||
                     static_cast<int>(getSampleRate() * params.env1Release.get()) <= env1.getReleaseCounter())
                 {
                     clearCurrentNote();
@@ -351,7 +351,7 @@ protected:
         modDestBuffer.clear();
         lfo1Buffer.clear();
         env1Buffer.clear();
-        
+
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
@@ -406,7 +406,7 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
-    } 
+    }
 
     float biquadFilter(float inputSignal, float modValue) {
 
@@ -425,10 +425,10 @@ protected:
                     return 0.f;
                 }
                 break;
-            default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead 
+            default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead
                 return 0.f;
         }
-        
+
         //! \todo mod range must come from somewhere else
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
 
@@ -439,7 +439,7 @@ protected:
         else if (cutoffFreq > params.lp1Cutoff.getMax()) {
             cutoffFreq = params.lp1Cutoff.getMax();
         }
-        
+
         const float sRate = static_cast<float>(getSampleRate());
         cutoffFreq /= sRate;
 
@@ -493,20 +493,20 @@ protected:
         }
 
         lastSample = inputSignal;
-        
+
         // different biquad form for bandpass filter, it has more coefficients as well
         if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
             inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
         } else {
             inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
         }
-        
+
         //delaying samples
         inputDelay2 = inputDelay1;
         inputDelay1 = lastSample;
         outputDelay2 = outputDelay1;
         outputDelay1 = inputSignal;
-        
+
         if (inputSignal > 1.f) {
             inputSignal = 1.f;
         }
@@ -522,7 +522,7 @@ private:
     SynthParams &params;
     //New Filter Design
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, bandpassDelay1, bandpassDelay2;
-    
+
     Oscillator<&Waveforms::square> osc1Sine;
     Oscillator<&Waveforms::saw> osc1Saw;
     Oscillator<&Waveforms::whiteNoise> osc1WhiteNoise;
@@ -530,7 +530,7 @@ private:
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
-    
+
     float level;
 
     float pitchBend;
@@ -540,7 +540,7 @@ private:
 
     std::array<float*, MAX_SOURCES> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
-    
+
     int totSamples;
 
     // variable for env
@@ -563,10 +563,10 @@ private:
     AudioSampleBuffer env1Buffer;
 
     AudioSampleBuffer modDestBuffer;
-    
-    ModulationMatrix& modMatrix; 
-    
-    // Envelopes 
+
+    ModulationMatrix& modMatrix;
+
+    // Envelopes
     Envelope envToVolume;
     Envelope env1;
 };

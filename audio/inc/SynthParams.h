@@ -225,7 +225,7 @@ public:
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
-    
+
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().
     @param destData host data
@@ -253,7 +253,7 @@ public:
     @param paramsToSerialize specify which parameters should be used (all or only sequencer parameters)
     */
     void fillValues(XmlElement * patch, eSerializationParams paramsToSerialize);
-    
+
     /**
     * Restore host state by converting binary data into a XML file and set serialized parameters by using fillValues().
     @param data binary data to return to XML
@@ -268,10 +268,10 @@ public:
     */
     void readXMLPatchStandalone(eSerializationParams paramsToSerialize);
 
-	Param chorDelayLength;
-	Param chorDryWet;
-	Param chorModRate;
-	Param chorModDepth;
+    Param chorDelayLength;
+    Param chorDryWet;
+    Param chorModRate;
+    Param chorModDepth;
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

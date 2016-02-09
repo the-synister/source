@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "ModulationMatrix.h" 
+#include "ModulationMatrix.h"
 
 ModulationMatrix::ModulationMatrix()
 {
@@ -17,4 +17,3 @@ ModulationMatrix::ModulationMatrix()
 ModulationMatrix::~ModulationMatrix()
 {
 }
-

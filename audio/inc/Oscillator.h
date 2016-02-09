@@ -88,7 +88,7 @@ struct Waveforms {
 template<float(*_waveform)(float, float, float)>
 class RandomOscillator : public Oscillator<&Waveforms::square>
 {
-public: 
+public:
     float heldValue;
 
     RandomOscillator() : Oscillator()

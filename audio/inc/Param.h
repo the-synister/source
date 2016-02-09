@@ -91,7 +91,7 @@ public:
 
     void addListener(Listener *newListener) { listener.add(newListener); }
     void removeListener(Listener *aListener) { listener.remove(aListener); }
-    
+
 protected:
     ScopedPointer<float> value;
     std::atomic<float> val_;
