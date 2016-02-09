@@ -5,6 +5,10 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
+      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="Assets">
+        <FILE id="Ga6Xko" name="sine-switch_noise.png" compile="0" resource="1"
+              file="../../../../Desktop/Assets/sine-switch_noise.png"/>
+      </GROUP>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
         <FILE id="erDSYx" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
         <FILE id="JZ9ARJ" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>

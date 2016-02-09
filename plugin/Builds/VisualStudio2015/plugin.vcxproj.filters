@@ -8,6 +8,9 @@
     <Filter Include="plugin\Gui">
       <UniqueIdentifier>{E1BCBC1C-A163-9876-D70B-F5372500C76A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="plugin\Gui\Assets">
+      <UniqueIdentifier>{3501B87A-C557-D260-C1E2-E54D7BC2782B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="plugin\Gui\panels">
       <UniqueIdentifier>{7D44F8BC-8F8D-04FB-22C7-D3E92209163E}</UniqueIdentifier>
     </Filter>
@@ -340,18 +343,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -379,6 +370,21 @@
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
@@ -387,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>plugin\Audio\src</Filter>
@@ -1624,6 +1633,9 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>Juce Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1695,18 +1707,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1736,6 +1736,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>plugin\Gui</Filter>
@@ -3183,11 +3198,17 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>Juce Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\sine-switch_noise.png">
+      <Filter>plugin\Gui\Assets</Filter>
+    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>
