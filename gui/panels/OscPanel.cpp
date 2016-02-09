@@ -95,7 +95,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber, const String& panelTit
     ctune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ctune1->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
