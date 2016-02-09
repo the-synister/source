@@ -1,5 +1,5 @@
 #include "WaveformVisual.h"
-#include "Voice.h"
+#include "Oscillator.h"
 
 void WaveformVisual::paint(Graphics &g)
 {
