@@ -42,11 +42,12 @@ class Env1Panel  : public PanelBase,
 {
 public:
     //==============================================================================
-    Env1Panel (SynthParams &p);
+    Env1Panel (SynthParams &p, int envelopeNumber, const String& panelTitle);
     ~Env1Panel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void updateCurve();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -58,6 +59,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams::Env &env;
+    const String _panelTitle;
     //[/UserVariables]
 
     //==============================================================================

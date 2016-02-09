@@ -23,33 +23,43 @@ PluginAudioProcessor::PluginAudioProcessor()
     , clip(*this)
     , lowFi(*this)
 {
-    addParameter(new HostParam<Param>(osc[0].fine));
-    addParameter(new HostParam<Param>(osc[0].coarse));
-    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[0].waveForm));
-
+    for (int i = 0; i < 3; ++i) {
+        addParameter(new HostParam<Param>(osc[i].fine));
+        addParameter(new HostParam<Param>(osc[i].coarse));
+        addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[i].waveForm));
+        addParameter(new HostParam<Param>(osc[i].pitchModAmount2));
+        addParameter(new HostParam<Param>(osc[i].vol));
+        addParameter(new HostParam<Param>(osc[i].panDir));
+        addParameter(new HostParam<Param>(osc[i].trngAmount));
+        addParameter(new HostParam<Param>(osc[i].pulseWidth));
+    }
+   
+    for (int i = 0; i < 2; ++i) {
+        addParameter(new HostParam<Param>(env[i].envAttack));
+        addParameter(new HostParam<Param>(env[i].envDecay));
+        addParameter(new HostParam<Param>(env[i].envSustain));
+        addParameter(new HostParam<Param>(env[i].envRelease));
+        addParameter(new HostParam<Param>(env[i].envAttackShape));
+        addParameter(new HostParam<Param>(env[i].envDecayShape));
+        addParameter(new HostParam<Param>(env[i].envReleaseShape));
+    }
+    
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
-    addParameter(new HostParam<Param>(osc[0].pitchModAmount2));
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
-
-    addParameter(new HostParam<Param>(osc[0].vol));
-    addParameter(new HostParam<Param>(osc[0].panDir));
-
-    addParameter(new HostParam<Param>(osc[0].trngAmount));
-    addParameter(new HostParam<Param>(osc[0].pulseWidth));
 
     addParameter(new HostParam<Param>(lp1Cutoff));
     addParameter(new HostParam<Param>(hp1Cutoff));
     addParameter(new HostParam<Param>(filter1Resonance));
     addParameter(new HostParam<Param>(passtype));
 
-    addParameter(new HostParam<Param>(envAttack));
-    addParameter(new HostParam<Param>(envDecay));
+    addParameter(new HostParam<Param>(envVol[0].envAttack));
+    addParameter(new HostParam<Param>(envVol[0].envDecay));
     //addParameter(new HostParam<ParamDb>(envSustain));
-    addParameter(new HostParam<Param>(envRelease));
-
+    addParameter(new HostParam<Param>(envVol[0].envRelease));
+    
     addParameter(new HostParam<Param>(clippingFactor));
 
     addParameter(new HostParam<Param>(delayFeedback));

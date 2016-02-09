@@ -27,8 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Env1Panel::Env1Panel (SynthParams &p)
-    : PanelBase(p)
+Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber, const String& panelTitle)
+    : PanelBase(p),
+      env(p.env[envelopeNumber]),
+      _panelTitle(panelTitle)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -70,7 +72,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     decayTime1->setSkewFactor (0.5);
 
     addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
-    sustainLevel1->setRange (-96, 0, 0);
+    sustainLevel1->setRange (0, 1, 0);
     sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     sustainLevel1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
@@ -125,7 +127,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
 
@@ -140,14 +142,14 @@ Env1Panel::Env1Panel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime1, &params.env1Attack);
-    registerSlider(decayTime1, &params.env1Decay);
-    registerSlider(sustainLevel1, &params.env1Sustain);
-    registerSlider(releaseTime1, &params.env1Release);
-    registerSlider(attackShape1, &params.env1AttackShape);
-    registerSlider(decayShape1, &params.env1DecayShape);
-    registerSlider(releaseShape1, &params.env1ReleaseShape);
-    registerSlider(keyVelToEnv1, &params.keyVelToEnv1);
+    registerSlider(attackTime1, &env.envAttack, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(decayTime1, &env.envDecay, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(sustainLevel1, &env.envSustain, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(releaseTime1, &env.envRelease, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(attackShape1, &env.envAttackShape, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(decayShape1, &env.envDecayShape, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(releaseShape1, &env.envReleaseShape, std::bind(&Env1Panel::updateCurve, this));
+    registerSlider(keyVelToEnv1, &env.keyVelToEnv, std::bind(&Env1Panel::updateCurve, this));
     //[/UserPreSize]
 
     setSize (267, 252);
@@ -189,7 +191,7 @@ void Env1Panel::paint (Graphics& g)
     g.fillAll (Colour (0xffcbca63));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "vol env", 0, 0,
+    drawGroupBorder(g, _panelTitle, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffcbca63));
 
     int smallBorderHeight = 40;
@@ -203,18 +205,18 @@ void Env1Panel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    env2SpeedModSrc1->setBounds (60, 176, 64, 16);
-    env2SpeedModSrc2->setBounds (60, 152, 64, 16);
-    attackTime1->setBounds (12, 38, 64, 64);
-    decayTime1->setBounds (73, 38, 64, 64);
-    sustainLevel1->setBounds (134, 38, 64, 64);
-    releaseTime1->setBounds (199, 38, 64, 64);
-    attackShape1->setBounds (34, 111, 20, 20);
-    decayShape1->setBounds (95, 111, 20, 20);
-    releaseShape1->setBounds (220, 111, 20, 20);
-    keyVelToEnv1->setBounds (12, 146, 64, 64);
-    envelopeCurve->setBounds (121, 146, 128, 64);
-    shapeLabel1->setBounds (141, 108, 51, 24);
+    env2SpeedModSrc1->setBounds (60, 177, 64, 16);
+    env2SpeedModSrc2->setBounds (60, 153, 64, 16);
+    attackTime1->setBounds (12, 39, 64, 64);
+    decayTime1->setBounds (73, 39, 64, 64);
+    sustainLevel1->setBounds (134, 39, 64, 64);
+    releaseTime1->setBounds (199, 39, 64, 64);
+    attackShape1->setBounds (34, 112, 20, 20);
+    decayShape1->setBounds (95, 112, 20, 20);
+    releaseShape1->setBounds (220, 112, 20, 20);
+    keyVelToEnv1->setBounds (12, 147, 64, 64);
+    envelopeCurve->setBounds (121, 147, 128, 64);
+    shapeLabel1->setBounds (141, 109, 51, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -293,6 +295,17 @@ void Env1Panel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void Env1Panel::updateCurve()
+{
+    envelopeCurve->setAttack(static_cast<float>(attackTime1->getValue()));
+    envelopeCurve->setDecay(static_cast<float>(decayTime1->getValue()));
+    envelopeCurve->setSustain(static_cast<float>(sustainLevel1->getValue()));
+    envelopeCurve->setRelease(static_cast<float>(releaseTime1->getValue()));
+    envelopeCurve->setAttackShape(static_cast<float>(attackShape1->getValue()));
+    envelopeCurve->setDecayShape(static_cast<float>(decayShape1->getValue()));
+    envelopeCurve->setReleaseShape(static_cast<float>(releaseShape1->getValue()));
+    repaint();
+}
 //[/MiscUserCode]
 
 
@@ -306,67 +319,67 @@ void Env1Panel::sliderValueChanged (Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Env1Panel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)&#10;" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="267"
-                 initialHeight="252">
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int envelopeNumber, const String&amp; panelTitle"
+                 variableInitialisers="PanelBase(p), &#10;env(p.env[envelopeNumber]),&#10;_panelTitle(panelTitle)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="267" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
   <COMBOBOX name="env2SpeedModSrcBox1" id="6dae6bde5fbe8153" memberName="env2SpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="60 176 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="60 177 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="env2SpeedModSrcBox2" id="401dffa72d979c97" memberName="env2SpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="60 152 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="60 153 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Attack Time" id="c3597517f8c98b63" memberName="attackTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="9731927ce4f75586" memberName="decayTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="73 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="73 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="c5800da9b4223b05" memberName="sustainLevel1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="134 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="134 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-96" max="0" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="b706f933608906" memberName="releaseTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="199 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="199 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="bd17ed6e5bdc4910" memberName="attackShape1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="34 111 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="34 112 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="Decay Shape" id="9bd5989569f5223c" memberName="decayShape1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="95 111 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="95 112 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="Release Shape" id="fb9fa6b3328d7d27" memberName="releaseShape1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="220 111 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="220 112 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="Vel to Env" id="bee5e0860811e660" memberName="keyVelToEnv1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 146 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 147 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
-                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="121 146 128 64"
+                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="121 147 128 64"
                     class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
-         virtualName="" explicitFocusOrder="0" pos="141 108 51 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="141 109 51 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>

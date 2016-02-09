@@ -27,8 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-EnvPanel::EnvPanel (SynthParams &p)
-    : PanelBase(p)
+EnvPanel::EnvPanel (SynthParams &p, const String& panelTitle)
+    : PanelBase(p),
+      _panelTitle(panelTitle),
+      envVol(p.envVol[0])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -111,7 +113,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (envVol.envAttack.get(), envVol.envDecay.get(), envVol.envSustain.get(), envVol.envRelease.get(),  envVol.envAttackShape.get(), envVol.envDecayShape.get(), envVol.envReleaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
 
@@ -126,14 +128,14 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime, &params.envAttack, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayTime, &params.envDecay, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(sustainLevel, &params.envSustain, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseTime, &params.envRelease, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(attackShape, &params.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayShape, &params.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseShape, &params.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(keyVelToEnv1, &params.keyVelToEnv1);
+    registerSlider(attackTime, &envVol.envAttack, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayTime, &envVol.envDecay, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(sustainLevel, &envVol.envSustain, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseTime, &envVol.envRelease, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackShape, &envVol.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayShape, &envVol.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseShape, &envVol.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(keyVelToEnv1, &envVol.keyVelToEnv);
     attackShape->setPopupDisplayEnabled(true, this);
     decayShape->setPopupDisplayEnabled(true, this);
     releaseShape->setPopupDisplayEnabled(true, this);
@@ -177,7 +179,7 @@ void EnvPanel::paint (Graphics& g)
     g.fillAll (Colour (0xffcbca63));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "vol env", 0, 0,
+    drawGroupBorder(g, _panelTitle, 0, 0,
         this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffcbca63));
 
     int smallBorderHeight = 40;
@@ -290,10 +292,10 @@ void EnvPanel::updateCurve()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="266"
-                 initialHeight="252">
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, const String&amp; panelTitle"
+                 variableInitialisers="PanelBase(p),&#10;_panelTitle(panelTitle),&#10;envVol(p.envVol[0])"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="266" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
   <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"

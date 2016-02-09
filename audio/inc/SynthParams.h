@@ -79,17 +79,53 @@ public:
                        //Param lfoChorfreq; // delay-lfo frequency in Hz
                        //Param chorAmount; // wetness of signal [0 ... 1]
                        //Param chorSwitch; // Chorus on / off [1 / 0]
-
-    struct Osc {
-        Osc();
-
-        void setName(const String &s) {
+    
+    struct BaseParamStruct {
+        void setName(const String& s)
+        {
             name = s;
-
+            
             //! \todo set prefix of every param to name
         }
-
+       
         String name;
+    };
+    
+    struct EnvBase : public BaseParamStruct {
+        EnvBase();
+        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
+        Param envAttack;    //!< env attack in [0.001..5]s
+        Param envDecay;     //!< env decay in [0.001..5]s
+        //Param envSustain;   //!< env sustain in [0..-96]dB
+        Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+        
+        Param envAttackShape; //!< env attack shape in [0.01..10]
+        Param envDecayShape; //!< env decay shape in [0.01..10]
+        Param envReleaseShape; //!< env release shape in [0.01..10]
+        
+    };
+    
+    struct EnvVol : public EnvBase {
+        EnvVol();
+        
+        ParamDb envSustain;   //!< env sustain in [0..1]
+        ParamStepped<eModSource> envVolSpeedModSrc1; //!< Volume envelope speed mod source
+        ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
+    };
+    
+    struct Env : public EnvBase {
+        Env();
+        
+        Param envSustain;
+        ParamStepped<eModSource> env2SpeedModSrc1; //!< Envelope 2 speed mod source
+        ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
+    };
+    
+    std::array<EnvVol, 1> envVol;
+    std::array<Env, 2> env;
+
+    struct Osc : public BaseParamStruct {
+        Osc();
 
         Param fine;      //!< fine tune in [-100..100] ct
         Param coarse;    //!< coarse tune in [-11..11] st
@@ -132,19 +168,10 @@ public:
     ParamStepped<eModSource> hp1CutModSrc2;  //! hp filter modulation source
     Param hp1ModAmount2;   //! hp filter modulation amount
     ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
-
-    Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
-    Param envAttack;    //!< env attack in [0.001..5]s
-    Param envDecay;     //!< env decay in [0.001..5]s
-                        //Param envSustain;   //!< env sustain in [0..-96]dB
-    ParamDb envSustain;   //!< env sustain in [0..1]
-    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-
+    
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
-    Param envAttackShape; //!< env attack shape in [0.01..10]
-    Param envDecayShape; //!< env decay shape in [0.01..10]
-    Param envReleaseShape; //!< env release shape in [0.01..10]
+  
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
@@ -172,19 +199,14 @@ public:
     ParamStepped<eOnOffToggle> seqStepActive6;
     ParamStepped<eOnOffToggle> seqStepActive7;
 
-    Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
+    /*Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
     Param env1Attack;    //!< env1 attack in [0.001..5]s
     Param env1Decay;     //!< env1 decay in [0.001..5]s
     Param env1Sustain;   //!< env1 sustain in [0 .. 1]
     Param env1Release;   //!< env1 release in [0.001..5]s
     Param env1AttackShape; //!< env attack shape in [0.01..10]
     Param env1DecayShape; //!< env decay shape in [0.01..10]
-    Param env1ReleaseShape; //!< env release shape in [0.01..10]
-
-    ParamStepped<eModSource> envVolSpeedModSrc1; //!< Volume envelope speed mod source
-    ParamStepped<eModSource> env2SpeedModSrc1; //!< Envelope 2 speed mod source
-    ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
-    ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
+    Param env1ReleaseShape; //!< env release shape in [0.01..10]*/
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation
@@ -203,7 +225,6 @@ public:
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
-
                                                     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams; //!< vector of params to be serialized
                                          // list of only stepSeq params

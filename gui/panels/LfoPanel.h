@@ -37,7 +37,8 @@
 */
 class LfoPanel  : public PanelBase,
                   public SliderListener,
-                  public ButtonListener
+                  public ButtonListener,
+                  public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -52,6 +53,7 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -69,6 +71,8 @@ private:
     ScopedPointer<Label> squareLabel;
     ScopedPointer<Label> sampleHoldLabel2;
     ScopedPointer<MouseOverKnob> lfoFadeIn;
+    ScopedPointer<ToggleButton> triplets;
+    ScopedPointer<IncDecDropDown> noteLength;
 
 
     //==============================================================================

@@ -41,7 +41,7 @@ class EnvPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    EnvPanel (SynthParams &p);
+    EnvPanel (SynthParams &p, const String& panelTitle);
     ~EnvPanel();
 
     //==============================================================================
@@ -57,6 +57,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    const String _panelTitle;
+    SynthParams::EnvVol &envVol;
     //[/UserVariables]
 
     //==============================================================================

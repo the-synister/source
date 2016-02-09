@@ -37,10 +37,12 @@ SynthParams::SynthParams()
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
     &osc[0].fine, &osc[0].coarse, &osc[0].pitchModAmount2,&osc[0].trngAmount, &osc[0].pitchModAmount1, &osc[0].pulseWidth, &osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
+    &osc[1].fine, &osc[1].coarse, &osc[1].pitchModAmount2,&osc[1].trngAmount, &osc[1].pitchModAmount1, &osc[1].pulseWidth, &osc[1].pitchModSrc1, &osc[1].pitchModSrc2, &osc[1].shapeModSrc1, &osc[1].shapeModSrc2, &osc[1].panDir, &osc[1].vol, &osc[1].volModAmount1,
+    &osc[2].fine, &osc[2].coarse, &osc[2].pitchModAmount2,&osc[2].trngAmount, &osc[2].pitchModAmount1, &osc[2].pulseWidth, &osc[2].pitchModSrc1, &osc[2].pitchModSrc2, &osc[2].shapeModSrc1, &osc[2].shapeModSrc2, &osc[2].panDir, &osc[2].vol, &osc[2].volModAmount1,
     &lp1Cutoff, &filter1Resonance,
     &lp1CutModSrc1, &lp1CutModSrc2, &lp1ModAmount1, &lp1ModAmount2, &hp1Cutoff, &hp1CutModSrc1, &hp1CutModSrc2, &hp1ModAmount1, &hp1ModAmount2, &filter1ResonanceModSrc1, &filter1ResonanceModSrc2, 
-    &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv, &envVolSpeedModSrc1, &envVolSpeedModSrc2,
-    &env2SpeedModSrc1, &env2SpeedModSrc2,
+   /* &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv, &envVolSpeedModSrc1, &envVolSpeedModSrc2,
+    &env2SpeedModSrc1, &env2SpeedModSrc2,*/
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
@@ -70,16 +72,7 @@ SynthParams::SynthParams()
     , filter1Resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", "", 0.f, 10.f, 0.f)
     , filter1ResonanceModSrc1("Filter1 Res ModSrc1", "filter1ResModSrc1", "Filter1 resonance modSrc1", eModSource::eNone, modsourcenames)
     , filter1ResonanceModSrc2("Filter1 Res ModSrc2", "filter1ResModSrc2", "Filter1 resonance modSrc2", eModSource::eNone, modsourcenames)
-
-    , envAttack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-    , envDecay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
-    , envSustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
-    , envRelease("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-    , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
-    , envAttackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
-    , envDecayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
-    , envReleaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-
+/*
     , env1Attack("Attack", "env1Attack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
     , env1Decay("Decay", "env1Decay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
     , env1Sustain("Sustain", "env1Sustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
@@ -88,11 +81,7 @@ SynthParams::SynthParams()
     , env1AttackShape("A. Shape", "envAttackShape", "Env1 attack shape", "", 0.01f, 10.0f, 1.0f)
     , env1DecayShape("D. Shape", "envDecayShape", "Env1 decay shape", "", 0.01f, 10.0f, 1.0f)
     , env1ReleaseShape("R. Shape", "envReleaseShape", "Env1 release shape", "", 0.01f, 10.0f, 1.0f)
-    , envVolSpeedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
-    , envVolSpeedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
-    , env2SpeedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
-    , env2SpeedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
-
+*/
     , lfoFadein("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
     , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("Feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
@@ -163,6 +152,34 @@ SynthParams::Osc::Osc()
     , volModAmount1("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
+
+SynthParams::EnvBase::EnvBase()
+: envAttack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
+, envRelease("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
+, envAttackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+, envDecayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+, envReleaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
+, envDecay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+{
+}
+
+SynthParams::EnvVol::EnvVol()
+: EnvBase()
+, envSustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+, envVolSpeedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
+, envVolSpeedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
+{
+}
+
+SynthParams::Env::Env()
+:  EnvBase()
+, envSustain("Sustain", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+, env2SpeedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
+, env2SpeedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
+{
+}
+
 
 void SynthParams::addElement(XmlElement* patch, String name, float value) {
     XmlElement* node = new XmlElement(name);
