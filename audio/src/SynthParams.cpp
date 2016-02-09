@@ -212,6 +212,8 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
     if (patch->getChildByName(paramName) != NULL) {
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+        //! \todo dirty flag needs to be set! This is a bad hack, please use get/set instead of getUI/setUI
+        param.set(param.get(),true);
         //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
                                                                                                             // delay feedback and dry are bad and (ampVol sometimes); not further tested
     }

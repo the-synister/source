@@ -64,6 +64,19 @@ protected:
         }
     }
 
+    void updateDirtyBoxes() {
+        for (auto c2p : comboboxReg) {
+            if (c2p.second->isUIDirty()) {
+                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + 1);
+                
+                auto itHook = postUpdateHook.find(c2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
+        }
+    }
+
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
@@ -83,9 +96,12 @@ protected:
         }
     }
 
-    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p) {
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
         box->setSelectedId(static_cast<int>(p->getStep())+1);
+        if (hook) {
+            postUpdateHook[box] = hook;
+        }
     }
 
     bool handleCombobox(ComboBox* comboboxThatWasChanged) {
@@ -110,10 +126,11 @@ protected:
 
     virtual void timerCallback() override {
         updateDirtySliders();
+        updateDirtyBoxes();
     }
 
     std::map<Slider*, Param*> sliderReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
-    std::map<Slider*, tHookFn> postUpdateHook;
+    std::map<Component*, tHookFn> postUpdateHook;
     SynthParams &params;
 };
