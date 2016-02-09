@@ -142,6 +142,8 @@ SynthParams::SynthParams()
 {
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
+
+    osc[0].setName("Osc1");
 }
 
 SynthParams::Osc::Osc()

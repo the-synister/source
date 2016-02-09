@@ -23,9 +23,12 @@ public:
     }
     virtual ~Param() {}
 
+    void setPrefix(const String &s) { prefix_ = s; }
+    const String& prefix() { return prefix_; }
+
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
-    const String& hostTag() const { return hostTag_; }
+    String hostTag() const { return prefix_ + hostTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
@@ -103,6 +106,8 @@ protected:
     String hostTag_;
     String unit_;
     int numSteps_;
+
+    String prefix_;
 
     ListenerList<Listener> listener;
     std::atomic<bool> uiDirty;

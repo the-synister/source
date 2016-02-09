@@ -83,6 +83,14 @@ public:
     struct Osc {
         Osc();
 
+        void setName(const String &s) {
+            name = s;
+
+            //! \todo set prefix of every param to name
+        }
+
+        String name;
+
         Param fine;      //!< fine tune in [-100..100] ct
         Param coarse;    //!< coarse tune in [-11..11] st
         ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
