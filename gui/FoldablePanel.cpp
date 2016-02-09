@@ -230,9 +230,9 @@ void FoldablePanel::addSection (const String& sectionTitle,
 
 void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
 {
-    if (SectionComponent* s = panelHolderComponent->getSection (sectionIndex))
+    if (SectionComponent* s = panelHolderComponent->getSection (sectionIndex)) {
         s->addPanel(newPanel);
-
+    }
 }
 
 void FoldablePanel::updateLayout() const

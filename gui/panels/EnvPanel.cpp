@@ -33,73 +33,73 @@ EnvPanel::EnvPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (attackTime1 = new MouseOverKnob ("Attack Time"));
-    attackTime1->setRange (0.001, 5, 0);
-    attackTime1->setSliderStyle (Slider::RotaryVerticalDrag);
-    attackTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
-    attackTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    attackTime1->setColour (Slider::textBoxTextColourId, Colours::white);
-    attackTime1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    attackTime1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    attackTime1->addListener (this);
-    attackTime1->setSkewFactor (0.5);
+    addAndMakeVisible (attackTime = new MouseOverKnob ("Attack Time"));
+    attackTime->setRange (0.001, 5, 0);
+    attackTime->setSliderStyle (Slider::RotaryVerticalDrag);
+    attackTime->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    attackTime->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    attackTime->setColour (Slider::textBoxTextColourId, Colours::white);
+    attackTime->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    attackTime->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    attackTime->addListener (this);
+    attackTime->setSkewFactor (0.5);
 
-    addAndMakeVisible (decayTime1 = new MouseOverKnob ("Decay Time"));
-    decayTime1->setRange (0.001, 5, 0);
-    decayTime1->setSliderStyle (Slider::RotaryVerticalDrag);
-    decayTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
-    decayTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    decayTime1->setColour (Slider::textBoxTextColourId, Colours::white);
-    decayTime1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    decayTime1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    decayTime1->addListener (this);
-    decayTime1->setSkewFactor (0.5);
+    addAndMakeVisible (decayTime = new MouseOverKnob ("Decay Time"));
+    decayTime->setRange (0.001, 5, 0);
+    decayTime->setSliderStyle (Slider::RotaryVerticalDrag);
+    decayTime->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    decayTime->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    decayTime->setColour (Slider::textBoxTextColourId, Colours::white);
+    decayTime->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    decayTime->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    decayTime->addListener (this);
+    decayTime->setSkewFactor (0.5);
 
-    addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
-    sustainLevel1->setRange (-96, 0, 0);
-    sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
-    sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
-    sustainLevel1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    sustainLevel1->setColour (Slider::textBoxTextColourId, Colours::white);
-    sustainLevel1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    sustainLevel1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    sustainLevel1->addListener (this);
-    sustainLevel1->setSkewFactor (3);
+    addAndMakeVisible (sustainLevel = new MouseOverKnob ("Sustain"));
+    sustainLevel->setRange (-96, 0, 0);
+    sustainLevel->setSliderStyle (Slider::RotaryVerticalDrag);
+    sustainLevel->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    sustainLevel->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    sustainLevel->setColour (Slider::textBoxTextColourId, Colours::white);
+    sustainLevel->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    sustainLevel->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    sustainLevel->addListener (this);
+    sustainLevel->setSkewFactor (3);
 
-    addAndMakeVisible (releaseTime1 = new MouseOverKnob ("Release Time"));
-    releaseTime1->setRange (0.001, 5, 0);
-    releaseTime1->setSliderStyle (Slider::RotaryVerticalDrag);
-    releaseTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
-    releaseTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    releaseTime1->setColour (Slider::textBoxTextColourId, Colours::white);
-    releaseTime1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    releaseTime1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    releaseTime1->addListener (this);
-    releaseTime1->setSkewFactor (0.5);
+    addAndMakeVisible (releaseTime = new MouseOverKnob ("Release Time"));
+    releaseTime->setRange (0.001, 5, 0);
+    releaseTime->setSliderStyle (Slider::RotaryVerticalDrag);
+    releaseTime->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    releaseTime->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    releaseTime->setColour (Slider::textBoxTextColourId, Colours::white);
+    releaseTime->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    releaseTime->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    releaseTime->addListener (this);
+    releaseTime->setSkewFactor (0.5);
 
-    addAndMakeVisible (attackShape1 = new MouseOverKnob ("Attack Shape"));
-    attackShape1->setRange (0.01, 10, 0);
-    attackShape1->setSliderStyle (Slider::RotaryVerticalDrag);
-    attackShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    attackShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    attackShape1->addListener (this);
-    attackShape1->setSkewFactor (0.3);
+    addAndMakeVisible (attackShape = new MouseOverKnob ("Attack Shape"));
+    attackShape->setRange (0.01, 10, 0);
+    attackShape->setSliderStyle (Slider::RotaryVerticalDrag);
+    attackShape->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    attackShape->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    attackShape->addListener (this);
+    attackShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (decayShape1 = new MouseOverKnob ("Decay Shape"));
-    decayShape1->setRange (0.01, 10, 0);
-    decayShape1->setSliderStyle (Slider::RotaryVerticalDrag);
-    decayShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    decayShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    decayShape1->addListener (this);
-    decayShape1->setSkewFactor (0.3);
+    addAndMakeVisible (decayShape = new MouseOverKnob ("Decay Shape"));
+    decayShape->setRange (0.01, 10, 0);
+    decayShape->setSliderStyle (Slider::RotaryVerticalDrag);
+    decayShape->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    decayShape->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    decayShape->addListener (this);
+    decayShape->setSkewFactor (0.3);
 
-    addAndMakeVisible (releaseShape1 = new MouseOverKnob ("Release Shape"));
-    releaseShape1->setRange (0.01, 10, 0);
-    releaseShape1->setSliderStyle (Slider::RotaryVerticalDrag);
-    releaseShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    releaseShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
-    releaseShape1->addListener (this);
-    releaseShape1->setSkewFactor (0.3);
+    addAndMakeVisible (releaseShape = new MouseOverKnob ("Release Shape"));
+    releaseShape->setRange (0.01, 10, 0);
+    releaseShape->setSliderStyle (Slider::RotaryVerticalDrag);
+    releaseShape->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    releaseShape->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    releaseShape->addListener (this);
+    releaseShape->setSkewFactor (0.3);
 
     addAndMakeVisible (keyVelToEnv1 = new MouseOverKnob ("Vel to Env"));
     keyVelToEnv1->setRange (0, 1, 0);
@@ -111,9 +111,9 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve1 = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
-                                                           ));
-    envelopeCurve1->setName ("Envelope Curve");
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
+                                                          ));
+    envelopeCurve->setName ("Envelope Curve");
 
     addAndMakeVisible (shapeLabel1 = new Label ("new label",
                                                 TRANS("shape")));
@@ -126,23 +126,21 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime1, &params.envAttack, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayTime1, &params.envDecay, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(sustainLevel1, &params.envSustain, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseTime1, &params.envRelease, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(attackShape1, &params.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayShape1, &params.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseShape1, &params.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackTime, &params.envAttack, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayTime, &params.envDecay, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(sustainLevel, &params.envSustain, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseTime, &params.envRelease, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackShape, &params.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayShape, &params.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseShape, &params.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(keyVelToEnv1, &params.keyVelToEnv1);
-    attackShape1->setPopupDisplayEnabled(true, this);
-    decayShape1->setPopupDisplayEnabled(true, this);
-    releaseShape1->setPopupDisplayEnabled(true, this);
-
-    // TODO: Delete
+    attackShape->setPopupDisplayEnabled(true, this);
+    decayShape->setPopupDisplayEnabled(true, this);
+    releaseShape->setPopupDisplayEnabled(true, this);
 
     //[/UserPreSize]
 
-    setSize (267, 252);
+    setSize (266, 252);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -154,15 +152,15 @@ EnvPanel::~EnvPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    attackTime1 = nullptr;
-    decayTime1 = nullptr;
-    sustainLevel1 = nullptr;
-    releaseTime1 = nullptr;
-    attackShape1 = nullptr;
-    decayShape1 = nullptr;
-    releaseShape1 = nullptr;
+    attackTime = nullptr;
+    decayTime = nullptr;
+    sustainLevel = nullptr;
+    releaseTime = nullptr;
+    attackShape = nullptr;
+    decayShape = nullptr;
+    releaseShape = nullptr;
     keyVelToEnv1 = nullptr;
-    envelopeCurve1 = nullptr;
+    envelopeCurve = nullptr;
     shapeLabel1 = nullptr;
 
 
@@ -199,15 +197,15 @@ void EnvPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    attackTime1->setBounds (8, 38, 64, 64);
-    decayTime1->setBounds (69, 38, 64, 64);
-    sustainLevel1->setBounds (130, 38, 64, 64);
-    releaseTime1->setBounds (195, 38, 64, 64);
-    attackShape1->setBounds (30, 111, 20, 20);
-    decayShape1->setBounds (91, 111, 20, 20);
-    releaseShape1->setBounds (216, 111, 20, 20);
+    attackTime->setBounds (8, 38, 64, 64);
+    decayTime->setBounds (69, 38, 64, 64);
+    sustainLevel->setBounds (130, 38, 64, 64);
+    releaseTime->setBounds (195, 38, 64, 64);
+    attackShape->setBounds (30, 111, 20, 20);
+    decayShape->setBounds (91, 111, 20, 20);
+    releaseShape->setBounds (216, 111, 20, 20);
     keyVelToEnv1->setBounds (8, 146, 64, 64);
-    envelopeCurve1->setBounds (117, 146, 128, 64);
+    envelopeCurve->setBounds (117, 146, 128, 64);
     shapeLabel1->setBounds (137, 108, 51, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -219,40 +217,40 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == attackTime1)
+    if (sliderThatWasMoved == attackTime)
     {
-        //[UserSliderCode_attackTime1] -- add your slider handling code here..
-        //[/UserSliderCode_attackTime1]
+        //[UserSliderCode_attackTime] -- add your slider handling code here..
+        //[/UserSliderCode_attackTime]
     }
-    else if (sliderThatWasMoved == decayTime1)
+    else if (sliderThatWasMoved == decayTime)
     {
-        //[UserSliderCode_decayTime1] -- add your slider handling code here..
-        //[/UserSliderCode_decayTime1]
+        //[UserSliderCode_decayTime] -- add your slider handling code here..
+        //[/UserSliderCode_decayTime]
     }
-    else if (sliderThatWasMoved == sustainLevel1)
+    else if (sliderThatWasMoved == sustainLevel)
     {
-        //[UserSliderCode_sustainLevel1] -- add your slider handling code here..
-        //[/UserSliderCode_sustainLevel1]
+        //[UserSliderCode_sustainLevel] -- add your slider handling code here..
+        //[/UserSliderCode_sustainLevel]
     }
-    else if (sliderThatWasMoved == releaseTime1)
+    else if (sliderThatWasMoved == releaseTime)
     {
-        //[UserSliderCode_releaseTime1] -- add your slider handling code here..
-        //[/UserSliderCode_releaseTime1]
+        //[UserSliderCode_releaseTime] -- add your slider handling code here..
+        //[/UserSliderCode_releaseTime]
     }
-    else if (sliderThatWasMoved == attackShape1)
+    else if (sliderThatWasMoved == attackShape)
     {
-        //[UserSliderCode_attackShape1] -- add your slider handling code here..
-        //[/UserSliderCode_attackShape1]
+        //[UserSliderCode_attackShape] -- add your slider handling code here..
+        //[/UserSliderCode_attackShape]
     }
-    else if (sliderThatWasMoved == decayShape1)
+    else if (sliderThatWasMoved == decayShape)
     {
-        //[UserSliderCode_decayShape1] -- add your slider handling code here..
-        //[/UserSliderCode_decayShape1]
+        //[UserSliderCode_decayShape] -- add your slider handling code here..
+        //[/UserSliderCode_decayShape]
     }
-    else if (sliderThatWasMoved == releaseShape1)
+    else if (sliderThatWasMoved == releaseShape)
     {
-        //[UserSliderCode_releaseShape1] -- add your slider handling code here..
-        //[/UserSliderCode_releaseShape1]
+        //[UserSliderCode_releaseShape] -- add your slider handling code here..
+        //[/UserSliderCode_releaseShape]
     }
     else if (sliderThatWasMoved == keyVelToEnv1)
     {
@@ -269,13 +267,13 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void EnvPanel::updateCurve()
 {
-    envelopeCurve1->setAttack(static_cast<float>(attackTime1->getValue()));
-    envelopeCurve1->setDecay(static_cast<float>(decayTime1->getValue()));
-    envelopeCurve1->setSustain(static_cast<float>(sustainLevel1->getValue()));
-    envelopeCurve1->setRelease(static_cast<float>(releaseTime1->getValue()));
-    envelopeCurve1->setAttackShape(static_cast<float>(attackShape1->getValue()));
-    envelopeCurve1->setDecayShape(static_cast<float>(decayShape1->getValue()));
-    envelopeCurve1->setReleaseShape(static_cast<float>(releaseShape1->getValue()));
+    envelopeCurve->setAttack(static_cast<float>(attackTime->getValue()));
+    envelopeCurve->setDecay(static_cast<float>(decayTime->getValue()));
+    envelopeCurve->setSustain(static_cast<float>(sustainLevel->getValue()));
+    envelopeCurve->setRelease(static_cast<float>(releaseTime->getValue()));
+    envelopeCurve->setAttackShape(static_cast<float>(attackShape->getValue()));
+    envelopeCurve->setDecayShape(static_cast<float>(decayShape->getValue()));
+    envelopeCurve->setReleaseShape(static_cast<float>(releaseShape->getValue()));
     repaint();
 }
 
@@ -294,7 +292,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="800"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="266"
                  initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
   <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
@@ -344,7 +342,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
                     virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="117 146 128 64"
-                    class="Component" params="params.envAttack1.get(), params.envDecay1.get(), params.envSustain1.get(), params.envRelease1.get(),  params.envAttackShape1.get(), params.envDecayShape1.get(), params.envReleaseShape1.get()&#10;"/>
+                    class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
          virtualName="" explicitFocusOrder="0" pos="137 108 51 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"

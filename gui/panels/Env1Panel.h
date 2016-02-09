@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "EnvelopeCurve.h"
 //[/Headers]
 
 
@@ -36,8 +37,8 @@
                                                                     //[/Comments]
 */
 class Env1Panel  : public PanelBase,
-                   public SliderListener,
-                   public ComboBoxListener
+                   public ComboBoxListener,
+                   public SliderListener
 {
 public:
     //==============================================================================
@@ -50,8 +51,8 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -60,6 +61,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<ComboBox> env2SpeedModSrc1;
+    ScopedPointer<ComboBox> env2SpeedModSrc2;
     ScopedPointer<MouseOverKnob> attackTime1;
     ScopedPointer<MouseOverKnob> decayTime1;
     ScopedPointer<MouseOverKnob> sustainLevel1;
@@ -68,9 +71,8 @@ private:
     ScopedPointer<MouseOverKnob> decayShape1;
     ScopedPointer<MouseOverKnob> releaseShape1;
     ScopedPointer<MouseOverKnob> keyVelToEnv1;
-    ScopedPointer<Label> Env1Label;
-    ScopedPointer<ComboBox> env2SpeedModSrc1;
-    ScopedPointer<ComboBox> env2SpeedModSrc2;
+    ScopedPointer<EnvelopeCurve> envelopeCurve;
+    ScopedPointer<Label> shapeLabel1;
 
 
     //==============================================================================
