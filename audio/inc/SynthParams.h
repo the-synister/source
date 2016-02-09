@@ -83,22 +83,22 @@ public:
     struct Osc {
         Osc();
 
-        Param osc1fine;      //!< fine tune in [-100..100] ct
-        Param osc1coarse;    //!< coarse tune in [-11..11] st
-        ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
-        Param osc1trngAmount; //Triangle Amount [0 ... 1]
-        Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
-        Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
+        Param fine;      //!< fine tune in [-100..100] ct
+        Param coarse;    //!< coarse tune in [-11..11] st
+        ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
+        Param trngAmount; //Triangle Amount [0 ... 1]
+        Param pulseWidth; //!< pulse width in [0,01..0,99]
+        Param shapeModAmount; //!< amount of pulse width modulation [0..1]
         //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
         //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
         //ParamStepped<eModSource> osc1panModSrc1; //!< osc1 pan mod source
         //ParamStepped<eModSource> osc1panModSrc2; //!< osc2 pan mod source
-        ParamStepped<eModSource> osc1PWModSrc1; //!< oscillator 1 pulse width modulation source
-        ParamStepped<eModSource> osc1PWModSrc2; //!< oscillator 1 pulse width modulation source
-        ParamStepped<eModSource> oscPitchModSrc1; //!< oscillator 1 pitch modulation source
-        Param oscPitchModAmount1; //!< range in [0..12] st
-        ParamStepped<eModSource> oscPitchModSrc2; //!< oscillator 1 pitch modulation source
-        Param oscPitchModAmount2; //!< modulation depth in [-12..12] st
+        ParamStepped<eModSource> shapeModSrc1; //!< oscillator 1 pulse width modulation source
+        ParamStepped<eModSource> shapeModSrc2; //!< oscillator 1 pulse width modulation source
+        ParamStepped<eModSource> pitchModSrc1; //!< oscillator 1 pitch modulation source
+        Param pitchModAmount1; //!< range in [0..12] st
+        ParamStepped<eModSource> pitchModSrc2; //!< oscillator 1 pitch modulation source
+        Param pitchModAmount2; //!< modulation depth in [-12..12] st
     } osc[1];
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used

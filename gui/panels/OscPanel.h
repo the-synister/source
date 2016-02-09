@@ -65,7 +65,7 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> ftune1;
     ScopedPointer<MouseOverKnob> lfo1depth1;
-    ScopedPointer<MouseOverKnob> osc1trngAmount;
+    ScopedPointer<MouseOverKnob> trngAmount;
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;

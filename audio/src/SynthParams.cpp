@@ -35,8 +35,8 @@ namespace {
 SynthParams::SynthParams()
     : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
-    &osc[0].osc1fine, &osc[0].osc1coarse, &osc[0].oscPitchModAmount2,&osc[0].osc1trngAmount, &osc[0].oscPitchModAmount1, &osc[0].osc1pulsewidth, &osc[0].oscPitchModSrc1, &osc[0].oscPitchModSrc2,
-    &osc[0].osc1PWModSrc1, &osc[0].osc1PWModSrc2,
+    &osc[0].fine, &osc[0].coarse, &osc[0].pitchModAmount2,&osc[0].trngAmount, &osc[0].pitchModAmount1, &osc[0].pulseWidth, &osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
+    &osc[0].shapeModSrc1, &osc[0].shapeModSrc2,
     &lp1Cutoff, &filter1Resonance,
     &lp1CutModSrc1, &lp1CutModSrc2, &lp1ModAmount1, &lp1ModAmount2, &hp1Cutoff, &hp1CutModSrc1, &hp1CutModSrc2, &hp1ModAmount1, &hp1ModAmount2, &filter1ResonanceModSrc1, &filter1ResonanceModSrc2, &keyVelocityLevel,
     &envAttack, &envDecay, &envSustain, &envRelease, &envAttackShape, &envDecayShape, &envReleaseShape, &keyVelToEnv, &envVolSpeedModSrc1, &envVolSpeedModSrc2,
@@ -148,18 +148,18 @@ SynthParams::SynthParams()
 }
 
 SynthParams::Osc::Osc()
-    : osc1fine("f.tune", "osc1fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
-    , osc1coarse("c.tune", "osc1coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
-    , oscPitchModAmount2("mod", "oscPitchModAmount2", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
-    , osc1trngAmount("trianlge", "osc1trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-    , oscPitchModAmount1("Pitch", "oscPitchModAmount1", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
-    , oscPitchModSrc1("OSC1 PitchModSrc1", "osc1PitchModSrc1", "OSC1 pitch modSrc1", eModSource::eNone, modsourcenames)
-    , oscPitchModSrc2("OSC1 PitchModSrc2", "osc1PitchModSrc2", "OSC1 pitch modSrc2", eModSource::eNone, modsourcenames)
-    , osc1PWModSrc1("OSC1 PW ModSrc1", "osc1PWModSrc1", "OSC1 pulse width modSrc1", eModSource::eNone, modsourcenames)
-    , osc1PWModSrc2("OSC1 PW ModSrc2", "osc1PWModSrc2", "OSC1 pulse width modSrc2", eModSource::eNone, modsourcenames)
-    , osc1pulsewidth("Width", "osc1pulsewidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-    , osc1AmountWidthMod("Width Mod", "osc1AmountWidthMod", "OSC1 PWM", "", 0.f, 1.f, 0.f)
-    , osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
+    : fine("f.tune", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
+    , coarse("c.tune", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
+    , pitchModAmount2("mod", "pitchModAmount2", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
+    , trngAmount("trianlge", "trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+    , pitchModAmount1("Pitch", "pitchModAmount1", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
+    , pitchModSrc1("OSC1 PitchModSrc1", "osc1PitchModSrc1", "OSC1 pitch modSrc1", eModSource::eNone, modsourcenames)
+    , pitchModSrc2("OSC1 PitchModSrc2", "osc1PitchModSrc2", "OSC1 pitch modSrc2", eModSource::eNone, modsourcenames)
+    , shapeModSrc1("OSC1 PW ModSrc1", "shapeModSrc1", "OSC1 pulse width modSrc1", eModSource::eNone, modsourcenames)
+    , shapeModSrc2("OSC1 PW ModSrc2", "shapeModSrc2", "OSC1 pulse width modSrc2", eModSource::eNone, modsourcenames)
+    , pulseWidth("Width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , shapeModAmount("Width Mod", "shapeModAmount", "OSC1 PWM", "", 0.f, 1.f, 0.f)
+    , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
 {
 }
 

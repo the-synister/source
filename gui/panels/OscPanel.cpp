@@ -48,12 +48,12 @@ OscPanel::OscPanel (SynthParams &p)
     lfo1depth1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     lfo1depth1->addListener (this);
 
-    addAndMakeVisible (osc1trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
-    osc1trngAmount->setRange (0, 1, 0);
-    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
-    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    osc1trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    osc1trngAmount->addListener (this);
+    addAndMakeVisible (trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
+    trngAmount->setRange (0, 1, 0);
+    trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    trngAmount->addListener (this);
 
     addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
@@ -86,7 +86,7 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.osc1Waveform.getStep(), osc.osc1pulsewidth.get(), osc.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -148,36 +148,36 @@ OscPanel::OscPanel (SynthParams &p)
     //[UserPreSize]
     // NOTE: test wise
     registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
-    registerSaturnSource(ctune1, pitchRange, &osc.oscPitchModAmount1, 2);
-    registerSaturnSource(ctune1, lfo1depth1, &osc.oscPitchModAmount2, 1);
+    registerSaturnSource(ctune1, pitchRange, &osc.pitchModAmount1, 2);
+    registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModAmount2, 1);
 
-    registerSaturnSource(lfo1depth1, pitchRange, &osc.oscPitchModAmount1, 1);
+    registerSaturnSource(lfo1depth1, pitchRange, &osc.pitchModAmount1, 1);
     registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);
 
-    registerSlider(ftune1, &osc.osc1fine);
-    registerSlider(lfo1depth1, &osc.oscPitchModAmount2);
-    registerSlider(osc1trngAmount, &osc.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(pitchRange, &osc.oscPitchModAmount1);
-    registerSlider(pulsewidth, &osc.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod, &osc.osc1AmountWidthMod);
-    registerSlider(ctune1, &osc.osc1coarse);
-    registerSlider(waveformSwitch, &osc.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(ftune1, &osc.fine);
+    registerSlider(lfo1depth1, &osc.pitchModAmount2);
+    registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(pitchRange, &osc.pitchModAmount1);
+    registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &osc.shapeModAmount);
+    registerSlider(ctune1, &osc.coarse);
+    registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
-    registerSlider(waveformSwitch, &osc.osc1Waveform);
+    registerSlider(waveformSwitch, &osc.waveForm);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
 
-    registerCombobox(osc1FreqModSrc1, &osc.oscPitchModSrc1);
-    registerCombobox(osc1FreqModSrc2, &osc.oscPitchModSrc2);
+    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1);
+    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2);
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-    osc1trngAmount->setVisible(false);
+    trngAmount->setVisible(false);
     //[/Constructor]
 }
 
@@ -188,7 +188,7 @@ OscPanel::~OscPanel()
 
     ftune1 = nullptr;
     lfo1depth1 = nullptr;
-    osc1trngAmount = nullptr;
+    trngAmount = nullptr;
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
@@ -226,7 +226,7 @@ void OscPanel::resized()
 
     ftune1->setBounds (80, 8, 64, 64);
     lfo1depth1->setBounds (224, 8, 64, 64);
-    osc1trngAmount->setBounds (296, 8, 64, 64);
+    trngAmount->setBounds (296, 8, 64, 64);
     pulsewidth->setBounds (296, 8, 64, 64);
     pitchRange->setBounds (152, 8, 64, 64);
     ctune1->setBounds (8, 8, 64, 64);
@@ -260,7 +260,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
         //[/UserSliderCode_lfo1depth1]
     }
-    else if (sliderThatWasMoved == osc1trngAmount)
+    else if (sliderThatWasMoved == trngAmount)
     {
         //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
         //[/UserSliderCode_osc1trngAmount]
@@ -328,12 +328,12 @@ void OscPanel::updateWFShapeControls()
 {
     int waveformKey = static_cast<int>(waveformSwitch->getValue());
     eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
-    osc.osc1Waveform.setStep(eWaveformKey);
+    osc.waveForm.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
-    osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+    trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-    waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+    waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
 }
 //[/MiscUserCode]
 
@@ -363,7 +363,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ff6c788c" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
+  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
           rotarysliderfill="ff6c788c" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
@@ -391,7 +391,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="24 112 208 96"
-                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+                    class="Component" params="params.waveForm.getStep(), params.pulseWidth.get(), params.trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
           virtualName="" explicitFocusOrder="0" pos="360 128 64 64" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
