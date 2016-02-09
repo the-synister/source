@@ -29,6 +29,7 @@
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p)
     : PanelBase(p)
+    , osc(p.osc[0])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -85,7 +86,7 @@ OscPanel::OscPanel (SynthParams &p)
     lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     lfoFadeIn->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.osc1Waveform.getStep(), osc.osc1pulsewidth.get(), osc.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -147,29 +148,29 @@ OscPanel::OscPanel (SynthParams &p)
     //[UserPreSize]
     // NOTE: test wise
     registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
-    registerSaturnSource(ctune1, pitchRange, &params.osc1PitchRange, 2);
-    registerSaturnSource(ctune1, lfo1depth1, &params.osc1lfo1depth, 1);
+    registerSaturnSource(ctune1, pitchRange, &osc.oscPitchModAmount1, 2);
+    registerSaturnSource(ctune1, lfo1depth1, &osc.oscPitchModAmount2, 1);
 
-    registerSaturnSource(lfo1depth1, pitchRange, &params.osc1PitchRange, 1);
+    registerSaturnSource(lfo1depth1, pitchRange, &osc.oscPitchModAmount1, 1);
     registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);
 
-    registerSlider(ftune1, &params.osc1fine);
-    registerSlider(lfo1depth1, &params.osc1lfo1depth);
-    registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(pitchRange, &params.osc1PitchRange);
-    registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
-    registerSlider(ctune1, &params.osc1coarse);
-    registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(ftune1, &osc.osc1fine);
+    registerSlider(lfo1depth1, &osc.oscPitchModAmount2);
+    registerSlider(osc1trngAmount, &osc.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(pitchRange, &osc.oscPitchModAmount1);
+    registerSlider(pulsewidth, &osc.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &osc.osc1AmountWidthMod);
+    registerSlider(ctune1, &osc.osc1coarse);
+    registerSlider(waveformSwitch, &osc.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(lfoFadeIn, &params.lfoFadein);
-    registerSlider(waveformSwitch, &params.osc1Waveform);
+    registerSlider(waveformSwitch, &osc.osc1Waveform);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
 
-    registerCombobox(osc1FreqModSrc1, &params.osc1PiModSrc1);
-    registerCombobox(osc1FreqModSrc2, &params.osc1PiModSrc2);
+    registerCombobox(osc1FreqModSrc1, &osc.oscPitchModSrc1);
+    registerCombobox(osc1FreqModSrc2, &osc.oscPitchModSrc2);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -327,7 +328,7 @@ void OscPanel::updateWFShapeControls()
 {
     int waveformKey = static_cast<int>(waveformSwitch->getValue());
     eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
-    params.osc1Waveform.setStep(eWaveformKey);
+    osc.osc1Waveform.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
     waveformVisual->setWaveformKey(eWaveformKey);

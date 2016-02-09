@@ -23,21 +23,21 @@ PluginAudioProcessor::PluginAudioProcessor()
     , clip(*this)
     , lowFi(*this)
 {
-    addParameter(new HostParam<Param>(osc1fine));
-    addParameter(new HostParam<Param>(osc1coarse));
-    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc1Waveform));
+    addParameter(new HostParam<Param>(osc[0].osc1fine));
+    addParameter(new HostParam<Param>(osc[0].osc1coarse));
+    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[0].osc1Waveform));
 
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
-    addParameter(new HostParam<Param>(osc1lfo1depth));
+    addParameter(new HostParam<Param>(osc[0].oscPitchModAmount2));
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
 
     addParameter(new HostParam<Param>(vol));
 
-    addParameter(new HostParam<Param>(osc1trngAmount));
-    addParameter(new HostParam<Param>(osc1pulsewidth));
+    addParameter(new HostParam<Param>(osc[0].osc1trngAmount));
+    addParameter(new HostParam<Param>(osc[0].osc1pulsewidth));
 
     addParameter(new HostParam<Param>(lp1Cutoff));
     addParameter(new HostParam<Param>(hp1Cutoff));
@@ -66,8 +66,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc1PitchRange, "osc1FreqModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc1lfo1depth, "osc1FreqModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].oscPitchModAmount1, "osc1FreqModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].oscPitchModAmount2, "osc1FreqModSrcBox2");
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

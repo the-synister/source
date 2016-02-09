@@ -130,28 +130,28 @@ public:
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
-        switch (params.osc1Waveform.getStep())
+        switch (params.osc[0].osc1Waveform.getStep())
         {
             case eOscWaves::eOscSquare:
         {
             osc1Sine.phase = 0.f;
-            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc1fine.get()) * Param::fromSemi(params.osc1coarse.get())) / sRate * 2.f * float_Pi;
-            osc1Sine.width = params.osc1pulsewidth.get();
-            lfo1square.width = params.osc1pulsewidth.get();
+            osc1Sine.phaseDelta = freqHz * (Param::fromCent(params.osc[0].osc1fine.get()) * Param::fromSemi(params.osc[0].osc1coarse.get())) / sRate * 2.f * float_Pi;
+            osc1Sine.width = params.osc[0].osc1pulsewidth.get();
+            lfo1square.width = params.osc[0].osc1pulsewidth.get();
             //osc1.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
             break;
         }
             case eOscWaves::eOscSaw:
         {
             osc1Saw.phase = 0.f;
-            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
-            osc1Saw.trngAmount = params.osc1trngAmount.get();
+            osc1Saw.phaseDelta = freqHz * Param::fromCent(params.osc[0].osc1fine.get()) / sRate * 2.f * float_Pi;
+            osc1Saw.trngAmount = params.osc[0].osc1trngAmount.get();
             break;
         }
             case eOscWaves::eOscNoise:
             {
                 osc1WhiteNoise.phase = 0.f;
-                osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc1fine.get()) / sRate * 2.f * float_Pi;
+                osc1WhiteNoise.phaseDelta = freqHz * Param::fromCent(params.osc[0].osc1fine.get()) / sRate * 2.f * float_Pi;
                 break;
             }
         }
@@ -220,20 +220,20 @@ public:
             for (int s = 0; s < numSamples; ++s) {
                 float currentSample = 0.0f;
 
-                switch (params.osc1Waveform.getStep())
+                switch (params.osc[0].osc1Waveform.getStep())
                 {
                 case eOscWaves::eOscSquare:
                     {
                         // In case of pulse width modulation
                         float deltaWidth = osc1Sine.width > .5f
-                            ? params.osc1pulsewidth.getMax() - osc1Sine.width
-                            : osc1Sine.width - params.osc1pulsewidth.getMin();
+                            ? params.osc[0].osc1pulsewidth.getMax() - osc1Sine.width
+                            : osc1Sine.width - params.osc[0].osc1pulsewidth.getMin();
                         // Pulse width must not reach 0 or 1
-                        if (deltaWidth > (.5f - params.osc1pulsewidth.getMin()) && deltaWidth < (.5f + params.osc1pulsewidth.getMin())) {
+                        if (deltaWidth > (.5f - params.osc[0].osc1pulsewidth.getMin()) && deltaWidth < (.5f + params.osc[0].osc1pulsewidth.getMin())) {
                             deltaWidth = .49f;
                         }
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaWidth = deltaWidth * lfo1[s] * params.osc1AmountWidthMod.get();
+                        deltaWidth = deltaWidth * lfo1[s] * params.osc[0].osc1AmountWidthMod.get();
                         // Next sample will be fetched with the new width
                         currentSample = (osc1Sine.next(osc1PitchMod[s], deltaWidth));
                     }
@@ -243,10 +243,10 @@ public:
                 {
                         // In case of triangle modulation
                         float deltaTr = osc1Saw.trngAmount > .5f
-                            ? params.osc1trngAmount.getMax() - osc1Saw.trngAmount
-                            : osc1Saw.trngAmount - params.osc1trngAmount.getMin();
+                            ? params.osc[0].osc1trngAmount.getMax() - osc1Saw.trngAmount
+                            : osc1Saw.trngAmount - params.osc[0].osc1trngAmount.getMin();
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaTr = deltaTr * lfo1[s] * params.osc1AmountWidthMod.get();
+                        deltaTr = deltaTr * lfo1[s] * params.osc[0].osc1AmountWidthMod.get();
                         // Next sample will be fetch with the new width
                         currentSample = (osc1Saw.next(osc1PitchMod[s], deltaTr));
                     }
