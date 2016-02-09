@@ -8,9 +8,6 @@
     <Filter Include="plugin\Gui">
       <UniqueIdentifier>{E1BCBC1C-A163-9876-D70B-F5372500C76A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Gui\Assets">
-      <UniqueIdentifier>{3501B87A-C557-D260-C1E2-E54D7BC2782B}</UniqueIdentifier>
-    </Filter>
     <Filter Include="plugin\Gui\panels">
       <UniqueIdentifier>{7D44F8BC-8F8D-04FB-22C7-D3E92209163E}</UniqueIdentifier>
     </Filter>
@@ -346,12 +343,6 @@
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-=======
->>>>>>> master
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
@@ -371,9 +362,6 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
@@ -400,28 +388,25 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1639,9 +1624,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>Juce Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1716,12 +1698,6 @@
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-=======
->>>>>>> master
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
@@ -1741,9 +1717,6 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
@@ -1773,23 +1746,22 @@
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
-=======
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
->>>>>>> master
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
@@ -1802,9 +1774,6 @@
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">
@@ -3214,17 +3183,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>Juce Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\sine-switch_noise.png">
-      <Filter>plugin\Gui\Assets</Filter>
-    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>
