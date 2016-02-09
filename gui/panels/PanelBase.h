@@ -23,6 +23,7 @@ public:
         stopTimer();
     }
 
+    static const int COMBO_OFS = 2;
 protected:
     typedef std::function<void()> tHookFn;
 
@@ -31,9 +32,10 @@ protected:
         if (hook) {
             postUpdateHook[slider] = hook;
         }
-        if(p->hasLabels()) {
+        if (p->hasLabels()) {
             slider->setName(p->getUIString());
-        } else {
+        }
+        else {
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
@@ -69,7 +71,7 @@ protected:
         for (auto s2p : sliderReg) {
             if (s2p.second->isUIDirty()) {
                 s2p.first->setValue(s2p.second->getUI());
-                if(s2p.second->hasLabels()) {
+                if (s2p.second->hasLabels()) {
                     s2p.first->setName(s2p.second->getUIString());
                 }
 
@@ -99,11 +101,24 @@ protected:
         }
     }
 
+    void updateDirtyBoxes() {
+        for (auto c2p : comboboxReg) {
+            if (c2p.second->isUIDirty()) {
+                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
+
+                auto itHook = postUpdateHook.find(c2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
+        }
+    }
+
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
             it->second->setUI(static_cast<float>(it->first->getValue()));
-            if(it->second->hasLabels()) {
+            if (it->second->hasLabels()) {
                 it->first->setName(it->second->getUIString());
             }
 
@@ -121,14 +136,44 @@ protected:
             }
 
             return true;
-        } else {
+        }
+        else {
             return false;
+        }
+    }
+
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
+        comboboxReg[box] = p;
+        box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
+        if (hook) {
+            postUpdateHook[box] = hook;
+        }
+    }
+
+    bool handleCombobox(ComboBox* comboboxThatWasChanged) {
+        auto it = comboboxReg.find(comboboxThatWasChanged);
+        if (it != comboboxReg.end()) {
+            // we gotta subtract 2 from the item id since the combobox ids start at 1 and the sources enum starts at -1
+            params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
+            // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
+            it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    void fillModsourceBox(ComboBox* box) {
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
         }
     }
 
     virtual void timerCallback() override {
         updateDirtySaturns();
         updateDirtySliders();
+        updateDirtyBoxes();
     }
 
     /**
@@ -158,7 +203,8 @@ protected:
     }
 
     std::map<Slider*, Param*> sliderReg;
+    std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
+    std::map<Component*, tHookFn> postUpdateHook;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<Slider*, tHookFn> postUpdateHook;
     SynthParams &params;
 };

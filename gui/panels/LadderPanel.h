@@ -35,8 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class LadderPanel  : public PanelBase,
-                     public SliderListener
+class LadderPanel  : public PanelBase
 {
 public:
     //==============================================================================
@@ -49,7 +48,6 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -58,8 +56,6 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> cutoff;
-    ScopedPointer<MouseOverKnob> resonance;
 
 
     //==============================================================================

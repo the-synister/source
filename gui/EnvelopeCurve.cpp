@@ -170,7 +170,6 @@ void EnvelopeCurve::paint (Graphics& g)
         curvePath.lineTo(i, (getHeight())*(1.013f - getEnvCoef()));
     }
 
-
     g.setColour(Colour(216, 202, 155));
     g.strokePath(curvePath, PathStrokeType(2.5f));
 }

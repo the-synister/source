@@ -9,8 +9,6 @@
 */
 
 #include "StepSequencer.h"
-#include "Voice.h"
-#include "HostParam.h"
 #include "SynthParams.h"
 
 //==============================================================================

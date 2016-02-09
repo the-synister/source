@@ -23,9 +23,12 @@ public:
     }
     virtual ~Param() {}
 
+    void setPrefix(const String &s) { prefix_ = s; }
+    const String& prefix() { return prefix_; }
+
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
-    const String& hostTag() const { return hostTag_; }
+    String hostTag() const { return prefix_ + hostTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
@@ -53,6 +56,7 @@ public:
     float getMin() const { return min_; }
     float getMax() const { return max_; }
     float getDefault() const { return default_; }
+    String getUnit() const { return unit_; }
 
     void setHost(float f) {
         setUI(f, false);
@@ -65,14 +69,21 @@ public:
 
     constexpr static float MIN_DB = -96.f;
 
-    static float toDb(float linear) {return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
-    static float fromDb(float db) { return db <= MIN_DB ? 0.f : std::pow(10.f, db / 20.f); }
+    static inline float toDb(float linear) {return linear > 0.f ? 20.f * std::log10(linear) : MIN_DB; }
+    static inline float fromDb(float db) { return db <= MIN_DB ? 0.f : std::pow(10.f, db / 20.f); }
 
-    static float toCent(float factor) { return std::log(factor) / log(2.f)*1200.f; }
-    static float fromCent(float ct) { return std::pow(2.f, ct / 1200.f); }
+    static inline float toCent(float factor) { return std::log(factor) / log(2.f)*1200.f; }
+    static inline float fromCent(float ct) { return std::pow(2.f, ct / 1200.f); }
 
-    static float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
-    static float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
+    static inline float toSemi(float factor) { return std::log(factor)/log(2.f)*12.f; }
+    static inline float fromSemi(float st) { return std::pow(2.f, st / 12.f); }
+
+    /**
+    * @param modRange max modulation in octaves
+    */
+    static inline float bipolarToFreq(float modValue, float fInput, float modRange) {
+        return fInput * std::pow(2.f, modValue * modRange);
+    }
 
     class Listener {
     public:
@@ -85,6 +96,7 @@ public:
     void removeListener(Listener *aListener) { listener.remove(aListener); }
 
 protected:
+    ScopedPointer<float> value;
     std::atomic<float> val_;
     float min_;
     float max_;
@@ -94,6 +106,8 @@ protected:
     String hostTag_;
     String unit_;
     int numSteps_;
+
+    String prefix_;
 
     ListenerList<Listener> listener;
     std::atomic<bool> uiDirty;

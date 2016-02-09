@@ -23,43 +23,33 @@ PluginAudioProcessor::PluginAudioProcessor()
     , clip(*this)
     , lowFi(*this)
 {
-    addParameter(new HostParam<Param>(osc1fine));
-    addParameter(new HostParam<Param>(osc1coarse));
-    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc1Waveform));
+    addParameter(new HostParam<Param>(osc[0].fine));
+    addParameter(new HostParam<Param>(osc[0].coarse));
+    addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[0].waveForm));
 
     addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
     addParameter(new HostParam<Param>(lfo1freq));
-    addParameter(new HostParam<Param>(osc1lfo1depth));
+    addParameter(new HostParam<Param>(osc[0].pitchModAmount2));
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
 
-    addParameter(new HostParam<Param>(vol));
+    addParameter(new HostParam<Param>(osc[0].vol));
+    addParameter(new HostParam<Param>(osc[0].panDir));
 
-    addParameter(new HostParam<Param>(osc1trngAmount));
-    addParameter(new HostParam<Param>(osc1pulsewidth));
+    addParameter(new HostParam<Param>(osc[0].trngAmount));
+    addParameter(new HostParam<Param>(osc[0].pulseWidth));
 
-    addParameter(new HostParam<Param>(lpCutoff));
-    addParameter(new HostParam<Param>(hpCutoff));
-    addParameter(new HostParam<Param>(biquadResonance));
+    addParameter(new HostParam<Param>(lp1Cutoff));
+    addParameter(new HostParam<Param>(hp1Cutoff));
+    addParameter(new HostParam<Param>(filter1Resonance));
     addParameter(new HostParam<Param>(passtype));
 
-    addParameter(new HostParam<Param>(envAttack1));
-    addParameter(new HostParam<Param>(envDecay1));
-    addParameter(new HostParam<Param>(envSustain1));
-    addParameter(new HostParam<Param>(envRelease1));
+    addParameter(new HostParam<Param>(envAttack));
+    addParameter(new HostParam<Param>(envDecay));
+    addParameter(new HostParam<ParamDb>(envSustain));
+    addParameter(new HostParam<Param>(envRelease));
 
-    addParameter(new HostParam<Param>(envAttack2));
-    addParameter(new HostParam<Param>(envDecay2));
-    addParameter(new HostParam<Param>(envSustain2));
-    addParameter(new HostParam<Param>(envRelease2));
-
-    addParameter(new HostParam<Param>(envAttack3));
-    addParameter(new HostParam<Param>(envDecay3));
-    addParameter(new HostParam<Param>(envSustain3));
-    addParameter(new HostParam<Param>(envRelease3));
-
-    addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));
 
     addParameter(new HostParam<Param>(delayFeedback));
@@ -70,6 +60,14 @@ PluginAudioProcessor::PluginAudioProcessor()
     positionInfo[1].resetToDefault();
 
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
+
+    /*Create ModMatrixRows here*/
+
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
+
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "osc1FreqModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "osc1FreqModSrcBox2");
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
@@ -170,6 +168,7 @@ void PluginAudioProcessor::prepareToPlay (double sRate, int samplesPerBlock)
     ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sRate);
     synth.clearVoices();
+
     for (int i = 8; --i >= 0;)
     {
         synth.addVoice(new Voice(*this, samplesPerBlock));

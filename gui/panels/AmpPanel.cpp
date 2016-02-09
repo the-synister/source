@@ -67,9 +67,9 @@ AmpPanel::AmpPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(amp, &params.vol);
-    registerSlider(pan, &params.panDir);
-    registerSlider(velocitySense, &params.keyVelocityLevel);
+    registerSlider(amp, &params.osc[0].vol);
+    registerSlider(pan, &params.osc[0].panDir);
+    registerSlider(velocitySense, &params.osc[0].volModAmount1);
 
     amp->setPopupDisplayEnabled(true, this);
     pan->setPopupDisplayEnabled(true, this);

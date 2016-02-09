@@ -22,6 +22,7 @@
 #include "panels/LfoPanel.h"
 #include "panels/AmpPanel.h"
 #include "panels/EnvPanel.h"
+#include "panels/Env1Panel.h"
 #include "panels/LadderPanel.h"
 #include "panels/FiltPanel.h"
 #include "panels/FxPanel.h"

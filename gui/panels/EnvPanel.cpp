@@ -297,41 +297,41 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="800"
                  initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
-  <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime1"
+  <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime1"
+  <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="69 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel1"
+  <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="130 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-96" max="0" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="3"/>
-  <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime1"
+  <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="195 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
-  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape1"
+  <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
-  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape1"
+  <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="91 111 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
-  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape1"
+  <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="216 111 20 20"
           rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
           int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
@@ -342,7 +342,7 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
-  <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve1"
+  <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
                     virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="117 146 128 64"
                     class="Component" params="params.envAttack1.get(), params.envDecay1.get(), params.envSustain1.get(), params.envRelease1.get(),  params.envAttackShape1.get(), params.envDecayShape1.get(), params.envReleaseShape1.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"

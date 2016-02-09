@@ -30,9 +30,9 @@
 //==============================================================================
 /**
                                                                     //[Comments]
-    An auto-generated component, created by the Introjucer.
+An auto-generated component, created by the Introjucer.
 
-    Describe your class and how it works here!
+Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class FiltPanel  : public PanelBase,
@@ -64,8 +64,14 @@ private:
     ScopedPointer<MouseOverKnob> resonanceSlider;
     ScopedPointer<MouseOverKnob> cutoffSlider2;
     ScopedPointer<MouseOverKnob> passtype;
-    ScopedPointer<ComboBox> modSrc;
     ScopedPointer<Slider> modSliderCut;
+    ScopedPointer<ComboBox> lp1ModSrc1;
+    ScopedPointer<ComboBox> hp1ModSrc1;
+    ScopedPointer<ComboBox> lp1ModSrc2;
+    ScopedPointer<ComboBox> hp1ModSrc2;
+    ScopedPointer<ComboBox> res1ModSrc1;
+    ScopedPointer<ComboBox> res1ModSrc2;
+    ScopedPointer<Slider> modSliderCut2;
 
 
     //==============================================================================

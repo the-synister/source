@@ -1,5 +1,5 @@
 #include "WaveformVisual.h"
-#include "Voice.h"
+#include "Oscillator.h"
 
 void WaveformVisual::paint(Graphics &g)
 {
@@ -21,8 +21,8 @@ void WaveformVisual::paint(Graphics &g)
         if (phs > (2 * float_Pi))
             phs = phs - (2 * float_Pi);
 
-		switch (m_iWaveformKey)
-		{
+        switch (m_iWaveformKey)
+        {
             case eOscWaves::eOscSquare:
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
@@ -35,7 +35,7 @@ void WaveformVisual::paint(Graphics &g)
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::whiteNoise(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
 
-		}
+        }
 
     }
     g.setColour(Colour (185, 189, 190));

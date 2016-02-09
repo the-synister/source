@@ -53,15 +53,15 @@ OscPanel::OscPanel (SynthParams &p)
     lfo1depth1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     lfo1depth1->addListener (this);
 
-    addAndMakeVisible (osc1trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
-    osc1trngAmount->setRange (0, 1, 0);
-    osc1trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
-    osc1trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    osc1trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    osc1trngAmount->setColour (Slider::textBoxTextColourId, Colours::white);
-    osc1trngAmount->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    osc1trngAmount->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    osc1trngAmount->addListener (this);
+    addAndMakeVisible (trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
+    trngAmount->setRange (0, 1, 0);
+    trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
+    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    trngAmount->setColour (Slider::textBoxTextColourId, Colours::white);
+    trngAmount->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    trngAmount->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    trngAmount->addListener (this);
 
     addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
@@ -114,49 +114,54 @@ OscPanel::OscPanel (SynthParams &p)
     amountWidthMod->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     amountWidthMod->addListener (this);
 
+    addAndMakeVisible (osc1FreqModSrc1 = new ComboBox ("osc1FreqModSrcBox1"));
+    osc1FreqModSrc1->setEditableText (false);
+    osc1FreqModSrc1->setJustificationType (Justification::centred);
+    osc1FreqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    osc1FreqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    osc1FreqModSrc1->addListener (this);
+
+    addAndMakeVisible (osc1FreqModSrc2 = new ComboBox ("osc1FreqModSrcBox2"));
+    osc1FreqModSrc2->setEditableText (false);
+    osc1FreqModSrc2->setJustificationType (Justification::centred);
+    osc1FreqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    osc1FreqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    osc1FreqModSrc2->addListener (this);
+
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, pitchRange, &params.osc1PitchRange, 2);
-    registerSaturnSource(ctune1, lfo1depth1, &params.osc1lfo1depth, 1);
-    registerSaturnSource(lfo1depth1, pitchRange, &params.osc1PitchRange, 1);
+    registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
+    registerSaturnSource(ctune1, pitchRange, &osc.pitchModAmount1, 2);
+    registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModAmount2, 1);
 
-    registerSlider(ftune1, &params.osc1fine);
-    registerSlider(lfo1depth1, &params.osc1lfo1depth);
-    registerSlider(osc1trngAmount, &params.osc1trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(pitchRange, &params.osc1PitchRange);
-    registerSlider(pulsewidth, &params.osc1pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod, &params.osc1AmountWidthMod);
-    registerSlider(ctune1, &params.osc1coarse);
-    registerSlider(waveformSwitch, &params.osc1Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(waveformSwitch, &params.osc1Waveform);
-/*
-    registerSlider(ftune2, &params.osc2fine);
-    registerSlider(lfo1depth2, &params.osc2lfo1depth);
-    registerSlider(osc2trngAmount, &params.osc2trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(pitchRange2, &params.osc2PitchRange);
-    registerSlider(pulsewidth2, &params.osc2pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod2, &params.osc2AmountWidthMod);
-    registerSlider(ctune2, &params.osc2coarse);
-    registerSlider(waveformSwitch, &params.osc2Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(waveformSwitch, &params.osc2Waveform);
+    registerSaturnSource(lfo1depth1, pitchRange, &osc.pitchModAmount1, 1);
+    registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);
 
-    registerSlider(ftune3, &params.osc3fine);
-    registerSlider(lfo1depth3, &params.osc3lfo1depth);
-    registerSlider(osc3trngAmount, &params.osc3trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(pitchRange3, &params.osc3PitchRange);
-    registerSlider(pulsewidth3, &params.osc3pulsewidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod3, &params.osc3AmountWidthMod);
-    registerSlider(ctune3, &params.osc3coarse);
-    registerSlider(waveformSwitch3, &params.osc3Waveform, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(waveformSwitch3, &params.osc3Waveform);*/
+    registerSlider(ftune1, &osc.fine);
+    registerSlider(lfo1depth1, &osc.pitchModAmount2);
+    registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(pitchRange, &osc.pitchModAmount1);
+    registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(amountWidthMod, &osc.shapeModAmount);
+    registerSlider(ctune1, &osc.coarse);
+    registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(lfoFadeIn, &params.lfoFadein);
+    registerSlider(waveformSwitch, &osc.waveForm);
+    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
+
+    fillModsourceBox(osc1FreqModSrc1);
+    fillModsourceBox(osc1FreqModSrc2);
+
+    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1);
+    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2);
     //[/UserPreSize]
 
     setSize (267, 272);
 
 
     //[Constructor] You can add your own custom stuff here..
-    osc1trngAmount->setVisible(false);/*
+    trngAmount->setVisible(false);/*
     osc2trngAmount->setVisible(false);
     osc3trngAmount->setVisible(false);*/
     waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
@@ -170,13 +175,15 @@ OscPanel::~OscPanel()
 
     ftune1 = nullptr;
     lfo1depth1 = nullptr;
-    osc1trngAmount = nullptr;
+    trngAmount = nullptr;
     pulsewidth = nullptr;
     pitchRange = nullptr;
     ctune1 = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
     amountWidthMod = nullptr;
+    osc1FreqModSrc1 = nullptr;
+    osc1FreqModSrc2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -213,13 +220,15 @@ void OscPanel::resized()
 
     ftune1->setBounds (8, 170, 64, 64);
     lfo1depth1->setBounds (84, 30, 64, 64);
-    osc1trngAmount->setBounds (84, 97, 64, 64);
-    pulsewidth->setBounds (84, 97, 64, 64);
+    trngAmount->setBounds (80, 96, 64, 64);
+    pulsewidth->setBounds (80, 96, 64, 64);
     pitchRange->setBounds (8, 31, 64, 64);
     ctune1->setBounds (8, 97, 64, 64);
     waveformVisual->setBounds (75, 160, 123, 72);
     waveformSwitch->setBounds (198, 169, 40, 54);
     amountWidthMod->setBounds (172, 30, 64, 64);
+    osc1FreqModSrc1->setBounds (144, 96, 64, 16);
+    osc1FreqModSrc2->setBounds (144, 120, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -241,10 +250,10 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
         //[/UserSliderCode_lfo1depth1]
     }
-    else if (sliderThatWasMoved == osc1trngAmount)
+    else if (sliderThatWasMoved == trngAmount)
     {
-        //[UserSliderCode_osc1trngAmount] -- add your slider handling code here..
-        //[/UserSliderCode_osc1trngAmount]
+        //[UserSliderCode_trngAmount] -- add your slider handling code here..
+        //[/UserSliderCode_trngAmount]
     }
     else if (sliderThatWasMoved == pulsewidth)
     {
@@ -276,6 +285,27 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == osc1FreqModSrc1)
+    {
+        //[UserComboBoxCode_osc1FreqModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_osc1FreqModSrc1]
+    }
+    else if (comboBoxThatHasChanged == osc1FreqModSrc2)
+    {
+        //[UserComboBoxCode_osc1FreqModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_osc1FreqModSrc2]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -283,12 +313,12 @@ void OscPanel::updateWFShapeControls()
 {
     int waveformKey = static_cast<int>(waveformSwitch->getValue());
     eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
-    params.osc1Waveform.setStep(eWaveformKey);
+    osc.waveForm.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
-    osc1trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+    trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
-    waveformVisual->setTrngAmount(static_cast<float>(osc1trngAmount->getValue()));
+    waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
 }
 
 
@@ -331,14 +361,14 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="osc1trngAmount"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 97 64 64"
+  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 96 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 97 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 96 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.010000000000000000208" max="0.98999999999999999112"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
@@ -369,6 +399,12 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
+  <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="144 96 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="osc1FreqModSrcBox2" id="58dc64c4649ad205" memberName="osc1FreqModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="144 120 64 16" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

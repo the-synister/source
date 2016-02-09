@@ -52,7 +52,6 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     dryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
@@ -60,7 +59,6 @@ FxPanel::FxPanel (SynthParams &p)
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     timeSlider->addListener (this);
     timeSlider->setSkewFactor (0.33);
 
@@ -227,7 +225,7 @@ void FxPanel::resized()
     //[/UserPreResize]
 
     feedbackSlider->setBounds (8, 8, 64, 64);
-    clippingFactor->setBounds (8, 168, 64, 64);
+    clippingFactor->setBounds (8, 152, 64, 64);
     dryWetSlider->setBounds (80, 8, 64, 64);
     timeSlider->setBounds (152, 8, 64, 64);
     syncToggle->setBounds (304, 8, 63, 24);
@@ -410,7 +408,7 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          rotarysliderfill="ff2b3240" min="0" max="100" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff2b3240" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
@@ -420,12 +418,12 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="80 8 64 64" rotarysliderfill="ff2b3240"
-          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" rotarysliderfill="ff2b3240"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="304 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -441,12 +439,12 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="376 8 64 64"
           rotarysliderfill="ff2b3240" min="1" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="528 8 64 64"
           rotarysliderfill="ff2b3240" min="-25" max="0" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 88 64 64"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
