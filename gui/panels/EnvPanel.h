@@ -70,26 +70,6 @@ private:
     ScopedPointer<MouseOverKnob> keyVelToEnv1;
     ScopedPointer<EnvelopeCurve> envelopeCurve1;
     ScopedPointer<Label> shapeLabel1;
-    ScopedPointer<MouseOverKnob> attackTime2;
-    ScopedPointer<MouseOverKnob> decayTime2;
-    ScopedPointer<MouseOverKnob> sustainLevel2;
-    ScopedPointer<MouseOverKnob> releaseTime2;
-    ScopedPointer<MouseOverKnob> attackShape2;
-    ScopedPointer<MouseOverKnob> decayShape2;
-    ScopedPointer<MouseOverKnob> releaseShape2;
-    ScopedPointer<MouseOverKnob> keyVelToEnv2;
-    ScopedPointer<EnvelopeCurve> envelopeCurve2;
-    ScopedPointer<Label> shapeLabel2;
-    ScopedPointer<MouseOverKnob> attackTime3;
-    ScopedPointer<MouseOverKnob> decayTime3;
-    ScopedPointer<MouseOverKnob> sustainLevel3;
-    ScopedPointer<MouseOverKnob> releaseTime3;
-    ScopedPointer<MouseOverKnob> attackShape3;
-    ScopedPointer<MouseOverKnob> decayShape3;
-    ScopedPointer<MouseOverKnob> releaseShape3;
-    ScopedPointer<MouseOverKnob> keyVelToEnv3;
-    ScopedPointer<EnvelopeCurve> envelopeCurve3;
-    ScopedPointer<Label> shapeLabel3;
 
 
     //==============================================================================

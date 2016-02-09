@@ -32,6 +32,7 @@ struct FoldablePanel::SectionComponent  : public Component
     ~SectionComponent()
     {
         panels.clear();
+        positionIndex = 0;
     }
 
     void paint(Graphics& g) override
@@ -45,7 +46,7 @@ struct FoldablePanel::SectionComponent  : public Component
 
             // draw section header text
             const int textX = (int)(buttonIndent * 4.0f + buttonSize);
-            g.setColour(getSectionColour());
+            g.setColour(getSectionColour().brighter());
             g.setFont(Font(titleHeight * 0.85f, Font::plain));
             g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
         }
@@ -63,9 +64,8 @@ struct FoldablePanel::SectionComponent  : public Component
         int x = 0;
         for (int i = 0; i < panels.size(); ++i ) {
             Component* const panel = panels.getUnchecked(i);
-            panel->setBounds(x, getY() + titleHeight, panel->getWidth(), panel->getHeight());
+            panel->setBounds(x, titleHeight, panel->getWidth(), panel->getHeight());
             x += panel->getWidth();
-            panel->resized();
         }
     }
 
@@ -121,10 +121,6 @@ struct FoldablePanel::SectionComponent  : public Component
 };
 
 //==============================================================================
-/*
-    TODO: Make it unfoldable
-    - be able to hold more than one control panel
-*/
 struct FoldablePanel::PanelHolderComponent  : public Component
 {
     PanelHolderComponent() {}
@@ -168,18 +164,9 @@ struct FoldablePanel::PanelHolderComponent  : public Component
         addAndMakeVisible (newSection, 0);
     }
 
-    SectionComponent* getSectionWithNonEmptyName (const int targetIndex) const noexcept
+    SectionComponent* getSection (const int targetIndex) const noexcept
     {
-        for (int index = 0, i = 0; i < sections.size(); ++i)
-        {
-            SectionComponent* const section = sections.getUnchecked (i);
-
-            if (section->getName().isNotEmpty())
-                if (index++ == targetIndex)
-                    return section;
-        }
-
-        return nullptr;
+        return sections.getUnchecked (targetIndex);
     }
 
     OwnedArray<SectionComponent> sections;
@@ -243,7 +230,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
 
 void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
 {
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
+    if (SectionComponent* s = panelHolderComponent->getSection (sectionIndex))
         s->addPanel(newPanel);
 
 }
@@ -251,73 +238,4 @@ void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
 void FoldablePanel::updateLayout() const
 {
     panelHolderComponent->updateLayout (getWidth());
-}
-
-bool FoldablePanel::isSectionOpen (const int sectionIndex) const
-{
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex)) {
-        return s->isOpen;
-    }
-
-    return false;
-}
-
-void FoldablePanel::setSectionOpen (const int sectionIndex, const bool shouldBeOpen)
-{
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
-        s->setOpen (shouldBeOpen);
-}
-
-void FoldablePanel::setSectionEnabled (const int sectionIndex, const bool shouldBeEnabled)
-{
-    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
-        s->setEnabled (shouldBeEnabled);
-}
-
-StringArray FoldablePanel::getSectionNames() const
-{
-    StringArray s;
-
-    for (int i = 0; i < panelHolderComponent->sections.size(); ++i)
-    {
-        SectionComponent* const section = panelHolderComponent->sections.getUnchecked(i);
-            if (section->getName().isNotEmpty())
-                s.add (section->getName());
-    }
-
-    return s;
-}
-
-XmlElement* FoldablePanel::getOpennessState() const
-{
-    XmlElement* const xml = new XmlElement ("PROPERTYPANELSTATE");
-
-    const StringArray sections (getSectionNames());
-
-    for (int i = 0; i < sections.size(); ++i)
-    {
-        if (sections[i].isNotEmpty())
-        {
-            XmlElement* const e = xml->createNewChildElement ("SECTION");
-            e->setAttribute ("name", sections[i]);
-            e->setAttribute ("open", isSectionOpen (i) ? 1 : 0);
-        }
-    }
-
-    return xml;
-}
-
-void FoldablePanel::restoreOpennessState (const XmlElement& xml)
-{
-    if (xml.hasTagName ("PROPERTYPANELSTATE"))
-    {
-        const StringArray sections (getSectionNames());
-
-        forEachXmlChildElementWithTagName (xml, e, "SECTION")
-        {
-            setSectionOpen (sections.indexOf (e->getStringAttribute ("name")),
-                            e->getBoolAttribute ("open"));
-        }
-
-    }
 }

@@ -86,7 +86,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->initTextBox();
     //[/UserPreSize]
 
-    setSize (800, 600);
+    setSize (800, 900);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -147,13 +147,13 @@ void PlugUI::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (728, 8, 64, 64);
-    keyboard->setBounds (1, 560, 800, 40);
+    freq->setBounds (728, 0, 64, 64);
+    keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
-    loadPresetButton->setBounds (8, 40, 88, 24);
-    bpmLabel->setBounds (127, 7, 40, 24);
-    bpmDisplay->setBounds (175, 7, 64, 24);
-    foldableComponent->setBounds (0, 72, 800, 480);
+    loadPresetButton->setBounds (112, 8, 88, 24);
+    bpmLabel->setBounds (222, 6, 40, 24);
+    bpmDisplay->setBounds (270, 6, 64, 24);
+    foldableComponent->setBounds (0, 72, 800, 624);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -229,33 +229,33 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component, private Timer" constructorParams="SynthParams &amp;p"
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
-                 initialHeight="600">
+                 initialHeight="900">
   <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="728 8 64 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="728 0 64 64" rotarysliderfill="ff6c788c"
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
-                    virtualName="" explicitFocusOrder="0" pos="1 560 800 40" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
               virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="8 40 88 24" buttonText="Load preset"
+              virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="127 7 40 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="222 6 40 24" edTextCol="ff000000"
          edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="175 7 64 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="270 6 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
-                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 480"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
 </JUCER_COMPONENT>
 
