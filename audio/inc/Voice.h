@@ -10,7 +10,7 @@ class Sound : public SynthesiserSound {
 public:
     bool appliesToNote(int /*midiNoteNumber*/) override { return true; }
     bool appliesToChannel(int /*midiChannel*/) override { return true; }
-}; 
+};
 
 class Voice : public SynthesiserVoice {
 public:
@@ -112,9 +112,9 @@ public:
             lfo1square.phase = 0.f;
             lfo1random.phase = 0.f;
 
-            lfo1sine.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1square.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1random.phaseDelta = params.positionInfo[params.getGUIIndex()].bpm / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
         else{
@@ -217,8 +217,8 @@ public:
             const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
 
             for (int s = 0; s < numSamples; ++s) {
-                
-                float currentSample;
+                float currentSample = 0.0f;
+
                 switch (params.osc1Waveform.getStep())
                 {
                 case eOscWaves::eOscSquare:
@@ -255,10 +255,16 @@ public:
                     break;
                 }
 
-                // apply modulation
-                currentSample = biquadFilter(currentSample, filterMod[s]);
-                currentSample = ladderFilter(currentSample);
-                currentSample *= level * envToVolMod[s];
+                if(params.passtype.getStep() == eBiquadFilters::eLadder)
+                {
+                    currentSample = ladderFilter(currentSample, filterMod[s]);
+                }
+                else
+                {
+                    currentSample = biquadFilter(currentSample, filterMod[s]);
+                }
+
+                currentSample *= (level * envToVolMod[s]);
 
                 //check if the output is a stereo output
                 if (outputBuffer.getNumChannels() == 2) {
@@ -287,24 +293,34 @@ public:
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
     //naive 1 pole filters wigh a hyperbolic tangent saturator
-    float ladderFilter(float ladderIn)
+    float ladderFilter(float ladderIn, float modValue)
     {
         const float sRate = static_cast<float>(getSampleRate());
 
-        //float currentResonance = pow(10.f, params.ladderRes.get() / 20.f);
-        float currentLadderCutoffFreq = params.lp1Cutoff.get();
+        float cutoffFreq = params.lp1Cutoff.get();
+        float currentResonance = params.filter1Resonance.get();
+
+        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
+
+        // TODO can't this be shortened?
+        if (cutoffFreq < params.lp1Cutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            cutoffFreq = params.lp1Cutoff.getMin();
+        }
+        else if (cutoffFreq > params.lp1Cutoff.getMax()) {
+            cutoffFreq = params.lp1Cutoff.getMax();
+        }
 
         //coeffecients and parameters
-        float omega_c = 2.f*float_Pi*currentLadderCutoffFreq / sRate;
+        float omega_c = 2.f * float_Pi * cutoffFreq / sRate;
         float g = omega_c / 2.f;
         float a = (1.f - g) / (1.f + g);
         float b = g / (1.f + g);
 
         // subtract the feedback
         // inverse hyperbolic Sinus
-        // ladderIn = tanh(ladderIn) - asinh(params.ladderRes.get() * ladderOut);
+        // ladderIn = tanh(ladderIn) - asinh(currentResonance * ladderOut);
         // hyperbolic tangent
-        ladderIn = tanh(ladderIn) - tanh(params.filter1Resonance.get() * ladderOut);
+        ladderIn = tanh(ladderIn) - tanh(currentResonance * ladderOut);
 
         // proecess through 1 pole Filters 4 times
         lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
@@ -429,9 +445,9 @@ protected:
 
         // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
-        float k, coeff1, coeff2, coeff3, b0, b1, b2, a0, a1, a2, bw, w0;
+        float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
 
-        const float currentResonance = pow(10.f, -params.filter1Resonance.get() / 20.f);
+        const float currentResonance = pow(10.f, (-params.filter1Resonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
 
         if (static_cast<eBiquadFilters>(params.passtype.getStep()) == eBiquadFilters::eLowpass) {
 

@@ -29,7 +29,8 @@ enum class eBiquadFilters : int {
     eLowpass = 0,
     eHighpass = 1,
     eBandpass = 2,
-    nSteps = 3
+    eLadder = 3,
+    nSteps = 4
 };
 
 enum class eOnOffToggle : int {
@@ -109,6 +110,7 @@ public:
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
+
     Param lp1Cutoff; //!< filter cutoff frequency in Hz
     Param hp1Cutoff; //!< filter cutoff frequency in Hz
     Param filter1Resonance; //! filter resonance in dB
@@ -123,7 +125,6 @@ public:
     ParamStepped<eModSource> hp1CutModSrc2;  //! hp filter modulation source
     Param hp1ModAmount2;   //! hp filter modulation amount
     ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
-
 
     ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
     Param osc1trngAmount; //Triangle Amount [0 ... 1]

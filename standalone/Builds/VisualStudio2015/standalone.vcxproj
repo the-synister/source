@@ -139,10 +139,13 @@
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
@@ -1303,10 +1306,13 @@
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>

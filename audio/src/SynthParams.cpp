@@ -19,7 +19,7 @@ namespace {
     };
 
     static const char *biquadFilters[] = {
-        "Lowpass", "Highpass", "Bandpass", nullptr
+        "Lowpass", "Highpass", "Bandpass", "Ladder", nullptr
     };
 
     static const char *modsourcenames[] = {

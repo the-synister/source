@@ -48,6 +48,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     freq->addListener (this);
 
     addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
@@ -102,6 +103,14 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
+
+    //LookAndFeel_V1 *laf = new LookAndFeel_V1();
+    //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
+    //LookAndFeel_V3 *laf = new LookAndFeel_V3();
+
+    // set whole design from very parent GUI component
+    lnf = new CustomLookAndFeel();
+    LookAndFeel::setDefaultLookAndFeel(lnf);
     //[/Constructor]
 }
 
@@ -129,7 +138,7 @@ void PlugUI::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff292929));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -223,10 +232,10 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
                  initialHeight="600">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="728 8 64 64" min="220" max="880"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          explicitFocusOrder="0" pos="728 8 64 64" rotarysliderfill="ff6c788c"
+          min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
                     virtualName="" explicitFocusOrder="0" pos="8 552 784 40" class="MidiKeyboardComponent"

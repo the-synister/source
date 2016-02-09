@@ -178,7 +178,7 @@ void StepSequencer::setStepRandom(int step)
 
     Random r = Random();
     r.setSeedRandomly();
-    currMidiStepSeq[step]->set(r.nextFloat() * (max - min) + min, true);
+    currMidiStepSeq[step]->set(r.nextFloat() * (max - min) + min, true); // TODO: nochmal min und max abchecken (hier oder im panel)
 }
 
 void StepSequencer::setStepActive(int step, bool active)

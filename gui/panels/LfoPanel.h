@@ -37,8 +37,7 @@
 */
 class LfoPanel  : public PanelBase,
                   public SliderListener,
-                  public ButtonListener,
-                  public ComboBoxListener
+                  public ButtonListener
 {
 public:
     //==============================================================================
@@ -53,7 +52,6 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -63,13 +61,13 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> freq;
-    ScopedPointer<MouseOverKnob> wave;
+    ScopedPointer<Slider> wave;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
     ScopedPointer<Slider> notelength;
     ScopedPointer<Label> label4;
-    ScopedPointer<ComboBox> lfo1FreqModSrc1;
-    ScopedPointer<ComboBox> lfo1FreqModSrc2;
-    ScopedPointer<ComboBox> lfo1GainModSrc;
+    ScopedPointer<Label> sineLabel;
+    ScopedPointer<Label> squareLabel;
+    ScopedPointer<Label> sampleHoldLabel2;
 
 
     //==============================================================================

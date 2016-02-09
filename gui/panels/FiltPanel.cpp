@@ -37,12 +37,14 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider->setRange (10, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider->addListener (this);
 
     addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
-    resonanceSlider->setRange (-25, 25, 0);
+    resonanceSlider->setRange (0, 10, 0);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    resonanceSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     resonanceSlider->addListener (this);
 
     addAndMakeVisible (cutoffSlider2 = new MouseOverKnob ("Cutoff2"));
@@ -166,7 +168,7 @@ void FiltPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -290,15 +292,17 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
-          min="-25" max="25" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 122 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

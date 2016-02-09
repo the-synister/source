@@ -11,6 +11,9 @@
     <Filter Include="standalone\Gui\panels">
       <UniqueIdentifier>{D5C93014-E216-5B63-13D7-D61533B35694}</UniqueIdentifier>
     </Filter>
+    <Filter Include="standalone\Gui\Assets">
+      <UniqueIdentifier>{BD9A04FA-3BCD-FD83-BEDE-CF90525C61A8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="standalone\Audio">
       <UniqueIdentifier>{FEDEC6AC-FAE9-2EA8-033E-6EB7D773507C}</UniqueIdentifier>
     </Filter>
@@ -355,7 +358,13 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
@@ -365,6 +374,9 @@
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
@@ -1674,7 +1686,13 @@
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
@@ -1684,6 +1702,9 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
