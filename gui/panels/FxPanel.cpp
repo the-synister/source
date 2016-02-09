@@ -118,24 +118,28 @@ FxPanel::FxPanel (SynthParams &p)
     chorDryWetSlider->setRange (0, 1, 0);
     chorDryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    chorDryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     chorDryWetSlider->addListener (this);
 
     addAndMakeVisible (chorDepthSlider = new MouseOverKnob ("Chorus Depth"));
     chorDepthSlider->setRange (5, 20, 0);
     chorDepthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDepthSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    chorDepthSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     chorDepthSlider->addListener (this);
 
     addAndMakeVisible (chorDelayLengthSlider = new MouseOverKnob ("Chorus Width"));
     chorDelayLengthSlider->setRange (0.025, 0.08, 0);
     chorDelayLengthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDelayLengthSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    chorDelayLengthSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     chorDelayLengthSlider->addListener (this);
 
     addAndMakeVisible (chorModRateSlider = new MouseOverKnob ("Chorus Rate"));
     chorModRateSlider->setRange (0.1, 1.5, 0);
     chorModRateSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorModRateSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    chorModRateSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     chorModRateSlider->addListener (this);
 
     addAndMakeVisible (tripTggl = new ToggleButton ("tripTggl1"));
@@ -423,7 +427,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="152 8 64 64" rotarysliderfill="ff2b3240"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="304 8 63 24" buttonText="Sync"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -439,30 +443,32 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="376 8 64 64"
           rotarysliderfill="ff2b3240" min="1" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <SLIDER name="Resonance" id="b0842c8b86f33a2f" memberName="resSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="528 8 64 64"
           rotarysliderfill="ff2b3240" min="-25" max="0" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 88 64 64"
-          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 88 64 64"
-          min="5" max="20" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 88 64 64"
-          min="0.025000000000000001388" max="0.080000000000000001665" int="0"
-          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="226 88 64 64"
-          min="0.10000000000000000555" max="1.5" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff2b3240" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 88 64 64"
+          rotarysliderfill="ff2b3240" min="5" max="20" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 88 64 64"
+          rotarysliderfill="ff2b3240" min="0.025000000000000001" max="0.080000000000000002"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="226 88 64 64"
+          rotarysliderfill="ff2b3240" min="0.10000000000000001" max="1.5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="224 56 63 24" buttonText="Triplet"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>

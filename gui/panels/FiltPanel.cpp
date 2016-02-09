@@ -51,12 +51,14 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->setRange (10, 20000, 1);
     cutoffSlider2->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider2->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
     passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    passtype->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     passtype->addListener (this);
 
     addAndMakeVisible (modSliderCut = new Slider ("Mod"));
@@ -178,7 +180,7 @@ void FiltPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff40ae69));
+    g.fillAll (Colour (0xff5b7a47));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -308,7 +310,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ff40ae69"/>
+  <BACKGROUND backgroundColour="ff5b7a47"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
           rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
@@ -321,12 +323,14 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 122 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          min="0" max="3" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="0" max="3" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="144 72 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"

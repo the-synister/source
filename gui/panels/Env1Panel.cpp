@@ -37,6 +37,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     attackTime1->setRange (0.001, 5, 0);
     attackTime1->setSliderStyle (Slider::RotaryVerticalDrag);
     attackTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    attackTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     attackTime1->addListener (this);
     attackTime1->setSkewFactor (0.5);
 
@@ -44,6 +45,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     decayTime1->setRange (0.001, 5, 0);
     decayTime1->setSliderStyle (Slider::RotaryVerticalDrag);
     decayTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    decayTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     decayTime1->addListener (this);
     decayTime1->setSkewFactor (0.5);
 
@@ -52,6 +54,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     sustainLevel1->setRange (0, 1, 0.001);
     sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    sustainLevel1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     sustainLevel1->addListener (this);
     sustainLevel1->setSkewFactor (0.5);
 
@@ -59,6 +62,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     releaseTime1->setRange (0.001, 5, 0);
     releaseTime1->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseTime1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    releaseTime1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     releaseTime1->addListener (this);
     releaseTime1->setSkewFactor (0.5);
 
@@ -66,6 +70,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     attackShape1->setRange (0.01, 10, 0);
     attackShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     attackShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    attackShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     attackShape1->addListener (this);
     attackShape1->setSkewFactor (0.3);
 
@@ -73,6 +78,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     decayShape1->setRange (0.01, 10, 0);
     decayShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     decayShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    decayShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     decayShape1->addListener (this);
     decayShape1->setSkewFactor (0.3);
 
@@ -80,6 +86,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     releaseShape1->setRange (0.01, 10, 0);
     releaseShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseShape1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    releaseShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     releaseShape1->addListener (this);
     releaseShape1->setSkewFactor (0.3);
 
@@ -87,6 +94,7 @@ Env1Panel::Env1Panel (SynthParams &p)
     keyVelToEnv1->setRange (0, 1, 0);
     keyVelToEnv1->setSliderStyle (Slider::RotaryVerticalDrag);
     keyVelToEnv1->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    keyVelToEnv1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
     keyVelToEnv1->addListener (this);
 
     addAndMakeVisible (Env1Label = new Label ("Envelope_1",
@@ -158,7 +166,7 @@ void Env1Panel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xffbfa65a));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -275,46 +283,47 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)&#10;" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ffbfa65a"/>
   <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 32 64 64"
-          min="0.0010000000000000000208" max="5" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 32 64 64"
-          min="0.0010000000000000000208" max="5" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel1"
           virtualName="MouseOverKnob" explicitFocusOrder="1" pos="152 32 64 64"
-          min="0" max="1" int="0.0010000000000000000208" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0" max="1" int="0.001" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 32 64 64"
-          min="0.0010000000000000000208" max="5" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 104 64 64"
-          min="0.010000000000000000208" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.2999999999999999889"/>
+          textBoxHeight="20" skewFactor="0.29999999999999999"/>
   <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 104 64 64"
-          min="0.010000000000000000208" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.2999999999999999889"/>
+          textBoxHeight="20" skewFactor="0.29999999999999999"/>
   <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="224 104 64 64"
-          min="0.010000000000000000208" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.2999999999999999889"/>
+          textBoxHeight="20" skewFactor="0.29999999999999999"/>
   <SLIDER name="Vel to Env" id="595a20e744f094d5" memberName="keyVelToEnv1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 32 64 64"
-          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ffbfa65a" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Envelope_1" id="a3abaef13a231d86" memberName="Env1Label"
          virtualName="" explicitFocusOrder="0" pos="8 8 150 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Envelope 1" editableSingleClick="0" editableDoubleClick="0"

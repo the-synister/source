@@ -37,12 +37,14 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     lowFiActive->setRange (0, 1, 1);
     lowFiActive->setSliderStyle (Slider::RotaryVerticalDrag);
     lowFiActive->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    lowFiActive->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     lowFiActive->addListener (this);
 
     addAndMakeVisible (nBitsLowFi = new MouseOverKnob ("nBits Low Fi"));
     nBitsLowFi->setRange (1, 16, 0);
     nBitsLowFi->setSliderStyle (Slider::RotaryVerticalDrag);
     nBitsLowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    nBitsLowFi->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     nBitsLowFi->addListener (this);
 
 
@@ -77,7 +79,7 @@ void LoFiPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::white);
+    g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -135,15 +137,17 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
-  <BACKGROUND backgroundColour="ffffffff"/>
+  <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Low Fi active" id="221421ebd522cd9a" memberName="lowFiActive"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="56 40 64 64"
-          min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff2b3240" min="0" max="1" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="160 40 64 64"
-          min="1" max="16" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff2b3240" min="1" max="16" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

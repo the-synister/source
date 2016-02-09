@@ -127,6 +127,7 @@ OscPanel::OscPanel (SynthParams &p)
     amountWidthMod->setRange (0, 1, 0);
     amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
     amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    amountWidthMod->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     amountWidthMod->addListener (this);
 
     addAndMakeVisible (osc1FreqModSrc1 = new ComboBox ("osc1FreqModSrcBox1"));
@@ -369,7 +370,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="296 8 64 64"
-          rotarysliderfill="ff6c788c" min="0.010000000000000000208" max="0.98999999999999999112"
+          rotarysliderfill="ff6c788c" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
@@ -413,8 +414,9 @@ BEGIN_JUCER_METADATA
          fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="368 8 64 64"
-          min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff6c788c" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
             virtualName="" explicitFocusOrder="0" pos="152 80 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
