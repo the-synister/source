@@ -55,7 +55,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
-    passtype->setRange (0, 2, 1);
+    passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
@@ -230,7 +230,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
-          rotarysliderfill="ff5b7a47" min="0" max="2" int="1" style="RotaryVerticalDrag"
+          rotarysliderfill="ff5b7a47" min="0" max="3" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="modSrcBox" id="11f9848905955e67" memberName="modSrc" virtualName=""
