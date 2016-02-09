@@ -99,7 +99,14 @@ public:
         Param pitchModAmount1; //!< range in [0..12] st
         ParamStepped<eModSource> pitchModSrc2; //!< oscillator 1 pitch modulation source
         Param pitchModAmount2; //!< modulation depth in [-12..12] st
-    } osc[1];
+
+        Param panDir; //!< pan R/L [-100..100]
+
+        ParamDb vol; //!< volume in [-96..12]
+        Param volModAmount1;    //!< key velocity level range in [0..96]dB
+    };
+
+    std::array<Osc, 1> osc;
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
 
@@ -130,7 +137,6 @@ public:
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
-    Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
     Param envAttackShape; //!< env attack shape in [0.01..10]
     Param envDecayShape; //!< env decay shape in [0.01..10]
     Param envReleaseShape; //!< env release shape in [0.01..10]
@@ -176,12 +182,8 @@ public:
     ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
     ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
 
-    Param panDir; //!< pan R/L [-100..100]
-
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation
-
-    ParamDb vol; //!< volume in [0..1]
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;

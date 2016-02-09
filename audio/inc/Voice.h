@@ -91,7 +91,7 @@ public:
 
         currentVelocity = velocity;
 
-        level = Param::fromDb((velocity - 1.f) * params.keyVelocityLevel.get());
+        level = Param::fromDb((velocity - 1.f) * params.osc[0].volModAmount1.get());
 
         totSamples = 0;
 
@@ -210,8 +210,8 @@ public:
             const float *lfo1 = lfo1Buffer.getReadPointer(0);
             const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
 
-            const float currentAmp = params.vol.get();
-            const float currentPan = params.panDir.get();
+            const float currentAmp = params.osc[0].vol.get();
+            const float currentPan = params.osc[0].panDir.get();
 
             // Pan Influence
             const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);

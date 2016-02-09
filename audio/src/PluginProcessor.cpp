@@ -34,7 +34,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(noteLength));
     addParameter(new HostParam<Param>(lfoFadein));
 
-    addParameter(new HostParam<Param>(vol));
+    addParameter(new HostParam<Param>(osc[0].vol));
+    addParameter(new HostParam<Param>(osc[0].panDir));
 
     addParameter(new HostParam<Param>(osc[0].trngAmount));
     addParameter(new HostParam<Param>(osc[0].pulseWidth));
@@ -49,7 +50,6 @@ PluginAudioProcessor::PluginAudioProcessor()
     //addParameter(new HostParam<ParamDb>(envSustain));
     addParameter(new HostParam<Param>(envRelease));
 
-    addParameter(new HostParam<Param>(panDir));
     addParameter(new HostParam<Param>(clippingFactor));
 
     addParameter(new HostParam<Param>(delayFeedback));

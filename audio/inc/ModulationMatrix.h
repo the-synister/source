@@ -100,7 +100,6 @@ inline bool isUnipolar(eModSource source) {
     default:
         return false;
     }
-    return false;
 }
 
 // core
