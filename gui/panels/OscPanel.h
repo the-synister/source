@@ -47,6 +47,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateWFShapeControls();
+    void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -61,6 +62,7 @@ private:
     Rectangle<int> sawFrame = { 0, 20, 30, 20 };
     Rectangle<int> squareFrame = { 69, 20, 30, 20 };
     Rectangle<int> noiseFrame = { 35, 0, 30, 20 };
+    
     //[/UserVariables]
 
     //==============================================================================
@@ -73,6 +75,24 @@ private:
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<MouseOverKnob> amountWidthMod;
+    ScopedPointer<MouseOverKnob> ftune2;
+    ScopedPointer<MouseOverKnob> lfo1depth2;
+    ScopedPointer<MouseOverKnob> osc2trngAmount;
+    ScopedPointer<MouseOverKnob> pulsewidth2;
+    ScopedPointer<MouseOverKnob> pitchRange2;
+    ScopedPointer<MouseOverKnob> ctune2;
+    ScopedPointer<WaveformVisual> waveformVisual2;
+    ScopedPointer<Slider> waveformSwitch2;
+    ScopedPointer<MouseOverKnob> amountWidthMod2;
+    ScopedPointer<MouseOverKnob> ftune3;
+    ScopedPointer<MouseOverKnob> lfo1depth3;
+    ScopedPointer<MouseOverKnob> osc3trngAmount;
+    ScopedPointer<MouseOverKnob> pulsewidth3;
+    ScopedPointer<MouseOverKnob> pitchRange3;
+    ScopedPointer<MouseOverKnob> ctune3;
+    ScopedPointer<WaveformVisual> waveformVisual3;
+    ScopedPointer<Slider> waveformSwitch3;
+    ScopedPointer<MouseOverKnob> amountWidthMod3;
 
 
     //==============================================================================

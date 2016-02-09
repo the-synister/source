@@ -79,7 +79,30 @@ public:
     Param osc1fine;      //!< fine tune in [-100..100] ct
     Param osc1coarse;    //!< coarse tune in [-11..11] st
     Param osc1lfo1depth; //!< modulation depth in [-12..12] st
-
+    Param osc1trngAmount; //Triangle Amount [0 ... 1]
+    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
+    Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
+    ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
+    Param osc1PitchRange; //!< range in [0..12] st
+    
+    Param osc2fine;      //!< fine tune in [-100..100] ct
+    Param osc2coarse;    //!< coarse tune in [-11..11] st
+    Param osc2lfo1depth; //!< modulation depth in [-12..12] st
+    Param osc2trngAmount; //Triangle Amount [0 ... 1]
+    Param osc2pulsewidth; //!< pulse width in [0,01..0,99]
+    Param osc2AmountWidthMod; //!< amount of pulse width modulation [0..1]
+    ParamStepped<eOscWaves> osc2Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
+    Param osc2PitchRange; //!< range in [0..12] st
+    
+    Param osc3fine;      //!< fine tune in [-100..100] ct
+    Param osc3coarse;    //!< coarse tune in [-11..11] st
+    Param osc3lfo1depth; //!< modulation depth in [-12..12] st
+    Param osc3trngAmount; //Triangle Amount [0 ... 1]
+    Param osc3pulsewidth; //!< pulse width in [0,01..0,99]
+    Param osc3AmountWidthMod; //!< amount of pulse width modulation [0..1]
+    ParamStepped<eOscWaves> osc3Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
+    Param osc3PitchRange; //!< range in [0..12] st
+    
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
     Param lpCutoff; //!< filter cutoff frequency in Hz
     Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -88,13 +111,6 @@ public:
     Param lpModAmount;   //! lp filter modulation amount
     ParamStepped<eModSource> hpModSource;  //! hp filter modulation source
     Param hpModAmount;   //! hp filter modulation amount
-
-    ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
-
-    Param osc1trngAmount; //Triangle Amount [0 ... 1]
-    Param osc1PitchRange; //!< range in [0..12] st
-    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
-    Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
 
     Param keyVelToEnv1;  //!< key velocity influence on env [0 ... 1]
     Param envAttack1;    //!< env attack in [0.001..5]s

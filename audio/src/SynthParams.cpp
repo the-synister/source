@@ -35,6 +35,8 @@ SynthParams::SynthParams()
 : serializeParams{ &freq,
     &lfo1freq, &lfo1wave, &lfoFadein,&lfo1TempSync, &noteLength,
     &osc1fine, &osc1coarse, &osc1lfo1depth,&osc1trngAmount, &osc1PitchRange, &osc1pulsewidth, &osc1AmountWidthMod,
+    &osc2fine, &osc2coarse, &osc2lfo1depth,&osc2trngAmount, &osc2PitchRange, &osc2pulsewidth, &osc2AmountWidthMod,
+    &osc3fine, &osc3coarse, &osc3lfo1depth,&osc3trngAmount, &osc3PitchRange, &osc3pulsewidth, &osc3AmountWidthMod,
     &lpCutoff, &biquadResonance, &ladderCutoff, &ladderRes, &lpModSource, &lpModAmount, &hpModSource, &hpModAmount, &keyVelocityLevel,
     &envAttack1, &envDecay1, &envSustain1, &envRelease1, &envAttackShape1, &envDecayShape1, &envReleaseShape1, &keyVelToEnv1,
     &envAttack2, &envDecay2, &envSustain2, &envRelease2, &envAttackShape2, &envDecayShape2, &envReleaseShape2, &keyVelToEnv2,
@@ -51,9 +53,36 @@ SynthParams::SynthParams()
 , lfo1wave("Wave", "lfo1wave", "LFO1 waveform", eLfoWaves::eLfoSine, lfowavenames)
 , lfo1TempSync("TempoSync", "tempoSyncSwitch", "LFO1 TempoSync", eOnOffToggle::eOff, onoffnames)
 , noteLength("Note Length", "notelength", "LFO1 Note Length", "", 1.f, 32.f, 4.f)
+/**
+ Begin: Oscillators
+ */
 , osc1fine("f.tune", "osc1fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
 , osc1coarse("c.tune", "osc1coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
 , osc1lfo1depth("mod", "osc1lfo1depth", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
+, osc1trngAmount("trianlge", "osc1trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+, osc1pulsewidth("Width", "osc1pulsewidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+, osc1AmountWidthMod("Width Mod", "osc1AmountWidthMod", "OSC1 PWM", "", 0.f, 1.f, 0.f)
+, osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
+, osc1PitchRange("Pitch", "osc1PitchRange", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
+, osc2fine("f.tune", "osc2fine", "OSC2 f.tune", "ct", -100.f, 100.f, 0.f)
+, osc2coarse("c.tune", "osc2coarse", "OSC2 c.tune", "st", -11.f, 11.f, 0.f)
+, osc2lfo1depth("mod", "osc2lfo1depth", "OSC2 LFO1 depth", "st", 0.f, 12.f, 0.f)
+, osc2trngAmount("trianlge", "osc2trngAmount", "OSC2 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+, osc2pulsewidth("Width", "osc2pulsewidth", "OSC2 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+, osc2AmountWidthMod("Width Mod", "osc2AmountWidthMod", "OSC2 PWM", "", 0.f, 1.f, 0.f)
+, osc2Waveform("Waveform", "osc2Waveform", "OSC2 Waveform", eOscWaves::eOscSquare, waveformNames)
+, osc2PitchRange("Pitch", "osc2PitchRange", "OSC2 pitch range", "st", 0.f, 12.f, 0.f)
+, osc3fine("f.tune", "osc3fine", "OSC3 f.tune", "ct", -100.f, 100.f, 0.f)
+, osc3coarse("c.tune", "osc3coarse", "OSC3 c.tune", "st", -11.f, 11.f, 0.f)
+, osc3lfo1depth("mod", "osc3lfo1depth", "OSC3 LFO1 depth", "st", 0.f, 12.f, 0.f)
+, osc3trngAmount("trianlge", "osc3trngAmount", "OSC3 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+, osc3pulsewidth("Width", "osc3pulsewidth", "OSC3 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+, osc3AmountWidthMod("Width Mod", "osc3AmountWidthMod", "OSC3 PWM", "", 0.f, 1.f, 0.f)
+, osc3Waveform("Waveform", "osc3Waveform", "OSC3 Waveform", eOscWaves::eOscSquare, waveformNames)
+, osc3PitchRange("Pitch", "osc3PitchRange", "OSC3 pitch range", "st", 0.f, 12.f, 0.f)
+/**
+ End: Oscillators
+ */
 , passtype("Filter Type", "filterType", "Filter type", eBiquadFilters::eLowpass, biquadFilters)
 , lpCutoff("LP Cut", "lpCutoff", "LP filter cutoff",  "Hz", 10.f, 20000.f, 20000.f)
 , biquadResonance("Filter Reso", "filterResonance", "Filter resonance",  "dB", -25.f, 25.f, 0.f)
@@ -62,9 +91,9 @@ SynthParams::SynthParams()
 , lpModAmount("LP ModAmnt", "lpModAmout", "LP mod amount", "prct", 0.f, 100.f, 0.f)
 , hpModSource("HP ModSrc", "hpMod", "HP mod source", eModSource::eNone, modsourcenames)
 , hpModAmount("HP ModAmnt", "hpModAmount", "HP mod amount", "%", 0.f, 100.f, 0.f)
-, osc1trngAmount("trianlge", "osc1trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-
-, osc1PitchRange("Pitch", "osc1PitchRange", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
+/**
+ * Begin: Envelopes
+ */
 , envAttack1("att.", "envAttack", "Env1 attack", "s", 0.001f, 5.0f, 0.005f)
 , envDecay1("dec.", "envDecay", "Env1 decay", "s", 0.001f, 5.0f, 0.05f)
 , envSustain1("sust.", "envSustain", "Env1 sustain", "dB", -96.0f, 0.0f, -5.0f)
@@ -89,10 +118,9 @@ SynthParams::SynthParams()
 , envAttackShape3("Attack Shape", "envAttackShape", "Env attack shape", "", 0.01f, 10.0f, 1.0f)
 , envDecayShape3("Decay Shape", "envDecayShape", "Env decay shape", "", 0.01f, 10.0f, 1.0f)
 , envReleaseShape3("Release Shape", "envReleaseShape", "Env release shape", "", 0.01f, 10.0f, 1.0f)
-
-, osc1pulsewidth("Width", "osc1pulsewidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-, osc1AmountWidthMod("Width Mod", "osc1AmountWidthMod", "OSC1 PWM", "", 0.f, 1.f, 0.f)
-, osc1Waveform("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
+/**
+ * End: Envelopes
+ */
 , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
 , keyVelocityLevel("Velocity Sense", "keyVelocityLevel", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 , vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
