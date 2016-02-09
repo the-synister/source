@@ -41,7 +41,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider->addListener (this);
 
     addAndMakeVisible (resonanceSlider = new MouseOverKnob ("Resonance"));
-    resonanceSlider->setRange (1, 10, 0);
+    resonanceSlider->setRange (0, 10, 0);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
@@ -55,7 +55,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
-    passtype->setRange (0, 3, 1);
+    passtype->setRange (0, 2, 1);
     passtype->setSliderStyle (Slider::RotaryVerticalDrag);
     passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     passtype->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
@@ -220,7 +220,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
-          rotarysliderfill="ff5b7a47" min="-25" max="25" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff5b7a47" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"

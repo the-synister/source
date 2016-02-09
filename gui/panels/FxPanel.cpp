@@ -34,7 +34,7 @@ FxPanel::FxPanel (SynthParams &p)
     //[/Constructor_pre]
 
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
-    feedbackSlider->setRange (0, 1, 0);
+    feedbackSlider->setRange (0, 100, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     feedbackSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -48,11 +48,10 @@ FxPanel::FxPanel (SynthParams &p)
     clippingFactor->addListener (this);
 
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
-    dryWetSlider->setRange (0, 1, 0);
+    dryWetSlider->setRange (0, 100, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     dryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
@@ -60,7 +59,6 @@ FxPanel::FxPanel (SynthParams &p)
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     timeSlider->addListener (this);
     timeSlider->setSkewFactor (0.33);
 
@@ -227,7 +225,7 @@ void FxPanel::resized()
     //[/UserPreResize]
 
     feedbackSlider->setBounds (8, 8, 64, 64);
-    clippingFactor->setBounds (8, 168, 64, 64);
+    clippingFactor->setBounds (8, 152, 64, 64);
     dryWetSlider->setBounds (80, 8, 64, 64);
     timeSlider->setBounds (152, 8, 64, 64);
     syncToggle->setBounds (304, 8, 63, 24);
@@ -457,12 +455,12 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="152 88 64 64"
-          min="0.025000000000000001388" max="0.080000000000000001665" int="0"
+          min="0.025000000000000001" max="0.080000000000000002" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="226 88 64 64"
-          min="0.10000000000000000555" max="1.5" int="0" style="RotaryVerticalDrag"
+          min="0.10000000000000001" max="1.5" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
