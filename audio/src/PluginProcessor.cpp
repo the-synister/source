@@ -63,9 +63,11 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     /*Create ModMatrixRows here*/
 
-    globalModMatrix.addModMatrixRow(SOURCE_NONE, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
-    globalModMatrix.addModMatrixRow(SOURCE_NONE, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
 
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc1PitchRange, "osc1FreqModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc1lfo1depth, "osc1FreqModSrcBox2");
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

@@ -22,7 +22,7 @@ public:
         stopTimer();
     }
 
-
+    static const int COMBO_OFS = 2;
 protected:
     typedef std::function<void()> tHookFn;
 
@@ -102,7 +102,7 @@ protected:
     void updateDirtyBoxes() {
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
-                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + 1);
+                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
 
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
@@ -142,7 +142,7 @@ protected:
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
-        box->setSelectedId(static_cast<int>(p->getStep())+1);
+        box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
         if (hook) {
             postUpdateHook[box] = hook;
         }
@@ -152,9 +152,9 @@ protected:
         auto it = comboboxReg.find(comboboxThatWasChanged);
         if (it != comboboxReg.end()) {
             // we gotta subtract 2 from the item id since the combobox ids start at 1 and the sources enum starts at -1
-            params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<sources>(comboboxThatWasChanged->getSelectedId() - 2));
+            params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
-            it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - 1));
+            it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
             return true;
         }
         else {
@@ -163,8 +163,8 @@ protected:
     }
 
     void fillModsourceBox(ComboBox* box) {
-        for (int i = 0; i < 15; i++) {
-            box->addItem(params.getModSrcName(i), i + 1);
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
         }
     }
 

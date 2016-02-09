@@ -50,9 +50,10 @@ public:
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
-        modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[SOURCE_VOL_ENV] = env1Buffer.getWritePointer(0);
+        modSources[eModSource::eVelocity] = &currentVelocity;
+        modSources[eModSource::ePitchbend] = &pitchBend;
+        modSources[eModSource::eLFO1] = lfo1Buffer.getWritePointer(0);
+        modSources[eModSource::eVolEnv] = env1Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -356,8 +357,8 @@ protected:
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
-        modSources[SOURCE_VOL_ENV] = env1Buffer.getWritePointer(0);
-        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
+        modSources[eModSource::eLFO1] = lfo1Buffer.getWritePointer(0);
+        modSources[eModSource::eVolEnv] = env1Buffer.getWritePointer(0);
 
         for (int s = 0; s < numSamples; ++s) {
 
@@ -397,8 +398,8 @@ protected:
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
             }
-            ++modSources[SOURCE_VOL_ENV];
-            ++modSources[SOURCE_LFO1];
+            ++modSources[eModSource::eLFO1];
+            ++modSources[eModSource::eVolEnv];
         }
 
         //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
@@ -538,7 +539,7 @@ private:
     //float lfoValue;
     //float env1Coeff;
 
-    std::array<float*, MAX_SOURCES> modSources;
+    std::array<float*, eModSource::nSteps> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
 
     int totSamples;

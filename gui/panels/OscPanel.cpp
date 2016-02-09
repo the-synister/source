@@ -165,6 +165,11 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(waveformSwitch, &params.osc1Waveform);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
+    fillModsourceBox(osc1FreqModSrc1);
+    fillModsourceBox(osc1FreqModSrc2);
+    
+    registerCombobox(osc1FreqModSrc1, &params.osc1PiModSrc1);
+    registerCombobox(osc1FreqModSrc2, &params.osc1PiModSrc2);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -231,8 +236,8 @@ void OscPanel::resized()
     squarelabel->setBounds (256, 152, 96, 24);
     noiselabel->setBounds (433, 152, 80, 24);
     amountWidthMod->setBounds (368, 8, 64, 64);
-    osc1FreqModSrc1->setBounds (248, 88, 64, 16);
-    osc1FreqModSrc2->setBounds (320, 88, 64, 16);
+    osc1FreqModSrc1->setBounds (152, 80, 64, 16);
+    osc1FreqModSrc2->setBounds (224, 80, 64, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -297,6 +302,7 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == osc1FreqModSrc1)
@@ -410,10 +416,10 @@ BEGIN_JUCER_METADATA
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="248 88 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="152 80 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="osc1FreqModSrcBox2" id="58dc64c4649ad205" memberName="osc1FreqModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="320 88 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="224 80 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

@@ -12,42 +12,40 @@ Author:  nj
 #define MODULATIONMATRIX_H_INCLUDED
 
 #include "JuceHeader.h"
-#include <atomic>
 #include "Param.h"
 #include <map>
-//#include "..\gui\panels\PanelBase.h"
 
 //! Modulation Matrix
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
 */
 
-
-enum sources : int {
-    SOURCE_NONE = -1,
-
+enum eModSource : int {
+    eNone = 0,
+    
     // Midi
-    SOURCE_AFTERTOUCH,
-    SOURCE_KEY_BIPOLAR,
-    SOURCE_INVERTED_VELOCITY,
-    SOURCE_VELOCITY,
-    SOURCE_FOOT,
-    SOURCE_EXPPEDAL,
-    SOURCE_MODWHEEL,
-    SOURCE_PITCHBEND,
-
+    eAftertouch,
+    eKeyBipolar,
+    eInvertedVelocity,
+    eVelocity,
+    eFoot,
+    eExpPedal,
+    eModwheel,
+    ePitchbend,
+    
     // LFOs
-    SOURCE_LFO1,
-    SOURCE_LFO2,
-    SOURCE_LFO3,
-
+    eLFO1,
+    eLFO2,
+    eLFO3,
+    
     // Envelopes
-    SOURCE_VOL_ENV,
-    SOURCE_ENV2,
-    SOURCE_ENV3,
-
-    MAX_SOURCES
+    eVolEnv,
+    eEnv2,
+    eEnv3,
+    
+    nSteps
 };
+
 
 enum destinations : int {
     DEST_NONE = -1,
@@ -87,28 +85,21 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
-inline bool isUnipolar(sources source) {
+inline bool isUnipolar(eModSource source) {
     switch (source) {
-    case SOURCE_VOL_ENV:
-    case SOURCE_ENV2:
-    case SOURCE_ENV3:
-    case SOURCE_AFTERTOUCH:
-    case SOURCE_MODWHEEL:
-    case SOURCE_VELOCITY:
-    case SOURCE_INVERTED_VELOCITY:
-    case SOURCE_FOOT:
-    case SOURCE_EXPPEDAL:
+    case eModSource::eVolEnv:
+    case eModSource::eEnv2:
+    case eModSource::eEnv3:
+    case eModSource::eAftertouch:
+    case eModSource::eModwheel:
+    case eModSource::eVelocity:
+    case eModSource::eInvertedVelocity:
+    case eModSource::eFoot:
+    case eModSource::eExpPedal:
         return true;
-        break;
-    case SOURCE_LFO1:
-    case SOURCE_LFO2:
-    case SOURCE_LFO3:
-    case SOURCE_PITCHBEND:
-    case SOURCE_KEY_BIPOLAR:
+    default:
         return false;
-        break;
     }
-    // when the function is complete with all sources, this code should be unreachable
     return false;
 }
 
@@ -122,12 +113,12 @@ public:
 
     struct ModMatrixRow
     {
-        sources sourceIndex;
+        eModSource sourceIndex;
         destinations destinationIndex;
         Param* modIntensity;
         String modSrcBox;
 
-        ModMatrixRow(sources s, destinations d, Param *intensity, String boxname)
+        ModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
             : sourceIndex(s)
             , destinationIndex(d)
             , modIntensity(intensity)
@@ -137,9 +128,9 @@ public:
 
 
 
-    inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
-    inline void changeSource(String comboboxName, sources source);
-    inline void addModMatrixRow(sources s, destinations d, Param *intensity, String comboboxName);
+    inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
+    inline void changeSource(String comboboxName, eModSource source);
+    inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
 
 
@@ -157,7 +148,7 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
     for (const ModMatrixRow &row : matrixCore)
     {
         // get the source value & mod intensity
-        if (row.sourceIndex > SOURCE_NONE && row.sourceIndex < MAX_SOURCES
+        if (row.sourceIndex > eModSource::eNone && row.sourceIndex < eModSource::nSteps
             && row.destinationIndex > DEST_NONE && row.destinationIndex < MAX_DESTINATIONS) {
             float source = *(src[row.sourceIndex]);
             float intensity = row.modIntensity->get();
@@ -187,7 +178,7 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
 
 // config changes
 
-inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const
+inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const
 {
     for (const ModMatrixRow &row : matrixCore)
     {
@@ -200,7 +191,7 @@ inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinatio
     return false;
 }
 
-inline void ModulationMatrix::changeSource(String comboboxName, sources source) {
+inline void ModulationMatrix::changeSource(String comboboxName, eModSource source) {
     for (ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
@@ -212,7 +203,7 @@ inline void ModulationMatrix::changeSource(String comboboxName, sources source) 
 }
 
 
-inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, String boxname)
+inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
 {
     matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
 }
