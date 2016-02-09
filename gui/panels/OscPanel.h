@@ -42,7 +42,7 @@ class OscPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    OscPanel (SynthParams &p);
+    OscPanel (SynthParams &p, int oscillatorNumber, const String& panelTitle);
     ~OscPanel();
 
     //==============================================================================
@@ -64,7 +64,9 @@ private:
     Rectangle<int> sawFrame = { 0, 20, 30, 20 };
     Rectangle<int> squareFrame = { 69, 20, 30, 20 };
     Rectangle<int> noiseFrame = { 35, 0, 30, 20 };
-
+    
+    const String _panelTitle;
+    
     SynthParams::Osc &osc;
     //[/UserVariables]
 

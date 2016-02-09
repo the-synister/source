@@ -27,9 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscPanel::OscPanel (SynthParams &p)
-: PanelBase(p)
-, osc(p.osc[0])
+OscPanel::OscPanel (SynthParams &p, int oscillatorNumber, const String& panelTitle)
+    : PanelBase(p)
+      , osc(p.osc[oscillatorNumber])
+      , _panelTitle(panelTitle)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -94,7 +95,7 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ctune1->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), params.osc1trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -335,10 +336,10 @@ void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="267"
-                 initialHeight="272">
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int oscillatorNumber, const String&amp; panelTitle"
+                 variableInitialisers="PanelBase(p)&#10;, osc(p.osc[oscillatorNumber])&#10;, _panelTitle(panelTitle)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="267" initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 170 64 64"

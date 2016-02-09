@@ -114,7 +114,7 @@ public:
         Param volModAmount1;    //!< key velocity level range in [0..96]dB
     };
 
-    std::array<Osc, 1> osc;
+    std::array<Osc, 3> osc;
 
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
 

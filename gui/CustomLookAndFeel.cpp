@@ -86,7 +86,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-//TODO: vorzeitige version später statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar / bipolar und evtl.Colour
+//TODO: vorzeitige version spter statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar / bipolar und evtl.Colour
 void CustomLookAndFeel::drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar,
     float centreX, float centreY, float radius, float innerCircleSize,
     float currAngle, float rotaryStartAngle, float rotaryEndAngle)
@@ -146,7 +146,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
         if (s.getMinimum() == -s.getMaximum())
         {
-            // TODO: wenn überhaupt am ende noch relevant ist, ansonsten löschen
+            // TODO: wenn berhaupt am ende noch relevant ist, ansonsten lschen
             const float middleHeight = boxHeight * 0.65f;
             // create left and right part of pan
             path.addQuadrilateral(posX, posY,
@@ -278,7 +278,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
     }
 }
 
-// TODO: wenn nicht benötigt, dann weg
+// TODO: wenn nicht bentigt, dann weg
 Slider::SliderLayout CustomLookAndFeel::getSliderLayout(Slider& s)
 {
     // 1. compute the actually visible textBox size from the slider textBox size and some additional constraints
@@ -469,7 +469,7 @@ void CustomLookAndFeel::positionComboBoxText(ComboBox& c, Label& l)
 
 //==============================================================================
 
-// TODO: alle popup sachen je nach dem ob benötigt werden später, ansonsten löschen
+// TODO: alle popup sachen je nach dem ob bentigt werden spter, ansonsten lschen
 Font CustomLookAndFeel::getPopupMenuFont()
 {
     return LookAndFeel_V2::getPopupMenuFont();
