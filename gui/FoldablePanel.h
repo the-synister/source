@@ -32,6 +32,7 @@ public:
     StringArray getSectionNames() const;
 
     bool isEmpty() const;
+    void addPanel(const int sectionIndex, Component* const newPanel);
     bool isSectionOpen (const int sectionIndex) const;
     void setSectionOpen (int sectionIndex, bool shouldBeOpen);
     void setSectionEnabled (int sectionIndex, bool shouldBeEnabled);

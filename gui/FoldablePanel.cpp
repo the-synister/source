@@ -19,18 +19,19 @@ struct FoldablePanel::SectionComponent  : public Component
                       const int sectionHeight,
                       const bool sectionIsOpen)
     : Component (sectionTitle),
+    positionIndex(0),
     titleHeight (22),
     isOpen (sectionIsOpen),
-    _sectionColour(sectionColour),
-    _sectionHeight(sectionHeight + titleHeight)
+    _sectionHeight(sectionHeight + titleHeight),
+    _sectionColour(sectionColour)
     {
         jassert(sectionTitle.isNotEmpty());
-        addAndMakeVisible (panel = newPanel);
+        addPanel (newPanel);
     }
 
     ~SectionComponent()
     {
-        panel = nullptr;
+        panels.clear();
     }
 
     void paint(Graphics& g) override
@@ -50,10 +51,19 @@ struct FoldablePanel::SectionComponent  : public Component
         }
     }
 
+    void addPanel(Component* const newPanel)
+    {
+        panels.insert(positionIndex++, newPanel);
+        addAndMakeVisible (newPanel, 0);
+    }
+    
     void resized() override
     {
-        panel->setBounds(panel->getBoundsInParent().withTop(titleHeight));
-        panel->resized();
+        for (int i = 0; i < panels.size(); ++i ) {
+            Component* const panel = panels.getUnchecked(i);
+            panel->setBounds(getX(), getY() + 22, getWidth(), getHeight() - 22);
+            panel->resized();
+        }
     }
 
     void setOpen (const bool open)
@@ -61,7 +71,10 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
-            panel->setVisible(open);
+            for (int i = 0; i < panels.size(); ++i ) {
+                Component* const panel = panels.getUnchecked(i);
+                panel->setVisible(open);
+            }
 
            if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>())
                pp->resized();
@@ -94,7 +107,8 @@ struct FoldablePanel::SectionComponent  : public Component
         return (isOpen ? _sectionHeight : titleHeight);
     }
 
-    WeakReference<Component> panel;
+    int positionIndex;
+    OwnedArray<Component> panels;
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
@@ -222,6 +236,13 @@ void FoldablePanel::addSection (const String& sectionTitle,
     panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
     resized();
     updateLayout();
+}
+
+void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
+{
+    if (SectionComponent* s = panelHolderComponent->getSectionWithNonEmptyName (sectionIndex))
+        s->addPanel(newPanel);
+
 }
 
 void FoldablePanel::updateLayout() const

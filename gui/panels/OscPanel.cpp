@@ -574,7 +574,7 @@ void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
-    
+
     g.drawImageWithin(waveforms.getClippedImage(noiseFrame), centerX - 15, _waveformSwitch->getY() - 20, 30, 20, RectanglePlacement::centred);
     g.drawImageWithin(waveforms.getClippedImage(sawFrame), _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2 + 10, centerY - 10, 30, 20, RectanglePlacement::centred);
     g.drawImageWithin(waveforms.getClippedImage(squareFrame), centerX - 15, _waveformSwitch->getY() + _waveformSwitch->getHeight() - 2, 30, 20, RectanglePlacement::centred);
