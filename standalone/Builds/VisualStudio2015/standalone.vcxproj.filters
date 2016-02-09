@@ -376,6 +376,18 @@
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -1694,6 +1706,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
       <Filter>standalone\Audio\inc</Filter>

@@ -47,7 +47,7 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(envAttack));
     addParameter(new HostParam<Param>(envDecay));
-    addParameter(new HostParam<ParamDb>(envSustain));
+    //addParameter(new HostParam<ParamDb>(envSustain));
     addParameter(new HostParam<Param>(envRelease));
 
     addParameter(new HostParam<Param>(clippingFactor));
