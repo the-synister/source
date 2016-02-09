@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include <cmath>
 #include "SynthParams.h"
 #include "ModulationMatrix.h"
 #include "Envelope.h"
@@ -441,16 +442,19 @@ protected:
                 factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
             }
 
+            const float lfoGain = params.lfo1gainModSrc1.getStep() == eModSource::eNone 
+                ? 1.f
+                : *(modSources[static_cast<int>(params.lfo1gainModSrc1.getStep()) - 1]);
             // calculate lfo values and fill the buffers
             switch (params.lfo1wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO * lfo1Gain[0]);
+                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSampleHold:
-                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO * lfo1Gain[0]);
+                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSquare:
-                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfo1Gain[0]);
+                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfoGain);
                 break;
             }
 
