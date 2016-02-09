@@ -95,6 +95,8 @@ PlugUI::PlugUI (SynthParams &p)
     // see env panel. introjucer height is set to 252
     // TODO: mem leaks
     foldableComponent->addSection (TRANS("OSC"), new OscPanel (params), Colour (0xff6c788c), 250, true, 0);
+    foldableComponent->addPanel(0, new OscPanel(params));
+    foldableComponent->addPanel(0, new OscPanel(params));
     foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), Colour (0xffcbca63), 230, false, 1);
     foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params), Colour (0xffb16565), 200, false, 2);
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 200, false, 3);

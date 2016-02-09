@@ -55,13 +55,16 @@ struct FoldablePanel::SectionComponent  : public Component
     {
         panels.insert(positionIndex++, newPanel);
         addAndMakeVisible (newPanel, 0);
+        resized();
     }
     
     void resized() override
     {
+        int x = 0;
         for (int i = 0; i < panels.size(); ++i ) {
             Component* const panel = panels.getUnchecked(i);
-            panel->setBounds(getX(), getY() + 22, getWidth(), getHeight() - 22);
+            panel->setBounds(x, getY() + titleHeight, panel->getWidth(), panel->getHeight());
+            x += panel->getWidth();
             panel->resized();
         }
     }

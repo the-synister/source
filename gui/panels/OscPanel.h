@@ -75,24 +75,6 @@ private:
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<MouseOverKnob> amountWidthMod;
-    ScopedPointer<MouseOverKnob> ftune2;
-    ScopedPointer<MouseOverKnob> lfo1depth2;
-    ScopedPointer<MouseOverKnob> osc2trngAmount;
-    ScopedPointer<MouseOverKnob> pulsewidth2;
-    ScopedPointer<MouseOverKnob> pitchRange2;
-    ScopedPointer<MouseOverKnob> ctune2;
-    ScopedPointer<WaveformVisual> waveformVisual2;
-    ScopedPointer<Slider> waveformSwitch2;
-    ScopedPointer<MouseOverKnob> amountWidthMod2;
-    ScopedPointer<MouseOverKnob> ftune3;
-    ScopedPointer<MouseOverKnob> lfo1depth3;
-    ScopedPointer<MouseOverKnob> osc3trngAmount;
-    ScopedPointer<MouseOverKnob> pulsewidth3;
-    ScopedPointer<MouseOverKnob> pitchRange3;
-    ScopedPointer<MouseOverKnob> ctune3;
-    ScopedPointer<WaveformVisual> waveformVisual3;
-    ScopedPointer<Slider> waveformSwitch3;
-    ScopedPointer<MouseOverKnob> amountWidthMod3;
 
 
     //==============================================================================
