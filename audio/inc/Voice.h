@@ -605,8 +605,8 @@ protected:
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
 
-        /*const float currentResonance = pow(10.f, -params.biquadResonance.get() / 20.f);*/
-        const float currentResonance = params.biquadResonance.get();
+        const float currentResonance = pow(10.f, (-params.biquadResonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
+        //const float currentResonance = pow(10.f, (params.biquadResonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 0 maximal*/
 
         if (filterType == eBiquadFilters::eLowpass) {
 
