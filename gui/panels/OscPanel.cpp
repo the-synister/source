@@ -93,7 +93,7 @@ OscPanel::OscPanel (SynthParams &p)
     ctune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ctune1->addListener (this);
 
-    addAndMakeVisible (waveformVisual = new WaveformVisual (params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()));
+    addAndMakeVisible (waveformVisual = new WaveformVisual (osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()));
     waveformVisual->setName ("Waveform Visual");
 
     addAndMakeVisible (waveformSwitch = new Slider ("Waveform Switch"));
@@ -131,12 +131,10 @@ OscPanel::OscPanel (SynthParams &p)
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, lfoFadeIn, &params.lfoFadein, 2);
     registerSaturnSource(ctune1, pitchRange, &osc.pitchModAmount1, 2);
     registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModAmount2, 1);
 
     registerSaturnSource(lfo1depth1, pitchRange, &osc.pitchModAmount1, 1);
-    registerSaturnSource(lfo1depth1, lfoFadeIn, &params.lfoFadein, 2);
 
     registerSlider(ftune1, &osc.fine);
     registerSlider(lfo1depth1, &osc.pitchModAmount2);
@@ -146,9 +144,7 @@ OscPanel::OscPanel (SynthParams &p)
     registerSlider(amountWidthMod, &osc.shapeModAmount);
     registerSlider(ctune1, &osc.coarse);
     registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(lfoFadeIn, &params.lfoFadein);
     registerSlider(waveformSwitch, &osc.waveForm);
-    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
@@ -164,7 +160,7 @@ OscPanel::OscPanel (SynthParams &p)
     trngAmount->setVisible(false);/*
     osc2trngAmount->setVisible(false);
     osc3trngAmount->setVisible(false);*/
-    waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
+    //waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
     //[/Constructor]
 }
 
@@ -201,15 +197,9 @@ void OscPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "osc 1", 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
-    //drawGroupBorder(g, "osc 2",this->getWidth() / 3, 0,
-      //              this->getWidth() / 3, this->getHeight(), 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
-    //drawGroupBorder(g, "osc 3", this->getWidth() / 3 * 2, 0,
-        //            this->getWidth() / 3, this->getHeight(), 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
 
     // draw waveform symbols
-    drawWaves(g, waveformSwitch);/*
-    drawWaves(g, waveformSwitch2);
-    drawWaves(g, waveformSwitch3);*/
+    drawWaves(g, waveformSwitch);
     //[/UserPaint]
 }
 

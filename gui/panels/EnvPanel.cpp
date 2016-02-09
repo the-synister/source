@@ -111,7 +111,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve1 = new EnvelopeCurve (params.envAttack1.get(), params.envDecay1.get(), params.envSustain1.get(), params.envRelease1.get(),  params.envAttackShape1.get(), params.envDecayShape1.get(), params.envReleaseShape1.get()
+    addAndMakeVisible (envelopeCurve1 = new EnvelopeCurve (params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()
                                                            ));
     envelopeCurve1->setName ("Envelope Curve");
 
@@ -126,13 +126,13 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime1, &params.envAttack1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayTime1, &params.envDecay1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(sustainLevel1, &params.envSustain1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseTime1, &params.envRelease1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(attackShape1, &params.envAttackShape1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayShape1, &params.envDecayShape1, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseShape1, &params.envReleaseShape1, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackTime1, &params.envAttack, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayTime1, &params.envDecay, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(sustainLevel1, &params.envSustain, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseTime1, &params.envRelease, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackShape1, &params.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayShape1, &params.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseShape1, &params.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(keyVelToEnv1, &params.keyVelToEnv1);
     attackShape1->setPopupDisplayEnabled(true, this);
     decayShape1->setPopupDisplayEnabled(true, this);
