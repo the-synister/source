@@ -261,7 +261,11 @@ SynthParams::~SynthParams() {
 
 const char * SynthParams::getModSrcName(int index)
 {
-    if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) return modsourcenames[index];
+    if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) {
+        return modsourcenames[index];
+    } else {
+        return "unknown";
+    }
 }
 
 int SynthParams::getAudioIndex()

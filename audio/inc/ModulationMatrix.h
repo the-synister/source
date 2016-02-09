@@ -157,8 +157,7 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
     for (const ModMatrixRow &row : matrixCore)
     {
         // get the source value & mod intensity
-        float dModValue;
-        if (row.sourceIndex >= 0) {
+        if (row.sourceIndex > SOURCE_NONE && row.sourceIndex < MAX_SOURCES) {
             float source = *(src[row.sourceIndex]);
             float intensity = row.modIntensity->get();
 
@@ -176,9 +175,9 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
             }
 
             float dModValue = source*intensity;
-                /*we are just adding the modified values into the predefined buffers
-                the conversion and application is apllied outside of the matrix*/
-                *(dst[row.destinationIndex]) += dModValue;
+            /*we are just adding the modified values into the predefined buffers
+              the conversion and application is apllied outside of the matrix*/
+            *(dst[row.destinationIndex]) += dModValue;
         }
 
 

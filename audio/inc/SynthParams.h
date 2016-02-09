@@ -83,7 +83,7 @@ public:
     SynthParams();
     ~SynthParams();
 
-    const char * SynthParams::getModSrcName(int index);
+    static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
 

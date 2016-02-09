@@ -43,8 +43,10 @@ public:
     , lfo1Buffer(1,blockSize)
     , env1Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
-    {        
-        std::fill(modSources.begin(), modSources.end(), nullptr);
+    {
+        // set all to velocity so that the modulation matrix does not crash
+        std::fill(modSources.begin(), modSources.end(), &currentVelocity);
+        //std::fill(modSources.begin(), modSources.end(), nullptr);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
