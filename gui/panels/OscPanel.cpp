@@ -160,7 +160,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     trngAmount->setVisible(false);/*
     osc2trngAmount->setVisible(false);
     osc3trngAmount->setVisible(false);*/
-    //waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
+    waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize); // TODO: braucht destructor?
     //[/Constructor]
 }
 
