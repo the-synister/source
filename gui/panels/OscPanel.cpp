@@ -28,8 +28,7 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
-    : PanelBase(p)
-      , osc(p.osc[oscillatorNumber])
+    : PanelBase(p), osc(p.osc[oscillatorNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -336,7 +335,7 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int oscillatorNumber"
-                 variableInitialisers="PanelBase(p)&#10;, osc(p.osc[oscillatorNumber])"
+                 variableInitialisers="PanelBase(p), osc(p.osc[oscillatorNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>
@@ -378,7 +377,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 160 123 72"
-                    class="Component" params="params.osc1Waveform.getStep(), params.osc1pulsewidth.get(), params.osc1trngAmount.get()"/>
+                    class="Component" params="osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
           virtualName="" explicitFocusOrder="0" pos="198 169 40 54" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearVertical"

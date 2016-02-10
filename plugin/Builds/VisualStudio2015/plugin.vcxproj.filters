@@ -343,10 +343,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
@@ -1633,9 +1642,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>Juce Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1707,10 +1713,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
@@ -3198,17 +3213,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>Juce Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\sine-switch_noise.png">
-      <Filter>plugin\Gui\Assets</Filter>
-    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>
