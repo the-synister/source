@@ -112,7 +112,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (envVol.envAttack.get(), envVol.envDecay.get(), envVol.envSustain.get(), envVol.envRelease.get(),  envVol.envAttackShape.get(), envVol.envDecayShape.get(), envVol.envReleaseShape.get()
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (envVol.attack.get(), envVol.decay.get(), envVol.sustain.get(), envVol.release.get(),  envVol.attackShape.get(), envVol.decayShape.get(), envVol.releaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
 
@@ -127,13 +127,13 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(attackTime, &envVol.envAttack, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayTime, &envVol.envDecay, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(sustainLevel, &envVol.envSustain, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseTime, &envVol.envRelease, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(attackShape, &envVol.envAttackShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(decayShape, &envVol.envDecayShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(releaseShape, &envVol.envReleaseShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackTime, &envVol.attack, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayTime, &envVol.decay, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(sustainLevel, &envVol.sustain, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseTime, &envVol.release, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(attackShape, &envVol.attackShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(keyVelToEnv1, &envVol.keyVelToEnv);
     attackShape->setPopupDisplayEnabled(true, this);
     decayShape->setPopupDisplayEnabled(true, this);
@@ -343,7 +343,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
                     virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="117 146 128 64"
-                    class="Component" params="envVol.envAttack.get(), envVol.envDecay.get(), envVol.envSustain.get(), envVol.envRelease.get(),  envVol.envAttackShape.get(), envVol.envDecayShape.get(), envVol.envReleaseShape.get()&#10;"/>
+                    class="Component" params="envVol.attack.get(), envVol.decay.get(), envVol.sustain.get(), envVol.release.get(),  envVol.attackShape.get(), envVol.decayShape.get(), envVol.releaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
          virtualName="" explicitFocusOrder="0" pos="137 108 51 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"

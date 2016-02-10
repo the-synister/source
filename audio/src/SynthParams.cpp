@@ -38,7 +38,8 @@ SynthParams::SynthParams()
     &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
     &osc[1].fine, &osc[1].coarse, &osc[1].pitchModAmount2,&osc[1].trngAmount, &osc[1].pitchModAmount1, &osc[1].pulseWidth, &osc[1].pitchModSrc1, &osc[1].pitchModSrc2, &osc[1].shapeModSrc1, &osc[1].shapeModSrc2, &osc[1].panDir, &osc[1].vol, &osc[1].volModAmount1,
     &osc[2].fine, &osc[2].coarse, &osc[2].pitchModAmount2,&osc[2].trngAmount, &osc[2].pitchModAmount1, &osc[2].pulseWidth, &osc[2].pitchModSrc1, &osc[2].pitchModSrc2, &osc[2].shapeModSrc1, &osc[2].shapeModSrc2, &osc[2].panDir, &osc[2].vol, &osc[2].volModAmount1,
-  /*  &lp1Cutoff, &filter1Resonance,
+
+        /*  &lp1Cutoff, &filter1Resonance,
     &lp1CutModSrc1, &lp1CutModSrc2, &lp1ModAmount1, &lp1ModAmount2, &hp1Cutoff, &hp1CutModSrc1, &hp1CutModSrc2, &hp1ModAmount1, &hp1ModAmount2, &filter1ResonanceModSrc1, &filter1ResonanceModSrc2,
     */
    /* TODO: Register Env, filter, and lfo params*/
@@ -133,29 +134,29 @@ SynthParams::Osc::Osc()
 }
 
 SynthParams::EnvBase::EnvBase()
-: envAttack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-, envRelease("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
+: attack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
+, release("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
 , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
-, envAttackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
-, envDecayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
-, envReleaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-, envDecay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+, attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+, decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+, releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
+, decay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
 : EnvBase()
-, envSustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
-, envVolSpeedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
-, envVolSpeedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
+, sustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+, speedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
+, speedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::Env::Env()
 :  EnvBase()
-, envSustain("Sustain", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
-, env2SpeedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
-, env2SpeedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
+, sustain("Sustain", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+, speedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
+, speedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
 {
 }
 

@@ -23,10 +23,10 @@ public:
     , bandpassDelay1(0.f)
     , bandpassDelay2(0.f)
     , params(p)
-    , envToVolume(getSampleRate(), params.envVol[0].envAttack, params.envVol[0].envDecay, params.envVol[0].envSustain, params.envVol[0].envRelease,
-        params.envVol[0].envAttackShape, params.envVol[0].envDecayShape, params.envVol[0].envReleaseShape, params.envVol[0].keyVelToEnv)
-    , env1(getSampleRate(), params.env[0].envAttack, params.env[0].envDecay, params.env[0].envSustain, params.env[0].envRelease,
-        params.env[0].envAttackShape, params.env[0].envDecayShape, params.env[0].envReleaseShape, params.env[0].keyVelToEnv)
+    , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
+        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
+    , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
+        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
     , level (0.f)
     , ladderOut(0.f)
     , ladderInDelay(0.f)
@@ -279,8 +279,8 @@ public:
                     }
                 }
 
-                if (static_cast<int>(getSampleRate() * params.envVol[0].envRelease.get()) <= envToVolume.getReleaseCounter() ||
-                    static_cast<int>(getSampleRate() * params.env[0].envRelease.get()) <= env1.getReleaseCounter())
+                if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter() ||
+                    static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env1.getReleaseCounter())
                 {
                     clearCurrentNote();
                     lfo1sine.reset();

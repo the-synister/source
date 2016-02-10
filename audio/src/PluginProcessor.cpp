@@ -35,13 +35,13 @@ PluginAudioProcessor::PluginAudioProcessor()
     }
 
     for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(env[i].envAttack));
-        addParameter(new HostParam<Param>(env[i].envDecay));
-        addParameter(new HostParam<Param>(env[i].envSustain));
-        addParameter(new HostParam<Param>(env[i].envRelease));
-        addParameter(new HostParam<Param>(env[i].envAttackShape));
-        addParameter(new HostParam<Param>(env[i].envDecayShape));
-        addParameter(new HostParam<Param>(env[i].envReleaseShape));
+        addParameter(new HostParam<Param>(env[i].attack));
+        addParameter(new HostParam<Param>(env[i].decay));
+        addParameter(new HostParam<Param>(env[i].sustain));
+        addParameter(new HostParam<Param>(env[i].release));
+        addParameter(new HostParam<Param>(env[i].attackShape));
+        addParameter(new HostParam<Param>(env[i].decayShape));
+        addParameter(new HostParam<Param>(env[i].releaseShape));
     }
 
     for (int i = 0; i < 3; ++i) {
@@ -59,10 +59,10 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(filter[i].passtype));
     }
 
-    addParameter(new HostParam<Param>(envVol[0].envAttack));
-    addParameter(new HostParam<Param>(envVol[0].envDecay));
+    addParameter(new HostParam<Param>(envVol[0].attack));
+    addParameter(new HostParam<Param>(envVol[0].decay));
     //addParameter(new HostParam<ParamDb>(envSustain));
-    addParameter(new HostParam<Param>(envVol[0].envRelease));
+    addParameter(new HostParam<Param>(envVol[0].release));
 
     addParameter(new HostParam<Param>(clippingFactor));
 
