@@ -3,6 +3,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 
+//! \brief multi-mode audio filter code
 class Filter {
 public:
     Filter(SynthParams::Filter &f) 
@@ -10,6 +11,9 @@ public:
     {
     }
 
+    //! \brief reset the internal state
+    /** \param sRate sample rate in Hz
+    */
     void reset(float sRate)
     {
         sampleRate = sRate;
@@ -34,6 +38,11 @@ public:
         lpOut3Delay = 0.f;
     }
 
+    //! \brief apply the filter to a single sample
+    /** \param inputSignal audio sample to filter
+     *  \param modValue cutoff modulation in abstract modulation range (i.e., [-1;1] per modulation source)
+     *  \return filtered audio sample
+     */
     float run(float inputSignal, float modValue) {
         if (filter.passtype.getStep() == eBiquadFilters::eLadder) {
             return ladderFilter(inputSignal, modValue);
@@ -202,11 +211,13 @@ protected:
 
     float sampleRate;
 
-    //! biquad internal state
+    //! \name biquad internal state
+    ///@{ 
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, bandpassDelay1, bandpassDelay2;
+    ///@}
 
-    //@{ 
-    //! for the lader filter
+    //! \name ladder internal state
+    ///@{ 
     float ladderOut;
     float ladderInDelay;
     float lpOut1;
@@ -215,6 +226,6 @@ protected:
     float lpOut1Delay;
     float lpOut2Delay;
     float lpOut3Delay;
-    //@}
+    ///@}
 };
 
