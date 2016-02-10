@@ -227,10 +227,10 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "synister"
+ #define JucePlugin_Name                   "plugin"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "project at QU Lab, TU Berlin"
+ #define JucePlugin_Desc                   "plugin"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "qu.tu-berlin.de"
@@ -248,13 +248,13 @@
  #define JucePlugin_PluginCode             'MiSp'
 #endif
 #ifndef  JucePlugin_MaxNumInputChannels
- #define JucePlugin_MaxNumInputChannels    0
+ #define JucePlugin_MaxNumInputChannels    2
 #endif
 #ifndef  JucePlugin_MaxNumOutputChannels
- #define JucePlugin_MaxNumOutputChannels   6
+ #define JucePlugin_MaxNumOutputChannels   2
 #endif
 #ifndef  JucePlugin_PreferredChannelConfigurations
- #define JucePlugin_PreferredChannelConfigurations  {0, 1}, {0, 2}, {0, 6}
+ #define JucePlugin_PreferredChannelConfigurations  {1, 1}, {2, 2}
 #endif
 #ifndef  JucePlugin_IsSynth
  #define JucePlugin_IsSynth                1
@@ -302,7 +302,7 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     de.tu-berlin.qu.synister
+ #define JucePlugin_CFBundleIdentifier     de.tu-berlin.qu.synth.plugin
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           ePlugInCategory_SWGenerators
@@ -320,7 +320,7 @@
  #define JucePlugin_RTASDisableMultiMono   0
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          de.tu-berlin.qu.synister
+ #define JucePlugin_AAXIdentifier          de.tu-berlin.qu.synth.plugin
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
