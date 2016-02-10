@@ -107,7 +107,7 @@ public:
         ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
     };
     
-    struct Lfo : public EnvBase {
+    struct Lfo : public BaseParamStruct {
         Lfo();
         
         Param freq; //!< lfo frequency in Hz
