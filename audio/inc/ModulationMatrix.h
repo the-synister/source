@@ -51,9 +51,12 @@ enum destinations : int {
     DEST_NONE = -1,
 
     // Filters
-    DEST_FILTER_LC,
-    DEST_FILTER_HC,
-    DEST_FILTER_RES,
+    DEST_FILTER1_LC,
+    DEST_FILTER2_LC,
+    DEST_FILTER1_HC,
+    DEST_FILTER2_HC,
+    DEST_FILTER1_RES,
+    DEST_FILTER2_RES,
 
     // Oscillators
     DEST_OSC1_GAIN,
@@ -73,9 +76,6 @@ enum destinations : int {
     DEST_LFO1_FREQ,
     DEST_LFO2_FREQ,
     DEST_LFO3_FREQ,
-    DEST_LFO1_GAIN,
-    DEST_LFO2_GAIN,
-    DEST_LFO3_GAIN,
 
     // Envelopes
     DEST_VOL_ENV_SPEED,
