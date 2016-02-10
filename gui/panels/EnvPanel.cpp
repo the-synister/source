@@ -179,11 +179,11 @@ void EnvPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, envVol.name, 0, 0,
-        this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffcbca63));
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::envColour);
 
     int smallBorderHeight = 40;
     drawGroupBorder(g, "", 10, (this->getHeight() - 22) / 2 - (smallBorderHeight - 12) / 2,
-        this->getWidth() - 20, smallBorderHeight, 3.0f, 10.0f, 3.0f, 3.0f, Colour(0xffcbca63));
+        this->getWidth() - 20, smallBorderHeight, 3.0f, 10.0f, 3.0f, 3.0f, SynthParams::envColour);
     // NOTE: debug
     // TODO: panel is cutoff 22 pixel from below
     //g.setColour(Colours::red);

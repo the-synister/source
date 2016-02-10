@@ -435,7 +435,7 @@ void SeqPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "step sequencer", 0, 0,
-        this->getWidth(), this->getHeight(), 30.0f, 20.0f, 5.0f, 3.0f, Colour(0xff564c43));
+        this->getWidth(), this->getHeight(), 30.0f, 20.0f, 5.0f, 3.0f, SynthParams::stepSeqColour);
     //[/UserPaint]
 }
 

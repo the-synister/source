@@ -59,6 +59,20 @@ public:
     SynthParams();
     ~SynthParams();
 
+    static const Colour oscColour;
+    static const Colour envColour;
+    static const Colour lfoColour;
+    static const Colour filterColour;
+    static const Colour fxColour;
+    static const Colour stepSeqColour;
+    static const Colour onOffSwitchEnabled;
+    static const Colour onOffSwitchDisabled;
+    static const Colour envelopeCurveLine;
+    static const Colour envelopeCurveBackground;
+    static const Colour waveformLine;
+    static const Colour waveformBackground;
+    
+    
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
@@ -203,15 +217,6 @@ public:
     ParamStepped<eOnOffToggle> seqStepActive5;
     ParamStepped<eOnOffToggle> seqStepActive6;
     ParamStepped<eOnOffToggle> seqStepActive7;
-
-    /*Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
-    Param env1Attack;    //!< env1 attack in [0.001..5]s
-    Param env1Decay;     //!< env1 decay in [0.001..5]s
-    Param env1Sustain;   //!< env1 sustain in [0 .. 1]
-    Param env1Release;   //!< env1 release in [0.001..5]s
-    Param env1AttackShape; //!< env attack shape in [0.01..10]
-    Param env1DecayShape; //!< env decay shape in [0.01..10]
-    Param env1ReleaseShape; //!< env release shape in [0.01..10]*/
 
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation

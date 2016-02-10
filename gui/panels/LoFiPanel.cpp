@@ -87,7 +87,7 @@ void LoFiPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "LoFi", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff2b3240));
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
     //[/UserPaint]
 }
 
@@ -129,7 +129,7 @@ void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void LoFiPanel::onOffSwitchChanged()
 {
     nBitsLowFi->setEnabled((onOffSwitch->getValue() == 1));
-    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? Colour (114, 136, 98) :  Colour (102, 102, 102)));
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? params.onOffSwitchEnabled :  params.onOffSwitchDisabled));
 }
 //[/MiscUserCode]
 

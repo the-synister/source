@@ -156,7 +156,7 @@ float EnvelopeCurve::interpolateLog(int c, int t, float k, bool slow)
 void EnvelopeCurve::paint (Graphics& g)
 {
     // TODO: gradient for less than 1 samples
-    FillType backgroundFill = FillType(Colour(116, 101, 60));
+    FillType backgroundFill = FillType(SynthParams::envelopeCurveBackground);
     backgroundFill.setOpacity(1.0f);
     g.setFillType(backgroundFill);
     g.fillAll();
@@ -170,7 +170,7 @@ void EnvelopeCurve::paint (Graphics& g)
         curvePath.lineTo(i, (getHeight())*(1.013f - getEnvCoef()));
     }
 
-    g.setColour(Colour(216, 202, 155));
+    g.setColour(SynthParams::envelopeCurveLine);
     g.strokePath(curvePath, PathStrokeType(2.5f));
 }
 

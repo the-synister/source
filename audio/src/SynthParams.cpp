@@ -32,6 +32,20 @@ namespace {
     };
 }
 
+
+const Colour SynthParams::oscColour (0xff6c788c);
+const Colour SynthParams::envColour (0xffcbca63);
+const Colour SynthParams::lfoColour (0xffb16565);
+const Colour SynthParams::filterColour (0xff40ae69);
+const Colour SynthParams::fxColour (0xff2b3240);
+const Colour SynthParams::stepSeqColour (0xff564c43);
+const Colour SynthParams::onOffSwitchEnabled (114, 136, 98);
+const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
+const Colour SynthParams::envelopeCurveLine (216, 202, 155);
+const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
+const Colour SynthParams::waveformLine (185, 189, 190);
+const Colour SynthParams::waveformBackground (85, 93, 104);
+
 SynthParams::SynthParams()
     : serializeParams{ &freq,
         // TODO: Think of another way to register all the struct params?
@@ -120,6 +134,7 @@ SynthParams::SynthParams()
     filter[1].setName("filter 2");
 }
 
+        
 SynthParams::Osc::Osc()
     : fine("f.tune", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
     , coarse("c.tune", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)

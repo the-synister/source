@@ -183,7 +183,7 @@ void FiltPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, filter.name, 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff40ae69));
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::filterColour);
     //[/UserPaint]
 }
 

@@ -3,7 +3,7 @@
 
 void WaveformVisual::paint(Graphics &g)
 {
-    FillType backgroundFill = FillType(Colour(85, 93, 104));
+    FillType backgroundFill = FillType(SynthParams::waveformBackground);
     backgroundFill.setOpacity(1.0f);
     g.setFillType(backgroundFill);
     g.fillAll();
@@ -38,7 +38,7 @@ void WaveformVisual::paint(Graphics &g)
         }
 
     }
-    g.setColour(Colour (185, 189, 190));
+    g.setColour(SynthParams::waveformLine);
     g.strokePath(wavePath, PathStrokeType(2.5f));
     g.drawRect(getLocalBounds(), 3);
     g.setColour(Colours::darkgrey);
