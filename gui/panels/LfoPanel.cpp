@@ -163,7 +163,7 @@ void LfoPanel::paint (Graphics& g)
     g.fillAll (Colour (0xffb16565));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "lfo1", 0, 0,
+    drawGroupBorder(g, _panelTitle, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffb16565));
     //[/UserPaint]
 }
