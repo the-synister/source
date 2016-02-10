@@ -22,7 +22,6 @@ public:
         params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
     , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
         params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
-    , level (0.f)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , totSamples(0)
@@ -243,7 +242,7 @@ public:
                         }
                     }
 
-                    if (static_cast<int>(getSampleRate() * params.envVol[0].envRelease.get()) <= envToVolume.getReleaseCounter()) {
+                    if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
                         // next osc 
                         break;
                     }
