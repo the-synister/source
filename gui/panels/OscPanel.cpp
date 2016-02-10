@@ -27,10 +27,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscPanel::OscPanel (SynthParams &p, int oscillatorNumber, const String& panelTitle)
+OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     : PanelBase(p)
       , osc(p.osc[oscillatorNumber])
-      , _panelTitle(panelTitle)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -197,7 +196,7 @@ void OscPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff6c788c));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, _panelTitle, 0, 0,
+    drawGroupBorder(g, osc.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff6c788c));
 
     // draw waveform symbols
@@ -336,8 +335,8 @@ void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int oscillatorNumber, const String&amp; panelTitle"
-                 variableInitialisers="PanelBase(p)&#10;, osc(p.osc[oscillatorNumber])&#10;, _panelTitle(panelTitle)"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int oscillatorNumber"
+                 variableInitialisers="PanelBase(p)&#10;, osc(p.osc[oscillatorNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>

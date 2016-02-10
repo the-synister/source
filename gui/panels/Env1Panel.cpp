@@ -27,10 +27,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber, const String& panelTitle)
+Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     : PanelBase(p),
-      env(p.env[envelopeNumber]),
-      _panelTitle(panelTitle)
+      env(p.env[envelopeNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -192,7 +191,7 @@ void Env1Panel::paint (Graphics& g)
     g.fillAll (Colour (0xffcbca63));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, _panelTitle, 0, 0,
+    drawGroupBorder(g, env.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffcbca63));
 
     int smallBorderHeight = 40;
@@ -320,8 +319,8 @@ void Env1Panel::updateCurve()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="Env1Panel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int envelopeNumber, const String&amp; panelTitle"
-                 variableInitialisers="PanelBase(p), &#10;env(p.env[envelopeNumber]),&#10;_panelTitle(panelTitle)"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int envelopeNumber"
+                 variableInitialisers="PanelBase(p), &#10;env(p.env[envelopeNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>

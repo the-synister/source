@@ -42,7 +42,7 @@ class Env1Panel  : public PanelBase,
 {
 public:
     //==============================================================================
-    Env1Panel (SynthParams &p, int envelopeNumber, const String& panelTitle);
+    Env1Panel (SynthParams &p, int envelopeNumber);
     ~Env1Panel();
 
     //==============================================================================
@@ -60,7 +60,6 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams::Env &env;
-    const String _panelTitle;
     //[/UserVariables]
 
     //==============================================================================

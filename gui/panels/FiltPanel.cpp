@@ -27,10 +27,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-FiltPanel::FiltPanel (SynthParams &p, int filterNumber, const String& panelTitle)
+FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     : PanelBase(p),
-      filter(p.filter[filterNumber]),
-      _panelTitle(panelTitle)
+      filter(p.filter[filterNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -183,7 +182,7 @@ void FiltPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, _panelTitle, 0, 0,
+    drawGroupBorder(g, filter.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff40ae69));
     //[/UserPaint]
 }
@@ -308,8 +307,8 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FiltPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int filterNumber, const String&amp; panelTitle"
-                 variableInitialisers="PanelBase(p),&#10;filter(p.filter[filterNumber]),&#10;_panelTitle(panelTitle)"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int filterNumber"
+                 variableInitialisers="PanelBase(p),&#10;filter(p.filter[filterNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="400" initialHeight="180">
   <BACKGROUND backgroundColour="ff40ae69"/>
