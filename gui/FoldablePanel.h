@@ -44,7 +44,7 @@ public:
 private:
     struct SectionComponent;
     struct PanelHolderComponent;
-    PanelHolderComponent* panelHolderComponent;
+    ScopedPointer<PanelHolderComponent> panelHolderComponent;
 
     void updateLayout() const;
 
