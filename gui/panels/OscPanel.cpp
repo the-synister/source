@@ -137,14 +137,13 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSaturnSource(lfo1depth1, pitchRange, &osc.pitchModAmount1, 1);
 
     registerSlider(ftune1, &osc.fine);
+    registerSlider(ctune1, &osc.coarse);
     registerSlider(lfo1depth1, &osc.pitchModAmount2);
-    registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pitchRange, &osc.pitchModAmount1);
+    registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
+    registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(amountWidthMod, &osc.shapeModAmount);
-    registerSlider(ctune1, &osc.coarse);
-    registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(waveformSwitch, &osc.waveForm);
 
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
