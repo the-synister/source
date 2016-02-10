@@ -34,15 +34,21 @@ namespace {
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
+        // TODO: Think of another way to register all the struct params?
     &osc[0].fine, &osc[0].coarse, &osc[0].pitchModAmount2,&osc[0].trngAmount, &osc[0].pitchModAmount1, &osc[0].pulseWidth, &osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
     &osc[1].fine, &osc[1].coarse, &osc[1].pitchModAmount2,&osc[1].trngAmount, &osc[1].pitchModAmount1, &osc[1].pulseWidth, &osc[1].pitchModSrc1, &osc[1].pitchModSrc2, &osc[1].shapeModSrc1, &osc[1].shapeModSrc2, &osc[1].panDir, &osc[1].vol, &osc[1].volModAmount1,
     &osc[2].fine, &osc[2].coarse, &osc[2].pitchModAmount2,&osc[2].trngAmount, &osc[2].pitchModAmount1, &osc[2].pulseWidth, &osc[2].pitchModSrc1, &osc[2].pitchModSrc2, &osc[2].shapeModSrc1, &osc[2].shapeModSrc2, &osc[2].panDir, &osc[2].vol, &osc[2].volModAmount1,
-
-        /*  &lp1Cutoff, &filter1Resonance,
-    &lp1CutModSrc1, &lp1CutModSrc2, &lp1ModAmount1, &lp1ModAmount2, &hp1Cutoff, &hp1CutModSrc1, &hp1CutModSrc2, &hp1ModAmount1, &hp1ModAmount2, &filter1ResonanceModSrc1, &filter1ResonanceModSrc2,
-    */
-   /* TODO: Register Env, filter, and lfo params*/
+    &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModSrc1, &env[0].speedModSrc2,
+    &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModSrc1, &env[1].speedModSrc2,
+    &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
+    &filter[0].lpCutoff, &filter[0].resonance,
+    &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].hpCutoff, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].resonanceModSrc1, &filte[0].resonanceModSrc2,
+    &filter[1].lpCutoff, &filter[1].resonance,
+    &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].hpCutoff, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].resonanceModSrc1, &filte[1].resonanceModSrc2,
+    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc1, &lfo[0].gainModSrc2,
+    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc1, &lfo[1].gainModSrc2,
+    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc1, &lfo[2].gainModSrc2,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
