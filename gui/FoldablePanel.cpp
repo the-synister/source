@@ -58,7 +58,7 @@ struct FoldablePanel::SectionComponent  : public Component
         addAndMakeVisible (newPanel, 0);
         resized();
     }
-    
+
     void resized() override
     {
         int x = 0;

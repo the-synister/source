@@ -33,7 +33,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(osc[i].trngAmount));
         addParameter(new HostParam<Param>(osc[i].pulseWidth));
     }
-   
+
     for (int i = 0; i < 2; ++i) {
         addParameter(new HostParam<Param>(env[i].envAttack));
         addParameter(new HostParam<Param>(env[i].envDecay));
@@ -43,7 +43,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(env[i].envDecayShape));
         addParameter(new HostParam<Param>(env[i].envReleaseShape));
     }
-    
+
     for (int i = 0; i < 3; ++i) {
         addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo[i].wave));
         addParameter(new HostParam<Param>(lfo[i].freq));
@@ -51,7 +51,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(lfo[i].noteLength));
         addParameter(new HostParam<Param>(lfo[i].fadeIn));
     }
-    
+
     for (int i = 0; i < 2; ++i) {
         addParameter(new HostParam<Param>(filter[i].lpCutoff));
         addParameter(new HostParam<Param>(filter[i].hpCutoff));
@@ -63,7 +63,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(envVol[0].envDecay));
     //addParameter(new HostParam<ParamDb>(envSustain));
     addParameter(new HostParam<Param>(envVol[0].envRelease));
-    
+
     addParameter(new HostParam<Param>(clippingFactor));
 
     addParameter(new HostParam<Param>(delayFeedback));

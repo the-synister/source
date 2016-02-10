@@ -71,7 +71,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     decayTime1->setSkewFactor (0.5);
 
     addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
-    sustainLevel1->setRange (0, 1, 0);
+    sustainLevel1->setRange (-96, 0, 0);
     sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     sustainLevel1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
@@ -126,7 +126,6 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    // FIXME: find a better conversion for sustain.
     addAndMakeVisible (envelopeCurve = new EnvelopeCurve (env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
@@ -377,7 +376,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
                     virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="121 147 128 64"
-                    class="Component" params="params.envAttack.get(), params.envDecay.get(), params.envSustain.get(), params.envRelease.get(),  params.envAttackShape.get(), params.envDecayShape.get(), params.envReleaseShape.get()&#10;"/>
+                    class="Component" params="env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
          virtualName="" explicitFocusOrder="0" pos="141 109 51 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"

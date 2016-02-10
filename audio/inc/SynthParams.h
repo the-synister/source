@@ -66,72 +66,72 @@ public:
                        //Param lfoChorfreq; // delay-lfo frequency in Hz
                        //Param chorAmount; // wetness of signal [0 ... 1]
                        //Param chorSwitch; // Chorus on / off [1 / 0]
-    
+
     struct BaseParamStruct {
         void setName(const String& s)
         {
             name = s;
-            
+
             //! \todo set prefix of every param to name
         }
-       
+
         String name;
     };
-    
+
     struct EnvBase : public BaseParamStruct {
         EnvBase();
         Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
         Param envAttack;    //!< env attack in [0.001..5]s
         Param envDecay;     //!< env decay in [0.001..5]s
         Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
-        
+
         Param envAttackShape; //!< env attack shape in [0.01..10]
         Param envDecayShape; //!< env decay shape in [0.01..10]
         Param envReleaseShape; //!< env release shape in [0.01..10]
-        
+
     };
-    
+
     struct EnvVol : public EnvBase {
         EnvVol();
-        
+
         ParamDb envSustain;   //!< env sustain in [0..1]
         ParamStepped<eModSource> envVolSpeedModSrc1; //!< Volume envelope speed mod source
         ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
     };
-    
+
     struct Env : public EnvBase {
         Env();
-        
+
         Param envSustain;
         ParamStepped<eModSource> env2SpeedModSrc1; //!< Envelope 2 speed mod source
         ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
     };
-    
+
     struct Lfo : public BaseParamStruct {
         Lfo();
-        
+
         Param freq; //!< lfo frequency in Hz
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-        
+
         ParamStepped<eModSource> freqModSrc1; //!< lfo1 frequency mod source
         ParamStepped<eModSource> freqModSrc2; //!< lfo2 frequency mod source
         ParamStepped<eModSource> gainModSrc1; //!< lfo1 gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< lfo2 gain mod source
-        
+
         Param fadeIn;   // The LFOs fade in with a range of [0..10s]
     };
-    
+
     struct Filter : public BaseParamStruct {
         Filter();
-        
+
         ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
-        
+
         Param lpCutoff; //!< filter cutoff frequency in Hz
         Param hpCutoff; //!< filter cutoff frequency in Hz
         Param resonance; //! filter resonance in dB
-        
+
         ParamStepped<eModSource> lpCutModSrc1;  //! lp filter modulation source
         Param lpModAmount1;   //! lp filter modulation amount
         ParamStepped<eModSource> hpCutModSrc1;  //! hp filter modulation source
@@ -169,7 +169,7 @@ public:
         ParamDb vol; //!< volume in [-96..12]
         Param volModAmount1;    //!< key velocity level range in [0..96]dB
     };
-    
+
     std::array<Filter, 2> filter;
     std::array<Lfo, 3> lfo;
     std::array<EnvVol, 1> envVol;
@@ -177,8 +177,8 @@ public:
     std::array<Osc, 3> osc;
 
     // TODO: Filter struct
-    
-    
+
+
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host

@@ -64,7 +64,7 @@ private:
     Rectangle<int> sawFrame = { 0, 20, 30, 20 };
     Rectangle<int> squareFrame = { 69, 20, 30, 20 };
     Rectangle<int> noiseFrame = { 35, 0, 30, 20 };
-        
+
     SynthParams::Osc &osc;
     //[/UserVariables]
 
