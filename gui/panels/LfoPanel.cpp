@@ -104,12 +104,15 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->setJustificationType (Justification::centred);
     noteLength->setTextWhenNothingSelected (TRANS("Step Length"));
     noteLength->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    noteLength->addItem (TRANS("1/32"), 1);
-    noteLength->addItem (TRANS("1/16"), 2);
-    noteLength->addItem (TRANS("1/8"), 3);
-    noteLength->addItem (TRANS("1/4"), 4);
-    noteLength->addItem (TRANS("1/2"), 5);
-    noteLength->addItem (TRANS("1/1"), 6);
+    noteLength->addItem (TRANS("1/1"), 1);
+    noteLength->addItem (TRANS("1/2"), 2);
+    noteLength->addItem (TRANS("1/4"), 3);
+    noteLength->addItem (TRANS("1/8"), 4);
+    noteLength->addItem (TRANS("1/16"), 5);
+    noteLength->addItem (TRANS("1/32"), 6);
+    noteLength->addItem (TRANS("1/64"), 7);
+    noteLength->addSeparator();
+    noteLength->addSeparator();
     noteLength->addListener (this);
 
 
@@ -119,6 +122,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     wave->setValue(lfo.wave.getUI());
     tempoSyncSwitch->setToggleState(0, dontSendNotification);
     notelength->setValue(lfo.noteLength.getUI());
+    noteLength->setText(getNoteLengthAsString(), dontSendNotification);
     registerSlider(notelength, &lfo.noteLength);
     registerSlider(wave, &lfo.wave);
     registerSlider(lfoFadeIn, &lfo.fadeIn);
@@ -263,6 +267,11 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+String LfoPanel::getNoteLengthAsString()
+{
+    int denominator = static_cast<int>(4.0f * (1.0f / lfo.noteLength.get()));
+    return "1/" + String(denominator);
+}
 //[/MiscUserCode]
 
 
@@ -324,7 +333,7 @@ BEGIN_JUCER_METADATA
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="105 120 87 24"
-            editable="0" layout="36" items="1/32&#10;1/16&#10;1/8&#10;1/4&#10;1/2&#10;1/1"
+            editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64&#10;&#10;"
             textWhenNonSelected="Step Length" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

@@ -141,6 +141,15 @@ protected:
             return false;
         }
     }
+    
+    void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
+    {
+        dropdownReg[dropdown] = p;
+        
+        if (hook) {
+            postUpdateHook[dropdown] = hook;
+        }
+    }
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
@@ -205,6 +214,7 @@ protected:
     std::map<Slider*, Param*> sliderReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
+    std::map<ComboBox*, Param*> dropdownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
     SynthParams &params;
 };
