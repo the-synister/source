@@ -42,7 +42,7 @@ class LfoPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    LfoPanel (SynthParams &p, int lfoNumber, const String& panelTitle);
+    LfoPanel (SynthParams &p, int lfoNumber);
     ~LfoPanel();
 
     //==============================================================================
@@ -60,7 +60,6 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams::Lfo& lfo;
-    const String _panelTitle;
     //[/UserVariables]
 
     //==============================================================================

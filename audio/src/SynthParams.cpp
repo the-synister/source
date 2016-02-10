@@ -97,7 +97,20 @@ SynthParams::SynthParams()
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
-    osc[0].setName("Osc1");
+    osc[0].setName("osc 1");
+    osc[1].setName("osc 2");
+    osc[2].setName("osc 3");
+
+    envVol[0].setName("vol env");
+    env[0].setName("env 2");
+    env[1].setName("env 3");
+    
+    lfo[0].setName("lfo 1");
+    lfo[1].setName("lfo 2");
+    lfo[2].setName("lfo 3");
+    
+    filter[0].setName("filter 1");
+    filter[1].setName("filter 2");
 }
 
 SynthParams::Osc::Osc()

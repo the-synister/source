@@ -96,26 +96,22 @@ PlugUI::PlugUI (SynthParams &p)
 
     // NOTE: preferred sectionHeight should be set (introjucer's panelHeight - 22) due to section header
     // see env panel. introjucer height is set to 252
-    // TODO: mem leaks
-    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params, 0, "Osc 1"), Colour (0xff6c788c), 250, true, 0);
-    foldableComponent->addPanel(0, new OscPanel(params, 1, "Osc 2"));
-    foldableComponent->addPanel(0, new OscPanel(params, 2, "Osc 3"));
-    foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params, "vol env"), Colour (0xffcbca63), 230, false, 1);
-    foldableComponent->addPanel(1, new Env1Panel(params, 0, "env 1"));
-    foldableComponent->addPanel(1, new Env1Panel(params, 1, "env 2"));
-    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0, "lfo 1"), Colour (0xffb16565), 200, false, 2);
-    foldableComponent->addPanel(2, new LfoPanel(params, 1, "lfo 2"));
-    foldableComponent->addPanel(2, new LfoPanel(params, 2, "lfo 3"));
-    foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params, 0, "filter 1"), Colour (0xff40ae69), 158, false, 3);
-    foldableComponent->addPanel(3, new FiltPanel (params, 1, "filter 2"));
-//    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, false, 4);
+    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params, 0), Colour (0xff6c788c), 250, true, 0);
+    foldableComponent->addPanel(0, new OscPanel(params, 1));
+    foldableComponent->addPanel(0, new OscPanel(params, 2));
+    foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), Colour (0xffcbca63), 230, false, 1);
+    foldableComponent->addPanel(1, new Env1Panel(params, 0));
+    foldableComponent->addPanel(1, new Env1Panel(params, 1));
+    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), Colour (0xffb16565), 200, false, 2);
+    foldableComponent->addPanel(2, new LfoPanel(params, 1));
+    foldableComponent->addPanel(2, new LfoPanel(params, 2));
+    foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params, 0), Colour (0xff40ae69), 158, false, 3);
+    foldableComponent->addPanel(3, new FiltPanel (params, 1));
     foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, false, 4);
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-//    foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colour (0xff2b3240), 200, false, 6);
     foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 347, false, 5);
-//    foldableComponent->addSection (TRANS("LOFI"), new LoFiPanel (params), Colour (0xff2b3240), 200, false, 8);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();

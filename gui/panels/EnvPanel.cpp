@@ -27,9 +27,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-EnvPanel::EnvPanel (SynthParams &p, const String& panelTitle)
+EnvPanel::EnvPanel (SynthParams &p)
     : PanelBase(p),
-      _panelTitle(panelTitle),
       envVol(p.envVol[0])
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -179,7 +178,7 @@ void EnvPanel::paint (Graphics& g)
     g.fillAll (Colour (0xffcbca63));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, _panelTitle, 0, 0,
+    drawGroupBorder(g, envVol.name, 0, 0,
         this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffcbca63));
 
     int smallBorderHeight = 40;
@@ -292,8 +291,8 @@ void EnvPanel::updateCurve()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="EnvPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, const String&amp; panelTitle"
-                 variableInitialisers="PanelBase(p),&#10;_panelTitle(panelTitle),&#10;envVol(p.envVol[0])"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p),&#10;envVol(p.envVol[0])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="266" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>

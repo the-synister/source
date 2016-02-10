@@ -27,10 +27,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-LfoPanel::LfoPanel (SynthParams &p, int lfoNumber, const String& panelTitle)
+LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     : PanelBase(p),
-      lfo(p.lfo[lfoNumber]),
-      _panelTitle(panelTitle)
+      lfo(p.lfo[lfoNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -163,7 +162,7 @@ void LfoPanel::paint (Graphics& g)
     g.fillAll (Colour (0xffb16565));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, _panelTitle, 0, 0,
+    drawGroupBorder(g, lfo.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xffb16565));
     //[/UserPaint]
 }
@@ -277,8 +276,8 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="LfoPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int lfoNumber, const String&amp; panelTitle"
-                 variableInitialisers="PanelBase(p),&#10;lfo(p.lfo[lfoNumber]),&#10;_panelTitle(panelTitle)"
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int lfoNumber"
+                 variableInitialisers="PanelBase(p),&#10;lfo(p.lfo[lfoNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="222">
   <BACKGROUND backgroundColour="ffb16565"/>
