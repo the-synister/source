@@ -38,7 +38,6 @@ public:
     , lpOut2Delay(0.f)
     , lpOut3Delay(0.f)
     , modWheelValue(0.f)
-    , midiPan(0.f)
     , channelAfterTouch(0.f)
     , expPedalValue(0.f)
     , footControlValue(0.f)
@@ -61,7 +60,6 @@ public:
         modSources[SOURCE_MODWHEEL] = &modWheelValue;
         modSources[SOURCE_FOOT] = &footControlValue;
         modSources[SOURCE_EXPPEDAL] = &expPedalValue;
-        modSources[SOURCE_PAN] = &midiPan;
         modSources[SOURCE_AFTERTOUCH] = &channelAfterTouch;
         //INTERNAL
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
@@ -118,7 +116,7 @@ public:
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         // Initialization of midi values
-        modWheelValue = params.modWheelAmount.get();
+        modWheelValue = 0.f; // TODO: this needs to be changed to the current value
         footControlValue = 0.f;
         expPedalValue = 0.f;
         channelAfterTouch = 0.f;
@@ -223,16 +221,11 @@ public:
         {
         //Modwheel
         case 1:
-            params.modWheelAmount.set(static_cast<float>(newValue) / 127.f); // TODO: this is ugly (but does the trick to get out of the voice scope)
             modWheelValue = static_cast<float>(newValue) / 127.f;
             break;
         //Foot Controller
         case 4:
             footControlValue = (static_cast<float>(newValue) / 127.f); //TODO: test
-            break;
-        //Pan
-        case 10:
-            params.panDir.set(static_cast<float>((newValue) / 127.f - 0.5f)*200); // TODO: only works while voice is active, should only be used for pan mod here!
             break;
         //Expression Control
         case 11:
@@ -622,7 +615,6 @@ private:
     float footControlValue;
     float expPedalValue;
     float channelAfterTouch;
-    float midiPan;
 
     std::array<float*, MAX_SOURCES> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;

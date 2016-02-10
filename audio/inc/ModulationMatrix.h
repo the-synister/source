@@ -25,7 +25,6 @@ enum sources : int {
 
     // Midi
     SOURCE_AFTERTOUCH,
-    SOURCE_PAN,
     SOURCE_KEY_BIPOLAR,
     SOURCE_INVERTED_VELOCITY,
     SOURCE_VELOCITY,
@@ -96,7 +95,6 @@ inline bool isUnipolar(sources source) {
     case SOURCE_EXPPEDAL:
         return true;
         break;
-    case SOURCE_PAN:
     case SOURCE_LFO1:
     case SOURCE_LFO2:
     case SOURCE_LFO3:

@@ -167,8 +167,6 @@ SynthParams::SynthParams()
     , seqStepActive6("Step 6 Active", "seqStepActive6", "Step 6 Active", eOnOffToggle::eOn, onoffnames)
     , seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
     //Others
-    , oneHelper(" ", " ", " ", " ", 0.f, 1.f, 1.f)
-    , modWheelAmount("ModWheel", "ModWheel", "ModWheel ", " ", 0.f, 1.f, 0.f)
     , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
