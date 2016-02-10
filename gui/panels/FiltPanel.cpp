@@ -54,10 +54,12 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     cutoffSlider2->addListener (this);
 
-    addAndMakeVisible (passtype = new MouseOverKnob ("passtype switch"));
+    addAndMakeVisible (passtype = new Slider ("passtype switch"));
     passtype->setRange (0, 3, 1);
-    passtype->setSliderStyle (Slider::RotaryVerticalDrag);
-    passtype->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    passtype->setSliderStyle (Slider::LinearVertical);
+    passtype->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    passtype->setColour (Slider::thumbColourId, Colour (0xff40ae69));
+    passtype->setColour (Slider::trackColourId, Colours::white);
     passtype->addListener (this);
 
     addAndMakeVisible (modSliderCut = new Slider ("Mod"));
@@ -114,6 +116,42 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     modSliderCut2->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
     modSliderCut2->addListener (this);
 
+    addAndMakeVisible (ladderLabel = new Label ("ladder filter label",
+                                                TRANS("ladder")));
+    ladderLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    ladderLabel->setJustificationType (Justification::centredLeft);
+    ladderLabel->setEditable (false, false, false);
+    ladderLabel->setColour (Label::textColourId, Colours::white);
+    ladderLabel->setColour (TextEditor::textColourId, Colours::black);
+    ladderLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (bandpassLabel = new Label ("bandpass filter label",
+                                                  TRANS("bandpass")));
+    bandpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    bandpassLabel->setJustificationType (Justification::centredLeft);
+    bandpassLabel->setEditable (false, false, false);
+    bandpassLabel->setColour (Label::textColourId, Colours::white);
+    bandpassLabel->setColour (TextEditor::textColourId, Colours::black);
+    bandpassLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (highpassLabel = new Label ("highpass filter label",
+                                                  TRANS("highpass")));
+    highpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    highpassLabel->setJustificationType (Justification::centredLeft);
+    highpassLabel->setEditable (false, false, false);
+    highpassLabel->setColour (Label::textColourId, Colours::white);
+    highpassLabel->setColour (TextEditor::textColourId, Colours::black);
+    highpassLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (lowpassLabel = new Label ("lowpass filter label",
+                                                 TRANS("lowpass\n")));
+    lowpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    lowpassLabel->setJustificationType (Justification::centredLeft);
+    lowpassLabel->setEditable (false, false, false);
+    lowpassLabel->setColour (Label::textColourId, Colours::white);
+    lowpassLabel->setColour (TextEditor::textColourId, Colours::black);
+    lowpassLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     registerSlider(cutoffSlider, &filter.lpCutoff);
@@ -167,6 +205,10 @@ FiltPanel::~FiltPanel()
     res1ModSrc1 = nullptr;
     res1ModSrc2 = nullptr;
     modSliderCut2 = nullptr;
+    ladderLabel = nullptr;
+    bandpassLabel = nullptr;
+    highpassLabel = nullptr;
+    lowpassLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -195,7 +237,7 @@ void FiltPanel::resized()
     cutoffSlider->setBounds (110, 34, 64, 64);
     resonanceSlider->setBounds (300, 36, 64, 64);
     cutoffSlider2->setBounds (204, 34, 64, 64);
-    passtype->setBounds (8, 27, 64, 64);
+    passtype->setBounds (7, 52, 40, 88);
     modSliderCut->setBounds (158, 98, 24, 24);
     lp1ModSrc1->setBounds (108, 101, 50, 16);
     hp1ModSrc1->setBounds (204, 104, 64, 16);
@@ -204,6 +246,10 @@ void FiltPanel::resized()
     res1ModSrc1->setBounds (299, 104, 64, 16);
     res1ModSrc2->setBounds (299, 127, 64, 16);
     modSliderCut2->setBounds (158, 122, 24, 24);
+    ladderLabel->setBounds (35, 47, 56, 24);
+    bandpassLabel->setBounds (35, 71, 72, 24);
+    highpassLabel->setBounds (35, 95, 72, 24);
+    lowpassLabel->setBounds (35, 119, 72, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -327,9 +373,10 @@ BEGIN_JUCER_METADATA
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 27 64 64"
-          min="0" max="3" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="7 52 40 88" thumbcol="ff40ae69"
+          trackcol="ffffffff" min="0" max="3" int="1" style="LinearVertical"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
           explicitFocusOrder="0" pos="158 98 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
@@ -356,6 +403,26 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="158 122 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="ladder filter label" id="26f319c896bbcef8" memberName="ladderLabel"
+         virtualName="" explicitFocusOrder="0" pos="35 47 56 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="ladder" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="bandpass filter label" id="136829ecbbe3f920" memberName="bandpassLabel"
+         virtualName="" explicitFocusOrder="0" pos="35 71 72 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="bandpass" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="highpass filter label" id="3ebea5764d8cff7e" memberName="highpassLabel"
+         virtualName="" explicitFocusOrder="0" pos="35 95 72 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="highpass" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="lowpass filter label" id="e56ff6668718e91a" memberName="lowpassLabel"
+         virtualName="" explicitFocusOrder="0" pos="35 119 72 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="lowpass&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         fontsize="15" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

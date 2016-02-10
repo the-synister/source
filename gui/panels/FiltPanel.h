@@ -64,7 +64,7 @@ private:
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resonanceSlider;
     ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<MouseOverKnob> passtype;
+    ScopedPointer<Slider> passtype;
     ScopedPointer<Slider> modSliderCut;
     ScopedPointer<ComboBox> lp1ModSrc1;
     ScopedPointer<ComboBox> hp1ModSrc1;
@@ -73,6 +73,10 @@ private:
     ScopedPointer<ComboBox> res1ModSrc1;
     ScopedPointer<ComboBox> res1ModSrc2;
     ScopedPointer<Slider> modSliderCut2;
+    ScopedPointer<Label> ladderLabel;
+    ScopedPointer<Label> bandpassLabel;
+    ScopedPointer<Label> highpassLabel;
+    ScopedPointer<Label> lowpassLabel;
 
 
     //==============================================================================
