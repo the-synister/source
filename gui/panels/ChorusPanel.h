@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_5AD0F87140DC6984__
-#define __JUCE_HEADER_5AD0F87140DC6984__
+#ifndef __JUCE_HEADER_26B702AF37F23E80__
+#define __JUCE_HEADER_26B702AF37F23E80__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -35,13 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class AmpPanel  : public PanelBase,
-                  public SliderListener
+class ChorusPanel  : public PanelBase,
+                     public SliderListener
 {
 public:
     //==============================================================================
-    AmpPanel (SynthParams &p);
-    ~AmpPanel();
+    ChorusPanel (SynthParams &p);
+    ~ChorusPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -58,16 +58,17 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> amp;
-    ScopedPointer<Slider> pan;
-    ScopedPointer<MouseOverKnob> velocitySense;
+    ScopedPointer<MouseOverKnob> chorDryWetSlider;
+    ScopedPointer<MouseOverKnob> chorDepthSlider;
+    ScopedPointer<MouseOverKnob> chorDelayLengthSlider;
+    ScopedPointer<MouseOverKnob> chorModRateSlider;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AmpPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChorusPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_5AD0F87140DC6984__
+#endif   // __JUCE_HEADER_26B702AF37F23E80__

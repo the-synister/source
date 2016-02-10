@@ -33,7 +33,7 @@ AmpPanel::AmpPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (amp = new MouseOverKnob ("amp"));
+    addAndMakeVisible (amp = new Slider ("amp"));
     amp->setRange (-96, 12, 0);
     amp->setSliderStyle (Slider::LinearBar);
     amp->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
@@ -46,7 +46,7 @@ AmpPanel::AmpPanel (SynthParams &p)
     amp->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     amp->addListener (this);
 
-    addAndMakeVisible (pan = new MouseOverKnob ("pan"));
+    addAndMakeVisible (pan = new Slider ("pan"));
     pan->setRange (-100, 100, 0);
     pan->setSliderStyle (Slider::LinearBar);
     pan->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
@@ -67,13 +67,12 @@ AmpPanel::AmpPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(amp, &params.vol);
-    registerSlider(pan, &params.panDir);
-    registerSlider(velocitySense, &params.keyVelocityLevel);
+    registerSlider(amp, &params.osc[0].vol);
+    registerSlider(pan, &params.osc[0].panDir);
+    registerSlider(velocitySense, &params.osc[0].volModAmount1);
 
-    // TODO: vllt ohne textbox und stattdessen mit popup
-    //amp->setPopupDisplayEnabled(true, this);
-    //pan->setPopupDisplayEnabled(true, this);
+    amp->setPopupDisplayEnabled(true, this);
+    pan->setPopupDisplayEnabled(true, this);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -168,13 +167,13 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ff6c788c"/>
-  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="MouseOverKnob"
+  <SLIDER name="amp" id="3279e0342166e50f" memberName="amp" virtualName="Slider"
           explicitFocusOrder="0" pos="8 8 200 60" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="MouseOverKnob"
+  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="pan" virtualName="Slider"
           explicitFocusOrder="0" pos="272 8 125 60" thumbcol="ff6c788c"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"

@@ -20,41 +20,29 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "LoFiPanel.h"
+#include "ClippingPanel.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-LoFiPanel::LoFiPanel (SynthParams &p)
+ClippingPanel::ClippingPanel (SynthParams &p)
     : PanelBase(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (nBitsLowFi = new MouseOverKnob ("nBits Low Fi"));
-    nBitsLowFi->setRange (1, 16, 0);
-    nBitsLowFi->setSliderStyle (Slider::RotaryVerticalDrag);
-    nBitsLowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
-    nBitsLowFi->addListener (this);
-
-    addAndMakeVisible (onOffSwitch = new Slider ("lofi switch"));
-    onOffSwitch->setRange (0, 1, 1);
-    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
-    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
-    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
-    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
-    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
-    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
-    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
-    onOffSwitch->addListener (this);
+    addAndMakeVisible (clippingFactor = new MouseOverKnob ("Clipping Factor"));
+    clippingFactor->setRange (0, 25, 0);
+    clippingFactor->setSliderStyle (Slider::RotaryVerticalDrag);
+    clippingFactor->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    clippingFactor->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    clippingFactor->addListener (this);
 
 
     //[UserPreSize]
-    nBitsLowFi->setEnabled((onOffSwitch->getValue() == 1));
-    registerSlider(onOffSwitch, &params.lowFiActivation, std::bind(&LoFiPanel::onOffSwitchChanged, this));
-    registerSlider(nBitsLowFi, &params.nBitsLowFi);
+    registerSlider(clippingFactor, &params.clippingFactor);
     //[/UserPreSize]
 
     setSize (133, 200);
@@ -64,13 +52,12 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     //[/Constructor]
 }
 
-LoFiPanel::~LoFiPanel()
+ClippingPanel::~ClippingPanel()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    nBitsLowFi = nullptr;
-    onOffSwitch = nullptr;
+    clippingFactor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -78,7 +65,7 @@ LoFiPanel::~LoFiPanel()
 }
 
 //==============================================================================
-void LoFiPanel::paint (Graphics& g)
+void ClippingPanel::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
@@ -86,37 +73,31 @@ void LoFiPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "LoFi", 0, 0,
+    drawGroupBorder(g, "clip", 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
     //[/UserPaint]
 }
 
-void LoFiPanel::resized()
+void ClippingPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    nBitsLowFi->setBounds (32, 63, 64, 64);
-    onOffSwitch->setBounds (9, 2, 47, 30);
+    clippingFactor->setBounds (32, 64, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
 
-void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
+void ClippingPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == nBitsLowFi)
+    if (sliderThatWasMoved == clippingFactor)
     {
-        //[UserSliderCode_nBitsLowFi] -- add your slider handling code here..
-        //[/UserSliderCode_nBitsLowFi]
-    }
-    else if (sliderThatWasMoved == onOffSwitch)
-    {
-        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
-        //[/UserSliderCode_onOffSwitch]
+        //[UserSliderCode_clippingFactor] -- add your slider handling code here..
+        //[/UserSliderCode_clippingFactor]
     }
 
     //[UsersliderValueChanged_Post]
@@ -126,11 +107,6 @@ void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void LoFiPanel::onOffSwitchChanged()
-{
-    nBitsLowFi->setEnabled((onOffSwitch->getValue() == 1));
-    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? params.onOffSwitchEnabled :  params.onOffSwitchDisabled));
-}
 //[/MiscUserCode]
 
 
@@ -143,21 +119,16 @@ void LoFiPanel::onOffSwitchChanged()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="LoFiPanel" componentName=""
+<JUCER_COMPONENT documentType="Component" className="ClippingPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="133"
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
-  <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 63 64 64"
-          min="1" max="16" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="lofi switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
-          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
-          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
-          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+  <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 64 64 64"
+          rotarysliderfill="ff2b3240" min="0" max="25" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

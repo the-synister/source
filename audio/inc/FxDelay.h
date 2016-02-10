@@ -39,12 +39,12 @@ public:
     {}
     //! FxDelay destructor.
     ~FxDelay(){}
-    
+
     //! delay rendering.
     /*!
     The public function render can be called to add a delay to a processed audio block.
     This functions calls calcTime(), to determine the delay length, adds the (filtered)
-    signal to the delay and output buffer and takes care of the current position and 
+    signal to the delay and output buffer and takes care of the current position and
     direction inside the ring buffer (feedback loop).
     @param outputBuffer a reference to the current block. the delay gets added to it
     @param startSample needed for sudden (midi) parameter changes
@@ -55,7 +55,7 @@ public:
     //! delay initialization.
     /*!
     The init function sets up the audio buffer size, sample rate, maximum length and channels.
-    @param channelsIn the amount of audio channels 
+    @param channelsIn the amount of audio channels
     @param sampleRateIn the current sample rate
     */
     void init(int channelsIn, double sampleRateIn);
@@ -67,7 +67,7 @@ private:
     of the host tempo or user input.
     */
     void calcTime();
-    
+
     //! delay filter.
     /*!
     The private filter function add the possibility to apply a lowpass filter

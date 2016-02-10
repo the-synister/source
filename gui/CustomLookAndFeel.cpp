@@ -31,8 +31,8 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
 
     // custom start and end angle for knob and saturn
-    rotaryStartAngle = -float_Pi + degreesToRadians(30.0f);
-    rotaryEndAngle = float_Pi - degreesToRadians(30.0f);
+    rotaryStartAngle = -float_Pi + degreesToRadians(45.0f);
+    rotaryEndAngle = float_Pi - degreesToRadians(45.0f);
 
     // current slider position angle in radians in range [rotaryStartAngle, rotaryEndAngle]
     const float currAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
@@ -86,7 +86,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-//TODO: vorzeitige version später statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar / bipolar und evtl.Colour
+//TODO: vorzeitige version spter statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar / bipolar und evtl.Colour
 void CustomLookAndFeel::drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar,
     float centreX, float centreY, float radius, float innerCircleSize,
     float currAngle, float rotaryStartAngle, float rotaryEndAngle)
@@ -146,7 +146,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
         if (s.getMinimum() == -s.getMaximum())
         {
-            // TODO: wenn überhaupt am ende noch relevant ist, ansonsten löschen
+            // TODO: wenn berhaupt am ende noch relevant ist, ansonsten lschen
             const float middleHeight = boxHeight * 0.65f;
             // create left and right part of pan
             path.addQuadrilateral(posX, posY,
@@ -216,7 +216,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
         indent.addRoundedRectangle(x - sliderRadius * 0.5f, iy,
             width + sliderRadius, ih,
-            10.0f);
+            sliderRadius * 0.5f);
     }
     else
     {
@@ -225,7 +225,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
         indent.addRoundedRectangle(ix, y - sliderRadius * 0.5f,
             iw, height + sliderRadius,
-            10.0f);
+            sliderRadius * 0.5f);
     }
 
     g.fillPath(indent);
@@ -233,7 +233,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
 void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
+    const float sliderRadius = (float)(jmin(10, width / 4, height / 4) - 2);
     const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
     float centreX, centreY;
 
@@ -278,7 +278,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
     }
 }
 
-// TODO: wenn nicht benötigt, dann weg
+// TODO: wenn nicht bentigt, dann weg
 Slider::SliderLayout CustomLookAndFeel::getSliderLayout(Slider& s)
 {
     // 1. compute the actually visible textBox size from the slider textBox size and some additional constraints
@@ -310,7 +310,7 @@ Slider::SliderLayout CustomLookAndFeel::getSliderLayout(Slider& s)
         else /* above or below -> centre horizontally */ layout.textBoxBounds.setX((localBounds.getWidth() - textBoxWidth) / 2);
 
         if (textBoxPos == Slider::TextBoxAbove)          layout.textBoxBounds.setY(0);
-        else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight);
+        else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight - 5);
         else /* left or right -> centre vertically */    layout.textBoxBounds.setY((localBounds.getHeight() - textBoxHeight) / 2);
     }
 
@@ -350,7 +350,7 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
     const int width = b.getWidth();
     const int height = b.getHeight();
     const float cornerSize = 7.0f;
-    const float outlineThickness = 2.2f;
+    const float outlineThickness = isMouseOverButton ? 2.5f : 2.0f;
     const float halfThickness = outlineThickness * 0.5f;
 
     // background colour
@@ -469,7 +469,7 @@ void CustomLookAndFeel::positionComboBoxText(ComboBox& c, Label& l)
 
 //==============================================================================
 
-// TODO: alle popup sachen je nach dem ob benötigt werden später, ansonsten löschen
+// TODO: alle popup sachen je nach dem ob bentigt werden spter, ansonsten lschen
 Font CustomLookAndFeel::getPopupMenuFont()
 {
     return LookAndFeel_V2::getPopupMenuFont();
@@ -486,6 +486,19 @@ void CustomLookAndFeel::drawPopupMenuItem(Graphics &g, const Rectangle< int > &a
     LookAndFeel_V2::drawPopupMenuItem(g, area, isSeparator, isActive, isHighlighted, isTicked, hasSubMenu, text, shortcutKeyText, icon, textColour);
 }
 
+void CustomLookAndFeel::drawBubble(Graphics& g, BubbleComponent& comp, const Point<float>& tip, const Rectangle<float>& body)
+{
+    Path p;
+    p.addBubble(body.reduced(0.5f), body.getUnion(Rectangle<float>(tip.x, tip.y, 1.0f, 1.0f)),
+        tip, 5.0f, jmin(15.0f, body.getWidth() * 0.2f, body.getHeight() * 0.2f));
+
+    g.setColour(Colours::white);
+    g.fillPath(p);
+
+    g.setColour(comp.findColour(BubbleComponent::outlineColourId));
+    g.strokePath(p, PathStrokeType(2.5f));
+}
+
 Font CustomLookAndFeel::getSliderPopupFont(Slider &/*s*/)
 {
     return Font(15.0f, Font::plain);
@@ -497,4 +510,42 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
         | BubbleComponent::below
         | BubbleComponent::left
         | BubbleComponent::right;
+}
+
+//==============================================================================
+
+void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& /*name*/, bool isOpen, int width, int height)
+{
+    // background colour
+    ColourGradient gradient(Colour (77, 77, 79), 0.0f, 0.0f, Colour (45, 43, 44), 0.0f, static_cast<float>(height), false);
+    g.setGradientFill(gradient);
+    g.fillRect(0, 0, width, height);
+
+    // draw arrow
+    const float buttonSize = height * 0.65f;
+    const float buttonIndent = (height - buttonSize) * 0.5f;
+    const float x = buttonIndent * 2.0f;
+    const float y = (height - buttonSize) * 0.5f;
+    const float arrowThickness = buttonIndent * 2.0f;
+
+    Path arrow;
+    if (isOpen)
+    {
+        arrow.addQuadrilateral(x, y,
+                               x + buttonSize * 0.5f, y + buttonSize - arrowThickness,
+                               x + buttonSize, y,
+                               x + buttonSize * 0.5f, y + buttonSize);
+    }
+    else
+    {
+        arrow.addQuadrilateral(x, y,
+                               x + buttonSize - arrowThickness, y + buttonSize * 0.5f,
+                               x, y + buttonSize,
+                               x + buttonSize, y + buttonSize * 0.5f);
+    }
+
+    g.setColour(Colours::grey);
+    g.fillPath(arrow);
+
+    // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
 }

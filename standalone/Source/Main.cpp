@@ -23,7 +23,7 @@ public:
     //==============================================================================
     StandaloneApplication() {}
 
-    const String getApplicationName() override       { return ProjectInfo::projectName; }
+    const String getApplicationName() override       { return "synister"; }
     const String getApplicationVersion() override    { return ProjectInfo::versionString; }
     bool moreThanOneInstanceAllowed() override       { return true; }
 
@@ -34,7 +34,7 @@ public:
         // This method is where you should put your application's initialisation code..
         
         mainWindow = new StandaloneFilterWindow(getApplicationName(),Colours::black,nullptr,false);
-        mainWindow->setSize(800, 600 + mainWindow->getTitleBarHeight());
+        mainWindow->setSize(800, 740 + mainWindow->getTitleBarHeight());
         mainWindow->setVisible(true);
     }
 

@@ -33,24 +33,8 @@ LadderPanel::LadderPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (cutoff = new MouseOverKnob ("Cutoff"));
-    cutoff->setRange (10, 20000, 0);
-    cutoff->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoff->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    cutoff->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    cutoff->addListener (this);
-
-    addAndMakeVisible (resonance = new MouseOverKnob ("Resonance"));
-    resonance->setRange (0, 10, 0);
-    resonance->setSliderStyle (Slider::RotaryVerticalDrag);
-    resonance->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    resonance->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
-    resonance->addListener (this);
-
 
     //[UserPreSize]
-    //registerSlider(cutoff, &params.ladderCutoff);
-    //registerSlider(resonance, &params.ladderRes);
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -65,8 +49,6 @@ LadderPanel::~LadderPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    cutoff = nullptr;
-    resonance = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -90,33 +72,8 @@ void LadderPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoff->setBounds (8, 8, 64, 64);
-    resonance->setBounds (80, 8, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
-}
-
-void LadderPanel::sliderValueChanged (Slider* sliderThatWasMoved)
-{
-    //[UsersliderValueChanged_Pre]
-    handleSlider(sliderThatWasMoved);
-    //[/UsersliderValueChanged_Pre]
-
-    if (sliderThatWasMoved == cutoff)
-    {
-        //[UserSliderCode_cutoff] -- add your slider handling code here..
-        //params.ladderCutoff.setUI(static_cast<float>(cutoff->getValue()));
-        //[/UserSliderCode_cutoff]
-    }
-    else if (sliderThatWasMoved == resonance)
-    {
-        //[UserSliderCode_resonance] -- add your slider handling code here..
-        //params.ladderRes.setUI(static_cast<float>(resonance->getValue()));
-        //[/UserSliderCode_resonance]
-    }
-
-    //[UsersliderValueChanged_Post]
-    //[/UsersliderValueChanged_Post]
 }
 
 
@@ -140,15 +97,6 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ff2b3240"/>
-  <SLIDER name="Cutoff" id="9f0401962808ddd3" memberName="cutoff" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 8 64 64" rotarysliderfill="ff2b3240"
-          min="10" max="20000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Resonance" id="5cc36d41af142d68" memberName="resonance"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 8 64 64"
-          rotarysliderfill="ff2b3240" min="0" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -1,9 +1,13 @@
 #include "WaveformVisual.h"
-#include "Voice.h"
+#include "Oscillator.h"
 
 void WaveformVisual::paint(Graphics &g)
 {
-    g.fillAll(Colours::black);
+    FillType backgroundFill = FillType(SynthParams::waveformBackground);
+    backgroundFill.setOpacity(1.0f);
+    g.setFillType(backgroundFill);
+    g.fillAll();
+
     Path wavePath;
     const float centreY = getHeight() / 2.0f;
     const float amplitude = 0.4f;
@@ -11,14 +15,14 @@ void WaveformVisual::paint(Graphics &g)
     const float step = 4*float_Pi / width;
     wavePath.startNewSubPath(0, centreY);
 
-    for (float x = 1.0f; x < width; ++x) {
+    for (float x = 0.0f; x < width; ++x) {
 
         float phs = x * step;
         if (phs > (2 * float_Pi))
             phs = phs - (2 * float_Pi);
 
-		switch (m_iWaveformKey)
-		{
+        switch (m_iWaveformKey)
+        {
             case eOscWaves::eOscSquare:
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::square(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
@@ -31,11 +35,12 @@ void WaveformVisual::paint(Graphics &g)
                 wavePath.lineTo(x, centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::whiteNoise(phs, m_fTrngAmount, m_fPulseWidth));
                 break;
 
-		}
+        }
 
     }
-    g.setColour(Colours::lightgreen);
+    g.setColour(SynthParams::waveformLine);
     g.strokePath(wavePath, PathStrokeType(2.5f));
+    g.drawRect(getLocalBounds(), 3);
+    g.setColour(Colours::darkgrey);
+    g.drawRect(getLocalBounds(), 1);
 }
-
-

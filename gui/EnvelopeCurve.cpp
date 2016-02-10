@@ -18,25 +18,24 @@ EnvelopeCurve::~EnvelopeCurve()
 
 void EnvelopeCurve::setSamples()
 {
-    
-    //TODO: responsive design
+
     sustainLevel_ = (96.f + sustain_) / 96.f;
-    
-    float samplesSection = getWidth()/4;
-    
+
+    float samplesSection = getWidth() / 4.0f;
+
     attackSamples = (attack_ * samplesSection/5) > 0.5f ?
     static_cast<int>(ceil(attack_ * samplesSection/5)) :
     1;
-    
+
     decaySamples = static_cast<int>(decay_ * samplesSection/5);
-    
+
     releaseSamples = (release_ * (samplesSection)/5 ) > 0.5f ?
     static_cast<int>(ceil(release_ * samplesSection/5)) :
     1;
-    
+
     // NOTE: the 2 at the end are responsible for the ending of the curve
     sustainSamples = getWidth() - (attackSamples + decaySamples + releaseSamples + 2);
-    
+
     samplesCounter_ = 0;
 
 }
@@ -79,7 +78,7 @@ void EnvelopeCurve::setReleaseShape(float releaseShape)
 float EnvelopeCurve::getEnvCoef()
 {
     float envCoeff;
-    
+
     // attack phase sets envCoeff from 0.0f to 1.0f
     if (samplesCounter_ <= attackSamples)
     {
@@ -136,7 +135,7 @@ float EnvelopeCurve::getEnvCoef()
     {
         return 0.f;
     }
-    
+
     return envCoeff;
 
 }
@@ -156,24 +155,22 @@ float EnvelopeCurve::interpolateLog(int c, int t, float k, bool slow)
 
 void EnvelopeCurve::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
+    // TODO: gradient for less than 1 samples
+    FillType backgroundFill = FillType(SynthParams::envelopeCurveBackground);
+    backgroundFill.setOpacity(1.0f);
+    g.setFillType(backgroundFill);
+    g.fillAll();
 
-       You should replace everything in this method with your own
-       drawing code..
-    */
-    g.fillAll(Colours::black);
-    
     Path curvePath;
     const int width = getWidth();
     setSamples();
-    curvePath.startNewSubPath(0, getHeight());
-    
+    curvePath.startNewSubPath(0.0f, static_cast<float>(getHeight()));
+
     for (float i = 1.0f; i < width; ++i) {
-        curvePath.lineTo(i, getHeight()*(1.f - getEnvCoef()));
+        curvePath.lineTo(i, (getHeight())*(1.013f - getEnvCoef()));
     }
-    
-    g.setColour(Colours::lightgreen);
+
+    g.setColour(SynthParams::envelopeCurveLine);
     g.strokePath(curvePath, PathStrokeType(2.5f));
 }
 

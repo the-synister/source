@@ -23,6 +23,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PanelBase.h"
+#include "EnvelopeCurve.h"
 //[/Headers]
 
 
@@ -36,28 +37,34 @@
                                                                     //[/Comments]
 */
 class Env1Panel  : public PanelBase,
+                   public ComboBoxListener,
                    public SliderListener
 {
 public:
     //==============================================================================
-    Env1Panel (SynthParams &p);
+    Env1Panel (SynthParams &p, int envelopeNumber);
     ~Env1Panel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void updateCurve();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
     void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams::Env &env;
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<ComboBox> env2SpeedModSrc1;
+    ScopedPointer<ComboBox> env2SpeedModSrc2;
     ScopedPointer<MouseOverKnob> attackTime1;
     ScopedPointer<MouseOverKnob> decayTime1;
     ScopedPointer<MouseOverKnob> sustainLevel1;
@@ -66,7 +73,8 @@ private:
     ScopedPointer<MouseOverKnob> decayShape1;
     ScopedPointer<MouseOverKnob> releaseShape1;
     ScopedPointer<MouseOverKnob> keyVelToEnv1;
-    ScopedPointer<Label> Env1Label;
+    ScopedPointer<EnvelopeCurve> envelopeCurve;
+    ScopedPointer<Label> shapeLabel1;
 
 
     //==============================================================================

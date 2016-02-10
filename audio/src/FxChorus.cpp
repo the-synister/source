@@ -5,7 +5,7 @@ FxChorus::~FxChorus() {};
 void FxChorus::init(int channelsIn, double sampleRateIn)
 {
     channels = channelsIn;
-    sampleRate = sampleRateIn;
+    sampleRate = static_cast<float>(sampleRateIn);
     chorusBuffer = AudioSampleBuffer(channels, static_cast<int>(sampleRate * 2.0));
     //currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate / 1000.0));
     currentDelayLength = static_cast<int>(params.chorDelayLength.get()*(sampleRate));

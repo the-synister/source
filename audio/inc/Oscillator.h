@@ -80,6 +80,7 @@ struct Waveforms {
         else { return (-.5f + 1.f / (2.f*float_Pi - trngAmount*float_Pi) * (phs - trngAmount*float_Pi)); }
     }
     static float whiteNoise(float phs, float trngAmount, float width) {
+        ignoreUnused(phs, trngAmount, width);
         return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
     }
 };
@@ -88,7 +89,7 @@ struct Waveforms {
 template<float(*_waveform)(float, float, float)>
 class RandomOscillator : public Oscillator<&Waveforms::square>
 {
-public: 
+public:
     float heldValue;
 
     RandomOscillator() : Oscillator()

@@ -24,6 +24,7 @@
 #include "JuceHeader.h"
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
+#include "FoldablePanel.h"
 #include "IncDecDropDown.h"
 //[/Headers]
 
@@ -72,11 +73,11 @@ private:
     //==============================================================================
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<MidiKeyboardComponent> keyboard;
-    ScopedPointer<TabbedComponent> tabs;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
+    ScopedPointer<FoldablePanel> foldableComponent;
 
 
     //==============================================================================

@@ -24,9 +24,12 @@ public:
     }
     virtual ~Param() {}
 
+    void setPrefix(const String &s) { prefix_ = s; }
+    const String& prefix() { return prefix_; }
+
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
-    const String& hostTag() const { return hostTag_; }
+    String hostTag() const { return prefix_ + hostTag_; }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
@@ -83,20 +86,6 @@ public:
         return fInput * std::pow(2.f, modValue * modRange);
     }
 
-#if 0
-    static bool isUnipolar(eModSource source) {
-        switch (source) {
-        case eModSource::eEnv:
-            //todo: add all unipolar modulators
-            return true;
-        case eModSource::eLFO1:
-            //todo: add all unipolar modulators
-            return false;
-        }
-        return false;
-    }
-#endif
-
     class Listener {
     public:
         virtual ~Listener(){}
@@ -106,7 +95,7 @@ public:
 
     void addListener(Listener *newListener) { listener.add(newListener); }
     void removeListener(Listener *aListener) { listener.remove(aListener); }
-    
+
 protected:
     ScopedPointer<float> value;
     std::atomic<float> val_;
@@ -118,6 +107,8 @@ protected:
     String hostTag_;
     String unit_;
     int numSteps_;
+
+    String prefix_;
 
     ListenerList<Listener> listener;
     std::atomic<bool> uiDirty;

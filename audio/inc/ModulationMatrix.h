@@ -1,63 +1,70 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    ModulationMatrix.h
-    Created: 2 Jan 2016 9:16:56pm
-    Author:  nj, ant, fb
+ModulationMatrix.h
+Created: 2 Jan 2016 9:16:56pm
+Author:  nj
 
-  ==============================================================================
+==============================================================================
 */
 
 #ifndef MODULATIONMATRIX_H_INCLUDED
 #define MODULATIONMATRIX_H_INCLUDED
 
 #include "JuceHeader.h"
-#include <atomic>
 #include "Param.h"
+#include <map>
 
-//! Modulation Matrix 
+//! Modulation Matrix
 /*! this fixed size mod matrix is based on the book
 "Designing Software Synthesizer Plug-Ins in C++"
 */
 
-enum sources : int {
-    SOURCE_NONE = -1,
+enum eModSource : int {
+    eNone = 0,
 
     // Midi
-    SOURCE_AFTERTOUCH,
-    SOURCE_KEY_BIPOLAR,
-    SOURCE_INVERTED_VELOCITY,
-    SOURCE_VELOCITY,
-    SOURCE_FOOT,
-    SOURCE_EXPPEDAL,
-    SOURCE_MODWHEEL,
-    SOURCE_PITCHBEND,
+    eAftertouch,
+    eKeyBipolar,
+    eInvertedVelocity,
+    eVelocity,
+    eFoot,
+    eExpPedal,
+    eModwheel,
+    ePitchbend,
 
     // LFOs
-    SOURCE_LFO1,
-    SOURCE_LFO2,
-    SOURCE_LFO3,
+    eLFO1,
+    eLFO2,
+    eLFO3,
 
     // Envelopes
-    SOURCE_VOL_ENV,
-    SOURCE_ENV2,
-    SOURCE_ENV3,
+    eVolEnv,
+    eEnv2,
+    eEnv3,
 
-    MAX_SOURCES
+    nSteps
 };
 
-enum destinations : int {
 
+enum destinations : int {
     DEST_NONE = -1,
 
     // Filters
-    DEST_FILTER_LC,
-    DEST_FILTER_HC,
-    DEST_FILTER_RES,
+    DEST_FILTER1_LC,
+    DEST_FILTER2_LC,
+    DEST_FILTER1_HC,
+    DEST_FILTER2_HC,
+    DEST_FILTER1_RES,
+    DEST_FILTER2_RES,
 
     // Oscillators
-    DEST_AMP,
-    DEST_PAN,
+    DEST_OSC1_GAIN,
+    DEST_OSC2_GAIN,
+    DEST_OSC3_GAIN,
+    DEST_OSC1_PAN,
+    DEST_OSC2_PAN,
+    DEST_OSC3_PAN,
     DEST_OSC1_PI,
     DEST_OSC2_PI,
     DEST_OSC3_PI,
@@ -69,9 +76,6 @@ enum destinations : int {
     DEST_LFO1_FREQ,
     DEST_LFO2_FREQ,
     DEST_LFO3_FREQ,
-    DEST_LFO1_GAIN,
-    DEST_LFO2_GAIN,
-    DEST_LFO3_GAIN,
 
     // Envelopes
     DEST_VOL_ENV_SPEED,
@@ -81,34 +85,22 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
-inline bool isUnipolar(sources source) {
-    
+inline bool isUnipolar(eModSource source) {
     switch (source) {
-    case SOURCE_VOL_ENV:
-    case SOURCE_ENV2:
-    case SOURCE_ENV3:
-    case SOURCE_AFTERTOUCH:
-    case SOURCE_MODWHEEL:
-    case SOURCE_VELOCITY:
-    case SOURCE_INVERTED_VELOCITY:
-    case SOURCE_FOOT:
-    case SOURCE_EXPPEDAL:
+    case eModSource::eVolEnv:
+    case eModSource::eEnv2:
+    case eModSource::eEnv3:
+    case eModSource::eAftertouch:
+    case eModSource::eModwheel:
+    case eModSource::eVelocity:
+    case eModSource::eInvertedVelocity:
+    case eModSource::eFoot:
+    case eModSource::eExpPedal:
         return true;
-        break;
-    case SOURCE_LFO1:
-    case SOURCE_LFO2:
-    case SOURCE_LFO3:
-    case SOURCE_PITCHBEND:
-    case SOURCE_KEY_BIPOLAR:
+    default:
         return false;
-        break;
-
     }
-    // when the function is complete with all sources, this code should be unreachable
-    return false;
 }
-
-
 
 // core
 class ModulationMatrix {
@@ -116,33 +108,36 @@ public:
     ModulationMatrix();
     ~ModulationMatrix();
 
-    inline bool modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const;
-    inline bool enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable);
 
-    inline void addModMatrixRow(sources s, destinations d, Param *intensity, bool b = false);
 
+    struct ModMatrixRow
+    {
+        eModSource sourceIndex;
+        destinations destinationIndex;
+        Param* modIntensity;
+        String modSrcBox;
+
+        ModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
+            : sourceIndex(s)
+            , destinationIndex(d)
+            , modIntensity(intensity)
+            , modSrcBox(boxname)
+        {}
+    };
+
+
+
+    inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
+    inline void changeSource(String comboboxName, eModSource source);
+    inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
+
 
 protected:
     static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
     static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
 private:
-    struct ModMatrixRow
-    {
-        sources sourceIndex;
-        destinations destinationIndex;
-        Param* modIntensity;
-        bool enable;
-
-        ModMatrixRow(sources s, destinations d, Param *intensity, bool b = false)
-            : sourceIndex(s)
-            , destinationIndex(d)
-            , modIntensity(intensity)
-            , enable(b)
-        {}
-    };
-
     std::vector<ModMatrixRow> matrixCore;
 };
 
@@ -150,38 +145,39 @@ private:
 inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) const
 {
     for (const ModMatrixRow &row : matrixCore)
-    {        
-        // --- if disabled, skip row
-        if (!row.enable) continue;
-                
+    {
         // get the source value & mod intensity
-        float source = *(src[row.sourceIndex]);
-        float intensity = row.modIntensity->get();
+        if (row.sourceIndex > eModSource::eNone && row.sourceIndex < eModSource::nSteps
+            && row.destinationIndex > DEST_NONE && row.destinationIndex < MAX_DESTINATIONS) {
+            float source = *(src[row.sourceIndex]);
+            float intensity = row.modIntensity->get();
 
-        // get the min max values for the intensity for transformation
-        float min = row.modIntensity->getMin();
-        float max = row.modIntensity->getMax();
-        
-        if (isUnipolar(row.sourceIndex)) { 
-            // if the source is unipolar, transform the intensity to bipolar
-            intensity = toBipolar(min, max, intensity);
-        }
-        else { 
-            // else the source is bipolar, transform the intensity to unipolar
-            intensity = toUnipolar(min, max, intensity);
+            // get the min max values for the intensity for transformation
+            float min = row.modIntensity->getMin();
+            float max = row.modIntensity->getMax();
+
+            if (isUnipolar(row.sourceIndex)) {
+                // if the source is unipolar, transform the intensity to bipolar
+                intensity = toBipolar(min, max, intensity);
+            }
+            else {
+                // else the source is bipolar, transform the intensity to unipolar
+                intensity = toUnipolar(min, max, intensity);
+            }
+
+            float dModValue = source*intensity;
+            /*we are just adding the modified values into the predefined buffers
+              the conversion and application is apllied outside of the matrix*/
+            *(dst[row.destinationIndex]) += dModValue;
         }
 
-        float dModValue = source*intensity;
-                
-        /*we are just adding the modified values into the predefined buffers
-         the conversion and application is apllied outside of the matrix*/
-        *(dst[row.destinationIndex]) += dModValue;
+
     }
 }
 
 // config changes
 
-inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinations destinationIndex) const
+inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const
 {
     for (const ModMatrixRow &row : matrixCore)
     {
@@ -194,27 +190,21 @@ inline bool ModulationMatrix::modMatrixRowExists(sources sourceIndex, destinatio
     return false;
 }
 
-inline bool ModulationMatrix::enableModMatrixRow(sources sourceIndex, destinations destinationIndex, bool enable)
-{
+inline void ModulationMatrix::changeSource(String comboboxName, eModSource source) {
     for (ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
+        if (row.modSrcBox == comboboxName)
         {
-            row.enable = enable;
-            return true; // found it
+            row.sourceIndex = source;
         }
     }
-    return false;
 }
 
-inline void ModulationMatrix::addModMatrixRow(sources s, destinations d, Param *intensity, bool b)
+
+inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
 {
-    // add if not already existing
-    if (!modMatrixRowExists(s, d))
-    {
-        matrixCore.push_back(ModMatrixRow(s,d,intensity,b));
-    }
+    matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
 }
 
 #endif  // MODULATIONMATRIX_H_INCLUDED

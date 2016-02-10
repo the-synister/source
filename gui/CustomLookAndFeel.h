@@ -107,6 +107,11 @@ public:
     virtual void drawPopupMenuItem(Graphics &g, const Rectangle< int > &area, bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
         const String &text, const String &shortcutKeyText, const Drawable *icon, const Colour *textColour);
 
+    /**
+    * Draw custom popup bubble for slider drag.
+    */
+    virtual void drawBubble(Graphics& g, BubbleComponent& comp, const Point<float>& tip, const Rectangle<float>& body);
+
     /*
     * For changing Font of value popup.
     */
@@ -116,6 +121,13 @@ public:
     * For changing position of value popup.
     */
     virtual int getSliderPopupPlacement(Slider &s);
+
+    //==============================================================================
+
+    /*
+    * Draw custom panel section header.
+    */
+    void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height);
 
 //==============================================================================
 private:

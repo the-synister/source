@@ -3,7 +3,7 @@
 
 
 #include "SynthParams.h"
-#include "Voice.h"
+#include "Oscillator.h"
 
 
 class FxChorus
@@ -32,7 +32,7 @@ private:
     Oscillator<&Waveforms::sinus> modSine3;
     Oscillator<&Waveforms::sinus> modSine4;
     Oscillator<&Waveforms::sinus> modSine5;
-    double sampleRate;
+    float sampleRate;
     int channels;
     int currentDelayLength;
     int loopPosition;
