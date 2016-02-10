@@ -138,7 +138,6 @@
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
@@ -153,14 +152,11 @@
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\audio\inc\Voice.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
@@ -1313,7 +1309,6 @@
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
@@ -1334,7 +1329,6 @@
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>

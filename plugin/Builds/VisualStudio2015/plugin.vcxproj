@@ -143,7 +143,6 @@
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
@@ -158,11 +157,8 @@
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
@@ -1335,7 +1331,6 @@
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
@@ -1349,15 +1344,12 @@
     <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h"/>
