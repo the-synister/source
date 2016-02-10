@@ -44,12 +44,13 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(env[i].envReleaseShape));
     }
     
-    addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo1wave));
-    addParameter(new HostParam<Param>(lfo1freq));
-    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo1TempSync));
-    addParameter(new HostParam<Param>(noteLength));
-    addParameter(new HostParam<Param>(lfoFadein));
-
+    for (int i = 0; i < 3; ++i) {
+        addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo[i].wave));
+        addParameter(new HostParam<Param>(lfo[i].freq));
+        addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo[i].tempSync));
+        addParameter(new HostParam<Param>(lfo[i].noteLength));
+        addParameter(new HostParam<Param>(lfo[i].fadeIn));
+    }
     addParameter(new HostParam<Param>(lp1Cutoff));
     addParameter(new HostParam<Param>(hp1Cutoff));
     addParameter(new HostParam<Param>(filter1Resonance));

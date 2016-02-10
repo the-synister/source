@@ -107,26 +107,26 @@ public:
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
 
-        if (params.lfo1TempSync.get() == 1.f) {
+        if (params.lfo[0].tempSync.get() == 1.f) {
 
             lfo1sine.phase = .5f*float_Pi;
             lfo1square.phase = 0.f;
             lfo1random.phase = 0.f;
 
-            lfo1sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
         else{
 
             lfo1sine.phase = .5f*float_Pi;
-            lfo1sine.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1sine.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
             lfo1square.phase = .5f*float_Pi;
-            lfo1square.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1square.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
 
             lfo1random.phase = 0.f;
-            lfo1random.phaseDelta = params.lfo1freq.get() / sRate * 2.f * float_Pi;
+            lfo1random.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
@@ -346,7 +346,7 @@ protected:
         // LFO Fade IN Variables
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
-        const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
+        const int samplesFadeInLFO = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);     // Length in samples of the LFO fade in
 
         //clear the buffers
         modDestBuffer.clear();
@@ -375,7 +375,7 @@ protected:
             }
 
             // calculate lfo values and fill the buffers
-            switch (params.lfo1wave.getStep()) {
+            switch (params.lfo[0].wave.getStep()) {
             case eLfoWaves::eLfoSine:
                 // lfoValue = lfo1sine.next();
                 lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);

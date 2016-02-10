@@ -27,8 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-LfoPanel::LfoPanel (SynthParams &p)
-    : PanelBase(p)
+LfoPanel::LfoPanel (SynthParams &p, int lfoNumber, const String& panelTitle)
+    : PanelBase(p),
+      lfo(p.lfo[lfoNumber]),
+      _panelTitle(panelTitle)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -113,14 +115,14 @@ LfoPanel::LfoPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(freq, &params.lfo1freq);
-    freq->setSkewFactorFromMidPoint(params.lfo1freq.getDefault());
-    wave->setValue(params.lfo1wave.getUI());
+    registerSlider(freq, &lfo.freq);
+    freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
+    wave->setValue(lfo.wave.getUI());
     tempoSyncSwitch->setToggleState(0, dontSendNotification);
-    notelength->setValue(params.noteLength.getUI());
-    registerSlider(notelength, &params.noteLength);
-    registerSlider(wave, &params.lfo1wave);
-    registerSlider(lfoFadeIn, &params.lfoFadein);
+    notelength->setValue(lfo.noteLength.getUI());
+    registerSlider(notelength, &lfo.noteLength);
+    registerSlider(wave, &lfo.wave);
+    registerSlider(lfoFadeIn, &lfo.fadeIn);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
@@ -172,12 +174,12 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 26, 64, 64);
-    wave->setBounds (143, 66, 64, 24);
+    wave->setBounds (133, 66, 64, 24);
     tempoSyncSwitch->setBounds (83, 96, 150, 24);
     notelength->setBounds (97, 149, 152, 24);
-    sineLabel->setBounds (88, 63, 64, 24);
-    squareLabel->setBounds (143, 42, 64, 24);
-    sampleHoldLabel2->setBounds (202, 66, 72, 24);
+    sineLabel->setBounds (78, 63, 64, 24);
+    squareLabel->setBounds (133, 42, 64, 24);
+    sampleHoldLabel2->setBounds (192, 66, 72, 24);
     lfoFadeIn->setBounds (8, 98, 64, 64);
     triplets->setBounds (192, 97, 120, 24);
     noteLength->setBounds (105, 120, 87, 24);
@@ -225,7 +227,7 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == tempoSyncSwitch)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
-        params.lfo1TempSync.setUI(tempoSyncSwitch->getToggleState());
+        lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
         if (tempoSyncSwitch->getToggleState()==1){
             freq->setEnabled(false);
         }else{
@@ -275,10 +277,10 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="LfoPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="267"
-                 initialHeight="222">
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int lfoNumber, const String&amp; panelTitle"
+                 variableInitialisers="PanelBase(p),&#10;lfo(p.lfo[lfoNumber]),&#10;_panelTitle(panelTitle)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="267" initialHeight="222">
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="8 26 64 64" rotarysliderfill="ff855050"
@@ -286,7 +288,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
-          explicitFocusOrder="0" pos="143 66 64 24" thumbcol="ff855050"
+          explicitFocusOrder="0" pos="133 66 64 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
@@ -298,17 +300,17 @@ BEGIN_JUCER_METADATA
           max="32" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="sine label" id="b40cd065bdc2086c" memberName="sineLabel"
-         virtualName="" explicitFocusOrder="0" pos="88 63 64 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="78 63 64 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Sine" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="square label" id="5adc08b39551a18d" memberName="squareLabel"
-         virtualName="" explicitFocusOrder="0" pos="143 42 64 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="133 42 64 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Square" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="sample and hold label" id="f2be9ba7b41efda2" memberName="sampleHoldLabel2"
-         virtualName="" explicitFocusOrder="0" pos="202 66 72 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="192 66 72 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Smp+Hold" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>

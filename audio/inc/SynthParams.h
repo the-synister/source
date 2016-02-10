@@ -63,19 +63,6 @@ public:
 
     Param freq;  //!< master tune in Hz
 
-    Param lfo1freq; //!< lfo frequency in Hz
-    ParamStepped<eOnOffToggle> lfo1TempSync; //!< bool if checked or not
-    Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
-    ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-
-    ParamStepped<eModSource> lfo1freqModSrc1; //!< lfo1 frequency mod source
-    ParamStepped<eModSource> lfo1freqModSrc2; //!< lfo2 frequency mod source
-    ParamStepped<eModSource> lfo1gainModSrc1; //!< lfo1 gain mod source
-    ParamStepped<eModSource> lfo1gainModSrc2; //!< lfo2 gain mod source
-
-
-    Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
-
                        //Param lfoChorfreq; // delay-lfo frequency in Hz
                        //Param chorAmount; // wetness of signal [0 ... 1]
                        //Param chorSwitch; // Chorus on / off [1 / 0]
@@ -96,7 +83,6 @@ public:
         Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
         Param envAttack;    //!< env attack in [0.001..5]s
         Param envDecay;     //!< env decay in [0.001..5]s
-        //Param envSustain;   //!< env sustain in [0..-96]dB
         Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
         
         Param envAttackShape; //!< env attack shape in [0.01..10]
@@ -121,8 +107,21 @@ public:
         ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
     };
     
-    std::array<EnvVol, 1> envVol;
-    std::array<Env, 2> env;
+    struct Lfo : public EnvBase {
+        Lfo();
+        
+        Param freq; //!< lfo frequency in Hz
+        ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
+        Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
+        ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
+        
+        ParamStepped<eModSource> freqModSrc1; //!< lfo1 frequency mod source
+        ParamStepped<eModSource> freqModSrc2; //!< lfo2 frequency mod source
+        ParamStepped<eModSource> gainModSrc1; //!< lfo1 gain mod source
+        ParamStepped<eModSource> gainModSrc2; //!< lfo2 gain mod source
+        
+        Param fadeIn;   // The LFOs fade in with a range of [0..10s]
+    };
 
     struct Osc : public BaseParamStruct {
         Osc();
@@ -149,9 +148,13 @@ public:
         ParamDb vol; //!< volume in [-96..12]
         Param volModAmount1;    //!< key velocity level range in [0..96]dB
     };
-
+    
+    std::array<Lfo, 3> lfo;
+    std::array<EnvVol, 1> envVol;
+    std::array<Env, 2> env;
     std::array<Osc, 3> osc;
 
+    // TODO: Filter struct
     ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
 
     Param lp1Cutoff; //!< filter cutoff frequency in Hz
@@ -170,8 +173,6 @@ public:
     ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
     
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
-
-  
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
