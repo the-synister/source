@@ -192,6 +192,11 @@ public:
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 
+    Param chorDelayLength;
+    Param chorDryWet;
+    Param chorModRate;
+    Param chorModDepth;
+
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
     Param seqLastPlayedStep;                 //!< index of last played sequencer step in [0..7]

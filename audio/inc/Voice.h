@@ -17,19 +17,19 @@ public:
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize)
-    : params(p)
-    , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
-    , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
-        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
-    , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
-        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
-    , modMatrix(p.globalModMatrix)
-    , filterModBuffer(1, blockSize)
-    , totSamples(0)
-    , envToVolBuffer(1, blockSize)
-    , lfo1Buffer(1,blockSize)
-    , env1Buffer(1, blockSize)
-    , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
+        : params(p)
+        , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
+        , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
+            params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
+        , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
+            params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
+        , modMatrix(p.globalModMatrix)
+        , filterModBuffer(1, blockSize)
+        , totSamples(0)
+        , envToVolBuffer(1, blockSize)
+        , lfo1Buffer(1, blockSize)
+        , env1Buffer(1, blockSize)
+        , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         // set all to velocity so that the modulation matrix does not crash
         std::fill(modSources.begin(), modSources.end(), &currentVelocity);
@@ -54,7 +54,7 @@ public:
         modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
         //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
         //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
-        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);    
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
         //modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
 #endif
 
@@ -63,6 +63,7 @@ public:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
     }
+}
 
     bool canPlaySound(SynthesiserSound* sound) override
     {
