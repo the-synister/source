@@ -122,6 +122,27 @@ public:
         
         Param fadeIn;   // The LFOs fade in with a range of [0..10s]
     };
+    
+    struct Filter : public BaseParamStruct {
+        Filter();
+        
+        ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
+        
+        Param lpCutoff; //!< filter cutoff frequency in Hz
+        Param hpCutoff; //!< filter cutoff frequency in Hz
+        Param resonance; //! filter resonance in dB
+        
+        ParamStepped<eModSource> lpCutModSrc1;  //! lp filter modulation source
+        Param lpModAmount1;   //! lp filter modulation amount
+        ParamStepped<eModSource> hpCutModSrc1;  //! hp filter modulation source
+        Param hpModAmount1;   //! hp filter modulation amount
+        ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
+        ParamStepped<eModSource> lpCutModSrc2;  //! lp filter modulation source
+        Param lpModAmount2;   //! lp filter modulation amount
+        ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
+        Param hpModAmount2;   //! hp filter modulation amount
+        ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
+    };
 
     struct Osc : public BaseParamStruct {
         Osc();
@@ -149,28 +170,14 @@ public:
         Param volModAmount1;    //!< key velocity level range in [0..96]dB
     };
     
+    std::array<Filter, 2> filter;
     std::array<Lfo, 3> lfo;
     std::array<EnvVol, 1> envVol;
     std::array<Env, 2> env;
     std::array<Osc, 3> osc;
 
     // TODO: Filter struct
-    ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
-
-    Param lp1Cutoff; //!< filter cutoff frequency in Hz
-    Param hp1Cutoff; //!< filter cutoff frequency in Hz
-    Param filter1Resonance; //! filter resonance in dB
-
-    ParamStepped<eModSource> lp1CutModSrc1;  //! lp filter modulation source
-    Param lp1ModAmount1;   //! lp filter modulation amount
-    ParamStepped<eModSource> hp1CutModSrc1;  //! hp filter modulation source
-    Param hp1ModAmount1;   //! hp filter modulation amount
-    ParamStepped<eModSource> filter1ResonanceModSrc1;  //! biquad filter resonance modulation source
-    ParamStepped<eModSource> lp1CutModSrc2;  //! lp filter modulation source
-    Param lp1ModAmount2;   //! lp filter modulation amount
-    ParamStepped<eModSource> hp1CutModSrc2;  //! hp filter modulation source
-    Param hp1ModAmount2;   //! hp filter modulation amount
-    ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
+    
     
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
 

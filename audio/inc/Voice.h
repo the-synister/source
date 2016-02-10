@@ -256,7 +256,7 @@ public:
                     break;
                 }
 
-                if(params.passtype.getStep() == eBiquadFilters::eLadder)
+                if(params.filter[0].passtype.getStep() == eBiquadFilters::eLadder)
                 {
                     currentSample = ladderFilter(currentSample, filterMod[s]);
                 }
@@ -299,17 +299,17 @@ public:
     {
         const float sRate = static_cast<float>(getSampleRate());
 
-        float cutoffFreq = params.lp1Cutoff.get();
-        float currentResonance = params.filter1Resonance.get();
+        float cutoffFreq = params.filter[0].lpCutoff.get();
+        float currentResonance = params.filter[0].resonance.get();
 
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
 
         // TODO can't this be shortened?
-        if (cutoffFreq < params.lp1Cutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            cutoffFreq = params.lp1Cutoff.getMin();
+        if (cutoffFreq < params.filter[0].lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            cutoffFreq = params.filter[0].lpCutoff.getMin();
         }
-        else if (cutoffFreq > params.lp1Cutoff.getMax()) {
-            cutoffFreq = params.lp1Cutoff.getMax();
+        else if (cutoffFreq > params.filter[0].lpCutoff.getMax()) {
+            cutoffFreq = params.filter[0].lpCutoff.getMax();
         }
 
         //coeffecients and parameters
@@ -413,16 +413,16 @@ protected:
 
         // get mod frequency from active filter type
         float cutoffFreq;
-        switch (params.passtype.getStep()) {
+        switch (params.filter[0].passtype.getStep()) {
             case eBiquadFilters::eLowpass:
-                cutoffFreq = params.lp1Cutoff.get();
+                cutoffFreq = params.filter[0].lpCutoff.get();
                 break;
             case eBiquadFilters::eHighpass:
-                cutoffFreq = params.hp1Cutoff.get();
+                cutoffFreq = params.filter[0].hpCutoff.get();
                 break;
             case eBiquadFilters::eBandpass:
-                cutoffFreq = (params.lp1Cutoff.get() + params.hp1Cutoff.get()) / 2.f;
-                if (params.lp1Cutoff.get() < params.hp1Cutoff.get()){
+                cutoffFreq = (params.filter[0].lpCutoff.get() + params.filter[0].hpCutoff.get()) / 2.f;
+                if (params.filter[0].lpCutoff.get() < params.filter[0].hpCutoff.get()){
                     return 0.f;
                 }
                 break;
@@ -434,11 +434,11 @@ protected:
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
 
         // check range
-        if (cutoffFreq < params.lp1Cutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            cutoffFreq = params.lp1Cutoff.getMin();
+        if (cutoffFreq < params.filter[0].lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
+            cutoffFreq = params.filter[0].lpCutoff.getMin();
         }
-        else if (cutoffFreq > params.lp1Cutoff.getMax()) {
-            cutoffFreq = params.lp1Cutoff.getMax();
+        else if (cutoffFreq > params.filter[0].lpCutoff.getMax()) {
+            cutoffFreq = params.filter[0].lpCutoff.getMax();
         }
 
         const float sRate = static_cast<float>(getSampleRate());
@@ -448,9 +448,9 @@ protected:
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
 
-        const float currentResonance = pow(10.f, (-params.filter1Resonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
+        const float currentResonance = pow(10.f, (-params.filter[0].resonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
 
-        if (static_cast<eBiquadFilters>(params.passtype.getStep()) == eBiquadFilters::eLowpass) {
+        if (static_cast<eBiquadFilters>(params.filter[0].passtype.getStep()) == eBiquadFilters::eLowpass) {
 
             // coefficients for lowpass, depending on resonance and lowcut frequency
             k = 0.5f * currentResonance * sin(2.f * float_Pi * cutoffFreq);
@@ -464,7 +464,7 @@ protected:
             a1 = 2.f * -coeff2;
             a2 = 2.f * coeff1;
 
-        } else if (params.passtype.getStep() == eBiquadFilters::eHighpass) {
+        } else if (params.filter[0].passtype.getStep() == eBiquadFilters::eHighpass) {
 
             // coefficients for highpass, depending on resonance and highcut frequency
             k = 0.5f * currentResonance * sin(float_Pi * cutoffFreq);
@@ -478,11 +478,11 @@ protected:
             a1 = -2.f * coeff2;
             a2 = 2.f * coeff1;
 
-        } else if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
+        } else if (params.filter[0].passtype.getStep() == eBiquadFilters::eBandpass) {
 
             // coefficients for bandpass, depending on low- and highcut frequency
             w0 = 2.f * float_Pi*cutoffFreq;
-            bw = (log2(params.lp1Cutoff.get() / params.hp1Cutoff.get())); // bandwidth in octaves
+            bw = (log2(params.filter[0].lpCutoff.get() / params.filter[0].hpCutoff.get())); // bandwidth in octaves
             coeff1 = sin(w0)*sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
 
             b0 = coeff1;
@@ -496,7 +496,7 @@ protected:
         lastSample = inputSignal;
 
         // different biquad form for bandpass filter, it has more coefficients as well
-        if (params.passtype.getStep() == eBiquadFilters::eBandpass) {
+        if (params.filter[0].passtype.getStep() == eBiquadFilters::eBandpass) {
             inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
         } else {
             inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;

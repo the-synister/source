@@ -51,10 +51,13 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(lfo[i].noteLength));
         addParameter(new HostParam<Param>(lfo[i].fadeIn));
     }
-    addParameter(new HostParam<Param>(lp1Cutoff));
-    addParameter(new HostParam<Param>(hp1Cutoff));
-    addParameter(new HostParam<Param>(filter1Resonance));
-    addParameter(new HostParam<Param>(passtype));
+    
+    for (int i = 0; i < 2; ++i) {
+        addParameter(new HostParam<Param>(filter[i].lpCutoff));
+        addParameter(new HostParam<Param>(filter[i].hpCutoff));
+        addParameter(new HostParam<Param>(filter[i].resonance));
+        addParameter(new HostParam<Param>(filter[i].passtype));
+    }
 
     addParameter(new HostParam<Param>(envVol[0].envAttack));
     addParameter(new HostParam<Param>(envVol[0].envDecay));
@@ -74,8 +77,8 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     /*Create ModMatrixRows here*/
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount1, "lp1ModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &lp1ModAmount2, "lp1ModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &filter[0].lpModAmount1, "lp1ModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER_LC, &filter[0].lpModAmount2, "lp1ModSrcBox2");
 
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "osc1FreqModSrcBox1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "osc1FreqModSrcBox2");

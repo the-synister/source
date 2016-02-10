@@ -41,7 +41,7 @@ class FiltPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p);
+    FiltPanel (SynthParams &p, int filterNumber, const String& panelTitle);
     ~FiltPanel();
 
     //==============================================================================
@@ -57,6 +57,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    const String _panelTitle;
+    SynthParams::Filter& filter;
     //[/UserVariables]
 
     //==============================================================================

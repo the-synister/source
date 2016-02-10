@@ -27,8 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-FiltPanel::FiltPanel (SynthParams &p)
-    : PanelBase(p)
+FiltPanel::FiltPanel (SynthParams &p, int filterNumber, const String& panelTitle)
+    : PanelBase(p),
+      filter(p.filter[filterNumber]),
+      _panelTitle(panelTitle)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -115,16 +117,16 @@ FiltPanel::FiltPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSlider(cutoffSlider, &params.lp1Cutoff);
-    registerSlider(modSliderCut, &params.lp1ModAmount1);
-    registerSlider(modSliderCut2, &params.lp1ModAmount2);
+    registerSlider(cutoffSlider, &filter.lpCutoff);
+    registerSlider(modSliderCut, &filter.lpModAmount1);
+    registerSlider(modSliderCut2, &filter.lpModAmount2);
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
 
-    registerSlider(cutoffSlider2, &params.hp1Cutoff);
+    registerSlider(cutoffSlider2, &filter.hpCutoff);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
 
-    registerSlider(resonanceSlider, &params.filter1Resonance);
-    registerSlider(passtype, &params.passtype);
+    registerSlider(resonanceSlider, &filter.resonance);
+    registerSlider(passtype, &filter.passtype);
 
 
     fillModsourceBox(lp1ModSrc1);
@@ -134,12 +136,12 @@ FiltPanel::FiltPanel (SynthParams &p)
     fillModsourceBox(res1ModSrc1);
     fillModsourceBox(res1ModSrc2);
 
-    registerCombobox(lp1ModSrc1, &params.lp1CutModSrc1);
-    registerCombobox(lp1ModSrc2, &params.lp1CutModSrc2);
-    registerCombobox(hp1ModSrc1, &params.hp1CutModSrc1);
-    registerCombobox(hp1ModSrc2, &params.hp1CutModSrc2);
-    registerCombobox(res1ModSrc1, &params.filter1ResonanceModSrc1);
-    registerCombobox(res1ModSrc2, &params.filter1ResonanceModSrc2);
+    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1);
+    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2);
+    registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1);
+    registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2);
+    registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
+    registerCombobox(res1ModSrc2, &filter.resonanceModSrc2);
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -181,7 +183,7 @@ void FiltPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "filter", 0, 0,
+    drawGroupBorder(g, _panelTitle, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff40ae69));
     //[/UserPaint]
 }
@@ -193,13 +195,13 @@ void FiltPanel::resized()
 
     cutoffSlider->setBounds (110, 34, 64, 64);
     resonanceSlider->setBounds (300, 36, 64, 64);
-    cutoffSlider2->setBounds (202, 34, 64, 64);
+    cutoffSlider2->setBounds (204, 34, 64, 64);
     passtype->setBounds (8, 27, 64, 64);
     modSliderCut->setBounds (158, 98, 24, 24);
     lp1ModSrc1->setBounds (108, 101, 50, 16);
-    hp1ModSrc1->setBounds (202, 104, 64, 16);
+    hp1ModSrc1->setBounds (204, 104, 64, 16);
     lp1ModSrc2->setBounds (108, 125, 50, 16);
-    hp1ModSrc2->setBounds (202, 128, 64, 16);
+    hp1ModSrc2->setBounds (204, 128, 64, 16);
     res1ModSrc1->setBounds (299, 104, 64, 16);
     res1ModSrc2->setBounds (299, 127, 64, 16);
     modSliderCut2->setBounds (158, 122, 24, 24);
@@ -236,7 +238,7 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == modSliderCut)
     {
         //[UserSliderCode_modSliderCut] -- add your slider handling code here..
-        params.lp1ModAmount1.setUI(static_cast<float>(modSliderCut->getValue()));
+        filter.lpModAmount1.setUI(static_cast<float>(modSliderCut->getValue()));
         //[/UserSliderCode_modSliderCut]
     }
     else if (sliderThatWasMoved == modSliderCut2)
@@ -306,10 +308,10 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="FiltPanel" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="400"
-                 initialHeight="180">
+                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int filterNumber, const String&amp; panelTitle"
+                 variableInitialisers="PanelBase(p),&#10;filter(p.filter[filterNumber]),&#10;_panelTitle(panelTitle)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="400" initialHeight="180">
   <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="110 34 64 64"
@@ -322,7 +324,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="202 34 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="204 34 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
@@ -337,13 +339,13 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="108 101 50 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox1" id="85c37cba161b4f29" memberName="hp1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="202 104 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="204 104 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lp1ModSrcBox2" id="6dae6bde5fbe8153" memberName="lp1ModSrc2"
             virtualName="" explicitFocusOrder="0" pos="108 125 50 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox2" id="f1f85630e066837c" memberName="hp1ModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="202 128 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="204 128 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="res1ModSrcBox1" id="733eefe1cee8bab3" memberName="res1ModSrc1"
             virtualName="" explicitFocusOrder="0" pos="299 104 64 16" editable="0"

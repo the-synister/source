@@ -38,10 +38,10 @@ SynthParams::SynthParams()
     &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
     &osc[1].fine, &osc[1].coarse, &osc[1].pitchModAmount2,&osc[1].trngAmount, &osc[1].pitchModAmount1, &osc[1].pulseWidth, &osc[1].pitchModSrc1, &osc[1].pitchModSrc2, &osc[1].shapeModSrc1, &osc[1].shapeModSrc2, &osc[1].panDir, &osc[1].vol, &osc[1].volModAmount1,
     &osc[2].fine, &osc[2].coarse, &osc[2].pitchModAmount2,&osc[2].trngAmount, &osc[2].pitchModAmount1, &osc[2].pulseWidth, &osc[2].pitchModSrc1, &osc[2].pitchModSrc2, &osc[2].shapeModSrc1, &osc[2].shapeModSrc2, &osc[2].panDir, &osc[2].vol, &osc[2].volModAmount1,
-    &lp1Cutoff, &filter1Resonance,
+  /*  &lp1Cutoff, &filter1Resonance,
     &lp1CutModSrc1, &lp1CutModSrc2, &lp1ModAmount1, &lp1ModAmount2, &hp1Cutoff, &hp1CutModSrc1, &hp1CutModSrc2, &hp1ModAmount1, &hp1ModAmount2, &filter1ResonanceModSrc1, &filter1ResonanceModSrc2,
-        
-   /* TODO: Register Env and lfo params*/
+    */
+   /* TODO: Register Env, filter, and lfo params*/
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
@@ -49,20 +49,6 @@ SynthParams::SynthParams()
     , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
-    , passtype("Filter Type", "filterType", "Filter type", eBiquadFilters::eLowpass, biquadFilters)
-    , lp1Cutoff("LP1 Cut", "lp1Cutoff", "LP1 filter cutoff", "Hz", 10.f, 20000.f, 20000.f)
-    , hp1Cutoff("HP1 Cut", "hp1Cutoff", "HP1 filter cutoff", "Hz", 10.f, 20000.f, 10.f)
-    , lp1CutModSrc1("LP1 Cut ModSrc1", "lp1CutModSrc1", "LP1 cut modSrc1", eModSource::eNone, modsourcenames)
-    , lp1CutModSrc2("LP1 Cut ModSrc2", "lp1CutModSrc2", "LP1 cut modSrc2", eModSource::eNone, modsourcenames)
-    , lp1ModAmount1("LP1 ModAmnt1", "lp1ModAmout1", "LP1 mod amount1", "oct", 0.f, 8.f, 0.f)
-    , lp1ModAmount2("LP1 ModAmnt2", "lp1ModAmout2", "LP1 mod amount2", "oct", 0.f, 8.f, 0.f)
-    , hp1CutModSrc1("HP1 Cut ModSrc1", "hp1CutModSrc1", "HP1 cut modSrc1", eModSource::eNone, modsourcenames)
-    , hp1CutModSrc2("HP1 Cut ModSrc2", "hp1CutModSrc2", "HP1 cut modSrc2", eModSource::eNone, modsourcenames)
-    , hp1ModAmount1("HP1 ModAmnt1", "hp1ModAmount1", "HP1 mod amount1", "oct", 0.f, 8.f, 0.f)
-    , hp1ModAmount2("HP1 ModAmnt2", "hp1ModAmount2", "HP1 mod amount2", "oct", 0.f, 8.f, 0.f)
-    , filter1Resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", "", 0.f, 10.f, 0.f)
-    , filter1ResonanceModSrc1("Filter1 Res ModSrc1", "filter1ResModSrc1", "Filter1 resonance modSrc1", eModSource::eNone, modsourcenames)
-    , filter1ResonanceModSrc2("Filter1 Res ModSrc2", "filter1ResModSrc2", "Filter1 resonance modSrc2", eModSource::eNone, modsourcenames)
     , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("Feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
     , delayTime("Time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
@@ -170,6 +156,24 @@ SynthParams::Lfo::Lfo()
 , gainModSrc2("LFO1 Gain ModSrc2", "LFO1GainModSrc2", "LFO1 gain modSrc2", eModSource::eNone, modsourcenames)
 , noteLength("Note Length", "notelength", "LFO1 Note Length", "", 1.f, 32.f, 4.f)
 , fadeIn("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
+{
+}
+
+SynthParams::Filter::Filter()
+: passtype("Filter Type", "filterType", "Filter type", eBiquadFilters::eLowpass, biquadFilters)
+, lpCutoff("LP1 Cut", "lp1Cutoff", "LP1 filter cutoff", "Hz", 10.f, 20000.f, 20000.f)
+, hpCutoff("HP1 Cut", "hp1Cutoff", "HP1 filter cutoff", "Hz", 10.f, 20000.f, 10.f)
+, lpCutModSrc1("LP1 Cut ModSrc1", "lp1CutModSrc1", "LP1 cut modSrc1", eModSource::eNone, modsourcenames)
+, lpCutModSrc2("LP1 Cut ModSrc2", "lp1CutModSrc2", "LP1 cut modSrc2", eModSource::eNone, modsourcenames)
+, lpModAmount1("LP1 ModAmnt1", "lp1ModAmout1", "LP1 mod amount1", "oct", 0.f, 8.f, 0.f)
+, lpModAmount2("LP1 ModAmnt2", "lp1ModAmout2", "LP1 mod amount2", "oct", 0.f, 8.f, 0.f)
+, hpCutModSrc1("HP1 Cut ModSrc1", "hp1CutModSrc1", "HP1 cut modSrc1", eModSource::eNone, modsourcenames)
+, hpCutModSrc2("HP1 Cut ModSrc2", "hp1CutModSrc2", "HP1 cut modSrc2", eModSource::eNone, modsourcenames)
+, hpModAmount1("HP1 ModAmnt1", "hp1ModAmount1", "HP1 mod amount1", "oct", 0.f, 8.f, 0.f)
+, hpModAmount2("HP1 ModAmnt2", "hp1ModAmount2", "HP1 mod amount2", "oct", 0.f, 8.f, 0.f)
+, resonance("Filter1 Reso", "filter1Resonance", "Filter1 resonance", "", 0.f, 10.f, 0.f)
+, resonanceModSrc1("Filter1 Res ModSrc1", "filter1ResModSrc1", "Filter1 resonance modSrc1", eModSource::eNone, modsourcenames)
+, resonanceModSrc2("Filter1 Res ModSrc2", "filter1ResModSrc2", "Filter1 resonance modSrc2", eModSource::eNone, modsourcenames)
 {
 }
 
