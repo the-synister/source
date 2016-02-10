@@ -142,7 +142,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     registerCombobox(res1ModSrc2, &params.filter1ResonanceModSrc2);
     //[/UserPreSize]
 
-    setSize (400, 400);
+    setSize (400, 180);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -181,6 +181,8 @@ void FiltPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff40ae69));
 
     //[UserPaint] Add your own custom painting code here..
+    drawGroupBorder(g, "filter", 0, 0,
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff40ae69));
     //[/UserPaint]
 }
 
@@ -189,18 +191,18 @@ void FiltPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoffSlider->setBounds (96, 8, 64, 64);
-    resonanceSlider->setBounds (168, 8, 64, 64);
-    cutoffSlider2->setBounds (96, 122, 64, 64);
-    passtype->setBounds (8, 8, 64, 64);
-    modSliderCut->setBounds (144, 72, 24, 24);
-    lp1ModSrc1->setBounds (94, 75, 50, 16);
-    hp1ModSrc1->setBounds (96, 192, 64, 16);
-    lp1ModSrc2->setBounds (94, 99, 50, 16);
-    hp1ModSrc2->setBounds (96, 216, 64, 16);
-    res1ModSrc1->setBounds (183, 76, 64, 16);
-    res1ModSrc2->setBounds (183, 99, 64, 16);
-    modSliderCut2->setBounds (144, 96, 24, 24);
+    cutoffSlider->setBounds (110, 34, 64, 64);
+    resonanceSlider->setBounds (300, 36, 64, 64);
+    cutoffSlider2->setBounds (202, 34, 64, 64);
+    passtype->setBounds (8, 27, 64, 64);
+    modSliderCut->setBounds (158, 98, 24, 24);
+    lp1ModSrc1->setBounds (108, 101, 50, 16);
+    hp1ModSrc1->setBounds (202, 104, 64, 16);
+    lp1ModSrc2->setBounds (108, 125, 50, 16);
+    hp1ModSrc2->setBounds (202, 128, 64, 16);
+    res1ModSrc1->setBounds (299, 104, 64, 16);
+    res1ModSrc2->setBounds (299, 127, 64, 16);
+    modSliderCut2->setBounds (158, 122, 24, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -307,50 +309,50 @@ BEGIN_JUCER_METADATA
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="400"
-                 initialHeight="400">
+                 initialHeight="180">
   <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="110 34 64 64"
           rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="168 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="300 36 64 64"
           rotarysliderfill="ff5b7a47" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="96 122 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="202 34 64 64"
           min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 8 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 27 64 64"
           min="0" max="3" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
-          explicitFocusOrder="0" pos="144 72 24 24" min="0" max="8" int="0"
+          explicitFocusOrder="0" pos="158 98 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="94 75 50 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="108 101 50 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox1" id="85c37cba161b4f29" memberName="hp1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="96 192 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="202 104 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lp1ModSrcBox2" id="6dae6bde5fbe8153" memberName="lp1ModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="94 99 50 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="108 125 50 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox2" id="f1f85630e066837c" memberName="hp1ModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="96 216 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="202 128 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="res1ModSrcBox1" id="733eefe1cee8bab3" memberName="res1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="183 76 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="299 104 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="res1ModSrcBox2" id="cf210285cf2d4ef" memberName="res1ModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="183 99 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="299 127 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="c0e4229cc3539fbe" memberName="modSliderCut2" virtualName=""
-          explicitFocusOrder="0" pos="144 96 24 24" min="0" max="8" int="0"
+          explicitFocusOrder="0" pos="158 122 24 24" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>

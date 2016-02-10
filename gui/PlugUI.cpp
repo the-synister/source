@@ -104,7 +104,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(1, new Env1Panel(params, 0, "env 1"));
     foldableComponent->addPanel(1, new Env1Panel(params, 1, "env 2"));
     foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params), Colour (0xffb16565), 200, false, 2);
-    foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 200, false, 3);
+    foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 158, false, 3);
 //    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, false, 4);
     foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, false, 4);
     foldableComponent->addPanel(4, new ChorusPanel(params));
