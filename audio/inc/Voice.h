@@ -17,19 +17,19 @@ public:
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize)
-        : params(p)
-        , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
-        , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
-            params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
-        , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
-            params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
-        , modMatrix(p.globalModMatrix)
-        , filterModBuffer(1, blockSize)
-        , totSamples(0)
-        , envToVolBuffer(1, blockSize)
-        , lfo1Buffer(1, blockSize)
-        , env1Buffer(1, blockSize)
-        , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
+    : params(p)
+    , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
+    , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
+        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
+    , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
+        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
+    , modMatrix(p.globalModMatrix)
+    , filterModBuffer(1, blockSize)
+    , totSamples(0)
+    , envToVolBuffer(1, blockSize)
+    , lfo1Buffer(1, blockSize)
+    , env1Buffer(1, blockSize)
+    , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         // set all to velocity so that the modulation matrix does not crash
         std::fill(modSources.begin(), modSources.end(), &currentVelocity);
@@ -63,7 +63,6 @@ public:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
     }
-}
 
     bool canPlaySound(SynthesiserSound* sound) override
     {
@@ -84,16 +83,13 @@ public:
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
-
-        // Initialisieren der Parameter hier
-        pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
-
+#if 0
         // Initialization of midi values
         modWheelValue = 0.f; // TODO: this needs to be changed to the current value
         footControlValue = 0.f;
         expPedalValue = 0.f;
         channelAfterTouch = 0.f;
-
+#endif
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
@@ -142,10 +138,12 @@ public:
             }
         }
 
-        for (auto& filters : filter) {
-            for (Filter& f : filters) {
+        for (auto& filters : filter) 
+        {
+            for (Filter& f : filters) 
+            {
                 f.reset(sRate);
-        }
+            }
         }
     }
 
@@ -164,10 +162,7 @@ public:
             if (env1.getReleaseCounter() == -1)
             {
                 env1.resetReleaseCounter();
-        }
-
-        }
-
+            }
         }
         else
         {
@@ -176,14 +171,17 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             lfo1random.reset();
-            for (Osc& o : osc) {
+            for (Osc& o : osc) 
+            {
                 o.square.reset();
                 o.saw.reset();
                 o.noise.reset();
             }
         }
     }
-    void channelPressureChanged(int newValue) override {
+
+    void channelPressureChanged(int newValue) override 
+    {
         channelAfterTouch = static_cast<float>(newValue) / 127.f;
     }
 
@@ -209,14 +207,7 @@ public:
         case 11:
             expPedalValue = static_cast<float>(newValue) / 127.f; //TODO: test
             break;
-    }
-#if 0
-        if (controllerNumber == 1)    // If modulation wheel is moved, the value is updated
-        {
-            modWheelValue = static_cast<float>(newValue)/127.f;
         }
-#endif
-
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
@@ -226,6 +217,7 @@ public:
 
         // Modulation
         renderModulation(numSamples);
+
 #if 0
             //not sure if this is obsolete yet ...
             const float *lfo1 = lfo1Buffer.getReadPointer(0);
@@ -236,6 +228,7 @@ public:
             const float currentAmp = params.vol.get();
             const float currentPan = params.panDir.get();
 #endif
+
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
 
             // oscillators
@@ -315,13 +308,13 @@ public:
                 }
             }
 
-
             if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
                     clearCurrentNote();
                     lfo1sine.reset();
                     lfo1square.reset();
             }
         }
+
         //Update of the total samples variable
         totSamples = totSamples + numSamples;
     }
@@ -335,9 +328,10 @@ protected:
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);     // Length in samples of the LFO fade in
-        const float lfoGain = params.lfo1gainModSrc1.getStep() == eModSource::eNone
+
+        const float lfoGain = params.lfo[0].gainModSrc1.get() == eModSource::eNone
             ? 1.f
-            : *(modSources[static_cast<int>(params.lfo1gainModSrc1.getStep()) - 1]);
+            : *(modSources[static_cast<int>(params.lfo[0].gainModSrc1.get()) - 1]);
 
         //clear the buffers
         modDestBuffer.clear();
@@ -350,7 +344,7 @@ protected:
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
             modDestinations[u] = modDestBuffer.getWritePointer(u);
-            }
+        }
         modSources[eModSource::eLFO1] = lfo1Buffer.getWritePointer(0);
         modSources[eModSource::eVolEnv] = env1Buffer.getWritePointer(0);
 
@@ -382,7 +376,7 @@ protected:
                 // lfoValue = lfo1square.next();
                 lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfoGain);
                 break;
-        }
+            }
             // Calculate the Envelope coefficients and fill the buffers
             env1Buffer.setSample(0, s, env1.calcEnvCoeff());
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
@@ -391,7 +385,7 @@ protected:
 
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
-        }
+            }
             ++modSources[eModSource::eLFO1];
             ++modSources[eModSource::eVolEnv];
         }
@@ -403,9 +397,7 @@ protected:
             modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
             modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
         }
-        }
-
-public:
+    }
 
 public:
 
@@ -418,6 +410,7 @@ private:
         Oscillator<&Waveforms::whiteNoise> noise;
         float level;
     };
+
     std::array<Osc, 3> osc;
     std::array<std::array<Filter,2>,3> filter;
 
@@ -433,19 +426,16 @@ private:
     std::array<float*, eModSource::nSteps> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
 
-    float pitchBend;
+    int totSamples;
+
+    // variable for env
+    float currentVelocity;
     
     //Midi Inputs
     float modWheelValue;
     float footControlValue;
     float expPedalValue;
     float channelAfterTouch;
-
-    
-    int totSamples;
-
-    // variable for env
-    float currentVelocity;
 
     // Buffers
     AudioSampleBuffer filterModBuffer;
@@ -457,8 +447,6 @@ private:
     //AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
     //AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
     //AudioSampleBuffer env3Buffer;       /*not yet in use*/
-
-    AudioSampleBuffer modDestBuffer;
 
     ModulationMatrix& modMatrix;
 
