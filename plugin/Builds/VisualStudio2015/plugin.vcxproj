@@ -38,9 +38,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">plugin</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">synister</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">plugin</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">synister</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
@@ -71,11 +71,11 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\plugin.dll</OutputFile>
+      <OutputFile>$(OutDir)\synister.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\plugin.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\synister.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -84,7 +84,7 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\plugin.bsc</OutputFile>
+      <OutputFile>$(IntDir)\synister.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,11 +113,11 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\plugin.dll</OutputFile>
+      <OutputFile>$(OutDir)\synister.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\plugin.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\synister.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <OptimizeReferences>true</OptimizeReferences>
@@ -127,7 +127,7 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\plugin.bsc</OutputFile>
+      <OutputFile>$(IntDir)\synister.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>

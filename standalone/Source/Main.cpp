@@ -23,7 +23,7 @@ public:
     //==============================================================================
     StandaloneApplication() {}
 
-    const String getApplicationName() override       { return ProjectInfo::projectName; }
+    const String getApplicationName() override       { return "synister"; }
     const String getApplicationVersion() override    { return ProjectInfo::versionString; }
     bool moreThanOneInstanceAllowed() override       { return true; }
 
