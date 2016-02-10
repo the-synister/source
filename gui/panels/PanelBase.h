@@ -112,6 +112,22 @@ protected:
                 }
             }
         }
+        
+    }
+    
+    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
+    void updateDirtyDropdowns()
+    {
+        for (auto d2p : dropdownReg) {
+            if (d2p.second->isUIDirty()) {
+                d2p.first->setText("1/" + String(d2p.second->getUI()));
+            }
+            
+            auto itHook = postUpdateHook.find(d2p.first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+        }
     }
 
     bool handleSlider(Slider* sliderThatWasMoved) {
@@ -141,13 +157,24 @@ protected:
             return false;
         }
     }
-    
+  
+    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
     void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
     {
         dropdownReg[dropdown] = p;
         
         if (hook) {
             postUpdateHook[dropdown] = hook;
+        }
+    }
+    
+    // TODO: Change for ParamStepped?
+    bool handleDropdown(ComboBox* dropdownThatWasChanged)
+    {
+        auto it = dropdownReg.find(dropdownThatWasChanged);
+        
+        if (it != dropdownReg.end()) {
+            it->second->setUI(static_cast<float>(std::pow(2,it->first->getSelectedItemIndex())));
         }
     }
 
@@ -183,6 +210,7 @@ protected:
         updateDirtySaturns();
         updateDirtySliders();
         updateDirtyBoxes();
+        updateDirtyDropdowns();
     }
 
     /**

@@ -52,12 +52,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
     tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
     tempoSyncSwitch->addListener (this);
-
-    addAndMakeVisible (notelength = new Slider ("notelength"));
-    notelength->setRange (1, 32, 1);
-    notelength->setSliderStyle (Slider::IncDecButtons);
-    notelength->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
-    notelength->addListener (this);
+    tempoSyncSwitch->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (sineLabel = new Label ("sine label",
                                               TRANS("Sine")));
@@ -98,11 +93,12 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     addAndMakeVisible (triplets = new ToggleButton ("triplets"));
     triplets->addListener (this);
+    triplets->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (noteLength = new IncDecDropDown ("note length"));
     noteLength->setEditableText (false);
     noteLength->setJustificationType (Justification::centred);
-    noteLength->setTextWhenNothingSelected (TRANS("Step Length"));
+    noteLength->setTextWhenNothingSelected (TRANS("Note Length"));
     noteLength->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     noteLength->addItem (TRANS("1/1"), 1);
     noteLength->addItem (TRANS("1/2"), 2);
@@ -110,9 +106,6 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addItem (TRANS("1/8"), 4);
     noteLength->addItem (TRANS("1/16"), 5);
     noteLength->addItem (TRANS("1/32"), 6);
-    noteLength->addItem (TRANS("1/64"), 7);
-    noteLength->addSeparator();
-    noteLength->addSeparator();
     noteLength->addListener (this);
 
 
@@ -121,15 +114,14 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     wave->setValue(lfo.wave.getUI());
     tempoSyncSwitch->setToggleState(0, dontSendNotification);
-    notelength->setValue(lfo.noteLength.getUI());
     noteLength->setText(getNoteLengthAsString(), dontSendNotification);
-    registerSlider(notelength, &lfo.noteLength);
+    registerDropdown(noteLength, &lfo.noteLength);
     registerSlider(wave, &lfo.wave);
     registerSlider(lfoFadeIn, &lfo.fadeIn);
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
     //[/UserPreSize]
 
-    setSize (267, 222);
+    setSize (267, 197);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -144,7 +136,6 @@ LfoPanel::~LfoPanel()
     freq = nullptr;
     wave = nullptr;
     tempoSyncSwitch = nullptr;
-    notelength = nullptr;
     sineLabel = nullptr;
     squareLabel = nullptr;
     sampleHoldLabel2 = nullptr;
@@ -179,7 +170,6 @@ void LfoPanel::resized()
     freq->setBounds (8, 26, 64, 64);
     wave->setBounds (133, 66, 64, 24);
     tempoSyncSwitch->setBounds (83, 96, 150, 24);
-    notelength->setBounds (97, 149, 152, 24);
     sineLabel->setBounds (78, 63, 64, 24);
     squareLabel->setBounds (133, 42, 64, 24);
     sampleHoldLabel2->setBounds (192, 66, 72, 24);
@@ -205,12 +195,6 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_wave] -- add your slider handling code here..
         //[/UserSliderCode_wave]
-    }
-    else if (sliderThatWasMoved == notelength)
-    {
-        //[UserSliderCode_notelength] -- add your slider handling code here..
-        //params.noteLength.setUI(notelength->getValue());
-        //[/UserSliderCode_notelength]
     }
     else if (sliderThatWasMoved == lfoFadeIn)
     {
@@ -252,6 +236,7 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleDropdown(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == noteLength)
@@ -269,8 +254,7 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 String LfoPanel::getNoteLengthAsString()
 {
-    int denominator = static_cast<int>(4.0f * (1.0f / lfo.noteLength.get()));
-    return "1/" + String(denominator);
+    return "1/" + String(lfo.noteLength.getUI());
 }
 //[/MiscUserCode]
 
@@ -288,7 +272,7 @@ BEGIN_JUCER_METADATA
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p, int lfoNumber"
                  variableInitialisers="PanelBase(p),&#10;lfo(p.lfo[lfoNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="267" initialHeight="222">
+                 fixedSize="0" initialWidth="267" initialHeight="197">
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="8 26 64 64" rotarysliderfill="ff855050"
@@ -301,12 +285,9 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="83 96 150 24" buttonText="Tempo Sync"
-                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
-  <SLIDER name="notelength" id="6fa8673edff62372" memberName="notelength"
-          virtualName="" explicitFocusOrder="0" pos="97 149 152 24" min="1"
-          max="32" int="1" style="IncDecButtons" textBoxPos="TextBoxLeft"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+                virtualName="" explicitFocusOrder="0" pos="83 96 150 24" txtcol="ffffffff"
+                buttonText="Tempo Sync" connectedEdges="0" needsCallback="1"
+                radioGroupId="0" state="0"/>
   <LABEL name="sine label" id="b40cd065bdc2086c" memberName="sineLabel"
          virtualName="" explicitFocusOrder="0" pos="78 63 64 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Sine" editableSingleClick="0"
@@ -329,12 +310,13 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="192 97 120 24" buttonText="triplets"
-                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+                explicitFocusOrder="0" pos="192 97 120 24" txtcol="ffffffff"
+                buttonText="triplets" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="105 120 87 24"
-            editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64&#10;&#10;"
-            textWhenNonSelected="Step Length" textWhenNoItems="(no choices)"/>
+            editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32"
+            textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -67,7 +67,6 @@ private:
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<Slider> wave;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
-    ScopedPointer<Slider> notelength;
     ScopedPointer<Label> sineLabel;
     ScopedPointer<Label> squareLabel;
     ScopedPointer<Label> sampleHoldLabel2;
