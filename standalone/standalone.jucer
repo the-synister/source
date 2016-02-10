@@ -5,13 +5,12 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
-      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="Assets">
-        <FILE id="Ga6Xko" name="sine-switch_noise.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/sine-switch_noise.png"/>
-      </GROUP>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
-        <FILE id="erDSYx" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
-        <FILE id="JZ9ARJ" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
+        <FILE id="uzwNv9" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
+        <FILE id="gAiDGO" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
+        <FILE id="DQF3P0" name="ClippingPanel.cpp" compile="1" resource="0"
+              file="../gui/panels/ClippingPanel.cpp"/>
+        <FILE id="EFpVVO" name="ClippingPanel.h" compile="0" resource="0" file="../gui/panels/ClippingPanel.h"/>
         <FILE id="chgfm2" name="LoFiPanel.cpp" compile="1" resource="0" file="../gui/panels/LoFiPanel.cpp"/>
         <FILE id="hZbxsx" name="LoFiPanel.h" compile="0" resource="0" file="../gui/panels/LoFiPanel.h"/>
         <FILE id="ypZ5Om" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
@@ -22,6 +21,8 @@
         <FILE id="JUtYnk" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
         <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
+        <FILE id="erDSYx" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
+        <FILE id="JZ9ARJ" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
         <FILE id="YcWj5s" name="FiltPanel.cpp" compile="1" resource="0" file="../gui/panels/FiltPanel.cpp"/>

@@ -8,9 +8,6 @@
     <Filter Include="standalone\Gui">
       <UniqueIdentifier>{68C986E8-60F2-258C-9D00-41ACE81C0D9A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="standalone\Gui\Assets">
-      <UniqueIdentifier>{BD9A04FA-3BCD-FD83-BEDE-CF90525C61A8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="standalone\Gui\panels">
       <UniqueIdentifier>{D5C93014-E216-5B63-13D7-D61533B35694}</UniqueIdentifier>
     </Filter>
@@ -328,7 +325,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+    <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
@@ -344,6 +344,9 @@
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
@@ -1615,9 +1618,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>Juce Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\juce_audio_basics.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -1662,7 +1662,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+    <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
@@ -1678,6 +1681,9 @@
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
@@ -3129,17 +3135,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>Juce Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\sine-switch_noise.png">
-      <Filter>standalone\Gui\Assets</Filter>
-    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>

@@ -28,6 +28,8 @@
 #include "panels/FxPanel.h"
 #include "panels/SeqPanel.h"
 #include "panels/LoFiPanel.h"
+#include "panels/ChorusPanel.h"
+#include "panels/ClippingPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -103,11 +105,14 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(1, new Env1Panel(params, 1, "env 2"));
     foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params), Colour (0xffb16565), 200, false, 2);
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params), Colour (0xff40ae69), 200, false, 3);
-    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, false, 4);
-    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, false, 5);
-    foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colour (0xff2b3240), 200, false, 6);
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 347, false, 7);
-    foldableComponent->addSection (TRANS("LOFI"), new LoFiPanel (params), Colour (0xff2b3240), 200, false, 8);
+//    foldableComponent->addSection (TRANS("AMP"),  new AmpPanel (params), Colour (0xff6c788c), 200, false, 4);
+    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), Colour (0xff2b3240), 200, false, 4);
+    foldableComponent->addPanel(4, new ChorusPanel(params));
+    foldableComponent->addPanel(4, new LoFiPanel(params));
+    foldableComponent->addPanel(4, new ClippingPanel(params));
+//    foldableComponent->addSection (TRANS("LADDER"), new LadderPanel (params), Colour (0xff2b3240), 200, false, 6);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), Colour (0xff564c43), 347, false, 5);
+//    foldableComponent->addSection (TRANS("LOFI"), new LoFiPanel (params), Colour (0xff2b3240), 200, false, 8);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();

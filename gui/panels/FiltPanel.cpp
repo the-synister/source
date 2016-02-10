@@ -142,7 +142,7 @@ FiltPanel::FiltPanel (SynthParams &p)
     registerCombobox(res1ModSrc2, &params.filter1ResonanceModSrc2);
     //[/UserPreSize]
 
-    setSize (600, 400);
+    setSize (400, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -306,7 +306,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="FiltPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="400"
                  initialHeight="400">
   <BACKGROUND backgroundColour="ff40ae69"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"

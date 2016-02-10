@@ -127,6 +127,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber, const String& panelTit
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
+    // FIXME: find a better conversion for sustain.
     addAndMakeVisible (envelopeCurve = new EnvelopeCurve (env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
@@ -299,7 +300,7 @@ void Env1Panel::updateCurve()
 {
     envelopeCurve->setAttack(static_cast<float>(attackTime1->getValue()));
     envelopeCurve->setDecay(static_cast<float>(decayTime1->getValue()));
-    envelopeCurve->setSustain(static_cast<float>(sustainLevel1->getValue()));
+    envelopeCurve->setSustain(static_cast<float>(sustainLevel1->getValue())); //FIXME: find a better conversion
     envelopeCurve->setRelease(static_cast<float>(releaseTime1->getValue()));
     envelopeCurve->setAttackShape(static_cast<float>(attackShape1->getValue()));
     envelopeCurve->setDecayShape(static_cast<float>(decayShape1->getValue()));

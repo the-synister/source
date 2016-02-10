@@ -51,7 +51,7 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     registerSlider(nBitsLowFi, &params.nBitsLowFi);
     //[/UserPreSize]
 
-    setSize (600, 400);
+    setSize (133, 200);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -80,6 +80,8 @@ void LoFiPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
+    drawGroupBorder(g, "LoFi", 0, 0,
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, Colour(0xff2b3240));
     //[/UserPaint]
 }
 
@@ -88,8 +90,8 @@ void LoFiPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    lowFiActive->setBounds (56, 40, 64, 64);
-    nBitsLowFi->setBounds (160, 40, 64, 64);
+    lowFiActive->setBounds (-3, -3, 64, 64);
+    nBitsLowFi->setBounds (32, 63, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -133,15 +135,15 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="LoFiPanel" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
-                 initialHeight="400">
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="133"
+                 initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Low Fi active" id="221421ebd522cd9a" memberName="lowFiActive"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="56 40 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="-3 -3 64 64"
           min="0" max="1" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="160 40 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 63 64 64"
           min="1" max="16" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
