@@ -111,7 +111,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 347, false, 5);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 323, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
