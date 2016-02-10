@@ -128,8 +128,8 @@ void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void LoFiPanel::onOffSwitchChanged()
 {
-    nBitsLowFi->setEnabled((onOffSwitch->getValue() == 1));
-    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? params.onOffSwitchEnabled :  params.onOffSwitchDisabled));
+    nBitsLowFi->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled :  SynthParams::onOffSwitchDisabled));
 }
 //[/MiscUserCode]
 
