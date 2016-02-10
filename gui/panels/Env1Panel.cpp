@@ -71,7 +71,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     decayTime1->setSkewFactor (0.5);
 
     addAndMakeVisible (sustainLevel1 = new MouseOverKnob ("Sustain"));
-    sustainLevel1->setRange (-96, 0, 0);
+    sustainLevel1->setRange (0, 1, 0);
     sustainLevel1->setSliderStyle (Slider::RotaryVerticalDrag);
     sustainLevel1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     sustainLevel1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
@@ -126,7 +126,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     keyVelToEnv1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     keyVelToEnv1->addListener (this);
 
-    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()
+    addAndMakeVisible (envelopeCurve = new EnvelopeCurve (env.envAttack.get(), env.envDecay.get(), ((env.envSustain.get() - 1) * 96), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()
                                                           ));
     envelopeCurve->setName ("Envelope Curve");
 
@@ -298,7 +298,7 @@ void Env1Panel::updateCurve()
 {
     envelopeCurve->setAttack(static_cast<float>(attackTime1->getValue()));
     envelopeCurve->setDecay(static_cast<float>(decayTime1->getValue()));
-    envelopeCurve->setSustain(static_cast<float>(sustainLevel1->getValue())); //FIXME: find a better conversion
+    envelopeCurve->setSustain(static_cast<float>((sustainLevel1->getValue() - 1) * 96));
     envelopeCurve->setRelease(static_cast<float>(releaseTime1->getValue()));
     envelopeCurve->setAttackShape(static_cast<float>(attackShape1->getValue()));
     envelopeCurve->setDecayShape(static_cast<float>(decayShape1->getValue()));
@@ -344,7 +344,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Sustain" id="c5800da9b4223b05" memberName="sustainLevel1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="134 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="-96" max="0" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="b706f933608906" memberName="releaseTime1"
@@ -376,7 +376,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
                     virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="121 147 128 64"
-                    class="Component" params="env.envAttack.get(), env.envDecay.get(), env.envSustain.get(), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()&#10;"/>
+                    class="Component" params="env.envAttack.get(), env.envDecay.get(), ((env.envSustain.get() - 1) * 96), env.envRelease.get(),  env.envAttackShape.get(), env.envDecayShape.get(), env.envReleaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
          virtualName="" explicitFocusOrder="0" pos="141 109 51 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"
