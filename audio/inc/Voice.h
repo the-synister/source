@@ -400,7 +400,7 @@ protected:
         const float sRate = static_cast<float>(getSampleRate());    // Sample rate
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfoFadein.get() * sRate);     // Length in samples of the LFO fade in
-        const float *lfo1Gain = modDestBuffer.getReadPointer(DEST_LFO1_GAIN);              //Check Lfo1 Gain
+        //const float *lfo1Gain = modDestBuffer.getReadPointer(DEST_LFO1_GAIN);              //Check Lfo1 Gain
 
         //clear the buffers
         modDestBuffer.clear();
@@ -472,11 +472,12 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
             modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI,s) * 12.f));
         }
-#endif
+
         //Apply GainFactors here - not really working like it should!!!
-        //for (int s = 0; s < numSamples; ++s) {
-        //    modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
-        //}
+        for (int s = 0; s < numSamples; ++s) {
+            modDestBuffer.setSample(DEST_OSC1_PI, s, modDestBuffer.getSample(DEST_OSC1_PI,s) * lfo1Gain[s]);
+        }
+#endif
     }
 
     float biquadFilter(float inputSignal, float modValue) {
