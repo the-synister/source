@@ -5,6 +5,7 @@
 #include "ModulationMatrix.h"
 #include "Envelope.h"
 #include "Oscillator.h"
+#include "Filter.h"
 
 class Sound : public SynthesiserSound {
 public:
@@ -15,26 +16,12 @@ public:
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize)
-    : lastSample(0.f)
-    , inputDelay1(0.f)
-    , inputDelay2(0.f)
-    , outputDelay1(0.f)
-    , outputDelay2(0.f)
-    , bandpassDelay1(0.f)
-    , bandpassDelay2(0.f)
-    , params(p)
+    : params(p)
+        , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
     , envToVolume(getSampleRate(), params.envVol[0].envAttack, params.envVol[0].envDecay, params.envVol[0].envSustain, params.envVol[0].envRelease,
         params.envVol[0].envAttackShape, params.envVol[0].envDecayShape, params.envVol[0].envReleaseShape, params.envVol[0].keyVelToEnv)
     , env1(getSampleRate(), params.env[0].envAttack, params.env[0].envDecay, params.env[0].envSustain, params.env[0].envRelease,
         params.env[0].envAttackShape, params.env[0].envDecayShape, params.env[0].envReleaseShape, params.env[0].keyVelToEnv)
-    , ladderOut(0.f)
-    , ladderInDelay(0.f)
-    , lpOut1(0.f)
-    , lpOut2(0.f)
-    , lpOut3(0.f)
-    , lpOut1Delay(0.f)
-    , lpOut2Delay(0.f)
-    , lpOut3Delay(0.f)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , totSamples(0)
@@ -69,25 +56,6 @@ public:
     void startNote(int midiNoteNumber, float velocity,
                     SynthesiserSound*, int currentPitchWheelPosition) override
     {
-        //for ladder filter
-        ladderOut = 0.f;
-        ladderInDelay = 0.f;
-        lpOut1 = 0.f;
-        lpOut2 = 0.f;
-        lpOut3 = 0.f;
-        lpOut1Delay = 0.f;
-        lpOut2Delay = 0.f;
-        lpOut3Delay = 0.f;
-
-        lastSample = 0.f;
-        inputDelay1 = 0.f;
-        inputDelay2 = 0.f;
-        outputDelay1 = 0.f;
-        outputDelay2 = 0.f;
-
-        bandpassDelay1 = 0.f;
-        bandpassDelay2 = 0.f;
-
         currentVelocity = velocity;
 
         totSamples = 0;
@@ -144,6 +112,12 @@ public:
                 break;
             case eOscWaves::eOscNoise:
                 break;
+            }
+        }
+
+        for (auto& filters : filter) {
+            for (Filter& f : filters) {
+                f.reset(sRate);
             }
         }
     }
@@ -226,7 +200,7 @@ public:
                         // Next sample will be fetched with the new width
                         currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                     }
-                        break;
+                    break;
                     case eOscWaves::eOscSaw:
                     {
                         // In case of triangle modulation
@@ -238,21 +212,17 @@ public:
                         // Next sample will be fetch with the new width
                         currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
                     }
-                        break;
+                    break;
                     case eOscWaves::eOscNoise:
                         currentSample = (osc[o].noise.next(pitchMod[s]));
                         break;
                     }
 
-#if 0
                     // filter
-                    const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC);
-                    if (params.filter[0].passtype.getStep() == eBiquadFilters::eLadder) {
-                        currentSample = ladderFilter(currentSample, filterMod[s]);
-                    } else {
-                        currentSample = biquadFilter(currentSample, filterMod[s]);
+                    for (size_t f = 0;f < params.filter.size();++f) {
+                        const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                        currentSample = filter[o][f].run(currentSample, filterMod[s]);
                     }
-#endif
 
                     // gain + pan
                     currentSample *= (osc[o].level * envToVolMod[s]);
@@ -265,10 +235,16 @@ public:
                         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
                         outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                         outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    } else {
+                    }
+                    else {
                         for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                             outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                         }
+                    }
+
+                    if (static_cast<int>(getSampleRate() * params.envVol[0].envRelease.get()) <= envToVolume.getReleaseCounter()) {
+                        // next osc 
+                        break;
                     }
                 }
             }
@@ -283,52 +259,7 @@ public:
         totSamples = totSamples + numSamples;
     }
 
-    //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
-    //naive 1 pole filters wigh a hyperbolic tangent saturator
-    float ladderFilter(float ladderIn, float modValue)
-    {
-        const float sRate = static_cast<float>(getSampleRate());
 
-        float cutoffFreq = params.filter[0].lpCutoff.get();
-        float currentResonance = params.filter[0].resonance.get();
-
-        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
-
-        // TODO can't this be shortened?
-        if (cutoffFreq < params.filter[0].lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            cutoffFreq = params.filter[0].lpCutoff.getMin();
-        }
-        else if (cutoffFreq > params.filter[0].lpCutoff.getMax()) {
-            cutoffFreq = params.filter[0].lpCutoff.getMax();
-        }
-
-        //coeffecients and parameters
-        float omega_c = 2.f * float_Pi * cutoffFreq / sRate;
-        float g = omega_c / 2.f;
-        float a = (1.f - g) / (1.f + g);
-        float b = g / (1.f + g);
-
-        // subtract the feedback
-        // inverse hyperbolic Sinus
-        // ladderIn = tanh(ladderIn) - asinh(currentResonance * ladderOut);
-        // hyperbolic tangent
-        ladderIn = tanh(ladderIn) - tanh(currentResonance * ladderOut);
-
-        // proecess through 1 pole Filters 4 times
-        lpOut1 = b*(ladderIn + ladderInDelay) + a*tanh(lpOut1);
-        ladderInDelay = ladderIn;
-
-        lpOut2 = b*(lpOut1 + lpOut1Delay) + a* tanh(lpOut2);
-        lpOut1Delay = lpOut1;
-
-        lpOut3 = b*(lpOut2 + lpOut2Delay) + a* tanh(lpOut3);
-        lpOut2Delay = lpOut2;
-
-        ladderOut = b*(lpOut3 + lpOut3Delay) + a* tanh(ladderOut);
-        lpOut3Delay = lpOut3;
-
-        return ladderOut;
-    }
 
 protected:
     void renderModulation(int numSamples) {
@@ -401,120 +332,10 @@ protected:
         }
     }
 
-    float biquadFilter(float inputSignal, float modValue) {
-
-        // get mod frequency from active filter type
-        float cutoffFreq;
-        switch (params.filter[0].passtype.getStep()) {
-            case eBiquadFilters::eLowpass:
-                cutoffFreq = params.filter[0].lpCutoff.get();
-                break;
-            case eBiquadFilters::eHighpass:
-                cutoffFreq = params.filter[0].hpCutoff.get();
-                break;
-            case eBiquadFilters::eBandpass:
-                cutoffFreq = (params.filter[0].lpCutoff.get() + params.filter[0].hpCutoff.get()) / 2.f;
-                if (params.filter[0].lpCutoff.get() < params.filter[0].hpCutoff.get()){
-                    return 0.f;
-                }
-                break;
-            default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead
-                return 0.f;
-        }
-
-        //! \todo mod range must come from somewhere else
-        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
-
-        // check range
-        if (cutoffFreq < params.filter[0].lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
-            cutoffFreq = params.filter[0].lpCutoff.getMin();
-        }
-        else if (cutoffFreq > params.filter[0].lpCutoff.getMax()) {
-            cutoffFreq = params.filter[0].lpCutoff.getMax();
-        }
-
-        const float sRate = static_cast<float>(getSampleRate());
-        cutoffFreq /= sRate;
-
-        // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
-        // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
-        float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
-
-        const float currentResonance = pow(10.f, (-params.filter[0].resonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
-
-        if (static_cast<eBiquadFilters>(params.filter[0].passtype.getStep()) == eBiquadFilters::eLowpass) {
-
-            // coefficients for lowpass, depending on resonance and lowcut frequency
-            k = 0.5f * currentResonance * sin(2.f * float_Pi * cutoffFreq);
-                coeff1 = 0.5f * (1.f - k) / (1.f + k);
-            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * cutoffFreq);
-                    coeff3 = (0.5f + coeff1 - coeff2) * 0.25f;
-
-            b0 = 2.f * coeff3;
-            b1 = 2.f * 2.f * coeff3;
-            b2 = 2.f * coeff3;
-            a1 = 2.f * -coeff2;
-            a2 = 2.f * coeff1;
-
-        } else if (params.filter[0].passtype.getStep() == eBiquadFilters::eHighpass) {
-
-            // coefficients for highpass, depending on resonance and highcut frequency
-            k = 0.5f * currentResonance * sin(float_Pi * cutoffFreq);
-            coeff1 = 0.5f * (1.f - k) / (1.f + k);
-            coeff2 = (0.5f + coeff1) * cos(float_Pi * cutoffFreq);
-            coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
-
-            b0 = 2.f * coeff3;
-            b1 = -4.f * coeff3;
-            b2 = 2.f * coeff3;
-            a1 = -2.f * coeff2;
-            a2 = 2.f * coeff1;
-
-        } else if (params.filter[0].passtype.getStep() == eBiquadFilters::eBandpass) {
-
-            // coefficients for bandpass, depending on low- and highcut frequency
-            w0 = 2.f * float_Pi*cutoffFreq;
-            bw = (log2(params.filter[0].lpCutoff.get() / params.filter[0].hpCutoff.get())); // bandwidth in octaves
-            coeff1 = sin(w0)*sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
-
-            b0 = coeff1;
-            b1 = 0.f;
-            b2 = -coeff1;
-            a0 = 1.f + coeff1;
-            a1 = -2.f * cos(w0);
-            a2 = 1.f - coeff1;
-        }
-
-        lastSample = inputSignal;
-
-        // different biquad form for bandpass filter, it has more coefficients as well
-        if (params.filter[0].passtype.getStep() == eBiquadFilters::eBandpass) {
-            inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
-        } else {
-            inputSignal = b0*inputSignal + b1*inputDelay1 + b2*inputDelay2 - a1*outputDelay1 - a2*outputDelay2;
-        }
-
-        //delaying samples
-        inputDelay2 = inputDelay1;
-        inputDelay1 = lastSample;
-        outputDelay2 = outputDelay1;
-        outputDelay1 = inputSignal;
-
-        if (inputSignal > 1.f) {
-            inputSignal = 1.f;
-        }
-        else if (inputSignal < -1.f) {
-            inputSignal = -1.f;
-        }
-        return inputSignal;
-    }
-
 public:
 
 private:
     SynthParams &params;
-    //New Filter Design
-    float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, bandpassDelay1, bandpassDelay2;
 
     struct Osc {
         Oscillator<&Waveforms::square> square;
@@ -523,6 +344,7 @@ private:
         float level;
     };
     std::array<Osc, 3> osc;
+    std::array<std::array<Filter,2>,3> filter;
 
     Oscillator<&Waveforms::sinus> lfo1sine;
     Oscillator<&Waveforms::square> lfo1square;
@@ -540,16 +362,6 @@ private:
 
     // variable for env
     float currentVelocity;
-
-    //for the lader filter
-    float ladderOut;
-    float ladderInDelay;
-    float lpOut1;
-    float lpOut2;
-    float lpOut3;
-    float lpOut1Delay;
-    float lpOut2Delay;
-    float lpOut3Delay;
 
     // Buffers
     AudioSampleBuffer filterModBuffer;
