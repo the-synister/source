@@ -146,17 +146,15 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
 
-    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1);
-    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2);
+    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1, ctune1);
+    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2, ctune1);
     //[/UserPreSize]
 
     setSize (267, 272);
 
 
     //[Constructor] You can add your own custom stuff here..
-    trngAmount->setVisible(false);/*
-    osc2trngAmount->setVisible(false);
-    osc3trngAmount->setVisible(false);*/
+    trngAmount->setVisible(false);
     waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize);
     //[/Constructor]
 }
@@ -307,7 +305,6 @@ void OscPanel::updateWFShapeControls()
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
 }
-
 
 void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
 {

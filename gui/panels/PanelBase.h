@@ -56,9 +56,6 @@ protected:
     void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, bool convert, int sourceNumber) {
         dest->setModSource(modSource, modAmount, convert, sourceNumber);
 
-        // TODO:
-        saturnSourceReg[dest] = modSource;
-
         auto temp = saturnReg.find(dest);
         if (temp == saturnReg.end()) {
             std::array<Slider*, 2> newSource = {nullptr};
@@ -98,14 +95,6 @@ protected:
                 if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
                     dest2saturn.first->repaint();
                 }
-
-            }
-        }
-
-        // TODO:
-        for (auto k2s : saturnSourceReg) {
-            if (k2s.second->isUIDirty()) {
-                k2s.first->repaint();
             }
         }
     }
@@ -114,7 +103,13 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-                                
+                
+                auto c2s = saturnSourceReg.find(c2p.first);
+                
+                if (c2s != saturnSourceReg.end()) {
+                    c2s->second->repaint();
+                }
+                
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();
@@ -151,9 +146,16 @@ protected:
         }
     }
 
-    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
+        
+        // couple combobox with saturn knob
+        if (modDest != nullptr) {
+            saturnSourceReg[box] = modDest;
+        }
+        
         box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
+        
         if (hook) {
             postUpdateHook[box] = hook;
         }
@@ -166,6 +168,13 @@ protected:
             params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
+            
+            auto temp = saturnSourceReg.find(comboboxThatWasChanged);
+            
+            // update saturn
+            if (temp != saturnSourceReg.end()) {
+                temp->second->repaint();
+            }
 
             return true;
         }
@@ -216,6 +225,6 @@ protected:
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<MouseOverKnob*, ParamStepped<eModSource>*> saturnSourceReg;
+    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg;
     SynthParams &params;
 };
