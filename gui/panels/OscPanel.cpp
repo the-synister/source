@@ -146,8 +146,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     fillModsourceBox(osc1FreqModSrc1);
     fillModsourceBox(osc1FreqModSrc2);
 
-    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1);
-    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2);
+    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1, ctune1);
+    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2, ctune1);
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -307,7 +307,6 @@ void OscPanel::updateWFShapeControls()
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
 }
-
 
 void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
 {

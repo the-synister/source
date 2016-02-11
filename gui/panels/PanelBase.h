@@ -57,7 +57,7 @@ protected:
         dest->setModSource(modSource, modAmount, sourceNumber);
 
         // TODO:
-        saturnSourceReg[dest] = modSource;
+        // saturnSourceReg[dest] = modSource;
 
         auto temp = saturnReg.find(dest);
         if (temp == saturnReg.end()) {
@@ -67,6 +67,14 @@ protected:
         } else {
             temp->second[sourceNumber-1] = source;
         }
+    }
+    
+    void updateSaturnSource(MouseOverKnob *dest, int sourceNumber)
+    {
+        //auto temp = saturnReg.find(dest);
+        
+        
+        dest->repaint();
     }
 
     void updateDirtySliders() {
@@ -98,16 +106,16 @@ protected:
                 if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
                     dest2saturn.first->repaint();
                 }
-
             }
         }
 
         // TODO:
+        /*
         for (auto k2s : saturnSourceReg) {
             if (k2s.second->isUIDirty()) {
                 k2s.first->repaint();
             }
-        }
+        }*/
     }
 
     void updateDirtyBoxes() {
@@ -151,8 +159,13 @@ protected:
         }
     }
 
-    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, const tHookFn hook = tHookFn()) {
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
+        
+        if (modDest != nullptr) {
+            saturnSourceReg[box] = modDest;
+        }
+        
         box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
         if (hook) {
             postUpdateHook[box] = hook;
@@ -166,6 +179,12 @@ protected:
             params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
+            
+            auto dest = saturnSourceReg.find(comboboxThatWasChanged);
+            
+            if (dest != saturnSourceReg.end()) {
+                dest->second->repaint();
+            }
 
             return true;
         }
@@ -216,6 +235,6 @@ protected:
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<MouseOverKnob*, ParamStepped<eModSource>*> saturnSourceReg;
+    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg;
     SynthParams &params;
 };
