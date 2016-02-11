@@ -47,6 +47,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    String getNoteLengthAsString();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -66,7 +67,6 @@ private:
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<Slider> wave;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
-    ScopedPointer<Slider> notelength;
     ScopedPointer<Label> sineLabel;
     ScopedPointer<Label> squareLabel;
     ScopedPointer<Label> sampleHoldLabel2;

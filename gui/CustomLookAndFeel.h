@@ -47,6 +47,11 @@ public:
     virtual void drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s);
 
     /**
+    * Create slider label textbox. This will be the editable double-click text box where values can be input.
+    */
+    virtual Label* createSliderTextBox(Slider& slider);
+
+    /**
     * Set Slider Layout. Needed for mouseOverKnob with barSlider to not set textBoxPosition into bar slider (leads to flickering).
     */
     virtual Slider::SliderLayout getSliderLayout(Slider& s);

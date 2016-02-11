@@ -38,9 +38,9 @@ public:
     void setDefaultValue(float val);
 
     virtual void setName(const String& newName) override;
+    void setBounds(int x, int y, int width, int height);
 
     void resized() override;
-    void setBounds(int x, int y, int width, int height);
     void enablementChanged() override;
     void componentMovedOrResized(Component &component, bool wasMoved, bool wasResized) override;
 
@@ -49,7 +49,7 @@ public:
     void mouseDown(const MouseEvent &e) override;
     void mouseDoubleClick(const MouseEvent &e) override;
     void mouseDrag(const MouseEvent &e) override;
-
+    
 private:
     ScopedPointer<Label> knobLabel;
 

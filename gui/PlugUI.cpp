@@ -104,7 +104,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), SynthParams::envColour, 230, false, 1);
     foldableComponent->addPanel(1, new Env1Panel(params, 0));
     foldableComponent->addPanel(1, new Env1Panel(params, 1));
-    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), SynthParams::lfoColour, 200, false, 2);
+    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), SynthParams::lfoColour, 175, false, 2);
     foldableComponent->addPanel(2, new LfoPanel(params, 1));
     foldableComponent->addPanel(2, new LfoPanel(params, 2));
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params, 0), SynthParams::filterColour, 158, false, 3);
@@ -113,7 +113,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 347, false, 5);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 323, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
@@ -160,7 +160,7 @@ void PlugUI::resized()
     keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (112, 8, 88, 24);
-    bpmLabel->setBounds (222, 6, 64, 24);
+    bpmLabel->setBounds (222, 6, 58, 24);
     bpmDisplay->setBounds (274, 6, 64, 24);
     foldableComponent->setBounds (0, 72, 800, 624);
     //[UserResized] Add your own custom resize handling here..
@@ -254,7 +254,7 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="222 6 64 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="222 6 58 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="BPM:" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="20" bold="0" italic="0" justification="33"/>

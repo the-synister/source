@@ -134,6 +134,7 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(attackShape, &envVol.attackShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
+
     registerSlider(keyVelToEnv1, &envVol.keyVelToEnv);
     //[/UserPreSize]
 

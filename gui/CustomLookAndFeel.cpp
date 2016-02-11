@@ -232,7 +232,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(20, width / 2, height / 2) - 2);
+    const float sliderRadius = (float)(jmin(20, width, height) - 2);
     g.setColour(s.findColour(Slider::trackColourId));
     Path indent;
 
@@ -261,7 +261,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
 void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(10, width / 4, height / 4) - 2);
+    const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
     const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
     float centreX, centreY;
 
@@ -304,6 +304,30 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
             LookAndFeel_V2::drawLinearSliderThumb(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
         }
     }
+}
+
+Label* CustomLookAndFeel::createSliderTextBox(Slider& slider)
+{
+    Label* const l = new Label();
+
+    l->setJustificationType(Justification::centred);
+    l->setKeyboardType(TextInputTarget::decimalKeyboard);
+
+    l->setColour(Label::textColourId, slider.findColour(Slider::textBoxTextColourId));
+    l->setColour(Label::backgroundColourId,
+        (slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+        ? Colours::transparentBlack
+        : slider.findColour(Slider::textBoxBackgroundColourId));
+    l->setColour(Label::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+    l->setColour(TextEditor::textColourId, Colours::black);
+    l->setColour(TextEditor::backgroundColourId,
+        slider.findColour(Slider::textBoxBackgroundColourId)
+        .withAlpha((slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+            ? 0.7f : 1.0f));
+    l->setColour(TextEditor::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+    l->setColour(TextEditor::highlightColourId, slider.findColour(Slider::textBoxHighlightColourId));
+
+    return l;
 }
 
 // TODO: wenn nicht bentigt, dann weg
@@ -545,7 +569,7 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
 void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& /*name*/, bool isOpen, int width, int height)
 {
     // background colour
-    ColourGradient gradient(Colour (77, 77, 79), 0.0f, 0.0f, Colour (45, 43, 44), 0.0f, static_cast<float>(height), false);
+    ColourGradient gradient(Colours::darkgrey, 0.0f, 0.0f, Colours::black, 0.0f, static_cast<float>(height), false);
     g.setGradientFill(gradient);
     g.fillRect(0, 0, width, height);
 
