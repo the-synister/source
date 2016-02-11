@@ -12,6 +12,13 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
+        <FILE id="pIqP0J" name="sine-switch_noise.png" compile="0" resource="1"
+              file="../gui/assets/sine-switch_noise.png"/>
+      </GROUP>
+      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
       <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
       <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
             file="../gui/EnvelopeCurve.cpp"/>
@@ -28,6 +35,13 @@
       <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
             file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
+        <FILE id="TrQb2j" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
+        <FILE id="xNUcDC" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
+        <FILE id="zpG5Vz" name="ClippingPanel.cpp" compile="1" resource="0"
+              file="../gui/panels/ClippingPanel.cpp"/>
+        <FILE id="AaJRQP" name="ClippingPanel.h" compile="0" resource="0" file="../gui/panels/ClippingPanel.h"/>
+        <FILE id="sZWJeP" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
+        <FILE id="S5w80K" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="MQe5Fc" name="LoFiPanel.cpp" compile="1" resource="0" file="../gui/panels/LoFiPanel.cpp"/>
         <FILE id="QyuXB3" name="LoFiPanel.h" compile="0" resource="0" file="../gui/panels/LoFiPanel.h"/>
         <FILE id="T6NiX2" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
@@ -36,8 +50,6 @@
         <FILE id="l2unIn" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="n4LLrh" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="Sh6NXS" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
-        <FILE id="pHTWgt" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
-        <FILE id="eaQWuN" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="arXpqu" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
         <FILE id="q6cLYL" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
@@ -61,33 +73,33 @@
     </GROUP>
     <GROUP id="{949202BF-874E-EF1D-0F32-E294A4403CF7}" name="Audio">
       <GROUP id="{B810726F-87B4-284E-870E-8BE0D67A873E}" name="inc">
-        <FILE id="AYGn56" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
-        <FILE id="UdB9ZE" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
-        <FILE id="KDfjqW" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
-        <FILE id="KGYPH3" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
-        <FILE id="ssKU2v" name="ModulationMatrix.h" compile="0" resource="0"
+        <FILE id="kjkjZy" name="ModulationMatrix.h" compile="0" resource="0"
               file="../audio/inc/ModulationMatrix.h"/>
+        <FILE id="TF6p7U" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
+        <FILE id="cLkCeP" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
+        <FILE id="NNdGXy" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
+        <FILE id="vSOsHd" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
+        <FILE id="KGYPH3" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="eXN6xq" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="ettrMG" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="P0vVMP" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="M1Xoos" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
-        <FILE id="b41rgX" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
         <FILE id="MIapmi" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="MZRnMw" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
         <FILE id="zORnwQ" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
-        <FILE id="lju71T" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
-        <FILE id="kzz3ds" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
-        <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
-        <FILE id="j131qu" name="ModulationMatrix.cpp" compile="1" resource="0"
+        <FILE id="oYEQrl" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
+        <FILE id="OJ6adT" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
-        <FILE id="P8Z4lI" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
+        <FILE id="hoUGIH" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
+        <FILE id="bu7iHM" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
+        <FILE id="wEODLt" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
+        <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
-        <FILE id="rF1zbB" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

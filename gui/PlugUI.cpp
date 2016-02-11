@@ -28,6 +28,8 @@
 #include "panels/FxPanel.h"
 #include "panels/SeqPanel.h"
 #include "panels/LoFiPanel.h"
+#include "panels/ChorusPanel.h"
+#include "panels/ClippingPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -55,20 +57,6 @@ PlugUI::PlugUI (SynthParams &p)
                                                              MidiKeyboardComponent::horizontalKeyboard));
     keyboard->setName ("midi keyboard");
 
-    addAndMakeVisible (tabs = new TabbedComponent (TabbedButtonBar::TabsAtTop));
-    tabs->setTabBarDepth (30);
-    tabs->addTab (TRANS("OSC"), Colours::lightgrey, new OscPanel (params), true);
-    tabs->addTab (TRANS("LFO"), Colours::lightgrey, new LfoPanel (params), true);
-    tabs->addTab (TRANS("ENV"), Colours::lightgrey, new EnvPanel (params), true);
-    tabs->addTab (TRANS("ENV1"), Colours::lightgrey, new Env1Panel (params), true);
-    tabs->addTab (TRANS("FILT"), Colours::lightgrey, new FiltPanel (params), true);
-    tabs->addTab (TRANS("AMP"), Colours::lightgrey, new AmpPanel (params), true);
-    tabs->addTab (TRANS("FX"), Colours::lightgrey, new FxPanel (params), true);
-    tabs->addTab (TRANS("LADDER"), Colours::lightgrey, new LadderPanel (params), true);
-    tabs->addTab (TRANS("SEQ"), Colours::lightgrey, new SeqPanel (params), true);
-    tabs->addTab (TRANS("LOFI"), Colours::lightgrey, new LoFiPanel (params), true);
-    tabs->setCurrentTabIndex (0);
-
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
     savePresetButton->addListener (this);
 
@@ -91,6 +79,8 @@ PlugUI::PlugUI (SynthParams &p)
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (foldableComponent = new FoldablePanel ("foldablePanels"));
+
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
@@ -99,14 +89,29 @@ PlugUI::PlugUI (SynthParams &p)
     freq->initTextBox();
     //[/UserPreSize]
 
-    setSize (800, 600);
+    setSize (800, 900);
 
 
     //[Constructor] You can add your own custom stuff here..
 
-    //LookAndFeel_V1 *laf = new LookAndFeel_V1();
-    //LookAndFeel_V2 *laf = new LookAndFeel_V2(); // default slider
-    //LookAndFeel_V3 *laf = new LookAndFeel_V3();
+    // NOTE: preferred sectionHeight should be set (introjucer's panelHeight - 22) due to section header
+    // see env panel. introjucer height is set to 252
+    foldableComponent->addSection (TRANS("OSC"), new OscPanel (params, 0), SynthParams::oscColour, 250, true, 0);
+    foldableComponent->addPanel(0, new OscPanel(params, 1));
+    foldableComponent->addPanel(0, new OscPanel(params, 2));
+    foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), SynthParams::envColour, 230, false, 1);
+    foldableComponent->addPanel(1, new Env1Panel(params, 0));
+    foldableComponent->addPanel(1, new Env1Panel(params, 1));
+    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), SynthParams::lfoColour, 200, false, 2);
+    foldableComponent->addPanel(2, new LfoPanel(params, 1));
+    foldableComponent->addPanel(2, new LfoPanel(params, 2));
+    foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params, 0), SynthParams::filterColour, 158, false, 3);
+    foldableComponent->addPanel(3, new FiltPanel (params, 1));
+    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), SynthParams::fxColour, 178, false, 4);
+    foldableComponent->addPanel(4, new ChorusPanel(params));
+    foldableComponent->addPanel(4, new LoFiPanel(params));
+    foldableComponent->addPanel(4, new ClippingPanel(params));
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 347, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
@@ -121,11 +126,11 @@ PlugUI::~PlugUI()
 
     freq = nullptr;
     keyboard = nullptr;
-    tabs = nullptr;
     savePresetButton = nullptr;
     loadPresetButton = nullptr;
     bpmLabel = nullptr;
     bpmDisplay = nullptr;
+    foldableComponent = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -149,13 +154,13 @@ void PlugUI::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (728, 8, 64, 64);
-    keyboard->setBounds (8, 552, 784, 40);
-    tabs->setBounds (8, 128, 784, 416);
+    freq->setBounds (728, 0, 64, 64);
+    keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
-    loadPresetButton->setBounds (8, 40, 88, 24);
-    bpmLabel->setBounds (127, 7, 40, 24);
-    bpmDisplay->setBounds (175, 7, 64, 24);
+    loadPresetButton->setBounds (112, 8, 88, 24);
+    bpmLabel->setBounds (222, 6, 40, 24);
+    bpmDisplay->setBounds (270, 6, 64, 24);
+    foldableComponent->setBounds (0, 72, 800, 624);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -231,55 +236,34 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component, private Timer" constructorParams="SynthParams &amp;p"
                  variableInitialisers="params(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
-                 initialHeight="600">
+                 initialHeight="900">
   <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="728 8 64 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="728 0 64 64" rotarysliderfill="ff6c788c"
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
-                    virtualName="" explicitFocusOrder="0" pos="8 552 784 40" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
-  <TABBEDCOMPONENT name="tabs" id="748541b462cb42f4" memberName="tabs" virtualName=""
-                   explicitFocusOrder="0" pos="8 128 784 416" orientation="top"
-                   tabBarDepth="30" initialTab="0">
-    <TAB name="OSC" colour="ffd3d3d3" useJucerComp="0" contentClassName="OscPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="LFO" colour="ffd3d3d3" useJucerComp="0" contentClassName="LfoPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="ENV" colour="ffd3d3d3" useJucerComp="0" contentClassName="EnvPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="ENV1" colour="ffd3d3d3" useJucerComp="0" contentClassName="Env1Panel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="FILT" colour="ffd3d3d3" useJucerComp="0" contentClassName="FiltPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="AMP" colour="ffd3d3d3" useJucerComp="0" contentClassName="AmpPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="FX" colour="ffd3d3d3" useJucerComp="0" contentClassName="FxPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="LADDER" colour="ffd3d3d3" useJucerComp="0" contentClassName="LadderPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="SEQ" colour="ffd3d3d3" useJucerComp="0" contentClassName="SeqPanel"
-         constructorParams="params" jucerComponentFile=""/>
-    <TAB name="LOFI" colour="ffd3d3d3" useJucerComp="0" contentClassName="LoFiPanel"
-         constructorParams="params" jucerComponentFile=""/>
-  </TABBEDCOMPONENT>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
               virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="8 40 88 24" buttonText="Load preset"
+              virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="127 7 40 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="222 6 40 24" edTextCol="ff000000"
          edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="175 7 64 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="270 6 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
+  <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
+                    class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

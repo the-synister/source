@@ -37,11 +37,12 @@
 */
 class LfoPanel  : public PanelBase,
                   public SliderListener,
-                  public ButtonListener
+                  public ButtonListener,
+                  public ComboBoxListener
 {
 public:
     //==============================================================================
-    LfoPanel (SynthParams &p);
+    LfoPanel (SynthParams &p, int lfoNumber);
     ~LfoPanel();
 
     //==============================================================================
@@ -52,11 +53,13 @@ public:
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams::Lfo& lfo;
     //[/UserVariables]
 
     //==============================================================================
@@ -64,10 +67,12 @@ private:
     ScopedPointer<Slider> wave;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
     ScopedPointer<Slider> notelength;
-    ScopedPointer<Label> label4;
     ScopedPointer<Label> sineLabel;
     ScopedPointer<Label> squareLabel;
     ScopedPointer<Label> sampleHoldLabel2;
+    ScopedPointer<MouseOverKnob> lfoFadeIn;
+    ScopedPointer<ToggleButton> triplets;
+    ScopedPointer<IncDecDropDown> noteLength;
 
 
     //==============================================================================

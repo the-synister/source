@@ -14,7 +14,8 @@ class PanelBase : public Component, protected Timer
 public:
 
     PanelBase(SynthParams &p)
-        : params(p) {
+        : params(p)
+    {
         startTimerHz(60);
     }
 
@@ -42,6 +43,7 @@ protected:
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
+        slider->setDefaultValue(p->getDefault());
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;
@@ -51,11 +53,13 @@ protected:
 
     // NOTE: sourceNumber values 1 or 2
     // TODO: change it to an enum?
-    void registerSaturnSource(MouseOverKnob *dest, Slider *source, Param *paramSource, int sourceNumber) {
-        dest->setModSource(paramSource, sourceNumber);
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber) {
+        dest->setModSource(modSource, modAmount, sourceNumber);
+
+        // TODO:
+        saturnSourceReg[dest] = modSource;
 
         auto temp = saturnReg.find(dest);
-
         if (temp == saturnReg.end()) {
             std::array<Slider*, 2> newSource = {nullptr};
             newSource[sourceNumber-1] = source;
@@ -97,13 +101,20 @@ protected:
 
             }
         }
+
+        // TODO:
+        for (auto k2s : saturnSourceReg) {
+            if (k2s.second->isUIDirty()) {
+                k2s.first->repaint();
+            }
+        }
     }
 
     void updateDirtyBoxes() {
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-
+                                
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();
@@ -155,6 +166,7 @@ protected:
             params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
+
             return true;
         }
         else {
@@ -174,9 +186,36 @@ protected:
         updateDirtyBoxes();
     }
 
+    /**
+    * Draw white group border with group name alligned right.
+    */
+    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, Colour c)
+    {
+        float posX = static_cast<float>(x) + padding;
+        float posY = static_cast<float>(y) + padding;
+        float boxWidth = static_cast<float>(width) - 2.0f * padding;
+        float boxHeight = static_cast<float>(height) - 2.0f * padding;
+
+        // draw white groupborder
+        Rectangle<float> rect = { posX, posY, boxWidth, boxHeight };
+        g.setColour(Colours::white);
+        g.fillRoundedRectangle(rect, cornerSize);
+
+        rect = { posX + borderThickness, posY + headHeight, boxWidth - borderThickness * 2.0f, boxHeight - headHeight - borderThickness };
+        g.setColour(c);
+        g.fillRoundedRectangle(rect, cornerSize);
+
+        // draw group name text
+        int offset = 2 * static_cast<int>(cornerSize);
+        g.setFont(headHeight * 0.85f);
+        g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY),
+            width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);
+    }
+
     std::map<Slider*, Param*> sliderReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
+    std::map<MouseOverKnob*, ParamStepped<eModSource>*> saturnSourceReg;
     SynthParams &params;
 };

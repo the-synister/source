@@ -46,6 +46,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void updateCurve();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -56,6 +57,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams::EnvVol &envVol;
     //[/UserVariables]
 
     //==============================================================================
@@ -66,8 +68,9 @@ private:
     ScopedPointer<MouseOverKnob> attackShape;
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
-    ScopedPointer<MouseOverKnob> keyVelToEnv;
+    ScopedPointer<MouseOverKnob> keyVelToEnv1;
     ScopedPointer<EnvelopeCurve> envelopeCurve;
+    ScopedPointer<Label> shapeLabel1;
 
 
     //==============================================================================

@@ -12,6 +12,7 @@
 #define ENVELOPECURVE_H_INCLUDED
 
 #include "JuceHeader.h"
+#include "SynthParams.h"
 
 //==============================================================================
 /*

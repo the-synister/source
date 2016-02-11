@@ -41,7 +41,7 @@ class FiltPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p);
+    FiltPanel (SynthParams &p, int filterNumber);
     ~FiltPanel();
 
     //==============================================================================
@@ -57,13 +57,14 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams::Filter& filter;
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> cutoffSlider;
     ScopedPointer<MouseOverKnob> resonanceSlider;
     ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<MouseOverKnob> passtype;
+    ScopedPointer<Slider> passtype;
     ScopedPointer<Slider> modSliderCut;
     ScopedPointer<ComboBox> lp1ModSrc1;
     ScopedPointer<ComboBox> hp1ModSrc1;
@@ -72,6 +73,10 @@ private:
     ScopedPointer<ComboBox> res1ModSrc1;
     ScopedPointer<ComboBox> res1ModSrc2;
     ScopedPointer<Slider> modSliderCut2;
+    ScopedPointer<Label> ladderLabel;
+    ScopedPointer<Label> bandpassLabel;
+    ScopedPointer<Label> highpassLabel;
+    ScopedPointer<Label> lowpassLabel;
 
 
     //==============================================================================

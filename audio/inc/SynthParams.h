@@ -59,78 +59,138 @@ public:
     SynthParams();
     ~SynthParams();
 
+    static const Colour oscColour;
+    static const Colour envColour;
+    static const Colour lfoColour;
+    static const Colour filterColour;
+    static const Colour fxColour;
+    static const Colour stepSeqColour;
+    static const Colour onOffSwitchEnabled;
+    static const Colour onOffSwitchDisabled;
+    static const Colour envelopeCurveLine;
+    static const Colour envelopeCurveBackground;
+    static const Colour waveformLine;
+    static const Colour waveformBackground;
+    static const Colour otherModulation; // TODO: add more diverse colours
+    
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
-
-    Param lfo1freq; //!< lfo frequency in Hz
-    ParamStepped<eOnOffToggle> lfo1TempSync; //!< bool if checked or not
-    Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
-    ParamStepped<eLfoWaves> lfo1wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-
-    ParamStepped<eModSource> lfo1freqModSrc1; //!< lfo1 frequency mod source
-    ParamStepped<eModSource> lfo1freqModSrc2; //!< lfo2 frequency mod source
-    ParamStepped<eModSource> lfo1gainModSrc1; //!< lfo1 gain mod source
-    ParamStepped<eModSource> lfo1gainModSrc2; //!< lfo2 gain mod source
-
-
-    Param lfoFadein;   // The LFOs fade in with a range of [0..10s]
 
                        //Param lfoChorfreq; // delay-lfo frequency in Hz
                        //Param chorAmount; // wetness of signal [0 ... 1]
                        //Param chorSwitch; // Chorus on / off [1 / 0]
 
-    Param osc1fine;      //!< fine tune in [-100..100] ct
-    Param osc1coarse;    //!< coarse tune in [-11..11] st
-    Param osc1lfo1depth; //!< modulation depth in [-12..12] st
+    struct BaseParamStruct {
+        void setName(const String& s)
+        {
+            name = s;
 
-    ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
+            //! \todo set prefix of every param to name
+        }
 
-    Param lp1Cutoff; //!< filter cutoff frequency in Hz
-    Param hp1Cutoff; //!< filter cutoff frequency in Hz
-    Param filter1Resonance; //! filter resonance in dB
+        String name;
+    };
 
-    ParamStepped<eModSource> lp1CutModSrc1;  //! lp filter modulation source
-    Param lp1ModAmount1;   //! lp filter modulation amount
-    ParamStepped<eModSource> hp1CutModSrc1;  //! hp filter modulation source
-    Param hp1ModAmount1;   //! hp filter modulation amount
-    ParamStepped<eModSource> filter1ResonanceModSrc1;  //! biquad filter resonance modulation source
-    ParamStepped<eModSource> lp1CutModSrc2;  //! lp filter modulation source
-    Param lp1ModAmount2;   //! lp filter modulation amount
-    ParamStepped<eModSource> hp1CutModSrc2;  //! hp filter modulation source
-    Param hp1ModAmount2;   //! hp filter modulation amount
-    ParamStepped<eModSource> filter1ResonanceModSrc2;  //! biquad filter resonance modulation source
+    struct EnvBase : public BaseParamStruct {
+        EnvBase();
+        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
+        Param attack;    //!< env attack in [0.001..5]s
+        Param decay;     //!< env decay in [0.001..5]s
+        Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
 
-    ParamStepped<eOscWaves> osc1Waveform; //! waveform of the oscillator, it can be either square, saw, or noise
-    Param osc1trngAmount; //Triangle Amount [0 ... 1]
-    Param osc1PitchRange; //!< range in [0..12] st
-    Param osc1pulsewidth; //!< pulse width in [0,01..0,99]
-    Param osc1AmountWidthMod; //!< amount of pulse width modulation [0..1]
+        Param attackShape; //!< env attack shape in [0.01..10]
+        Param decayShape; //!< env decay shape in [0.01..10]
+        Param releaseShape; //!< env release shape in [0.01..10]
 
-    //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
-    //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
-    //ParamStepped<eModSource> osc1panModSrc1; //!< osc1 pan mod source
-    //ParamStepped<eModSource> osc1panModSrc2; //!< osc2 pan mod source
-    ParamStepped<eModSource> osc1PWModSrc1; //!< oscillator 1 pulse width modulation source
-    ParamStepped<eModSource> osc1PWModSrc2; //!< oscillator 1 pulse width modulation source
-    ParamStepped<eModSource> osc1PiModSrc1; //!< oscillator 1 pitch modulation source
-    ParamStepped<eModSource> osc1PiModSrc2; //!< oscillator 1 pitch modulation source
+    };
 
+    struct EnvVol : public EnvBase {
+        EnvVol();
 
-    Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
-    Param envAttack;    //!< env attack in [0.001..5]s
-    Param envDecay;     //!< env decay in [0.001..5]s
-                        //Param envSustain;   //!< env sustain in [0..-96]dB
-    ParamDb envSustain;   //!< env sustain in [0..1]
-    Param envRelease;   //!< env release in [0.001..5]s (logarithmic scaling)
+        ParamDb sustain;   //!< env sustain in [0..1]
+        ParamStepped<eModSource> speedModSrc1; //!< Volume envelope speed mod source
+        ParamStepped<eModSource> speedModSrc2; //!< Volume envelope speed mod source
+    };
+
+    struct Env : public EnvBase {
+        Env();
+
+        Param sustain;
+        ParamStepped<eModSource> speedModSrc1; //!< Envelope 2 speed mod source
+        ParamStepped<eModSource> speedModSrc2; //!< Envelope 2 speed mod source
+    };
+
+    struct Lfo : public BaseParamStruct {
+        Lfo();
+
+        Param freq; //!< lfo frequency in Hz
+        ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
+        Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
+        ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
+
+        ParamStepped<eModSource> freqModSrc1; //!< lfo1 frequency mod source
+        ParamStepped<eModSource> freqModSrc2; //!< lfo2 frequency mod source
+        ParamStepped<eModSource> gainModSrc1; //!< lfo1 gain mod source
+        ParamStepped<eModSource> gainModSrc2; //!< lfo2 gain mod source
+
+        Param fadeIn;   // The LFOs fade in with a range of [0..10s]
+    };
+
+    struct Filter : public BaseParamStruct {
+        Filter();
+
+        ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
+
+        Param lpCutoff; //!< filter cutoff frequency in Hz
+        Param hpCutoff; //!< filter cutoff frequency in Hz
+        Param resonance; //! filter resonance in dB
+
+        ParamStepped<eModSource> lpCutModSrc1;  //! lp filter modulation source
+        Param lpModAmount1;   //! lp filter modulation amount
+        ParamStepped<eModSource> hpCutModSrc1;  //! hp filter modulation source
+        Param hpModAmount1;   //! hp filter modulation amount
+        ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
+        ParamStepped<eModSource> lpCutModSrc2;  //! lp filter modulation source
+        Param lpModAmount2;   //! lp filter modulation amount
+        ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
+        Param hpModAmount2;   //! hp filter modulation amount
+        ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
+    };
+
+    struct Osc : public BaseParamStruct {
+        Osc();
+
+        Param fine;      //!< fine tune in [-100..100] ct
+        Param coarse;    //!< coarse tune in [-11..11] st
+        ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
+        Param trngAmount; //Triangle Amount [0 ... 1]
+        Param pulseWidth; //!< pulse width in [0,01..0,99]
+        Param shapeModAmount; //!< amount of pulse width modulation [0..1]
+        //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
+        //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
+        //ParamStepped<eModSource> osc1panModSrc1; //!< osc1 pan mod source
+        //ParamStepped<eModSource> osc1panModSrc2; //!< osc2 pan mod source
+        ParamStepped<eModSource> shapeModSrc1; //!< oscillator 1 pulse width modulation source
+        ParamStepped<eModSource> shapeModSrc2; //!< oscillator 1 pulse width modulation source
+        ParamStepped<eModSource> pitchModSrc1; //!< oscillator 1 pitch modulation source
+        Param pitchModAmount1; //!< range in [0..12] st
+        ParamStepped<eModSource> pitchModSrc2; //!< oscillator 1 pitch modulation source
+        Param pitchModAmount2; //!< modulation depth in [-12..12] st
+
+        Param panDir; //!< pan R/L [-100..100]
+
+        ParamDb vol; //!< volume in [-96..12]
+        Param volModAmount1;    //!< key velocity level range in [0..96]dB
+    };
+
+    std::array<Filter, 2> filter;
+    std::array<Lfo, 3> lfo;
+    std::array<EnvVol, 1> envVol;
+    std::array<Env, 2> env;
+    std::array<Osc, 3> osc;
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
-
-    Param keyVelocityLevel;    //!< key velocity level range in [0..96]dB
-    Param envAttackShape; //!< env attack shape in [0.01..10]
-    Param envDecayShape; //!< env decay shape in [0.01..10]
-    Param envReleaseShape; //!< env release shape in [0.01..10]
-
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
@@ -158,26 +218,8 @@ public:
     ParamStepped<eOnOffToggle> seqStepActive6;
     ParamStepped<eOnOffToggle> seqStepActive7;
 
-    Param keyVelToEnv1;  //!< key velocity influence on env1 [0 ... 1]
-    Param env1Attack;    //!< env1 attack in [0.001..5]s
-    Param env1Decay;     //!< env1 decay in [0.001..5]s
-    Param env1Sustain;   //!< env1 sustain in [0 .. 1]
-    Param env1Release;   //!< env1 release in [0.001..5]s
-    Param env1AttackShape; //!< env attack shape in [0.01..10]
-    Param env1DecayShape; //!< env decay shape in [0.01..10]
-    Param env1ReleaseShape; //!< env release shape in [0.01..10]
-
-    ParamStepped<eModSource> envVolSpeedModSrc1; //!< Volume envelope speed mod source
-    ParamStepped<eModSource> env2SpeedModSrc1; //!< Envelope 2 speed mod source
-    ParamStepped<eModSource> envVolSpeedModSrc2; //!< Volume envelope speed mod source
-    ParamStepped<eModSource> env2SpeedModSrc2; //!< Envelope 2 speed mod source
-
-    Param panDir; //!< pan R/L [-100..100]
-
     ParamStepped<eOnOffToggle> lowFiActivation; //!< Activation of the low fidelity effect
     Param nBitsLowFi; //!< Bit degradation
-
-    ParamDb vol; //!< volume in [0..1]
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;
@@ -193,13 +235,14 @@ public:
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
-
                                                     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams; //!< vector of params to be serialized
                                          // list of only stepSeq params
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
+
+    static Colour getModSourceColour(eModSource source);
 
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().

@@ -45,6 +45,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void onOffSwitchChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -58,8 +59,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> lowFiActive;
     ScopedPointer<MouseOverKnob> nBitsLowFi;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

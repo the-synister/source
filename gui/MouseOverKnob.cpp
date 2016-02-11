@@ -14,7 +14,8 @@
 // contructer & destructer
 MouseOverKnob::MouseOverKnob(const String& name)
     : Slider(name)
-    , modSources({nullptr})
+    , modSources({ nullptr })
+    , modAmounts({ nullptr })
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(18.00f, Font::plain));
@@ -32,6 +33,7 @@ MouseOverKnob::~MouseOverKnob()
 {
     knobLabel = nullptr;
     modSources = {nullptr};
+    modSources = {nullptr};
 }
 //==============================================================================
 
@@ -44,17 +46,35 @@ void MouseOverKnob::initTextBox()
     }
 }
 
-void MouseOverKnob::setModSource(Param *p, int sourceNumber)
+//==============================================================================
+
+/**
+* Init saturn parameters by saving amount knob and modSource parameter.
+*/
+void MouseOverKnob::setModSource(ParamStepped<eModSource> *source, Param *amount, int sourceNumber)
 {
-    modSources[sourceNumber - 1] = p;
+    modSources[sourceNumber - 1] = source;
+    modAmounts[sourceNumber - 1] = amount;
 }
 
-std::array<Param*, 2> MouseOverKnob::getModSources()
+std::array<ParamStepped<eModSource>*, 2> MouseOverKnob::getModSources()
 {
     return modSources;
 }
 
-void MouseOverKnob::setName  (const String& newName) {
+std::array<Param*, 2> MouseOverKnob::getModAmounts()
+{
+    return modAmounts;
+}
+
+//==============================================================================
+
+void MouseOverKnob::setDefaultValue(float val)
+{
+    defaultValue = static_cast<double>(val);
+}
+
+void MouseOverKnob::setName(const String& newName) {
     knobLabel->setText(newName, NotificationType::dontSendNotification);
 }
 
@@ -83,22 +103,20 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 }
 
 /**
-* Right click popup menu.
+* Right click popup menu with some useful items.
 */
 void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
-    // TODO: erben von synthparams und dann hier setzen
-    // mouseOverKnob mit dem amount verbinden über registerSaturn, danach hierüber nur noch params ändern
+    Slider::mouseDown(e);
+
     if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
     {
-        PopupMenu main, sub;
-        sub.addItem(3, "set min");
-        sub.addItem(4, "set max");
+        PopupMenu main;
+        main.addSectionHeader("Current Value: " + String(this->getValue()) + this->getTextValueSuffix());
+        main.addItem(1, "reset value");
+        main.addItem(2, "set min");
+        main.addItem(3, "set max");
 
-        main.addSectionHeader("Test Popup Menu");
-        main.addItem(1, "set 0.0");
-        main.addItem(2, "change colour to red");
-        main.addSubMenu("sub item", sub);
         const int result = main.show();
         if (result == 0)
         {
@@ -106,23 +124,17 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
         }
         else if (result == 1)
         {
-            this->setValue(0.0);
+            this->setValue(defaultValue);
         }
         else if (result == 2)
         {
-            this->setColour(Slider::ColourIds::rotarySliderFillColourId, Colours::red);
-        }
-        else if (result == 3)
-        {
             this->setValue(this->getMinimum());
         }
-        else if (result == 4)
+        else if (result == 3)
         {
             this->setValue(this->getMaximum());
         }
     }
-
-    Slider::mouseDown(e);
 }
 
 /**
@@ -194,7 +206,7 @@ void MouseOverKnob::enablementChanged()
 void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
 {
     knobLabel->setSize(knobWidth, this->getTextBoxHeight());
-    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight());
+    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight() - 5);
 
     ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }

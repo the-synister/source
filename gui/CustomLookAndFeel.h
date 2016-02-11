@@ -107,6 +107,11 @@ public:
     virtual void drawPopupMenuItem(Graphics &g, const Rectangle< int > &area, bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
         const String &text, const String &shortcutKeyText, const Drawable *icon, const Colour *textColour);
 
+    /**
+    * Draw custom popup bubble for slider drag.
+    */
+    virtual void drawBubble(Graphics& g, BubbleComponent& comp, const Point<float>& tip, const Rectangle<float>& body);
+
     /*
     * For changing Font of value popup.
     */
@@ -117,14 +122,21 @@ public:
     */
     virtual int getSliderPopupPlacement(Slider &s);
 
+    //==============================================================================
+
+    /*
+    * Draw custom panel section header.
+    */
+    void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height);
+
 //==============================================================================
 private:
     /**
     * Draw modSources of rotary slider as saturn.
     @param g canvas to draw on
+    @param source modulation source
     @param s destination slider
     @param sourceValue current mod amount value
-    @param unipolar true if modsource is unipolar otherwise bipolar
     @param centreX centre x position
     @param centreY centre y position
     @param radius radius of saturn of
@@ -133,7 +145,7 @@ private:
     @param rotaryStartAngle slider's minimum angle position
     @param rotaryEndAngle slider's maximum angle position
     */
-    void drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
+    void drawModSource(Graphics &g, eModSource source, Slider &s, float sourceValue, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED

@@ -42,12 +42,13 @@ class OscPanel  : public PanelBase,
 {
 public:
     //==============================================================================
-    OscPanel (SynthParams &p);
+    OscPanel (SynthParams &p, int oscillatorNumber);
     ~OscPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateWFShapeControls();
+    void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -59,21 +60,23 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Image waveforms;
+    Rectangle<int> sawFrame = { 0, 20, 30, 20 };
+    Rectangle<int> squareFrame = { 69, 20, 30, 20 };
+    Rectangle<int> noiseFrame = { 35, 0, 30, 20 };
+
+    SynthParams::Osc &osc;
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> ftune1;
     ScopedPointer<MouseOverKnob> lfo1depth1;
-    ScopedPointer<MouseOverKnob> osc1trngAmount;
+    ScopedPointer<MouseOverKnob> trngAmount;
     ScopedPointer<MouseOverKnob> pulsewidth;
     ScopedPointer<MouseOverKnob> pitchRange;
     ScopedPointer<MouseOverKnob> ctune1;
-    ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
-    ScopedPointer<Label> sawlabel;
-    ScopedPointer<Label> squarelabel;
-    ScopedPointer<Label> noiselabel;
     ScopedPointer<MouseOverKnob> amountWidthMod;
     ScopedPointer<ComboBox> osc1FreqModSrc1;
     ScopedPointer<ComboBox> osc1FreqModSrc2;
