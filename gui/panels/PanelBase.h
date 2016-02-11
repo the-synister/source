@@ -103,7 +103,13 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-                                
+                
+                auto c2s = saturnSourceReg.find(c2p.first);
+                
+                if (c2s != saturnSourceReg.end()) {
+                    c2s->second->repaint();
+                }
+                
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();
@@ -149,6 +155,7 @@ protected:
         }
         
         box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
+        
         if (hook) {
             postUpdateHook[box] = hook;
         }
