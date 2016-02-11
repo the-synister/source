@@ -46,7 +46,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
     lfo1depth1->setRange (0, 12, 0);
     lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfo1depth1->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    lfo1depth1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     lfo1depth1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     lfo1depth1->setColour (Slider::textBoxTextColourId, Colours::white);
     lfo1depth1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -76,7 +76,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (pitchRange = new MouseOverKnob ("pitch range"));
     pitchRange->setRange (0, 12, 0);
     pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
-    pitchRange->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    pitchRange->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     pitchRange->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     pitchRange->setColour (Slider::textBoxTextColourId, Colours::white);
     pitchRange->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -204,16 +204,16 @@ void OscPanel::resized()
     //[/UserPreResize]
 
     ftune1->setBounds (8, 170, 64, 64);
-    lfo1depth1->setBounds (84, 30, 64, 64);
-    trngAmount->setBounds (80, 96, 64, 64);
-    pulsewidth->setBounds (80, 96, 64, 64);
-    pitchRange->setBounds (8, 31, 64, 64);
-    ctune1->setBounds (8, 97, 64, 64);
+    lfo1depth1->setBounds (72, 119, 20, 20);
+    trngAmount->setBounds (140, 95, 64, 64);
+    pulsewidth->setBounds (140, 95, 64, 64);
+    pitchRange->setBounds (72, 95, 20, 20);
+    ctune1->setBounds (8, 96, 64, 64);
     waveformVisual->setBounds (75, 160, 123, 72);
     waveformSwitch->setBounds (198, 169, 40, 54);
-    amountWidthMod->setBounds (172, 30, 64, 64);
-    osc1FreqModSrc1->setBounds (144, 96, 64, 16);
-    osc1FreqModSrc2->setBounds (144, 120, 64, 16);
+    amountWidthMod->setBounds (140, 30, 64, 64);
+    osc1FreqModSrc1->setBounds (96, 95, 40, 20);
+    osc1FreqModSrc2->setBounds (96, 119, 40, 20);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -340,31 +340,31 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="84 30 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="72 119 20 20"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
-          textBoxHeight="20" skewFactor="1"/>
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 95 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="80 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 95 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.010000000000000000208" max="0.98999999999999999112"
+          textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 31 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="72 95 20 20"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
-          textBoxHeight="20" skewFactor="1"/>
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 97 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 96 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
@@ -378,16 +378,16 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="172 30 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 30 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
           textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="144 96 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="96 95 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="osc1FreqModSrcBox2" id="58dc64c4649ad205" memberName="osc1FreqModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="144 120 64 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="96 119 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

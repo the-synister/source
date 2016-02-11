@@ -95,7 +95,6 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-// TODO: add case for envelope and are there other cases as well?
 void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, float sourceValue,
     float centreX, float centreY, float radius, float innerCircleSize,
     float currAngle, float rotaryStartAngle, float rotaryEndAngle)
@@ -104,6 +103,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
     const float min = static_cast<float>(s.getMinimum());
     const float max = static_cast<float>(s.getMaximum());
     const float skew = static_cast<float>(s.getSkewFactor());
+    const bool invertedUnipolar = false;
 
     float modStartAngle, modEndAngle, modPosition1, modPosition2;
     float afterModVal1, afterModVal2, coeff;
@@ -113,13 +113,13 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
     if (!s.isModSourceValueConverted())
     {
         // check whether positive or negative unipolar
-        coeff = true ? 1.0f : -1.0f;
+        coeff = invertedUnipolar ? -1.0f : 1.0f;
         afterModVal1 = jmax(min, jmin(val + sourceValue * coeff, max));
     }
     else
     {
         // check whether positive or negative unipolar
-        coeff = true ? 2.0f : 0.5f;
+        coeff = invertedUnipolar ? 0.5f : 2.0f;
         afterModVal1 = jmax(min, jmin(val * std::pow(coeff, sourceValue) , max));
     }
     modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
@@ -132,13 +132,13 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         if (!s.isModSourceValueConverted())
         {
             // check whether positive or negative unipolar
-            coeff = true ? 1.0f : -1.0f;
+            coeff = invertedUnipolar ? -1.0f : 1.0f;
             afterModVal2 = jmax(min, jmin(val - sourceValue * coeff, max));
         }
         else
         {
             // check whether positive or negative unipolar
-            coeff = true ? 0.5f : 2.0f;
+            coeff = invertedUnipolar ? 2.0f : 0.5f;
             afterModVal2 = jmax(min, jmin(val * std::pow(coeff, sourceValue), max));
         }
         modPosition2 = pow((afterModVal2 - min) / (max - min), skew);

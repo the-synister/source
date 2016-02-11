@@ -45,7 +45,7 @@ const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
 const Colour SynthParams::waveformLine (185, 189, 190);
 const Colour SynthParams::waveformBackground(85, 93, 104);
-const Colour SynthParams::otherModulation(255, 255, 255); // add more different colours
+const Colour SynthParams::otherModulation(80, 80, 80); // add more different colours
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
@@ -239,10 +239,11 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
 }
 
 // TODO: add more diverse colours, note that what if lfo modulates lfo? -> same colour, currently draw saturn with saturation
-// 
 Colour SynthParams::getModSourceColour(eModSource source)
 {
     switch (source) {
+        case eModSource::eNone:
+            return Colours::black;
         case eModSource::eVolEnv:
         case eModSource::eEnv2:
         case eModSource::eEnv3:
@@ -250,7 +251,7 @@ Colour SynthParams::getModSourceColour(eModSource source)
         case eModSource::eLFO1:
         case eModSource::eLFO2:
         case eModSource::eLFO3:
-            return SynthParams::lfoColour.withSaturation(1.0f);
+            return SynthParams::lfoColour.withSaturation(1.0f).brighter();
         default:
             return SynthParams::otherModulation;
     }

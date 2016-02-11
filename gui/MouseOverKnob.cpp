@@ -190,6 +190,12 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
 {
     knobWidth = width;
     knobHeight = height;
+
+    if (height < 24)
+    {
+        this->setPopupDisplayEnabled(true, this->getParentComponent());
+    }
+
     Slider::setBounds(x, y, width, height);
 }
 

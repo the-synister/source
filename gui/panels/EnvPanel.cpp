@@ -135,10 +135,6 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(keyVelToEnv1, &envVol.keyVelToEnv);
-    attackShape->setPopupDisplayEnabled(true, this);
-    decayShape->setPopupDisplayEnabled(true, this);
-    releaseShape->setPopupDisplayEnabled(true, this);
-
     //[/UserPreSize]
 
     setSize (266, 252);

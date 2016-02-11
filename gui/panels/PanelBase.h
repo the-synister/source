@@ -103,7 +103,8 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-                
+                c2p.first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(c2p.first->getSelectedId() - COMBO_OFS)));
+
                 auto c2s = saturnSourceReg.find(c2p.first);
                 
                 if (c2s != saturnSourceReg.end()) {
@@ -168,7 +169,8 @@ protected:
             params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
-            
+            it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
+
             auto temp = saturnSourceReg.find(comboboxThatWasChanged);
             
             // update saturn
