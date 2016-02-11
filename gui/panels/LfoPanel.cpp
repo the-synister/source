@@ -168,9 +168,9 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (8, 26, 64, 64);
-    wave->setBounds (133, 66, 64, 24);
+    wave->setBounds (133, 66, 60, 24);
     tempoSyncSwitch->setBounds (83, 96, 150, 24);
-    sineLabel->setBounds (78, 63, 64, 24);
+    sineLabel->setBounds (78, 66, 64, 24);
     squareLabel->setBounds (133, 42, 64, 24);
     sampleHoldLabel2->setBounds (192, 66, 72, 24);
     lfoFadeIn->setBounds (8, 98, 64, 64);
@@ -276,11 +276,10 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="8 26 64 64" rotarysliderfill="ff855050"
-          min="0.010000000000000000208" max="50" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
-          explicitFocusOrder="0" pos="133 66 64 24" thumbcol="ff855050"
+          explicitFocusOrder="0" pos="133 66 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
@@ -289,7 +288,7 @@ BEGIN_JUCER_METADATA
                 buttonText="Tempo Sync" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <LABEL name="sine label" id="b40cd065bdc2086c" memberName="sineLabel"
-         virtualName="" explicitFocusOrder="0" pos="78 63 64 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="78 66 64 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="Sine" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="36"/>

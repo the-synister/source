@@ -149,6 +149,10 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     registerSlider(decayShape1, &env.decayShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(releaseShape1, &env.releaseShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(keyVelToEnv1, &env.keyVelToEnv, std::bind(&Env1Panel::updateCurve, this));
+
+    attackShape1->setPopupDisplayEnabled(true, this);
+    decayShape1->setPopupDisplayEnabled(true, this);
+    releaseShape1->setPopupDisplayEnabled(true, this);
     //[/UserPreSize]
 
     setSize (267, 252);
@@ -206,10 +210,10 @@ void Env1Panel::resized()
 
     env2SpeedModSrc1->setBounds (60, 177, 64, 16);
     env2SpeedModSrc2->setBounds (60, 153, 64, 16);
-    attackTime1->setBounds (12, 39, 64, 64);
-    decayTime1->setBounds (73, 39, 64, 64);
-    sustainLevel1->setBounds (134, 39, 64, 64);
-    releaseTime1->setBounds (199, 39, 64, 64);
+    attackTime1->setBounds (11, 39, 64, 64);
+    decayTime1->setBounds (72, 39, 64, 64);
+    sustainLevel1->setBounds (132, 39, 64, 64);
+    releaseTime1->setBounds (197, 39, 64, 64);
     attackShape1->setBounds (34, 112, 20, 20);
     decayShape1->setBounds (95, 112, 20, 20);
     releaseShape1->setBounds (220, 112, 20, 20);
@@ -330,44 +334,44 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="60 153 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Attack Time" id="c3597517f8c98b63" memberName="attackTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 39 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="11 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="9731927ce4f75586" memberName="decayTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="73 39 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="72 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="c5800da9b4223b05" memberName="sustainLevel1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="134 39 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="132 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="b706f933608906" memberName="releaseTime1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="199 39 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="197 39 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="bd17ed6e5bdc4910" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="34 112 20 20"
-          rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="Decay Shape" id="9bd5989569f5223c" memberName="decayShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="95 112 20 20"
-          rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="Release Shape" id="fb9fa6b3328d7d27" memberName="releaseShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="220 112 20 20"
-          rotarysliderfill="ffbfa65a" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="Vel to Env" id="bee5e0860811e660" memberName="keyVelToEnv1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="12 147 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"

@@ -175,6 +175,11 @@ protected:
         
         if (it != dropdownReg.end()) {
             it->second->setUI(static_cast<float>(std::pow(2,it->first->getSelectedItemIndex())));
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
