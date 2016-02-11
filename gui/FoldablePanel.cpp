@@ -47,7 +47,7 @@ struct FoldablePanel::SectionComponent  : public Component
 
             // draw section header text
             const int textX = (int)(buttonIndent * 4.0f + buttonSize);
-            g.setColour(getSectionColour().brighter());
+            g.setColour(getSectionColour().withSaturation(1.0f).brighter());
             g.setFont(Font(titleHeight * 0.85f, Font::plain));
             g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
         }

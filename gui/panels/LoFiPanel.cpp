@@ -37,6 +37,7 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     nBitsLowFi->setRange (1, 16, 0);
     nBitsLowFi->setSliderStyle (Slider::RotaryVerticalDrag);
     nBitsLowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    nBitsLowFi->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     nBitsLowFi->addListener (this);
 
     addAndMakeVisible (onOffSwitch = new Slider ("lofi switch"));
@@ -151,8 +152,9 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 63 64 64"
-          min="1" max="16" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff2b3240" min="1" max="16" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lofi switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
           virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"

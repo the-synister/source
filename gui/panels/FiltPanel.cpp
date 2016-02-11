@@ -52,6 +52,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     cutoffSlider2->setRange (10, 20000, 1);
     cutoffSlider2->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider2->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new Slider ("passtype switch"));
@@ -173,8 +174,8 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     fillModsourceBox(res1ModSrc1);
     fillModsourceBox(res1ModSrc2);
 
-    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1);
-    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2);
+    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1, cutoffSlider);
+    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2, cutoffSlider);
     registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1);
     registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2);
     registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
@@ -376,8 +377,9 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="204 34 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="" explicitFocusOrder="0" pos="7 52 40 88" thumbcol="ff40ae69"
           trackcol="ffffffff" min="0" max="3" int="1" style="LinearVertical"

@@ -113,13 +113,13 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
     if (!s.isModSourceValueConverted())
     {
         // check whether positive or negative unipolar
-        coeff = false ? 1.0f : -1.0f;
+        coeff = true ? 1.0f : -1.0f;
         afterModVal1 = jmax(min, jmin(val + sourceValue * coeff, max));
     }
     else
     {
         // check whether positive or negative unipolar
-        coeff = false ? 2.0f : 0.5f;
+        coeff = true ? 2.0f : 0.5f;
         afterModVal1 = jmax(min, jmin(val * std::pow(coeff, sourceValue) , max));
     }
     modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
@@ -132,13 +132,13 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         if (!s.isModSourceValueConverted())
         {
             // check whether positive or negative unipolar
-            coeff = false ? 1.0f : -1.0f;
+            coeff = true ? 1.0f : -1.0f;
             afterModVal2 = jmax(min, jmin(val - sourceValue * coeff, max));
         }
         else
         {
             // check whether positive or negative unipolar
-            coeff = false ? 0.5f : 2.0f;
+            coeff = true ? 0.5f : 2.0f;
             afterModVal2 = jmax(min, jmin(val * std::pow(coeff, sourceValue), max));
         }
         modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
@@ -151,7 +151,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
 
     // draw saturns
     Path saturn;
-    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source).brighter() : Colours::lightgrey);
+    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : Colours::lightgrey);
     saturn.addPieSegment(centreX - radius, centreY - radius, radius * 2.0f, radius * 2.0f, modStartAngle, modEndAngle, innerCircleSize * 1.03f);
     g.fillPath(saturn);
 }

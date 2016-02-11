@@ -71,7 +71,7 @@ public:
     static const Colour envelopeCurveBackground;
     static const Colour waveformLine;
     static const Colour waveformBackground;
-    static const Colour otherModulation; // TODO: add more diverse colours
+    static const Colour otherModulation;
     
     static const char* getModSrcName(int index);
 
