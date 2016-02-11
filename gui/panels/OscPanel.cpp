@@ -154,9 +154,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
 
     //[Constructor] You can add your own custom stuff here..
-    trngAmount->setVisible(false);/*
-    osc2trngAmount->setVisible(false);
-    osc3trngAmount->setVisible(false);*/
+    trngAmount->setVisible(false);
     waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize);
     //[/Constructor]
 }
