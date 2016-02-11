@@ -25,9 +25,15 @@ public:
 
     void initTextBox();
 
-    void setModSource(ParamStepped<eModSource> *source, Param *amount, int sourceNumber);
+    /**
+    *
+    @param conversion if source unit is different from destination unit used for filter
+           where source is in octave and destination is in freq
+    */
+    void setModSource(ParamStepped<eModSource> *source, Param *amount, bool convert, int sourceNumber);
     std::array<ParamStepped<eModSource>*, 2> getModSources();
     std::array<Param*, 2> getModAmounts();
+    bool isModSourceValueConverted();
 
     void setDefaultValue(float val);
 
@@ -53,6 +59,7 @@ private:
 
     std::array<Param*, 2> modAmounts;
     std::array<ParamStepped<eModSource>*, 2> modSources;
+    bool modSourceValueConverted;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

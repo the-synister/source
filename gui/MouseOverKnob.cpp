@@ -16,6 +16,7 @@ MouseOverKnob::MouseOverKnob(const String& name)
     : Slider(name)
     , modSources({ nullptr })
     , modAmounts({ nullptr })
+    , modSourceValueConverted(false)
 {
     addAndMakeVisible(knobLabel = new Label("new label", TRANS(name)));
     knobLabel->setFont(Font(18.00f, Font::plain));
@@ -51,10 +52,11 @@ void MouseOverKnob::initTextBox()
 /**
 * Init saturn parameters by saving amount knob and modSource parameter.
 */
-void MouseOverKnob::setModSource(ParamStepped<eModSource> *source, Param *amount, int sourceNumber)
+void MouseOverKnob::setModSource(ParamStepped<eModSource> *source, Param *amount, bool convert, int sourceNumber)
 {
     modSources[sourceNumber - 1] = source;
     modAmounts[sourceNumber - 1] = amount;
+    modSourceValueConverted = convert;
 }
 
 std::array<ParamStepped<eModSource>*, 2> MouseOverKnob::getModSources()
@@ -65,6 +67,11 @@ std::array<ParamStepped<eModSource>*, 2> MouseOverKnob::getModSources()
 std::array<Param*, 2> MouseOverKnob::getModAmounts()
 {
     return modAmounts;
+}
+
+bool MouseOverKnob::isModSourceValueConverted()
+{
+    return modSourceValueConverted;
 }
 
 //==============================================================================

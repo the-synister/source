@@ -53,8 +53,8 @@ protected:
 
     // NOTE: sourceNumber values 1 or 2
     // TODO: change it to an enum?
-    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber) {
-        dest->setModSource(modSource, modAmount, sourceNumber);
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, bool convert, int sourceNumber) {
+        dest->setModSource(modSource, modAmount, convert, sourceNumber);
 
         // TODO:
         saturnSourceReg[dest] = modSource;

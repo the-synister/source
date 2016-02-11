@@ -180,8 +180,8 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
     registerCombobox(res1ModSrc2, &filter.resonanceModSrc2);
 
-    registerSaturnSource(cutoffSlider, modSliderCut, &filter.lpCutModSrc1, &filter.lpModAmount1, 1);
-    registerSaturnSource(cutoffSlider, modSliderCut2, &filter.lpCutModSrc2, &filter.lpModAmount2, 2);
+    registerSaturnSource(cutoffSlider, modSliderCut, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
+    registerSaturnSource(cutoffSlider, modSliderCut2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
 
     modSliderCut->setPopupDisplayEnabled(true, this);
     modSliderCut2->setPopupDisplayEnabled(true, this);

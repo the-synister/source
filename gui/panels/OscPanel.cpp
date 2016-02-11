@@ -131,8 +131,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, pitchRange, &osc.pitchModSrc1, &osc.pitchModAmount1, 1);
-    registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModSrc2, &osc.pitchModAmount2, 2);
+    registerSaturnSource(ctune1, pitchRange, &osc.pitchModSrc1, &osc.pitchModAmount1, false, 1);
+    registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModSrc2, &osc.pitchModAmount2, false, 2);
 
     registerSlider(ftune1, &osc.fine);
     registerSlider(ctune1, &osc.coarse);

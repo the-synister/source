@@ -145,7 +145,7 @@ private:
     @param rotaryStartAngle slider's minimum angle position
     @param rotaryEndAngle slider's maximum angle position
     */
-    void drawModSource(Graphics &g, eModSource source, Slider &s, float sourceValue, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
+    void drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, float sourceValue, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED

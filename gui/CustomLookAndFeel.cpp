@@ -58,7 +58,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
             eModSource source1 = sources[0]->getStep();
             if (source1 != eModSource::eNone)
             {
-                drawModSource(g, source1, s, amounts[0]->get(), centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
+                drawModSource(g, source1, static_cast<MouseOverKnob&>(s), amounts[0]->get(), centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
             }
         }
 
@@ -68,7 +68,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
             eModSource source2 = sources[1]->getStep();
             if (source2 != eModSource::eNone)
             {
-                drawModSource(g, source2, s, amounts[1]->get(), centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
+                drawModSource(g, source2, static_cast<MouseOverKnob&>(s), amounts[1]->get(), centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
             }
         }
 
@@ -95,7 +95,8 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, Slider &s, float sourceValue,
+// TODO: add case for envelope and are there other cases as well?
+void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, float sourceValue,
     float centreX, float centreY, float radius, float innerCircleSize,
     float currAngle, float rotaryStartAngle, float rotaryEndAngle)
 {
@@ -105,36 +106,47 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, Slider &s,
     const float skew = static_cast<float>(s.getSkewFactor());
 
     float modStartAngle, modEndAngle, modPosition1, modPosition2;
-    float afterModVal1, afterModVal2;
+    float afterModVal1, afterModVal2, coeff;
 
-    // code sparen indem unipolar immer gemacht wird und wenn nötig 2. hälfte dazu kommt
-    if (isUnipolar(source))
+    // calculate first saturn half
+    // modSource value does not need conversion
+    if (!s.isModSourceValueConverted())
     {
-        // TODO: je nach dem ob log oder linear, muss man hier nur aftermodval ändern
-        // Param::bipolarToFreq() im filter verwenden
-        // idee val * 2^sourceValue
-
-        afterModVal1 = jmax(min, jmin(val + sourceValue, max));
-
-        //afterModVal1 = jmax(min, jmin(val * std::pow(2.0f, sourceValue) , max)); // if positive
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-
-        modStartAngle = currAngle;
-        modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+        // check whether positive or negative unipolar
+        coeff = false ? 1.0f : -1.0f;
+        afterModVal1 = jmax(min, jmin(val + sourceValue * coeff, max));
     }
     else
     {
-        afterModVal1 = jmax(min, jmin(val + sourceValue, max));
-        afterModVal2 = jmax(min, jmin(val - sourceValue, max));
-
-        afterModVal1 = jmax(min, jmin(val * std::pow(2.0f, sourceValue), max));
-        afterModVal2 = jmax(min, jmin(val * std::pow(0.5f, sourceValue), max));
-
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+        // check whether positive or negative unipolar
+        coeff = false ? 2.0f : 0.5f;
+        afterModVal1 = jmax(min, jmin(val * std::pow(coeff, sourceValue) , max));
+    }
+    modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+    modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+    
+    // if bipolar then add other half
+    if (!isUnipolar(source))
+    {
+        // modSource value does not need conversion
+        if (!s.isModSourceValueConverted())
+        {
+            // check whether positive or negative unipolar
+            coeff = false ? 1.0f : -1.0f;
+            afterModVal2 = jmax(min, jmin(val - sourceValue * coeff, max));
+        }
+        else
+        {
+            // check whether positive or negative unipolar
+            coeff = false ? 0.5f : 2.0f;
+            afterModVal2 = jmax(min, jmin(val * std::pow(coeff, sourceValue), max));
+        }
         modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
-
-        modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
         modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
+    }
+    else
+    {
+        modEndAngle = currAngle;
     }
 
     // draw saturns
