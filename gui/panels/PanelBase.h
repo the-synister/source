@@ -56,9 +56,6 @@ protected:
     void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber) {
         dest->setModSource(modSource, modAmount, sourceNumber);
 
-        // TODO:
-        // saturnSourceReg[dest] = modSource;
-
         auto temp = saturnReg.find(dest);
         if (temp == saturnReg.end()) {
             std::array<Slider*, 2> newSource = {nullptr};
@@ -67,14 +64,6 @@ protected:
         } else {
             temp->second[sourceNumber-1] = source;
         }
-    }
-    
-    void updateSaturnSource(MouseOverKnob *dest, int sourceNumber)
-    {
-        //auto temp = saturnReg.find(dest);
-        
-        
-        dest->repaint();
     }
 
     void updateDirtySliders() {
@@ -108,14 +97,6 @@ protected:
                 }
             }
         }
-
-        // TODO:
-        /*
-        for (auto k2s : saturnSourceReg) {
-            if (k2s.second->isUIDirty()) {
-                k2s.first->repaint();
-            }
-        }*/
     }
 
     void updateDirtyBoxes() {
