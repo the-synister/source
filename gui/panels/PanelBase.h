@@ -43,7 +43,7 @@ protected:
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
-        slider->setDefaultValue(p->getDefault());
+        slider->setDefaultValue(p->getUI());
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;
@@ -103,23 +103,23 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-                c2p.first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(c2p.first->getSelectedId() - COMBO_OFS)));
+                c2p.first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(c2p.first->getSelectedId() + COMBO_OFS)));
 
                 auto c2s = saturnSourceReg.find(c2p.first);
-                
+
                 if (c2s != saturnSourceReg.end()) {
                     c2s->second->repaint();
                 }
-                
+
                 auto itHook = postUpdateHook.find(c2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();
                 }
             }
         }
-        
+
     }
-    
+
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
     void updateDirtyDropdowns()
     {
@@ -127,7 +127,7 @@ protected:
             if (d2p.second->isUIDirty()) {
                 d2p.first->setText("1/" + String(d2p.second->getUI()));
             }
-            
+
             auto itHook = postUpdateHook.find(d2p.first);
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
@@ -162,22 +162,22 @@ protected:
             return false;
         }
     }
-  
+
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
     void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
     {
         dropdownReg[dropdown] = p;
-        
+
         if (hook) {
             postUpdateHook[dropdown] = hook;
         }
     }
-    
+
     // TODO: Change for ParamStepped?
     bool handleDropdown(ComboBox* dropdownThatWasChanged)
     {
         auto it = dropdownReg.find(dropdownThatWasChanged);
-        
+
         if (it != dropdownReg.end()) {
             it->second->setUI(static_cast<float>(std::pow(2,it->first->getSelectedItemIndex())));
             return true;
@@ -190,14 +190,14 @@ protected:
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
-        
+
         // couple combobox with saturn knob
         if (modDest != nullptr) {
             saturnSourceReg[box] = modDest;
         }
-        
+
         box->setSelectedId(static_cast<int>(p->getStep())+COMBO_OFS);
-        
+
         if (hook) {
             postUpdateHook[box] = hook;
         }
@@ -211,9 +211,10 @@ protected:
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
             it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
+            it->first->setText(SynthParams::getShortModSrcName(it->first->getSelectedId() - COMBO_OFS), dontSendNotification);
 
             auto temp = saturnSourceReg.find(comboboxThatWasChanged);
-            
+
             // update saturn
             if (temp != saturnSourceReg.end()) {
                 temp->second->repaint();

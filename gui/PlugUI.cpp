@@ -89,6 +89,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     freq->initTextBox();
+    freq->setDefaultValue(params.freq.getDefault());
     //[/UserPreSize]
 
     setSize (800, 900);

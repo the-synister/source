@@ -244,6 +244,8 @@ public:
 
     static Colour getModSourceColour(eModSource source);
 
+    static String getShortModSrcName(int index);
+
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().
     @param destData host data

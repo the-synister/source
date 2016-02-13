@@ -141,7 +141,7 @@ private:
     @param g canvas to draw on
     @param source modulation source
     @param s destination slider
-    @param sourceValue current mod amount value
+    @param m mod amount parameter
     @param centreX centre x position
     @param centreY centre y position
     @param radius radius of saturn of
@@ -150,7 +150,7 @@ private:
     @param rotaryStartAngle slider's minimum angle position
     @param rotaryEndAngle slider's maximum angle position
     */
-    void drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, float sourceValue, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
+    void drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, Param *modAmount, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED

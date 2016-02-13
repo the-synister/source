@@ -27,6 +27,11 @@ namespace {
         "LFO1", "LFO2", "LFO3", "VolEnvelope", "Envelope2", "Envelope3", nullptr
     };
 
+    static const char *modSourceNamesShort[] = {
+        "X", "M", "M", "M", "M", "M", "M", "C", "C",
+        "1", "2", "3", "1", "2", "3", nullptr
+    };
+
     static const char *waveformNames[] = {
         "Square", "Saw", "White-noise"
     };
@@ -339,6 +344,18 @@ const char * SynthParams::getModSrcName(int index)
         return modsourcenames[index];
     } else {
         return "unknown";
+    }
+}
+
+
+String SynthParams::getShortModSrcName(int index)
+{
+    if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) {
+        return modSourceNamesShort[index];
+    }
+    else 
+    {
+        return "?";
     }
 }
 

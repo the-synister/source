@@ -58,7 +58,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
             eModSource source1 = sources[0]->getStep();
             if (source1 != eModSource::eNone)
             {
-                drawModSource(g, source1, static_cast<MouseOverKnob&>(s), amounts[0]->get(), centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
+                drawModSource(g, source1, static_cast<MouseOverKnob&>(s), amounts[0], centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
             }
         }
 
@@ -68,7 +68,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
             eModSource source2 = sources[1]->getStep();
             if (source2 != eModSource::eNone)
             {
-                drawModSource(g, source2, static_cast<MouseOverKnob&>(s), amounts[1]->get(), centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
+                drawModSource(g, source2, static_cast<MouseOverKnob&>(s), amounts[1], centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
             }
         }
 
@@ -95,9 +95,9 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, float sourceValue,
+void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, Param *modAmount,
     float centreX, float centreY, float radius, float innerCircleSize,
-    float currAngle, float rotaryStartAngle, float rotaryEndAngle)
+    float /*currAngle*/, float rotaryStartAngle, float rotaryEndAngle)
 {
     const float val = static_cast<float>(s.getValue());
     const float min = static_cast<float>(s.getMinimum());
@@ -106,48 +106,46 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
     const bool invertedUnipolar = false;
 
     float modStartAngle, modEndAngle, modPosition1, modPosition2;
-    float afterModVal1, afterModVal2, coeff;
+    float afterModVal1, afterModVal2, base, intensity;
 
-    // calculate first saturn half
-    // modSource value does not need conversion
-    if (!s.isModSourceValueConverted())
+    // unipolar
+    if (isUnipolar(source))
     {
-        // check whether positive or negative unipolar
-        coeff = invertedUnipolar ? -1.0f : 1.0f;
-        afterModVal1 = jmax(min, jmin(val + sourceValue * coeff, max));
-    }
-    else
-    {
-        // check whether positive or negative unipolar
-        coeff = invertedUnipolar ? 0.5f : 2.0f;
-        afterModVal1 = jmax(min, jmin(val * std::pow(coeff, sourceValue) , max));
-    }
-    modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-    modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
-    
-    // if bipolar then add other half
-    if (!isUnipolar(source))
-    {
-        // modSource value does not need conversion
-        if (!s.isModSourceValueConverted())
+        // calculate intensity for unipolar direction
+        intensity = toBipolar(modAmount->getMin(), modAmount->getMax(), modAmount->get());
+
+        // if conversion is needed (for cases of octave to frequency)
+        if (s.isModSourceValueConverted())
         {
-            // check whether positive or negative unipolar
-            coeff = invertedUnipolar ? -1.0f : 1.0f;
-            afterModVal2 = jmax(min, jmin(val - sourceValue * coeff, max));
+            base = intensity < 0.0f ? 0.5f : 2.0f;
+            afterModVal1 = jmax(min, jmin(val * std::pow(base, abs(intensity * modAmount->getMax())), max));
         }
         else
         {
-            // check whether positive or negative unipolar
-            coeff = invertedUnipolar ? 2.0f : 0.5f;
-            afterModVal2 = jmax(min, jmin(val * std::pow(coeff, sourceValue), max));
+            afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
         }
-        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
-        modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
+        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = pow((val - min) / (max - min), skew);
     }
     else
     {
-        modEndAngle = currAngle;
+        // if conversion is needed (for cases of octave to frequency)
+        if (s.isModSourceValueConverted())
+        {
+            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
+            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
+        }
+        else
+        {
+            afterModVal1 = jmax(min, jmin(val + modAmount->get(), max));
+            afterModVal2 = jmax(min, jmin(val - modAmount->get(), max));
+        }
+        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
     }
+
+    modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+    modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
 
     // draw saturns
     Path saturn;
@@ -501,7 +499,8 @@ void CustomLookAndFeel::drawComboBox(Graphics &g, int width, int height, bool /*
                       buttonX + buttonW * arrowOffset, buttonY + buttonH * arrowOffset,
                       buttonX + buttonW * arrowOffset, buttonY + buttonH * (1.0f - arrowOffset));
 
-        g.setColour(c.findColour(ComboBox::ColourIds::arrowColourId));
+        Colour arrowColour(c.findColour(ComboBox::ColourIds::arrowColourId));
+        g.setColour(c.isMouseOver()? arrowColour.brighter() : arrowColour);
         g.fillPath(p);
     }
 }

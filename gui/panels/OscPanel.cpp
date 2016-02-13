@@ -36,27 +36,27 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (ftune1 = new MouseOverKnob ("fine tune 1"));
     ftune1->setRange (-100, 100, 0);
     ftune1->setSliderStyle (Slider::RotaryVerticalDrag);
-    ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     ftune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     ftune1->setColour (Slider::textBoxTextColourId, Colours::white);
     ftune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     ftune1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     ftune1->addListener (this);
 
-    addAndMakeVisible (lfo1depth1 = new MouseOverKnob ("LFO depth 1"));
-    lfo1depth1->setRange (0, 12, 0);
-    lfo1depth1->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfo1depth1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    lfo1depth1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    lfo1depth1->setColour (Slider::textBoxTextColourId, Colours::white);
-    lfo1depth1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    lfo1depth1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    lfo1depth1->addListener (this);
+    addAndMakeVisible (pitchModAmount2 = new MouseOverKnob ("pitch mod amount 2"));
+    pitchModAmount2->setRange (0, 12, 0);
+    pitchModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
+    pitchModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    pitchModAmount2->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    pitchModAmount2->setColour (Slider::textBoxTextColourId, Colours::white);
+    pitchModAmount2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    pitchModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    pitchModAmount2->addListener (this);
 
     addAndMakeVisible (trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
     trngAmount->setRange (0, 1, 0);
     trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
-    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     trngAmount->setColour (Slider::textBoxTextColourId, Colours::white);
     trngAmount->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -66,27 +66,27 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
     pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
-    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     pulsewidth->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     pulsewidth->setColour (Slider::textBoxTextColourId, Colours::white);
     pulsewidth->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     pulsewidth->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pulsewidth->addListener (this);
 
-    addAndMakeVisible (pitchRange = new MouseOverKnob ("pitch range"));
-    pitchRange->setRange (0, 12, 0);
-    pitchRange->setSliderStyle (Slider::RotaryVerticalDrag);
-    pitchRange->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    pitchRange->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    pitchRange->setColour (Slider::textBoxTextColourId, Colours::white);
-    pitchRange->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    pitchRange->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    pitchRange->addListener (this);
+    addAndMakeVisible (pitchModAmount1 = new MouseOverKnob ("pitch mod amount 1"));
+    pitchModAmount1->setRange (0, 12, 0);
+    pitchModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
+    pitchModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    pitchModAmount1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    pitchModAmount1->setColour (Slider::textBoxTextColourId, Colours::white);
+    pitchModAmount1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    pitchModAmount1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    pitchModAmount1->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
     ctune1->setRange (-11, 11, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
-    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     ctune1->setColour (Slider::textBoxTextColourId, Colours::white);
     ctune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -104,50 +104,178 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     waveformSwitch->setColour (Slider::trackColourId, Colours::white);
     waveformSwitch->addListener (this);
 
-    addAndMakeVisible (amountWidthMod = new MouseOverKnob ("Amount width mod"));
-    amountWidthMod->setRange (0, 1, 0);
-    amountWidthMod->setSliderStyle (Slider::RotaryVerticalDrag);
-    amountWidthMod->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
-    amountWidthMod->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
-    amountWidthMod->setColour (Slider::textBoxTextColourId, Colours::white);
-    amountWidthMod->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
-    amountWidthMod->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
-    amountWidthMod->addListener (this);
+    addAndMakeVisible (widthModAmount1 = new MouseOverKnob ("width mod amount 1"));
+    widthModAmount1->setRange (0, 1, 0);
+    widthModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
+    widthModAmount1->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
+    widthModAmount1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    widthModAmount1->setColour (Slider::textBoxTextColourId, Colours::white);
+    widthModAmount1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    widthModAmount1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    widthModAmount1->addListener (this);
 
-    addAndMakeVisible (osc1FreqModSrc1 = new ComboBox ("osc1FreqModSrcBox1"));
-    osc1FreqModSrc1->setEditableText (false);
-    osc1FreqModSrc1->setJustificationType (Justification::centred);
-    osc1FreqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
-    osc1FreqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    osc1FreqModSrc1->addListener (this);
+    addAndMakeVisible (pitchModSrc1 = new ComboBox ("pitch mod source 1"));
+    pitchModSrc1->setEditableText (false);
+    pitchModSrc1->setJustificationType (Justification::centred);
+    pitchModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    pitchModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    pitchModSrc1->addListener (this);
 
-    addAndMakeVisible (osc1FreqModSrc2 = new ComboBox ("osc1FreqModSrcBox2"));
-    osc1FreqModSrc2->setEditableText (false);
-    osc1FreqModSrc2->setJustificationType (Justification::centred);
-    osc1FreqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
-    osc1FreqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    osc1FreqModSrc2->addListener (this);
+    addAndMakeVisible (pitchModSrc2 = new ComboBox ("pitch mod source 2"));
+    pitchModSrc2->setEditableText (false);
+    pitchModSrc2->setJustificationType (Justification::centred);
+    pitchModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    pitchModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    pitchModSrc2->addListener (this);
+
+    addAndMakeVisible (gain = new MouseOverKnob ("gain knob"));
+    gain->setRange (-96, 12, 0);
+    gain->setSliderStyle (Slider::RotaryVerticalDrag);
+    gain->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    gain->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    gain->setColour (Slider::textBoxTextColourId, Colours::white);
+    gain->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    gain->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    gain->addListener (this);
+
+    addAndMakeVisible (pan = new MouseOverKnob ("pan knob"));
+    pan->setRange (-100, 100, 0);
+    pan->setSliderStyle (Slider::RotaryVerticalDrag);
+    pan->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    pan->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    pan->setColour (Slider::textBoxTextColourId, Colours::white);
+    pan->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    pan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    pan->addListener (this);
+
+    addAndMakeVisible (widthModAmount2 = new MouseOverKnob ("width mod amount 2"));
+    widthModAmount2->setRange (0, 1, 0);
+    widthModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
+    widthModAmount2->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
+    widthModAmount2->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    widthModAmount2->setColour (Slider::textBoxTextColourId, Colours::white);
+    widthModAmount2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    widthModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    widthModAmount2->addListener (this);
+
+    addAndMakeVisible (widthModSrc1 = new ComboBox ("width mod source 1"));
+    widthModSrc1->setEditableText (false);
+    widthModSrc1->setJustificationType (Justification::centred);
+    widthModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    widthModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    widthModSrc1->addListener (this);
+
+    addAndMakeVisible (widthModSrc2 = new ComboBox ("width mod source 2"));
+    widthModSrc2->setEditableText (false);
+    widthModSrc2->setJustificationType (Justification::centred);
+    widthModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    widthModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    widthModSrc2->addListener (this);
+
+    addAndMakeVisible (gainModAmount2 = new MouseOverKnob ("gain mod amount 2"));
+    gainModAmount2->setRange (0, 12, 0);
+    gainModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
+    gainModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    gainModAmount2->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    gainModAmount2->setColour (Slider::textBoxTextColourId, Colours::white);
+    gainModAmount2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    gainModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    gainModAmount2->addListener (this);
+
+    addAndMakeVisible (gainModAmount1 = new MouseOverKnob ("gain mod amount 1"));
+    gainModAmount1->setRange (0, 12, 0);
+    gainModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
+    gainModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    gainModAmount1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    gainModAmount1->setColour (Slider::textBoxTextColourId, Colours::white);
+    gainModAmount1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    gainModAmount1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    gainModAmount1->addListener (this);
+
+    addAndMakeVisible (gainModSrc1 = new ComboBox ("gain mod source 1"));
+    gainModSrc1->setEditableText (false);
+    gainModSrc1->setJustificationType (Justification::centred);
+    gainModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    gainModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    gainModSrc1->addListener (this);
+
+    addAndMakeVisible (gainModSrc2 = new ComboBox ("gain mod source 2"));
+    gainModSrc2->setEditableText (false);
+    gainModSrc2->setJustificationType (Justification::centred);
+    gainModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    gainModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    gainModSrc2->addListener (this);
+
+    addAndMakeVisible (panModAmount2 = new MouseOverKnob ("pan mod amount 2"));
+    panModAmount2->setRange (0, 12, 0);
+    panModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
+    panModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    panModAmount2->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    panModAmount2->setColour (Slider::textBoxTextColourId, Colours::white);
+    panModAmount2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    panModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    panModAmount2->addListener (this);
+
+    addAndMakeVisible (panModAmount1 = new MouseOverKnob ("pan mod amount 1"));
+    panModAmount1->setRange (0, 12, 0);
+    panModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
+    panModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
+    panModAmount1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    panModAmount1->setColour (Slider::textBoxTextColourId, Colours::white);
+    panModAmount1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    panModAmount1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    panModAmount1->addListener (this);
+
+    addAndMakeVisible (panModSrc1 = new ComboBox ("pan mod source 1"));
+    panModSrc1->setEditableText (false);
+    panModSrc1->setJustificationType (Justification::centred);
+    panModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    panModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    panModSrc1->addListener (this);
+
+    addAndMakeVisible (panModSrc2 = new ComboBox ("pan mod source 2"));
+    panModSrc2->setEditableText (false);
+    panModSrc2->setJustificationType (Justification::centred);
+    panModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    panModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    panModSrc2->addListener (this);
 
 
     //[UserPreSize]
     // NOTE: test wise
-    registerSaturnSource(ctune1, pitchRange, &osc.pitchModSrc1, &osc.pitchModAmount1, false, 1);
-    registerSaturnSource(ctune1, lfo1depth1, &osc.pitchModSrc2, &osc.pitchModAmount2, false, 2);
+    registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, false, 1);
+    registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, false, 2);
 
+    registerSlider(gain, &osc.vol);
+    registerSlider(pan, &osc.panDir);
     registerSlider(ftune1, &osc.fine);
     registerSlider(ctune1, &osc.coarse);
-    registerSlider(pitchRange, &osc.pitchModAmount1);
-    registerSlider(lfo1depth1, &osc.pitchModAmount2);
+    registerSlider(pitchModAmount1, &osc.pitchModAmount1);
+    registerSlider(pitchModAmount2, &osc.pitchModAmount2);
     registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(amountWidthMod, &osc.shapeModAmount);
+    registerSlider(widthModAmount1, &osc.shapeModAmount);
+    //registerSlider(widthModAmount2, &osc.shapeModAmount2);
 
-    fillModsourceBox(osc1FreqModSrc1);
-    fillModsourceBox(osc1FreqModSrc2);
+    // TODO: register other boxes
+    fillModsourceBox(pitchModSrc1);
+    fillModsourceBox(pitchModSrc2);
+    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, ctune1);
+    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, ctune1);
 
-    registerCombobox(osc1FreqModSrc1, &osc.pitchModSrc1, ctune1);
-    registerCombobox(osc1FreqModSrc2, &osc.pitchModSrc2, ctune1);
+    fillModsourceBox(widthModSrc1);
+    fillModsourceBox(widthModSrc2);
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, trngAmount);
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, trngAmount);
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, pulsewidth);
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, pulsewidth);
+
+    fillModsourceBox(panModSrc1);
+    fillModsourceBox(panModSrc2);
+
+    fillModsourceBox(gainModSrc1);
+    fillModsourceBox(gainModSrc2);
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -155,6 +283,17 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
     //[Constructor] You can add your own custom stuff here..
     trngAmount->setVisible(false);
+    gain->setSkewFactorFromMidPoint(-6.0);
+
+    pitchModAmount1->setAlwaysOnTop(true);
+    pitchModAmount2->setAlwaysOnTop(true);
+    gainModAmount1->setAlwaysOnTop(true);
+    gainModAmount2->setAlwaysOnTop(true);
+    widthModAmount1->setAlwaysOnTop(true);
+    widthModAmount2->setAlwaysOnTop(true);
+    panModAmount1->setAlwaysOnTop(true);
+    panModAmount2->setAlwaysOnTop(true);
+
     waveforms = ImageCache::getFromMemory(BinaryData::sineswitch_noise_png, BinaryData::sineswitch_noise_pngSize);
     //[/Constructor]
 }
@@ -165,16 +304,29 @@ OscPanel::~OscPanel()
     //[/Destructor_pre]
 
     ftune1 = nullptr;
-    lfo1depth1 = nullptr;
+    pitchModAmount2 = nullptr;
     trngAmount = nullptr;
     pulsewidth = nullptr;
-    pitchRange = nullptr;
+    pitchModAmount1 = nullptr;
     ctune1 = nullptr;
     waveformVisual = nullptr;
     waveformSwitch = nullptr;
-    amountWidthMod = nullptr;
-    osc1FreqModSrc1 = nullptr;
-    osc1FreqModSrc2 = nullptr;
+    widthModAmount1 = nullptr;
+    pitchModSrc1 = nullptr;
+    pitchModSrc2 = nullptr;
+    gain = nullptr;
+    pan = nullptr;
+    widthModAmount2 = nullptr;
+    widthModSrc1 = nullptr;
+    widthModSrc2 = nullptr;
+    gainModAmount2 = nullptr;
+    gainModAmount1 = nullptr;
+    gainModSrc1 = nullptr;
+    gainModSrc2 = nullptr;
+    panModAmount2 = nullptr;
+    panModAmount1 = nullptr;
+    panModSrc1 = nullptr;
+    panModSrc2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -204,16 +356,29 @@ void OscPanel::resized()
     //[/UserPreResize]
 
     ftune1->setBounds (8, 170, 64, 64);
-    lfo1depth1->setBounds (72, 119, 20, 20);
-    trngAmount->setBounds (140, 95, 64, 64);
-    pulsewidth->setBounds (140, 95, 64, 64);
-    pitchRange->setBounds (72, 95, 20, 20);
-    ctune1->setBounds (8, 96, 64, 64);
+    pitchModAmount2->setBounds (65, 124, 18, 18);
+    trngAmount->setBounds (127, 100, 64, 64);
+    pulsewidth->setBounds (127, 100, 64, 64);
+    pitchModAmount1->setBounds (65, 100, 18, 18);
+    ctune1->setBounds (8, 100, 64, 64);
     waveformVisual->setBounds (75, 160, 123, 72);
     waveformSwitch->setBounds (198, 169, 40, 54);
-    amountWidthMod->setBounds (140, 30, 64, 64);
-    osc1FreqModSrc1->setBounds (96, 95, 40, 20);
-    osc1FreqModSrc2->setBounds (96, 119, 40, 20);
+    widthModAmount1->setBounds (184, 100, 18, 18);
+    pitchModSrc1->setBounds (88, 100, 40, 18);
+    pitchModSrc2->setBounds (88, 124, 40, 18);
+    gain->setBounds (8, 34, 64, 64);
+    pan->setBounds (127, 34, 64, 64);
+    widthModAmount2->setBounds (184, 124, 18, 18);
+    widthModSrc1->setBounds (207, 100, 40, 18);
+    widthModSrc2->setBounds (207, 124, 40, 18);
+    gainModAmount2->setBounds (65, 58, 18, 18);
+    gainModAmount1->setBounds (65, 34, 18, 18);
+    gainModSrc1->setBounds (88, 34, 40, 18);
+    gainModSrc2->setBounds (88, 58, 40, 18);
+    panModAmount2->setBounds (184, 58, 18, 18);
+    panModAmount1->setBounds (184, 34, 18, 18);
+    panModSrc1->setBounds (207, 34, 40, 18);
+    panModSrc2->setBounds (207, 58, 40, 18);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -230,10 +395,10 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_ftune1] -- add your slider handling code here..
         //[/UserSliderCode_ftune1]
     }
-    else if (sliderThatWasMoved == lfo1depth1)
+    else if (sliderThatWasMoved == pitchModAmount2)
     {
-        //[UserSliderCode_lfo1depth1] -- add your slider handling code here..
-        //[/UserSliderCode_lfo1depth1]
+        //[UserSliderCode_pitchModAmount2] -- add your slider handling code here..
+        //[/UserSliderCode_pitchModAmount2]
     }
     else if (sliderThatWasMoved == trngAmount)
     {
@@ -245,10 +410,10 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_pulsewidth] -- add your slider handling code here..
         //[/UserSliderCode_pulsewidth]
     }
-    else if (sliderThatWasMoved == pitchRange)
+    else if (sliderThatWasMoved == pitchModAmount1)
     {
-        //[UserSliderCode_pitchRange] -- add your slider handling code here..
-        //[/UserSliderCode_pitchRange]
+        //[UserSliderCode_pitchModAmount1] -- add your slider handling code here..
+        //[/UserSliderCode_pitchModAmount1]
     }
     else if (sliderThatWasMoved == ctune1)
     {
@@ -260,10 +425,45 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_waveformSwitch] -- add your slider handling code here..
         //[/UserSliderCode_waveformSwitch]
     }
-    else if (sliderThatWasMoved == amountWidthMod)
+    else if (sliderThatWasMoved == widthModAmount1)
     {
-        //[UserSliderCode_amountWidthMod] -- add your slider handling code here..
-        //[/UserSliderCode_amountWidthMod]
+        //[UserSliderCode_widthModAmount1] -- add your slider handling code here..
+        //[/UserSliderCode_widthModAmount1]
+    }
+    else if (sliderThatWasMoved == gain)
+    {
+        //[UserSliderCode_gain] -- add your slider handling code here..
+        //[/UserSliderCode_gain]
+    }
+    else if (sliderThatWasMoved == pan)
+    {
+        //[UserSliderCode_pan] -- add your slider handling code here..
+        //[/UserSliderCode_pan]
+    }
+    else if (sliderThatWasMoved == widthModAmount2)
+    {
+        //[UserSliderCode_widthModAmount2] -- add your slider handling code here..
+        //[/UserSliderCode_widthModAmount2]
+    }
+    else if (sliderThatWasMoved == gainModAmount2)
+    {
+        //[UserSliderCode_gainModAmount2] -- add your slider handling code here..
+        //[/UserSliderCode_gainModAmount2]
+    }
+    else if (sliderThatWasMoved == gainModAmount1)
+    {
+        //[UserSliderCode_gainModAmount1] -- add your slider handling code here..
+        //[/UserSliderCode_gainModAmount1]
+    }
+    else if (sliderThatWasMoved == panModAmount2)
+    {
+        //[UserSliderCode_panModAmount2] -- add your slider handling code here..
+        //[/UserSliderCode_panModAmount2]
+    }
+    else if (sliderThatWasMoved == panModAmount1)
+    {
+        //[UserSliderCode_panModAmount1] -- add your slider handling code here..
+        //[/UserSliderCode_panModAmount1]
     }
 
     //[UsersliderValueChanged_Post]
@@ -276,15 +476,45 @@ void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == osc1FreqModSrc1)
+    if (comboBoxThatHasChanged == pitchModSrc1)
     {
-        //[UserComboBoxCode_osc1FreqModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_osc1FreqModSrc1]
+        //[UserComboBoxCode_pitchModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_pitchModSrc1]
     }
-    else if (comboBoxThatHasChanged == osc1FreqModSrc2)
+    else if (comboBoxThatHasChanged == pitchModSrc2)
     {
-        //[UserComboBoxCode_osc1FreqModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_osc1FreqModSrc2]
+        //[UserComboBoxCode_pitchModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_pitchModSrc2]
+    }
+    else if (comboBoxThatHasChanged == widthModSrc1)
+    {
+        //[UserComboBoxCode_widthModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_widthModSrc1]
+    }
+    else if (comboBoxThatHasChanged == widthModSrc2)
+    {
+        //[UserComboBoxCode_widthModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_widthModSrc2]
+    }
+    else if (comboBoxThatHasChanged == gainModSrc1)
+    {
+        //[UserComboBoxCode_gainModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_gainModSrc1]
+    }
+    else if (comboBoxThatHasChanged == gainModSrc2)
+    {
+        //[UserComboBoxCode_gainModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_gainModSrc2]
+    }
+    else if (comboBoxThatHasChanged == panModSrc1)
+    {
+        //[UserComboBoxCode_panModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_panModSrc1]
+    }
+    else if (comboBoxThatHasChanged == panModSrc2)
+    {
+        //[UserComboBoxCode_panModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_panModSrc2]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -337,37 +567,37 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 170 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-100" max="100" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="LFO depth 1" id="523b9024be39c1b" memberName="lfo1depth1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="72 119 20 20"
+  <SLIDER name="pitch mod amount 2" id="523b9024be39c1b" memberName="pitchModAmount2"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 124 18 18"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 95 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 95 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="pitch range" id="29275125e377aaa" memberName="pitchRange"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="72 95 20 20"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="pitch mod amount 1" id="29275125e377aaa" memberName="pitchModAmount1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 100 18 18"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 96 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 160 123 72"
@@ -377,17 +607,75 @@ BEGIN_JUCER_METADATA
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Amount width mod" id="ea500ea6791045c2" memberName="amountWidthMod"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="140 30 64 64"
+  <SLIDER name="width mod amount 1" id="ea500ea6791045c2" memberName="widthModAmount1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 100 18 18"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="64"
-          textBoxHeight="20" skewFactor="1"/>
-  <COMBOBOX name="osc1FreqModSrcBox1" id="4e9e1857f51fc7f4" memberName="osc1FreqModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="96 95 40 20" editable="0"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
+          textBoxHeight="0" skewFactor="1"/>
+  <COMBOBOX name="pitch mod source 1" id="4e9e1857f51fc7f4" memberName="pitchModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="88 100 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="osc1FreqModSrcBox2" id="58dc64c4649ad205" memberName="osc1FreqModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="96 119 40 20" editable="0"
+  <COMBOBOX name="pitch mod source 2" id="58dc64c4649ad205" memberName="pitchModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="88 124 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <SLIDER name="gain knob" id="da94529625060498" memberName="gain" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="8 34 64 64" rotarysliderfill="ff6c788c"
+          textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
+          min="-96" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="pan knob" id="dd33a09584f4c2ff" memberName="pan" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="127 34 64 64" rotarysliderfill="ff6c788c"
+          textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
+          min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="width mod amount 2" id="ae5c9ce50e2de7e1" memberName="widthModAmount2"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 124 18 18"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
+          textBoxHeight="0" skewFactor="1"/>
+  <COMBOBOX name="width mod source 1" id="928cd04bb7b23ab9" memberName="widthModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="207 100 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="width mod source 2" id="455e48a25414a454" memberName="widthModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="207 124 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <SLIDER name="gain mod amount 2" id="93ff4adc6f243ee3" memberName="gainModAmount2"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 58 18 18"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <SLIDER name="gain mod amount 1" id="6604fe537dac0d1e" memberName="gainModAmount1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 34 18 18"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <COMBOBOX name="gain mod source 1" id="66da971c3fe90ee6" memberName="gainModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="88 34 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="gain mod source 2" id="7fad32464e7c032" memberName="gainModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="88 58 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <SLIDER name="pan mod amount 2" id="373f8321765bf923" memberName="panModAmount2"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 58 18 18"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <SLIDER name="pan mod amount 1" id="3d939a1eb44dbbb0" memberName="panModAmount1"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 34 18 18"
+          rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <COMBOBOX name="pan mod source 1" id="9c99fb5c7e8aa9ca" memberName="panModSrc1"
+            virtualName="" explicitFocusOrder="0" pos="207 34 40 18" editable="0"
+            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="pan mod source 2" id="48da71ae7732f1b" memberName="panModSrc2"
+            virtualName="" explicitFocusOrder="0" pos="207 58 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

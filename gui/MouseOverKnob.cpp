@@ -47,16 +47,22 @@ void MouseOverKnob::initTextBox()
     }
 }
 
+void MouseOverKnob::setName(const String& newName) {
+    knobLabel->setText(newName, NotificationType::dontSendNotification);
+}
+
 //==============================================================================
 
-/**
-* Init saturn parameters by saving amount knob and modSource parameter.
-*/
 void MouseOverKnob::setModSource(ParamStepped<eModSource> *source, Param *amount, bool convert, int sourceNumber)
 {
     modSources[sourceNumber - 1] = source;
     modAmounts[sourceNumber - 1] = amount;
     modSourceValueConverted = convert;
+}
+
+void MouseOverKnob::setDefaultValue(float val)
+{
+    defaultValue = static_cast<double>(val);
 }
 
 std::array<ParamStepped<eModSource>*, 2> MouseOverKnob::getModSources()
@@ -76,18 +82,57 @@ bool MouseOverKnob::isModSourceValueConverted()
 
 //==============================================================================
 
-void MouseOverKnob::setDefaultValue(float val)
+void MouseOverKnob::setBounds(int x, int y, int width, int height)
 {
-    defaultValue = static_cast<double>(val);
+    knobWidth = width;
+    knobHeight = height;
+
+    if (height < 24)
+    {
+        this->setPopupDisplayEnabled(true, this->getParentComponent());
+    }
+
+    Slider::setBounds(x, y, width, height);
 }
 
-void MouseOverKnob::setName(const String& newName) {
-    knobLabel->setText(newName, NotificationType::dontSendNotification);
+void MouseOverKnob::resized()
+{
+    if (!this->isMouseOver())
+    {
+        this->setSize(knobWidth, knobHeight - this->getTextBoxHeight());
+    }
+    else
+    {
+        this->setSize(knobWidth, knobHeight);
+    }
+
+    Slider::resized();
 }
 
-/**
-* If mouse enters slider then replace label with textbox.
-*/
+void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
+{
+    knobLabel->setSize(knobWidth, this->getTextBoxHeight());
+    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight() - 5);
+
+    ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
+}
+
+void MouseOverKnob::enablementChanged()
+{
+    Slider::enablementChanged();
+
+    if (this->isEnabled())
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
+    }
+    else
+    {
+        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white.withAlpha(0.5f));
+    }
+}
+
+//==============================================================================
+
 void MouseOverKnob::mouseEnter(const MouseEvent &e)
 {
     if (e.eventComponent == this)
@@ -97,9 +142,6 @@ void MouseOverKnob::mouseEnter(const MouseEvent &e)
     }
 }
 
-/**
-* If mouse exits slider then replace textbox with label.
-*/
 void MouseOverKnob::mouseExit(const MouseEvent &e)
 {
     if (e.eventComponent == this)
@@ -109,9 +151,6 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
     }
 }
 
-/**
-* Right click popup menu with some useful items.
-*/
 void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
     Slider::mouseDown(e);
@@ -144,9 +183,6 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
     }
 }
 
-/**
-* If slider is double clicked then values can be edited manually.
-*/
 void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
     if (e.eventComponent == this)
@@ -155,71 +191,10 @@ void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
     }
 }
 
-/**
-* Only drag on slider, not on label.
-*/
 void MouseOverKnob::mouseDrag(const MouseEvent &e)
 {
     if (e.eventComponent == this)
     {
         Slider::mouseDrag(e);
     }
-}
-
-/**
-* Overwrite resize(), so that slider size is independent of textbox visibility.
-*/
-void MouseOverKnob::resized()
-{
-    if (!this->isMouseOver())
-    {
-        this->setSize(knobWidth, knobHeight - this->getTextBoxHeight());
-    }
-    else
-    {
-        this->setSize(knobWidth, knobHeight);
-    }
-
-    Slider::resized();
-}
-
-/*
-* Needed to save bounds of slider.
-*/
-void MouseOverKnob::setBounds(int x, int y, int width, int height)
-{
-    knobWidth = width;
-    knobHeight = height;
-
-    if (height < 24)
-    {
-        this->setPopupDisplayEnabled(true, this->getParentComponent());
-    }
-
-    Slider::setBounds(x, y, width, height);
-}
-
-void MouseOverKnob::enablementChanged()
-{
-    Slider::enablementChanged();
-
-    if (this->isEnabled())
-    {
-        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white);
-    }
-    else
-    {
-        knobLabel->setColour(Label::ColourIds::textColourId, Colours::white.withAlpha(0.5f));
-    }
-}
-
-/**
-* Always set label below slider.
-*/
-void MouseOverKnob::componentMovedOrResized(Component &component, bool wasMoved, bool wasResized)
-{
-    knobLabel->setSize(knobWidth, this->getTextBoxHeight());
-    knobLabel->setTopLeftPosition(this->getX(), this->getY() + this->getHeight() - 5);
-
-    ComponentListener::componentMovedOrResized(component, wasMoved, wasResized);
 }
