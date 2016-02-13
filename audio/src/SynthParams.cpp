@@ -55,10 +55,14 @@ const Colour SynthParams::otherModulation(0, 0, 255); // add more different colo
 SynthParams::SynthParams()
     : serializeParams{ &freq,
         // TODO: Think of another way to register all the struct params?
-    &osc[0].fine, &osc[0].coarse, &osc[0].pitchModAmount2,&osc[0].trngAmount, &osc[0].pitchModAmount1, &osc[0].pulseWidth, &osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
-    &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
-    &osc[1].fine, &osc[1].coarse, &osc[1].pitchModAmount2,&osc[1].trngAmount, &osc[1].pitchModAmount1, &osc[1].pulseWidth, &osc[1].pitchModSrc1, &osc[1].pitchModSrc2, &osc[1].shapeModSrc1, &osc[1].shapeModSrc2, &osc[1].panDir, &osc[1].vol, &osc[1].volModAmount1,
-    &osc[2].fine, &osc[2].coarse, &osc[2].pitchModAmount2,&osc[2].trngAmount, &osc[2].pitchModAmount1, &osc[2].pulseWidth, &osc[2].pitchModSrc1, &osc[2].pitchModSrc2, &osc[2].shapeModSrc1, &osc[2].shapeModSrc2, &osc[2].panDir, &osc[2].vol, &osc[2].volModAmount1,
+    //Oscillators PArams
+    &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
+    &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
+    &osc[1].fine, &osc[1].coarse, &osc[1].panDir,&osc[1].vol,&osc[1].trngAmount,&osc[1].pulseWidth,&osc[1].waveForm,&osc[1].pitchModAmount1, &osc[1].pitchModAmount2,&osc[1].pitchModSrc1, &osc[1].pitchModSrc2,
+    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1,&osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2,
+    &osc[2].fine, &osc[2].coarse, &osc[2].panDir,&osc[2].vol,&osc[2].trngAmount,&osc[2].pulseWidth,&osc[2].waveForm,&osc[2].pitchModAmount1, &osc[2].pitchModAmount2,&osc[2].pitchModSrc1, &osc[2].pitchModSrc2,
+    &osc[2].panModAmount1,&osc[2].panModAmount2, &osc[2].panModSrc1,&osc[0].panModSrc2,&osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2,
+    //Envelope Params
     &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModSrc1, &env[0].speedModSrc2,
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModSrc1, &env[1].speedModSrc2,
     &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
@@ -145,19 +149,31 @@ SynthParams::SynthParams()
 SynthParams::Osc::Osc()
     : fine("fine", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
     , coarse("coarse", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
-    , pitchModAmount2("mod", "pitchModAmount2", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
-    , trngAmount("trianlge", "trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-    , pitchModAmount1("Pitch", "pitchModAmount1", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
-    , pitchModSrc1("OSC1 PitchModSrc1", "osc1PitchModSrc1", "OSC1 pitch modSrc1", eModSource::eNone, modsourcenames)
-    , pitchModSrc2("OSC1 PitchModSrc2", "osc1PitchModSrc2", "OSC1 pitch modSrc2", eModSource::eNone, modsourcenames)
-    , shapeModSrc1("OSC1 PW ModSrc1", "shapeModSrc1", "OSC1 pulse width modSrc1", eModSource::eNone, modsourcenames)
-    , shapeModSrc2("OSC1 PW ModSrc2", "shapeModSrc2", "OSC1 pulse width modSrc2", eModSource::eNone, modsourcenames)
-    , pulseWidth("width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-    , shapeModAmount("Width Mod", "shapeModAmount", "OSC1 PWM", "", 0.f, 1.f, 0.f)
+    , trngAmount("trianlge", "trngAmount", "OSC triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+    , pulseWidth("width", "pulseWidth", "OSC pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
     , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
     , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
-    , volModAmount1("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
+
+    //ModAmounts and ModSources
+    , panModAmount1("OSC PanModAmount1", "oscPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 1.f, 0.f)
+    , panModAmount2("OSC PanModAmount2", "oscPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 1.f, 0.f)
+    , panModSrc1("OSC PanModSrc1", "oscPanModSrc1", "OSC Pan ModSource 1", eModSource::eNone, modsourcenames)
+    , panModSrc2("OSC PanModSrc2", "oscPanModSrc2", "OSC Pan ModSource 2", eModSource::eNone, modsourcenames)
+    , shapeModAmount1("OSC ShapeModAmount1", "oscShapeModAmount1", "OSC Shape ModAmount 1", "", 0.f, 1.f, 0.f)
+    , shapeModAmount2("OSC ShapeModAmount2", "oscShapeModAmount2", "OSC Shape ModAmount 2", "", 0.f, 1.f, 0.f)
+    , shapeModSrc1("OSC ShapeModSrc1", "oscShapeModSrc1", "OSC Shape ModSource 1", eModSource::eNone, modsourcenames)
+    , shapeModSrc2("OSC ShapeModSrc2", "oscShapeModSrc2", "OSC Shape ModSource 2", eModSource::eNone, modsourcenames)
+    , pitchModAmount1("OSC PitchModAmount1", "oscPitchModAmount1", "OSC Pitch ModAmount 1", "st", 0.f, 12.f, 0.f)
+    , pitchModAmount2("OSC PitchModAmount2", "oscPitchModAmount2", "OSC Pitch ModAmount 2", "st", 0.f, 12.f, 0.f)
+    , pitchModSrc1("OSC PitchModSrc1", "oscPitchModSrc1", "OSC Pitch ModSource 1", eModSource::eNone, modsourcenames)
+    , pitchModSrc2("OSC PitchModSrc2", "oscPitchModSrc2", "OSC Pitch ModSource 2", eModSource::eNone, modsourcenames)
+    , gainModAmount1("OSC GainModAmount1", "oscGainModAmount1", "OSC Gain ModAmount 1", "dB", 0.f, 96.f, 0.0f)
+    , gainModAmount2("OSC GainModAmount2", "oscGainModAmount2", "OSC Gain ModAmount 2", "dB", 0.f, 96.f, 0.0f)
+    , gainModSrc1("OSC GainModSrc1", "oscGainModSrc1", "OSC Gain ModSource 1", eModSource::eNone, modsourcenames)
+    , gainModSrc2("OSC GainModSrc2", "oscGainModSrc2", "OSC Gain ModSource 2", eModSource::eNone, modsourcenames)
+    // do we really need this???
+    , volModAmount("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
 

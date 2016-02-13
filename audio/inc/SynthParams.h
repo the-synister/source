@@ -166,22 +166,28 @@ public:
         ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
         Param trngAmount; //Triangle Amount [0 ... 1]
         Param pulseWidth; //!< pulse width in [0,01..0,99]
-        Param shapeModAmount; //!< amount of pulse width modulation [0..1]
-        //ParamStepped<eModSource> osc1gainModSrc1; //!< osc1 gain mod source
-        //ParamStepped<eModSource> osc1gainModSrc2; //!< osc2 gain mod source
-        //ParamStepped<eModSource> osc1panModSrc1; //!< osc1 pan mod source
-        //ParamStepped<eModSource> osc1panModSrc2; //!< osc2 pan mod source
+        ParamDb vol; //!< volume in [-96..12]
+        Param panDir; //!< pan R/L [-100..100]
+        
+        //ModAmounts and Sources
+        Param panModAmount1; //!< pan mod amount
+        Param panModAmount2; //!< pan mod amount
+        ParamStepped<eModSource> panModSrc1; //!< pan mod source
+        ParamStepped<eModSource> panModSrc2; //!< pan mod source
+        Param shapeModAmount1; //!< amount of pulse width modulation [0..1]
+        Param shapeModAmount2; //!< amount of pulse width modulation [0..1]
         ParamStepped<eModSource> shapeModSrc1; //!< oscillator 1 pulse width modulation source
         ParamStepped<eModSource> shapeModSrc2; //!< oscillator 1 pulse width modulation source
-        ParamStepped<eModSource> pitchModSrc1; //!< oscillator 1 pitch modulation source
         Param pitchModAmount1; //!< range in [0..12] st
-        ParamStepped<eModSource> pitchModSrc2; //!< oscillator 1 pitch modulation source
         Param pitchModAmount2; //!< modulation depth in [-12..12] st
-
-        Param panDir; //!< pan R/L [-100..100]
-
-        ParamDb vol; //!< volume in [-96..12]
-        Param volModAmount1;    //!< key velocity level range in [0..96]dB
+        ParamStepped<eModSource> pitchModSrc2; //!< oscillator 1 pitch modulation source
+        ParamStepped<eModSource> pitchModSrc1; //!< oscillator 1 pitch modulation source
+        Param gainModAmount1; //!< gain mod amount
+        Param gainModAmount2; //!< gain mod amount
+        ParamStepped<eModSource> gainModSrc1; //!< gain mod source
+        ParamStepped<eModSource> gainModSrc2; //!< gain mod source
+        // do we really need this???
+        Param volModAmount;    //!< key velocity level range in [0..96]dB
     };
 
     std::array<Filter, 2> filter;

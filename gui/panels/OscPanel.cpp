@@ -255,8 +255,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(widthModAmount1, &osc.shapeModAmount);
-    //registerSlider(widthModAmount2, &osc.shapeModAmount2);
+    registerSlider(widthModAmount1, &osc.shapeModAmount1);
+    registerSlider(widthModAmount2, &osc.shapeModAmount2);
 
     // TODO: register other boxes
     fillModsourceBox(pitchModSrc1);

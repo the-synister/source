@@ -119,7 +119,7 @@ public:
         }
 
         for (size_t o=0; o < params.osc.size(); ++o) {
-            osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].volModAmount1.get());
+            osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].volModAmount.get());
 
             switch (params.osc[o].waveForm.getStep())
         {
@@ -253,7 +253,8 @@ public:
                             deltaWidth = .49f;
                         }
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        //deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount1.get();
                         // Next sample will be fetched with the new width
                         currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                     }
@@ -266,7 +267,8 @@ public:
                             ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
                             : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        //deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount1.get();
                         // Next sample will be fetch with the new width
                         currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
                     }
