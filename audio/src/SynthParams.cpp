@@ -154,7 +154,6 @@ SynthParams::Osc::Osc()
     , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
     , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
-
     //ModAmounts and ModSources
     , panModAmount1("OSC PanModAmount1", "oscPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 1.f, 0.f)
     , panModAmount2("OSC PanModAmount2", "oscPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 1.f, 0.f)
@@ -189,18 +188,22 @@ SynthParams::EnvBase::EnvBase()
 }
 
 SynthParams::EnvVol::EnvVol()
-: EnvBase()
-, sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
-, speedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
-, speedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
+    : EnvBase()
+    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+    , speedModAmount1("ENV SpeedModAmount1", "envSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
+    , speedModAmount2("ENV SpeedModAmount2", "envSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , speedModSrc1("ENV Speed ModSrc1", "envSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "envSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::Env::Env()
 :  EnvBase()
-, sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
-, speedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
-, speedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
+    , sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+    , speedModAmount1("ENV SpeedModAmount1", "envSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
+    , speedModAmount2("ENV SpeedModAmount2", "envSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , speedModSrc1("ENV Speed ModSrc1", "envSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "envSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 

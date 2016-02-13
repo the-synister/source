@@ -98,27 +98,27 @@ public:
         Param attack;    //!< env attack in [0.001..5]s
         Param decay;     //!< env decay in [0.001..5]s
         Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
-
         Param attackShape; //!< env attack shape in [0.01..10]
         Param decayShape; //!< env decay shape in [0.01..10]
         Param releaseShape; //!< env release shape in [0.01..10]
-
     };
 
     struct EnvVol : public EnvBase {
         EnvVol();
-
-        ParamDb sustain;   //!< env sustain in [0..1]
+        ParamDb sustain;   //!< Envelope sustain in [0..1]
+        Param speedModAmount1; //!< Volume envelope speed mod amount
+        Param speedModAmount2; //!< Volume envelope speed mod amount
         ParamStepped<eModSource> speedModSrc1; //!< Volume envelope speed mod source
         ParamStepped<eModSource> speedModSrc2; //!< Volume envelope speed mod source
     };
 
     struct Env : public EnvBase {
         Env();
-
-        Param sustain;
-        ParamStepped<eModSource> speedModSrc1; //!< Envelope 2 speed mod source
-        ParamStepped<eModSource> speedModSrc2; //!< Envelope 2 speed mod source
+        Param sustain; //!< Envelope sustain in [0..1]
+        Param speedModAmount1; //!< Envelope speed mod amount
+        Param speedModAmount2; //!< Envelope speed mod amount
+        ParamStepped<eModSource> speedModSrc1; //!< Envelope speed mod source
+        ParamStepped<eModSource> speedModSrc2; //!< Envelope speed mod source
     };
 
     struct Lfo : public BaseParamStruct {

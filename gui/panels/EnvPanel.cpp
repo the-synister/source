@@ -166,10 +166,16 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(attackShape, &envVol.attackShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
-    registerSlider(speedMod1, &envVol.keyVelToEnv, std::bind(&EnvPanel::updateCurve, this));
+    registerSlider(speedMod1, &envVol.keyVelToEnv, std::bind(&EnvPanel::updateCurve, this));         //sure about this???
+
+
+    registerSlider(speedMod1, &envVol.speedModAmount1);
+    registerSlider(speedMod2, &envVol.speedModAmount2);
 
     fillModsourceBox(envSpeedModSrc1);
     fillModsourceBox(envSpeedModSrc2);
+    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1);
+    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2);
     //[/UserPreSize]
 
     setSize (266, 252);
