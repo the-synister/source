@@ -513,7 +513,7 @@ Font CustomLookAndFeel::getComboBoxFont(ComboBox& c)
 
 void CustomLookAndFeel::positionComboBoxText(ComboBox& c, Label& l)
 {
-    l.setBounds(1, 1, c.getWidth() + 3 - c.getHeight(), c.getHeight() - 2);
+    l.setBounds(0, 0, c.getWidth() + 5 - c.getHeight(), c.getHeight());
 
     l.setFont(getComboBoxFont(c));
 }

@@ -23,12 +23,12 @@ namespace {
     };
 
     static const char *modsourcenames[] = {
-        "None", "Aftertouch", "KeyBipolar", "InvertedVelocity", "Velocity", "Foot", "ExpPedal", "Modwheel", "Pitchbend",
+        "None", "Aftertouch (AT)", "KeyBipolar (KB)", "InvertedVelocity (-Vel)", "Velocity (Vel)", "Foot (Ft)", "ExpPedal (Ped)", "Modwheel (MW)", "Pitchbend (PB)",
         "LFO1", "LFO2", "LFO3", "VolEnvelope", "Envelope2", "Envelope3", nullptr
     };
 
     static const char *modSourceNamesShort[] = {
-        "X", "M", "M", "M", "M", "M", "M", "C", "C",
+        "X", "AT", "KB", "-Vel", "Vel", "Ft", "Ped", "MW", "PB",
         "1", "2", "3", "1", "2", "3", nullptr
     };
 
@@ -50,7 +50,7 @@ const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
 const Colour SynthParams::waveformLine (185, 189, 190);
 const Colour SynthParams::waveformBackground(85, 93, 104);
-const Colour SynthParams::otherModulation(80, 80, 80); // add more different colours
+const Colour SynthParams::otherModulation(0, 0, 255); // add more different colours
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
@@ -142,8 +142,8 @@ SynthParams::SynthParams()
 
         
 SynthParams::Osc::Osc()
-    : fine("f.tune", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
-    , coarse("c.tune", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
+    : fine("fine", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
+    , coarse("coarse", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
     , pitchModAmount2("mod", "pitchModAmount2", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
     , trngAmount("trianlge", "trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
     , pitchModAmount1("Pitch", "pitchModAmount1", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
@@ -151,29 +151,29 @@ SynthParams::Osc::Osc()
     , pitchModSrc2("OSC1 PitchModSrc2", "osc1PitchModSrc2", "OSC1 pitch modSrc2", eModSource::eNone, modsourcenames)
     , shapeModSrc1("OSC1 PW ModSrc1", "shapeModSrc1", "OSC1 pulse width modSrc1", eModSource::eNone, modsourcenames)
     , shapeModSrc2("OSC1 PW ModSrc2", "shapeModSrc2", "OSC1 pulse width modSrc2", eModSource::eNone, modsourcenames)
-    , pulseWidth("Width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , pulseWidth("width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
     , shapeModAmount("Width Mod", "shapeModAmount", "OSC1 PWM", "", 0.f, 1.f, 0.f)
     , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
-    , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
-    , vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
+    , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
+    , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     , volModAmount1("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
 
 SynthParams::EnvBase::EnvBase()
-: attack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-, release("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
+: attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
+, release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
 , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
 , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
 , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-, decay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+, decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
 : EnvBase()
-, sustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+, sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 , speedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
 , speedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
 {
@@ -181,7 +181,7 @@ SynthParams::EnvVol::EnvVol()
 
 SynthParams::Env::Env()
 :  EnvBase()
-, sustain("Sustain", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+, sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
 , speedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
 , speedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
 {

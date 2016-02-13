@@ -209,6 +209,15 @@ protected:
             params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
+
+            if (it->second->getStep() == eModSource::eNone)
+            {
+                it->first->setColour(ComboBox::ColourIds::backgroundColourId, Colours::lightgrey);
+            }
+            else
+            {
+                it->first->setColour(ComboBox::ColourIds::backgroundColourId, Colours::white);
+            }
             it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
             it->first->setText(SynthParams::getShortModSrcName(it->first->getSelectedId() - COMBO_OFS), dontSendNotification);
 
