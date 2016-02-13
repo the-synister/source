@@ -73,6 +73,11 @@ private:
     ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<ToggleButton> triplets;
     ScopedPointer<IncDecDropDown> noteLength;
+    ScopedPointer<MouseOverKnob> freqModAmount1;
+    ScopedPointer<MouseOverKnob> freqModAmount2;
+    ScopedPointer<ComboBox> freqModSrc1;
+    ScopedPointer<ComboBox> freqModSrc2;
+    ScopedPointer<ComboBox> lfoGain;
 
 
     //==============================================================================
