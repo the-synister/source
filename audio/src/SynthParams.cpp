@@ -67,9 +67,9 @@ SynthParams::SynthParams()
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
     &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModAmount1, &envVol[0].speedModAmount2, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
     //LFOS Params
-    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc,
-    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc,
-    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc,
+    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].freqModAmount1, &lfo[0].freqModAmount2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc,
+    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc,
+    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc,
     //Filters Params
     &filter[0].lpCutoff, &filter[0].resonance,
     &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].hpCutoff, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2,
