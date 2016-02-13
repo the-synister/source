@@ -244,8 +244,8 @@ void EnvPanel::resized()
     speedMod1->setBounds (30, 146, 20, 20);
     envelopeCurve->setBounds (117, 146, 128, 64);
     shapeLabel1->setBounds (137, 108, 51, 24);
-    envSpeedModSrc2->setBounds (54, 174, 40, 20);
-    envSpeedModSrc1->setBounds (54, 146, 40, 20);
+    envSpeedModSrc2->setBounds (53, 174, 40, 20);
+    envSpeedModSrc1->setBounds (53, 146, 40, 20);
     speedMod2->setBounds (30, 174, 20, 20);
     speedModLabel->setBounds (23, 192, 80, 24);
     //[UserResized] Add your own custom resize handling here..
@@ -415,10 +415,10 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="54 174 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 174 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="54 146 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 146 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 174 20 20"

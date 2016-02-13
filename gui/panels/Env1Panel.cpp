@@ -228,8 +228,8 @@ void Env1Panel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    envSpeedModSrc2->setBounds (54, 174, 40, 20);
-    envSpeedModSrc1->setBounds (54, 146, 40, 20);
+    envSpeedModSrc2->setBounds (53, 174, 40, 20);
+    envSpeedModSrc1->setBounds (53, 146, 40, 20);
     attackTime1->setBounds (8, 38, 64, 64);
     decayTime1->setBounds (69, 38, 64, 64);
     sustainLevel1->setBounds (132, 38, 64, 64);
@@ -355,10 +355,10 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="267" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="54 174 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 174 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="54 146 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 146 40 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Attack Time" id="c3597517f8c98b63" memberName="attackTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"

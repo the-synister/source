@@ -212,11 +212,11 @@ protected:
 
             if (it->second->getStep() == eModSource::eNone)
             {
-                it->first->setColour(ComboBox::ColourIds::backgroundColourId, Colour(0x40ffffff));
+                it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(0.5f));
             }
             else
             {
-                it->first->setColour(ComboBox::ColourIds::backgroundColourId, Colours::white);
+                it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(1.0f));
             }
             it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
             it->first->setText(SynthParams::getShortModSrcName(it->first->getSelectedId() - COMBO_OFS), dontSendNotification);
