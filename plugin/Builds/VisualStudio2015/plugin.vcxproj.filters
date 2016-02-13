@@ -1806,9 +1806,6 @@
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
