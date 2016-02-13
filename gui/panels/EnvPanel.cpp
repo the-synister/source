@@ -245,12 +245,12 @@ void EnvPanel::resized()
     attackShape->setBounds (30, 111, 20, 20);
     decayShape->setBounds (91, 111, 20, 20);
     releaseShape->setBounds (216, 111, 20, 20);
-    speedMod1->setBounds (30, 146, 20, 20);
+    speedMod1->setBounds (32, 146, 18, 18);
     envelopeCurve->setBounds (117, 146, 128, 64);
     shapeLabel1->setBounds (137, 108, 51, 24);
-    envSpeedModSrc2->setBounds (53, 174, 40, 20);
-    envSpeedModSrc1->setBounds (53, 146, 40, 20);
-    speedMod2->setBounds (30, 174, 20, 20);
+    envSpeedModSrc2->setBounds (53, 172, 40, 18);
+    envSpeedModSrc1->setBounds (53, 146, 40, 18);
+    speedMod2->setBounds (32, 172, 18, 18);
     speedModLabel->setBounds (23, 192, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -315,6 +315,7 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void EnvPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == envSpeedModSrc2)
@@ -405,7 +406,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="0.29999999999999999"/>
   <SLIDER name="speedMod1" id="595a20e744f094d5" memberName="speedMod1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 146 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 146 18 18"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
@@ -419,13 +420,13 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="53 174 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 172 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="53 146 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 146 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 174 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"

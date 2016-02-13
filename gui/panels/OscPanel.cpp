@@ -246,6 +246,14 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     // NOTE: test wise
     registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, false, 1);
     registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, false, 2);
+    registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, false, 1);
+    registerSaturnSource(gain, gainModAmount2, &osc.gainModSrc2, &osc.gainModAmount2, false, 2);
+    registerSaturnSource(pan, panModAmount1, &osc.panModSrc1, &osc.panModAmount1, false, 1);
+    registerSaturnSource(pan, panModAmount2, &osc.panModSrc2, &osc.panModAmount2, false, 2);
+    registerSaturnSource(pulsewidth, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, false, 1);
+    registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, false, 2);
+    registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, false, 1);
+    registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, false, 2);
 
     registerSlider(gain, &osc.vol);
     registerSlider(pan, &osc.panDir);
@@ -263,7 +271,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(gainModAmount1, &osc.gainModAmount1);
     registerSlider(gainModAmount2, &osc.gainModAmount2);
 
-    // TODO: register other boxes
+    // fill and register mod selection boxes
     fillModsourceBox(pitchModSrc1);
     fillModsourceBox(pitchModSrc2);
     registerCombobox(pitchModSrc1, &osc.pitchModSrc1, ctune1);

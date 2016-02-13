@@ -39,6 +39,9 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
+    freq->setColour (Slider::textBoxTextColourId, Colours::white);
+    freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    freq->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     freq->addListener (this);
 
     addAndMakeVisible (wave = new Slider ("wave switch"));
@@ -151,20 +154,24 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
 
     //[UserPreSize]
+    registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, true, 1);
+    registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, true, 2);
+
     registerSlider(freq, &lfo.freq);
+    registerSlider(wave, &lfo.wave);
+    registerSlider(lfoFadeIn, &lfo.fadeIn);
+    registerSlider(freqModAmount1, &lfo.freqModAmount1);
+    registerSlider(freqModAmount2, &lfo.freqModAmount2);
+
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     wave->setValue(lfo.wave.getUI());
     tempoSyncSwitch->setToggleState(0, dontSendNotification);
     noteLength->setText(getNoteLengthAsString(), dontSendNotification);
     registerDropdown(noteLength, &lfo.noteLength);
-    registerSlider(wave, &lfo.wave);
-    registerSlider(lfoFadeIn, &lfo.fadeIn);
+
     lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
 
     lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour);
-
-    registerSlider(freqModAmount1, &lfo.freqModAmount1);
-    registerSlider(freqModAmount2, &lfo.freqModAmount2);
 
     fillModsourceBox(freqModSrc1);
     fillModsourceBox(freqModSrc2);
@@ -310,7 +317,7 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    handleDropdown(comboBoxThatHasChanged);
+    handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == noteLength)
@@ -365,6 +372,7 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
+          textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
