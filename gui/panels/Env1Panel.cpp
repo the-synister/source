@@ -254,6 +254,7 @@ void Env1Panel::resized()
 void Env1Panel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == envSpeedModSrc2)

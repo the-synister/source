@@ -315,6 +315,7 @@ void EnvPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void EnvPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == envSpeedModSrc2)

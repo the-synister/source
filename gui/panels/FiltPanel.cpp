@@ -188,17 +188,23 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
 
     //[UserPreSize]
+    registerSaturnSource(cutoffSlider, lpModAmount1, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
+    registerSaturnSource(cutoffSlider, lpModAmount2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
+    registerSaturnSource(cutoffSlider2, hpModAmount1, &filter.hpCutModSrc1, &filter.hpModAmount1, true, 1);
+    registerSaturnSource(cutoffSlider2, hpModAmount2, &filter.hpCutModSrc2, &filter.hpModAmount2, true, 2);
+    registerSaturnSource(resonanceSlider, resModAmount1, &filter.resonanceModSrc1, &filter.resModAmount1, false, 1);
+    registerSaturnSource(resonanceSlider, resModAmount2, &filter.resonanceModSrc2, &filter.resModAmount2, false, 2);
+
     registerSlider(cutoffSlider, &filter.lpCutoff);
+    registerSlider(cutoffSlider2, &filter.hpCutoff);
+    registerSlider(resonanceSlider, &filter.resonance);
     registerSlider(lpModAmount1, &filter.lpModAmount1);
     registerSlider(lpModAmount2, &filter.lpModAmount2);
-    cutoffSlider->setSkewFactorFromMidPoint(1000.0);
-
-    registerSlider(cutoffSlider2, &filter.hpCutoff);
-    cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
-
-    registerSlider(resonanceSlider, &filter.resonance);
+    registerSlider(hpModAmount1, &filter.hpModAmount1);
+    registerSlider(hpModAmount2, &filter.hpModAmount2);
+    registerSlider(resModAmount1, &filter.resModAmount1);
+    registerSlider(resModAmount2, &filter.resModAmount2);
     registerSlider(passtype, &filter.passtype);
-
 
     fillModsourceBox(lp1ModSrc1);
     fillModsourceBox(lp1ModSrc2);
@@ -214,8 +220,8 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerCombobox(res1ModSrc1, &filter.resonanceModSrc1, resonanceSlider);
     registerCombobox(res1ModSrc2, &filter.resonanceModSrc2, resonanceSlider);
 
-    registerSaturnSource(cutoffSlider, lpModAmount1, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
-    registerSaturnSource(cutoffSlider, lpModAmount2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
+    cutoffSlider->setSkewFactorFromMidPoint(1000.0);
+    cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
     //[/UserPreSize]
 
     setSize (400, 180);
