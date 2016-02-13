@@ -379,6 +379,9 @@
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -421,10 +424,19 @@
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
+      <Filter>plugin\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1752,6 +1764,9 @@
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1797,6 +1812,9 @@
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
@@ -1807,6 +1825,9 @@
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
+      <Filter>plugin\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">

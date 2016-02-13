@@ -250,13 +250,17 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(pan, &osc.panDir);
     registerSlider(ftune1, &osc.fine);
     registerSlider(ctune1, &osc.coarse);
-    registerSlider(pitchModAmount1, &osc.pitchModAmount1);
-    registerSlider(pitchModAmount2, &osc.pitchModAmount2);
     registerSlider(waveformSwitch, &osc.waveForm, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(trngAmount, &osc.trngAmount, std::bind(&OscPanel::updateWFShapeControls, this));
     registerSlider(pulsewidth, &osc.pulseWidth, std::bind(&OscPanel::updateWFShapeControls, this));
-    registerSlider(widthModAmount1, &osc.shapeModAmount);
-    //registerSlider(widthModAmount2, &osc.shapeModAmount2);
+    registerSlider(pitchModAmount1, &osc.pitchModAmount1);
+    registerSlider(pitchModAmount2, &osc.pitchModAmount2);
+    registerSlider(widthModAmount1, &osc.shapeModAmount1);
+    registerSlider(widthModAmount2, &osc.shapeModAmount2);
+    registerSlider(panModAmount1, &osc.panModAmount1);
+    registerSlider(panModAmount2, &osc.panModAmount2);
+    registerSlider(gainModAmount1, &osc.gainModAmount1);
+    registerSlider(gainModAmount2, &osc.gainModAmount2);
 
     // TODO: register other boxes
     fillModsourceBox(pitchModSrc1);
@@ -273,9 +277,13 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
     fillModsourceBox(panModSrc1);
     fillModsourceBox(panModSrc2);
+    registerCombobox(panModSrc1, &osc.panModSrc1, pan);
+    registerCombobox(panModSrc2, &osc.panModSrc2, pan);
 
     fillModsourceBox(gainModSrc1);
     fillModsourceBox(gainModSrc2);
+    registerCombobox(gainModSrc1, &osc.gainModSrc1, gain);
+    registerCombobox(gainModSrc2, &osc.gainModSrc2, gain);
     //[/UserPreSize]
 
     setSize (267, 272);

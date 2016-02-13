@@ -59,7 +59,7 @@ AmpPanel::AmpPanel (SynthParams &p)
     pan->addListener (this);
 
     addAndMakeVisible (velocitySense = new MouseOverKnob ("Key Velocity"));
-    velocitySense->setRange (0, 96, 0);
+    velocitySense->setRange (0, 1, 0);
     velocitySense->setSliderStyle (Slider::RotaryVerticalDrag);
     velocitySense->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     velocitySense->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
@@ -69,7 +69,7 @@ AmpPanel::AmpPanel (SynthParams &p)
     //[UserPreSize]
     registerSlider(amp, &params.osc[0].vol);
     registerSlider(pan, &params.osc[0].panDir);
-    registerSlider(velocitySense, &params.osc[0].volModAmount1);
+    registerSlider(velocitySense, &params.osc[0].volModAmount);
 
     amp->setPopupDisplayEnabled(true, this);
     pan->setPopupDisplayEnabled(true, this);

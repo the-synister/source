@@ -82,6 +82,27 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "osc1FreqModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "osc1FreqModSrcBox2");
+
+#if 0
+    //old Style, just for reference!!!
+    //SOURCE: VARIOUS MIDI
+    globalModMatrix.addModMatrixRow(SOURCE_PITCHBEND, DEST_OSC1_PI, &osc1PitchRange, true);
+    globalModMatrix.addModMatrixRow(SOURCE_AFTERTOUCH, DEST_FILTER_LC, &lp1ModAmount1, true);
+
+    //SOURCE: LFO1
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, true);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
+
+    //SOURCE: LFO2
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_OSC1_PI, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_LFO1, DEST_FILTER_LC, &lp1ModAmount1, false);
+
+    //SOURCE: ENV2
+    globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_OSC1_PI, &osc1lfo1depth, false);
+    globalModMatrix.addModMatrixRow(SOURCE_ENV2, DEST_FILTER_LC, &lp1ModAmount1, false);
+#endif
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()

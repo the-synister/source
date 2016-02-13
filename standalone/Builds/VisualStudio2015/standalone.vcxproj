@@ -148,10 +148,10 @@
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\audio\inc\Voice.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>

@@ -50,6 +50,8 @@
         <FILE id="l2unIn" name="FiltPanel.h" compile="0" resource="0" file="../gui/panels/FiltPanel.h"/>
         <FILE id="n4LLrh" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="Sh6NXS" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
+        <FILE id="pHTWgt" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
+        <FILE id="eaQWuN" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="arXpqu" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
         <FILE id="q6cLYL" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
         <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
@@ -80,10 +82,13 @@
         <FILE id="NNdGXy" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="vSOsHd" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="KGYPH3" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
+        <FILE id="ssKU2v" name="ModulationMatrix.h" compile="0" resource="0"
+              file="../audio/inc/ModulationMatrix.h"/>
         <FILE id="eXN6xq" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="ettrMG" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="P0vVMP" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
         <FILE id="M1Xoos" name="Param.h" compile="0" resource="0" file="../audio/inc/Param.h"/>
+        <FILE id="b41rgX" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
         <FILE id="MIapmi" name="Voice.h" compile="0" resource="0" file="../audio/inc/Voice.h"/>
         <FILE id="MZRnMw" name="PluginProcessor.h" compile="0" resource="0"
               file="../audio/inc/PluginProcessor.h"/>
@@ -97,9 +102,13 @@
         <FILE id="bu7iHM" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="wEODLt" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
         <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
+        <FILE id="j131qu" name="ModulationMatrix.cpp" compile="1" resource="0"
+              file="../audio/src/ModulationMatrix.cpp"/>
+        <FILE id="P8Z4lI" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
+        <FILE id="rF1zbB" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

@@ -209,10 +209,10 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
     registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1, cutoffSlider);
     registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2, cutoffSlider);
-    registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1);
-    registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2);
-    registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
-    registerCombobox(res1ModSrc2, &filter.resonanceModSrc2);
+    registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1, cutoffSlider2);
+    registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2, cutoffSlider2);
+    registerCombobox(res1ModSrc1, &filter.resonanceModSrc1, resonanceSlider);
+    registerCombobox(res1ModSrc2, &filter.resonanceModSrc2, resonanceSlider);
 
     registerSaturnSource(cutoffSlider, lpModAmount1, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
     registerSaturnSource(cutoffSlider, lpModAmount2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
