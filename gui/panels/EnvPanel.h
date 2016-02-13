@@ -37,7 +37,8 @@ Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class EnvPanel  : public PanelBase,
-                  public SliderListener
+                  public SliderListener,
+                  public ComboBoxListener
 {
 public:
     //==============================================================================
@@ -52,6 +53,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
@@ -68,9 +70,13 @@ private:
     ScopedPointer<MouseOverKnob> attackShape;
     ScopedPointer<MouseOverKnob> decayShape;
     ScopedPointer<MouseOverKnob> releaseShape;
-    ScopedPointer<MouseOverKnob> keyVelToEnv1;
+    ScopedPointer<MouseOverKnob> speedMod1;
     ScopedPointer<EnvelopeCurve> envelopeCurve;
     ScopedPointer<Label> shapeLabel1;
+    ScopedPointer<ComboBox> envSpeedModSrc2;
+    ScopedPointer<ComboBox> envSpeedModSrc1;
+    ScopedPointer<MouseOverKnob> speedMod2;
+    ScopedPointer<Label> speedModLabel;
 
 
     //==============================================================================

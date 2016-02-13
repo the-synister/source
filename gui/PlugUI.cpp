@@ -65,17 +65,19 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (bpmLabel = new Label ("bpm label",
                                              TRANS("BPM:")));
-    bpmLabel->setFont (Font (15.00f, Font::plain));
+    bpmLabel->setFont (Font (20.00f, Font::plain));
     bpmLabel->setJustificationType (Justification::centredLeft);
     bpmLabel->setEditable (false, false, false);
+    bpmLabel->setColour (Label::textColourId, Colours::white);
     bpmLabel->setColour (TextEditor::textColourId, Colours::black);
     bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (bpmDisplay = new Label ("bpm display",
                                                String::empty));
-    bpmDisplay->setFont (Font (15.00f, Font::plain));
+    bpmDisplay->setFont (Font (20.00f, Font::plain));
     bpmDisplay->setJustificationType (Justification::centredLeft);
     bpmDisplay->setEditable (false, false, false);
+    bpmDisplay->setColour (Label::textColourId, Colours::white);
     bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
     bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -87,6 +89,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setTextValueSuffix(String(" ") + params.freq.unit());
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     freq->initTextBox();
+    freq->setDefaultValue(params.freq.getDefault());
     //[/UserPreSize]
 
     setSize (800, 900);
@@ -102,7 +105,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addSection (TRANS("ENV"), new EnvPanel (params), SynthParams::envColour, 230, false, 1);
     foldableComponent->addPanel(1, new Env1Panel(params, 0));
     foldableComponent->addPanel(1, new Env1Panel(params, 1));
-    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), SynthParams::lfoColour, 200, false, 2);
+    foldableComponent->addSection (TRANS("LFO"), new LfoPanel (params, 0), SynthParams::lfoColour, 175, false, 2);
     foldableComponent->addPanel(2, new LfoPanel(params, 1));
     foldableComponent->addPanel(2, new LfoPanel(params, 2));
     foldableComponent->addSection (TRANS("FILT"), new FiltPanel (params, 0), SynthParams::filterColour, 158, false, 3);
@@ -111,7 +114,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 347, false, 5);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 323, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
@@ -158,8 +161,8 @@ void PlugUI::resized()
     keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (112, 8, 88, 24);
-    bpmLabel->setBounds (222, 6, 40, 24);
-    bpmDisplay->setBounds (270, 6, 64, 24);
+    bpmLabel->setBounds (222, 6, 58, 24);
+    bpmDisplay->setBounds (274, 6, 64, 24);
     foldableComponent->setBounds (0, 72, 800, 624);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -252,15 +255,15 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="222 6 40 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="BPM:" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="222 6 58 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="BPM:" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="20" bold="0" italic="0" justification="33"/>
   <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="270 6 64 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="274 6 64 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="20" bold="0" italic="0" justification="33"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>

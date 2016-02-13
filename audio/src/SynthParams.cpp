@@ -13,20 +13,25 @@ namespace {
     static const char *seqModeNames[] = {
         "Stop", "Play", "SyncHost", nullptr
     };
-    
+
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
     };
-    
+
     static const char *biquadFilters[] = {
         "Lowpass", "Highpass", "Bandpass", "Ladder", nullptr
     };
-    
+
     static const char *modsourcenames[] = {
-        "None", "Aftertouch", "KeyBipolar", "InvertedVelocity", "Velocity", "Foot", "ExpPedal", "Modwheel", "Pitchbend",
+        "None", "Aftertouch (AT)", "KeyBipolar (KB)", "InvertedVelocity (-Vel)", "Velocity (Vel)", "Foot (Ft)", "ExpPedal (Ped)", "Modwheel (MW)", "Pitchbend (PB)",
         "LFO1", "LFO2", "LFO3", "VolEnvelope", "Envelope2", "Envelope3", nullptr
     };
-    
+
+    static const char *modSourceNamesShort[] = {
+        "X", "AT", "KB", "-Vel", "Vel", "Ft", "Ped", "MW", "PB",
+        "1", "2", "3", "1", "2", "3", nullptr
+    };
+
     static const char *waveformNames[] = {
         "Square", "Saw", "White-noise"
     };
@@ -44,10 +49,11 @@ const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
 const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
 const Colour SynthParams::waveformLine (185, 189, 190);
-const Colour SynthParams::waveformBackground (85, 93, 104);
+const Colour SynthParams::waveformBackground(85, 93, 104);
+const Colour SynthParams::otherModulation(0, 0, 255); // add more different colours
 
 SynthParams::SynthParams()
-: serializeParams{ &freq,
+    : serializeParams{ &freq,
         // TODO: Think of another way to register all the struct params?
     &osc[0].fine, &osc[0].coarse, &osc[0].pitchModAmount2,&osc[0].trngAmount, &osc[0].pitchModAmount1, &osc[0].pulseWidth, &osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].shapeModSrc1, &osc[0].shapeModSrc2, &osc[0].panDir, &osc[0].vol, &osc[0].volModAmount1,
@@ -67,54 +73,54 @@ SynthParams::SynthParams()
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
     &lowFiActivation, &nBitsLowFi }
-, stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
+    , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
-, freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
-, delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
-, delayFeedback("Feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
-, delayTime("Time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
-, delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
-, delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
-, delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 32, 4)
-, delayCutoff("Cutoff", "delCut", "Delay cutoff", "Hz", 10.f, 20000.f, 20000.f)
-, delayResonance("Resonance", "delRes", "Delay resonance", "dB", -25.f, 0.f, 0.f)
-, delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
-, delayRecordFilter("Delay Record", "delRec", "Delay record filter", eOnOffToggle::eOff, onoffnames)
-, delayReverse("Delay Reverse", "delRev", "Delay reverse", eOnOffToggle::eOff, onoffnames)
-, lowFiActivation("Activation", "lowFiActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
-, nBitsLowFi("Bit Degr", "nBitsLowFi", "Number Bits", "bit", 1.f, 16.f, 16.f)
-, chorDelayLength("Width", "chorWidth", "Chorus Width", "s", .02f, .08f, .05f)
-, chorModRate("Rate", "chorRate", "Chorus Rate", "Hz", 0.f, 1.5f, 0.5f)
-, chorDryWet("Dry/Wet", "ChorAmount", "Chorus Dry/Wet", "", 0.f, 1.f, 0.f)
-, chorModDepth("Depth", "ChorDepth", "Chorus Depth", "ms", 1.f, 20.f, 15.f)
-, clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 25.f, 0.0f)
-, seqMode("SeqMode", "seqMode", "SeqMode", eSeqModes::eSeqStop, seqModeNames)
-, seqPlayMode("SeqPlayMode", "seqPlayMode", "SeqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
-, seqLastPlayedStep("Last Played Step", "lastPlayedStep", "Last Played Step", "", 0.0f, 7.0f, 0.0f)
-, seqNumSteps("Steps", "seqNumSteps", "Steps", "", 1.0f, 8.0f, 8.0f)
-, seqStepSpeed("Speed", "seqStepSpeed", "Speed", "qn", 0.0625f, 4.0f, 1.0f)
-, seqStepLength("Length", "seqNoteLength", "Length", "qn", 0.0625f, 4.0f, 1.0f)
-, seqTriplets("Seq Triplets", "seqTriplets", "Seq Triplets", eOnOffToggle::eOff, onoffnames)
-, seqRandomMin("Min", "seqRandomMin", "Min", "", 0.0f, 127.0f, 0.0f)
-, seqRandomMax("Max", "seqRandomMax", "Max", "", 0.0f, 127.0f, 127.0f)
-, seqStep0("Step 0", "seqNote0", "Step 0", "", 0.0f, 127.0f, 60.0f)
-, seqStep1("Step 1", "seqNote1", "Step 1", "", 0.0f, 127.0f, 62.0f)
-, seqStep2("Step 2", "seqNote2", "Step 2", "", 0.0f, 127.0f, 64.0f)
-, seqStep3("Step 3", "seqNote3", "Step 3", "", 0.0f, 127.0f, 65.0f)
-, seqStep4("Step 4", "seqNote4", "Step 4", "", 0.0f, 127.0f, 67.0f)
-, seqStep5("Step 5", "seqNote5", "Step 5", "", 0.0f, 127.0f, 69.0f)
-, seqStep6("Step 6", "seqNote6", "Step 6", "", 0.0f, 127.0f, 71.0f)
-, seqStep7("Step 7", "seqNote7", "Step 7", "", 0.0f, 127.0f, 72.0f)
-, seqStepActive0("Step 0 Active", "seqStepActive0", "Step 0 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive1("Step 1 Active", "seqStepActive1", "Step 1 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive2("Step 2 Active", "seqStepActive2", "Step 2 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive3("Step 3 Active", "seqStepActive3", "Step 3 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive4("Step 4 Active", "seqStepActive4", "Step 4 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive5("Step 5 Active", "seqStepActive5", "Step 5 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive6("Step 6 Active", "seqStepActive6", "Step 6 Active", eOnOffToggle::eOn, onoffnames)
-, seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
+    , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
+    , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
+    , delayFeedback("Feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
+    , delayTime("Time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
+    , delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
+    , delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
+    , delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 32, 4)
+    , delayCutoff("Cutoff", "delCut", "Delay cutoff", "Hz", 10.f, 20000.f, 20000.f)
+    , delayResonance("Resonance", "delRes", "Delay resonance", "dB", -25.f, 0.f, 0.f)
+    , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
+    , delayRecordFilter("Delay Record", "delRec", "Delay record filter", eOnOffToggle::eOff, onoffnames)
+    , delayReverse("Delay Reverse", "delRev", "Delay reverse", eOnOffToggle::eOff, onoffnames)
+    , lowFiActivation("Activation", "lowFiActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
+    , nBitsLowFi("Bit Degr", "nBitsLowFi", "Number Bits", "bit", 1.f, 16.f, 16.f)
+    , chorDelayLength("Width", "chorWidth", "Chorus Width", "s", .02f, .08f, .05f)
+    , chorModRate("Rate", "chorRate", "Chorus Rate", "Hz", 0.f, 1.5f, 0.5f)
+    , chorDryWet("Dry/Wet", "ChorAmount", "Chorus Dry/Wet", "", 0.f, 1.f, 0.f)
+    , chorModDepth("Depth", "ChorDepth", "Chorus Depth", "ms", 1.f, 20.f, 15.f)
+    , clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 25.f, 0.0f)
+    , seqMode("SeqMode", "seqMode", "SeqMode", eSeqModes::eSeqStop, seqModeNames)
+    , seqPlayMode("SeqPlayMode", "seqPlayMode", "SeqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
+    , seqLastPlayedStep("Last Played Step", "lastPlayedStep", "Last Played Step", "", 0.0f, 7.0f, 0.0f)
+    , seqNumSteps("Steps", "seqNumSteps", "Steps", "", 1.0f, 8.0f, 8.0f)
+    , seqStepSpeed("Speed", "seqStepSpeed", "Speed", "qn", 0.0625f, 4.0f, 1.0f)
+    , seqStepLength("Length", "seqNoteLength", "Length", "qn", 0.0625f, 4.0f, 1.0f)
+    , seqTriplets("Seq Triplets", "seqTriplets", "Seq Triplets", eOnOffToggle::eOff, onoffnames)
+    , seqRandomMin("Min", "seqRandomMin", "Min", "", 0.0f, 127.0f, 0.0f)
+    , seqRandomMax("Max", "seqRandomMax", "Max", "", 0.0f, 127.0f, 127.0f)
+    , seqStep0("Step 0", "seqNote0", "Step 0", "", 0.0f, 127.0f, 60.0f)
+    , seqStep1("Step 1", "seqNote1", "Step 1", "", 0.0f, 127.0f, 62.0f)
+    , seqStep2("Step 2", "seqNote2", "Step 2", "", 0.0f, 127.0f, 64.0f)
+    , seqStep3("Step 3", "seqNote3", "Step 3", "", 0.0f, 127.0f, 65.0f)
+    , seqStep4("Step 4", "seqNote4", "Step 4", "", 0.0f, 127.0f, 67.0f)
+    , seqStep5("Step 5", "seqNote5", "Step 5", "", 0.0f, 127.0f, 69.0f)
+    , seqStep6("Step 6", "seqNote6", "Step 6", "", 0.0f, 127.0f, 71.0f)
+    , seqStep7("Step 7", "seqNote7", "Step 7", "", 0.0f, 127.0f, 72.0f)
+    , seqStepActive0("Step 0 Active", "seqStepActive0", "Step 0 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive1("Step 1 Active", "seqStepActive1", "Step 1 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive2("Step 2 Active", "seqStepActive2", "Step 2 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive3("Step 3 Active", "seqStepActive3", "Step 3 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive4("Step 4 Active", "seqStepActive4", "Step 4 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive5("Step 5 Active", "seqStepActive5", "Step 5 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive6("Step 6 Active", "seqStepActive6", "Step 6 Active", eOnOffToggle::eOn, onoffnames)
+    , seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
     //Others
-, positionIndex(0)
+    , positionIndex(0)
 {
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
@@ -137,8 +143,8 @@ SynthParams::SynthParams()
 
         
 SynthParams::Osc::Osc()
-    : fine("f.tune", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
-    , coarse("c.tune", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
+    : fine("fine", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
+    , coarse("coarse", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
     , pitchModAmount2("mod", "pitchModAmount2", "OSC1 LFO1 depth", "st", 0.f, 12.f, 0.f)
     , trngAmount("trianlge", "trngAmount", "OSC1 triangle amount", "prct", 0.0f, 1.0f, 0.0f)
     , pitchModAmount1("Pitch", "pitchModAmount1", "OSC1 pitch range", "st", 0.f, 12.f, 0.f)
@@ -146,29 +152,29 @@ SynthParams::Osc::Osc()
     , pitchModSrc2("OSC1 PitchModSrc2", "osc1PitchModSrc2", "OSC1 pitch modSrc2", eModSource::eNone, modsourcenames)
     , shapeModSrc1("OSC1 PW ModSrc1", "shapeModSrc1", "OSC1 pulse width modSrc1", eModSource::eNone, modsourcenames)
     , shapeModSrc2("OSC1 PW ModSrc2", "shapeModSrc2", "OSC1 pulse width modSrc2", eModSource::eNone, modsourcenames)
-    , pulseWidth("Width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , pulseWidth("width", "pulseWidth", "OSC1 pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
     , shapeModAmount("Width Mod", "shapeModAmount", "OSC1 PWM", "", 0.f, 1.f, 0.f)
     , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
-    , panDir("Pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
-    , vol("Vol", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
+    , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
+    , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     , volModAmount1("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
 
 SynthParams::EnvBase::EnvBase()
-: attack("Attack", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-, release("Release", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "veloToKey", 0.0f, 1.0f, 0.0f)
+: attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
+, release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
+, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
 , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
 , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
 , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-, decay("Decay", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+, decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
 : EnvBase()
-, sustain("Sustain", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+, sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 , speedModSrc1("VolEnv Speed ModSrc1", "volEnvSpeedModSrc1", "Vol Env modSrc1", eModSource::eNone, modsourcenames)
 , speedModSrc2("VolEnv Speed ModSrc2", "volEnvSpeedModSrc2", "Vol Env modSrc2", eModSource::eNone, modsourcenames)
 {
@@ -176,7 +182,7 @@ SynthParams::EnvVol::EnvVol()
 
 SynthParams::Env::Env()
 :  EnvBase()
-, sustain("Sustain", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+, sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
 , speedModSrc1("Env2 Speed ModSrc1", "env2SpeedModSrc1", "Env2 speed modSrc1", eModSource::eNone, modsourcenames)
 , speedModSrc2("Env2 Speed ModSrc2", "env2SpeedModSrc2", "Env2 speed modSrc2", eModSource::eNone, modsourcenames)
 {
@@ -238,6 +244,25 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
 }
 }
 
+// TODO: add more diverse colours, note that what if lfo modulates lfo? -> same colour, currently draw saturn with saturation
+Colour SynthParams::getModSourceColour(eModSource source)
+{
+    switch (source) {
+        case eModSource::eNone:
+            return Colours::black;
+        case eModSource::eVolEnv:
+        case eModSource::eEnv2:
+        case eModSource::eEnv3:
+            return SynthParams::envColour.withSaturation(1.0f).brighter();
+        case eModSource::eLFO1:
+        case eModSource::eLFO2:
+        case eModSource::eLFO3:
+            return SynthParams::lfoColour.withSaturation(1.0f).brighter();
+        default:
+            return SynthParams::otherModulation;
+}
+}
+
 void SynthParams::writeXMLPatchHost(MemoryBlock& destData, eSerializationParams paramsToSerialize) {
     // create an outer node of the patch
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
@@ -267,7 +292,7 @@ void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& 
         param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
         //! \todo dirty flag needs to be set! This is a bad hack, please use get/set instead of getUI/setUI
         param.set(param.get(),true);
-        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least 
+        //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
                                                                                                             // delay feedback and dry are bad and (ampVol sometimes); not further tested
     }
 }
@@ -320,6 +345,18 @@ const char * SynthParams::getModSrcName(int index)
         return modsourcenames[index];
     } else {
         return "unknown";
+    }
+}
+
+
+String SynthParams::getShortModSrcName(int index)
+{
+    if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) {
+        return modSourceNamesShort[index];
+    }
+    else 
+    {
+        return "?";
     }
 }
 

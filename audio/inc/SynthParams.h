@@ -71,7 +71,7 @@ public:
     static const Colour envelopeCurveBackground;
     static const Colour waveformLine;
     static const Colour waveformBackground;
-    
+    static const Colour otherModulation;
     
     static const char* getModSrcName(int index);
 
@@ -246,6 +246,10 @@ public:
     std::vector<Param*> stepSeqParams;
 
     const float version = 1.1f; // version of the program, to be written into the xml
+
+    static Colour getModSourceColour(eModSource source);
+
+    static String getShortModSrcName(int index);
 
     /**
     * Store host state by creating XML file to serialize specified parameters by using writeXMLPatchTree().

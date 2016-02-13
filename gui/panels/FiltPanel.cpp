@@ -52,6 +52,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     cutoffSlider2->setRange (10, 20000, 1);
     cutoffSlider2->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider2->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    cutoffSlider2->setColour (Slider::rotarySliderFillColourId, Colour (0xff5b7a47));
     cutoffSlider2->addListener (this);
 
     addAndMakeVisible (passtype = new Slider ("passtype switch"));
@@ -62,10 +63,10 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     passtype->setColour (Slider::trackColourId, Colours::white);
     passtype->addListener (this);
 
-    addAndMakeVisible (modSliderCut = new Slider ("Mod"));
+    addAndMakeVisible (modSliderCut = new MouseOverKnob ("Mod"));
     modSliderCut->setRange (0, 8, 0);
     modSliderCut->setSliderStyle (Slider::RotaryVerticalDrag);
-    modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    modSliderCut->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
     modSliderCut->addListener (this);
 
     addAndMakeVisible (lp1ModSrc1 = new ComboBox ("lp1ModSrcBox1"));
@@ -113,7 +114,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     addAndMakeVisible (modSliderCut2 = new Slider ("Mod"));
     modSliderCut2->setRange (0, 8, 0);
     modSliderCut2->setSliderStyle (Slider::RotaryVerticalDrag);
-    modSliderCut2->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    modSliderCut2->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
     modSliderCut2->addListener (this);
 
     addAndMakeVisible (ladderLabel = new Label ("ladder filter label",
@@ -173,12 +174,15 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     fillModsourceBox(res1ModSrc1);
     fillModsourceBox(res1ModSrc2);
 
-    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1);
-    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2);
+    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1, cutoffSlider);
+    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2, cutoffSlider);
     registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1);
     registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2);
     registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
     registerCombobox(res1ModSrc2, &filter.resonanceModSrc2);
+
+    registerSaturnSource(cutoffSlider, modSliderCut, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
+    registerSaturnSource(cutoffSlider, modSliderCut2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -238,14 +242,14 @@ void FiltPanel::resized()
     resonanceSlider->setBounds (300, 36, 64, 64);
     cutoffSlider2->setBounds (204, 34, 64, 64);
     passtype->setBounds (7, 52, 40, 88);
-    modSliderCut->setBounds (158, 98, 24, 24);
-    lp1ModSrc1->setBounds (108, 101, 50, 16);
+    modSliderCut->setBounds (158, 100, 20, 20);
+    lp1ModSrc1->setBounds (106, 100, 50, 20);
     hp1ModSrc1->setBounds (204, 104, 64, 16);
-    lp1ModSrc2->setBounds (108, 125, 50, 16);
+    lp1ModSrc2->setBounds (106, 125, 50, 20);
     hp1ModSrc2->setBounds (204, 128, 64, 16);
     res1ModSrc1->setBounds (299, 104, 64, 16);
     res1ModSrc2->setBounds (299, 127, 64, 16);
-    modSliderCut2->setBounds (158, 122, 24, 24);
+    modSliderCut2->setBounds (158, 125, 20, 20);
     ladderLabel->setBounds (35, 47, 56, 24);
     bandpassLabel->setBounds (35, 71, 72, 24);
     highpassLabel->setBounds (35, 95, 72, 24);
@@ -370,25 +374,26 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="204 34 64 64"
-          min="10" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff5b7a47" min="10" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
           virtualName="" explicitFocusOrder="0" pos="7 52 40 88" thumbcol="ff40ae69"
           trackcol="ffffffff" min="0" max="3" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName=""
-          explicitFocusOrder="0" pos="158 98 24 24" min="0" max="8" int="0"
+  <SLIDER name="Mod" id="2634056a966d88f4" memberName="modSliderCut" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="158 100 20 20" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="108 101 50 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="106 100 50 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox1" id="85c37cba161b4f29" memberName="hp1ModSrc1"
             virtualName="" explicitFocusOrder="0" pos="204 104 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lp1ModSrcBox2" id="6dae6bde5fbe8153" memberName="lp1ModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="108 125 50 16" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="106 125 50 20" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hp1ModSrcBox2" id="f1f85630e066837c" memberName="hp1ModSrc2"
             virtualName="" explicitFocusOrder="0" pos="204 128 64 16" editable="0"
@@ -400,9 +405,9 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="299 127 64 16" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Mod" id="c0e4229cc3539fbe" memberName="modSliderCut2" virtualName=""
-          explicitFocusOrder="0" pos="158 122 24 24" min="0" max="8" int="0"
+          explicitFocusOrder="0" pos="158 125 20 20" min="0" max="8" int="0"
           style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <LABEL name="ladder filter label" id="26f319c896bbcef8" memberName="ladderLabel"
          virtualName="" explicitFocusOrder="0" pos="35 47 56 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="ladder" editableSingleClick="0"

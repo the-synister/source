@@ -70,16 +70,29 @@ private:
 
     //==============================================================================
     ScopedPointer<MouseOverKnob> ftune1;
-    ScopedPointer<MouseOverKnob> lfo1depth1;
+    ScopedPointer<MouseOverKnob> pitchModAmount2;
     ScopedPointer<MouseOverKnob> trngAmount;
     ScopedPointer<MouseOverKnob> pulsewidth;
-    ScopedPointer<MouseOverKnob> pitchRange;
+    ScopedPointer<MouseOverKnob> pitchModAmount1;
     ScopedPointer<MouseOverKnob> ctune1;
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
-    ScopedPointer<MouseOverKnob> amountWidthMod;
-    ScopedPointer<ComboBox> osc1FreqModSrc1;
-    ScopedPointer<ComboBox> osc1FreqModSrc2;
+    ScopedPointer<MouseOverKnob> widthModAmount1;
+    ScopedPointer<ComboBox> pitchModSrc1;
+    ScopedPointer<ComboBox> pitchModSrc2;
+    ScopedPointer<MouseOverKnob> gain;
+    ScopedPointer<MouseOverKnob> pan;
+    ScopedPointer<MouseOverKnob> widthModAmount2;
+    ScopedPointer<ComboBox> widthModSrc1;
+    ScopedPointer<ComboBox> widthModSrc2;
+    ScopedPointer<MouseOverKnob> gainModAmount2;
+    ScopedPointer<MouseOverKnob> gainModAmount1;
+    ScopedPointer<ComboBox> gainModSrc1;
+    ScopedPointer<ComboBox> gainModSrc2;
+    ScopedPointer<MouseOverKnob> panModAmount2;
+    ScopedPointer<MouseOverKnob> panModAmount1;
+    ScopedPointer<ComboBox> panModSrc1;
+    ScopedPointer<ComboBox> panModSrc2;
 
 
     //==============================================================================
