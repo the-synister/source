@@ -28,7 +28,7 @@ namespace {
     };
 
     static const char *modSourceNamesShort[] = {
-        "X", "AT", "KB", "-Vel", "Vel", "Ft", "Ped", "MW", "PB",
+        " ", "AT", "KB", "-Vel", "Vel", "Ft", "Ped", "MW", "PB",
         "1", "2", "3", "1", "2", "3", nullptr
     };
 

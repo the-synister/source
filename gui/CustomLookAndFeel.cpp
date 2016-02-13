@@ -73,7 +73,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
         }
 
         // draw knob border
-        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        g.setColour(s.isEnabled() ? Colours::white : Colours::white.withAlpha(0.5f));
         knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
         g.fillPath(knob);
 
