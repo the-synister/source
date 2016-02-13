@@ -54,7 +54,7 @@ const Colour SynthParams::otherModulation(0, 0, 255); // add more different colo
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
-        // TODO: Think of another way to register all the struct params?
+    // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
@@ -73,7 +73,7 @@ SynthParams::SynthParams()
     //Filters Params
     &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2,
     &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2,
-//Others
+    //Others
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
@@ -155,8 +155,8 @@ SynthParams::Osc::Osc()
     , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     // ModAmounts and ModSources
-    , panModAmount1("OSC PanModAmount1", "OSCPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 1.f, 0.f)
-    , panModAmount2("OSC PanModAmount2", "OSCPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 1.f, 0.f)
+    , panModAmount1("OSC PanModAmount1", "OSCPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 100.f, 0.f)
+    , panModAmount2("OSC PanModAmount2", "OSCPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 100.f, 0.f)
     , panModSrc1("OSC PanModSrc1", "OSCPanModSrc1", "OSC Pan ModSource 1", eModSource::eNone, modsourcenames)
     , panModSrc2("OSC PanModSrc2", "OSCPanModSrc2", "OSC Pan ModSource 2", eModSource::eNone, modsourcenames)
     , shapeModAmount1("OSC ShapeModAmount1", "OSCShapeModAmount1", "OSC Shape ModAmount 1", "", 0.f, 1.f, 0.f)
@@ -199,20 +199,20 @@ SynthParams::EnvVol::EnvVol()
 }
 
 SynthParams::Env::Env()
-:  EnvBase()
+    : EnvBase()
     , sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
 {
 }
 
 SynthParams::Lfo::Lfo()
-    : freq("Freq", "lfo1freq", "LFO1 freq", "Hz", .01f, 50.f, 1.f)
-    , wave("Wave", "lfo1wave", "LFO1 waveform", eLfoWaves::eLfoSine, lfowavenames)
-    , tempSync("TempoSync", "tempoSyncSwitch", "LFO1 TempoSync", eOnOffToggle::eOff, onoffnames)
-    , noteLength("Note Length", "notelength", "LFO1 Note Length", "", 1.f, 32.f, 4.f)
-    , fadeIn("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
+    : freq("LFO Freq", "LFOfreq", "LFO Freq", "Hz", .01f, 50.f, 1.f)
+    , wave("LFO Wave", "LFO1wave", "LFO Waveform", eLfoWaves::eLfoSine, lfowavenames)
+    , tempSync("LFO TempoSync", "LFOtempoSyncSwitch", "LFO TempoSync", eOnOffToggle::eOff, onoffnames)
+    , noteLength("LFO Note Length", "LFOnotelength", "LFO Note Length", "", 1.f, 32.f, 4.f)
+    , fadeIn("LFO FadeIn", "LFOFadein", "LFO Fade In", "s", 0.f, 10.f, 0.f)
     // ModAmounts and Sources
-    , freqModAmount1("LFO FreqModAmount1", "LFOFreqModAmount1", "LFO Freq ModAmount 1", "", 0.f, 1.f, 0.0f)
-    , freqModAmount2("LFO FreqModAmount2", "LFOFreqModAmount2", "LFO Freq ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , freqModAmount1("LFO FreqModAmount1", "LFOFreqModAmount1", "LFO Freq ModAmount 1", "", 0.f, 1.f, 0.f)
+    , freqModAmount2("LFO FreqModAmount2", "LFOFreqModAmount2", "LFO Freq ModAmount 2", "", 0.f, 1.f, 0.f)
     , freqModSrc1("LFO Freq ModSrc1", "LFOFreqModSrc1", "LFO Freq ModSource 1", eModSource::eNone, modsourcenames)
     , freqModSrc2("LFO Freq ModSrc2", "LFOFreqModSrc2", "LFO Freq ModSource 2", eModSource::eNone, modsourcenames)
     , gainModSrc("LFO Gain ModSrc", "LFOGainModSrc", "LFO Gain ModSource", eModSource::eNone, modsourcenames)
@@ -229,8 +229,8 @@ SynthParams::Filter::Filter()
     , lpModAmount2("FILTER Lc ModAmnout2", "FILTERLcModAmount2", "FILTER Lc ModAmount 2", "oct", 0.f, 8.f, 0.f)
     , hpModAmount1("FILTER Hc ModAmount1", "FILTERHcModAmount1", "FILTER Hc ModAmount 1", "oct", 0.f, 8.f, 0.f)
     , hpModAmount2("FILTER Hc ModAmount2", "FILTERHcModAmount2", "FILTER Hc ModAmount 2", "oct", 0.f, 8.f, 0.f)
-    , resModAmount1("FILTER Res ModAmount1", "FILTERResModAmount1", "FILTER Res ModAmount 1", "", 0.f, 1.f, 0.f)
-    , resModAmount2("FILTER Res ModAmount2", "FILTERResModAmount2", "FILTER Res ModAmount 2", "", 0.f, 1.f, 0.f)
+    , resModAmount1("FILTER Res ModAmount1", "FILTERResModAmount1", "FILTER Res ModAmount 1", "", 0.f, 10.f, 0.f)
+    , resModAmount2("FILTER Res ModAmount2", "FILTERResModAmount2", "FILTER Res ModAmount 2", "", 0.f, 10.f, 0.f)
     , lpCutModSrc1("FILTER Lc ModSrc1", "FILTERLcModSrc1", "FILTER Lc ModSource 1", eModSource::eNone, modsourcenames)
     , lpCutModSrc2("FILTER Lc ModSrc2", "FILTERLcModSrc2", "FILTER Lc ModSource 2", eModSource::eNone, modsourcenames)
     , hpCutModSrc1("FILTER Hc ModSrc1", "FILTERHcModSrc1", "FILTER Hc ModSource 1", eModSource::eNone, modsourcenames)
