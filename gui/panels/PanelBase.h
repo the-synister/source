@@ -103,7 +103,6 @@ protected:
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-                c2p.first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(c2p.first->getSelectedId() + COMBO_OFS)));
 
                 auto c2s = saturnSourceReg.find(c2p.first);
 
