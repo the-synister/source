@@ -163,9 +163,16 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour);
 
+    registerSlider(freqModAmount1, &lfo.freqModAmount1);
+    registerSlider(freqModAmount2, &lfo.freqModAmount2);
+
     fillModsourceBox(freqModSrc1);
     fillModsourceBox(freqModSrc2);
+    registerCombobox(freqModSrc1, &lfo.freqModSrc1, freq);
+    registerCombobox(freqModSrc2, &lfo.freqModSrc2, freq);
+    
     fillModsourceBox(lfoGain);
+    registerCombobox(lfoGain, &lfo.gainModSrc);
     //[/UserPreSize]
 
     setSize (267, 197);

@@ -101,11 +101,6 @@ public:
         Param attackShape; //!< env attack shape in [0.01..10]
         Param decayShape; //!< env decay shape in [0.01..10]
         Param releaseShape; //!< env release shape in [0.01..10]
-    };
-
-    struct EnvVol : public EnvBase {
-        EnvVol();
-        ParamDb sustain;   //!< Envelope sustain in [0..1]
         //ModAmounts and Sources
         Param speedModAmount1; //!< Volume envelope speed mod amount
         Param speedModAmount2; //!< Volume envelope speed mod amount
@@ -113,14 +108,14 @@ public:
         ParamStepped<eModSource> speedModSrc2; //!< Volume envelope speed mod source
     };
 
+    struct EnvVol : public EnvBase {
+        EnvVol();
+        ParamDb sustain;   //!< Envelope sustain in [0..1]
+    };
+
     struct Env : public EnvBase {
         Env();
         Param sustain; //!< Envelope sustain in [0..1]
-        //ModAmounts and Sources
-        Param speedModAmount1; //!< Envelope speed mod amount
-        Param speedModAmount2; //!< Envelope speed mod amount
-        ParamStepped<eModSource> speedModSrc1; //!< Envelope speed mod source
-        ParamStepped<eModSource> speedModSrc2; //!< Envelope speed mod source
     };
 
     struct Lfo : public BaseParamStruct {
@@ -146,16 +141,18 @@ public:
         Param lpCutoff; //!< filter cutoff frequency in Hz
         Param hpCutoff; //!< filter cutoff frequency in Hz
         Param resonance; //! filter resonance in dB
-
-        ParamStepped<eModSource> lpCutModSrc1;  //! lp filter modulation source
+        // ModAmounts and ModSources
         Param lpModAmount1;   //! lp filter modulation amount
-        ParamStepped<eModSource> hpCutModSrc1;  //! hp filter modulation source
-        Param hpModAmount1;   //! hp filter modulation amount
-        ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
-        ParamStepped<eModSource> lpCutModSrc2;  //! lp filter modulation source
         Param lpModAmount2;   //! lp filter modulation amount
-        ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
+        Param hpModAmount1;   //! hp filter modulation amount
         Param hpModAmount2;   //! hp filter modulation amount
+        Param resModAmount1;  //! resonance filter modulation amount
+        Param resModAmount2;  //! resonance filter modulation amount
+        ParamStepped<eModSource> lpCutModSrc1;  //! lp filter modulation source
+        ParamStepped<eModSource> lpCutModSrc2;  //! lp filter modulation source
+        ParamStepped<eModSource> hpCutModSrc1;  //! hp filter modulation source
+        ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
+        ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
         ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
     };
 
