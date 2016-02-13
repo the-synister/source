@@ -28,8 +28,8 @@
 
 //==============================================================================
 EnvPanel::EnvPanel (SynthParams &p)
-    : PanelBase(p),
-      envVol(p.envVol[0])
+    : PanelBase(p)
+    , envVol(p.envVol[0])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]

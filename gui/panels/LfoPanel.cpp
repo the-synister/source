@@ -28,8 +28,8 @@
 
 //==============================================================================
 LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
-    : PanelBase(p),
-      lfo(p.lfo[lfoNumber])
+    : PanelBase(p)
+    , lfo(p.lfo[lfoNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]

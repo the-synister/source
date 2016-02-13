@@ -29,7 +29,7 @@
 //==============================================================================
 FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     : PanelBase(p),
-      filter(p.filter[filterNumber])
+    filter(p.filter[filterNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]

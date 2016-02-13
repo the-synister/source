@@ -28,8 +28,8 @@
 
 //==============================================================================
 Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
-    : PanelBase(p),
-      env(p.env[envelopeNumber])
+    : PanelBase(p)
+    , env(p.env[envelopeNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
