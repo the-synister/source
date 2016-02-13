@@ -39,6 +39,9 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
     freq->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
+    freq->setColour (Slider::textBoxTextColourId, Colours::white);
+    freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    freq->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     freq->addListener (this);
 
     addAndMakeVisible (wave = new Slider ("wave switch"));
@@ -358,6 +361,7 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ffb16565"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
+          textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"

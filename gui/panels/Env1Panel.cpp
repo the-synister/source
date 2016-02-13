@@ -228,8 +228,8 @@ void Env1Panel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    envSpeedModSrc2->setBounds (53, 174, 40, 20);
-    envSpeedModSrc1->setBounds (53, 146, 40, 20);
+    envSpeedModSrc2->setBounds (53, 172, 40, 18);
+    envSpeedModSrc1->setBounds (53, 146, 40, 18);
     attackTime1->setBounds (8, 38, 64, 64);
     decayTime1->setBounds (69, 38, 64, 64);
     sustainLevel1->setBounds (132, 38, 64, 64);
@@ -237,10 +237,10 @@ void Env1Panel::resized()
     attackShape1->setBounds (30, 111, 20, 20);
     decayShape1->setBounds (91, 111, 20, 20);
     releaseShape1->setBounds (216, 111, 20, 20);
-    speedMod1->setBounds (30, 146, 20, 20);
+    speedMod1->setBounds (32, 146, 18, 18);
     envelopeCurve->setBounds (117, 146, 128, 64);
     shapeLabel1->setBounds (137, 108, 51, 24);
-    speedMod2->setBounds (30, 174, 20, 20);
+    speedMod2->setBounds (32, 172, 18, 18);
     speedModLabel->setBounds (23, 192, 80, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -355,10 +355,10 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="267" initialHeight="252">
   <BACKGROUND backgroundColour="ffcbca63"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="53 174 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 172 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="53 146 40 20" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="53 146 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="Attack Time" id="c3597517f8c98b63" memberName="attackTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"
@@ -400,7 +400,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="0.29999999999999999"/>
   <SLIDER name="speedMod1" id="bee5e0860811e660" memberName="speedMod1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 146 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 146 18 18"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
@@ -414,7 +414,7 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 174 20 20"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
