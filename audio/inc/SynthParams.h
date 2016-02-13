@@ -135,9 +135,7 @@ public:
 
     struct Filter : public BaseParamStruct {
         Filter();
-
         ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
-
         Param lpCutoff; //!< filter cutoff frequency in Hz
         Param hpCutoff; //!< filter cutoff frequency in Hz
         Param resonance; //! filter resonance in dB
