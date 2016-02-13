@@ -331,9 +331,9 @@ protected:
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);     // Length in samples of the LFO fade in
 
-        const float lfoGain = params.lfo[0].gainModSrc1.get() == eModSource::eNone
+        const float lfoGain = params.lfo[0].gainModSrc.get() == eModSource::eNone
             ? 1.f
-            : *(modSources[static_cast<int>(params.lfo[0].gainModSrc1.get()) - 1]);
+            : *(modSources[static_cast<int>(params.lfo[0].gainModSrc.get()) - 1]);
 
         //clear the buffers
         modDestBuffer.clear();

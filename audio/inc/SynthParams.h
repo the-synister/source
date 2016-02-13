@@ -106,6 +106,7 @@ public:
     struct EnvVol : public EnvBase {
         EnvVol();
         ParamDb sustain;   //!< Envelope sustain in [0..1]
+        //ModAmounts and Sources
         Param speedModAmount1; //!< Volume envelope speed mod amount
         Param speedModAmount2; //!< Volume envelope speed mod amount
         ParamStepped<eModSource> speedModSrc1; //!< Volume envelope speed mod source
@@ -115,6 +116,7 @@ public:
     struct Env : public EnvBase {
         Env();
         Param sustain; //!< Envelope sustain in [0..1]
+        //ModAmounts and Sources
         Param speedModAmount1; //!< Envelope speed mod amount
         Param speedModAmount2; //!< Envelope speed mod amount
         ParamStepped<eModSource> speedModSrc1; //!< Envelope speed mod source
@@ -123,18 +125,17 @@ public:
 
     struct Lfo : public BaseParamStruct {
         Lfo();
-
         Param freq; //!< lfo frequency in Hz
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-
-        ParamStepped<eModSource> freqModSrc1; //!< lfo1 frequency mod source
-        ParamStepped<eModSource> freqModSrc2; //!< lfo2 frequency mod source
-        ParamStepped<eModSource> gainModSrc1; //!< lfo1 gain mod source
-        ParamStepped<eModSource> gainModSrc2; //!< lfo2 gain mod source
-
         Param fadeIn;   // The LFOs fade in with a range of [0..10s]
+        //ModAmounts and Sources
+        Param freqModAmount1; //!< lfo frequency mod amount
+        Param freqModAmount2; //!< lfo frequency mod amount
+        ParamStepped<eModSource> freqModSrc1; //!< lfo frequency mod source
+        ParamStepped<eModSource> freqModSrc2; //!< lfo frequency mod source
+        ParamStepped<eModSource> gainModSrc; //!< lfo gain mod source
     };
 
     struct Filter : public BaseParamStruct {
@@ -168,7 +169,6 @@ public:
         Param pulseWidth; //!< pulse width in [0,01..0,99]
         ParamDb vol; //!< volume in [-96..12]
         Param panDir; //!< pan R/L [-100..100]
-        
         //ModAmounts and Sources
         Param panModAmount1; //!< pan mod amount
         Param panModAmount2; //!< pan mod amount

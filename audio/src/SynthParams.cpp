@@ -59,20 +59,23 @@ SynthParams::SynthParams()
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
     &osc[1].fine, &osc[1].coarse, &osc[1].panDir,&osc[1].vol,&osc[1].trngAmount,&osc[1].pulseWidth,&osc[1].waveForm,&osc[1].pitchModAmount1, &osc[1].pitchModAmount2,&osc[1].pitchModSrc1, &osc[1].pitchModSrc2,
-    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1,&osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2,
+    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2,
     &osc[2].fine, &osc[2].coarse, &osc[2].panDir,&osc[2].vol,&osc[2].trngAmount,&osc[2].pulseWidth,&osc[2].waveForm,&osc[2].pitchModAmount1, &osc[2].pitchModAmount2,&osc[2].pitchModSrc1, &osc[2].pitchModSrc2,
-    &osc[2].panModAmount1,&osc[2].panModAmount2, &osc[2].panModSrc1,&osc[0].panModSrc2,&osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2,
-    //Envelope Params
-    &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModSrc1, &env[0].speedModSrc2,
-    &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModSrc1, &env[1].speedModSrc2,
-    &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
+    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[0].panModSrc2,&osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2,
+    //Envelopes Params
+    &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModAmount1, &env[0].speedModAmount2, &env[0].speedModSrc1, &env[0].speedModSrc2,
+    &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
+    &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModAmount1, &envVol[0].speedModAmount2, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
+    //LFOS Params
+    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc,
+    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc,
+    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc,
+    //Filters Params
     &filter[0].lpCutoff, &filter[0].resonance,
     &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].hpCutoff, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2,
     &filter[1].lpCutoff, &filter[1].resonance,
     &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].hpCutoff, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2,
-    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc1, &lfo[0].gainModSrc2,
-    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc1, &lfo[1].gainModSrc2,
-    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc1, &lfo[2].gainModSrc2,
+    //Others
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
@@ -145,7 +148,6 @@ SynthParams::SynthParams()
     filter[1].setName("filter 2");
 }
 
-        
 SynthParams::Osc::Osc()
     : fine("fine", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
     , coarse("coarse", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
@@ -155,68 +157,72 @@ SynthParams::Osc::Osc()
     , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     //ModAmounts and ModSources
-    , panModAmount1("OSC PanModAmount1", "oscPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 1.f, 0.f)
-    , panModAmount2("OSC PanModAmount2", "oscPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 1.f, 0.f)
-    , panModSrc1("OSC PanModSrc1", "oscPanModSrc1", "OSC Pan ModSource 1", eModSource::eNone, modsourcenames)
-    , panModSrc2("OSC PanModSrc2", "oscPanModSrc2", "OSC Pan ModSource 2", eModSource::eNone, modsourcenames)
-    , shapeModAmount1("OSC ShapeModAmount1", "oscShapeModAmount1", "OSC Shape ModAmount 1", "", 0.f, 1.f, 0.f)
-    , shapeModAmount2("OSC ShapeModAmount2", "oscShapeModAmount2", "OSC Shape ModAmount 2", "", 0.f, 1.f, 0.f)
-    , shapeModSrc1("OSC ShapeModSrc1", "oscShapeModSrc1", "OSC Shape ModSource 1", eModSource::eNone, modsourcenames)
-    , shapeModSrc2("OSC ShapeModSrc2", "oscShapeModSrc2", "OSC Shape ModSource 2", eModSource::eNone, modsourcenames)
-    , pitchModAmount1("OSC PitchModAmount1", "oscPitchModAmount1", "OSC Pitch ModAmount 1", "st", 0.f, 12.f, 0.f)
-    , pitchModAmount2("OSC PitchModAmount2", "oscPitchModAmount2", "OSC Pitch ModAmount 2", "st", 0.f, 12.f, 0.f)
-    , pitchModSrc1("OSC PitchModSrc1", "oscPitchModSrc1", "OSC Pitch ModSource 1", eModSource::eNone, modsourcenames)
-    , pitchModSrc2("OSC PitchModSrc2", "oscPitchModSrc2", "OSC Pitch ModSource 2", eModSource::eNone, modsourcenames)
-    , gainModAmount1("OSC GainModAmount1", "oscGainModAmount1", "OSC Gain ModAmount 1", "dB", 0.f, 96.f, 0.0f)
-    , gainModAmount2("OSC GainModAmount2", "oscGainModAmount2", "OSC Gain ModAmount 2", "dB", 0.f, 96.f, 0.0f)
-    , gainModSrc1("OSC GainModSrc1", "oscGainModSrc1", "OSC Gain ModSource 1", eModSource::eNone, modsourcenames)
-    , gainModSrc2("OSC GainModSrc2", "oscGainModSrc2", "OSC Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , panModAmount1("OSC PanModAmount1", "OSCPanModAmount1", "OSC Pan ModAmount 1", "", 0.f, 1.f, 0.f)
+    , panModAmount2("OSC PanModAmount2", "OSCPanModAmount2", "OSC Pan ModAmount 2", "", 0.f, 1.f, 0.f)
+    , panModSrc1("OSC PanModSrc1", "OSCPanModSrc1", "OSC Pan ModSource 1", eModSource::eNone, modsourcenames)
+    , panModSrc2("OSC PanModSrc2", "OSCPanModSrc2", "OSC Pan ModSource 2", eModSource::eNone, modsourcenames)
+    , shapeModAmount1("OSC ShapeModAmount1", "OSCShapeModAmount1", "OSC Shape ModAmount 1", "", 0.f, 1.f, 0.f)
+    , shapeModAmount2("OSC ShapeModAmount2", "OSCShapeModAmount2", "OSC Shape ModAmount 2", "", 0.f, 1.f, 0.f)
+    , shapeModSrc1("OSC ShapeModSrc1", "OSCShapeModSrc1", "OSC Shape ModSource 1", eModSource::eNone, modsourcenames)
+    , shapeModSrc2("OSC ShapeModSrc2", "OSCShapeModSrc2", "OSC Shape ModSource 2", eModSource::eNone, modsourcenames)
+    , pitchModAmount1("OSC PitchModAmount1", "OSCPitchModAmount1", "OSC Pitch ModAmount 1", "st", 0.f, 12.f, 0.f)
+    , pitchModAmount2("OSC PitchModAmount2", "OSCPitchModAmount2", "OSC Pitch ModAmount 2", "st", 0.f, 12.f, 0.f)
+    , pitchModSrc1("OSC PitchModSrc1", "OSCPitchModSrc1", "OSC Pitch ModSource 1", eModSource::eNone, modsourcenames)
+    , pitchModSrc2("OSC PitchModSrc2", "OSCPitchModSrc2", "OSC Pitch ModSource 2", eModSource::eNone, modsourcenames)
+    , gainModAmount1("OSC GainModAmount1", "OSCGainModAmount1", "OSC Gain ModAmount 1", "dB", 0.f, 96.f, 0.0f)
+    , gainModAmount2("OSC GainModAmount2", "OSCGainModAmount2", "OSC Gain ModAmount 2", "dB", 0.f, 96.f, 0.0f)
+    , gainModSrc1("OSC GainModSrc1", "OSCGainModSrc1", "OSC Gain ModSource 1", eModSource::eNone, modsourcenames)
+    , gainModSrc2("OSC GainModSrc2", "OSCGainModSrc2", "OSC Gain ModSource 2", eModSource::eNone, modsourcenames)
     // do we really need this???
     , volModAmount("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
 
 SynthParams::EnvBase::EnvBase()
-: attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-, release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-, keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-, attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
-, decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
-, releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-, decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+    : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
+    , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
+    , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
+    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
+    , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
     , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
-    , speedModAmount1("ENV SpeedModAmount1", "envSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
-    , speedModAmount2("ENV SpeedModAmount2", "envSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
-    , speedModSrc1("ENV Speed ModSrc1", "envSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("ENV Speed ModSrc2", "envSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
+    //ModAmounts and Sources
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::Env::Env()
 :  EnvBase()
     , sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
-    , speedModAmount1("ENV SpeedModAmount1", "envSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
-    , speedModAmount2("ENV SpeedModAmount2", "envSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
-    , speedModSrc1("ENV Speed ModSrc1", "envSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("ENV Speed ModSrc2", "envSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
+    //ModAmounts and Sources
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::Lfo::Lfo()
-: freq("Freq", "lfo1freq", "LFO1 freq", "Hz", .01f, 50.f, 1.f)
-, wave("Wave", "lfo1wave", "LFO1 waveform", eLfoWaves::eLfoSine, lfowavenames)
-, tempSync("TempoSync", "tempoSyncSwitch", "LFO1 TempoSync", eOnOffToggle::eOff, onoffnames)
-, freqModSrc1("LFO1 Freq ModSrc1", "LFO1FreqModSrc1", "LFO1 freq modSrc1", eModSource::eNone, modsourcenames)
-, freqModSrc2("LFO1 Freq ModSrc2", "LFO1FreqModSrc2", "LFO1 freq modSrc2", eModSource::eNone, modsourcenames)
-, gainModSrc1("LFO1 Gain ModSrc1", "LFO1GainModSrc1", "LFO1 gain modSrc1", eModSource::eNone, modsourcenames)
-, gainModSrc2("LFO1 Gain ModSrc2", "LFO1GainModSrc2", "LFO1 gain modSrc2", eModSource::eNone, modsourcenames)
-, noteLength("Note Length", "notelength", "LFO1 Note Length", "", 1.f, 32.f, 4.f)
-, fadeIn("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
+    : freq("Freq", "lfo1freq", "LFO1 freq", "Hz", .01f, 50.f, 1.f)
+    , wave("Wave", "lfo1wave", "LFO1 waveform", eLfoWaves::eLfoSine, lfowavenames)
+    , tempSync("TempoSync", "tempoSyncSwitch", "LFO1 TempoSync", eOnOffToggle::eOff, onoffnames)
+    , noteLength("Note Length", "notelength", "LFO1 Note Length", "", 1.f, 32.f, 4.f)
+    , fadeIn("FadeIn", "lfoFadein", "LFO1 fade-in", "s", 0.f, 10.f, 0.f)
+    //ModAmounts and Sources
+    , freqModAmount1("LFO FreqModAmount1", "LFOFreqModAmount1", "LFO Freq ModAmount 1", "", 0.f, 1.f, 0.0f)
+    , freqModAmount2("LFO FreqModAmount2", "LFOFreqModAmount2", "LFO Freq ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , freqModSrc1("LFO Freq ModSrc1", "LFOFreqModSrc1", "LFO Freq ModSource 1", eModSource::eNone, modsourcenames)
+    , freqModSrc2("LFO Freq ModSrc2", "LFOFreqModSrc2", "LFO Freq ModSource 2", eModSource::eNone, modsourcenames)
+    , gainModSrc("LFO Gain ModSrc", "LFOGainModSrc", "LFO Gain ModSource", eModSource::eNone, modsourcenames)
 {
 }
 

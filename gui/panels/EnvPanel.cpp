@@ -168,7 +168,6 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(speedMod1, &envVol.keyVelToEnv, std::bind(&EnvPanel::updateCurve, this));         //sure about this???
 
-
     registerSlider(speedMod1, &envVol.speedModAmount1);
     registerSlider(speedMod2, &envVol.speedModAmount2);
 
