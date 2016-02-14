@@ -23,40 +23,41 @@ public:
         params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
     , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
         params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
+    , env2(getSampleRate(), params.env[1].attack, params.env[1].decay, params.env[1].sustain, params.env[1].release,
+        params.env[1].attackShape, params.env[1].decayShape, params.env[1].releaseShape, params.env[1].keyVelToEnv)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
-    , totSamples(0)
     , envToVolBuffer(1, blockSize)
-    , lfo1Buffer(1, blockSize)
     , env1Buffer(1, blockSize)
+    , env2Buffer(1, blockSize)
+    , lfo0Buffer(1, blockSize)
+    , lfo1Buffer(1, blockSize)
+    , lfo2Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
+        std::fill(totSamples.begin(), totSamples.end(), 0);
         // set all to velocity so that the modulation matrix does not crash
         std::fill(modSources.begin(), modSources.end(), &currentVelocity);
         //std::fill(modSources.begin(), modSources.end(), nullptr);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
+        // midi
+        modSources[eModSource::eAftertouch] = &channelAfterTouch;
+        modSources[eModSource::eKeyBipolar] = &keyBipolar;
+        modSources[eModSource::eInvertedVelocity] = &currentInvertedVelocity;
         modSources[eModSource::eVelocity] = &currentVelocity;
+        modSources[eModSource::eFoot] = &footControlValue;
+        modSources[eModSource::eExpPedal] = &expPedalValue;
+        modSources[eModSource::eModwheel] = &modWheelValue;
         modSources[eModSource::ePitchbend] = &pitchBend;
-        modSources[eModSource::eLFO1] = lfo1Buffer.getWritePointer(0);
-        modSources[eModSource::eVolEnv] = env1Buffer.getWritePointer(0);
-#if 0
-        //old sytel for reference!!!!
-        //set connection bewtween source and matrix here
-        //MIDI
-        modSources[SOURCE_PITCHBEND] = &pitchBend;
-        modSources[SOURCE_MODWHEEL] = &modWheelValue;
-        modSources[SOURCE_FOOT] = &footControlValue;
-        modSources[SOURCE_EXPPEDAL] = &expPedalValue;
-        modSources[SOURCE_AFTERTOUCH] = &channelAfterTouch;
-        //INTERNAL
-        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
-        //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
-        //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
-        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
-        //modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
-#endif
+        // internal
+        modSources[eModSource::eLFO1] = lfo0Buffer.getWritePointer(0);
+        modSources[eModSource::eLFO2] = lfo1Buffer.getWritePointer(0);
+        modSources[eModSource::eLFO3] = lfo2Buffer.getWritePointer(0);
+        modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
+        modSources[eModSource::eEnv2] = env1Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv3] = env2Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -75,7 +76,7 @@ public:
     {
         currentVelocity = velocity;
 
-        totSamples = 0;
+        std::fill(totSamples.begin(), totSamples.end(), 0);
 
         // reset attackDecayCounter
         envToVolume.startEnvelope(currentVelocity);
@@ -296,8 +297,8 @@ public:
                 if (outputBuffer.getNumChannels() == 2) 
                 {
                     // Pan Influence
-                    //const float currentPan = params.osc[o].panDir.get();
-                    const float currentPan = panMod[s] * 100.f;
+                    const float currentPan = params.osc[o].panDir.get() + panMod[s] * 100.f;
+                    //const float currentPan = panMod[s] * 100.f;
                     const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
                     const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
@@ -325,7 +326,7 @@ public:
         }
 
         //Update of the total samples variable
-        totSamples = totSamples + numSamples;
+        totSamples[0] = totSamples[0] + numSamples;
     }
 
 
@@ -360,7 +361,7 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
 
             // Fade in factor calculation
-            if (samplesFadeInLFO == 0 || (totSamples + s > samplesFadeInLFO))
+            if (samplesFadeInLFO == 0 || (totSamples[0] + s > samplesFadeInLFO))
             {
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                 factorFadeInLFO = 1.f;
@@ -368,7 +369,7 @@ protected:
             else
             {
                 // Otherwise the factor is determined
-                factorFadeInLFO = static_cast<float>(totSamples + s) / static_cast<float>(samplesFadeInLFO);
+                factorFadeInLFO = static_cast<float>(totSamples[0] + s) / static_cast<float>(samplesFadeInLFO);
             }
 
             // calculate lfo values and fill the buffers
@@ -424,39 +425,38 @@ private:
     Oscillator<&Waveforms::square> lfo1square;
     RandomOscillator<&Waveforms::square> lfo1random;
 
-    float pitchBend;
-    //float currentPitchInCents;
-    //float lfoValue;
-    //float env1Coeff;
-
     std::array<float*, eModSource::nSteps> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
-
-    int totSamples;
-
-    // variable for env
-    float currentVelocity;
     
-    //Midi Inputs
-    float modWheelValue;
+    std::array<int, 3> totSamples;
+
+    // Midi
+    float channelAfterTouch;
+    float keyBipolar;
+    float currentInvertedVelocity;
+    float currentVelocity;
     float footControlValue;
     float expPedalValue;
-    float channelAfterTouch;
+    float modWheelValue;
+    float pitchBend;
 
-    // Buffers
-    AudioSampleBuffer filterModBuffer;
-    AudioSampleBuffer lfo1Buffer;
-    AudioSampleBuffer envToVolBuffer;
-    AudioSampleBuffer env1Buffer;
-
-    AudioSampleBuffer modDestBuffer;
-    //AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
-    //AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
-    //AudioSampleBuffer env3Buffer;       /*not yet in use*/
-
+    //Mod matrix
     ModulationMatrix& modMatrix;
 
+    // Buffers
+    AudioSampleBuffer modDestBuffer;
+    AudioSampleBuffer filterModBuffer;
+    //std::array<AudioSampleBuffer, 3> lfoBuffer;
+    AudioSampleBuffer lfo0Buffer;
+    AudioSampleBuffer lfo1Buffer;
+    AudioSampleBuffer lfo2Buffer;
+    //std::array<AudioSampleBuffer, 3> envBuffer;
+    AudioSampleBuffer envToVolBuffer;
+    AudioSampleBuffer env1Buffer;
+    AudioSampleBuffer env2Buffer;
     // Envelopes
+    //std::array<Envelope*, 3> env;
     Envelope envToVolume;
     Envelope env1;
+    Envelope env2;
 };

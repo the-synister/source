@@ -384,9 +384,6 @@
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
