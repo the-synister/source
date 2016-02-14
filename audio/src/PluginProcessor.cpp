@@ -76,21 +76,33 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "lp1ModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "lp1ModSrcBox2");
-
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
-
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PAN, &osc[0].panModAmount1, "PanModSrc1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PAN, &osc[0].panModAmount2, "PanModSrc2");
-
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PW, &osc[0].shapeModAmount1, "WidthModSrc1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PW, &osc[0].shapeModAmount2, "WidthModSrc2");
-
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "envSpeedModSrcBox2");
+    for (size_t f = 0; f < filter.size(); ++f) {
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, "lp1ModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, "lp1ModSrcBox2");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].lpModAmount1, "hp1ModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].lpModAmount2, "hp1ModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].lpModAmount1, "res1ModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].lpModAmount2, "res1ModSrcBox1");
+    }
+    for (size_t o = 0; o < osc.size(); ++o) {
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, "GainModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, "GainModSrc2");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, "PanModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount2, "PanModSrc2");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount1, "oscPitchModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount2, "oscPitchModSrc2");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, "WidthModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, "WidthModSrc2");
+    }
+    for (size_t e = 0; e < env.size(); ++e) {
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount1, "envSpeedModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount2, "envSpeedModSrcBox2");
+    }
+    for (size_t l = 0; l < lfo.size(); ++l) {
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, "freqModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, "freqModSrc2");
+        // LFO Gain is handled in directly @ voice.renderModulation()
+    }
 }
 
 PluginAudioProcessor::~PluginAudioProcessor()
