@@ -63,27 +63,30 @@ void IncDecDropDown::paint(Graphics &g)
 
 void IncDecDropDown::mouseDown(const MouseEvent &e)
 {
-    const float width = static_cast<float>(this->getWidth());
-    const float buttonWidth = width / 4.0f;
-    const int numItems = this->getNumItems();
-    int index = this->getSelectedItemIndex();
+    if (this->isEnabled())
+    {
+        const float width = static_cast<float>(this->getWidth());
+        const float buttonWidth = width / 4.0f;
+        const int numItems = this->getNumItems();
+        int index = this->getSelectedItemIndex();
 
-    if (e.position.getX() <= buttonWidth)
-    {
-        // if dec button
-        if (index == 0)
+        if (e.position.getX() <= buttonWidth)
         {
-            index = numItems;
+            // if dec button
+            if (index == 0)
+            {
+                index = numItems;
+            }
+            this->setSelectedItemIndex((index - 1) % numItems);
         }
-        this->setSelectedItemIndex((index - 1) % numItems);
-    }
-    else if (e.position.getX() >= width - buttonWidth)
-    {
-        // if inc button
-        this->setSelectedItemIndex((index + 1) % numItems);
-    }
-    else
-    {
-        ComboBox::mouseDown(e);
+        else if (e.position.getX() >= width - buttonWidth)
+        {
+            // if inc button
+            this->setSelectedItemIndex((index + 1) % numItems);
+        }
+        else
+        {
+            ComboBox::mouseDown(e);
+        }
     }
 }

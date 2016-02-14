@@ -155,7 +155,7 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
     Slider::mouseDown(e);
 
-    if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier)
+    if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier && this->isEnabled())
     {
         PopupMenu main;
         main.addSectionHeader("Current Value: " + String(this->getValue()) + this->getTextValueSuffix());

@@ -282,7 +282,7 @@ void FiltPanel::resized()
     //[/UserPreResize]
 
     cutoffSlider->setBounds (110, 34, 64, 64);
-    resonanceSlider->setBounds (300, 36, 64, 64);
+    resonanceSlider->setBounds (300, 34, 64, 64);
     cutoffSlider2->setBounds (204, 34, 64, 64);
     passtype->setBounds (7, 52, 40, 88);
     lpModAmount1->setBounds (111, 97, 18, 18);
@@ -435,7 +435,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="300 36 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="300 34 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"

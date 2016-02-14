@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;..\..\..\vst;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -98,7 +98,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;..\..\..\vst;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -1830,7 +1830,20 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\delayReverse.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoGain.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSampleHold.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSineWave.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSquareWave.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\oscWaveForms.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqRandom.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqSequential.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqUpDown.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\tempoSync.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOff.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOn.png"/>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\triplets.png"/>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_formats\juce_module_info"/>

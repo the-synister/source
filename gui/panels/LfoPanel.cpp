@@ -57,33 +57,6 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     tempoSyncSwitch->addListener (this);
     tempoSyncSwitch->setColour (ToggleButton::textColourId, Colours::white);
 
-    addAndMakeVisible (sineLabel = new Label ("sine label",
-                                              TRANS("Sine")));
-    sineLabel->setFont (Font (15.00f, Font::plain));
-    sineLabel->setJustificationType (Justification::centred);
-    sineLabel->setEditable (false, false, false);
-    sineLabel->setColour (Label::textColourId, Colours::white);
-    sineLabel->setColour (TextEditor::textColourId, Colours::black);
-    sineLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (squareLabel = new Label ("square label",
-                                                TRANS("Square")));
-    squareLabel->setFont (Font (15.00f, Font::plain));
-    squareLabel->setJustificationType (Justification::centred);
-    squareLabel->setEditable (false, false, false);
-    squareLabel->setColour (Label::textColourId, Colours::white);
-    squareLabel->setColour (TextEditor::textColourId, Colours::black);
-    squareLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (sampleHoldLabel2 = new Label ("sample and hold label",
-                                                     TRANS("Smp+Hold")));
-    sampleHoldLabel2->setFont (Font (15.00f, Font::plain));
-    sampleHoldLabel2->setJustificationType (Justification::centred);
-    sampleHoldLabel2->setEditable (false, false, false);
-    sampleHoldLabel2->setColour (Label::textColourId, Colours::white);
-    sampleHoldLabel2->setColour (TextEditor::textColourId, Colours::black);
-    sampleHoldLabel2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
     lfoFadeIn->setRange (0, 10, 0);
     lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -186,6 +159,10 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
 
     //[Constructor] You can add your own custom stuff here..
+    sineWave = ImageCache::getFromMemory(BinaryData::lfoSineWave_png, BinaryData::lfoSineWave_pngSize);
+    squareWave = ImageCache::getFromMemory(BinaryData::lfoSquareWave_png, BinaryData::lfoSquareWave_pngSize);
+    sampleHold = ImageCache::getFromMemory(BinaryData::lfoSampleHold_png, BinaryData::lfoSampleHold_pngSize);
+    gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
     //[/Constructor]
 }
 
@@ -197,9 +174,6 @@ LfoPanel::~LfoPanel()
     freq = nullptr;
     wave = nullptr;
     tempoSyncSwitch = nullptr;
-    sineLabel = nullptr;
-    squareLabel = nullptr;
-    sampleHoldLabel2 = nullptr;
     lfoFadeIn = nullptr;
     triplets = nullptr;
     noteLength = nullptr;
@@ -220,11 +194,12 @@ void LfoPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xffb16565));
+    g.fillAll (Colour (0xff855050));
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, lfo.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::lfoColour);
+    drawWaves(g, wave, lfoGain);
     //[/UserPaint]
 }
 
@@ -234,14 +209,11 @@ void LfoPanel::resized()
     //[/UserPreResize]
 
     freq->setBounds (10, 35, 64, 64);
-    wave->setBounds (133, 81, 60, 24);
-    tempoSyncSwitch->setBounds (83, 111, 150, 24);
-    sineLabel->setBounds (78, 81, 64, 24);
-    squareLabel->setBounds (133, 57, 64, 24);
-    sampleHoldLabel2->setBounds (192, 81, 72, 24);
+    wave->setBounds (168, 58, 60, 24);
+    tempoSyncSwitch->setBounds (82, 102, 100, 24);
     lfoFadeIn->setBounds (10, 97, 64, 64);
-    triplets->setBounds (192, 112, 120, 24);
-    noteLength->setBounds (110, 135, 87, 24);
+    triplets->setBounds (180, 102, 100, 24);
+    noteLength->setBounds (122, 130, 87, 24);
     freqModAmount1->setBounds (67, 35, 18, 18);
     freqModAmount2->setBounds (67, 59, 18, 18);
     freqModSrc1->setBounds (90, 35, 40, 18);
@@ -352,6 +324,18 @@ String LfoPanel::getNoteLengthAsString()
 {
     return "1/" + String(lfo.noteLength.getUI());
 }
+
+void LfoPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox)
+{
+    int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
+    int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
+
+    g.drawImageWithin(sineWave, _waveformSwitch->getX() - 20, centerY - 8, 19, 16, RectanglePlacement::centred); //19x16
+    g.drawImageWithin(squareWave, centerX - 9, _waveformSwitch->getY() - 15, 17, 15, RectanglePlacement::centred); // 17x15
+    g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 1, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
+
+    g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
+}
 //[/MiscUserCode]
 
 
@@ -369,36 +353,21 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p),&#10;lfo(p.lfo[lfoNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="197">
-  <BACKGROUND backgroundColour="ffb16565"/>
+  <BACKGROUND backgroundColour="ff855050"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
-          explicitFocusOrder="0" pos="133 81 60 24" thumbcol="ff855050"
+          explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="83 111 150 24" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="82 102 100 24" txtcol="ffffffff"
                 buttonText="Tempo Sync" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
-  <LABEL name="sine label" id="b40cd065bdc2086c" memberName="sineLabel"
-         virtualName="" explicitFocusOrder="0" pos="78 81 64 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Sine" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="square label" id="5adc08b39551a18d" memberName="squareLabel"
-         virtualName="" explicitFocusOrder="0" pos="133 57 64 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Square" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="sample and hold label" id="f2be9ba7b41efda2" memberName="sampleHoldLabel2"
-         virtualName="" explicitFocusOrder="0" pos="192 81 72 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="Smp+Hold" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="10 97 64 64"
           rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -406,11 +375,11 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="192 112 120 24" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="180 102 100 24" txtcol="ffffffff"
                 buttonText="triplets" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="110 135 87 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="122 130 87 24"
             editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32"
             textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"

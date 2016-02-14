@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="standalone">
@@ -351,6 +352,12 @@
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -387,6 +394,15 @@
     <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
       <Filter>standalone\Audio\inc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
@@ -396,10 +412,16 @@
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
@@ -519,6 +541,12 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_devices\native\juce_linux_Midi.cpp">
       <Filter>Juce Modules\juce_audio_devices\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_audio_devices\native\juce_mac_AudioCDBurner.mm">
+      <Filter>Juce Modules\juce_audio_devices\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_audio_devices\native\juce_mac_AudioCDReader.mm">
+      <Filter>Juce Modules\juce_audio_devices\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_devices\native\juce_mac_CoreAudio.cpp">
       <Filter>Juce Modules\juce_audio_devices\native</Filter>
     </ClCompile>
@@ -614,6 +642,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_processors\format\juce_AudioPluginFormatManager.cpp">
       <Filter>Juce Modules\juce_audio_processors\format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_audio_processors\format_types\juce_AudioUnitPluginFormat.mm">
+      <Filter>Juce Modules\juce_audio_processors\format_types</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_processors\format_types\juce_LADSPAPluginFormat.cpp">
       <Filter>Juce Modules\juce_audio_processors\format_types</Filter>
@@ -867,6 +898,21 @@
     <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_linux_Threads.cpp">
       <Filter>Juce Modules\juce_core\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_mac_Files.mm">
+      <Filter>Juce Modules\juce_core\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_mac_Network.mm">
+      <Filter>Juce Modules\juce_core\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_mac_Strings.mm">
+      <Filter>Juce Modules\juce_core\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_mac_SystemStats.mm">
+      <Filter>Juce Modules\juce_core\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_mac_Threads.mm">
+      <Filter>Juce Modules\juce_core\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_core\native\juce_posix_NamedPipe.cpp">
       <Filter>Juce Modules\juce_core\native</Filter>
     </ClCompile>
@@ -960,7 +1006,13 @@
     <ClCompile Include="..\..\..\juce\modules\juce_events\native\juce_android_Messaging.cpp">
       <Filter>Juce Modules\juce_events\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_events\native\juce_ios_MessageManager.mm">
+      <Filter>Juce Modules\juce_events\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_events\native\juce_linux_Messaging.cpp">
+      <Filter>Juce Modules\juce_events\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_events\native\juce_mac_MessageManager.mm">
       <Filter>Juce Modules\juce_events\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_events\native\juce_win32_Messaging.cpp">
@@ -1060,6 +1112,12 @@
       <Filter>Juce Modules\juce_graphics\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_graphics\native\juce_linux_Fonts.cpp">
+      <Filter>Juce Modules\juce_graphics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_graphics\native\juce_mac_CoreGraphicsContext.mm">
+      <Filter>Juce Modules\juce_graphics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_graphics\native\juce_mac_Fonts.mm">
       <Filter>Juce Modules\juce_graphics\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_graphics\native\juce_win32_Direct2DGraphicsContext.cpp">
@@ -1410,6 +1468,12 @@
     <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_android_Windowing.cpp">
       <Filter>Juce Modules\juce_gui_basics\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_ios_UIViewComponentPeer.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_ios_Windowing.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_linux_Clipboard.cpp">
       <Filter>Juce Modules\juce_gui_basics\native</Filter>
     </ClCompile>
@@ -1417,6 +1481,21 @@
       <Filter>Juce Modules\juce_gui_basics\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_linux_Windowing.cpp">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_mac_FileChooser.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_mac_MainMenu.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_mac_MouseCursor.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_mac_NSViewComponentPeer.mm">
+      <Filter>Juce Modules\juce_gui_basics\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_mac_Windowing.mm">
       <Filter>Juce Modules\juce_gui_basics\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_basics\native\juce_win32_DragAndDrop.cpp">
@@ -1476,13 +1555,25 @@
     <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_android_WebBrowserComponent.cpp">
       <Filter>Juce Modules\juce_gui_extra\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_ios_UIViewComponent.mm">
+      <Filter>Juce Modules\juce_gui_extra\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_linux_SystemTrayIcon.cpp">
       <Filter>Juce Modules\juce_gui_extra\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_linux_WebBrowserComponent.cpp">
       <Filter>Juce Modules\juce_gui_extra\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_mac_AppleRemote.mm">
+      <Filter>Juce Modules\juce_gui_extra\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_mac_NSViewComponent.mm">
+      <Filter>Juce Modules\juce_gui_extra\native</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_mac_SystemTrayIcon.cpp">
+      <Filter>Juce Modules\juce_gui_extra\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_mac_WebBrowserComponent.mm">
       <Filter>Juce Modules\juce_gui_extra\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_gui_extra\native\juce_win32_ActiveXComponent.cpp">
@@ -1525,6 +1616,12 @@
       <Filter>Juce Modules\juce_video\capture</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_android_CameraDevice.cpp">
+      <Filter>Juce Modules\juce_video\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_mac_CameraDevice.mm">
+      <Filter>Juce Modules\juce_video\native</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_mac_QuickTimeMovieComponent.mm">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_CameraDevice.cpp">
@@ -1581,29 +1678,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\juce_video.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp" />
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp" />
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
@@ -1627,7 +1701,13 @@
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
@@ -1666,6 +1746,9 @@
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
@@ -1694,6 +1777,9 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
@@ -3085,22 +3171,48 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h" />
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png">
+    <None Include="..\..\..\..\..\..\Desktop\Assets\delayReverse.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoGain.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSampleHold.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSineWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSquareWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\oscWaveForms.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqRandom.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqSequential.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqUpDown.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\tempoSync.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOff.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOn.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\triplets.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">

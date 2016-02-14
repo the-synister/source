@@ -3245,7 +3245,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png">
+    <None Include="..\..\..\..\..\..\Desktop\Assets\delayReverse.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoGain.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSampleHold.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSineWave.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSquareWave.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\oscWaveForms.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqRandom.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqSequential.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\seqUpDown.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\tempoSync.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOff.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOn.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\Desktop\Assets\triplets.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
