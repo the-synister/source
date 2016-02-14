@@ -231,7 +231,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         lowFi.bitReduction(buffer);
     }
 
-    if (clippingFactor.get() > 0.f) {
+    if (clippingActivation.getStep() == eOnOffToggle::eOn) {
         clip.clipSignal(buffer, 0, buffer.getNumSamples());
     }
     // fx

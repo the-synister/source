@@ -71,8 +71,8 @@ public:
     static const Colour envelopeCurveBackground;
     static const Colour waveformLine;
     static const Colour waveformBackground;
-    
-    
+
+
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
@@ -191,6 +191,7 @@ public:
     std::array<Osc, 3> osc;
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
+    ParamStepped<eOnOffToggle> clippingActivation; //!< Activation of the clipping effect
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
