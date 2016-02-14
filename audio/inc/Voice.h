@@ -169,6 +169,10 @@ public:
             {
                 env1.resetReleaseCounter();
             }
+            if (env2.getReleaseCounter() == -1)
+            {
+                env2.resetReleaseCounter();
+            }
         }
         else
         {
@@ -357,9 +361,9 @@ protected:
         //clear the buffers
         modDestBuffer.clear();
         lfo0Buffer.clear();
+        lfo1Buffer.clear();
+        lfo2Buffer.clear();
         env1Buffer.clear();
-        lfo2Buffer.clear();
-        lfo2Buffer.clear();
         env2Buffer.clear();
 
         //set the write point in the buffers
@@ -367,10 +371,10 @@ protected:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
 
-        std::array<AudioSampleBuffer, 3> lfoBuffers; //todo: hardcoded size
-        lfoBuffers[0] = lfo0Buffer;
-        lfoBuffers[1] = lfo1Buffer;
-        lfoBuffers[2] = lfo2Buffer;
+        std::array<AudioSampleBuffer, 3> lfoArray; //todo: hardcoded size
+        lfoArray[0] = lfo0Buffer;
+        lfoArray[1] = lfo1Buffer;
+        lfoArray[2] = lfo2Buffer;
 
         for (size_t l = 0; l < lfo.size(); ++l) {
             for (int s = 0; s < numSamples; ++s) {
@@ -389,13 +393,13 @@ protected:
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
-                    lfoBuffers[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoArray[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSampleHold:
-                    lfoBuffers[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoArray[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSquare:
-                    lfoBuffers[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoArray[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 }
             
