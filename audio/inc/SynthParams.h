@@ -289,6 +289,7 @@ public:
     Param chorDryWet;
     Param chorModRate;
     Param chorModDepth;
+    ParamStepped<eOnOffToggle> chorActivation; //!< Activation of the chorus effect
 
     std::array<AudioPlayHead::CurrentPositionInfo, 2> positionInfo;
 

@@ -45,6 +45,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void onOffSwitchChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -62,6 +63,7 @@ private:
     ScopedPointer<MouseOverKnob> chorDepthSlider;
     ScopedPointer<MouseOverKnob> chorDelayLengthSlider;
     ScopedPointer<MouseOverKnob> chorModRateSlider;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================
