@@ -363,6 +363,7 @@ protected:
         lfo0Buffer.clear();
         lfo1Buffer.clear();
         lfo2Buffer.clear();
+        envToVolBuffer.clear();
         env1Buffer.clear();
         env2Buffer.clear();
 
@@ -376,7 +377,7 @@ protected:
         lfoArray[1] = lfo1Buffer;
         lfoArray[2] = lfo2Buffer;
 
-        for (size_t l = 0; l < lfo.size(); ++l) {
+        for (size_t l = 0; l < 1; ++l) {
             for (int s = 0; s < numSamples; ++s) {
 
                 // Fade in factor calculation
@@ -408,38 +409,38 @@ protected:
                 env1Buffer.setSample(0, s, env1.calcEnvCoeff());
                 env2Buffer.setSample(0, s, env2.calcEnvCoeff());
             }
-            modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
-
-            for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
-                ++modDestinations[u];
-            }
-            // internal
-            ++modSources[eModSource::eLFO1];
-            ++modSources[eModSource::eLFO2];
-            ++modSources[eModSource::eLFO3];
-            ++modSources[eModSource::eVolEnv];
-            ++modSources[eModSource::eEnv2];
-            ++modSources[eModSource::eEnv3];
-
-            // midi
-            ++modSources[eModSource::eAftertouch];
-            ++modSources[eModSource::eKeyBipolar];
-            ++modSources[eModSource::eInvertedVelocity];
-            ++modSources[eModSource::eVelocity];
-            ++modSources[eModSource::eFoot];
-            ++modSources[eModSource::eExpPedal];
-            ++modSources[eModSource::eModwheel];
-            ++modSources[eModSource::ePitchbend];
         }
+        modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
-        //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
-        //! \todo check whether this should be at the place where the values are actually used
-        for (int s = 0; s < numSamples; ++s) {
-            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * 12.f));
-            modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
-            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
+        for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
+            ++modDestinations[u];
         }
+        // internal
+        ++modSources[eModSource::eLFO1];
+        ++modSources[eModSource::eLFO2];
+        ++modSources[eModSource::eLFO3];
+        ++modSources[eModSource::eVolEnv];
+        ++modSources[eModSource::eEnv2];
+        ++modSources[eModSource::eEnv3];
+
+        // midi
+        ++modSources[eModSource::eAftertouch];
+        ++modSources[eModSource::eKeyBipolar];
+        ++modSources[eModSource::eInvertedVelocity];
+        ++modSources[eModSource::eVelocity];
+        ++modSources[eModSource::eFoot];
+        ++modSources[eModSource::eExpPedal];
+        ++modSources[eModSource::eModwheel];
+        ++modSources[eModSource::ePitchbend];
+
+    //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
+    //! \todo check whether this should be at the place where the values are actually used
+    for (int s = 0; s < numSamples; ++s) {
+        modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * 12.f));
+        modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
+        modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
     }
+}
 
 public:
 
