@@ -113,11 +113,12 @@ public:
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
 
-        lfo1random.phase = 0.f;
+            lfo1random.phase = 0.f;
             lfo1random.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
+        // das macht ja hier nicht mehr so viel sinn, denn velocity ist hardcoded ...
         for (size_t o=0; o < params.osc.size(); ++o) {
             osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].volModAmount.get());
 
@@ -236,12 +237,15 @@ public:
 
                 const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
                 const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
+                const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                const float *widthMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
 
-            for (int s = 0; s < numSamples; ++s) {
+            for (int s = 0; s < numSamples; ++s) 
+            {
                     float currentSample = 0.0f;
 
                     switch (params.osc[o].waveForm.getStep())
-                {
+                    {
                     case eOscWaves::eOscSquare:
                     {
                         // In case of pulse width modulation
@@ -253,8 +257,8 @@ public:
                             deltaWidth = .49f;
                         }
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        //deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount.get();
-                        deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount1.get();
+                        //deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount1.get();
+                        deltaWidth = deltaWidth * shapeMod[s] * widthMod[s];
                         // Next sample will be fetched with the new width
                         currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                     }
@@ -267,8 +271,8 @@ public:
                             ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
                             : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        //deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount.get();
-                        deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount1.get();
+                        // deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount1.get();
+                        deltaTr = deltaTr * shapeMod[s] * widthMod[s];
                         // Next sample will be fetch with the new width
                         currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
                     }
@@ -276,10 +280,11 @@ public:
                     case eOscWaves::eOscNoise:
                         currentSample = (osc[o].noise.next(pitchMod[s]));
                         break;
-                }
+                    }
 
                     // filter
-                    for (size_t f = 0;f < params.filter.size();++f) {
+                    for (size_t f = 0; f < params.filter.size(); ++f) 
+                    {
                         const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
                         currentSample = filter[o][f].run(currentSample, filterMod[s]);
                     }
@@ -288,11 +293,13 @@ public:
                     currentSample *= (osc[o].level * envToVolMod[s]);
                     const float currentAmp = params.osc[o].vol.get();
                     // check if the output is a stereo output
-                if (outputBuffer.getNumChannels() == 2) {
-                        // Pan Influence
-                        const float currentPan = params.osc[o].panDir.get();
-                        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
-                        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+                if (outputBuffer.getNumChannels() == 2) 
+                {
+                    // Pan Influence
+                    //const float currentPan = params.osc[o].panDir.get();
+                    const float currentPan = panMod[s] * 100.f;
+                    const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+                    const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
@@ -367,15 +374,12 @@ protected:
             // calculate lfo values and fill the buffers
             switch (params.lfo[0].wave.getStep()) {
             case eLfoWaves::eLfoSine:
-                // lfoValue = lfo1sine.next();
                 lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSampleHold:
-                // lfoValue = lfo1random.next();
                 lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSquare:
-                // lfoValue = lfo1square.next();
                 lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfoGain);
                 break;
             }

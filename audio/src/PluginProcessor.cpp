@@ -76,12 +76,25 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
+#if 0
+    for (size_t o = 0; o < osc.size(); ++o)
+    {
+        globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
+    }
+#endif
 
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "lp1ModSrcBox1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "lp1ModSrcBox2");
 
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
+
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PAN, &osc[0].panModAmount1, "PanModSrc1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PAN, &osc[0].panModAmount2, "PanModSrc2");
+
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PW, &osc[0].shapeModAmount1, "WidthModSrc1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PW, &osc[0].shapeModAmount2, "WidthModSrc2");
 
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "envSpeedModSrcBox1");
     globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "envSpeedModSrcBox2");
