@@ -167,7 +167,6 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     registerSlider(attackShape1, &env.attackShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(decayShape1, &env.decayShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(releaseShape1, &env.releaseShape, std::bind(&Env1Panel::updateCurve, this));
-    registerSlider(speedMod1, &env.keyVelToEnv, std::bind(&Env1Panel::updateCurve, this));      //sure about this???
 
     registerSlider(speedMod1, &env.speedModAmount1);
     registerSlider(speedMod2, &env.speedModAmount2);

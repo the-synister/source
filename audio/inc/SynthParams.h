@@ -91,7 +91,7 @@ public:
 
     struct EnvBase : public BaseParamStruct {
         EnvBase();
-        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
+        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1] \todo remove this!
         Param attack;    //!< env attack in [0.001..5]s
         Param decay;     //!< env decay in [0.001..5]s
         Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
