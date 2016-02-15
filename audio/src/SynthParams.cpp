@@ -373,7 +373,7 @@ String SynthParams::getShortModSrcName(int index)
     if (index >= 0 && index < static_cast<int>(eModSource::nSteps)) {
         return modSourceNamesShort[index];
     }
-    else 
+    else
     {
         return "?";
     }

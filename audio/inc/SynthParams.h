@@ -72,7 +72,7 @@ public:
     static const Colour waveformLine;
     static const Colour waveformBackground;
     static const Colour otherModulation;
-    
+
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
