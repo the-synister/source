@@ -8,7 +8,6 @@
       <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets">
         <FILE id="rZz5lL" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
-        <FILE id="cRwtY4" name="knobstrip.png" compile="0" resource="1" file="../png/knobstrip.png"/>
         <FILE id="VMk6Dg" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="Jb2GSN" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>

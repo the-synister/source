@@ -3140,9 +3140,6 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\png\knobstrip.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
