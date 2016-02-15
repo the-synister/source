@@ -236,8 +236,8 @@ public:
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
-	ParamStepped<eOnOffToggle> delayActivation;     //!< delay activation
-	ParamStepped<eOnOffToggle> syncToggle;          //!< delay sync toggle
+    ParamStepped<eOnOffToggle> delayActivation;     //!< delay activation
+    ParamStepped<eOnOffToggle> syncToggle;          //!< delay sync toggle
                                                     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams; //!< vector of params to be serialized
                                          // list of only stepSeq params
