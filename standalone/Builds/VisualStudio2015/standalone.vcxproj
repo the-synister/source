@@ -134,8 +134,6 @@
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
@@ -1304,8 +1302,6 @@
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
