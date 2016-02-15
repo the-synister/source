@@ -189,7 +189,7 @@ protected:
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
-        
+
         // couple combobox with saturn knob
         if (modDest != nullptr) {
             saturnSourceReg[box] = modDest;
