@@ -74,10 +74,10 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     registerSlider(chorDepthSlider, &params.chorModDepth);
     registerSlider(chorDelayLengthSlider, &params.chorDelayLength);
     registerSlider(chorModRateSlider, &params.chorModRate);
-	chorDryWetSlider->setEnabled((onOffSwitch->getValue() == 1));
-	chorDepthSlider->setEnabled((onOffSwitch->getValue() == 1));
-	chorDelayLengthSlider->setEnabled((onOffSwitch->getValue() == 1));
-	chorModRateSlider->setEnabled((onOffSwitch->getValue() == 1));
+	chorDryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorDepthSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorDelayLengthSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorModRateSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	registerSlider(onOffSwitch, &params.chorActivation, std::bind(&ChorusPanel::onOffSwitchChanged, this));
     //[/UserPreSize]
 

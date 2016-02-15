@@ -53,7 +53,7 @@ ClippingPanel::ClippingPanel (SynthParams &p)
 
 
     //[UserPreSize]
-	clippingFactor->setEnabled((onOffSwitch->getValue() == 1));
+	clippingFactor->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	registerSlider(onOffSwitch, &params.clippingActivation, std::bind(&ClippingPanel::onOffSwitchChanged, this));
     registerSlider(clippingFactor, &params.clippingFactor);
     //[/UserPreSize]
