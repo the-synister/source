@@ -237,18 +237,14 @@ public:
 
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
 
-            std::array<const float *, 3> pitchMod;
-            std::array<const float *, 3> shapeMod;
-            std::array<const float *, 3> panMod;
-
             for(int s = 0; s < numSamples; ++s) {
 
                 // oscillators
                 for (size_t o = 0; o < params.osc.size(); ++o) {
 
-                    pitchMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
-                    shapeMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
-                    panMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                    const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
+                    const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
+                    const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
 
                     float currentSample = 0.0f;
 
@@ -264,11 +260,11 @@ public:
                         if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < (.5f + params.osc[o].pulseWidth.getMin())) {
                             deltaWidth = .49f;
                         }
+
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        //deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount1.get();
-                        deltaWidth = deltaWidth * shapeMod[o][s];
+                        deltaWidth = deltaWidth * shapeMod[s];
                         // Next sample will be fetched with the new width
-                        currentSample = (osc[o].square.next(pitchMod[o][s], deltaWidth));
+                        currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                     }
                     //currentSample = (osc1Sine.next(osc1PitchMod[s]));
                     break;
@@ -280,13 +276,13 @@ public:
                             : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
                         // deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount1.get();
-                        deltaTr = deltaTr * shapeMod[o][s];
+                        deltaTr = deltaTr * shapeMod[s];
                         // Next sample will be fetch with the new width
-                        currentSample = (osc[o].saw.next(pitchMod[o][s], deltaTr));
+                        currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
                     }
                     break;
                     case eOscWaves::eOscNoise:
-                        currentSample = (osc[o].noise.next(pitchMod[o][s]));
+                        currentSample = (osc[o].noise.next(pitchMod[s]));
                         break;
                     }
 
@@ -300,25 +296,26 @@ public:
                     // gain + pan
                     currentSample *= (osc[o].level * envToVolMod[s]);
                     const float currentAmp = params.osc[o].vol.get();
+
                     // check if the output is a stereo output
-                if (outputBuffer.getNumChannels() == 2){
-                    // Pan Influence
-                    const float currentPan = params.osc[o].panDir.get() + panMod[o][s] * 100.f;
-                    //const float currentPan = panMod[s] * 100.f;
-                    const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
-                    const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-                    outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                    outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                }
-                else{
-                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                    if (outputBuffer.getNumChannels() == 2){
+                        // Pan Influence
+                        const float currentPan = params.osc[o].panDir.get() + panMod[s] * 100.f;
+                        //const float currentPan = panMod[s] * 100.f;
+                        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+                        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                     }
-                }
-                    if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
-                        // next osc 
-                        break;
+                    else{
+                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        }
                     }
+                        if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
+                            // next osc 
+                            break;
+                        }
             }
         }
 
@@ -369,6 +366,13 @@ protected:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
 
+        modSources[eModSource::eLFO1] = lfoBuffers[0].getWritePointer(0);
+        modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
+        modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
+        modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
+        modSources[eModSource::eEnv2] = env1Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv3] = env2Buffer.getWritePointer(0);
+
         //for each sample
         for (int s = 0; s < numSamples; ++s) {
 
@@ -408,7 +412,6 @@ protected:
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
 
-
             for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
                 ++modDestinations[u];
             }
@@ -420,16 +423,6 @@ protected:
             ++modSources[eModSource::eVolEnv];
             ++modSources[eModSource::eEnv2];
             ++modSources[eModSource::eEnv3];
-
-            // midi
-            //++modSources[eModSource::eAftertouch];
-            //++modSources[eModSource::eKeyBipolar];
-            //++modSources[eModSource::eInvertedVelocity];
-            //++modSources[eModSource::eVelocity];
-            //++modSources[eModSource::eFoot];
-            //++modSources[eModSource::eExpPedal];
-            //++modSources[eModSource::eModwheel];
-            //++modSources[eModSource::ePitchbend];
 
             //! \todo check whether this should be at the place where the values are actually used
             modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * params.osc[0].pitchModAmount1.getMax()));
