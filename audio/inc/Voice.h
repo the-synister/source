@@ -30,11 +30,12 @@ public:
     , envToVolBuffer(1, blockSize)
     , env1Buffer(1, blockSize)
     , env2Buffer(1, blockSize)
-    , lfo0Buffer(1, blockSize)
-    , lfo1Buffer(1, blockSize)
-    , lfo2Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
+        lfoBuffers[0] = AudioSampleBuffer(1, blockSize);
+        lfoBuffers[1] = AudioSampleBuffer(1, blockSize);
+        lfoBuffers[2] = AudioSampleBuffer(1, blockSize);
+
         std::fill(totSamples.begin(), totSamples.end(), 0);
         // set all to velocity so that the modulation matrix does not crash
         std::fill(modSources.begin(), modSources.end(), &currentVelocity);
@@ -52,9 +53,9 @@ public:
         modSources[eModSource::eModwheel] = &modWheelValue;
         modSources[eModSource::ePitchbend] = &pitchBend;
         // internal
-        modSources[eModSource::eLFO1] = lfo0Buffer.getWritePointer(0);
-        modSources[eModSource::eLFO2] = lfo1Buffer.getWritePointer(0);
-        modSources[eModSource::eLFO3] = lfo2Buffer.getWritePointer(0);
+        modSources[eModSource::eLFO1] = lfoBuffers[0].getWritePointer(0);
+        modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
+        modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
         modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
         modSources[eModSource::eEnv2] = env1Buffer.getWritePointer(0);
         modSources[eModSource::eEnv3] = env2Buffer.getWritePointer(0);
@@ -122,7 +123,7 @@ public:
                 lfo[l].random.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
             }
-            for (size_t o = 0; o < params.osc.size(); ++o) {
+            for (size_t o = 0; o < osc.size(); ++o) {
                 // das macht ja hier nicht mehr so viel sinn, denn velocity ist hardcoded ...
                 osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].volModAmount.get());
 
@@ -178,6 +179,7 @@ public:
         {
             // we're being told to stop playing immediately, so reset everything..
             clearCurrentNote();
+
             for (Lfo& l : lfo) {
                 l.sine.reset();
                 l.square.reset();
@@ -226,7 +228,9 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
     {
         // if voice active
-        if (lfo[0].sine.isActive() || lfo[0].square.isActive()) {
+        if (lfo[0].sine.isActive() || lfo[0].square.isActive() ||
+            lfo[1].sine.isActive() || lfo[1].square.isActive() ||
+            lfo[2].sine.isActive() || lfo[2].square.isActive() ){
 
             // Modulation
             renderModulation(numSamples);
@@ -237,15 +241,15 @@ public:
             std::array<const float *, 3> shapeMod;
             std::array<const float *, 3> panMod;
 
-            // oscillators
-            for (size_t o = 0; o < params.osc.size(); ++o) {
+            for(int s = 0; s < numSamples; ++s) {
 
-                pitchMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
-                shapeMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
-                panMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                // oscillators
+                for (size_t o = 0; o < params.osc.size(); ++o) {
 
-                for (int s = 0; s < numSamples; ++s) 
-                {
+                    pitchMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
+                    shapeMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
+                    panMod[o] = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+
                     float currentSample = 0.0f;
 
                     switch (params.osc[o].waveForm.getStep())
@@ -297,8 +301,7 @@ public:
                     currentSample *= (osc[o].level * envToVolMod[s]);
                     const float currentAmp = params.osc[o].vol.get();
                     // check if the output is a stereo output
-                if (outputBuffer.getNumChannels() == 2) 
-                {
+                if (outputBuffer.getNumChannels() == 2){
                     // Pan Influence
                     const float currentPan = params.osc[o].panDir.get() + panMod[o][s] * 100.f;
                     //const float currentPan = panMod[s] * 100.f;
@@ -307,18 +310,16 @@ public:
                     outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
                     outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
                 }
-                else 
-                {
+                else{
                     for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
                         outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
                 }
-
                     if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
                         // next osc 
                         break;
                     }
-                }
+            }
         }
 
         if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
@@ -337,16 +338,18 @@ public:
 protected:
     void renderModulation(int numSamples) {
         
-        // LFO Fade IN Variables
-        const float sRate = static_cast<float>(getSampleRate());    // Sample rate
+        // Variables
+        const float sRate = static_cast<float>(getSampleRate());
         std::array<float, 3> factorFadeInLFO;
         std::array<int, 3> samplesFadeInLFO;
-
         std::array<float, 3> lfoGain;
-        for (size_t l = 0; l < lfo.size(); ++l) {
-            factorFadeInLFO[l] = 1.f;   // Defaut value of fade in factor is 1 (100%)
-            samplesFadeInLFO[l] = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);  // Length in samples of the LFO fade in
 
+        // Init
+        for (size_t l = 0; l < lfo.size(); ++l) {
+            factorFadeInLFO[l] = 1.f;
+            // Length in samples of the LFO fade in
+            samplesFadeInLFO[l] = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);
+            // Lfo Gain
             lfoGain[l] = params.lfo[l].gainModSrc.get() == eModSource::eNone
                 ? 1.f
                 : *(modSources[static_cast<int>(params.lfo[l].gainModSrc.get()) - 1]);
@@ -354,9 +357,9 @@ protected:
 
         //clear the buffers
         modDestBuffer.clear();
-        lfo0Buffer.clear();
-        lfo1Buffer.clear();
-        lfo2Buffer.clear();
+        lfoBuffers[0].clear();
+        lfoBuffers[1].clear();
+        lfoBuffers[2].clear();
         envToVolBuffer.clear();
         env1Buffer.clear();
         env2Buffer.clear();
@@ -366,14 +369,12 @@ protected:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
 
-        std::array<AudioSampleBuffer, 3> lfoArray; //todo: hardcoded size
-        lfoArray[0] = lfo0Buffer;
-        lfoArray[1] = lfo1Buffer;
-        lfoArray[2] = lfo2Buffer;
+        //for each sample
+        for (int s = 0; s < numSamples; ++s) {
 
-        for (size_t l = 0; l < lfoArray.size(); ++l) {
-            for (int s = 0; s < numSamples; ++s) {
-
+            //calc lfo stuff
+            for (size_t l = 0; l < lfoBuffers.size(); ++l) {
+                
                 // Fade in factor calculation
                 if (samplesFadeInLFO[l] == 0 || (totSamples[l] + s > samplesFadeInLFO[l]))
                 {
@@ -385,56 +386,57 @@ protected:
                     // Otherwise the factor is determined
                     factorFadeInLFO[l] = static_cast<float>(totSamples[l] + s) / static_cast<float>(samplesFadeInLFO[l]);
                 }
+                
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
-                    lfoArray[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoBuffers[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSampleHold:
-                    lfoArray[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoBuffers[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSquare:
-                    lfoArray[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    lfoBuffers[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
                     break;
                 }
-            
-                // Calculate the Envelope coefficients and fill the buffers
-                envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-                env1Buffer.setSample(0, s, env1.calcEnvCoeff());
-                env2Buffer.setSample(0, s, env2.calcEnvCoeff());
             }
+            // Calculate the Envelope coefficients and fill the buffers
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
+            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
+
+            //run the matrix
+            modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
+
+
+            for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
+                ++modDestinations[u];
+            }
+
+            // internal modSources
+            ++modSources[eModSource::eLFO1];
+            ++modSources[eModSource::eLFO2];
+            ++modSources[eModSource::eLFO3];
+            ++modSources[eModSource::eVolEnv];
+            ++modSources[eModSource::eEnv2];
+            ++modSources[eModSource::eEnv3];
+
+            // midi
+            //++modSources[eModSource::eAftertouch];
+            //++modSources[eModSource::eKeyBipolar];
+            //++modSources[eModSource::eInvertedVelocity];
+            //++modSources[eModSource::eVelocity];
+            //++modSources[eModSource::eFoot];
+            //++modSources[eModSource::eExpPedal];
+            //++modSources[eModSource::eModwheel];
+            //++modSources[eModSource::ePitchbend];
+
+            //! \todo check whether this should be at the place where the values are actually used
+            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * params.osc[0].pitchModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * params.osc[1].pitchModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * params.osc[2].pitchModAmount1.getMax()));
         }
-        modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
-
-        for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
-            ++modDestinations[u];
-        }
-        // internal
-        ++modSources[eModSource::eLFO1];
-        ++modSources[eModSource::eLFO2];
-        ++modSources[eModSource::eLFO3];
-        ++modSources[eModSource::eVolEnv];
-        ++modSources[eModSource::eEnv2];
-        ++modSources[eModSource::eEnv3];
-
-        // midi
-        ++modSources[eModSource::eAftertouch];
-        ++modSources[eModSource::eKeyBipolar];
-        ++modSources[eModSource::eInvertedVelocity];
-        ++modSources[eModSource::eVelocity];
-        ++modSources[eModSource::eFoot];
-        ++modSources[eModSource::eExpPedal];
-        ++modSources[eModSource::eModwheel];
-        ++modSources[eModSource::ePitchbend];
-
-    //! \todo 12 st must come from somewhere else, e.g. max value of the respective Param
-    //! \todo check whether this should be at the place where the values are actually used
-    for (int s = 0; s < numSamples; ++s) {
-        modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * 12.f));
-        modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
-        modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 12.f));
     }
-}
 
 public:
 
@@ -457,10 +459,8 @@ private:
     std::array<Lfo, 3> lfo;
     
     std::array<std::array<Filter,2>,3> filter;
-
     std::array<float*, eModSource::nSteps> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
-    
     std::array<int, 3> totSamples;
 
     // Midi
@@ -479,9 +479,7 @@ private:
     // Buffers
     AudioSampleBuffer modDestBuffer;
     AudioSampleBuffer filterModBuffer;
-    AudioSampleBuffer lfo0Buffer;
-    AudioSampleBuffer lfo1Buffer;
-    AudioSampleBuffer lfo2Buffer;
+    std::array<AudioSampleBuffer, 3> lfoBuffers; //todo: hardcoded size
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env1Buffer;
     AudioSampleBuffer env2Buffer;

@@ -112,8 +112,6 @@ public:
     ModulationMatrix();
     ~ModulationMatrix();
 
-
-
     struct ModMatrixRow
     {
         eModSource sourceIndex;
@@ -129,8 +127,6 @@ public:
         {}
     };
 
-
-
     inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
     inline void changeSource(String comboboxName, eModSource source);
     inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
@@ -139,7 +135,6 @@ public:
 private:
     std::vector<ModMatrixRow> matrixCore;
 };
-
 
 inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) const
 {
@@ -169,13 +164,10 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
               the conversion and application is apllied outside of the matrix*/
             *(dst[row.destinationIndex]) += dModValue;
         }
-
-
     }
 }
 
 // config changes
-
 inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const
 {
     for (const ModMatrixRow &row : matrixCore)
@@ -199,7 +191,6 @@ inline void ModulationMatrix::changeSource(String comboboxName, eModSource sourc
         }
     }
 }
-
 
 inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
 {
