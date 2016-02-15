@@ -369,7 +369,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     randMaxLabel->setText(MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMax.get()), true, true, 3), dontSendNotification);
     //[/UserPreSize]
 
-    setSize (800, 325);
+    setSize (800, 323);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -881,7 +881,7 @@ BEGIN_JUCER_METADATA
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="800"
-                 initialHeight="325">
+                 initialHeight="323">
   <BACKGROUND backgroundColour="ff564c43"/>
   <SLIDER name="Step 1" id="1c1677034c4af23a" memberName="seqStep1" virtualName="Slider"
           explicitFocusOrder="0" pos="358 67 48 220" thumbcol="ff808080"

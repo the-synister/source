@@ -49,22 +49,31 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     if (jmin(width, height) > 24)
     {
         // display modulation on slider if neccessary
-        std::array<Param*, 2> modSources = static_cast<MouseOverKnob&>(s).getModSources();
+        std::array<ParamStepped<eModSource>*, 2> sources = static_cast<MouseOverKnob&>(s).getModSources();
+        std::array<Param*, 2> amounts = static_cast<MouseOverKnob&>(s).getModAmounts();
 
         // draw saturn 1 if modSource is in use
-        if (modSources[0] != nullptr)
+        if (sources[0] != nullptr)
         {
-            drawModSource(g, s, modSources[0]->get(), true, centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
+            eModSource source1 = sources[0]->getStep();
+            if (source1 != eModSource::eNone)
+            {
+                drawModSource(g, source1, static_cast<MouseOverKnob&>(s), amounts[0], centreX, centreY, radiusSource1, (radiusKnob / radiusSource1), currAngle, rotaryStartAngle, rotaryEndAngle);
+            }
         }
 
         // draw saturn 2 if modSource is in use
-        if (modSources[1] != nullptr)
+        if (sources[1] != nullptr)
         {
-            drawModSource(g, s, modSources[1]->get(), false, centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
+            eModSource source2 = sources[1]->getStep();
+            if (source2 != eModSource::eNone)
+            {
+                drawModSource(g, source2, static_cast<MouseOverKnob&>(s), amounts[1], centreX, centreY, radiusSource2, (radiusSource1 / radiusSource2), currAngle, rotaryStartAngle, rotaryEndAngle);
+            }
         }
 
         // draw knob border
-        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        g.setColour(s.isEnabled() ? Colours::white : Colours::white.withAlpha(0.5f));
         knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
         g.fillPath(knob);
 
@@ -86,44 +95,61 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     g.fillPath(knob);
 }
 
-//TODO: vorzeitige version spter statt sourceValue und unipolar, den ganzen param rein und dann check auf unipolar / bipolar und evtl.Colour
-void CustomLookAndFeel::drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar,
+void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, Param *modAmount,
     float centreX, float centreY, float radius, float innerCircleSize,
-    float currAngle, float rotaryStartAngle, float rotaryEndAngle)
+    float /*currAngle*/, float rotaryStartAngle, float rotaryEndAngle)
 {
     const float val = static_cast<float>(s.getValue());
     const float min = static_cast<float>(s.getMinimum());
     const float max = static_cast<float>(s.getMaximum());
     const float skew = static_cast<float>(s.getSkewFactor());
+    const bool invertedUnipolar = false;
 
     float modStartAngle, modEndAngle, modPosition1, modPosition2;
-    float afterModVal1, afterModVal2;
+    float afterModVal1, afterModVal2, base, intensity;
 
-    // TODO: unipolar/bipolar aus param oder source slider entnehmen
-    //       zugriff auf modSourceSlider, dann werte umrechnen und addieren usw.
-    // calculate positions for saturns
-    if (unipolar)
+    // unipolar
+    if (isUnipolar(source))
     {
-        afterModVal1 = jmax(min, jmin(val + sourceValue, max));
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
+        // calculate intensity for unipolar direction
+        intensity = toBipolar(modAmount->getMin(), modAmount->getMax(), modAmount->get());
 
-        modStartAngle = currAngle;
-        modEndAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+        // if conversion is needed (for cases of octave to frequency)
+        if (s.isModSourceValueConverted())
+        {
+            base = intensity < 0.0f ? 0.5f : 2.0f;
+            afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
+        }
+        else
+        {
+            afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
+        }
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((val - min) / (max - min), skew);
     }
     else
     {
-        afterModVal1 = jmax(min, jmin(val + sourceValue /*/ 2.0f*/, max));
-        afterModVal2 = jmax(min, jmin(val - sourceValue /*/ 2.0f*/, max));
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
-
-        modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
-        modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
+        // if conversion is needed (for cases of octave to frequency)
+        if (s.isModSourceValueConverted())
+        {
+            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
+            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
+        }
+        else
+        {
+            afterModVal1 = jmax(min, jmin(val + modAmount->get(), max));
+            afterModVal2 = jmax(min, jmin(val - modAmount->get(), max));
+        }
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((afterModVal2 - min) / (max - min), skew);
     }
+
+    modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
+    modEndAngle = rotaryStartAngle + modPosition2 * (rotaryEndAngle - rotaryStartAngle);
 
     // draw saturns
     Path saturn;
-    g.setColour(s.isEnabled() ? Colours::yellow : Colours::lightgrey); // TODO: mod specific colour verwenden
+    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : Colours::lightgrey);
     saturn.addPieSegment(centreX - radius, centreY - radius, radius * 2.0f, radius * 2.0f, modStartAngle, modEndAngle, innerCircleSize * 1.03f);
     g.fillPath(saturn);
 }
@@ -204,7 +230,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(20, width / 2, height / 2) - 2);
+    const float sliderRadius = (float)(jmin(20, width, height) - 2);
     g.setColour(s.findColour(Slider::trackColourId));
     Path indent;
 
@@ -233,7 +259,7 @@ void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, in
 
 void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s)
 {
-    const float sliderRadius = (float)(jmin(10, width / 4, height / 4) - 2);
+    const float sliderRadius = (float)(jmin(10, width / 2, height / 2) - 2);
     const float outlineThickness = s.isEnabled() ? 0.8f : 0.3f;
     float centreX, centreY;
 
@@ -276,6 +302,30 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
             LookAndFeel_V2::drawLinearSliderThumb(g, x, y, width, height, sliderPos, minSliderPos, maxSliderPos, style, s);
         }
     }
+}
+
+Label* CustomLookAndFeel::createSliderTextBox(Slider& slider)
+{
+    Label* const l = new Label();
+
+    l->setJustificationType(Justification::centred);
+    l->setKeyboardType(TextInputTarget::decimalKeyboard);
+
+    l->setColour(Label::textColourId, slider.findColour(Slider::textBoxTextColourId));
+    l->setColour(Label::backgroundColourId,
+        (slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+        ? Colours::transparentBlack
+        : slider.findColour(Slider::textBoxBackgroundColourId));
+    l->setColour(Label::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+    l->setColour(TextEditor::textColourId, Colours::black);
+    l->setColour(TextEditor::backgroundColourId,
+        slider.findColour(Slider::textBoxBackgroundColourId)
+        .withAlpha((slider.getSliderStyle() == Slider::LinearBar || slider.getSliderStyle() == Slider::LinearBarVertical)
+            ? 0.7f : 1.0f));
+    l->setColour(TextEditor::outlineColourId, slider.findColour(Slider::textBoxOutlineColourId));
+    l->setColour(TextEditor::highlightColourId, slider.findColour(Slider::textBoxHighlightColourId));
+
+    return l;
 }
 
 // TODO: wenn nicht bentigt, dann weg
@@ -449,7 +499,8 @@ void CustomLookAndFeel::drawComboBox(Graphics &g, int width, int height, bool /*
                       buttonX + buttonW * arrowOffset, buttonY + buttonH * arrowOffset,
                       buttonX + buttonW * arrowOffset, buttonY + buttonH * (1.0f - arrowOffset));
 
-        g.setColour(c.findColour(ComboBox::ColourIds::arrowColourId));
+        Colour arrowColour(c.findColour(ComboBox::ColourIds::arrowColourId));
+        g.setColour(c.isMouseOver()? arrowColour.brighter() : arrowColour);
         g.fillPath(p);
     }
 }
@@ -462,7 +513,7 @@ Font CustomLookAndFeel::getComboBoxFont(ComboBox& c)
 
 void CustomLookAndFeel::positionComboBoxText(ComboBox& c, Label& l)
 {
-    l.setBounds(1, 1, c.getWidth() + 3 - c.getHeight(), c.getHeight() - 2);
+    l.setBounds(0, 0, c.getWidth() + 5 - c.getHeight(), c.getHeight());
 
     l.setFont(getComboBoxFont(c));
 }
@@ -517,7 +568,7 @@ int CustomLookAndFeel::getSliderPopupPlacement(Slider &/*s*/)
 void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String& /*name*/, bool isOpen, int width, int height)
 {
     // background colour
-    ColourGradient gradient(Colour (77, 77, 79), 0.0f, 0.0f, Colour (45, 43, 44), 0.0f, static_cast<float>(height), false);
+    ColourGradient gradient(Colours::darkgrey, 0.0f, 0.0f, Colours::black, 0.0f, static_cast<float>(height), false);
     g.setGradientFill(gradient);
     g.fillRect(0, 0, width, height);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include <cmath>
 #include "SynthParams.h"
 #include "ModulationMatrix.h"
 #include "Envelope.h"
@@ -26,7 +27,7 @@ public:
     , filterModBuffer(1, blockSize)
     , totSamples(0)
     , envToVolBuffer(1, blockSize)
-    , lfo1Buffer(1,blockSize)
+    , lfo1Buffer(1, blockSize)
     , env1Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
@@ -40,6 +41,22 @@ public:
         modSources[eModSource::ePitchbend] = &pitchBend;
         modSources[eModSource::eLFO1] = lfo1Buffer.getWritePointer(0);
         modSources[eModSource::eVolEnv] = env1Buffer.getWritePointer(0);
+#if 0
+        //old sytel for reference!!!!
+        //set connection bewtween source and matrix here
+        //MIDI
+        modSources[SOURCE_PITCHBEND] = &pitchBend;
+        modSources[SOURCE_MODWHEEL] = &modWheelValue;
+        modSources[SOURCE_FOOT] = &footControlValue;
+        modSources[SOURCE_EXPPEDAL] = &expPedalValue;
+        modSources[SOURCE_AFTERTOUCH] = &channelAfterTouch;
+        //INTERNAL
+        modSources[SOURCE_LFO1] = lfo1Buffer.getWritePointer(0);
+        //modSources[SOURCE_LFO2] = lfo2Buffer.getWritePointer(0);            /*not yet in use*/
+        //modSources[SOURCE_LFO3] = lfo3Buffer.getWritePointer(0);            /*not yet in use*/
+        modSources[SOURCE_ENV2] = env2Buffer.getWritePointer(0);
+        //modSources[SOURCE_ENV3] = env3Buffer.getWritePointer(0);            /*not yet in use*/
+#endif
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -54,7 +71,7 @@ public:
     }
 
     void startNote(int midiNoteNumber, float velocity,
-                    SynthesiserSound*, int currentPitchWheelPosition) override
+        SynthesiserSound*, int currentPitchWheelPosition) override
     {
         currentVelocity = velocity;
 
@@ -66,7 +83,13 @@ public:
 
         // Initialisieren der Parameter hier
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
-
+#if 0
+        // Initialization of midi values
+        modWheelValue = 0.f; // TODO: this needs to be changed to the current value
+        footControlValue = 0.f;
+        expPedalValue = 0.f;
+        channelAfterTouch = 0.f;
+#endif
         const float sRate = static_cast<float>(getSampleRate());
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
@@ -90,33 +113,34 @@ public:
             lfo1square.phase = .5f*float_Pi;
             lfo1square.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
 
-            lfo1random.phase = 0.f;
+        lfo1random.phase = 0.f;
             lfo1random.phaseDelta = params.lfo[0].freq.get() / sRate * 2.f * float_Pi;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/2.f)) - 1.f;
         }
 
         for (size_t o=0; o < params.osc.size(); ++o) {
-            osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].volModAmount1.get());
 
             switch (params.osc[o].waveForm.getStep())
-            {
+        {
             case eOscWaves::eOscSquare:
                 osc[o].square.phase = 0.f;
                 osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                 osc[o].square.width = params.osc[o].pulseWidth.get();
-                break;
+            break;
             case eOscWaves::eOscSaw:
                 osc[o].saw.phase = 0.f;
                 osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                 osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
-                break;
+            break;
             case eOscWaves::eOscNoise:
                 break;
             }
         }
 
-        for (auto& filters : filter) {
-            for (Filter& f : filters) {
+        for (auto& filters : filter) 
+        {
+            for (Filter& f : filters) 
+            {
                 f.reset(sRate);
             }
         }
@@ -138,7 +162,6 @@ public:
             {
                 env1.resetReleaseCounter();
             }
-
         }
         else
         {
@@ -147,7 +170,8 @@ public:
             lfo1sine.reset();
             lfo1square.reset();
             lfo1random.reset();
-            for (Osc& o : osc) {
+            for (Osc& o : osc) 
+            {
                 o.square.reset();
                 o.saw.reset();
                 o.noise.reset();
@@ -155,14 +179,34 @@ public:
         }
     }
 
+    void channelPressureChanged(int newValue) override 
+    {
+        channelAfterTouch = static_cast<float>(newValue) / 127.f;
+    }
+
     void pitchWheelMoved(int newValue) override
     {
         pitchBend = (newValue - 8192.f) / 8192.f;
     }
 
-    void controllerMoved(int /*controllerNumber*/, int /*newValue*/) override
+    //Midi Control
+    void controllerMoved(int controllerNumber, int newValue) override
     {
-        // not interested in controllers in this case.
+        switch(controllerNumber)
+        {
+        //Modwheel
+        case 1:
+            modWheelValue = static_cast<float>(newValue) / 127.f;
+            break;
+        //Foot Controller
+        case 4:
+            footControlValue = (static_cast<float>(newValue) / 127.f); //TODO: test
+            break;
+        //Expression Control
+        case 11:
+            expPedalValue = static_cast<float>(newValue) / 127.f; //TODO: test
+            break;
+        }
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
@@ -170,8 +214,20 @@ public:
         // if voice active
         if (lfo1square.isActive() || lfo1sine.isActive()) {
 
-            // Modulation
-            renderModulation(numSamples);
+        // Modulation
+        renderModulation(numSamples);
+
+#if 0
+            //not sure if this is obsolete yet ...
+            const float *lfo1 = lfo1Buffer.getReadPointer(0);
+            //const float *lfo2 = lfo2Buffer.getReadPointer(0);           /*not yet in use*/
+            //const float *lfo3 = lfo3Buffer.getReadPointer(0);           /*not yet in use*/
+            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER_LC);
+
+            const float currentAmp = params.vol.get();
+            const float currentPan = params.panDir.get();
+#endif
+
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
 
             // oscillators
@@ -180,11 +236,11 @@ public:
                 const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
                 const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
 
-                for (int s = 0; s < numSamples; ++s) {
+            for (int s = 0; s < numSamples; ++s) {
                     float currentSample = 0.0f;
 
                     switch (params.osc[o].waveForm.getStep())
-                    {
+                {
                     case eOscWaves::eOscSquare:
                     {
                         // In case of pulse width modulation
@@ -196,10 +252,12 @@ public:
                             deltaWidth = .49f;
                         }
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        //deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        deltaWidth = deltaWidth * shapeMod[s] * params.osc[o].shapeModAmount1.get();
                         // Next sample will be fetched with the new width
                         currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                     }
+                    //currentSample = (osc1Sine.next(osc1PitchMod[s]));
                     break;
                     case eOscWaves::eOscSaw:
                     {
@@ -208,7 +266,8 @@ public:
                             ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
                             : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
                         // LFO mod has values [-1 .. 1], max amp for amount = 1
-                        deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        //deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount.get();
+                        deltaTr = deltaTr * shapeMod[s] * params.osc[o].shapeModAmount1.get();
                         // Next sample will be fetch with the new width
                         currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
                     }
@@ -216,7 +275,7 @@ public:
                     case eOscWaves::eOscNoise:
                         currentSample = (osc[o].noise.next(pitchMod[s]));
                         break;
-                    }
+                }
 
                     // filter
                     for (size_t f = 0;f < params.filter.size();++f) {
@@ -225,22 +284,23 @@ public:
                     }
 
                     // gain + pan
-                    currentSample *= (osc[o].level * envToVolMod[s]);
+                    currentSample *= envToVolMod[s];
                     const float currentAmp = params.osc[o].vol.get();
                     // check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2) {
+                if (outputBuffer.getNumChannels() == 2) {
                         // Pan Influence
                         const float currentPan = params.osc[o].panDir.get();
                         const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
                         const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                    outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                    outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                }
+                else 
+                {
+                    for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                        outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                     }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
-                        }
-                    }
+                }
 
                     if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
                         // next osc 
@@ -249,13 +309,13 @@ public:
                 }
             }
 
-
             if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter()) {
-                clearCurrentNote();
-                lfo1sine.reset();
-                lfo1square.reset();
+                    clearCurrentNote();
+                    lfo1sine.reset();
+                    lfo1square.reset();
             }
         }
+
         //Update of the total samples variable
         totSamples = totSamples + numSamples;
     }
@@ -270,10 +330,17 @@ protected:
         float factorFadeInLFO = 1.f;                                // Defaut value of fade in factor is 1 (100%)
         const int samplesFadeInLFO = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);     // Length in samples of the LFO fade in
 
+        const float lfoGain = params.lfo[0].gainModSrc.get() == eModSource::eNone
+            ? 1.f
+            : *(modSources[static_cast<int>(params.lfo[0].gainModSrc.get()) - 1]);
+
         //clear the buffers
         modDestBuffer.clear();
         lfo1Buffer.clear();
         env1Buffer.clear();
+        //lfo2Buffer.clear();         /*not yet in use*/
+        //lfo3Buffer.clear();         /*not yet in use*/
+        //env3Buffer.clear();         /*not yet in use*/
 
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -300,15 +367,15 @@ protected:
             switch (params.lfo[0].wave.getStep()) {
             case eLfoWaves::eLfoSine:
                 // lfoValue = lfo1sine.next();
-                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1sine.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSampleHold:
                 // lfoValue = lfo1random.next();
-                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1random.next() * factorFadeInLFO * lfoGain);
                 break;
             case eLfoWaves::eLfoSquare:
                 // lfoValue = lfo1square.next();
-                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO);
+                lfo1Buffer.setSample(0, s, lfo1square.next() * factorFadeInLFO * lfoGain);
                 break;
             }
             // Calculate the Envelope coefficients and fill the buffers
@@ -342,8 +409,8 @@ private:
         Oscillator<&Waveforms::square> square;
         Oscillator<&Waveforms::saw> saw;
         Oscillator<&Waveforms::whiteNoise> noise;
-        float level;
     };
+
     std::array<Osc, 3> osc;
     std::array<std::array<Filter,2>,3> filter;
 
@@ -363,6 +430,12 @@ private:
 
     // variable for env
     float currentVelocity;
+    
+    //Midi Inputs
+    float modWheelValue;
+    float footControlValue;
+    float expPedalValue;
+    float channelAfterTouch;
 
     // Buffers
     AudioSampleBuffer filterModBuffer;
@@ -371,6 +444,9 @@ private:
     AudioSampleBuffer env1Buffer;
 
     AudioSampleBuffer modDestBuffer;
+    //AudioSampleBuffer lfo2Buffer;       /*not yet in use*/
+    //AudioSampleBuffer lfo3Buffer;       /*not yet in use*/
+    //AudioSampleBuffer env3Buffer;       /*not yet in use*/
 
     ModulationMatrix& modMatrix;
 

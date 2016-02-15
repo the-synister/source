@@ -388,28 +388,25 @@
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
+      <Filter>standalone\Audio\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
@@ -1734,9 +1731,6 @@
     <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
@@ -1747,6 +1741,12 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
@@ -3149,7 +3149,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png">
+    <None Include="..\..\..\png\delayReverse.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\knobstrip.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoGain.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSampleHold.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSineWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSquareWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\oscWaveForms.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqRandom.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqSequential.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\tempoSync.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOff.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOn.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\triplets.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">

@@ -47,6 +47,11 @@ public:
     virtual void drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider &s);
 
     /**
+    * Create slider label textbox. This will be the editable double-click text box where values can be input.
+    */
+    virtual Label* createSliderTextBox(Slider& slider);
+
+    /**
     * Set Slider Layout. Needed for mouseOverKnob with barSlider to not set textBoxPosition into bar slider (leads to flickering).
     */
     virtual Slider::SliderLayout getSliderLayout(Slider& s);
@@ -134,9 +139,9 @@ private:
     /**
     * Draw modSources of rotary slider as saturn.
     @param g canvas to draw on
+    @param source modulation source
     @param s destination slider
-    @param sourceValue current mod amount value
-    @param unipolar true if modsource is unipolar otherwise bipolar
+    @param m mod amount parameter
     @param centreX centre x position
     @param centreY centre y position
     @param radius radius of saturn of
@@ -145,7 +150,7 @@ private:
     @param rotaryStartAngle slider's minimum angle position
     @param rotaryEndAngle slider's maximum angle position
     */
-    void drawModSource(Graphics &g, Slider &s, float sourceValue, bool unipolar, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
+    void drawModSource(Graphics &g, eModSource source, MouseOverKnob &s, Param *modAmount, float centreX, float centreY, float radius, float innerCircleSize, float currAngle, float rotaryStartAngle, float rotaryEndAngle);
 };
 
 #endif  // CUSTOMLOOKANDFEEL_H_INCLUDED

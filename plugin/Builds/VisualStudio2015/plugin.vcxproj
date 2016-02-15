@@ -138,11 +138,11 @@
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
@@ -152,13 +152,14 @@
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
@@ -1326,11 +1327,11 @@
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
+    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h"/>
@@ -1346,10 +1347,12 @@
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
+    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
+    <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h"/>
@@ -1823,7 +1826,20 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png"/>
+    <None Include="..\..\..\png\delayReverse.png"/>
+    <None Include="..\..\..\png\knobstrip.png"/>
+    <None Include="..\..\..\png\lfoGain.png"/>
+    <None Include="..\..\..\png\lfoSampleHold.png"/>
+    <None Include="..\..\..\png\lfoSineWave.png"/>
+    <None Include="..\..\..\png\lfoSquareWave.png"/>
+    <None Include="..\..\..\png\oscWaveForms.png"/>
+    <None Include="..\..\..\png\seqRandom.png"/>
+    <None Include="..\..\..\png\seqSequential.png"/>
+    <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\tempoSync.png"/>
+    <None Include="..\..\..\png\toggleOff.png"/>
+    <None Include="..\..\..\png\toggleOn.png"/>
+    <None Include="..\..\..\png\triplets.png"/>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_formats\juce_module_info"/>

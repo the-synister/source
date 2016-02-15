@@ -63,8 +63,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<ComboBox> env2SpeedModSrc1;
-    ScopedPointer<ComboBox> env2SpeedModSrc2;
+    ScopedPointer<ComboBox> envSpeedModSrc2;
+    ScopedPointer<ComboBox> envSpeedModSrc1;
     ScopedPointer<MouseOverKnob> attackTime1;
     ScopedPointer<MouseOverKnob> decayTime1;
     ScopedPointer<MouseOverKnob> sustainLevel1;
@@ -72,9 +72,11 @@ private:
     ScopedPointer<MouseOverKnob> attackShape1;
     ScopedPointer<MouseOverKnob> decayShape1;
     ScopedPointer<MouseOverKnob> releaseShape1;
-    ScopedPointer<MouseOverKnob> keyVelToEnv1;
+    ScopedPointer<MouseOverKnob> speedMod1;
     ScopedPointer<EnvelopeCurve> envelopeCurve;
     ScopedPointer<Label> shapeLabel1;
+    ScopedPointer<MouseOverKnob> speedMod2;
+    ScopedPointer<Label> speedModLabel;
 
 
     //==============================================================================

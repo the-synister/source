@@ -102,6 +102,10 @@ inline bool isUnipolar(eModSource source) {
     }
 }
 
+// TODO: need inline?
+static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
+static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
+
 // core
 class ModulationMatrix {
 public:
@@ -131,11 +135,6 @@ public:
     inline void changeSource(String comboboxName, eModSource source);
     inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
     inline void doModulationsMatrix(float** src, float** dst) const;
-
-
-protected:
-    static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
-    static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
 private:
     std::vector<ModMatrixRow> matrixCore;

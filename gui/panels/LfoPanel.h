@@ -47,6 +47,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    String getNoteLengthAsString();
+    void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -59,6 +61,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Image sineWave, squareWave, sampleHold, gainSign;
+
     SynthParams::Lfo& lfo;
     //[/UserVariables]
 
@@ -66,13 +70,14 @@ private:
     ScopedPointer<MouseOverKnob> freq;
     ScopedPointer<Slider> wave;
     ScopedPointer<ToggleButton> tempoSyncSwitch;
-    ScopedPointer<Slider> notelength;
-    ScopedPointer<Label> sineLabel;
-    ScopedPointer<Label> squareLabel;
-    ScopedPointer<Label> sampleHoldLabel2;
     ScopedPointer<MouseOverKnob> lfoFadeIn;
     ScopedPointer<ToggleButton> triplets;
     ScopedPointer<IncDecDropDown> noteLength;
+    ScopedPointer<MouseOverKnob> freqModAmount1;
+    ScopedPointer<MouseOverKnob> freqModAmount2;
+    ScopedPointer<ComboBox> freqModSrc1;
+    ScopedPointer<ComboBox> freqModSrc2;
+    ScopedPointer<ComboBox> lfoGain;
 
 
     //==============================================================================
