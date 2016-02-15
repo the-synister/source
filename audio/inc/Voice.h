@@ -371,7 +371,7 @@ protected:
         lfoArray[1] = lfo1Buffer;
         lfoArray[2] = lfo2Buffer;
 
-        for (size_t l = 0; l < 1; ++l) {
+        for (size_t l = 0; l < lfoArray.size(); ++l) {
             for (int s = 0; s < numSamples; ++s) {
 
                 // Fade in factor calculation
