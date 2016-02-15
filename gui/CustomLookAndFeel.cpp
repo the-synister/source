@@ -118,14 +118,14 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         if (s.isModSourceValueConverted())
         {
             base = intensity < 0.0f ? 0.5f : 2.0f;
-            afterModVal1 = jmax(min, jmin(val * std::pow(base, abs(intensity * modAmount->getMax())), max));
+            afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
         }
         else
         {
             afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
         }
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-        modPosition2 = pow((val - min) / (max - min), skew);
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((val - min) / (max - min), skew);
     }
     else
     {
@@ -140,8 +140,8 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
             afterModVal1 = jmax(min, jmin(val + modAmount->get(), max));
             afterModVal2 = jmax(min, jmin(val - modAmount->get(), max));
         }
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((afterModVal2 - min) / (max - min), skew);
     }
 
     modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);
