@@ -421,9 +421,6 @@
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
