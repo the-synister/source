@@ -355,9 +355,6 @@
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -390,18 +387,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
@@ -1707,9 +1692,6 @@
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1749,9 +1731,6 @@
     <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
@@ -1777,9 +1756,6 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
@@ -3173,46 +3149,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\delayReverse.png">
+    <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
+    <None Include="..\..\..\png\knobstrip.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoGain.png">
+    <None Include="..\..\..\png\lfoGain.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSampleHold.png">
+    <None Include="..\..\..\png\lfoSampleHold.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSineWave.png">
+    <None Include="..\..\..\png\lfoSineWave.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSquareWave.png">
+    <None Include="..\..\..\png\lfoSquareWave.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\oscWaveForms.png">
+    <None Include="..\..\..\png\oscWaveForms.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqRandom.png">
+    <None Include="..\..\..\png\seqRandom.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqSequential.png">
+    <None Include="..\..\..\png\seqSequential.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqUpDown.png">
+    <None Include="..\..\..\png\seqUpDown.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\tempoSync.png">
+    <None Include="..\..\..\png\tempoSync.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOff.png">
+    <None Include="..\..\..\png\toggleOff.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOn.png">
+    <None Include="..\..\..\png\toggleOn.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\triplets.png">
+    <None Include="..\..\..\png\triplets.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
