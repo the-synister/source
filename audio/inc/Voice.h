@@ -345,7 +345,7 @@ protected:
         for (size_t l = 0; l < lfo.size(); ++l) {
             factorFadeInLFO[l] = 1.f;
             // Length in samples of the LFO fade in
-            samplesFadeInLFO[l] = static_cast<int>(params.lfo[0].fadeIn.get() * sRate);
+            samplesFadeInLFO[l] = static_cast<int>(params.lfo[l].fadeIn.get() * sRate);
             // Lfo Gain
             lfoGain[l] = params.lfo[l].gainModSrc.get() == eModSource::eNone
                 ? 1.f
