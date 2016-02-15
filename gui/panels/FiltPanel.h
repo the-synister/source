@@ -46,6 +46,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void onOffSwitchChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -77,6 +78,7 @@ private:
     ScopedPointer<Label> bandpassLabel;
     ScopedPointer<Label> highpassLabel;
     ScopedPointer<Label> lowpassLabel;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

@@ -140,6 +140,7 @@ public:
     struct Filter : public BaseParamStruct {
         Filter();
 
+        ParamStepped<eOnOffToggle> filterActivation; //!< Activation of the filter
         ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
 
         Param lpCutoff; //!< filter cutoff frequency in Hz

@@ -152,8 +152,21 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     lowpassLabel->setColour (TextEditor::textColourId, Colours::black);
     lowpassLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (onOffSwitch = new Slider ("filter switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
+
 
     //[UserPreSize]
+	registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
+
     registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(modSliderCut, &filter.lpModAmount1);
     registerSlider(modSliderCut2, &filter.lpModAmount2);
@@ -179,6 +192,19 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2);
     registerCombobox(res1ModSrc1, &filter.resonanceModSrc1);
     registerCombobox(res1ModSrc2, &filter.resonanceModSrc2);
+
+	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	modSliderCut->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	modSliderCut2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	res1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	res1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -209,6 +235,7 @@ FiltPanel::~FiltPanel()
     bandpassLabel = nullptr;
     highpassLabel = nullptr;
     lowpassLabel = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -250,6 +277,7 @@ void FiltPanel::resized()
     bandpassLabel->setBounds (35, 71, 72, 24);
     highpassLabel->setBounds (35, 95, 72, 24);
     lowpassLabel->setBounds (35, 119, 72, 24);
+    onOffSwitch->setBounds (9, 2, 47, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -290,6 +318,11 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_modSliderCut2] -- add your slider handling code here..
         //[/UserSliderCode_modSliderCut2]
+    }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
     }
 
     //[UsersliderValueChanged_Post]
@@ -340,6 +373,23 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FiltPanel::onOffSwitchChanged()
+{
+	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	modSliderCut->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	modSliderCut2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	res1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	res1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
 //[/MiscUserCode]
 
 
@@ -423,6 +473,12 @@ BEGIN_JUCER_METADATA
          edTextCol="ff000000" edBkgCol="0" labelText="lowpass&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="15" bold="0" italic="0" justification="33"/>
+  <SLIDER name="filter switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

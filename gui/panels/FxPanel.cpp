@@ -232,27 +232,27 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     }
     else if (sliderThatWasMoved == cutoffSlider)
     {
-//[UserSliderCode_cutoffSlider] -- add your slider handling code here..
-//[/UserSliderCode_cutoffSlider]
-	}
-	else if (sliderThatWasMoved == onOffSwitch)
-	{
-		//[UserSliderCode_onOffSwitch] -- add your slider handling code here..
-		//[/UserSliderCode_onOffSwitch]
-	}
+        //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
+        //[/UserSliderCode_cutoffSlider]
+    }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
-	//[UsersliderValueChanged_Post]
-	//[/UsersliderValueChanged_Post]
+    //[UsersliderValueChanged_Post]
+    //[/UsersliderValueChanged_Post]
 }
 
-void FxPanel::buttonClicked(Button* buttonThatWasClicked)
+void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
-	//[UserbuttonClicked_Pre]
-	//[/UserbuttonClicked_Pre]
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
 
-	if (buttonThatWasClicked == syncToggle)
-	{
-		//[UserButtonCode_syncToggle] -- add your button handler code here..
+    if (buttonThatWasClicked == syncToggle)
+    {
+        //[UserButtonCode_syncToggle] -- add your button handler code here..
 
 		// Update sync param value
 		if (params.delaySync.getStep() == eOnOffToggle::eOn) {
@@ -277,60 +277,60 @@ void FxPanel::buttonClicked(Button* buttonThatWasClicked)
 			params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
 		}
 
-		//[/UserButtonCode_syncToggle]
-	}
-	else if (buttonThatWasClicked == tripTggl)
-	{
-		//[UserButtonCode_tripTggl] -- add your button handler code here..
+        //[/UserButtonCode_syncToggle]
+    }
+    else if (buttonThatWasClicked == tripTggl)
+    {
+        //[UserButtonCode_tripTggl] -- add your button handler code here..
 		if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
 			params.delayTriplet.setStep(eOnOffToggle::eOn);
 		}
 		else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-		//[/UserButtonCode_tripTggl]
-	}
-	else if (buttonThatWasClicked == filtTggl)
-	{
-		//[UserButtonCode_filtTggl] -- add your button handler code here..
+        //[/UserButtonCode_tripTggl]
+    }
+    else if (buttonThatWasClicked == filtTggl)
+    {
+        //[UserButtonCode_filtTggl] -- add your button handler code here..
 		if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {
 			params.delayRecordFilter.setStep(eOnOffToggle::eOn);
 		}
 		else { params.delayRecordFilter.setStep(eOnOffToggle::eOff); }
-		//[/UserButtonCode_filtTggl]
-	}
-	else if (buttonThatWasClicked == revTggl)
-	{
-		//[UserButtonCode_revTggl] -- add your button handler code here..
+        //[/UserButtonCode_filtTggl]
+    }
+    else if (buttonThatWasClicked == revTggl)
+    {
+        //[UserButtonCode_revTggl] -- add your button handler code here..
 		if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
 			params.delayReverse.setStep(eOnOffToggle::eOn);
 		}
 		else { params.delayReverse.setStep(eOnOffToggle::eOff); }
-		//[/UserButtonCode_revTggl]
-	}
+        //[/UserButtonCode_revTggl]
+    }
 
-	//[UserbuttonClicked_Post]
-	//[/UserbuttonClicked_Post]
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
-void FxPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-	//[UsercomboBoxChanged_Pre]
-	//[/UsercomboBoxChanged_Pre]
+    //[UsercomboBoxChanged_Pre]
+    //[/UsercomboBoxChanged_Pre]
 
-	if (comboBoxThatHasChanged == dividend)
-	{
-		//[UserComboBoxCode_dividend] -- add your combo box handling code here..
+    if (comboBoxThatHasChanged == dividend)
+    {
+        //[UserComboBoxCode_dividend] -- add your combo box handling code here..
 		params.delayDividend.set(dividend->getText().getFloatValue());
-		//[/UserComboBoxCode_dividend]
-	}
-	else if (comboBoxThatHasChanged == divisor)
-	{
-		//[UserComboBoxCode_divisor] -- add your combo box handling code here..
+        //[/UserComboBoxCode_dividend]
+    }
+    else if (comboBoxThatHasChanged == divisor)
+    {
+        //[UserComboBoxCode_divisor] -- add your combo box handling code here..
 		params.delayDivisor.set(divisor->getText().getFloatValue());
-		//[/UserComboBoxCode_divisor]
-	}
+        //[/UserComboBoxCode_divisor]
+    }
 
-	//[UsercomboBoxChanged_Post]
-	//[/UsercomboBoxChanged_Post]
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 
