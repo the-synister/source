@@ -65,7 +65,7 @@ SynthParams::SynthParams()
     &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc1, &lfo[2].gainModSrc2,
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
     &lowFiActivation, &nBitsLowFi }
     , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
@@ -81,6 +81,8 @@ SynthParams::SynthParams()
     , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
     , delayRecordFilter("Delay Record", "delRec", "Delay record filter", eOnOffToggle::eOff, onoffnames)
     , delayReverse("Delay Reverse", "delRev", "Delay reverse", eOnOffToggle::eOff, onoffnames)
+	, delayActivation("Delay Activation", "delayActivation", "Delay Active", eOnOffToggle::eOff, onoffnames)
+	, syncToggle("Delay Sync", "syncToggle", "Sync Toggle", eOnOffToggle::eOff, onoffnames)
     , lowFiActivation("Activation", "lowFiActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
     , nBitsLowFi("Bit Degr", "nBitsLowFi", "Number Bits", "bit", 1.f, 16.f, 16.f)
     , chorDelayLength("Width", "chorWidth", "Chorus Width", "s", .02f, .08f, .05f)

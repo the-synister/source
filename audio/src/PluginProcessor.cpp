@@ -236,7 +236,7 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     }
     // fx
     // delay
-    if (delayDryWet.get() > 0.f) {
+    if (delayActivation.getStep() == eOnOffToggle::eOn) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
     // chorus
