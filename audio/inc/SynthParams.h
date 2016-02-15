@@ -82,11 +82,8 @@ public:
                        //Param chorSwitch; // Chorus on / off [1 / 0]
 
     struct BaseParamStruct {
-        void setName(const String& s)
-        {
+        void setName(const String& s) {
             name = s;
-
-            //! \todo set prefix of every param to name
         }
 
         String name;
@@ -103,6 +100,16 @@ public:
         Param decayShape; //!< env decay shape in [0.01..10]
         Param releaseShape; //!< env release shape in [0.01..10]
 
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            keyVelToEnv.setPrefix(s);
+            attack.setPrefix(s);
+            decay.setPrefix(s);
+            release.setPrefix(s);
+            attackShape.setPrefix(s);
+            decayShape.setPrefix(s);
+            releaseShape.setPrefix(s);
+        }
     };
 
     struct EnvVol : public EnvBase {
@@ -111,6 +118,13 @@ public:
         ParamDb sustain;   //!< env sustain in [0..1]
         ParamStepped<eModSource> speedModSrc1; //!< Volume envelope speed mod source
         ParamStepped<eModSource> speedModSrc2; //!< Volume envelope speed mod source
+
+        void setName(const String& s) {
+            EnvBase::setName(s);
+            sustain.setPrefix(s);
+            speedModSrc1.setPrefix(s);
+            speedModSrc2.setPrefix(s);
+        }
     };
 
     struct Env : public EnvBase {
@@ -119,6 +133,13 @@ public:
         Param sustain;
         ParamStepped<eModSource> speedModSrc1; //!< Envelope 2 speed mod source
         ParamStepped<eModSource> speedModSrc2; //!< Envelope 2 speed mod source
+
+        void setName(const String& s) {
+            EnvBase::setName(s);
+            sustain.setPrefix(s);
+            speedModSrc1.setPrefix(s);
+            speedModSrc2.setPrefix(s);
+        }
     };
 
     struct Lfo : public BaseParamStruct {
@@ -135,6 +156,18 @@ public:
         ParamStepped<eModSource> gainModSrc2; //!< lfo2 gain mod source
 
         Param fadeIn;   // The LFOs fade in with a range of [0..10s]
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            freq.setPrefix(s);
+            tempSync.setPrefix(s);
+            noteLength.setPrefix(s);
+            wave.setPrefix(s);
+            freqModSrc1.setPrefix(s);
+            freqModSrc2.setPrefix(s);
+            gainModSrc1.setPrefix(s);
+            gainModSrc2.setPrefix(s);
+        }
     };
 
     struct Filter : public BaseParamStruct {
@@ -156,6 +189,24 @@ public:
         ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
         Param hpModAmount2;   //! hp filter modulation amount
         ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            passtype.setPrefix(s);
+            lpCutoff.setPrefix(s);
+            hpCutoff.setPrefix(s);
+            resonance.setPrefix(s);
+            lpCutModSrc1.setPrefix(s);
+            lpModAmount1.setPrefix(s);
+            hpCutModSrc1.setPrefix(s);
+            hpModAmount1.setPrefix(s);
+            resonanceModSrc1.setPrefix(s);
+            lpCutModSrc2.setPrefix(s);
+            lpModAmount2.setPrefix(s);
+            hpCutModSrc2.setPrefix(s);
+            hpModAmount2.setPrefix(s);
+            resonanceModSrc2.setPrefix(s);
+        }
     };
 
     struct Osc : public BaseParamStruct {
@@ -182,6 +233,25 @@ public:
 
         ParamDb vol; //!< volume in [-96..12]
         Param volModAmount1;    //!< key velocity level range in [0..96]dB
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            fine.setPrefix(s);
+            coarse.setPrefix(s);
+            waveForm.setPrefix(s);
+            trngAmount.setPrefix(s);
+            pulseWidth.setPrefix(s);
+            shapeModAmount.setPrefix(s);
+            shapeModSrc1.setPrefix(s);
+            shapeModSrc2.setPrefix(s);
+            pitchModSrc1.setPrefix(s);
+            pitchModAmount1.setPrefix(s);
+            pitchModSrc2.setPrefix(s);
+            pitchModAmount2.setPrefix(s);
+            panDir.setPrefix(s);
+            vol.setPrefix(s);
+            volModAmount1.setPrefix(s);
+        }
     };
 
     std::array<Filter, 2> filter;
