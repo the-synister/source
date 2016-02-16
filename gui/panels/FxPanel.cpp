@@ -212,6 +212,9 @@ void FxPanel::resized()
     dividend->setBounds (17, 111, 64, 18);
     divisor->setBounds (17, 135, 64, 18);
     cutoffSlider->setBounds (251, 38, 64, 64);
+    tripTggl->setBounds (176, 108, 65, 30);
+    filtTggl->setBounds (100, 141, 100, 30);
+    revTggl->setBounds (252, 108, 65, 30);
     onOffSwitch->setBounds (17, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -377,15 +380,15 @@ void FxPanel::onOffSwitchChanged()
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
 {
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    if (tripletT->isEnabled())
-    {
+    //if (tripletT->isEnabled())
+    //{
         g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
 
-    }
-    else
-    {
-        g.drawImageWithin(tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
-    }
+    //}
+    //else
+    //{
+    //    g.drawImageWithin(tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    //}
     g.drawImageWithin(reversePic, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
 }
 //[/MiscUserCode]
@@ -421,7 +424,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="100 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -439,7 +442,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="176 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
