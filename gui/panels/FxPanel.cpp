@@ -65,7 +65,7 @@ FxPanel::FxPanel (SynthParams &p)
     timeSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
-    syncToggle->setButtonText (TRANS("Sync"));
+    syncToggle->setButtonText (String::empty);
     syncToggle->addListener (this);
     syncToggle->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -113,7 +113,7 @@ FxPanel::FxPanel (SynthParams &p)
     cutoffSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (tripTggl = new ToggleButton ("tripTggl1"));
-    tripTggl->setButtonText (TRANS("Triplet"));
+    tripTggl->setButtonText (String::empty);
     tripTggl->addListener (this);
     tripTggl->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -123,7 +123,7 @@ FxPanel::FxPanel (SynthParams &p)
     filtTggl->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (revTggl = new ToggleButton ("revTggl"));
-    revTggl->setButtonText (TRANS("Reverse"));
+    revTggl->setButtonText (String::empty);
     revTggl->addListener (this);
     revTggl->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -146,6 +146,13 @@ FxPanel::FxPanel (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
+    syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    tripletPic.duplicateIfShared();
+    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    tripletPicOff.duplicateIfShared();
+    tripletPicOff.multiplyAllAlphas(0.5f);
+    reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
     //[/Constructor]
 }
 
@@ -181,6 +188,7 @@ void FxPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "delay", 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
+    drawPics(g, syncToggle, tripTggl, revTggl);
     //[/UserPaint]
 }
 
@@ -192,13 +200,13 @@ void FxPanel::resized()
     feedbackSlider->setBounds (173, 38, 64, 64);
     dryWetSlider->setBounds (17, 38, 64, 64);
     timeSlider->setBounds (95, 38, 64, 64);
-    syncToggle->setBounds (95, 111, 64, 24);
+    syncToggle->setBounds (100, 111, 65, 30);
     dividend->setBounds (17, 111, 64, 18);
     divisor->setBounds (17, 135, 64, 18);
     cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (173, 111, 64, 24);
-    filtTggl->setBounds (215, 144, 100, 16);
-    revTggl->setBounds (251, 111, 64, 24);
+    tripTggl->setBounds (176, 111, 65, 30);
+    filtTggl->setBounds (100, 144, 100, 22);
+    revTggl->setBounds (252, 111, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -317,6 +325,20 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
+{
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    if (tripletT->isEnabled())
+    {
+        g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+
+    }
+    else
+    {
+        g.drawImageWithin(tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    }
+    g.drawImageWithin(reversePic, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
+}
 //[/MiscUserCode]
 
 
@@ -352,8 +374,8 @@ BEGIN_JUCER_METADATA
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="95 111 64 24" txtcol="ffffffff"
-                buttonText="Sync" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="100 111 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="17 111 64 18"
@@ -370,16 +392,16 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="173 111 64 24" txtcol="ffffffff"
-                buttonText="Triplet" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="176 111 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="215 144 100 16" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="100 144 100 22" txtcol="ffffffff"
                 buttonText="Record Cutoff" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="251 111 64 24" txtcol="ffffffff"
-                buttonText="Reverse" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                explicitFocusOrder="0" pos="252 111 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 

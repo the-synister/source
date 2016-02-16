@@ -39,9 +39,9 @@ namespace {
 
 
 const Colour SynthParams::oscColour (0xff6c788c);
-const Colour SynthParams::envColour (0xffcbca63);
-const Colour SynthParams::lfoColour (0xffb16565);
-const Colour SynthParams::filterColour (0xff40ae69);
+const Colour SynthParams::envColour (0xffbfa65a);
+const Colour SynthParams::lfoColour (0xff855050);
+const Colour SynthParams::filterColour (0xff5b7a47);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
 const Colour SynthParams::onOffSwitchEnabled (114, 136, 98);
@@ -50,7 +50,7 @@ const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
 const Colour SynthParams::waveformLine (185, 189, 190);
 const Colour SynthParams::waveformBackground(85, 93, 104);
-const Colour SynthParams::otherModulation(0, 0, 255); // add more different colours
+const Colour SynthParams::otherModulation(180, 180, 180); // add more different colours
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
@@ -155,20 +155,20 @@ SynthParams::Osc::Osc()
     , panDir("pan", "panDir", "pan direction", "%", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     // ModAmounts and ModSources
-    , panModAmount1("PanModAmount1", "OSCPanModAmount1", "Pan ModAmount 1", "", 0.f, 100.f, 0.f)
-    , panModAmount2("PanModAmount2", "OSCPanModAmount2", "Pan ModAmount 2", "", 0.f, 100.f, 0.f)
+    , panModAmount1("PanModAmount1", "OSCPanModAmount1", "Pan ModAmount 1", "", 0.f, 100.f, 50.f)
+    , panModAmount2("PanModAmount2", "OSCPanModAmount2", "Pan ModAmount 2", "", 0.f, 100.f, 50.f)
     , panModSrc1("PanModSrc1", "OSCPanModSrc1", "Pan ModSource 1", eModSource::eNone, modsourcenames)
     , panModSrc2("PanModSrc2", "OSCPanModSrc2", "Pan ModSource 2", eModSource::eNone, modsourcenames)
-    , shapeModAmount1("ShapeModAmount1", "OSCShapeModAmount1", "Shape ModAmount 1", "", 0.f, 1.f, 0.f)
-    , shapeModAmount2("ShapeModAmount2", "OSCShapeModAmount2", "Shape ModAmount 2", "", 0.f, 1.f, 0.f)
+    , shapeModAmount1("ShapeModAmount1", "OSCShapeModAmount1", "Shape ModAmount 1", "", 0.f, 1.f, 0.5f)
+    , shapeModAmount2("ShapeModAmount2", "OSCShapeModAmount2", "Shape ModAmount 2", "", 0.f, 1.f, 0.5f)
     , shapeModSrc1("ShapeModSrc1", "OSCShapeModSrc1", "Shape ModSource 1", eModSource::eNone, modsourcenames)
     , shapeModSrc2("ShapeModSrc2", "OSCShapeModSrc2", "Shape ModSource 2", eModSource::eNone, modsourcenames)
-    , pitchModAmount1("PitchModAmount1", "OSCPitchModAmount1", "Pitch ModAmount 1", "st", 0.f, 12.f, 0.f)
-    , pitchModAmount2("PitchModAmount2", "OSCPitchModAmount2", "Pitch ModAmount 2", "st", 0.f, 12.f, 0.f)
+    , pitchModAmount1("PitchModAmount1", "OSCPitchModAmount1", "Pitch ModAmount 1", "st", 0.f, 12.f, 6.f)
+    , pitchModAmount2("PitchModAmount2", "OSCPitchModAmount2", "Pitch ModAmount 2", "st", 0.f, 12.f, 6.f)
     , pitchModSrc1("PitchModSrc1", "OSCPitchModSrc1", "Pitch ModSource 1", eModSource::eNone, modsourcenames)
     , pitchModSrc2("PitchModSrc2", "OSCPitchModSrc2", "Pitch ModSource 2", eModSource::eNone, modsourcenames)
-    , gainModAmount1("GainModAmount1", "OSCGainModAmount1", "Gain ModAmount 1", "dB", 0.f, 96.f, 0.0f)
-    , gainModAmount2("GainModAmount2", "OSCGainModAmount2", "Gain ModAmount 2", "dB", 0.f, 96.f, 0.0f)
+    , gainModAmount1("GainModAmount1", "OSCGainModAmount1", "Gain ModAmount 1", "dB", 0.f, 96.f, 48.0f)
+    , gainModAmount2("GainModAmount2", "OSCGainModAmount2", "Gain ModAmount 2", "dB", 0.f, 96.f, 48.0f)
     , gainModSrc1("GainModSrc1", "OSCGainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
     , gainModSrc2("GainModSrc2", "OSCGainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
 {
@@ -183,8 +183,8 @@ SynthParams::EnvBase::EnvBase()
     , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
     , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 1.f, 0.0f)
-    , speedModAmount2("SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 1.f, 0.0f)
+    , speedModAmount1("SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 1.f, 0.5f)
+    , speedModAmount2("SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 1.f, 0.5f)
     , speedModSrc1("Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
     , speedModSrc2("Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
@@ -209,8 +209,8 @@ SynthParams::Lfo::Lfo()
     , noteLength("Note Length", "notelength", "Note Length", "", 1.f, 32.f, 4.f)
     , fadeIn("FadeIn", "lfoFadein", "fade-in", "s", 0.f, 10.f, 0.f)
     // ModAmounts and Sources
-    , freqModAmount1("FreqModAmount1", "LFOFreqModAmount1", "Freq ModAmount 1", "oct", 0.f, 4.f, 0.0f)
-    , freqModAmount2("FreqModAmount2", "LFOFreqModAmount2", "Freq ModAmount 2", "oct", 0.f, 4.f, 0.0f)
+    , freqModAmount1("FreqModAmount1", "LFOFreqModAmount1", "Freq ModAmount 1", "oct", 0.f, 8.f, 4.0f)
+    , freqModAmount2("FreqModAmount2", "LFOFreqModAmount2", "Freq ModAmount 2", "oct", 0.f, 8.f, 4.0f)
     , freqModSrc1("FreqModSrc1", "LFOFreqModSrc1", "Freq ModSource 1", eModSource::eNone, modsourcenames)
     , freqModSrc2("FreqModSrc2", "LFOFreqModSrc2", "Freq ModSource 2", eModSource::eNone, modsourcenames)
     , gainModSrc("GainModSrc", "LFOGainModSrc", "Gain ModSource", eModSource::eNone, modsourcenames)
@@ -223,12 +223,12 @@ SynthParams::Filter::Filter()
     , hpCutoff("HP Cutoff", "hpCutoff", "HP Cutoff", "Hz", 10.f, 20000.f, 10.f)
     , resonance("Res", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
     // ModAmounts and ModSources
-    , lpModAmount1("Lc ModAmount1", "FILTERLcModAmount1", "Lc ModAmount 1", "oct", 0.f, 8.f, 0.f)
-    , lpModAmount2("Lc ModAmnout2", "FILTERLcModAmount2", "Lc ModAmount 2", "oct", 0.f, 8.f, 0.f)
-    , hpModAmount1("Hc ModAmount1", "FILTERHcModAmount1", "Hc ModAmount 1", "oct", 0.f, 8.f, 0.f)
-    , hpModAmount2("Hc ModAmount2", "FILTERHcModAmount2", "Hc ModAmount 2", "oct", 0.f, 8.f, 0.f)
-    , resModAmount1("Res ModAmount1", "FILTERResModAmount1", "Res ModAmount 1", "", 0.f, 10.f, 0.f)
-    , resModAmount2("Res ModAmount2", "FILTERResModAmount2", "Res ModAmount 2", "", 0.f, 10.f, 0.f)
+    , lpModAmount1("Lc ModAmount1", "FILTERLcModAmount1", "Lc ModAmount 1", "oct", 0.f, 8.f, 4.f)
+    , lpModAmount2("Lc ModAmnout2", "FILTERLcModAmount2", "Lc ModAmount 2", "oct", 0.f, 8.f, 4.f)
+    , hpModAmount1("Hc ModAmount1", "FILTERHcModAmount1", "Hc ModAmount 1", "oct", 0.f, 8.f, 4.f)
+    , hpModAmount2("Hc ModAmount2", "FILTERHcModAmount2", "Hc ModAmount 2", "oct", 0.f, 8.f, 4.f)
+    , resModAmount1("Res ModAmount1", "FILTERResModAmount1", "Res ModAmount 1", "", 0.f, 10.f, 5.f)
+    , resModAmount2("Res ModAmount2", "FILTERResModAmount2", "Res ModAmount 2", "", 0.f, 10.f, 5.f)
     , lpCutModSrc1("Lc ModSrc1", "FILTERLcModSrc1", "Lc ModSource 1", eModSource::eNone, modsourcenames)
     , lpCutModSrc2("Lc ModSrc2", "FILTERLcModSrc2", "Lc ModSource 2", eModSource::eNone, modsourcenames)
     , hpCutModSrc1("Hc ModSrc1", "FILTERHcModSrc1", "Hc ModSource 1", eModSource::eNone, modsourcenames)
@@ -276,7 +276,7 @@ Colour SynthParams::getModSourceColour(eModSource source)
         case eModSource::eLFO1:
         case eModSource::eLFO2:
         case eModSource::eLFO3:
-            return SynthParams::lfoColour.withSaturation(1.0f).brighter();
+            return SynthParams::lfoColour.withSaturation(1.0f).brighter(0.8f);
         default:
             return SynthParams::otherModulation;
 }

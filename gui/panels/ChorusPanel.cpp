@@ -38,6 +38,9 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     chorDryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     chorDryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    chorDryWetSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    chorDryWetSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    chorDryWetSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     chorDryWetSlider->addListener (this);
 
     addAndMakeVisible (chorDepthSlider = new MouseOverKnob ("Chorus Depth"));
@@ -45,6 +48,9 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     chorDepthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDepthSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     chorDepthSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    chorDepthSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    chorDepthSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    chorDepthSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     chorDepthSlider->addListener (this);
 
     addAndMakeVisible (chorDelayLengthSlider = new MouseOverKnob ("Chorus Width"));
@@ -52,6 +58,9 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     chorDelayLengthSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorDelayLengthSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     chorDelayLengthSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    chorDelayLengthSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    chorDelayLengthSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    chorDelayLengthSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     chorDelayLengthSlider->addListener (this);
 
     addAndMakeVisible (chorModRateSlider = new MouseOverKnob ("Chorus Rate"));
@@ -59,6 +68,9 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     chorModRateSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     chorModRateSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     chorModRateSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    chorModRateSlider->setColour (Slider::textBoxTextColourId, Colours::white);
+    chorModRateSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    chorModRateSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     chorModRateSlider->addListener (this);
 
 
@@ -172,24 +184,28 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 31 64 64"
-          rotarysliderfill="ff2b3240" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 31 64 64"
-          rotarysliderfill="ff2b3240" min="5" max="20" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="5" max="20" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 95 64 64"
-          rotarysliderfill="ff2b3240" min="0.025000000000000001" max="0.080000000000000002"
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0.025000000000000001" max="0.080000000000000002"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="113 95 64 64"
-          rotarysliderfill="ff2b3240" min="0.10000000000000001" max="1.5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0.10000000000000001" max="1.5" int="0"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

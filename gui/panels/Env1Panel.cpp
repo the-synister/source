@@ -96,7 +96,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     attackShape1->setRange (0.01, 10, 0);
     attackShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     attackShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    attackShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    attackShape1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     attackShape1->addListener (this);
     attackShape1->setSkewFactor (0.3);
 
@@ -104,7 +104,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     decayShape1->setRange (0.01, 10, 0);
     decayShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     decayShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    decayShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    decayShape1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     decayShape1->addListener (this);
     decayShape1->setSkewFactor (0.3);
 
@@ -112,7 +112,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     releaseShape1->setRange (0.01, 10, 0);
     releaseShape1->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseShape1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
-    releaseShape1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    releaseShape1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     releaseShape1->addListener (this);
     releaseShape1->setSkewFactor (0.3);
 
@@ -120,7 +120,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     speedMod1->setRange (0, 1, 0);
     speedMod1->setSliderStyle (Slider::RotaryVerticalDrag);
     speedMod1->setTextBoxStyle (Slider::TextBoxBelow, true, 0, 0);
-    speedMod1->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    speedMod1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     speedMod1->setColour (Slider::textBoxTextColourId, Colours::white);
     speedMod1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     speedMod1->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
@@ -143,7 +143,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     speedMod2->setRange (0, 1, 0);
     speedMod2->setSliderStyle (Slider::RotaryVerticalDrag);
     speedMod2->setTextBoxStyle (Slider::TextBoxBelow, true, 0, 0);
-    speedMod2->setColour (Slider::rotarySliderFillColourId, Colour (0xffbfa65a));
+    speedMod2->setColour (Slider::rotarySliderFillColourId, Colours::white);
     speedMod2->setColour (Slider::textBoxTextColourId, Colours::white);
     speedMod2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     speedMod2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
@@ -215,7 +215,7 @@ void Env1Panel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xffcbca63));
+    g.fillAll (Colour (0xffbfa65a));
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, env.name, 0, 0,
@@ -358,7 +358,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p), &#10;env(p.env[envelopeNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="252">
-  <BACKGROUND backgroundColour="ffcbca63"/>
+  <BACKGROUND backgroundColour="ffbfa65a"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
             virtualName="" explicitFocusOrder="0" pos="53 172 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
@@ -391,22 +391,22 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="bd17ed6e5bdc4910" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
-          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="0.29999999999999999"/>
   <SLIDER name="Decay Shape" id="9bd5989569f5223c" memberName="decayShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="91 111 20 20"
-          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="0.29999999999999999"/>
   <SLIDER name="Release Shape" id="fb9fa6b3328d7d27" memberName="releaseShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="216 111 20 20"
-          rotarysliderfill="ffbfa65a" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="0.29999999999999999"/>
   <SLIDER name="speedMod1" id="bee5e0860811e660" memberName="speedMod1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 146 18 18"
-          rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
+          rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
@@ -420,7 +420,7 @@ BEGIN_JUCER_METADATA
          fontsize="20" bold="0" italic="0" justification="36"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
-          rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
+          rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>

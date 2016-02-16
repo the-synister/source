@@ -48,6 +48,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncToggle, ScopedPointer<ToggleButton>& tripletToggle, ScopedPointer<ToggleButton>& reverseToggle);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -60,6 +61,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Image syncPic, tripletPic, tripletPicOff, reversePic;
+
     ScopedPointer<FxDelay> delay;
     //[/UserVariables]
 

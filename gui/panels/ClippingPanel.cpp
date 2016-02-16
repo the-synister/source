@@ -38,6 +38,9 @@ ClippingPanel::ClippingPanel (SynthParams &p)
     clippingFactor->setSliderStyle (Slider::RotaryVerticalDrag);
     clippingFactor->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     clippingFactor->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    clippingFactor->setColour (Slider::textBoxTextColourId, Colours::white);
+    clippingFactor->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    clippingFactor->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     clippingFactor->addListener (this);
 
 
@@ -83,7 +86,7 @@ void ClippingPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    clippingFactor->setBounds (32, 64, 64, 64);
+    clippingFactor->setBounds (35, 64, 64, 64);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -126,8 +129,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Clipping Factor" id="3671e326d731f5ec" memberName="clippingFactor"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 64 64 64"
-          rotarysliderfill="ff2b3240" min="0" max="25" int="0" style="RotaryVerticalDrag"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="35 64 64 64"
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="0" max="25" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>

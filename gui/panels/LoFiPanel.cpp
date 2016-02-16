@@ -38,6 +38,9 @@ LoFiPanel::LoFiPanel (SynthParams &p)
     nBitsLowFi->setSliderStyle (Slider::RotaryVerticalDrag);
     nBitsLowFi->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
     nBitsLowFi->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
+    nBitsLowFi->setColour (Slider::textBoxTextColourId, Colours::white);
+    nBitsLowFi->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    nBitsLowFi->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     nBitsLowFi->addListener (this);
 
     addAndMakeVisible (onOffSwitch = new Slider ("lofi switch"));
@@ -97,7 +100,7 @@ void LoFiPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    nBitsLowFi->setBounds (32, 63, 64, 64);
+    nBitsLowFi->setBounds (35, 63, 64, 64);
     onOffSwitch->setBounds (17, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -151,8 +154,9 @@ BEGIN_JUCER_METADATA
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="nBits Low Fi" id="c7728074cb4655d8" memberName="nBitsLowFi"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 63 64 64"
-          rotarysliderfill="ff2b3240" min="1" max="16" int="0" style="RotaryVerticalDrag"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="35 63 64 64"
+          rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
+          textboxoutline="ffffff" min="1" max="16" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lofi switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
