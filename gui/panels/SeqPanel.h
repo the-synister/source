@@ -47,7 +47,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
 
     /**
     * timerCallback() is needed here to display the currently playing note step.
@@ -160,17 +160,16 @@ private:
     ScopedPointer<Slider> randomSeq;
     ScopedPointer<Label> randMinLabel;
     ScopedPointer<Label> randMaxLabel;
-    ScopedPointer<ToggleButton> playUpDown;
     ScopedPointer<IncDecDropDown> seqStepSpeed;
     ScopedPointer<IncDecDropDown> seqStepLength;
     ScopedPointer<IncDecDropDown> seqNumSteps;
     ScopedPointer<Label> labelSeqSpeed;
     ScopedPointer<Label> labelSeqLength;
     ScopedPointer<Label> labelSeqStepNum;
-    ScopedPointer<ToggleButton> playRandom;
     ScopedPointer<ToggleButton> triplets;
     ScopedPointer<TextButton> saveSeq;
     ScopedPointer<TextButton> loadSeq;
+    ScopedPointer<Slider> playModes;
 
 
     //==============================================================================

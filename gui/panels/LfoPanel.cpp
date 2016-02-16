@@ -295,7 +295,14 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    handleCombobox(comboBoxThatHasChanged);
+    if (comboBoxThatHasChanged == noteLength)
+    {
+        handleDropdown(comboBoxThatHasChanged);
+    }
+    else
+    {
+        handleCombobox(comboBoxThatHasChanged);
+    }
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == noteLength)
