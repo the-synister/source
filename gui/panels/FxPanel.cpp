@@ -36,7 +36,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
     feedbackSlider->setRange (0, 1, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     feedbackSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     feedbackSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     feedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -46,7 +46,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
     dryWetSlider->setRange (0, 1, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     dryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     dryWetSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -56,7 +56,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
     timeSlider->setRange (1, 5000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     timeSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     timeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -104,7 +104,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
     cutoffSlider->setRange (1, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 90, 20);
     cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     cutoffSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     cutoffSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -361,18 +361,18 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="173 38 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="17 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="100 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -389,7 +389,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 38 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="90"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="176 108 65 30" txtcol="ffffffff"

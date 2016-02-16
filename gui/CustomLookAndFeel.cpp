@@ -496,7 +496,7 @@ void CustomLookAndFeel::drawComboBox(Graphics &g, int width, int height, bool /*
     g.fillRect(rect);
 
     // draw arrow background rectangle on right side
-    g.drawRect(0.f, 0.f, width+ 0.f, height+ 0.f, outlineThickness);
+    //g.drawRect(0.f, 0.f, width+ 0.f, height+ 0.f, halfThickness);
 
     // draw arrow
     if (c.isEnabled())

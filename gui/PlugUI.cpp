@@ -56,10 +56,18 @@ PlugUI::PlugUI (SynthParams &p)
     keyboard->setName ("midi keyboard");
 
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
+    savePresetButton->setButtonText (TRANS("save"));
     savePresetButton->addListener (this);
+    savePresetButton->setColour (TextButton::buttonColourId, Colours::white);
+    savePresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c78bc));
+    savePresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c78bc));
 
     addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
+    loadPresetButton->setButtonText (TRANS("load"));
     loadPresetButton->addListener (this);
+    loadPresetButton->setColour (TextButton::buttonColourId, Colours::white);
+    loadPresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c78bc));
+    loadPresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c78bc));
 
     addAndMakeVisible (bpmLabel = new Label ("bpm label",
                                              TRANS("BPM:")));
@@ -157,10 +165,10 @@ void PlugUI::resized()
 
     freq->setBounds (728, 0, 64, 64);
     keyboard->setBounds (0, 698, 800, 40);
-    savePresetButton->setBounds (8, 8, 88, 24);
-    loadPresetButton->setBounds (112, 8, 88, 24);
-    bpmLabel->setBounds (222, 6, 58, 24);
-    bpmDisplay->setBounds (274, 6, 64, 24);
+    savePresetButton->setBounds (8, 39, 88, 24);
+    loadPresetButton->setBounds (8, 8, 88, 24);
+    bpmLabel->setBounds (640, 6, 58, 24);
+    bpmDisplay->setBounds (640, 40, 64, 24);
     foldableComponent->setBounds (0, 72, 800, 624);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -247,18 +255,20 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="8 39 88 24" bgColOff="ffffffff"
+              textCol="ff6c78bc" textColOn="ff6c78bc" buttonText="save" connectedEdges="0"
+              needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="8 8 88 24" bgColOff="ffffffff"
+              textCol="ff6c78bc" textColOn="ff6c78bc" buttonText="load" connectedEdges="0"
+              needsCallback="1" radioGroupId="0"/>
   <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="222 6 58 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="640 6 58 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="BPM:" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="20" bold="0" italic="0" justification="33"/>
   <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="274 6 64 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="640 40 64 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="20" bold="0" italic="0" justification="33"/>

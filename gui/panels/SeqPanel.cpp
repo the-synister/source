@@ -482,7 +482,7 @@ void SeqPanel::resized()
     labelButton6->setBounds (626, 39, 48, 24);
     labelButton7->setBounds (679, 39, 48, 24);
     labelButton8->setBounds (732, 39, 48, 24);
-    genRandom->setBounds (99, 226, 146, 28);
+    genRandom->setBounds (99, 226, 152, 28);
     randomSeq->setBounds (32, 247, 280, 48);
     randMinLabel->setBounds (22, 231, 80, 32);
     randMaxLabel->setBounds (242, 231, 80, 32);
@@ -492,7 +492,7 @@ void SeqPanel::resized()
     seqNumSteps->setBounds (22, 69, 87, 24);
     labelSeqSpeed->setBounds (17, 101, 80, 20);
     labelSeqLength->setBounds (17, 155, 80, 20);
-    labelSeqStepNum->setBounds (17, 47, 80, 20);
+    labelSeqStepNum->setBounds (17, 47, 100, 20);
     playRandom->setBounds (196, 177, 120, 24);
     triplets->setBounds (200, 96, 64, 30);
     saveSeq->setBounds (170, 7, 100, 23);
@@ -974,7 +974,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="C4"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="99 226 146 28" bgColOff="ffffff"
+              virtualName="" explicitFocusOrder="0" pos="99 226 152 28" bgColOff="ffffff"
               bgColOn="ffffff" textCol="ffffffff" textColOn="ffffffff" buttonText="generate sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
@@ -1018,7 +1018,7 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq step num" id="c5b4cbd8722afa9c" memberName="labelSeqStepNum"
-         virtualName="" explicitFocusOrder="0" pos="17 47 80 20" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="17 47 100 20" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="numb. steps" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="18" bold="0" italic="0" justification="33"/>

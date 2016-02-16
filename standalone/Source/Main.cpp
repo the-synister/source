@@ -35,6 +35,7 @@ public:
         
         mainWindow = new StandaloneFilterWindow(getApplicationName(),Colours::black,nullptr,false);
         mainWindow->setSize(800, 740 + mainWindow->getTitleBarHeight());
+		mainWindow->setTopLeftPosition(200,20);
         mainWindow->setVisible(true);
     }
 
