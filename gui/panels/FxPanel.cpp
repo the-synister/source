@@ -221,6 +221,7 @@ void FxPanel::resized()
     tripTggl->setBounds (173, 111, 64, 24);
     filtTggl->setBounds (215, 144, 100, 16);
     revTggl->setBounds (251, 111, 64, 24);
+    onOffSwitch->setBounds (17, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -414,7 +415,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="95 111 64 24" txtcol="ffffffff"
                 buttonText="Sync" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -432,7 +433,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="173 111 64 24" txtcol="ffffffff"
                 buttonText="Triplet" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -446,7 +447,7 @@ BEGIN_JUCER_METADATA
                 buttonText="Reverse" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="17 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

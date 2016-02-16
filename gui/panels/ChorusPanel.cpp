@@ -128,7 +128,7 @@ void ChorusPanel::resized()
     chorDepthSlider->setBounds (111, 31, 64, 64);
     chorDelayLengthSlider->setBounds (25, 95, 64, 64);
     chorModRateSlider->setBounds (113, 95, 64, 64);
-    onOffSwitch->setBounds (9, 2, 40, 30);
+    onOffSwitch->setBounds (14, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -219,7 +219,7 @@ BEGIN_JUCER_METADATA
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="chorus switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="9 2 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

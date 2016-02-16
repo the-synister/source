@@ -205,7 +205,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSaturnSource(cutoffSlider2, hpModAmount2, &filter.hpCutModSrc2, &filter.hpModAmount2, true, 2);
     registerSaturnSource(resonanceSlider, resModAmount1, &filter.resonanceModSrc1, &filter.resModAmount1, false, 1);
     registerSaturnSource(resonanceSlider, resModAmount2, &filter.resonanceModSrc2, &filter.resModAmount2, false, 2);
-    
+
 
     registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(cutoffSlider, &filter.lpCutoff);
@@ -320,7 +320,7 @@ void FiltPanel::resized()
     hpModAmount2->setBounds (205, 120, 18, 18);
     resModAmount1->setBounds (301, 97, 18, 18);
     resModAmount2->setBounds (301, 120, 18, 18);
-    onOffSwitch->setBounds (9, 2, 47, 30);
+    onOffSwitch->setBounds (9, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -563,7 +563,7 @@ BEGIN_JUCER_METADATA
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
           textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="filter switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="9 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
