@@ -5,6 +5,26 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
+      <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
+              file="../png/delayReverse.png"/>
+        <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
+        <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
+              file="../png/lfoSampleHold.png"/>
+        <FILE id="NQuZcI" name="lfoSineWave.png" compile="0" resource="1" file="../png/lfoSineWave.png"/>
+        <FILE id="mIM9Oi" name="lfoSquareWave.png" compile="0" resource="1"
+              file="../png/lfoSquareWave.png"/>
+        <FILE id="raV8fg" name="oscWaveForms.png" compile="0" resource="1"
+              file="../png/oscWaveForms.png"/>
+        <FILE id="X7bbhn" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
+        <FILE id="mF0MIl" name="seqSequential.png" compile="0" resource="1"
+              file="../png/seqSequential.png"/>
+        <FILE id="qoR5L9" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
+        <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
+        <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
+        <FILE id="QdjsBI" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
+      </GROUP>
       <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets"/>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
         <FILE id="uzwNv9" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
@@ -18,8 +38,6 @@
         <FILE id="Yr6zTA" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="JKipUS" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="kXuahO" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
-        <FILE id="erDSYx" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
-        <FILE id="JZ9ARJ" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
         <FILE id="gVQnLQ" name="EnvPanel.h" compile="0" resource="0" file="../gui/panels/EnvPanel.h"/>
         <FILE id="O23HBc" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
@@ -61,10 +79,6 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
-        <FILE id="dNJsGY" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
-        <FILE id="w5hctc" name="ModulationMatrix.h" compile="0" resource="0"
-              file="../audio/inc/ModulationMatrix.h"/>
-        <FILE id="dzqkeQ" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="HgFz6a" name="Voice.cpp" compile="1" resource="0" file="../audio/inc/Voice.cpp"/>
         <FILE id="h2p1M5" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="faRDeB" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
@@ -83,10 +97,6 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
-        <FILE id="nVIuVz" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
-        <FILE id="f0h5gf" name="ModulationMatrix.cpp" compile="1" resource="0"
-              file="../audio/src/ModulationMatrix.cpp"/>
-        <FILE id="gk21NT" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="jXROwI" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>

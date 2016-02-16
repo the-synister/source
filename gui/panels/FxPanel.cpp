@@ -146,20 +146,6 @@ FxPanel::FxPanel (SynthParams &p)
 	registerSlider(cutoffSlider, &params.delayCutoff);
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
-	/*feedbackSlider->setEnabled(true);
-	dryWetSlider->setEnabled(true);
-	timeSlider->setEnabled(true);
-	cutoffSlider->setEnabled(true);
-	syncToggle->setEnabled(true);
-	revTggl->setEnabled(true);
-	cutoffSlider->setEnabled(true);
-	tripTggl->setEnabled(false);
-
-    dividend->setText(String("1"));
-    divisor->setText(String("4"));
-    dividend->setEnabled(false);
-    divisor->setEnabled(false);
-    tripTggl->setEnabled(false);*/
     onOffSwitchChanged();
     //[/UserPreSize]
 

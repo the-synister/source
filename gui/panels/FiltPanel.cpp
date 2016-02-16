@@ -79,47 +79,47 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     lpModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     lpModAmount1->addListener (this);
 
-    addAndMakeVisible (lp1ModSrc1 = new ComboBox ("lp1ModSrcBox1"));
-    lp1ModSrc1->setEditableText (false);
-    lp1ModSrc1->setJustificationType (Justification::centred);
-    lp1ModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
-    lp1ModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    lp1ModSrc1->addListener (this);
+    addAndMakeVisible (lpModSrc1 = new ComboBox ("lpModSrcBox1"));
+    lpModSrc1->setEditableText (false);
+    lpModSrc1->setJustificationType (Justification::centred);
+    lpModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    lpModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lpModSrc1->addListener (this);
 
-    addAndMakeVisible (hp1ModSrc1 = new ComboBox ("hp1ModSrcBox1"));
-    hp1ModSrc1->setEditableText (false);
-    hp1ModSrc1->setJustificationType (Justification::centred);
-    hp1ModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
-    hp1ModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    hp1ModSrc1->addListener (this);
+    addAndMakeVisible (hpModSrc1 = new ComboBox ("hpModSrcBox1"));
+    hpModSrc1->setEditableText (false);
+    hpModSrc1->setJustificationType (Justification::centred);
+    hpModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    hpModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    hpModSrc1->addListener (this);
 
-    addAndMakeVisible (lp1ModSrc2 = new ComboBox ("lp1ModSrcBox2"));
-    lp1ModSrc2->setEditableText (false);
-    lp1ModSrc2->setJustificationType (Justification::centred);
-    lp1ModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
-    lp1ModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    lp1ModSrc2->addListener (this);
+    addAndMakeVisible (lpModSrc2 = new ComboBox ("lpModSrcBox2"));
+    lpModSrc2->setEditableText (false);
+    lpModSrc2->setJustificationType (Justification::centred);
+    lpModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    lpModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    lpModSrc2->addListener (this);
 
-    addAndMakeVisible (hp1ModSrc2 = new ComboBox ("hp1ModSrcBox2"));
-    hp1ModSrc2->setEditableText (false);
-    hp1ModSrc2->setJustificationType (Justification::centred);
-    hp1ModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
-    hp1ModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    hp1ModSrc2->addListener (this);
+    addAndMakeVisible (hpModSrc2 = new ComboBox ("hpModSrcBox2"));
+    hpModSrc2->setEditableText (false);
+    hpModSrc2->setJustificationType (Justification::centred);
+    hpModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    hpModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    hpModSrc2->addListener (this);
 
-    addAndMakeVisible (res1ModSrc1 = new ComboBox ("res1ModSrcBox1"));
-    res1ModSrc1->setEditableText (false);
-    res1ModSrc1->setJustificationType (Justification::centred);
-    res1ModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
-    res1ModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    res1ModSrc1->addListener (this);
+    addAndMakeVisible (resModSrc1 = new ComboBox ("resModSrcBox1"));
+    resModSrc1->setEditableText (false);
+    resModSrc1->setJustificationType (Justification::centred);
+    resModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    resModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    resModSrc1->addListener (this);
 
-    addAndMakeVisible (res1ModSrc2 = new ComboBox ("res1ModSrcBox2"));
-    res1ModSrc2->setEditableText (false);
-    res1ModSrc2->setJustificationType (Justification::centred);
-    res1ModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
-    res1ModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    res1ModSrc2->addListener (this);
+    addAndMakeVisible (resModSrc2 = new ComboBox ("resModSrcBox2"));
+    resModSrc2->setEditableText (false);
+    resModSrc2->setJustificationType (Justification::centred);
+    resModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    resModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    resModSrc2->addListener (this);
 
     addAndMakeVisible (lpModAmount2 = new MouseOverKnob ("lpModAmount2"));
     lpModAmount2->setRange (0, 8, 0);
@@ -226,19 +226,19 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(passtype, &filter.passtype);
     registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
-    fillModsourceBox(lp1ModSrc1);
-    fillModsourceBox(lp1ModSrc2);
-    fillModsourceBox(hp1ModSrc1);
-    fillModsourceBox(hp1ModSrc2);
-    fillModsourceBox(res1ModSrc1);
-    fillModsourceBox(res1ModSrc2);
+    fillModsourceBox(lpModSrc1);
+    fillModsourceBox(lpModSrc2);
+    fillModsourceBox(hpModSrc1);
+    fillModsourceBox(hpModSrc2);
+    fillModsourceBox(resModSrc1);
+    fillModsourceBox(resModSrc2);
 
-    registerCombobox(lp1ModSrc1, &filter.lpCutModSrc1, cutoffSlider);
-    registerCombobox(lp1ModSrc2, &filter.lpCutModSrc2, cutoffSlider);
-    registerCombobox(hp1ModSrc1, &filter.hpCutModSrc1, cutoffSlider2);
-    registerCombobox(hp1ModSrc2, &filter.hpCutModSrc2, cutoffSlider2);
-    registerCombobox(res1ModSrc1, &filter.resonanceModSrc1, resonanceSlider);
-    registerCombobox(res1ModSrc2, &filter.resonanceModSrc2, resonanceSlider);
+    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, cutoffSlider);
+    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, cutoffSlider);
+    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, cutoffSlider2);
+    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, cutoffSlider2);
+    registerCombobox(resModSrc1, &filter.resonanceModSrc1, resonanceSlider);
+    registerCombobox(resModSrc2, &filter.resonanceModSrc2, resonanceSlider);
 
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -265,12 +265,12 @@ FiltPanel::~FiltPanel()
     cutoffSlider2 = nullptr;
     passtype = nullptr;
     lpModAmount1 = nullptr;
-    lp1ModSrc1 = nullptr;
-    hp1ModSrc1 = nullptr;
-    lp1ModSrc2 = nullptr;
-    hp1ModSrc2 = nullptr;
-    res1ModSrc1 = nullptr;
-    res1ModSrc2 = nullptr;
+    lpModSrc1 = nullptr;
+    hpModSrc1 = nullptr;
+    lpModSrc2 = nullptr;
+    hpModSrc2 = nullptr;
+    resModSrc1 = nullptr;
+    resModSrc2 = nullptr;
     lpModAmount2 = nullptr;
     ladderLabel = nullptr;
     bandpassLabel = nullptr;
@@ -311,12 +311,12 @@ void FiltPanel::resized()
     cutoffSlider2->setBounds (204, 34, 64, 64);
     passtype->setBounds (7, 52, 40, 88);
     lpModAmount1->setBounds (111, 97, 18, 18);
-    lp1ModSrc1->setBounds (132, 97, 40, 18);
-    hp1ModSrc1->setBounds (226, 97, 40, 18);
-    lp1ModSrc2->setBounds (132, 120, 40, 18);
-    hp1ModSrc2->setBounds (226, 120, 40, 18);
-    res1ModSrc1->setBounds (322, 97, 40, 18);
-    res1ModSrc2->setBounds (322, 120, 40, 18);
+    lpModSrc1->setBounds (132, 97, 40, 18);
+    hpModSrc1->setBounds (226, 97, 40, 18);
+    lpModSrc2->setBounds (132, 120, 40, 18);
+    hpModSrc2->setBounds (226, 120, 40, 18);
+    resModSrc1->setBounds (322, 97, 40, 18);
+    resModSrc2->setBounds (322, 120, 40, 18);
     lpModAmount2->setBounds (111, 120, 18, 18);
     ladderLabel->setBounds (35, 47, 56, 24);
     bandpassLabel->setBounds (35, 71, 72, 24);
@@ -403,35 +403,35 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     handleCombobox(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == lp1ModSrc1)
+    if (comboBoxThatHasChanged == lpModSrc1)
     {
-        //[UserComboBoxCode_lp1ModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_lp1ModSrc1]
+        //[UserComboBoxCode_lpModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lpModSrc1]
     }
-    else if (comboBoxThatHasChanged == hp1ModSrc1)
+    else if (comboBoxThatHasChanged == hpModSrc1)
     {
-        //[UserComboBoxCode_hp1ModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_hp1ModSrc1]
+        //[UserComboBoxCode_hpModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_hpModSrc1]
     }
-    else if (comboBoxThatHasChanged == lp1ModSrc2)
+    else if (comboBoxThatHasChanged == lpModSrc2)
     {
-        //[UserComboBoxCode_lp1ModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_lp1ModSrc2]
+        //[UserComboBoxCode_lpModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_lpModSrc2]
     }
-    else if (comboBoxThatHasChanged == hp1ModSrc2)
+    else if (comboBoxThatHasChanged == hpModSrc2)
     {
-        //[UserComboBoxCode_hp1ModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_hp1ModSrc2]
+        //[UserComboBoxCode_hpModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_hpModSrc2]
     }
-    else if (comboBoxThatHasChanged == res1ModSrc1)
+    else if (comboBoxThatHasChanged == resModSrc1)
     {
-        //[UserComboBoxCode_res1ModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_res1ModSrc1]
+        //[UserComboBoxCode_resModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_resModSrc1]
     }
-    else if (comboBoxThatHasChanged == res1ModSrc2)
+    else if (comboBoxThatHasChanged == resModSrc2)
     {
-        //[UserComboBoxCode_res1ModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_res1ModSrc2]
+        //[UserComboBoxCode_resModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_resModSrc2]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -447,12 +447,12 @@ void FiltPanel::onOffSwitchChanged()
 	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	lp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	lp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	hp1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	hp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	res1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	res1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 
 	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1)
 		? Colours::white
@@ -514,19 +514,19 @@ BEGIN_JUCER_METADATA
   <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
             virtualName="" explicitFocusOrder="0" pos="132 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="hp1ModSrcBox1" id="85c37cba161b4f29" memberName="hp1ModSrc1"
+  <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
             virtualName="" explicitFocusOrder="0" pos="226 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="lp1ModSrcBox2" id="6dae6bde5fbe8153" memberName="lp1ModSrc2"
+  <COMBOBOX name="lpModSrcBox2" id="6dae6bde5fbe8153" memberName="lpModSrc2"
             virtualName="" explicitFocusOrder="0" pos="132 120 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="hp1ModSrcBox2" id="f1f85630e066837c" memberName="hp1ModSrc2"
+  <COMBOBOX name="hpModSrcBox2" id="f1f85630e066837c" memberName="hpModSrc2"
             virtualName="" explicitFocusOrder="0" pos="226 120 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="res1ModSrcBox1" id="733eefe1cee8bab3" memberName="res1ModSrc1"
+  <COMBOBOX name="resModSrcBox1" id="733eefe1cee8bab3" memberName="resModSrc1"
             virtualName="" explicitFocusOrder="0" pos="322 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="res1ModSrcBox2" id="cf210285cf2d4ef" memberName="res1ModSrc2"
+  <COMBOBOX name="resModSrcBox2" id="cf210285cf2d4ef" memberName="resModSrc2"
             virtualName="" explicitFocusOrder="0" pos="322 120 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="lpModAmount2" id="c0e4229cc3539fbe" memberName="lpModAmount2"
