@@ -233,12 +233,12 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     fillModsourceBox(resModSrc1);
     fillModsourceBox(resModSrc2);
 
-    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, cutoffSlider);
-    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, cutoffSlider);
-    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, cutoffSlider2);
-    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, cutoffSlider2);
-    registerCombobox(resModSrc1, &filter.resonanceModSrc1, resonanceSlider);
-    registerCombobox(resModSrc2, &filter.resonanceModSrc2, resonanceSlider);
+    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr});
+    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr});
+    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr});
+    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr});
+    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr});
+    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr});
 
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);

@@ -149,8 +149,8 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     fillModsourceBox(freqModSrc1);
     fillModsourceBox(freqModSrc2);
-    registerCombobox(freqModSrc1, &lfo.freqModSrc1, freq);
-    registerCombobox(freqModSrc2, &lfo.freqModSrc2, freq);
+    registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr});
+    registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr});
     fillModsourceBox(lfoGain);
     registerCombobox(lfoGain, &lfo.gainModSrc);
 

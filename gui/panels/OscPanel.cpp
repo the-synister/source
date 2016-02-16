@@ -272,25 +272,25 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     // fill and register mod selection boxes
     fillModsourceBox(pitchModSrc1);
     fillModsourceBox(pitchModSrc2);
-    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, ctune1);
-    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, ctune1);
+    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr});
+    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr});
 
     fillModsourceBox(widthModSrc1);
     fillModsourceBox(widthModSrc2);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, trngAmount);
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, trngAmount);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, pulsewidth);
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, pulsewidth);
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, nullptr, nullptr});
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, nullptr, nullptr});
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, nullptr, nullptr});
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, nullptr, nullptr});
 
     fillModsourceBox(panModSrc1);
     fillModsourceBox(panModSrc2);
-    registerCombobox(panModSrc1, &osc.panModSrc1, pan);
-    registerCombobox(panModSrc2, &osc.panModSrc2, pan);
+    registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr});
+    registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr});
 
     fillModsourceBox(gainModSrc1);
     fillModsourceBox(gainModSrc2);
-    registerCombobox(gainModSrc1, &osc.gainModSrc1, gain);
-    registerCombobox(gainModSrc2, &osc.gainModSrc2, gain);
+    registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr});
+    registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr});
     //[/UserPreSize]
 
     setSize (267, 272);
