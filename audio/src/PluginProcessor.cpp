@@ -77,8 +77,8 @@ PluginAudioProcessor::PluginAudioProcessor()
     /*Create ModMatrixRows here*/
     //TODO: fix prefix!
     for (size_t f = 0; f < filter.size(); ++f) {
-        juce::String boxName = "filter ";
-        boxName.append(static_cast<juce::String>(f),1);
+        
+        String boxName = String::formatted("filter %u", f + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].lpModAmount1, boxName + " hpModSrcBox1");
@@ -87,8 +87,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].lpModAmount2, boxName + " resModSrcBox1");
     }
     for (size_t o = 0; o < osc.size(); ++o) {
-        juce::String boxName = "osc ";
-        boxName.append(static_cast<juce::String>(o), 1);
+        String boxName = String::formatted("osc %u", o + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, boxName + " GainModSrc1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, boxName + " GainModSrc2");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, boxName + " PanModSrc1");
@@ -99,14 +98,12 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
     for (size_t e = 0; e < env.size(); ++e) {
-        juce::String boxName = "env ";
-        boxName.append(static_cast<juce::String>(e), 1);
+        String boxName = String::formatted("env %u", e + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
     for (size_t l = 0; l < lfo.size(); ++l) {
-        juce::String boxName = "lfo ";
-        boxName.append(static_cast<juce::String>(l), 1);
+        String boxName = String::formatted("lfo %u", l + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, boxName + " freqModSrc2");
         // LFO Gain is handled in directly @ voice.renderModulation()

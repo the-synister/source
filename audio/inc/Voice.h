@@ -393,16 +393,16 @@ protected:
 
             // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
-            case eLfoWaves::eLfoSine:
-                    lfoBuffers[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
-                break;
-            case eLfoWaves::eLfoSampleHold:
-                    lfoBuffers[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
-                break;
-            case eLfoWaves::eLfoSquare:
-                    lfoBuffers[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
-                break;
-            }
+                case eLfoWaves::eLfoSine:
+                        lfoBuffers[l].setSample(0, s, lfo[l].sine.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    break;
+                case eLfoWaves::eLfoSampleHold:
+                        lfoBuffers[l].setSample(0, s, lfo[l].random.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    break;
+                case eLfoWaves::eLfoSquare:
+                        lfoBuffers[l].setSample(0, s, lfo[l].square.next() * factorFadeInLFO[l] * lfoGain[l]);
+                    break;
+                }
             }
             // Calculate the Envelope coefficients and fill the buffers
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
