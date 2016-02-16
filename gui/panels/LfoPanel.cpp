@@ -53,7 +53,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     wave->addListener (this);
 
     addAndMakeVisible (tempoSyncSwitch = new ToggleButton ("tempoSyncSwitch"));
-    tempoSyncSwitch->setButtonText (TRANS("Tempo Sync"));
+    tempoSyncSwitch->setButtonText (String::empty);
     tempoSyncSwitch->addListener (this);
     tempoSyncSwitch->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -68,6 +68,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoFadeIn->addListener (this);
 
     addAndMakeVisible (triplets = new ToggleButton ("triplets"));
+    triplets->setButtonText (String::empty);
     triplets->addListener (this);
     triplets->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -85,7 +86,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addListener (this);
 
     addAndMakeVisible (freqModAmount1 = new MouseOverKnob ("freqModAmount1"));
-    freqModAmount1->setRange (0, 4, 0);
+    freqModAmount1->setRange (0, 8, 0);
     freqModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount1->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -95,7 +96,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount1->addListener (this);
 
     addAndMakeVisible (freqModAmount2 = new MouseOverKnob ("freqModAmount2"));
-    freqModAmount2->setRange (0, 4, 0);
+    freqModAmount2->setRange (0, 8, 0);
     freqModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount2->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -127,8 +128,8 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
 
     //[UserPreSize]
-    registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, true, 1);
-    registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, true, 2);
+    registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
 
     registerSlider(freq, &lfo.freq);
     registerSlider(wave, &lfo.wave);
@@ -150,19 +151,22 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     fillModsourceBox(freqModSrc2);
     registerCombobox(freqModSrc1, &lfo.freqModSrc1, freq);
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, freq);
-
     fillModsourceBox(lfoGain);
     registerCombobox(lfoGain, &lfo.gainModSrc);
+
+    noteLength->setEnabled(false);
     //[/UserPreSize]
 
     setSize (267, 197);
 
 
     //[Constructor] You can add your own custom stuff here..
-   // sineWave = ImageCache::getFromMemory(BinaryData::lfoSineWave_png, BinaryData::lfoSineWave_pngSize);
-    //squareWave = ImageCache::getFromMemory(BinaryData::lfoSquareWave_png, BinaryData::lfoSquareWave_pngSize);
-   // sampleHold = ImageCache::getFromMemory(BinaryData::lfoSampleHold_png, BinaryData::lfoSampleHold_pngSize);
-    //gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
+    sineWave = ImageCache::getFromMemory(BinaryData::lfoSineWave_png, BinaryData::lfoSineWave_pngSize);
+    squareWave = ImageCache::getFromMemory(BinaryData::lfoSquareWave_png, BinaryData::lfoSquareWave_pngSize);
+    sampleHold = ImageCache::getFromMemory(BinaryData::lfoSampleHold_png, BinaryData::lfoSampleHold_pngSize);
+    gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
+    syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     //[/Constructor]
 }
 
@@ -199,7 +203,7 @@ void LfoPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, lfo.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::lfoColour);
-    drawWaves(g, wave, lfoGain);
+    drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets);
     //[/UserPaint]
 }
 
@@ -210,10 +214,10 @@ void LfoPanel::resized()
 
     freq->setBounds (10, 35, 64, 64);
     wave->setBounds (168, 58, 60, 24);
-    tempoSyncSwitch->setBounds (82, 102, 100, 24);
+    tempoSyncSwitch->setBounds (85, 100, 64, 30);
     lfoFadeIn->setBounds (10, 97, 64, 64);
-    triplets->setBounds (180, 102, 100, 24);
-    noteLength->setBounds (122, 130, 87, 24);
+    triplets->setBounds (175, 100, 64, 30);
+    noteLength->setBounds (122, 135, 87, 24);
     freqModAmount1->setBounds (67, 35, 18, 18);
     freqModAmount2->setBounds (67, 59, 18, 18);
     freqModSrc1->setBounds (90, 35, 40, 18);
@@ -268,10 +272,12 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
         lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
-        if (tempoSyncSwitch->getToggleState()==1){
+        if (lfo.tempSync.getStep() == eOnOffToggle::eOn){
             freq->setEnabled(false);
+            noteLength->setEnabled(true);
         }else{
             freq->setEnabled(true);
+            noteLength->setEnabled(false);
         }
         //params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
@@ -325,7 +331,7 @@ String LfoPanel::getNoteLengthAsString()
     return "1/" + String(lfo.noteLength.getUI());
 }
 
-void LfoPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox)
+void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
@@ -335,6 +341,8 @@ void LfoPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sc
     g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 1, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
 }
 //[/MiscUserCode]
 
@@ -365,9 +373,9 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="82 102 100 24" txtcol="ffffffff"
-                buttonText="Tempo Sync" connectedEdges="0" needsCallback="1"
-                radioGroupId="0" state="0"/>
+                virtualName="" explicitFocusOrder="0" pos="85 100 64 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="10 97 64 64"
           rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -375,23 +383,23 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="180 102 100 24" txtcol="ffffffff"
-                buttonText="triplets" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                explicitFocusOrder="0" pos="175 100 64 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="122 130 87 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="122 135 87 24"
             editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32"
             textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 35 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="freqModAmount2" id="ae5c9ce50e2de7e1" memberName="freqModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 59 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"

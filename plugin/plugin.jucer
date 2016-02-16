@@ -14,24 +14,24 @@
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/delayReverse.png"/>
-        <FILE id="Z8L7Ow" name="knobstrip.png" compile="0" resource="1" file="../../../../Desktop/Assets/knobstrip.png"/>
-        <FILE id="dmjcIv" name="lfoGain.png" compile="0" resource="1" file="../../../../Desktop/Assets/lfoGain.png"/>
+              file="../png/delayReverse.png"/>
+        <FILE id="Z8L7Ow" name="knobstrip.png" compile="0" resource="1" file="../png/knobstrip.png"/>
+        <FILE id="dmjcIv" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="wIJ89r" name="lfoSampleHold.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/lfoSampleHold.png"/>
-        <FILE id="ggpKKw" name="lfoSineWave.png" compile="0" resource="1" file="../../../../Desktop/Assets/lfoSineWave.png"/>
+              file="../png/lfoSampleHold.png"/>
+        <FILE id="ggpKKw" name="lfoSineWave.png" compile="0" resource="1" file="../png/lfoSineWave.png"/>
         <FILE id="pm4ul9" name="lfoSquareWave.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/lfoSquareWave.png"/>
+              file="../png/lfoSquareWave.png"/>
         <FILE id="YgLUep" name="oscWaveForms.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/oscWaveForms.png"/>
-        <FILE id="fANenm" name="seqRandom.png" compile="0" resource="1" file="../../../../Desktop/Assets/seqRandom.png"/>
+              file="../png/oscWaveForms.png"/>
+        <FILE id="fANenm" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
         <FILE id="dESjwD" name="seqSequential.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/seqSequential.png"/>
-        <FILE id="i2q4KN" name="seqUpDown.png" compile="0" resource="1" file="../../../../Desktop/Assets/seqUpDown.png"/>
-        <FILE id="OSvW0D" name="tempoSync.png" compile="0" resource="1" file="../../../../Desktop/Assets/tempoSync.png"/>
-        <FILE id="BuGbcx" name="toggleOff.png" compile="0" resource="1" file="../../../../Desktop/Assets/toggleOff.png"/>
-        <FILE id="m17guR" name="toggleOn.png" compile="0" resource="1" file="../../../../Desktop/Assets/toggleOn.png"/>
-        <FILE id="Ym6yJ5" name="triplets.png" compile="0" resource="1" file="../../../../Desktop/Assets/triplets.png"/>
+              file="../png/seqSequential.png"/>
+        <FILE id="i2q4KN" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="OSvW0D" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
+        <FILE id="BuGbcx" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
+        <FILE id="m17guR" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
+        <FILE id="Ym6yJ5" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
       </GROUP>
       <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
             file="../gui/FoldablePanel.cpp"/>
@@ -57,8 +57,6 @@
         <FILE id="zpG5Vz" name="ClippingPanel.cpp" compile="1" resource="0"
               file="../gui/panels/ClippingPanel.cpp"/>
         <FILE id="AaJRQP" name="ClippingPanel.h" compile="0" resource="0" file="../gui/panels/ClippingPanel.h"/>
-        <FILE id="sZWJeP" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
-        <FILE id="S5w80K" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="MQe5Fc" name="LoFiPanel.cpp" compile="1" resource="0" file="../gui/panels/LoFiPanel.cpp"/>
         <FILE id="QyuXB3" name="LoFiPanel.h" compile="0" resource="0" file="../gui/panels/LoFiPanel.h"/>
         <FILE id="T6NiX2" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>
@@ -69,10 +67,6 @@
         <FILE id="Sh6NXS" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
         <FILE id="pHTWgt" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
         <FILE id="eaQWuN" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
-        <FILE id="arXpqu" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
-        <FILE id="q6cLYL" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
-        <FILE id="xfe4Yx" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
-        <FILE id="b2jRRO" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="blqsaY" name="LfoPanel.cpp" compile="1" resource="0" file="../gui/panels/LfoPanel.cpp"/>
         <FILE id="UNPeJT" name="LfoPanel.h" compile="0" resource="0" file="../gui/panels/LfoPanel.h"/>
         <FILE id="De7pfA" name="OscPanel.cpp" compile="1" resource="0" file="../gui/panels/OscPanel.cpp"/>
@@ -113,9 +107,6 @@
       </GROUP>
       <GROUP id="{20A3CA03-24AD-4B22-EE28-A4C29532DEEA}" name="src">
         <FILE id="oYEQrl" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
-        <FILE id="OJ6adT" name="ModulationMatrix.cpp" compile="1" resource="0"
-              file="../audio/src/ModulationMatrix.cpp"/>
-        <FILE id="hoUGIH" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="bu7iHM" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="wEODLt" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
         <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
@@ -125,7 +116,6 @@
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
-        <FILE id="rF1zbB" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="rhxefx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
         <FILE id="vsLlSU" name="SynthParams.cpp" compile="1" resource="0" file="../audio/src/SynthParams.cpp"/>

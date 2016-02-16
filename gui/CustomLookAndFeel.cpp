@@ -114,34 +114,43 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         // calculate intensity for unipolar direction
         intensity = toBipolar(modAmount->getMin(), modAmount->getMax(), modAmount->get());
 
-        // if conversion is needed (for cases of octave to frequency)
-        if (s.isModSourceValueConverted())
+        // if conversion is needed due to unit differences of modAmount and target
+        switch (s.getConversionType())
         {
-            base = intensity < 0.0f ? 0.5f : 2.0f;
-            afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
+            case MouseOverKnob::modAmountConversion::noConversion:
+                afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
+                break;
+            case MouseOverKnob::modAmountConversion::octToFreq:
+                base = intensity < 0.0f ? 0.5f : 2.0f;
+                afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
+                break;
+            case MouseOverKnob::modAmountConversion::percentage:
+                afterModVal1 = jmax(min, jmin(val + intensity * max, max));
+                break;
         }
-        else
-        {
-            afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
-        }
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-        modPosition2 = pow((val - min) / (max - min), skew);
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((val - min) / (max - min), skew);
     }
     else
     {
-        // if conversion is needed (for cases of octave to frequency)
-        if (s.isModSourceValueConverted())
+        // if conversion is needed due to unit differences of modAmount and target
+        switch (s.getConversionType())
         {
-            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
-            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
-        }
-        else
-        {
+        case MouseOverKnob::modAmountConversion::noConversion:
             afterModVal1 = jmax(min, jmin(val + modAmount->get(), max));
             afterModVal2 = jmax(min, jmin(val - modAmount->get(), max));
+            break;
+        case MouseOverKnob::modAmountConversion::octToFreq:
+            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
+            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
+            break;
+        case MouseOverKnob::modAmountConversion::percentage:
+            afterModVal1 = jmax(min, jmin(val + modAmount->get() * max, max));
+            afterModVal2 = jmax(min, jmin(val - modAmount->get() * max, max));
+            break;
         }
-        modPosition1 = pow((afterModVal1 - min) / (max - min), skew);
-        modPosition2 = pow((afterModVal2 - min) / (max - min), skew);
+        modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
+        modPosition2 = std::pow((afterModVal2 - min) / (max - min), skew);
     }
 
     modStartAngle = rotaryStartAngle + modPosition1 * (rotaryEndAngle - rotaryStartAngle);

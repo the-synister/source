@@ -47,6 +47,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+
     /**
     * timerCallback() is needed here to display the currently playing note step.
     */
@@ -124,6 +126,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Image syncPic, tripletPic, sequentialPic, upDownPic, randomPic;
+
     std::array<ScopedPointer<Slider>, 8> seqStepArray;
     std::array<ScopedPointer<TextButton>, 8> labelButtonArray;
 

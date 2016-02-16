@@ -18,10 +18,6 @@
         <FILE id="Yr6zTA" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
         <FILE id="JKipUS" name="FxPanel.cpp" compile="1" resource="0" file="../gui/panels/FxPanel.cpp"/>
         <FILE id="kXuahO" name="FxPanel.h" compile="0" resource="0" file="../gui/panels/FxPanel.h"/>
-        <FILE id="Z3iEfN" name="LadderPanel.cpp" compile="1" resource="0" file="../gui/panels/LadderPanel.cpp"/>
-        <FILE id="JUtYnk" name="LadderPanel.h" compile="0" resource="0" file="../gui/panels/LadderPanel.h"/>
-        <FILE id="l3zb9h" name="AmpPanel.cpp" compile="1" resource="0" file="../gui/panels/AmpPanel.cpp"/>
-        <FILE id="me48Zc" name="AmpPanel.h" compile="0" resource="0" file="../gui/panels/AmpPanel.h"/>
         <FILE id="erDSYx" name="Env1Panel.cpp" compile="1" resource="0" file="../gui/panels/Env1Panel.cpp"/>
         <FILE id="JZ9ARJ" name="Env1Panel.h" compile="0" resource="0" file="../gui/panels/Env1Panel.h"/>
         <FILE id="UnNj1F" name="EnvPanel.cpp" compile="1" resource="0" file="../gui/panels/EnvPanel.cpp"/>

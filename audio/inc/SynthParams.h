@@ -16,7 +16,7 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
+};
 
 enum class eOscWaves : int {
     eOscSquare = 0,
@@ -82,11 +82,8 @@ public:
                        //Param chorSwitch; // Chorus on / off [1 / 0]
 
     struct BaseParamStruct {
-        void setName(const String& s)
-        {
+        void setName(const String& s) {
             name = s;
-
-            //! \todo set prefix of every param to name
         }
 
         String name;
@@ -94,7 +91,7 @@ public:
 
     struct EnvBase : public BaseParamStruct {
         EnvBase();
-        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1]
+        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1] \todo remove this!
         Param attack;    //!< env attack in [0.001..5]s
         Param decay;     //!< env decay in [0.001..5]s
         Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
@@ -106,16 +103,41 @@ public:
         Param speedModAmount2; //!< Volume envelope speed mod amount
         ParamStepped<eModSource> speedModSrc1; //!< Volume envelope speed mod source
         ParamStepped<eModSource> speedModSrc2; //!< Volume envelope speed mod source
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            keyVelToEnv.setPrefix(s);
+            attack.setPrefix(s);
+            decay.setPrefix(s);
+            release.setPrefix(s);
+            attackShape.setPrefix(s);
+            decayShape.setPrefix(s);
+            releaseShape.setPrefix(s);
+            speedModAmount1.setPrefix(s);
+            speedModAmount2.setPrefix(s);
+            speedModSrc1.setPrefix(s);
+            speedModSrc2.setPrefix(s);
+        }
     };
 
     struct EnvVol : public EnvBase {
         EnvVol();
-        ParamDb sustain;   //!< Envelope sustain in [0..1]
+        ParamDb sustain;   //!< Envelope sustain in [-96..0] dB
+
+        void setName(const String& s) {
+            EnvBase::setName(s);
+            sustain.setPrefix(s);
+        }
     };
 
     struct Env : public EnvBase {
         Env();
         Param sustain; //!< Envelope sustain in [0..1]
+
+        void setName(const String& s) {
+            EnvBase::setName(s);
+            sustain.setPrefix(s);
+        }
     };
 
     struct Lfo : public BaseParamStruct {
@@ -124,13 +146,27 @@ public:
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
-        Param fadeIn;   // The LFOs fade in with a range of [0..10s]
+        Param fadeIn;   //!< The LFOs fade in with a range of [0..10s]
         //ModAmounts and Sources
         Param freqModAmount1; //!< lfo frequency mod amount
         Param freqModAmount2; //!< lfo frequency mod amount
         ParamStepped<eModSource> freqModSrc1; //!< lfo frequency mod source
         ParamStepped<eModSource> freqModSrc2; //!< lfo frequency mod source
         ParamStepped<eModSource> gainModSrc; //!< lfo gain mod source
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            freq.setPrefix(s);
+            tempSync.setPrefix(s);
+            noteLength.setPrefix(s);
+            wave.setPrefix(s);
+            fadeIn.setPrefix(s);
+            freqModAmount1.setPrefix(s);
+            freqModAmount2.setPrefix(s);
+            freqModSrc1.setPrefix(s);
+            freqModSrc2.setPrefix(s);
+            gainModSrc.setPrefix(s);
+        }
     };
 
     struct Filter : public BaseParamStruct {
@@ -154,6 +190,26 @@ public:
         ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
         ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
         ParamStepped<eOnOffToggle> filterActivation; //!< Activation of the filter
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            passtype.setPrefix(s);
+            lpCutoff.setPrefix(s);
+            hpCutoff.setPrefix(s);
+            resonance.setPrefix(s);
+            lpModAmount1.setPrefix(s);
+            lpModAmount2.setPrefix(s);
+            hpModAmount1.setPrefix(s);
+            hpModAmount2.setPrefix(s);
+            resModAmount1.setPrefix(s);
+            resModAmount2.setPrefix(s);
+            lpCutModSrc1.setPrefix(s);
+            lpCutModSrc2.setPrefix(s);
+            hpCutModSrc1.setPrefix(s);
+            hpCutModSrc2.setPrefix(s);
+            resonanceModSrc1.setPrefix(s);
+            resonanceModSrc2.setPrefix(s);
+        }
     };
 
     struct Osc : public BaseParamStruct {
@@ -162,7 +218,7 @@ public:
         Param fine;      //!< fine tune in [-100..100] ct
         Param coarse;    //!< coarse tune in [-11..11] st
         ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
-        Param trngAmount; //Triangle Amount [0 ... 1]
+        Param trngAmount; //!< Triangle Amount [0 ... 1]
         Param pulseWidth; //!< pulse width in [0,01..0,99]
         ParamDb vol; //!< volume in [-96..12]
         Param panDir; //!< pan R/L [-100..100]
@@ -183,8 +239,33 @@ public:
         Param gainModAmount2; //!< gain mod amount
         ParamStepped<eModSource> gainModSrc1; //!< gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< gain mod source
-        // do we really need this???
-        Param volModAmount;    //!< key velocity level range in [0..96]dB
+
+        void setName(const String& s) {
+            BaseParamStruct::setName(s);
+            fine.setPrefix(s);
+            coarse.setPrefix(s);
+            waveForm.setPrefix(s);
+            trngAmount.setPrefix(s);
+            pulseWidth.setPrefix(s);
+            vol.setPrefix(s);
+            panDir.setPrefix(s);
+            panModAmount1.setPrefix(s);
+            panModAmount2.setPrefix(s);
+            panModSrc1.setPrefix(s);
+            panModSrc2.setPrefix(s);
+            shapeModAmount1.setPrefix(s);
+            shapeModAmount2.setPrefix(s);
+            shapeModSrc1.setPrefix(s);
+            shapeModSrc2.setPrefix(s);
+            pitchModAmount1.setPrefix(s);
+            pitchModAmount2.setPrefix(s);
+            pitchModSrc1.setPrefix(s);
+            pitchModSrc2.setPrefix(s);
+            gainModAmount1.setPrefix(s);
+            gainModAmount2.setPrefix(s);
+            gainModSrc1.setPrefix(s);
+            gainModSrc2.setPrefix(s);
+        }
     };
 
     std::array<Filter, 2> filter;

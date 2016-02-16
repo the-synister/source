@@ -53,8 +53,9 @@ protected:
 
     // NOTE: sourceNumber values 1 or 2
     // TODO: change it to an enum?
-    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, bool convert, int sourceNumber) {
-        dest->setModSource(modSource, modAmount, convert, sourceNumber);
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber
+        , MouseOverKnob::modAmountConversion convType = MouseOverKnob::modAmountConversion::noConversion) {
+        dest->setModSource(modSource, modAmount, sourceNumber, convType);
 
         auto temp = saturnReg.find(dest);
         if (temp == saturnReg.end()) {
@@ -104,8 +105,8 @@ protected:
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
 
+                // TODO: up to 3 dest per box
                 auto c2s = saturnSourceReg.find(c2p.first);
-
                 if (c2s != saturnSourceReg.end()) {
                     c2s->second->repaint();
                 }
@@ -189,7 +190,8 @@ protected:
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
-        
+
+        // TODO: register up to 3 dest per box
         // couple combobox with saturn knob
         if (modDest != nullptr) {
             saturnSourceReg[box] = modDest;
@@ -223,6 +225,7 @@ protected:
 
             auto temp = saturnSourceReg.find(comboboxThatWasChanged);
 
+            // TODO: up to 3 dest per box
             // update saturn
             if (temp != saturnSourceReg.end()) {
                 temp->second->repaint();
@@ -279,6 +282,6 @@ protected:
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<ComboBox*, Param*> dropdownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg;
+    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg; // TODO: register up to 3 dest per box for env ADR knobs
     SynthParams &params;
 };

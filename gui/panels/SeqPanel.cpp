@@ -106,7 +106,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     seqPlay->setColour (TextButton::textColourOffId, Colours::white);
 
     addAndMakeVisible (syncHost = new ToggleButton ("Sync Host"));
-    syncHost->setButtonText (TRANS("sync host"));
+    syncHost->setButtonText (String::empty);
     syncHost->addListener (this);
     syncHost->setColour (ToggleButton::textColourId, Colours::black);
 
@@ -285,6 +285,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     playRandom->addListener (this);
 
     addAndMakeVisible (triplets = new ToggleButton ("triplets"));
+    triplets->setButtonText (String::empty);
     triplets->addListener (this);
 
     addAndMakeVisible (saveSeq = new TextButton ("save button"));
@@ -373,6 +374,8 @@ SeqPanel::SeqPanel (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
+    syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     //[/Constructor]
 }
 
@@ -436,6 +439,7 @@ void SeqPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "step sequencer", 0, 0,
         this->getWidth(), this->getHeight(), 30.0f, 20.0f, 5.0f, 3.0f, SynthParams::stepSeqColour);
+    drawPics(g, syncHost, triplets);
     //[/UserPaint]
 }
 
@@ -469,7 +473,7 @@ void SeqPanel::resized()
     seqStep7->setBounds (679, 67, 48, 220);
     seqStep8->setBounds (732, 67, 48, 220);
     seqPlay->setBounds (55, 7, 100, 23);
-    syncHost->setBounds (196, 69, 120, 24);
+    syncHost->setBounds (200, 64, 64, 30);
     labelButton1->setBounds (358, 39, 48, 24);
     labelButton2->setBounds (412, 39, 48, 24);
     labelButton3->setBounds (466, 39, 48, 24);
@@ -482,15 +486,15 @@ void SeqPanel::resized()
     randomSeq->setBounds (32, 247, 280, 48);
     randMinLabel->setBounds (22, 231, 80, 32);
     randMaxLabel->setBounds (242, 231, 80, 32);
-    playUpDown->setBounds (196, 99, 120, 24);
+    playUpDown->setBounds (196, 147, 120, 24);
     seqStepSpeed->setBounds (22, 123, 87, 24);
     seqStepLength->setBounds (22, 177, 87, 24);
     seqNumSteps->setBounds (22, 69, 87, 24);
     labelSeqSpeed->setBounds (17, 101, 80, 20);
     labelSeqLength->setBounds (17, 155, 80, 20);
     labelSeqStepNum->setBounds (17, 47, 80, 20);
-    playRandom->setBounds (196, 129, 120, 24);
-    triplets->setBounds (196, 158, 120, 24);
+    playRandom->setBounds (196, 177, 120, 24);
+    triplets->setBounds (200, 96, 64, 30);
     saveSeq->setBounds (170, 7, 100, 23);
     loadSeq->setBounds (280, 7, 100, 23);
     //[UserResized] Add your own custom resize handling here..
@@ -761,6 +765,12 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void SeqPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+{
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+}
+
 void SeqPanel::timerCallback()
 {
     if (isPlaying())
@@ -928,8 +938,8 @@ BEGIN_JUCER_METADATA
               bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="play"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
-                virtualName="" explicitFocusOrder="0" pos="196 69 120 24" txtcol="ff000000"
-                buttonText="sync host" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="200 64 64 30" txtcol="ff000000"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TEXTBUTTON name="label button 1" id="ecf21a7d0b29e004" memberName="labelButton1"
               virtualName="" explicitFocusOrder="0" pos="358 39 48 24" bgColOff="ff9a9a9a"
@@ -983,7 +993,7 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="24"
          bold="1" italic="0" justification="36"/>
   <TOGGLEBUTTON name="play up down" id="92757ac860e48d18" memberName="playUpDown"
-                virtualName="" explicitFocusOrder="0" pos="196 99 120 24" buttonText="play up/down"
+                virtualName="" explicitFocusOrder="0" pos="196 147 120 24" buttonText="play up/down"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="seq step speed" id="b920cb2140721231" memberName="seqStepSpeed"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="22 123 87 24"
@@ -1013,11 +1023,11 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="play random" id="f5db190fb273c40b" memberName="playRandom"
-                virtualName="" explicitFocusOrder="0" pos="196 129 120 24" buttonText="play random"
+                virtualName="" explicitFocusOrder="0" pos="196 177 120 24" buttonText="play random"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="196 158 120 24" buttonText="triplets"
-                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+                explicitFocusOrder="0" pos="200 96 64 30" buttonText="" connectedEdges="0"
+                needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
               virtualName="" explicitFocusOrder="0" pos="170 7 100 23" bgColOff="ffffff"
               bgColOn="ffffff" textCol="ff808080" textColOn="ff808080" buttonText="save seq"
