@@ -46,6 +46,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void onOffSwitchChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -81,6 +82,7 @@ private:
     ScopedPointer<MouseOverKnob> hpModAmount2;
     ScopedPointer<MouseOverKnob> resModAmount1;
     ScopedPointer<MouseOverKnob> resModAmount2;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

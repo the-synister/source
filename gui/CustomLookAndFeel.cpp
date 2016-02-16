@@ -118,7 +118,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         if (s.isModSourceValueConverted())
         {
             base = intensity < 0.0f ? 0.5f : 2.0f;
-            afterModVal1 = jmax(min, jmin(val * std::pow(base, abs(intensity * modAmount->getMax())), max));
+            afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
         }
         else
         {

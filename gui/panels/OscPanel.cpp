@@ -310,7 +310,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     panModAmount1->setAlwaysOnTop(true);
     panModAmount2->setAlwaysOnTop(true);
 
-    waveforms = ImageCache::getFromMemory(BinaryData::oscWaveForms_png, BinaryData::oscWaveForms_pngSize);
+   // waveforms = ImageCache::getFromMemory(BinaryData::oscWaveForms_png, BinaryData::oscWaveForms_pngSize);
     //[/Constructor]
 }
 

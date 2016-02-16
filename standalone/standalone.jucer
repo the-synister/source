@@ -5,27 +5,7 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
-      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets">
-        <FILE id="rZz5lL" name="delayReverse.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/delayReverse.png"/>
-        <FILE id="cRwtY4" name="knobstrip.png" compile="0" resource="1" file="../../../../Desktop/Assets/knobstrip.png"/>
-        <FILE id="VMk6Dg" name="lfoGain.png" compile="0" resource="1" file="../../../../Desktop/Assets/lfoGain.png"/>
-        <FILE id="Jb2GSN" name="lfoSampleHold.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/lfoSampleHold.png"/>
-        <FILE id="EKwTBm" name="lfoSineWave.png" compile="0" resource="1" file="../../../../Desktop/Assets/lfoSineWave.png"/>
-        <FILE id="Orh68I" name="lfoSquareWave.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/lfoSquareWave.png"/>
-        <FILE id="nVj3fk" name="oscWaveForms.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/oscWaveForms.png"/>
-        <FILE id="MllVs2" name="seqRandom.png" compile="0" resource="1" file="../../../../Desktop/Assets/seqRandom.png"/>
-        <FILE id="ZCQ6gW" name="seqSequential.png" compile="0" resource="1"
-              file="../../../../Desktop/Assets/seqSequential.png"/>
-        <FILE id="E6NQLR" name="seqUpDown.png" compile="0" resource="1" file="../../../../Desktop/Assets/seqUpDown.png"/>
-        <FILE id="fHDZJZ" name="tempoSync.png" compile="0" resource="1" file="../../../../Desktop/Assets/tempoSync.png"/>
-        <FILE id="jMFoH6" name="toggleOff.png" compile="0" resource="1" file="../../../../Desktop/Assets/toggleOff.png"/>
-        <FILE id="NxieAc" name="toggleOn.png" compile="0" resource="1" file="../../../../Desktop/Assets/toggleOn.png"/>
-        <FILE id="onPC55" name="triplets.png" compile="0" resource="1" file="../../../../Desktop/Assets/triplets.png"/>
-      </GROUP>
+      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets"/>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
         <FILE id="uzwNv9" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
         <FILE id="gAiDGO" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>

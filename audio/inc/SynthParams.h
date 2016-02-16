@@ -72,7 +72,7 @@ public:
     static const Colour waveformLine;
     static const Colour waveformBackground;
     static const Colour otherModulation;
-    
+
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
@@ -135,6 +135,7 @@ public:
 
     struct Filter : public BaseParamStruct {
         Filter();
+
         ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
         Param lpCutoff; //!< filter cutoff frequency in Hz
         Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -152,6 +153,7 @@ public:
         ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
         ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
         ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
+        ParamStepped<eOnOffToggle> filterActivation; //!< Activation of the filter
     };
 
     struct Osc : public BaseParamStruct {
@@ -192,11 +194,13 @@ public:
     std::array<Osc, 3> osc;
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
+    ParamStepped<eOnOffToggle> clippingActivation; //!< Activation of the clipping effect
 
     Param chorDelayLength;
     Param chorDryWet;
     Param chorModRate;
     Param chorModDepth;
+    ParamStepped<eOnOffToggle> chorActivation; //!< Activation of the chorus effect
 
     ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
     ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
@@ -241,6 +245,9 @@ public:
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
+    ParamStepped<eOnOffToggle> delayActivation;     //!< delay activation
+    ParamStepped<eOnOffToggle> syncToggle;          //!< delay sync toggle
+
     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams; //!< vector of params to be serialized
     // list of only stepSeq params

@@ -40,8 +40,21 @@ ClippingPanel::ClippingPanel (SynthParams &p)
     clippingFactor->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     clippingFactor->addListener (this);
 
+    addAndMakeVisible (onOffSwitch = new Slider ("clipping switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
+
 
     //[UserPreSize]
+	clippingFactor->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	registerSlider(onOffSwitch, &params.clippingActivation, std::bind(&ClippingPanel::onOffSwitchChanged, this));
     registerSlider(clippingFactor, &params.clippingFactor);
     //[/UserPreSize]
 
@@ -58,6 +71,7 @@ ClippingPanel::~ClippingPanel()
     //[/Destructor_pre]
 
     clippingFactor = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -84,6 +98,7 @@ void ClippingPanel::resized()
     //[/UserPreResize]
 
     clippingFactor->setBounds (32, 64, 64, 64);
+    onOffSwitch->setBounds (9, 2, 47, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -99,6 +114,11 @@ void ClippingPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_clippingFactor] -- add your slider handling code here..
         //[/UserSliderCode_clippingFactor]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -107,6 +127,11 @@ void ClippingPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void ClippingPanel::onOffSwitchChanged()
+{
+	clippingFactor->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
 //[/MiscUserCode]
 
 
@@ -129,6 +154,12 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 64 64 64"
           rotarysliderfill="ff2b3240" min="0" max="25" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="clipping switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="9 2 47 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 

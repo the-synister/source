@@ -159,10 +159,10 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
 
     //[Constructor] You can add your own custom stuff here..
-    sineWave = ImageCache::getFromMemory(BinaryData::lfoSineWave_png, BinaryData::lfoSineWave_pngSize);
-    squareWave = ImageCache::getFromMemory(BinaryData::lfoSquareWave_png, BinaryData::lfoSquareWave_pngSize);
-    sampleHold = ImageCache::getFromMemory(BinaryData::lfoSampleHold_png, BinaryData::lfoSampleHold_pngSize);
-    gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
+   // sineWave = ImageCache::getFromMemory(BinaryData::lfoSineWave_png, BinaryData::lfoSineWave_pngSize);
+    //squareWave = ImageCache::getFromMemory(BinaryData::lfoSquareWave_png, BinaryData::lfoSquareWave_pngSize);
+   // sampleHold = ImageCache::getFromMemory(BinaryData::lfoSampleHold_png, BinaryData::lfoSampleHold_pngSize);
+    //gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
     //[/Constructor]
 }
 

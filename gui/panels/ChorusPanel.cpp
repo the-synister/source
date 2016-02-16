@@ -61,12 +61,25 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     chorModRateSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     chorModRateSlider->addListener (this);
 
+    addAndMakeVisible (onOffSwitch = new Slider ("chorus switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(chorDryWetSlider, &params.chorDryWet);
     registerSlider(chorDepthSlider, &params.chorModDepth);
     registerSlider(chorDelayLengthSlider, &params.chorDelayLength);
     registerSlider(chorModRateSlider, &params.chorModRate);
+  	onOffSwitchChanged();
+	  registerSlider(onOffSwitch, &params.chorActivation, std::bind(&ChorusPanel::onOffSwitchChanged, this));
     //[/UserPreSize]
 
     setSize (200, 200);
@@ -85,6 +98,7 @@ ChorusPanel::~ChorusPanel()
     chorDepthSlider = nullptr;
     chorDelayLengthSlider = nullptr;
     chorModRateSlider = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -114,6 +128,7 @@ void ChorusPanel::resized()
     chorDepthSlider->setBounds (111, 31, 64, 64);
     chorDelayLengthSlider->setBounds (25, 95, 64, 64);
     chorModRateSlider->setBounds (113, 95, 64, 64);
+    onOffSwitch->setBounds (9, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -144,6 +159,11 @@ void ChorusPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_chorModRateSlider] -- add your slider handling code here..
         //[/UserSliderCode_chorModRateSlider]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -152,6 +172,14 @@ void ChorusPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void ChorusPanel::onOffSwitchChanged()
+{
+	chorDelayLengthSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorDepthSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorDryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	chorModRateSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
 //[/MiscUserCode]
 
 
@@ -182,14 +210,20 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 95 64 64"
-          rotarysliderfill="ff2b3240" min="0.025000000000000001" max="0.080000000000000002"
+          rotarysliderfill="ff2b3240" min="0.025000000000000001388" max="0.080000000000000001665"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="113 95 64 64"
-          rotarysliderfill="ff2b3240" min="0.10000000000000001" max="1.5"
+          rotarysliderfill="ff2b3240" min="0.10000000000000000555" max="1.5"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="chorus switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="9 2 40 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

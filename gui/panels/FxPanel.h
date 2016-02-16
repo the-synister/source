@@ -48,6 +48,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void onOffSwitchChanged();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -74,6 +75,7 @@ private:
     ScopedPointer<ToggleButton> tripTggl;
     ScopedPointer<ToggleButton> filtTggl;
     ScopedPointer<ToggleButton> revTggl;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

@@ -54,7 +54,7 @@ const Colour SynthParams::otherModulation(0, 0, 255); // add more different colo
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
-        // TODO: Think of another way to register all the struct params?
+    // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
@@ -71,13 +71,13 @@ SynthParams::SynthParams()
     &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc,
     &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc,
     //Filters Params
-    &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2,
-    &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2,
-//Others
+    &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
+    &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
+    //Others
     &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse,
-    &lowFiActivation, &nBitsLowFi }
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
+    &lowFiActivation, &nBitsLowFi, &clippingActivation, &chorActivation }
     , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
@@ -92,13 +92,17 @@ SynthParams::SynthParams()
     , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
     , delayRecordFilter("Delay Record", "delRec", "Delay record filter", eOnOffToggle::eOff, onoffnames)
     , delayReverse("Delay Reverse", "delRev", "Delay reverse", eOnOffToggle::eOff, onoffnames)
+    , delayActivation("Delay Activation", "delayActivation", "Delay Active", eOnOffToggle::eOff, onoffnames)
+    , syncToggle("Delay Sync", "syncToggle", "Sync Toggle", eOnOffToggle::eOff, onoffnames)
     , lowFiActivation("Activation", "lowFiActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
     , nBitsLowFi("Bit Degr", "nBitsLowFi", "Number Bits", "bit", 1.f, 16.f, 16.f)
     , chorDelayLength("Width", "chorWidth", "Chorus Width", "s", .02f, .08f, .05f)
     , chorModRate("Rate", "chorRate", "Chorus Rate", "Hz", 0.f, 1.5f, 0.5f)
     , chorDryWet("Dry/Wet", "ChorAmount", "Chorus Dry/Wet", "", 0.f, 1.f, 0.f)
     , chorModDepth("Depth", "ChorDepth", "Chorus Depth", "ms", 1.f, 20.f, 15.f)
+    , chorActivation("Activation", "chorActivation", "Chorus Active", eOnOffToggle::eOff, onoffnames)
     , clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 25.f, 0.0f)
+    , clippingActivation("Activation", "clippingActivation", "Clipping Active", eOnOffToggle::eOff, onoffnames)
     , seqMode("SeqMode", "seqMode", "SeqMode", eSeqModes::eSeqStop, seqModeNames)
     , seqPlayMode("SeqPlayMode", "seqPlayMode", "SeqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
     , seqLastPlayedStep("Last Played Step", "lastPlayedStep", "Last Played Step", "", 0.0f, 7.0f, 0.0f)
@@ -237,6 +241,7 @@ SynthParams::Filter::Filter()
     , hpCutModSrc2("FILTER Hc ModSrc2", "FILTERHcModSrc2", "FILTER Hc ModSource 2", eModSource::eNone, modsourcenames)
     , resonanceModSrc1("FILTER Res ModSrc1", "FILTERResModSrc1", "FILTER Res ModSource 1", eModSource::eNone, modsourcenames)
     , resonanceModSrc2("FILTER Res ModSrc2", "FILTERResModSrc2", "FILTER Res ModSource 2", eModSource::eNone, modsourcenames)
+    , filterActivation("Filter Activation", "filterActivation", "LowFi Active", eOnOffToggle::eOff, onoffnames)
 {
 }
 

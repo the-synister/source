@@ -1633,9 +1633,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_video\native\juce_win32_QuickTimeMovieComponent.cpp">
       <Filter>Juce Modules\juce_video\native</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>Juce Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\juce_audio_basics.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
@@ -3165,56 +3162,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>Juce Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\delayReverse.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\knobstrip.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoGain.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSampleHold.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSineWave.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\lfoSquareWave.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\oscWaveForms.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqRandom.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqSequential.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\seqUpDown.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\tempoSync.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOff.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\toggleOn.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\Desktop\Assets\triplets.png">
-      <Filter>standalone\Gui\assets</Filter>
-    </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>
     </None>
