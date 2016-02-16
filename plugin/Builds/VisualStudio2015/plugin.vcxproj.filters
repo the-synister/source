@@ -364,9 +364,6 @@
     <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -380,12 +377,6 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp">
@@ -409,12 +400,6 @@
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -434,9 +419,6 @@
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
@@ -1749,9 +1731,6 @@
     <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1765,12 +1744,6 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h">
@@ -3245,7 +3218,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png">
+    <None Include="..\..\..\png\delayReverse.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\knobstrip.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoGain.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSampleHold.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSineWave.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSquareWave.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\oscWaveForms.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqRandom.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqSequential.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\tempoSync.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOff.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOn.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\triplets.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">

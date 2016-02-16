@@ -189,7 +189,7 @@ protected:
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
-        
+
         // couple combobox with saturn knob
         if (modDest != nullptr) {
             saturnSourceReg[box] = modDest;
@@ -206,7 +206,7 @@ protected:
         auto it = comboboxReg.find(comboboxThatWasChanged);
         if (it != comboboxReg.end()) {
             // we gotta subtract 2 from the item id since the combobox ids start at 1 and the sources enum starts at -1
-            params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
+            params.globalModMatrix.changeSource(it->second->prefix()+" "+comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
 

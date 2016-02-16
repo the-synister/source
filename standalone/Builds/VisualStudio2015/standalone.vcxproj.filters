@@ -343,12 +343,6 @@
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -1680,12 +1674,6 @@
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\panels\AmpPanel.h">
-      <Filter>standalone\Gui\panels</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1731,9 +1719,6 @@
     <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
@@ -1759,9 +1744,6 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
@@ -3155,7 +3137,43 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png">
+    <None Include="..\..\..\png\delayReverse.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoGain.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSampleHold.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSineWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\lfoSquareWave.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\oscWaveForms.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqRandom.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqSequential.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\tempoSync.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOff.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\toggleOn.png">
+      <Filter>standalone\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\triplets.png">
       <Filter>standalone\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">

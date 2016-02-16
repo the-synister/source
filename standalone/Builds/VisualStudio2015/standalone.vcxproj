@@ -134,8 +134,6 @@
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\LadderPanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\panels\AmpPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp"/>
@@ -1304,8 +1302,6 @@
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\LadderPanel.h"/>
-    <ClInclude Include="..\..\..\gui\panels\AmpPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h"/>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h"/>
@@ -1321,7 +1317,6 @@
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
     <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
@@ -1331,7 +1326,6 @@
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Param.h"/>
     <ClInclude Include="..\..\..\audio\inc\Voice.h"/>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h"/>
@@ -1797,7 +1791,19 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\gui\assets\sine-switch_noise.png"/>
+    <None Include="..\..\..\png\delayReverse.png"/>
+    <None Include="..\..\..\png\lfoGain.png"/>
+    <None Include="..\..\..\png\lfoSampleHold.png"/>
+    <None Include="..\..\..\png\lfoSineWave.png"/>
+    <None Include="..\..\..\png\lfoSquareWave.png"/>
+    <None Include="..\..\..\png\oscWaveForms.png"/>
+    <None Include="..\..\..\png\seqRandom.png"/>
+    <None Include="..\..\..\png\seqSequential.png"/>
+    <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\tempoSync.png"/>
+    <None Include="..\..\..\png\toggleOff.png"/>
+    <None Include="..\..\..\png\toggleOn.png"/>
+    <None Include="..\..\..\png\triplets.png"/>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_formats\juce_module_info"/>

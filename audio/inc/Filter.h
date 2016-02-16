@@ -6,7 +6,7 @@
 //! \brief multi-mode audio filter code
 class Filter {
 public:
-    Filter(SynthParams::Filter &f) 
+    Filter(SynthParams::Filter &f)
         : filter(f)
     {
     }
@@ -212,12 +212,12 @@ protected:
     float sampleRate;
 
     //! \name biquad internal state
-    ///@{ 
+    ///@{
     float lastSample, inputDelay1, inputDelay2, outputDelay1, outputDelay2, bandpassDelay1, bandpassDelay2;
     ///@}
 
     //! \name ladder internal state
-    ///@{ 
+    ///@{
     float ladderOut;
     float ladderInDelay;
     float lpOut1;
@@ -228,4 +228,3 @@ protected:
     float lpOut3Delay;
     ///@}
 };
-

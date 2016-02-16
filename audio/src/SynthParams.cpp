@@ -171,8 +171,6 @@ SynthParams::Osc::Osc()
     , gainModAmount2("OSC GainModAmount2", "OSCGainModAmount2", "OSC Gain ModAmount 2", "dB", 0.f, 96.f, 0.0f)
     , gainModSrc1("OSC GainModSrc1", "OSCGainModSrc1", "OSC Gain ModSource 1", eModSource::eNone, modsourcenames)
     , gainModSrc2("OSC GainModSrc2", "OSCGainModSrc2", "OSC Gain ModSource 2", eModSource::eNone, modsourcenames)
-    // do we really need this???
-    , volModAmount("Velocity Sense", "volModAmount1", "Key velocity level", "dB", 0.f, 96.f, 0.0f)
 {
 }
 
@@ -199,8 +197,8 @@ SynthParams::EnvVol::EnvVol()
 }
 
 SynthParams::Env::Env()
-    : EnvBase()
-    , sustain("sust.", "envSustain", "Env1 sustain", " ", 0.f, 1.f, 1.f)
+:  EnvBase()
+    , sustain("sust.", "envSustain", "sustain", "", 0.f, 1.f, 1.f)
 {
 }
 
