@@ -146,6 +146,20 @@ FxPanel::FxPanel (SynthParams &p)
 	registerSlider(cutoffSlider, &params.delayCutoff);
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
+    /**
+     
+     // Update sync param value
+     if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
+     params.delayTriplet.setStep(eOnOffToggle::eOn);
+     }
+     else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
+     
+
+     */
+    registerToggle(revTggl, &params.delayReverse);
+    registerToggle(filtTggl, &params.delayRecordFilter);
+    registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));
+    registerToggle(tripTggl, &params.delayTriplet);
     onOffSwitchChanged();
     //[/UserPreSize]
 
@@ -259,62 +273,27 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
+    handleToggle(buttonThatWasClicked);
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == syncToggle)
     {
         //[UserButtonCode_syncToggle] -- add your button handler code here..
-
-		// Update sync param value
-		if (params.delaySync.getStep() == eOnOffToggle::eOn) {
-			params.delaySync.setStep(eOnOffToggle::eOff);
-		}
-		else {
-			params.delaySync.setStep(eOnOffToggle::eOn);
-		}
-
-		// Update sliders using sync state
-		timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn));
-		divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-		dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-		tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-
-		if (divisor->isEnabled()) {
-			params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
-			params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
-		}
-		else {
-			timeSlider->setValue(params.delayTime.get());
-			params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
-		}
-
         //[/UserButtonCode_syncToggle]
     }
     else if (buttonThatWasClicked == tripTggl)
     {
         //[UserButtonCode_tripTggl] -- add your button handler code here..
-		if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
-			params.delayTriplet.setStep(eOnOffToggle::eOn);
-		}
-		else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-        //[/UserButtonCode_tripTggl]
+		//[/UserButtonCode_tripTggl]
     }
     else if (buttonThatWasClicked == filtTggl)
     {
         //[UserButtonCode_filtTggl] -- add your button handler code here..
-		if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {
-			params.delayRecordFilter.setStep(eOnOffToggle::eOn);
-		}
-		else { params.delayRecordFilter.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_filtTggl]
     }
     else if (buttonThatWasClicked == revTggl)
     {
         //[UserButtonCode_revTggl] -- add your button handler code here..
-		if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
-			params.delayReverse.setStep(eOnOffToggle::eOn);
-		}
-		else { params.delayReverse.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_revTggl]
     }
 
@@ -347,6 +326,23 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FxPanel::updateToggleState()
+{
+    timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn));
+    divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    
+    if (divisor->isEnabled()) {
+        params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
+        params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
+    }
+    else {
+        timeSlider->setValue(params.delayTime.get());
+        params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
+    }
+}
+
 void FxPanel::onOffSwitchChanged()
 {
 	// Switches that don't depend on syncToggle

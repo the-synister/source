@@ -48,7 +48,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	  void onOffSwitchChanged();
+    void onOffSwitchChanged();
+    void updateToggleState();
     void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncToggle, ScopedPointer<ToggleButton>& tripletToggle, ScopedPointer<ToggleButton>& reverseToggle);
     //[/UserMethods]
 

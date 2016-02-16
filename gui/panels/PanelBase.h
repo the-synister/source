@@ -166,6 +166,47 @@ protected:
             return false;
         }
     }
+    
+    void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
+    {
+        toggleReg[toggle] = p;
+        
+        if (hook) {
+            postUpdateHook[toggle] = hook;
+        }
+    }
+    
+    bool handleToggle(Button* buttonThatWasClicked)
+    {
+        auto it = toggleReg.find(buttonThatWasClicked);
+        
+        if (it != toggleReg.end()) {
+            it->second->setStep(it->first->getToggleState() ? eOnOffToggle::eOn : eOnOffToggle::eOff);
+            
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void updateDirtyToggles()
+    {
+        for (auto t2p : toggleReg) {
+            if (t2p.second->isUIDirty()) {
+                t2p.first->setToggleState(static_cast<bool>(t2p.second->getStep()), dontSendNotification);
+                
+                auto itHook = postUpdateHook.find(t2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
+        }
+    }
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
     void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
@@ -255,6 +296,7 @@ protected:
         updateDirtySliders();
         updateDirtyBoxes();
         updateDirtyDropdowns();
+        updateDirtyToggles();
     }
 
     /**
@@ -284,6 +326,7 @@ protected:
     }
 
     std::map<Slider*, Param*> sliderReg;
+    std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<ComboBox*, Param*> dropdownReg;
