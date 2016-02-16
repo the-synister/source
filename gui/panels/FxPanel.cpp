@@ -200,13 +200,13 @@ void FxPanel::resized()
     feedbackSlider->setBounds (173, 38, 64, 64);
     dryWetSlider->setBounds (17, 38, 64, 64);
     timeSlider->setBounds (95, 38, 64, 64);
-    syncToggle->setBounds (100, 111, 65, 30);
+    syncToggle->setBounds (100, 108, 65, 30);
     dividend->setBounds (17, 111, 64, 18);
     divisor->setBounds (17, 135, 64, 18);
     cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (176, 111, 65, 30);
-    filtTggl->setBounds (100, 144, 100, 22);
-    revTggl->setBounds (252, 111, 65, 30);
+    tripTggl->setBounds (176, 108, 65, 30);
+    filtTggl->setBounds (100, 141, 100, 30);
+    revTggl->setBounds (252, 108, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -374,7 +374,7 @@ BEGIN_JUCER_METADATA
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="100 111 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="100 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
@@ -392,15 +392,15 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="176 111 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="176 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="100 144 100 22" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="100 141 100 30" txtcol="ffffffff"
                 buttonText="Record Cutoff" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="252 111 65 30" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="252 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>

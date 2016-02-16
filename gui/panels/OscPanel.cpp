@@ -242,17 +242,16 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
 
     //[UserPreSize]
-    // NOTE: test wise
-    registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, false, 1);
-    registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, false, 2);
-    registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, false, 1);
-    registerSaturnSource(gain, gainModAmount2, &osc.gainModSrc2, &osc.gainModAmount2, false, 2);
-    registerSaturnSource(pan, panModAmount1, &osc.panModSrc1, &osc.panModAmount1, false, 1);
-    registerSaturnSource(pan, panModAmount2, &osc.panModSrc2, &osc.panModAmount2, false, 2);
-    registerSaturnSource(pulsewidth, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, false, 1);
-    registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, false, 2);
-    registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, false, 1);
-    registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, false, 2);
+    registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, 1);
+    registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, 2);
+    registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, 1);
+    registerSaturnSource(gain, gainModAmount2, &osc.gainModSrc2, &osc.gainModAmount2, 2);
+    registerSaturnSource(pan, panModAmount1, &osc.panModSrc1, &osc.panModAmount1, 1);
+    registerSaturnSource(pan, panModAmount2, &osc.panModSrc2, &osc.panModAmount2, 2);
+    registerSaturnSource(pulsewidth, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
+    registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
+    registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
+    registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
 
     registerSlider(gain, &osc.vol);
     registerSlider(pan, &osc.panDir);

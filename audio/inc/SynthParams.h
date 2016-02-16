@@ -16,7 +16,7 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
+};
 
 enum class eOscWaves : int {
     eOscSquare = 0,

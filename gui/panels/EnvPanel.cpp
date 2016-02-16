@@ -160,6 +160,13 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
+    registerSaturnSource(attackTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(attackTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+
     registerSlider(attackTime, &envVol.attack, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayTime, &envVol.decay, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(sustainLevel, &envVol.sustain, std::bind(&EnvPanel::updateCurve, this));
@@ -173,6 +180,8 @@ EnvPanel::EnvPanel (SynthParams &p)
 
     fillModsourceBox(envSpeedModSrc1);
     fillModsourceBox(envSpeedModSrc2);
+
+    // TODO: register all 3 ADR knobs to same combobox
     registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1);
     registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2);
     //[/UserPreSize]
