@@ -205,6 +205,8 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 	hp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	res1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	res1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	passtype->setColour(Slider::trackColourId, Colours::grey);
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -387,6 +389,15 @@ void FiltPanel::onOffSwitchChanged()
 	hp1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	res1ModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	res1ModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1)
+		? Colours::white
+		: Colours::grey;
+	passtype->setColour(Slider::trackColourId, col);
+	ladderLabel->setColour(Label::textColourId, col);
+	bandpassLabel->setColour(Label::textColourId, col);
+	highpassLabel->setColour(Label::textColourId, col);
+	lowpassLabel->setColour(Label::textColourId, col);
 
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
 }
