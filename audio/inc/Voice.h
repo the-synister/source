@@ -124,7 +124,7 @@ public:
             }
             for (size_t o = 0; o < osc.size(); ++o) {
                 // das macht ja hier nicht mehr so viel sinn, denn velocity ist hardcoded ...
-                osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].gainModAmount1.get());
+                //osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].gainModAmount1.get());
 
                 switch (params.osc[o].waveForm.getStep())
                 {
@@ -154,7 +154,7 @@ public:
     }
 
     void stopNote(float /*velocity*/, bool allowTailOff) override{
-        if (allowTailOff){
+        if (1){
 
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
@@ -240,6 +240,7 @@ public:
                     const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
                     const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
                     const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                    const float *gainMod = modDestBuffer.getReadPointer(DEST_OSC1_GAIN + o);
 
                     float currentSample = 0.0f;
 
@@ -284,8 +285,8 @@ public:
                     }
 
                     // gain + pan
-                    currentSample *= envToVolMod[s];
-                    const float currentAmp = params.osc[o].vol.get();
+                    //currentSample *= envToVolMod[s];
+                    const float currentAmp = params.osc[o].vol.get() * Param::fromDb(gainMod[s] * params.osc[o].gainModAmount1.getMax()) * envToVolMod[s];
 
                     // check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2){
