@@ -77,14 +77,14 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     /*Create ModMatrixRows here*/
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "lp1ModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "lp1ModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "filter 1 lpModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "filter 1 lpModSrcBox2");
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "osc 1 oscPitchModSrc1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "osc 1 oscPitchModSrc2");
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "envSpeedModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "vol env envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "vol env envSpeedModSrcBox2");
 
 #if 0
     //old Style, just for reference!!!
@@ -253,16 +253,16 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         lowFi.bitReduction(buffer);
     }
 
-    if (clippingFactor.get() > 0.f) {
+    if (clippingActivation.getStep() == eOnOffToggle::eOn) {
         clip.clipSignal(buffer, 0, buffer.getNumSamples());
     }
     // fx
     // delay
-    if (delayDryWet.get() > 0.f) {
+    if (delayActivation.getStep() == eOnOffToggle::eOn) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
     // chorus
-    if (chorDryWet.get() > 0.f) {
+    if (chorActivation.getStep() == eOnOffToggle::eOn) {
         chorus.render(buffer, 0); // adds the chorus to the outputBuffer
     }
 

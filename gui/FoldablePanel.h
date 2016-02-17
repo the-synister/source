@@ -42,6 +42,7 @@ public:
     void resized() override;
 
 private:
+    Viewport viewport;
     struct SectionComponent;
     struct PanelHolderComponent;
     ScopedPointer<PanelHolderComponent> panelHolderComponent;

@@ -105,10 +105,14 @@ protected:
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
 
-                // TODO: up to 3 dest per box
                 auto c2s = saturnSourceReg.find(c2p.first);
                 if (c2s != saturnSourceReg.end()) {
-                    c2s->second->repaint();
+                    for (int i = 0; i < 3; ++i ) {
+                        if (c2s->second[i] != nullptr) {
+                            c2s->second[i]->repaint();
+                        }
+                    }
+
                 }
 
                 auto itHook = postUpdateHook.find(c2p.first);
@@ -162,6 +166,47 @@ protected:
             return false;
         }
     }
+    
+    void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
+    {
+        toggleReg[toggle] = p;
+        
+        if (hook) {
+            postUpdateHook[toggle] = hook;
+        }
+    }
+    
+    bool handleToggle(Button* buttonThatWasClicked)
+    {
+        auto it = toggleReg.find(buttonThatWasClicked);
+        
+        if (it != toggleReg.end()) {
+            it->second->setStep(it->first->getToggleState() ? eOnOffToggle::eOn : eOnOffToggle::eOff);
+            
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void updateDirtyToggles()
+    {
+        for (auto t2p : toggleReg) {
+            if (t2p.second->isUIDirty()) {
+                t2p.first->setToggleState((t2p.second->getStep() == eOnOffToggle::eOn? true : false), dontSendNotification);
+                
+                auto itHook = postUpdateHook.find(t2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
+        }
+    }
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
     void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
@@ -188,12 +233,11 @@ protected:
         }
     }
 
-    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, std::array<MouseOverKnob*, 3> modDest = {nullptr}, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
 
-        // TODO: register up to 3 dest per box
         // couple combobox with saturn knob
-        if (modDest != nullptr) {
+        if (!modDest.empty()) {
             saturnSourceReg[box] = modDest;
         }
 
@@ -208,7 +252,7 @@ protected:
         auto it = comboboxReg.find(comboboxThatWasChanged);
         if (it != comboboxReg.end()) {
             // we gotta subtract 2 from the item id since the combobox ids start at 1 and the sources enum starts at -1
-            params.globalModMatrix.changeSource(comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
+            params.globalModMatrix.changeSource(it->second->prefix()+" "+comboboxThatWasChanged->getName(), static_cast<eModSource>(comboboxThatWasChanged->getSelectedId() - COMBO_OFS));
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
 
@@ -225,10 +269,13 @@ protected:
 
             auto temp = saturnSourceReg.find(comboboxThatWasChanged);
 
-            // TODO: up to 3 dest per box
             // update saturn
             if (temp != saturnSourceReg.end()) {
-                temp->second->repaint();
+                for (int i = 0; i < 3; ++i ) {
+                    if (temp->second[i] != nullptr) {
+                        temp->second[i]->repaint();
+                    }
+                }
             }
 
             return true;
@@ -249,6 +296,7 @@ protected:
         updateDirtySliders();
         updateDirtyBoxes();
         updateDirtyDropdowns();
+        updateDirtyToggles();
     }
 
     /**
@@ -278,10 +326,11 @@ protected:
     }
 
     std::map<Slider*, Param*> sliderReg;
+    std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<ComboBox*, Param*> dropdownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg; // TODO: register up to 3 dest per box for env ADR knobs
+    std::map<ComboBox*, std::array<MouseOverKnob*, 3>> saturnSourceReg; // there are 3, because of the ADR.
     SynthParams &params;
 };

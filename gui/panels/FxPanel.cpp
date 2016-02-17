@@ -127,19 +127,40 @@ FxPanel::FxPanel (SynthParams &p)
     revTggl->addListener (this);
     revTggl->setColour (ToggleButton::textColourId, Colours::white);
 
+    addAndMakeVisible (onOffSwitch = new Slider ("delay switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
-    registerSlider(cutoffSlider, &params.delayCutoff);
+	registerSlider(cutoffSlider, &params.delayCutoff);
+	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
+    /**
+     
+     // Update sync param value
+     if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
+     params.delayTriplet.setStep(eOnOffToggle::eOn);
+     }
+     else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
+     
 
-    dividend->setText(String("1"));
-    divisor->setText(String("4"));
-    dividend->setEnabled(false);
-    divisor->setEnabled(false);
-    tripTggl->setEnabled(false);
+     */
+    registerToggle(revTggl, &params.delayReverse);
+    registerToggle(filtTggl, &params.delayRecordFilter);
+    registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));
+    registerToggle(tripTggl, &params.delayTriplet);
+    onOffSwitchChanged();
     //[/UserPreSize]
 
     setSize (330, 200);
@@ -148,11 +169,16 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor] You can add your own custom stuff here..
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
-    tripletPic.duplicateIfShared();
-    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
-    tripletPicOff.duplicateIfShared();
-    tripletPicOff.multiplyAllAlphas(0.5f);
     reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPic.duplicateIfShared();
+    tripletPic.duplicateIfShared();
+    reversePic.duplicateIfShared();
+    syncPicOff = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    reversePicOff = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPicOff.multiplyAllAlphas(0.5f);
+    tripletPicOff.multiplyAllAlphas(0.5f);
+    reversePicOff.multiplyAllAlphas(0.5f);
     //[/Constructor]
 }
 
@@ -171,6 +197,7 @@ FxPanel::~FxPanel()
     tripTggl = nullptr;
     filtTggl = nullptr;
     revTggl = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -207,6 +234,7 @@ void FxPanel::resized()
     tripTggl->setBounds (176, 108, 65, 30);
     filtTggl->setBounds (100, 141, 100, 30);
     revTggl->setBounds (252, 108, 65, 30);
+    onOffSwitch->setBounds (17, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -237,6 +265,11 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
         //[/UserSliderCode_cutoffSlider]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -245,54 +278,27 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
+    handleToggle(buttonThatWasClicked);
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == syncToggle)
     {
         //[UserButtonCode_syncToggle] -- add your button handler code here..
-        timeSlider->setEnabled(!timeSlider->isEnabled());
-        dividend->setEnabled(!dividend->isEnabled());
-        divisor->setEnabled(!divisor->isEnabled());
-        tripTggl->setEnabled(!tripTggl->isEnabled());
-
-        if (divisor->isEnabled()) {
-            params.delaySync.setStep(eOnOffToggle::eOn);
-            params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
-            params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
-        }
-        else {
-            params.delaySync.setStep(eOnOffToggle::eOff);
-            timeSlider->setValue(params.delayTime.get());
-            params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
-        }
-
         //[/UserButtonCode_syncToggle]
     }
     else if (buttonThatWasClicked == tripTggl)
     {
         //[UserButtonCode_tripTggl] -- add your button handler code here..
-        if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
-            params.delayTriplet.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-        //[/UserButtonCode_tripTggl]
+		//[/UserButtonCode_tripTggl]
     }
     else if (buttonThatWasClicked == filtTggl)
     {
         //[UserButtonCode_filtTggl] -- add your button handler code here..
-        if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {
-            params.delayRecordFilter.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayRecordFilter.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_filtTggl]
     }
     else if (buttonThatWasClicked == revTggl)
     {
         //[UserButtonCode_revTggl] -- add your button handler code here..
-        if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
-            params.delayReverse.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayReverse.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_revTggl]
     }
 
@@ -308,13 +314,13 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == dividend)
     {
         //[UserComboBoxCode_dividend] -- add your combo box handling code here..
-        params.delayDividend.set(dividend->getText().getFloatValue());
+		params.delayDividend.set(dividend->getText().getFloatValue());
         //[/UserComboBoxCode_dividend]
     }
     else if (comboBoxThatHasChanged == divisor)
     {
         //[UserComboBoxCode_divisor] -- add your combo box handling code here..
-        params.delayDivisor.set(divisor->getText().getFloatValue());
+		params.delayDivisor.set(divisor->getText().getFloatValue());
         //[/UserComboBoxCode_divisor]
     }
 
@@ -325,19 +331,58 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FxPanel::updateToggleState()
+{
+    timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn));
+    divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    
+    if (divisor->isEnabled()) {
+        params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
+        params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
+    }
+    else {
+        timeSlider->setValue(params.delayTime.get());
+        params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
+    }
+}
+
+void FxPanel::onOffSwitchChanged()
+{
+	// Switches that don't depend on syncToggle
+	feedbackSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	dryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	syncToggle->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	revTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    filtTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	// If delay is on, these sliders depend on syncToggle
+	if (static_cast<int>(onOffSwitch->getValue()) == 1)
+	{
+		timeSlider->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOff);
+		divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+		dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+		tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+	}
+	// If delay is off, all the sliders are disabled
+	else
+	{
+		timeSlider->setEnabled(0);
+		divisor->setEnabled(0);
+		dividend->setEnabled(0);
+		tripTggl->setEnabled(0);
+	}
+
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
+
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
 {
-    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    if (tripletT->isEnabled())
-    {
-        g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
-
-    }
-    else
-    {
-        g.drawImageWithin(tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
-    }
-    g.drawImageWithin(reversePic, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
+    g.drawImageWithin(syncT->isEnabled()? syncPic : syncPicOff, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(reverseT->isEnabled()? reversePic : reversePicOff, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
 }
 //[/MiscUserCode]
 
@@ -403,6 +448,12 @@ BEGIN_JUCER_METADATA
                 explicitFocusOrder="0" pos="252 108 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
+  <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="17 2 40 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

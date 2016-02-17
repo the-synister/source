@@ -181,9 +181,8 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     fillModsourceBox(envSpeedModSrc1);
     fillModsourceBox(envSpeedModSrc2);
 
-    // TODO: register all 3 ADR knobs to same combobox
-    registerCombobox(envSpeedModSrc1, &env.speedModSrc1);
-    registerCombobox(envSpeedModSrc2, &env.speedModSrc2);
+    registerCombobox(envSpeedModSrc1, &env.speedModSrc1, {attackTime1, decayTime1, releaseTime1});
+    registerCombobox(envSpeedModSrc2, &env.speedModSrc2, {attackTime1, decayTime1, releaseTime1});
     //[/UserPreSize]
 
     setSize (267, 252);

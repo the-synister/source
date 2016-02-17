@@ -155,6 +155,8 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             section->setBounds (0, y, width, section->getSectionHeight());
             y = section->getBottom();
         }
+        
+        setSize(width, y);
 
         repaint();
     }
@@ -177,7 +179,11 @@ struct FoldablePanel::PanelHolderComponent  : public Component
 
 FoldablePanel::FoldablePanel (const String& name)  : Component (name)
 {
-    addAndMakeVisible (panelHolderComponent = new PanelHolderComponent());
+    addAndMakeVisible (viewport);
+    viewport.setViewedComponent (panelHolderComponent = new PanelHolderComponent());
+    viewport.setScrollBarsShown(true, false, true, false);
+    viewport.setScrollBarThickness(10);
+    viewport.setFocusContainer(true);
 }
 
 FoldablePanel::~FoldablePanel()
@@ -191,10 +197,10 @@ void FoldablePanel::paint (Graphics& /*g*/)
 
 void FoldablePanel::resized()
 {
-    Rectangle<int> content (getLocalBounds());
+    viewport.setBounds (getLocalBounds());
 
-    panelHolderComponent->setBounds (content);
-    panelHolderComponent->updateLayout (getWidth());
+    panelHolderComponent->setBounds (viewport.getLocalBounds());
+    panelHolderComponent->updateLayout (viewport.getWidth());
 }
 
 bool FoldablePanel::isEmpty() const

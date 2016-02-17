@@ -48,6 +48,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void onOffSwitchChanged();
+    void updateToggleState();
     void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncToggle, ScopedPointer<ToggleButton>& tripletToggle, ScopedPointer<ToggleButton>& reverseToggle);
     //[/UserMethods]
 
@@ -61,7 +63,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image syncPic, tripletPic, tripletPicOff, reversePic;
+    Image syncPic, syncPicOff, tripletPic, tripletPicOff, reversePic, reversePicOff;
 
     ScopedPointer<FxDelay> delay;
     //[/UserVariables]
@@ -77,6 +79,7 @@ private:
     ScopedPointer<ToggleButton> tripTggl;
     ScopedPointer<ToggleButton> filtTggl;
     ScopedPointer<ToggleButton> revTggl;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================
