@@ -90,7 +90,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setDefaultValue(params.freq.getDefault());
     //[/UserPreSize]
 
-    setSize (800, 900);
+    setSize (800, 700);
 
 
     //[Constructor] You can add your own custom stuff here..
