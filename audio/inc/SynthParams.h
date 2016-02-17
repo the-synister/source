@@ -39,13 +39,6 @@ enum class eOnOffToggle : int {
     nSteps = 2
 };
 
-enum class eSeqModes : int {
-    eSeqStop = 0,
-    eSeqPlay = 1,
-    eSeqSyncHost = 2,
-    nSteps = 3
-};
-
 enum class eSeqPlayModes : int {
     eSequential = 0,
     eUpDown = 1,
@@ -283,16 +276,18 @@ public:
     Param chorModDepth;
     ParamStepped<eOnOffToggle> chorActivation; //!< Activation of the chorus effect
 
-    ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
-    ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
-    Param seqLastPlayedStep;                 //!< index of last played sequencer step in [0..7]
-    Param seqNumSteps;                       //!< number of steps in [1..8] steps
-    Param seqStepSpeed;                      //!< step speed in [0.0625..4] quarter notes
-    Param seqStepLength;                     //!< step length in [0.0625..4] quarter notes
-    ParamStepped<eOnOffToggle> seqTriplets;  //!< activate triplet tempo? 0 = no, 1 = active
-    Param seqRandomMin;                      //!< randomMin value as int in [0..127]
-    Param seqRandomMax;                      //!< randomMax value as int in [0..127]
-    Param seqStep0;                          //!< midi note as int in [0..127]
+    Param seqPlaceHolder;                       //!< placeholder for register slider with exactly two thumb slider, value as int in [0..127]
+    ParamStepped<eOnOffToggle> seqPlayNoHost;   //!< play without host? 0 = no, 1 = yes
+    ParamStepped<eOnOffToggle> seqPlaySyncHost; //!< play synced with host? 0 = no, 1 = yes
+    ParamStepped<eSeqPlayModes> seqPlayMode;    //!< 0 = sequential, 1 = upDown, 2 = random
+    Param seqLastPlayedStep;                    //!< index of last played sequencer step in [0..7]
+    Param seqNumSteps;                          //!< number of steps in [1..8] steps
+    Param seqStepSpeed;                         //!< step speed in 1/[1 .. 64]
+    Param seqStepLength;                        //!< step length in 1/[1 .. 64]
+    ParamStepped<eOnOffToggle> seqTriplets;     //!< activate triplet tempo? 0 = no, 1 = active
+    Param seqRandomMin;                         //!< randomMin value as int in [0..127]
+    Param seqRandomMax;                         //!< randomMax value as int in [0..127]
+    Param seqStep0;                             //!< midi note as int in [0..127]
     Param seqStep1;
     Param seqStep2;
     Param seqStep3;
@@ -300,7 +295,7 @@ public:
     Param seqStep5;
     Param seqStep6;
     Param seqStep7;
-    ParamStepped<eOnOffToggle> seqStepActive0;    //!< seqStep should play? 0 = mute, 1 = active
+    ParamStepped<eOnOffToggle> seqStepActive0;  //!< seqStep should play? 0 = mute, 1 = active
     ParamStepped<eOnOffToggle> seqStepActive1;
     ParamStepped<eOnOffToggle> seqStepActive2;
     ParamStepped<eOnOffToggle> seqStepActive3;

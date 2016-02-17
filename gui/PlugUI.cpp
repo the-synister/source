@@ -97,9 +97,6 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-
-    // NOTE: preferred sectionHeight should be set (introjucer's panelHeight - 22) due to section header
-    // see env panel. introjucer height is set to 252
     foldableComponent->addSection (TRANS("OSC"), new OscPanel (params, 0), SynthParams::oscColour, 250, true, 0);
     foldableComponent->addPanel(0, new OscPanel(params, 1));
     foldableComponent->addPanel(0, new OscPanel(params, 2));
@@ -115,7 +112,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 323, false, 5);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 300, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();

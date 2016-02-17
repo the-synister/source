@@ -290,7 +290,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
         if (style == Slider::TwoValueHorizontal)
         {
             const float cornerSize = 10.0f;
-            const float r = (float)(jmin(20, width / 2, height / 2) - cornerSize);
+            const float r = (float)(jmin(20, width, height) - cornerSize);
             const float yOffset = y + height * 0.5f - r * 0.5f;
             centreY = y + height / 2.0f;
 
@@ -418,8 +418,11 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
     g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
 
     // draw outline
-    g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
-    g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    if (b.findColour(TextButton::ColourIds::buttonColourId) != b.findColour(TextButton::ColourIds::buttonOnColourId))
+    {
+        g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
+        g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    }
 }
 
 void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &b, bool isMouseOverButton, bool isButtonDown)
