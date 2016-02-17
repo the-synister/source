@@ -170,12 +170,12 @@ FxPanel::FxPanel (SynthParams &p)
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
-    syncPic.duplicateIfShared();
-    tripletPic.duplicateIfShared();
-    reversePic.duplicateIfShared();
     syncPicOff = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     reversePicOff = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPicOff.duplicateIfShared();
+    tripletPicOff.duplicateIfShared();
+    reversePicOff.duplicateIfShared();
     syncPicOff.multiplyAllAlphas(0.5f);
     tripletPicOff.multiplyAllAlphas(0.5f);
     reversePicOff.multiplyAllAlphas(0.5f);
