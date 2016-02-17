@@ -3221,9 +3221,6 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
-    <None Include="..\..\..\png\knobstrip.png">
-      <Filter>plugin\Gui\assets</Filter>
-    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
