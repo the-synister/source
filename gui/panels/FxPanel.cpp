@@ -169,11 +169,16 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor] You can add your own custom stuff here..
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
-    tripletPic.duplicateIfShared();
-    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
-    tripletPicOff.duplicateIfShared();
-    tripletPicOff.multiplyAllAlphas(0.5f);
     reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPic.duplicateIfShared();
+    tripletPic.duplicateIfShared();
+    reversePic.duplicateIfShared();
+    syncPicOff = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    reversePicOff = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPicOff.multiplyAllAlphas(0.5f);
+    tripletPicOff.multiplyAllAlphas(0.5f);
+    reversePicOff.multiplyAllAlphas(0.5f);
     //[/Constructor]
 }
 
@@ -351,7 +356,7 @@ void FxPanel::onOffSwitchChanged()
 	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	syncToggle->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	revTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	filtTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    filtTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 
 	// If delay is on, these sliders depend on syncToggle
 	if (static_cast<int>(onOffSwitch->getValue()) == 1)
@@ -375,17 +380,9 @@ void FxPanel::onOffSwitchChanged()
 
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
 {
-    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    //if (tripletT->isEnabled())
-    //{
-        g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
-
-    //}
-    //else
-    //{
-    //    g.drawImageWithin(tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
-    //}
-    g.drawImageWithin(reversePic, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
+    g.drawImageWithin(syncT->isEnabled()? syncPic : syncPicOff, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(reverseT->isEnabled()? reversePic : reversePicOff, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
 }
 //[/MiscUserCode]
 

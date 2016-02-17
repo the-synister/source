@@ -107,7 +107,7 @@ protected:
 
                 auto c2s = saturnSourceReg.find(c2p.first);
                 if (c2s != saturnSourceReg.end()) {
-                    for (int i = 0; i < c2s->second.size(); ++i ) {
+                    for (int i = 0; i < 3; ++i ) {
                         if (c2s->second[i] != nullptr) {
                             c2s->second[i]->repaint();
                         }
@@ -198,7 +198,7 @@ protected:
     {
         for (auto t2p : toggleReg) {
             if (t2p.second->isUIDirty()) {
-                t2p.first->setToggleState(static_cast<bool>(t2p.second->getStep()), dontSendNotification);
+                t2p.first->setToggleState((t2p.second->getStep() == eOnOffToggle::eOn? true : false), dontSendNotification);
                 
                 auto itHook = postUpdateHook.find(t2p.first);
                 if (itHook != postUpdateHook.end()) {
@@ -271,7 +271,7 @@ protected:
 
             // update saturn
             if (temp != saturnSourceReg.end()) {
-                for (int i = 0; i < temp->second.size(); ++i ) {
+                for (int i = 0; i < 3; ++i ) {
                     if (temp->second[i] != nullptr) {
                         temp->second[i]->repaint();
                     }

@@ -124,7 +124,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
                 base = intensity < 0.0f ? 0.5f : 2.0f;
                 afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
                 break;
-            case MouseOverKnob::modAmountConversion::percentage:
+            default:
                 afterModVal1 = jmax(min, jmin(val + intensity * max, max));
                 break;
         }
@@ -144,7 +144,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
             afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
             afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
             break;
-        case MouseOverKnob::modAmountConversion::percentage:
+        default:
             afterModVal1 = jmax(min, jmin(val + modAmount->get() * max, max));
             afterModVal2 = jmax(min, jmin(val - modAmount->get() * max, max));
             break;
