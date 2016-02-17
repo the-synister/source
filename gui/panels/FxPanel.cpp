@@ -147,13 +147,13 @@ FxPanel::FxPanel (SynthParams &p)
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
     /**
-     
+
      // Update sync param value
      if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
      params.delayTriplet.setStep(eOnOffToggle::eOn);
      }
      else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-     
+
 
      */
     registerToggle(revTggl, &params.delayReverse);
@@ -289,7 +289,7 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == tripTggl)
     {
         //[UserButtonCode_tripTggl] -- add your button handler code here..
-		//[/UserButtonCode_tripTggl]
+        //[/UserButtonCode_tripTggl]
     }
     else if (buttonThatWasClicked == filtTggl)
     {
@@ -333,11 +333,11 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void FxPanel::updateToggleState()
 {
-    timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn));
+    timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn) && (static_cast<int>(onOffSwitch->getValue()) == 1));
+    tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
     dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-    tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-    
+
     if (divisor->isEnabled()) {
         params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
         params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack

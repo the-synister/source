@@ -240,7 +240,8 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
     const float sliderRadius = (float)(jmin(20, width, height) - 2);
-    g.setColour(s.findColour(Slider::trackColourId));
+    Colour baseColour(s.findColour(Slider::trackColourId));
+    g.setColour(s.isEnabled()? baseColour : baseColour.withAlpha(0.5f));
     Path indent;
 
     // set bounds and  draw slider background
@@ -277,7 +278,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
     // draw thumb at curretn position
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
     {
-        g.setColour(s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour);
+        g.setColour(s.isEnabled()? (s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         centreX = style == Slider::LinearVertical ? (x + width / 2.0f) : sliderPos;
         centreY = style == Slider::LinearVertical ? sliderPos : (y + height / 2.0f);
 

@@ -184,7 +184,7 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
 
 void MouseOverKnob::mouseDoubleClick(const MouseEvent &e)
 {
-    if (e.eventComponent == this)
+    if (e.eventComponent == this && this->isEnabled())
     {
         showTextBox();
     }
