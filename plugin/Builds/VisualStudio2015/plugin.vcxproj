@@ -1822,7 +1822,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\delayReverse.png"/>
-    <None Include="..\..\..\png\knobstrip.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
     <None Include="..\..\..\png\lfoSampleHold.png"/>
     <None Include="..\..\..\png\lfoSineWave.png"/>
