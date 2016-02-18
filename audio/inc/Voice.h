@@ -28,8 +28,8 @@ public:
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , envToVolBuffer(1, blockSize)
-    , env1Buffer(1, blockSize)
     , env2Buffer(1, blockSize)
+    , env3Buffer(1, blockSize)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         for (size_t l = 0; l < lfo.size(); ++l) {
@@ -37,8 +37,9 @@ public:
             lfo[l].totSamples = 0;
         }
         // set all to velocity so that the modulation matrix does not crash
-        std::fill(modSources.begin(), modSources.end(), &currentVelocity);
-        //std::fill(modSources.begin(), modSources.end(), nullptr);
+        //std::fill(modSources.begin(), modSources.end(), &currentVelocity);
+        zeroMod = 0.f;
+        std::fill(modSources.begin(), modSources.end(), &zeroMod);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
@@ -56,8 +57,8 @@ public:
         modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
         modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
         modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
-        modSources[eModSource::eEnv2] = env1Buffer.getWritePointer(0);
-        modSources[eModSource::eEnv3] = env2Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv2] = env2Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv3] = env3Buffer.getWritePointer(0);
 
         //set connection between destination and matrix here
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -154,7 +155,7 @@ public:
     }
 
     void stopNote(float /*velocity*/, bool allowTailOff) override{
-        if (1){
+        if (allowTailOff){
 
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
@@ -345,7 +346,7 @@ protected:
             // Lfo Gain
             lfo[l].lfoGain = params.lfo[l].gainModSrc.get() == eModSource::eNone
             ? 1.f
-                : *(modSources[static_cast<int>(params.lfo[l].gainModSrc.get()) - 1]);
+                : *(modSources[static_cast<int>(params.lfo[l].gainModSrc.get())]);
         }
 
         //clear the buffers
@@ -354,8 +355,8 @@ protected:
         lfoBuffers[1].clear();
         lfoBuffers[2].clear();
         envToVolBuffer.clear();
-        env1Buffer.clear();
         env2Buffer.clear();
+        env3Buffer.clear();
 
         //set the write point in the buffers
         for (size_t u = 0; u < MAX_DESTINATIONS; ++u) {
@@ -366,8 +367,8 @@ protected:
         modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
         modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
         modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
-        modSources[eModSource::eEnv2] = env1Buffer.getWritePointer(0);
-        modSources[eModSource::eEnv3] = env2Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv2] = env2Buffer.getWritePointer(0);
+        modSources[eModSource::eEnv3] = env3Buffer.getWritePointer(0);
 
         //for each sample
         for (int s = 0; s < numSamples; ++s) {
@@ -402,8 +403,8 @@ protected:
             }
             // Calculate the Envelope coefficients and fill the buffers
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-            env1Buffer.setSample(0, s, env1.calcEnvCoeff());
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env1.calcEnvCoeff());
+            env3Buffer.setSample(0, s, env2.calcEnvCoeff());
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
@@ -467,14 +468,15 @@ private:
 
     //Mod matrix
     ModulationMatrix& modMatrix;
+    float zeroMod;
 
     // Buffers
     AudioSampleBuffer modDestBuffer;
     AudioSampleBuffer filterModBuffer;
     std::array<AudioSampleBuffer, 3> lfoBuffers; //todo: hardcoded size
     AudioSampleBuffer envToVolBuffer;
-    AudioSampleBuffer env1Buffer;
     AudioSampleBuffer env2Buffer;
+    AudioSampleBuffer env3Buffer;
     // Envelopes
     Envelope envToVolume;
     Envelope env1;
