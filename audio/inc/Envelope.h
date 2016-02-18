@@ -24,8 +24,8 @@
 
 class Envelope{
     public:
-    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release,
-        Param &_attackShape, Param &_decayShape, Param &_releaseShape, Param &_keyVelToEnv)
+    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release, Param &_attackShape, 
+        Param &_decayShape, Param &_releaseShape)
         :releaseCounter(-1)
         ,attackDecayCounter(0)
         ,sampleRate(_sampleRate)
@@ -36,7 +36,6 @@ class Envelope{
         ,attackShape(_attackShape)
         ,decayShape(_decayShape)
         ,releaseShape(_releaseShape)
-        ,keyVelToEnv(_keyVelToEnv)
     {
     }
 
@@ -52,13 +51,12 @@ class Envelope{
 
 
     //! calculation of the volume envelope coefficients (with shape control)
-    const float calcEnvCoeff();
-
-    //! sets the passed buffer for the modulation depending on calculated coefficients
-    void render(AudioSampleBuffer &buffer, int numSamples);
+    const float calcEnvCoeff(float modValue);
 
     private:
-
+    static inline int calcModRange(float modValue, int sInput, float tRange) {
+        return static_cast<int>(sInput * std::pow(2.f, modValue * tRange));
+    }
     //References for required Params for the envelope
     Param &attack;          //!< attack reference
     Param &decay;           //!< decay reference
@@ -67,8 +65,6 @@ class Envelope{
     Param &attackShape;     //!< attack shape reference
     Param &decayShape;      //!< decay shape reference
     Param &releaseShape;    //!< release shape reference
-
-    Param &keyVelToEnv;     //!< key velocity to envelope reference
 
     float sampleRate;       //!< sample rate
     float currentVelocity;  //!< current Veloctiy

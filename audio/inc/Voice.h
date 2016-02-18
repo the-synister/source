@@ -20,11 +20,11 @@ public:
     : params(p)
     , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
     , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
-        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
+        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape)
     , env2(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
-        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
+        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape)
     , env3(getSampleRate(), params.env[1].attack, params.env[1].decay, params.env[1].sustain, params.env[1].release,
-        params.env[1].attackShape, params.env[1].decayShape, params.env[1].releaseShape, params.env[1].keyVelToEnv)
+        params.env[1].attackShape, params.env[1].decayShape, params.env[1].releaseShape)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , envToVolBuffer(1, blockSize)
@@ -234,8 +234,6 @@ public:
 
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
 
-
-
             // oscillators
             for (size_t o = 0; o < params.osc.size(); ++o) {
 
@@ -406,9 +404,9 @@ protected:
                 }
             }
             // Calculate the Envelope coefficients and fill the buffers
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
-            env3Buffer.setSample(0, s, env3.calcEnvCoeff());
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_VOL_ENV_SPEED))));
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_ENV2_SPEED))));
+            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_ENV3_SPEED))));
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());

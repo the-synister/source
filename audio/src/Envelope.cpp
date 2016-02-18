@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    Envelope.cpp
-    Created: 11 Dec 2015 3:14:14pm
-    Author:  Nhat Duc Tran and Anton Schmied
+Envelope.cpp
+Created: 11 Dec 2015 3:14:14pm
+Author:  Nhat Duc Tran and Anton Schmied
 
-  ==============================================================================
+==============================================================================
 */
 
 #include "Envelope.h"
@@ -22,15 +22,20 @@ void Envelope::startEnvelope(float currVel)
     currentVelocity = currVel;
 }
 
-const float Envelope::calcEnvCoeff()
+const float Envelope::calcEnvCoeff(float modValue)
 {
     float envCoeff;
     float sustainLevel = sustain.get();
 
     // number of samples for all phases
-    int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-    int decaySamples = static_cast<int>(sampleRate * decay.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
+    int attackSamples = static_cast<int>(sampleRate * attack.get());
+    attackSamples = calcModRange(modValue, attackSamples, attack.getMax());
+
+    int decaySamples = static_cast<int>(sampleRate * decay.get());
+    decaySamples = calcModRange(modValue, decaySamples, decay.getMax());
+
     int releaseSamples = static_cast<int>(sampleRate * release.get());
+    releaseSamples = calcModRange(modValue, releaseSamples, release.getMax());
 
     // get growth/shrink rate from knobs
     float attackGrowthRate = attackShape.get();
@@ -112,14 +117,4 @@ float Envelope::interpolateLog(int c, int t, float k, bool slow)
     {
         return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
     }
-}
-
-
-void Envelope::render(AudioSampleBuffer &buffer, int numSamples) {
-
-    for (int s = 0; s < numSamples; ++s)
-    {
-        buffer.setSample(0, s, calcEnvCoeff());
-    }
-
 }

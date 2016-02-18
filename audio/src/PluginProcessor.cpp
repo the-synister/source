@@ -75,9 +75,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-    //TODO: fix prefix!
-    for (size_t f = 0; f < filter.size(); ++f) {
-        
+    for (size_t f = 0; f < filter.size(); ++f) {      
         String boxName = String::formatted("filter %u", f + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");

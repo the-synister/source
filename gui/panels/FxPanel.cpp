@@ -350,7 +350,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="95 111 64 24" txtcol="ffffffff"
                 buttonText="Sync" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -368,7 +368,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="173 111 64 24" txtcol="ffffffff"
                 buttonText="Triplet" connectedEdges="0" needsCallback="1" radioGroupId="0"
