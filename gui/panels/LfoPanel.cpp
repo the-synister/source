@@ -268,13 +268,6 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
-void LfoPanel::updateLfoSyncToggle()
-{
-	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
-	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-}
-
 void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
@@ -348,6 +341,14 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
     g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
 }
+
+void LfoPanel::updateLfoSyncToggle()
+{
+	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
+	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+}
+
 //[/MiscUserCode]
 
 
