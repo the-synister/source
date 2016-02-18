@@ -157,6 +157,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->setEnabled(false);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
+	registerToggle(triplets, &lfo.lfoTriplets);
 	
 
     //[/UserPreSize]
