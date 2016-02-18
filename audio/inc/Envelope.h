@@ -24,18 +24,12 @@
 
 class Envelope{
     public:
-    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release, Param &_attackShape, 
-        Param &_decayShape, Param &_releaseShape)
-        :releaseCounter(-1)
-        ,attackDecayCounter(0)
-        ,sampleRate(_sampleRate)
-        ,attack(_attack)
-        ,decay(_decay)
-        ,sustain(_sustain)
-        ,release(_release)
-        ,attackShape(_attackShape)
-        ,decayShape(_decayShape)
-        ,releaseShape(_releaseShape)
+    Envelope(SynthParams::EnvBase &_env, Param &_sustain, double _sampleRate)
+        : releaseCounter(-1)
+        , attackDecayCounter(0)
+        , sampleRate(_sampleRate)
+        , env(_env)
+        , sustain(_sustain)
     {
     }
 
@@ -43,7 +37,7 @@ class Envelope{
     ~Envelope(){}
 
     //! resets the sample counters and sets the current velocity for each new note
-    void startEnvelope(float currVel);
+    void startEnvelope();
 
     //! get and reset the release counters for the volume envelope
     int getReleaseCounter() const { return releaseCounter; }
@@ -57,18 +51,9 @@ class Envelope{
     static inline int calcModRange(float modValue, int sInput, float tRange) {
         return static_cast<int>(sInput * std::pow(2.f, modValue * tRange));
     }
-    //References for required Params for the envelope
-    Param &attack;          //!< attack reference
-    Param &decay;           //!< decay reference
-    Param &sustain;         //!< sustain reference
-    Param &release;         //!< release reference
-    Param &attackShape;     //!< attack shape reference
-    Param &decayShape;      //!< decay shape reference
-    Param &releaseShape;    //!< release shape reference
-
-    float sampleRate;       //!< sample rate
-    float currentVelocity;  //!< current Veloctiy
-
+    SynthParams::EnvBase& env;   //!< local params
+    Param& sustain;         
+    double sampleRate;       //!< sample rate
     float valueAtRelease;   //!< amplitude value once release phase starts
     int attackDecayCounter; //!< sample counter during the attack and decay phase
     int releaseCounter;     //!< sample counter during the release phase

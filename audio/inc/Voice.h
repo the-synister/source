@@ -19,12 +19,9 @@ public:
     Voice(SynthParams &p, int blockSize)
     : params(p)
     , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
-    , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
-        params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape)
-    , env2(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
-        params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape)
-    , env3(getSampleRate(), params.env[1].attack, params.env[1].decay, params.env[1].sustain, params.env[1].release,
-        params.env[1].attackShape, params.env[1].decayShape, params.env[1].releaseShape)
+    , envToVolume(p.envVol[0], p.envVol[0].sustain, getSampleRate())
+    , env2(p.env[0], p.env[0].sustain, getSampleRate())
+    , env3(p.env[1], p.env[1].sustain, getSampleRate())
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , envToVolBuffer(1, blockSize)
@@ -80,9 +77,9 @@ public:
         }
 
         // reset attackDecayCounter
-        envToVolume.startEnvelope(currentVelocity);
-        env2.startEnvelope(currentVelocity);
-        env3.startEnvelope(currentVelocity);
+        envToVolume.startEnvelope();
+        env2.startEnvelope();
+        env3.startEnvelope();
 
         // Initialization of midi values
         channelAfterTouch = 0.f;
@@ -403,10 +400,19 @@ protected:
                     break;
                 }
             }
+
             // Calculate the Envelope coefficients and fill the buffers
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_VOL_ENV_SPEED))));
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_ENV2_SPEED))));
-            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modDestBuffer.getReadPointer(DEST_ENV3_SPEED))));
+            float speedMod1 = params.envVol[0].speedModSrc1.get() == eModSource::eNone
+                ? 1.f
+                : 1.f - *(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]);
+            float speedMod2 = params.envVol[0].speedModSrc1.get() == eModSource::eNone
+                ? 1.f
+                : 1.f - *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]);
+
+
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(1.f - speedMod1 * speedMod2));
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())])));
+            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())])));
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());

@@ -15,11 +15,10 @@ void Envelope::resetReleaseCounter()
     releaseCounter = 0;
 }
 
-void Envelope::startEnvelope(float currVel)
+void Envelope::startEnvelope()
 {
     releaseCounter = -1;
     attackDecayCounter = 0;
-    currentVelocity = currVel;
 }
 
 const float Envelope::calcEnvCoeff(float modValue)
@@ -28,19 +27,19 @@ const float Envelope::calcEnvCoeff(float modValue)
     float sustainLevel = sustain.get();
 
     // number of samples for all phases
-    int attackSamples = static_cast<int>(sampleRate * attack.get());
-    attackSamples = calcModRange(modValue, attackSamples, attack.getMax());
+    int attackSamples = static_cast<int>(sampleRate * env.attack.get());
+    attackSamples = calcModRange(modValue, attackSamples, env.attack.getMax());
 
-    int decaySamples = static_cast<int>(sampleRate * decay.get());
-    decaySamples = calcModRange(modValue, decaySamples, decay.getMax());
+    int decaySamples = static_cast<int>(sampleRate * env.decay.get());
+    decaySamples = calcModRange(modValue, decaySamples, env.decay.getMax());
 
-    int releaseSamples = static_cast<int>(sampleRate * release.get());
-    releaseSamples = calcModRange(modValue, releaseSamples, release.getMax());
+    int releaseSamples = static_cast<int>(sampleRate * env.release.get());
+    releaseSamples = calcModRange(modValue, releaseSamples, env.release.getMax());
 
     // get growth/shrink rate from knobs
-    float attackGrowthRate = attackShape.get();
-    float decayShrinkRate = decayShape.get();
-    float releaseShrinkRate = releaseShape.get();
+    float attackGrowthRate = env.attackShape.get();
+    float decayShrinkRate = env.decayShape.get();
+    float releaseShrinkRate = env.releaseShape.get();
 
     // release phase sets envCoeff from valueAtRelease to 0.0f
     if (releaseCounter > -1)
