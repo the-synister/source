@@ -21,15 +21,16 @@ public:
     , filter({ { {p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] },{ p.filter[0],p.filter[1] } } })
     , envToVolume(getSampleRate(), params.envVol[0].attack, params.envVol[0].decay, params.envVol[0].sustain, params.envVol[0].release,
         params.envVol[0].attackShape, params.envVol[0].decayShape, params.envVol[0].releaseShape, params.envVol[0].keyVelToEnv)
-    , env1(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
+    , env2(getSampleRate(), params.env[0].attack, params.env[0].decay, params.env[0].sustain, params.env[0].release,
         params.env[0].attackShape, params.env[0].decayShape, params.env[0].releaseShape, params.env[0].keyVelToEnv)
-    , env2(getSampleRate(), params.env[1].attack, params.env[1].decay, params.env[1].sustain, params.env[1].release,
+    , env3(getSampleRate(), params.env[1].attack, params.env[1].decay, params.env[1].sustain, params.env[1].release,
         params.env[1].attackShape, params.env[1].decayShape, params.env[1].releaseShape, params.env[1].keyVelToEnv)
     , modMatrix(p.globalModMatrix)
     , filterModBuffer(1, blockSize)
     , envToVolBuffer(1, blockSize)
     , env2Buffer(1, blockSize)
     , env3Buffer(1, blockSize)
+    , zeroMod(0.f)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
         for (size_t l = 0; l < lfo.size(); ++l) {
@@ -38,7 +39,6 @@ public:
         }
         // set all to velocity so that the modulation matrix does not crash
         //std::fill(modSources.begin(), modSources.end(), &currentVelocity);
-        zeroMod = 0.f;
         std::fill(modSources.begin(), modSources.end(), &zeroMod);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
@@ -81,8 +81,8 @@ public:
 
         // reset attackDecayCounter
         envToVolume.startEnvelope(currentVelocity);
-        env1.startEnvelope(currentVelocity);
         env2.startEnvelope(currentVelocity);
+        env3.startEnvelope(currentVelocity);
 
         // Initialization of midi values
         channelAfterTouch = 0.f;
@@ -124,19 +124,19 @@ public:
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
             }
             for (size_t o = 0; o < osc.size(); ++o) {
-                // das macht ja hier nicht mehr so viel sinn, denn velocity ist hardcoded ...
-                //osc[o].level = Param::fromDb((velocity - 1.f) * params.osc[o].gainModAmount1.get());
 
                 switch (params.osc[o].waveForm.getStep())
                 {
                 case eOscWaves::eOscSquare:
                     osc[o].square.phase = 0.f;
-                    osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                    osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                                                Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                     osc[o].square.width = params.osc[o].pulseWidth.get();
                 break;
                 case eOscWaves::eOscSaw:
                     osc[o].saw.phase = 0.f;
-                    osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                    osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                                                Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                     osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
                 break;
                 case eOscWaves::eOscNoise:
@@ -160,18 +160,19 @@ public:
             // start a tail-off by setting this flag. The render callback will pick up on
             // this and do a fade out, calling clearCurrentNote() when it's finished.
 
-            if (envToVolume.getReleaseCounter() == -1)      // we only need to begin a tail-off if it's not already doing so - the
-            {                                               // stopNote method could be called more than once.
+            // we only need to begin a tail-off if it's not already doing so - the
+            // stopNote method could be called more than once.
+            if (envToVolume.getReleaseCounter() == -1)      
+            {                                               
                 envToVolume.resetReleaseCounter();
-            }
-
-            if (env1.getReleaseCounter() == -1)
-            {
-                env1.resetReleaseCounter();
             }
             if (env2.getReleaseCounter() == -1)
             {
                 env2.resetReleaseCounter();
+            }
+            if (env3.getReleaseCounter() == -1)
+            {
+                env3.resetReleaseCounter();
             }
         }
         else
@@ -233,15 +234,17 @@ public:
 
             const float *envToVolMod = envToVolBuffer.getReadPointer(0);
 
-            for(int s = 0; s < numSamples; ++s) {
 
-                // oscillators
-                for (size_t o = 0; o < params.osc.size(); ++o) {
 
-                    const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
-                    const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
-                    const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
-                    const float *gainMod = modDestBuffer.getReadPointer(DEST_OSC1_GAIN + o);
+            // oscillators
+            for (size_t o = 0; o < params.osc.size(); ++o) {
+
+                const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
+                const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
+                const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                const float *gainMod = modDestBuffer.getReadPointer(DEST_OSC1_GAIN + o);
+
+                for (int s = 0; s < numSamples; ++s) {
 
                     float currentSample = 0.0f;
 
@@ -253,7 +256,8 @@ public:
                                 ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
                                 : osc[o].square.width - params.osc[o].pulseWidth.getMin();
                             // Pulse width must not reach 0 or 1
-                            if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < (.5f + params.osc[o].pulseWidth.getMin())) {
+                            if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < 
+                                (.5f + params.osc[o].pulseWidth.getMin())) {
                                 deltaWidth = .49f;
                             }
                             // LFO mod has values [-1 .. 1], max amp for amount = 1
@@ -286,8 +290,8 @@ public:
                     }
 
                     // gain + pan
-                    //currentSample *= envToVolMod[s];
-                    const float currentAmp = params.osc[o].vol.get() * Param::fromDb(gainMod[s] * params.osc[o].gainModAmount1.getMax()) * envToVolMod[s];
+                    const float currentAmp =    params.osc[o].vol.get() * Param::fromDb(gainMod[s] * 
+                                                params.osc[o].gainModAmount1.getMax()) * envToVolMod[s];
 
                     // check if the output is a stereo output
                     if (outputBuffer.getNumChannels() == 2){
@@ -305,8 +309,8 @@ public:
                         }
                     }
                     if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter() && 
-                        static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env1.getReleaseCounter() &&
-                        static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env2.getReleaseCounter()) {
+                        static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env2.getReleaseCounter() &&
+                        static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env3.getReleaseCounter()) {
                         // next osc 
                         break;
                     }
@@ -315,8 +319,8 @@ public:
 
             // blockwise from here again:
             if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter() &&
-                static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env1.getReleaseCounter() &&
-                static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env2.getReleaseCounter()) {
+                static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env2.getReleaseCounter() &&
+                static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env3.getReleaseCounter()) {
 
                 clearCurrentNote();
                 for (size_t l = 0; l < lfo.size(); ++l) {
@@ -403,8 +407,8 @@ protected:
             }
             // Calculate the Envelope coefficients and fill the buffers
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff());
-            env2Buffer.setSample(0, s, env1.calcEnvCoeff());
-            env3Buffer.setSample(0, s, env2.calcEnvCoeff());
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff());
+            env3Buffer.setSample(0, s, env3.calcEnvCoeff());
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
@@ -422,9 +426,12 @@ protected:
             ++modSources[eModSource::eEnv3];
 
             //! \todo check whether this should be at the place where the values are actually used
-            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * params.osc[0].pitchModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * params.osc[1].pitchModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * params.osc[2].pitchModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_OSC1_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC1_PI, s) * 
+                                    params.osc[0].pitchModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
+                                    params.osc[1].pitchModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
+                                    params.osc[2].pitchModAmount1.getMax()));
         }
     }
 
@@ -473,12 +480,12 @@ private:
     // Buffers
     AudioSampleBuffer modDestBuffer;
     AudioSampleBuffer filterModBuffer;
-    std::array<AudioSampleBuffer, 3> lfoBuffers; //todo: hardcoded size
+    std::array<AudioSampleBuffer, 3> lfoBuffers;
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env2Buffer;
     AudioSampleBuffer env3Buffer;
     // Envelopes
     Envelope envToVolume;
-    Envelope env1;
     Envelope env2;
+    Envelope env3;
 };
