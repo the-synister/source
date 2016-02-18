@@ -155,6 +155,9 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     noteLength->setEnabled(false);
+
+	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
+
     //[/UserPreSize]
 
     setSize (267, 197);
@@ -263,6 +266,19 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void LfoPanel::updateLfoSyncToggle()
+{
+	lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
+	if (lfo.tempSync.getStep() == eOnOffToggle::eOn) {
+		freq->setEnabled(false);
+		noteLength->setEnabled(true);
+	}
+	else {
+		freq->setEnabled(true);
+		noteLength->setEnabled(false);
+	}
+}
+
 void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
@@ -271,14 +287,6 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == tempoSyncSwitch)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
-        lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
-        if (lfo.tempSync.getStep() == eOnOffToggle::eOn){
-            freq->setEnabled(false);
-            noteLength->setEnabled(true);
-        }else{
-            freq->setEnabled(true);
-            noteLength->setEnabled(false);
-        }
         //params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
     }
