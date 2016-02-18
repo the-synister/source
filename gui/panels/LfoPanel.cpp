@@ -139,7 +139,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     wave->setValue(lfo.wave.getUI());
-    tempoSyncSwitch->setToggleState(0, dontSendNotification);
+    
     noteLength->setText(getNoteLengthAsString(), dontSendNotification);
     registerDropdown(noteLength, &lfo.noteLength);
 
@@ -157,6 +157,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->setEnabled(false);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
+	tempoSyncSwitch->setToggleState(0, dontSendNotification);
 
     //[/UserPreSize]
 
@@ -268,15 +269,9 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 void LfoPanel::updateLfoSyncToggle()
 {
-	lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
-	if (lfo.tempSync.getStep() == eOnOffToggle::eOn) {
-		freq->setEnabled(false);
-		noteLength->setEnabled(true);
-	}
-	else {
-		freq->setEnabled(true);
-		noteLength->setEnabled(false);
-	}
+	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
+	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
 }
 
 void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
