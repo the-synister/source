@@ -271,6 +271,7 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
+	handleToggle(buttonThatWasClicked);
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == tempoSyncSwitch)
