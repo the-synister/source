@@ -63,7 +63,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image syncPic, tripletPic, tripletPicOff, reversePic;
+    Image syncPic, syncPicOff, tripletPic, tripletPicOff, reversePic, reversePicOff;
 
     ScopedPointer<FxDelay> delay;
     //[/UserVariables]

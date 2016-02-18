@@ -244,8 +244,6 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
 
     onOffSwitchChanged();
-
-	passtype->setColour(Slider::trackColourId, Colours::grey);
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -454,10 +452,7 @@ void FiltPanel::onOffSwitchChanged()
 	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 
-	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1)
-		? Colours::white
-		: Colours::grey;
-	passtype->setColour(Slider::trackColourId, col);
+	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
 	ladderLabel->setColour(Label::textColourId, col);
 	bandpassLabel->setColour(Label::textColourId, col);
 	highpassLabel->setColour(Label::textColourId, col);

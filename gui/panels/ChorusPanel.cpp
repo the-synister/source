@@ -91,7 +91,7 @@ ChorusPanel::ChorusPanel (SynthParams &p)
     registerSlider(chorDelayLengthSlider, &params.chorDelayLength);
     registerSlider(chorModRateSlider, &params.chorModRate);
   	onOffSwitchChanged();
-	  registerSlider(onOffSwitch, &params.chorActivation, std::bind(&ChorusPanel::onOffSwitchChanged, this));
+	registerSlider(onOffSwitch, &params.chorActivation, std::bind(&ChorusPanel::onOffSwitchChanged, this));
     //[/UserPreSize]
 
     setSize (200, 200);

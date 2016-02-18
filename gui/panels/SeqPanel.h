@@ -47,7 +47,10 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void updateToggleState();
+    void updateNoteNameLabels();
+    void updateMinMaxLabels();
+    void drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
 
     /**
     * timerCallback() is needed here to display the currently playing note step.
@@ -55,40 +58,9 @@ public:
     virtual void timerCallback() override;
 
     /**
-    * Generate a random sequence by setting each step random.
-    The lowest and highest random note can be set with provided functions.
-    */
-    void generateRandomSeq();
-
-    /**
-    * Function to set a specific step as activated or mute.
-    @param step the (step+1)th sequence note in range of [0..7]
-    @param active false->mute
-    */
-    void setStepActive(int step, bool active);
-
-    /**
     * Is true if stepSequencer is playing with or without host.
     */
     bool isPlaying();
-
-    /**
-    * Is true if specific step is activated and should play.
-    @param step in range [0..7]
-    */
-    bool isStepActive(int step);
-
-    /**
-    * Get current step speed as a string in format '1/denominator'
-    with denominator in {1, 2, 4, 8, 16, 32, 64}.
-    */
-    String getStepSpeedAsString();
-
-    /**
-    * Get current step length as a string in format '1/denominator'
-    with denominator in {1, 2, 4, 8, 16, 32, 64}.
-    */
-    String getStepLengthAsString();
 
     /**
     * Get the note name as a string of a specific step by using MidiMessage::getMidiNoteName().
@@ -98,22 +70,6 @@ public:
     @middleC number to use for middle c
     */
     String getStepNoteName(int step, bool sharps, bool octaveNumber, int middleC);
-
-    /**
-    * Set step speed from a string representing note length (e.g 1/4, 1/16 ...).
-    @param stepSpeed is assumed to be in the proper format; the function only takes the String after '/',
-    converts it to an int to use that as the denominator.
-    The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
-    */
-    void setStepSpeed(const String &stepSpeed);
-
-    /**
-    * Set step length from a string representing note length (e.g 1/4, 1/16 ...).
-    @param stepLength is assumed to be in the proper format; the function only takes the String after '/',
-    converts it to an int to use that as the denominator.
-    The denominator should be of {1, 2, 4, 8, 16, 32, 64}, the nominator will be ignored.
-    */
-    void setStepLength(const String &stepLength);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -160,17 +116,16 @@ private:
     ScopedPointer<Slider> randomSeq;
     ScopedPointer<Label> randMinLabel;
     ScopedPointer<Label> randMaxLabel;
-    ScopedPointer<ToggleButton> playUpDown;
     ScopedPointer<IncDecDropDown> seqStepSpeed;
     ScopedPointer<IncDecDropDown> seqStepLength;
     ScopedPointer<IncDecDropDown> seqNumSteps;
     ScopedPointer<Label> labelSeqSpeed;
     ScopedPointer<Label> labelSeqLength;
     ScopedPointer<Label> labelSeqStepNum;
-    ScopedPointer<ToggleButton> playRandom;
     ScopedPointer<ToggleButton> triplets;
     ScopedPointer<TextButton> saveSeq;
     ScopedPointer<TextButton> loadSeq;
+    ScopedPointer<Slider> playModes;
 
 
     //==============================================================================
