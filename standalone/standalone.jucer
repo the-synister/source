@@ -78,6 +78,7 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
+        <FILE id="fS6a0P" name="Filter.h" compile="0" resource="0" file="../audio/inc/Filter.h"/>
         <FILE id="dNJsGY" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
         <FILE id="dzqkeQ" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="h2p1M5" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>

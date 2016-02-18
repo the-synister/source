@@ -1316,6 +1316,7 @@
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
+    <ClInclude Include="..\..\..\audio\inc\Filter.h"/>
     <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
