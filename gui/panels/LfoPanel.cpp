@@ -139,7 +139,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     wave->setValue(lfo.wave.getUI());
-    
+	tempoSyncSwitch->setToggleState(0, dontSendNotification);
     noteLength->setText(getNoteLengthAsString(), dontSendNotification);
     registerDropdown(noteLength, &lfo.noteLength);
 
@@ -157,7 +157,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->setEnabled(false);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
-	tempoSyncSwitch->setToggleState(0, dontSendNotification);
+	
 
     //[/UserPreSize]
 
