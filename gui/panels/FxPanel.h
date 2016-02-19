@@ -80,6 +80,7 @@ private:
     ScopedPointer<ToggleButton> filtTggl;
     ScopedPointer<ToggleButton> revTggl;
     ScopedPointer<Slider> onOffSwitch;
+    ScopedPointer<ToggleButton> dottedNotes;
 
 
     //==============================================================================

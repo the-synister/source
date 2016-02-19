@@ -126,6 +126,11 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoGain->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     lfoGain->addListener (this);
 
+    addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
+    dottedNotes->setButtonText (TRANS("Dotted"));
+    dottedNotes->addListener (this);
+    dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
     registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
@@ -157,9 +162,8 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->setEnabled(false);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
-	registerToggle(triplets, &lfo.lfoTriplets);
-	
-
+    registerToggle(triplets, &lfo.lfoTriplets);
+    registerToggle(dottedNotes, &lfo.lfoDottedLength);
     //[/UserPreSize]
 
     setSize (267, 197);
@@ -191,6 +195,7 @@ LfoPanel::~LfoPanel()
     freqModSrc1 = nullptr;
     freqModSrc2 = nullptr;
     lfoGain = nullptr;
+    dottedNotes = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -219,15 +224,16 @@ void LfoPanel::resized()
 
     freq->setBounds (10, 35, 64, 64);
     wave->setBounds (168, 58, 60, 24);
-    tempoSyncSwitch->setBounds (85, 100, 64, 30);
+    tempoSyncSwitch->setBounds (85, 93, 64, 30);
     lfoFadeIn->setBounds (10, 97, 64, 64);
-    triplets->setBounds (175, 100, 64, 30);
-    noteLength->setBounds (122, 135, 87, 24);
+    triplets->setBounds (175, 93, 64, 30);
+    noteLength->setBounds (79, 128, 87, 24);
     freqModAmount1->setBounds (67, 35, 18, 18);
     freqModAmount2->setBounds (67, 59, 18, 18);
     freqModSrc1->setBounds (90, 35, 40, 18);
     freqModSrc2->setBounds (90, 59, 40, 18);
     lfoGain->setBounds (100, 6, 40, 18);
+    dottedNotes->setBounds (175, 126, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -284,6 +290,11 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_triplets] -- add your button handler code here..
         //[/UserButtonCode_triplets]
+    }
+    else if (buttonThatWasClicked == dottedNotes)
+    {
+        //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        //[/UserButtonCode_dottedNotes]
     }
 
     //[UserbuttonClicked_Post]
@@ -352,8 +363,9 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
 
 void LfoPanel::updateLfoSyncToggle()
 {
-	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
+    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
 	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
 }
 
@@ -386,7 +398,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="85 100 64 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="85 93 64 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
@@ -396,11 +408,10 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="175 100 64 30" txtcol="ffffffff"
-                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
-                state="0"/>
+                explicitFocusOrder="0" pos="175 93 64 30" txtcol="ffffffff" buttonText=""
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="122 135 87 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="79 128 87 24"
             editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32"
             textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
@@ -424,6 +435,10 @@ BEGIN_JUCER_METADATA
   <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName=""
             explicitFocusOrder="0" pos="100 6 40 18" editable="0" layout="36"
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
+                virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
+                buttonText="Dotted" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

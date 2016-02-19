@@ -50,14 +50,13 @@ public:
     String getNoteLengthAsString();
     void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
 	void updateLfoSyncToggle();
-	//[/UserMethods]
+    //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
-	
 
 
 
@@ -80,6 +79,7 @@ private:
     ScopedPointer<ComboBox> freqModSrc1;
     ScopedPointer<ComboBox> freqModSrc2;
     ScopedPointer<ComboBox> lfoGain;
+    ScopedPointer<ToggleButton> dottedNotes;
 
 
     //==============================================================================

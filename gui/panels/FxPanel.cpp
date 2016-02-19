@@ -138,6 +138,11 @@ FxPanel::FxPanel (SynthParams &p)
     onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
     onOffSwitch->addListener (this);
 
+    addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
+    dottedNotes->setButtonText (TRANS("Dotted"));
+    dottedNotes->addListener (this);
+    dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
     registerSlider(feedbackSlider, &params.delayFeedback);
@@ -160,6 +165,7 @@ FxPanel::FxPanel (SynthParams &p)
     registerToggle(filtTggl, &params.delayRecordFilter);
     registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));
     registerToggle(tripTggl, &params.delayTriplet);
+    registerToggle(dottedNotes, &params.delayDottedLength);
     onOffSwitchChanged();
     //[/UserPreSize]
 
@@ -198,6 +204,7 @@ FxPanel::~FxPanel()
     filtTggl = nullptr;
     revTggl = nullptr;
     onOffSwitch = nullptr;
+    dottedNotes = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -235,6 +242,7 @@ void FxPanel::resized()
     filtTggl->setBounds (100, 141, 100, 30);
     revTggl->setBounds (252, 108, 65, 30);
     onOffSwitch->setBounds (17, 2, 40, 30);
+    dottedNotes->setBounds (235, 141, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -301,6 +309,11 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_revTggl] -- add your button handler code here..
         //[/UserButtonCode_revTggl]
     }
+    else if (buttonThatWasClicked == dottedNotes)
+    {
+        //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        //[/UserButtonCode_dottedNotes]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -335,6 +348,7 @@ void FxPanel::updateToggleState()
 {
     timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn) && (static_cast<int>(onOffSwitch->getValue()) == 1));
     tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
+    dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
     dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
 
@@ -364,8 +378,9 @@ void FxPanel::onOffSwitchChanged()
 		timeSlider->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOff);
 		divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
 		dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-		tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-	}
+        tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+        dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    }
 	// If delay is off, all the sliders are disabled
 	else
 	{
@@ -373,6 +388,7 @@ void FxPanel::onOffSwitchChanged()
 		divisor->setEnabled(0);
 		dividend->setEnabled(0);
 		tripTggl->setEnabled(0);
+        dottedNotes->setEnabled(0);
 	}
 
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
@@ -454,6 +470,10 @@ BEGIN_JUCER_METADATA
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
+  <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
+                virtualName="" explicitFocusOrder="0" pos="235 141 64 30" txtcol="ffffffff"
+                buttonText="Dotted" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

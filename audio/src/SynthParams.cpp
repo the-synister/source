@@ -63,18 +63,18 @@ SynthParams::SynthParams()
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
     &envVol[0].attack, &envVol[0].decay, &envVol[0].sustain, &envVol[0].release, &envVol[0].attackShape, &envVol[0].decayShape, &envVol[0].releaseShape, &envVol[0].speedModAmount1, &envVol[0].speedModAmount2, &envVol[0].speedModSrc1, &envVol[0].speedModSrc2,
     //LFOs Params
-    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].freqModAmount1, &lfo[0].freqModAmount2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc,
-    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc,
-    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc,
+    &lfo[0].fadeIn, &lfo[0].freq, &lfo[0].freqModSrc1, &lfo[0].freqModSrc2, &lfo[0].freqModAmount1, &lfo[0].freqModAmount2, &lfo[0].tempSync, &lfo[0].wave, &lfo[0].noteLength, &lfo[0].gainModSrc, &lfo[0].lfoTriplets, &lfo[0].lfoDottedLength,
+    &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc, &lfo[1].lfoTriplets, &lfo[1].lfoDottedLength,
+    &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc, &lfo[2].lfoTriplets, &lfo[2].lfoDottedLength,
     //Filters Params
     &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
     &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
     //Others
-    &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
+    &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
-    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
+    &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayDottedLength, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
     &lowFiActivation, &nBitsLowFi, &clippingActivation, &chorActivation }
-    , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
+    , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
     , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
@@ -86,6 +86,7 @@ SynthParams::SynthParams()
     , delayCutoff("Cutoff", "delCut", "Delay cutoff", "Hz", 10.f, 20000.f, 20000.f)
     , delayResonance("Resonance", "delRes", "Delay resonance", "dB", -25.f, 0.f, 0.f)
     , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
+    , delayDottedLength("Delay Dotted Length", "delDot", "Delay dotted length", eOnOffToggle::eOff, onoffnames)
     , delayRecordFilter("Delay Record", "delRec", "Delay record filter", eOnOffToggle::eOff, onoffnames)
     , delayReverse("Delay Reverse", "delRev", "Delay reverse", eOnOffToggle::eOff, onoffnames)
     , delayActivation("Delay Activation", "delayActivation", "Delay Active", eOnOffToggle::eOff, onoffnames)
@@ -109,6 +110,7 @@ SynthParams::SynthParams()
     , seqStepSpeed("Speed", "seqStepSpeed", "Speed", "", 1.0f, 64.0f, 4.0f)
     , seqStepLength("Length", "seqNoteLength", "Length", "", 1.0f, 64.0f, 4.0f)
     , seqTriplets("Seq Triplets", "seqTriplets", "Seq Triplets", eOnOffToggle::eOff, onoffnames)
+    , seqDottedLength("Seq Dotted Length", "seqDottedLength", "Seq Dotted Length", eOnOffToggle::eOff, onoffnames)
     , seqRandomMin("Min", "seqRandomMin", "Min", "", 0.0f, 127.0f, 0.0f)
     , seqRandomMax("Max", "seqRandomMax", "Max", "", 0.0f, 127.0f, 127.0f)
     , seqStep0("Step 0", "seqNote0", "Step 0", "", 0.0f, 127.0f, 60.0f)
@@ -209,7 +211,8 @@ SynthParams::Lfo::Lfo()
     : freq("Freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
     , wave("Wave", "lfo1wave", "waveform", eLfoWaves::eLfoSine, lfowavenames)
     , tempSync("TempoSync", "tempoSyncSwitch", "TempoSync", eOnOffToggle::eOff, onoffnames)
-	, lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
+    , lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
+    , lfoDottedLength("Lfo Dotted Note Length", "lfoDottedLength", "Lfo Dotted Length", eOnOffToggle::eOff, onoffnames)
     , noteLength("Note Length", "notelength", "Note Length", "", 1.f, 32.f, 4.f)
     , fadeIn("FadeIn", "lfoFadein", "fade-in", "s", 0.f, 10.f, 0.f)
     // ModAmounts and Sources
