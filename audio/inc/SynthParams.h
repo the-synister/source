@@ -330,6 +330,9 @@ public:
     // list of only stepSeq params
     std::vector<Param*> stepSeqParams;
 
+
+    String patchName = "";
+    bool patchNameDirty = false;
     const float version = 1.1f; // version of the program, to be written into the xml
 
     static Colour getModSourceColour(eModSource source);

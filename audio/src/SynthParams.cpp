@@ -252,6 +252,8 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
 void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // set version of the patch
     patch->setAttribute("version", version);
+    // TODO check patchname for chars that need to be replaced/escaped for correct XML
+    patch->setAttribute("patchname", patchName);
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
@@ -333,9 +335,12 @@ void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSer
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
-{
+    {
         parameters = stepSeqParams;
     }
+
+    patchName = patch->getStringAttribute("patchname");
+    patchNameDirty = true;
 
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : parameters) {

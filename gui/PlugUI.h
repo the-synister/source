@@ -65,6 +65,7 @@ private:
 
     float lastBpmInfo;
     void timerCallback() override;
+    void updateDirtyPatchname(const String patchName);
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
 
     ScopedPointer<CustomLookAndFeel> lnf;
@@ -75,9 +76,8 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
-    ScopedPointer<Label> bpmLabel;
-    ScopedPointer<Label> bpmDisplay;
     ScopedPointer<FoldablePanel> foldableComponent;
+    ScopedPointer<TextEditor> patchNameEditor;
 
 
     //==============================================================================
