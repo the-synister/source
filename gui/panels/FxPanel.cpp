@@ -146,16 +146,6 @@ FxPanel::FxPanel (SynthParams &p)
 	registerSlider(cutoffSlider, &params.delayCutoff);
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
-    /**
-
-     // Update sync param value
-     if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
-     params.delayTriplet.setStep(eOnOffToggle::eOn);
-     }
-     else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-
-
-     */
     registerToggle(revTggl, &params.delayReverse);
     registerToggle(filtTggl, &params.delayRecordFilter);
     registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));

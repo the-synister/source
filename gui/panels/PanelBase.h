@@ -39,13 +39,15 @@ protected:
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
-        slider->setValue(p->getUI());
-
+        
         if (min) {
             slider->setMinValue(min->getUI());
         }
         if (max) {
             slider->setMaxValue(max->getUI());
+        }
+        if (!min && !max) {
+            slider->setValue(p->getUI());
         }
     }
 
@@ -76,7 +78,7 @@ protected:
 
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {
-            if (s2p.second[0]->isUIDirty()) {
+            if (s2p.second[0]->isUIDirty() && !s2p.second[1] && !s2p.second[2]) {
                 s2p.first->setValue(s2p.second[0]->getUI());
                 if (s2p.second[0]->hasLabels()) {
                     s2p.first->setName(s2p.second[0]->getUIString());
@@ -160,15 +162,15 @@ protected:
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
-            it->second[0]->setUI(static_cast<float>(it->first->getValue()));
-            if (it->second[0]->hasLabels()) {
-                it->first->setName(it->second[0]->getUIString());
+            if (it->second[1] == nullptr && it->second[2] == nullptr) {
+                it->second[0]->setUI(static_cast<float>(it->first->getValue()));
+                if (it->second[0]->hasLabels()) {
+                    it->first->setName(it->second[0]->getUIString());
+                }
             }
-
-            if (it->second[1]) {
+            
+            if (it->second[1] && it->second[2]) {
                 it->second[1]->setUI(static_cast<float>(it->first->getMinValue()));
-            }
-            if (it->second[2]) {
                 it->second[2]->setUI(static_cast<float>(it->first->getMaxValue()));
             }
 
