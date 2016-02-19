@@ -45,11 +45,19 @@ class Envelope{
 
 
     //! calculation of the volume envelope coefficients (with shape control)
-    const float calcEnvCoeff(float modValue);
+    const float calcEnvCoeff(float modValue1, float modValue2);
 
     private:
-    static inline int calcModRange(float modValue, int sInput, float tRange) {
-        return static_cast<int>(sInput * std::pow(2.f, modValue * tRange));
+    inline int calcModRange(float modValue, int sInput, float tRange, float modAmount) {
+        int samples = static_cast<int>(sInput * std::pow(2.f, modValue * tRange * modAmount));
+        int maxSamples = static_cast<int>(tRange * sampleRate);
+        samples = samples > maxSamples
+            ? maxSamples
+            : samples;
+        samples = samples <= 0
+            ? 0
+            : samples;
+        return samples;
     }
     SynthParams::EnvBase& env;   //!< local params
     Param& sustain;         

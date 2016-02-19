@@ -403,29 +403,12 @@ protected:
 
             // Calculate the Envelope coefficients and fill the buffers
             // this is a temporary (and fugly) solution, because env-array init lists are evil!
-            float speedMod1 = params.envVol[0].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]);
-            float speedMod2 = params.envVol[0].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]);
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(1.f - speedMod1 * speedMod2));
-
-            float speedMod3 = params.env[0].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]);
-            float speedMod4 = params.env[0].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())]);
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff(1.f - speedMod3 * speedMod4));
-
-            float speedMod5 = params.env[1].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]);
-            float speedMod6 = params.env[1].speedModSrc1.get() == eModSource::eNone
-                ? 1.f
-                : 1.f - *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]);
-            env3Buffer.setSample(0, s, env3.calcEnvCoeff(1.f - speedMod5 * speedMod6));
+            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
+                                    *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())])));
+            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]), 
+                                    *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())])));
+            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]), 
+                                    *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())])));
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
