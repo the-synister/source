@@ -3065,6 +3065,9 @@
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\delayReverse.png">
