@@ -27,13 +27,13 @@ const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
     float sustainLevel = sustain.get();
 
     // number of samples for all phases
-    int attackSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.attack.get()), env.attack.getMax(), env.speedModAmount1.get());
+    attackSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.attack.get()), env.attack.getMax(), env.speedModAmount1.get());
     attackSamples = calcModRange(modValue2, attackSamples, env.attack.getMax(), env.speedModAmount2.get());
 
-    int decaySamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.decay.get()), env.decay.getMax(), env.speedModAmount1.get());
+    decaySamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.decay.get()), env.decay.getMax(), env.speedModAmount1.get());
     decaySamples = calcModRange(modValue2, decaySamples, env.decay.getMax(), env.speedModAmount2.get());
 
-    int releaseSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.release.get()), env.release.getMax(), env.speedModAmount1.get());
+    releaseSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.release.get()), env.release.getMax(), env.speedModAmount1.get());
     releaseSamples = calcModRange(modValue2, releaseSamples, env.release.getMax(), env.speedModAmount2.get());
 
     // get growth/shrink rate from knobs

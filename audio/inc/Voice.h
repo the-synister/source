@@ -303,9 +303,9 @@ public:
                             outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                         }
                     }
-                    if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter() && 
-                        static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env2.getReleaseCounter() &&
-                        static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env3.getReleaseCounter()) {
+                    if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter() &&
+                        env2.getReleaseSamples() <= env2.getReleaseCounter() &&
+                        env3.getReleaseSamples() <= env3.getReleaseCounter()) {
                         // next osc 
                         break;
                     }
@@ -313,9 +313,9 @@ public:
             }
 
             // blockwise from here again:
-            if (static_cast<int>(getSampleRate() * params.envVol[0].release.get()) <= envToVolume.getReleaseCounter() &&
-                static_cast<int>(getSampleRate() * params.env[0].release.get()) <= env2.getReleaseCounter() &&
-                static_cast<int>(getSampleRate() * params.env[1].release.get()) <= env3.getReleaseCounter()) {
+            if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter() &&
+                env2.getReleaseSamples() <= env2.getReleaseCounter() &&
+                env3.getReleaseSamples() <= env3.getReleaseCounter()) {
 
                 clearCurrentNote();
                 for (size_t l = 0; l < lfo.size(); ++l) {

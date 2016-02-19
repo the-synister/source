@@ -41,6 +41,7 @@ class Envelope{
 
     //! get and reset the release counters for the volume envelope
     int getReleaseCounter() const { return releaseCounter; }
+    int getReleaseSamples() const { return releaseSamples; }
     void resetReleaseCounter();
 
 
@@ -64,6 +65,9 @@ class Envelope{
     double sampleRate;       //!< sample rate
     float valueAtRelease;   //!< amplitude value once release phase starts
     int attackDecayCounter; //!< sample counter during the attack and decay phase
+    int attackSamples;
+    int decaySamples;
+    int releaseSamples;     //!< total Amount of release samples
     int releaseCounter;     //!< sample counter during the release phase
 
     static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
