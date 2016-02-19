@@ -49,13 +49,15 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     String getNoteLengthAsString();
     void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
-    //[/UserMethods]
+	void updateLfoSyncToggle();
+	//[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
     void buttonClicked (Button* buttonThatWasClicked);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+	
 
 
 

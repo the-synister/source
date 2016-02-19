@@ -139,7 +139,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     wave->setValue(lfo.wave.getUI());
-    tempoSyncSwitch->setToggleState(0, dontSendNotification);
+	tempoSyncSwitch->setToggleState(0, dontSendNotification);
     noteLength->setText(getNoteLengthAsString(), dontSendNotification);
     registerDropdown(noteLength, &lfo.noteLength);
 
@@ -155,6 +155,11 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     noteLength->setEnabled(false);
+
+	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
+	registerToggle(triplets, &lfo.lfoTriplets);
+	
+
     //[/UserPreSize]
 
     setSize (267, 197);
@@ -266,19 +271,12 @@ void LfoPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
+	handleToggle(buttonThatWasClicked);
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == tempoSyncSwitch)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
-        lfo.tempSync.setUI(tempoSyncSwitch->getToggleState());
-        if (lfo.tempSync.getStep() == eOnOffToggle::eOn){
-            freq->setEnabled(false);
-            noteLength->setEnabled(true);
-        }else{
-            freq->setEnabled(true);
-            noteLength->setEnabled(false);
-        }
         //params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
     }
@@ -351,6 +349,14 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
     g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
 }
+
+void LfoPanel::updateLfoSyncToggle()
+{
+	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
+	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+}
+
 //[/MiscUserCode]
 
 

@@ -217,7 +217,7 @@ protected:
             return true;
         }
         
-        return false;
+        return false;  
     }
     
     void updateDirtyToggles()

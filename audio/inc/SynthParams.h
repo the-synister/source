@@ -137,6 +137,7 @@ public:
         Lfo();
         Param freq; //!< lfo frequency in Hz
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
+		ParamStepped<eOnOffToggle> lfoTriplets; //!< bool for triplet toggle in lfo
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
         Param fadeIn;   //!< The LFOs fade in with a range of [0..10s]
