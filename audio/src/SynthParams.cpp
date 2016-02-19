@@ -80,7 +80,9 @@ SynthParams::SynthParams()
     &lowFiActivation, &nBitsLowFi }
     , stepSeqParams{ &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
-    , freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
+    , masterAmp("Master Amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, 0.f)
+	, masterPan("Master Pan", "masterPan", "Master pan", "", -100.f, 100.f, 0.f)
+	, freq("Freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
     , delayDryWet("Dry / Wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("Feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
     , delayTime("Time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
