@@ -22,6 +22,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     , chorus(*this)
     , clip(*this)
     , lowFi(*this)
+    , synth(midiState)
 {
     for (int i = 0; i < 3; ++i) {
         addParameter(new HostParam<Param>(osc[i].fine));

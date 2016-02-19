@@ -82,13 +82,13 @@ public:
         env3.startEnvelope();
 
         // Initialization of midi values
-        channelAfterTouch = 0.f;
+        channelAfterTouch = params.midiState.get(MidiState::eAftertouch)/128.f;
         keyBipolar = (static_cast<float>(midiNoteNumber) - 64.f) / 64.f;
         currentInvertedVelocity = 1.f - velocity;
         currentVelocity = velocity;
-        footControlValue = 0.f;
-        expPedalValue = 0.f;
-        modWheelValue = 0.f;
+        footControlValue = params.midiState.get(MidiState::eFoot) / 128.f;
+        expPedalValue = params.midiState.get(MidiState::eExpPedal) / 128.f;
+        modWheelValue = params.midiState.get(MidiState::eModwheel) / 128.f;
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         const float sRate = static_cast<float>(getSampleRate());

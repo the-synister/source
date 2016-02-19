@@ -54,6 +54,28 @@ enum class eSeqPlayModes : int {
 };
 
 
+struct MidiState {
+    MidiState()
+    {
+        std::fill(values.begin(), values.end(), 0);
+    }
+
+    enum eMsg : int {
+        eAftertouch,
+        eFoot,
+        eExpPedal,
+        eModwheel,
+        nSteps
+    };
+
+    float get(eMsg e) const {
+        jassert(e >= eAftertouch && e < nSteps);
+        return static_cast<float>(values[e]);
+    }
+
+    std::array<int, eMsg::nSteps> values;
+};
+
 class SynthParams {
 public:
     SynthParams();
@@ -309,6 +331,7 @@ public:
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;
+    MidiState midiState;
 
     Param delayFeedback;    //!< delay feedback amount
     Param delayDryWet;      //!< delay wet signal
