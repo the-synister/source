@@ -13,10 +13,7 @@ TEMP_PLUGIN=~/synister
 TEMP_STANDALONE=~/synister_standalone
 
 # if no arguments were given, then it is only a patch update
-if [ $# -eq 0 ]; then
-	((CURRENT_PATCH++));
-	echo 'No version specified, assuming is just a patch..';
-else
+if [ $# -gt 0 ]; then
 	# otherwise it can be a major, minor or patch
 	for i in "$@"
 	do
@@ -41,8 +38,8 @@ else
 		exit 1;
 		;;
 	*)
-		echo 'Option not recognized, assuming is a patch update';
-		((CURRENT_PATCH++));
+		echo 'Usage: ./installer-script.sh [[--major|-ma] [--minor|-mi] | [--patch|-pa] | [--help|-h]]';
+		exit 1;
 		;;
  	esac
 	done
@@ -50,7 +47,7 @@ fi
 
 # updates the version file
 echo "\
-$CURRENT_MAJOR 
+$CURRENT_MAJOR
 $CURRENT_MINOR
 $CURRENT_PATCH" > .version
 
@@ -132,7 +129,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
         <pkg-ref id="de.tu-berlin.qu.synister.standalone" version="'$VERSION'">synister_standalone_build.pkg</pkg-ref>
     </choice>
 </installer-gui-script>
-' > "${TEMP_STANDALONE}/distribution.xml"2
+' > "${TEMP_STANDALONE}/distribution.xml"
 
 echo 'Finishing packages..'
 # productbuild is used to create from the existing packages and the distribution files the personalised installer package
