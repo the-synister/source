@@ -242,17 +242,6 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
 
     //[UserPreSize]
-    registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, 1);
-    registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, 2);
-    registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, 1);
-    registerSaturnSource(gain, gainModAmount2, &osc.gainModSrc2, &osc.gainModAmount2, 2);
-    registerSaturnSource(pan, panModAmount1, &osc.panModSrc1, &osc.panModAmount1, 1);
-    registerSaturnSource(pan, panModAmount2, &osc.panModSrc2, &osc.panModAmount2, 2);
-    registerSaturnSource(pulsewidth, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
-    registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
-    registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
-    registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
-
     registerSlider(gain, &osc.vol);
     registerSlider(pan, &osc.panDir);
     registerSlider(ftune1, &osc.fine);
@@ -269,7 +258,17 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(gainModAmount1, &osc.gainModAmount1);
     registerSlider(gainModAmount2, &osc.gainModAmount2);
 
-    // fill and register mod selection boxes
+    registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, 1);
+    registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, 2);
+    registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, 1);
+    registerSaturnSource(gain, gainModAmount2, &osc.gainModSrc2, &osc.gainModAmount2, 2);
+    registerSaturnSource(pan, panModAmount1, &osc.panModSrc1, &osc.panModAmount1, 1);
+    registerSaturnSource(pan, panModAmount2, &osc.panModSrc2, &osc.panModAmount2, 2);
+    registerSaturnSource(pulsewidth, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
+    registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
+    registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
+    registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
+
     fillModsourceBox(pitchModSrc1);
     fillModsourceBox(pitchModSrc2);
     registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr});
@@ -297,7 +296,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
 
     //[Constructor] You can add your own custom stuff here..
-    trngAmount->setVisible(false);
+    waveforms = ImageCache::getFromMemory(BinaryData::oscWaveForms_png, BinaryData::oscWaveForms_pngSize);
     gain->setSkewFactorFromMidPoint(-6.0);
 
     pitchModAmount1->setAlwaysOnTop(true);
@@ -308,8 +307,6 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     widthModAmount2->setAlwaysOnTop(true);
     panModAmount1->setAlwaysOnTop(true);
     panModAmount2->setAlwaysOnTop(true);
-
-    waveforms = ImageCache::getFromMemory(BinaryData::oscWaveForms_png, BinaryData::oscWaveForms_pngSize);
     //[/Constructor]
 }
 
@@ -376,7 +373,7 @@ void OscPanel::resized()
     pulsewidth->setBounds (127, 100, 64, 64);
     pitchModAmount1->setBounds (65, 100, 18, 18);
     ctune1->setBounds (8, 100, 64, 64);
-    waveformVisual->setBounds (75, 160, 123, 72);
+    waveformVisual->setBounds (75, 162, 123, 72);
     waveformSwitch->setBounds (198, 169, 40, 54);
     widthModAmount1->setBounds (184, 100, 18, 18);
     pitchModSrc1->setBounds (88, 100, 40, 18);
@@ -402,7 +399,6 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
     handleSlider(sliderThatWasMoved);
-    //sliderThatWasMoved->repaint(); // TODO: only for now, not nice
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == ftune1)
@@ -541,11 +537,22 @@ void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
-    int waveformKey = static_cast<int>(waveformSwitch->getValue());
-    eOscWaves eWaveformKey = static_cast<eOscWaves>(waveformKey);
+    eOscWaves eWaveformKey = osc.waveForm.getStep();
     osc.waveForm.setStep(eWaveformKey);
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+
+    // TODO: replace with below after bug fix
     trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
+    widthModAmount1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+
+    // TODO: mouseOver widthKnob leads to redrawing parts of waveformVisual -> bad if is noise
+    //       should save last noise and recalculate only if eOscWaves has changed or so
+    //trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw || eWaveformKey == eOscWaves::eOscNoise);
+    //trngAmount->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    //widthModAmount1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    //widthModAmount2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
@@ -615,7 +622,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 160 123 72"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 162 123 72"
                     class="Component" params="osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
           virtualName="" explicitFocusOrder="0" pos="198 169 40 54" thumbcol="ff6c788c"

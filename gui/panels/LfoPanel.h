@@ -62,7 +62,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic;
+    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic, tripletPicOff;
 
     SynthParams::Lfo& lfo;
     //[/UserVariables]

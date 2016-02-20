@@ -743,12 +743,12 @@ void SeqPanel::timerCallback()
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
             {
-                seqStepArray[i]->setColour(Slider::trackColourId, Colours::white);
+                seqStepArray[i]->setColour(Slider::thumbColourId, Colours::grey);
             }
 
             lastSeqNotePos = static_cast<int>(params.seqLastPlayedStep.get());
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
-            seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0xff60ff60));
+            seqStepArray[lastSeqNotePos]->setColour(Slider::thumbColourId, Colour(0xff60ff60));
         }
     }
     else
@@ -757,7 +757,7 @@ void SeqPanel::timerCallback()
         if (lastSeqNotePos != -1)
         {
             seqPlay->setToggleState(isPlaying(), dontSendNotification);
-            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colours::white);
+            seqStepArray.at(lastSeqNotePos)->setColour(Slider::thumbColourId, Colours::grey);
             lastSeqNotePos = -1;
         }
     }

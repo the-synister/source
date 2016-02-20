@@ -34,7 +34,7 @@ void IncDecDropDown::paint(Graphics &g)
     const float buttonWidth = width / 4.0f;
 
     const float cornerSize = 5.0f;
-    const float outlineThickness = this->isEnabled() ? (this->isMouseOver() ? 2.5f : 2.0f) : 1.7f;
+    const float outlineThickness = this->isEnabled() ? 2.35f : 1.7f;
     const float halfThickness = outlineThickness * 0.5f;
     Colour baseColour(this->isEnabled() ? Colours::white : Colours::lightgrey);
 

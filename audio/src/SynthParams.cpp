@@ -40,7 +40,7 @@ const Colour SynthParams::lfoColour (0xff855050);
 const Colour SynthParams::filterColour (0xff5b7a47);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
-const Colour SynthParams::onOffSwitchEnabled (114, 136, 98);
+const Colour SynthParams::onOffSwitchEnabled (96, 192, 96);
 const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
 const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
@@ -213,7 +213,7 @@ SynthParams::Lfo::Lfo()
     , tempSync("TempoSync", "tempoSyncSwitch", "TempoSync", eOnOffToggle::eOff, onoffnames)
     , lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
     , lfoDottedLength("Lfo Dotted Note Length", "lfoDottedLength", "Lfo Dotted Length", eOnOffToggle::eOff, onoffnames)
-    , noteLength("Note Length", "notelength", "Note Length", "", 1.f, 32.f, 4.f)
+    , noteLength("Note Length", "notelength", "Note Length", "", 1.f, 64.f, 4.f)
     , fadeIn("FadeIn", "lfoFadein", "fade-in", "s", 0.f, 10.f, 0.f)
     // ModAmounts and Sources
     , freqModAmount1("FreqModAmount1", "LFOFreqModAmount1", "Freq ModAmount 1", "oct", 0.f, 8.f, 4.0f)

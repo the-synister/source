@@ -69,36 +69,19 @@ FxPanel::FxPanel (SynthParams &p)
     syncToggle->addListener (this);
     syncToggle->setColour (ToggleButton::textColourId, Colours::white);
 
-    addAndMakeVisible (dividend = new IncDecDropDown ("delayDividend"));
-    dividend->setTooltip (TRANS("Dividend"));
-    dividend->setEditableText (false);
-    dividend->setJustificationType (Justification::centred);
-    dividend->setTextWhenNothingSelected (TRANS("1"));
-    dividend->setTextWhenNoChoicesAvailable (TRANS("1"));
-    dividend->addItem (TRANS("1"), 1);
-    dividend->addItem (TRANS("2"), 2);
-    dividend->addItem (TRANS("3"), 3);
-    dividend->addItem (TRANS("4"), 4);
-    dividend->addItem (TRANS("5"), 5);
-    dividend->addItem (TRANS("6"), 6);
-    dividend->addItem (TRANS("7"), 7);
-    dividend->addItem (TRANS("8"), 8);
-    dividend->addListener (this);
-
     addAndMakeVisible (divisor = new IncDecDropDown ("delayDivisor"));
     divisor->setTooltip (TRANS("Divisor"));
     divisor->setEditableText (false);
     divisor->setJustificationType (Justification::centred);
     divisor->setTextWhenNothingSelected (TRANS("4"));
     divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
-    divisor->addItem (TRANS("1"), 1);
-    divisor->addItem (TRANS("2"), 2);
-    divisor->addItem (TRANS("3"), 3);
-    divisor->addItem (TRANS("4"), 4);
-    divisor->addItem (TRANS("8"), 5);
-    divisor->addItem (TRANS("16"), 6);
-    divisor->addItem (TRANS("32"), 7);
-    divisor->addItem (TRANS("64"), 8);
+    divisor->addItem (TRANS("1/1"), 1);
+    divisor->addItem (TRANS("1/2"), 2);
+    divisor->addItem (TRANS("1/4"), 3);
+    divisor->addItem (TRANS("1/8"), 4);
+    divisor->addItem (TRANS("1/16"), 5);
+    divisor->addItem (TRANS("1/32"), 6);
+    divisor->addItem (TRANS("1/64"), 7);
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
@@ -151,21 +134,14 @@ FxPanel::FxPanel (SynthParams &p)
 	registerSlider(cutoffSlider, &params.delayCutoff);
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
-    /**
-
-     // Update sync param value
-     if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
-     params.delayTriplet.setStep(eOnOffToggle::eOn);
-     }
-     else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
-
-
-     */
     registerToggle(revTggl, &params.delayReverse);
     registerToggle(filtTggl, &params.delayRecordFilter);
     registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));
     registerToggle(tripTggl, &params.delayTriplet);
     registerToggle(dottedNotes, &params.delayDottedLength);
+
+    registerDropdown(divisor, &params.delayDivisor);
+
     onOffSwitchChanged();
     //[/UserPreSize]
 
@@ -197,7 +173,6 @@ FxPanel::~FxPanel()
     dryWetSlider = nullptr;
     timeSlider = nullptr;
     syncToggle = nullptr;
-    dividend = nullptr;
     divisor = nullptr;
     cutoffSlider = nullptr;
     tripTggl = nullptr;
@@ -234,15 +209,14 @@ void FxPanel::resized()
     feedbackSlider->setBounds (173, 38, 64, 64);
     dryWetSlider->setBounds (17, 38, 64, 64);
     timeSlider->setBounds (95, 38, 64, 64);
-    syncToggle->setBounds (100, 108, 65, 30);
-    dividend->setBounds (17, 111, 64, 18);
-    divisor->setBounds (17, 135, 64, 18);
+    syncToggle->setBounds (39, 102, 65, 30);
+    divisor->setBounds (26, 138, 85, 24);
     cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (176, 108, 65, 30);
-    filtTggl->setBounds (100, 141, 100, 30);
-    revTggl->setBounds (252, 108, 65, 30);
+    tripTggl->setBounds (122, 102, 65, 30);
+    filtTggl->setBounds (214, 138, 100, 30);
+    revTggl->setBounds (214, 102, 65, 30);
     onOffSwitch->setBounds (17, 2, 40, 30);
-    dottedNotes->setBounds (235, 141, 64, 30);
+    dottedNotes->setBounds (122, 138, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -322,18 +296,13 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
+    handleDropdown(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
-    if (comboBoxThatHasChanged == dividend)
-    {
-        //[UserComboBoxCode_dividend] -- add your combo box handling code here..
-		params.delayDividend.set(dividend->getText().getFloatValue());
-        //[/UserComboBoxCode_dividend]
-    }
-    else if (comboBoxThatHasChanged == divisor)
+    if (comboBoxThatHasChanged == divisor)
     {
         //[UserComboBoxCode_divisor] -- add your combo box handling code here..
-		params.delayDivisor.set(divisor->getText().getFloatValue());
+		//params.delayDivisor.set(divisor->getText().getFloatValue());
         //[/UserComboBoxCode_divisor]
     }
 
@@ -350,7 +319,6 @@ void FxPanel::updateToggleState()
     tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-    dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
 
     if (divisor->isEnabled()) {
         params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
@@ -377,7 +345,6 @@ void FxPanel::onOffSwitchChanged()
 	{
 		timeSlider->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOff);
 		divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-		dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
         tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
         dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
     }
@@ -386,7 +353,6 @@ void FxPanel::onOffSwitchChanged()
 	{
 		timeSlider->setEnabled(0);
 		divisor->setEnabled(0);
-		dividend->setEnabled(0);
 		tripTggl->setEnabled(0);
         dottedNotes->setEnabled(0);
 	}
@@ -435,16 +401,12 @@ BEGIN_JUCER_METADATA
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="100 108 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="39 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
-  <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="17 111 64 18"
-            tooltip="Dividend" editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;5&#10;6&#10;7&#10;8"
-            textWhenNonSelected="1" textWhenNoItems="1"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="17 135 64 18"
-            tooltip="Divisor" editable="0" layout="36" items="1&#10;2&#10;3&#10;4&#10;8&#10;16&#10;32&#10;64"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="26 138 85 24"
+            tooltip="Divisor" editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 38 64 64"
@@ -453,15 +415,15 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="176 108 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="122 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="100 141 100 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="214 138 100 30" txtcol="ffffffff"
                 buttonText="Record Cutoff" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="252 108 65 30" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="214 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
@@ -471,7 +433,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
-                virtualName="" explicitFocusOrder="0" pos="235 141 64 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="122 138 64 30" txtcol="ffffffff"
                 buttonText="Dotted" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>

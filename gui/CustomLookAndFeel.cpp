@@ -84,7 +84,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     }
     else
     {
-        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        g.setColour(s.isEnabled() ? Colours::white : Colours::white.withAlpha(0.5f));
         r = radiusSource2;
     }
 

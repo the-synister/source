@@ -160,13 +160,6 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
 
 
     //[UserPreSize]
-    registerSaturnSource(attackTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(attackTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-
     registerSlider(attackTime1, &env.attack, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(decayTime1, &env.decay, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(sustainLevel1, &env.sustain, std::bind(&Env1Panel::updateCurve, this));
@@ -174,13 +167,18 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     registerSlider(attackShape1, &env.attackShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(decayShape1, &env.decayShape, std::bind(&Env1Panel::updateCurve, this));
     registerSlider(releaseShape1, &env.releaseShape, std::bind(&Env1Panel::updateCurve, this));
-
     registerSlider(speedMod1, &env.speedModAmount1);
     registerSlider(speedMod2, &env.speedModAmount2);
 
+    registerSaturnSource(attackTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(attackTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime1, speedMod1, &env.speedModSrc1, &env.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime1, speedMod2, &env.speedModSrc2, &env.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+
     fillModsourceBox(envSpeedModSrc1);
     fillModsourceBox(envSpeedModSrc2);
-
     registerCombobox(envSpeedModSrc1, &env.speedModSrc1, {attackTime1, decayTime1, releaseTime1});
     registerCombobox(envSpeedModSrc2, &env.speedModSrc2, {attackTime1, decayTime1, releaseTime1});
     //[/UserPreSize]
@@ -189,6 +187,8 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
 
 
     //[Constructor] You can add your own custom stuff here..
+    speedMod1->setAlwaysOnTop(true);
+    speedMod2->setAlwaysOnTop(true);
     //[/Constructor]
 }
 
