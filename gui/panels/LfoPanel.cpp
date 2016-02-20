@@ -150,7 +150,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr});
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
-    registerDropdown(noteLength, &lfo.noteLength);
+    registerNoteLength(noteLength, &lfo.noteLength);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
     registerToggle(triplets, &lfo.lfoTriplets);
@@ -305,7 +305,7 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     if (comboBoxThatHasChanged == noteLength)
     {
-        handleDropdown(comboBoxThatHasChanged);
+        handleNoteLength(comboBoxThatHasChanged);
     }
     else
     {

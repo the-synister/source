@@ -140,7 +140,7 @@ FxPanel::FxPanel (SynthParams &p)
     registerToggle(tripTggl, &params.delayTriplet);
     registerToggle(dottedNotes, &params.delayDottedLength);
 
-    registerDropdown(divisor, &params.delayDivisor);
+    registerNoteLength(divisor, &params.delayDivisor);
 
     onOffSwitchChanged();
     //[/UserPreSize]
@@ -296,13 +296,12 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    handleDropdown(comboBoxThatHasChanged);
+    handleNoteLength(comboBoxThatHasChanged);
     //[/UsercomboBoxChanged_Pre]
 
     if (comboBoxThatHasChanged == divisor)
     {
         //[UserComboBoxCode_divisor] -- add your combo box handling code here..
-		//params.delayDivisor.set(divisor->getText().getFloatValue());
         //[/UserComboBoxCode_divisor]
     }
 

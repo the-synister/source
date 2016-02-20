@@ -27,6 +27,7 @@ public:
 protected:
     typedef std::function<void()> tHookFn;
 
+    //=======================================================================================================================================
     void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn(), Param *min = nullptr, Param *max = nullptr) {
         sliderReg[slider] = {p, min, max};
         if (hook) {
@@ -60,105 +61,6 @@ protected:
         slider->initTextBox();
     }
 
-    // NOTE: sourceNumber values 1 or 2
-    // TODO: change it to an enum?
-    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber
-        , MouseOverKnob::modAmountConversion convType = MouseOverKnob::modAmountConversion::noConversion) {
-        dest->setModSource(modSource, modAmount, sourceNumber, convType);
-
-        auto temp = saturnReg.find(dest);
-        if (temp == saturnReg.end()) {
-            std::array<Slider*, 2> newSource = {nullptr};
-            newSource[sourceNumber-1] = source;
-            saturnReg[dest] = newSource;
-        } else {
-            temp->second[sourceNumber-1] = source;
-        }
-    }
-
-    void updateDirtySliders() {
-        for (auto s2p : sliderReg) {
-            if (s2p.second[0]->isUIDirty() && !s2p.second[1] && !s2p.second[2]) {
-                s2p.first->setValue(s2p.second[0]->getUI());
-                if (s2p.second[0]->hasLabels()) {
-                    s2p.first->setName(s2p.second[0]->getUIString());
-                }
-
-                auto itHook = postUpdateHook.find(s2p.first);
-                if (itHook != postUpdateHook.end()) {
-                    itHook->second();
-                }
-            }
-
-            // if min and max params are set
-            if (s2p.second[1])  {
-                if (s2p.second[1]->isUIDirty()) {
-                    s2p.first->setMinValue(s2p.second[1]->getUI());
-                }
-            }
-            if (s2p.second[2]) {
-                if (s2p.second[2]->isUIDirty()) {
-                    s2p.first->setMaxValue(s2p.second[2]->getUI());
-                }
-            }
-        }
-    }
-
-    // Callback function in case there are any dirty saturn glows
-    void updateDirtySaturns() {
-        // iterate over all the registered saturn glows
-        for (auto dest2saturn : saturnReg) {
-            // find the mod source from the slider register
-            for (int i = 0; i < 2; ++i) {
-                auto modSource = sliderReg.find(dest2saturn.second[i]);
-
-                //if the mod source is Dirty repaint
-                if (modSource != sliderReg.end() && modSource->second[0]->isUIDirty()) {
-                    dest2saturn.first->repaint();
-                }
-            }
-        }
-    }
-
-    void updateDirtyBoxes() {
-        for (auto c2p : comboboxReg) {
-            if (c2p.second->isUIDirty()) {
-                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
-
-                auto c2s = saturnSourceReg.find(c2p.first);
-                if (c2s != saturnSourceReg.end()) {
-                    for (int i = 0; i < 3; ++i ) {
-                        if (c2s->second[i]) {
-                            c2s->second[i]->repaint();
-                        }
-                    }
-
-                }
-
-                auto itHook = postUpdateHook.find(c2p.first);
-                if (itHook != postUpdateHook.end()) {
-                    itHook->second();
-                }
-            }
-        }
-
-    }
-
-    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
-    void updateDirtyDropdowns()
-    {
-        for (auto d2p : dropdownReg) {
-            if (d2p.second->isUIDirty()) {
-                d2p.first->setText("1/" + String(d2p.second->getUI()));
-            }
-
-            auto itHook = postUpdateHook.find(d2p.first);
-            if (itHook != postUpdateHook.end()) {
-                itHook->second();
-            }
-        }
-    }
-
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
@@ -168,7 +70,7 @@ protected:
                     it->first->setName(it->second[0]->getUIString());
                 }
             }
-            
+
             if (it->second[1] && it->second[2]) {
                 it->second[1]->setUI(static_cast<float>(it->first->getMinValue()));
                 it->second[2]->setUI(static_cast<float>(it->first->getMaxValue()));
@@ -193,7 +95,71 @@ protected:
             return false;
         }
     }
+
+    void updateDirtySliders() {
+        for (auto s2p : sliderReg) {
+            if (s2p.second[0]->isUIDirty() && !s2p.second[1] && !s2p.second[2]) {
+                s2p.first->setValue(s2p.second[0]->getUI());
+                if (s2p.second[0]->hasLabels()) {
+                    s2p.first->setName(s2p.second[0]->getUIString());
+                }
+
+                auto itHook = postUpdateHook.find(s2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
+
+            // if min and max params are set
+            if (s2p.second[1]) {
+                if (s2p.second[1]->isUIDirty()) {
+                    s2p.first->setMinValue(s2p.second[1]->getUI());
+                }
+            }
+            if (s2p.second[2]) {
+                if (s2p.second[2]->isUIDirty()) {
+                    s2p.first->setMaxValue(s2p.second[2]->getUI());
+                }
+            }
+        }
+    }
+
+    //=======================================================================================================================================
+
+    // NOTE: sourceNumber values 1 or 2
+    // TODO: change it to an enum?
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber
+        , MouseOverKnob::modAmountConversion convType = MouseOverKnob::modAmountConversion::noConversion) {
+        dest->setModSource(modSource, modAmount, sourceNumber, convType);
+
+        auto temp = saturnReg.find(dest);
+        if (temp == saturnReg.end()) {
+            std::array<Slider*, 2> newSource = {nullptr};
+            newSource[sourceNumber-1] = source;
+            saturnReg[dest] = newSource;
+        } else {
+            temp->second[sourceNumber-1] = source;
+        }
+    }
+
+    // Callback function in case there are any dirty saturn glows
+    void updateDirtySaturns() {
+        // iterate over all the registered saturn glows
+        for (auto dest2saturn : saturnReg) {
+            // find the mod source from the slider register
+            for (int i = 0; i < 2; ++i) {
+                auto modSource = sliderReg.find(dest2saturn.second[i]);
+
+                //if the mod source is Dirty repaint
+                if (modSource != sliderReg.end() && modSource->second[0]->isUIDirty()) {
+                    dest2saturn.first->repaint();
+                }
+            }
+        }
+    }
     
+    //=======================================================================================================================================
+
     void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
     {
         toggleReg[toggle] = p;
@@ -236,30 +202,86 @@ protected:
         }
     }
 
-    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
-    void registerDropdown(ComboBox* dropdown, Param* p, const tHookFn hook = tHookFn())
+    //=======================================================================================================================================
+
+    void registerDropDowns(ComboBox* dropDown, Param* p, const tHookFn hook = tHookFn())
     {
-        dropdownReg[dropdown] = p;
+        dropDownReg[dropDown] = p;
 
         if (hook) {
-            postUpdateHook[dropdown] = hook;
+            postUpdateHook[dropDown] = hook;
+        }
+    }
+
+    bool handleDropDowns(ComboBox* dropDownThatWasChanged)
+    {
+        auto it = dropDownReg.find(dropDownThatWasChanged);
+
+        if (it != dropDownReg.end()) {
+            it->second->setUI(dropDownThatWasChanged->getText().getFloatValue());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    void updateDirtyDropDowns()
+    {
+        for (auto d2p : dropDownReg) {
+            if (d2p.second->isUIDirty()) {
+                d2p.first->setText(String(d2p.second->getUI()));
+            }
+
+            auto itHook = postUpdateHook.find(d2p.first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+        }
+    }
+
+    //=======================================================================================================================================
+
+    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
+    void registerNoteLength(ComboBox* noteLengthBox, Param* p, const tHookFn hook = tHookFn())
+    {
+        noteLengthReg[noteLengthBox] = p;
+
+        if (hook) {
+            postUpdateHook[noteLengthBox] = hook;
         }
     }
 
     // TODO: Change for ParamStepped?
-    bool handleDropdown(ComboBox* dropdownThatWasChanged)
+    bool handleNoteLength(ComboBox* noteLengthThatWasChanged)
     {
-        auto it = dropdownReg.find(dropdownThatWasChanged);
+        auto it = noteLengthReg.find(noteLengthThatWasChanged);
 
-        if (it != dropdownReg.end()) {
-            it->second->setUI(static_cast<float>(std::pow(2,it->first->getSelectedItemIndex())));
+        if (it != noteLengthReg.end()) {
+            it->second->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
+
+    // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
+    void updateDirtyNoteLength()
+    {
+        for (auto d2p : noteLengthReg) {
+            if (d2p.second->isUIDirty()) {
+                d2p.first->setText("1/" + String(d2p.second->getUI()));
+            }
+
+            auto itHook = postUpdateHook.find(d2p.first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+        }
+    }
+
+    //=======================================================================================================================================
 
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, std::array<MouseOverKnob*, 3> modDest = {nullptr}, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
@@ -284,12 +306,10 @@ protected:
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
 
-            if (it->second->getStep() == eModSource::eNone)
-            {
+            if (it->second->getStep() == eModSource::eNone) {
                 it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(0.5f));
             }
-            else
-            {
+            else {
                 it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(1.0f));
             }
             it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
@@ -305,7 +325,6 @@ protected:
                     }
                 }
             }
-
             return true;
         }
         else {
@@ -313,18 +332,43 @@ protected:
         }
     }
 
-    void fillModsourceBox(ComboBox* box) {
-        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
-            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
+    void updateDirtyBoxes() {
+        for (auto c2p : comboboxReg) {
+            if (c2p.second->isUIDirty()) {
+                c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
+
+                auto c2s = saturnSourceReg.find(c2p.first);
+                if (c2s != saturnSourceReg.end()) {
+                    for (int i = 0; i < 3; ++i) {
+                        if (c2s->second[i]) {
+                            c2s->second[i]->repaint();
+                        }
+                    }
+                }
+
+                auto itHook = postUpdateHook.find(c2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
         }
     }
+
+    //=======================================================================================================================================
 
     virtual void timerCallback() override {
         updateDirtySaturns();
         updateDirtySliders();
         updateDirtyBoxes();
-        updateDirtyDropdowns();
+        updateDirtyNoteLength();
+        updateDirtyDropDowns();
         updateDirtyToggles();
+    }
+
+    void fillModsourceBox(ComboBox* box) {
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
+        }
     }
 
     /**
@@ -357,7 +401,8 @@ protected:
     std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
-    std::map<ComboBox*, Param*> dropdownReg;
+    std::map<ComboBox*, Param*> noteLengthReg;
+    std::map<ComboBox*, Param*> dropDownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg; // 2 for each mod amount
     std::map<ComboBox*, std::array<MouseOverKnob*, 3>> saturnSourceReg; // there are up to 3, because of the ADR
     SynthParams &params;

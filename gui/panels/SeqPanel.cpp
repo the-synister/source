@@ -358,12 +358,9 @@ SeqPanel::SeqPanel (SynthParams &p)
     registerToggle(triplets, &params.seqTriplets);
     registerToggle(dottedNotes, &params.seqDottedLength);
 
-    registerDropdown(seqStepSpeed, &params.seqStepSpeed);
-    registerDropdown(seqStepLength, &params.seqStepLength);
-
-    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
-    seqPlay->setToggleState(isPlaying(), dontSendNotification);
-    genRandom->setAlwaysOnTop(true);
+    registerDropDowns(seqNumSteps, &params.seqNumSteps);
+    registerNoteLength(seqStepSpeed, &params.seqStepSpeed);
+    registerNoteLength(seqStepLength, &params.seqStepLength);
     //[/UserPreSize]
 
     setSize (800, 300);
@@ -375,6 +372,8 @@ SeqPanel::SeqPanel (SynthParams &p)
     sequentialPic = ImageCache::getFromMemory(BinaryData::seqSequential_png, BinaryData::seqSequential_pngSize);
     upDownPic = ImageCache::getFromMemory(BinaryData::seqUpDown_png, BinaryData::seqUpDown_pngSize);
     randomPic = ImageCache::getFromMemory(BinaryData::seqRandom_png, BinaryData::seqRandom_pngSize);
+
+    genRandom->setAlwaysOnTop(true);
     //[/Constructor]
 }
 
@@ -665,9 +664,13 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
 void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    if (comboBoxThatHasChanged != seqNumSteps)
+    if (comboBoxThatHasChanged == seqNumSteps)
     {
-        handleDropdown(comboBoxThatHasChanged);
+        handleDropDowns(comboBoxThatHasChanged);
+    }
+    else
+    {
+        handleNoteLength(comboBoxThatHasChanged);
     }
     //[/UsercomboBoxChanged_Pre]
 
@@ -684,7 +687,6 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     else if (comboBoxThatHasChanged == seqNumSteps)
     {
         //[UserComboBoxCode_seqNumSteps] -- add your combo box handling code here..
-        params.seqNumSteps.set(jmax(1.0f, jmin(comboBoxThatHasChanged->getText().getFloatValue(), 8.0f)));
         //[/UserComboBoxCode_seqNumSteps]
     }
 
