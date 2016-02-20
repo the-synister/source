@@ -68,6 +68,9 @@ public:
 
     static const char* getModSrcName(int index);
 
+	Param masterAmp; //!< master volume
+	Param masterPan; //!< master pan
+
     Param freq;  //!< master tune in Hz
 
                        //Param lfoChorfreq; // delay-lfo frequency in Hz

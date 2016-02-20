@@ -84,6 +84,31 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (foldableComponent = new FoldablePanel ("foldablePanels"));
 
+    addAndMakeVisible (masterAmp = new Slider ("amp"));
+    masterAmp->setRange (-96, 12, 0);
+    masterAmp->setSliderStyle (Slider::LinearBar);
+    masterAmp->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    masterAmp->setColour (Slider::backgroundColourId, Colour (0x00ffffff));
+    masterAmp->setColour (Slider::thumbColourId, Colours::grey);
+    masterAmp->setColour (Slider::trackColourId, Colours::white);
+    masterAmp->setColour (Slider::rotarySliderFillColourId, Colours::blue);
+    masterAmp->setColour (Slider::textBoxTextColourId, Colours::white);
+    masterAmp->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    masterAmp->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    masterAmp->addListener (this);
+
+    addAndMakeVisible (masterPan = new Slider ("pan"));
+    masterPan->setRange (-100, 100, 0);
+    masterPan->setSliderStyle (Slider::LinearBar);
+    masterPan->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    masterPan->setColour (Slider::thumbColourId, Colour (0xff6c788c));
+    masterPan->setColour (Slider::trackColourId, Colours::white);
+    masterPan->setColour (Slider::rotarySliderFillColourId, Colours::blue);
+    masterPan->setColour (Slider::textBoxTextColourId, Colours::white);
+    masterPan->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    masterPan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
+    masterPan->addListener (this);
+
 
     //[UserPreSize]
     freq->setValue(params.freq.getUI());
@@ -132,6 +157,8 @@ PlugUI::~PlugUI()
     bpmLabel = nullptr;
     bpmDisplay = nullptr;
     foldableComponent = nullptr;
+    masterAmp = nullptr;
+    masterPan = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -162,6 +189,8 @@ void PlugUI::resized()
     bpmLabel->setBounds (222, 6, 58, 24);
     bpmDisplay->setBounds (274, 6, 64, 24);
     foldableComponent->setBounds (0, 72, 800, 624);
+    masterAmp->setBounds (368, 8, 200, 60);
+    masterPan->setBounds (592, 8, 125, 60);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -176,6 +205,18 @@ void PlugUI::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_freq] -- add your slider handling code here..
         params.freq.setUI(static_cast<float>(freq->getValue()));
         //[/UserSliderCode_freq]
+    }
+    else if (sliderThatWasMoved == masterAmp)
+    {
+        //[UserSliderCode_masterAmp] -- add your slider handling code here..
+		params.masterAmp.setUI(static_cast<float>(masterAmp->getValue()));
+        //[/UserSliderCode_masterAmp]
+    }
+    else if (sliderThatWasMoved == masterPan)
+    {
+        //[UserSliderCode_masterPan] -- add your slider handling code here..
+		params.masterPan.setUI(static_cast<float>(masterPan->getValue()));
+        //[/UserSliderCode_masterPan]
     }
 
     //[UsersliderValueChanged_Post]
@@ -266,6 +307,18 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
+  <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="Slider"
+          explicitFocusOrder="0" pos="368 8 200 60" bkgcol="ffffff" thumbcol="ff808080"
+          trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
+          textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
+          int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="Slider"
+          explicitFocusOrder="0" pos="592 8 125 60" thumbcol="ff6c788c"
+          trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
+          textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
+          int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

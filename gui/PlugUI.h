@@ -78,6 +78,8 @@ private:
     ScopedPointer<Label> bpmLabel;
     ScopedPointer<Label> bpmDisplay;
     ScopedPointer<FoldablePanel> foldableComponent;
+    ScopedPointer<Slider> masterAmp;
+    ScopedPointer<Slider> masterPan;
 
 
     //==============================================================================
