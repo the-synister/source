@@ -279,9 +279,8 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 	// master pan
 	if (buffer.getNumChannels() == 2)
 	{
-		const float PI = 3.1415927;
 		// Calculation of channel gain for constant power pan
-		float p = (PI * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
+		float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
 		float rightGain = sin(p);
 		float leftGain = cos(p);
 		//linear pan

@@ -48,6 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateWFShapeControls();
+    void updateModAmountKnobs();
     void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch);
     //[/UserMethods]
 

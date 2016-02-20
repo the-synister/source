@@ -41,6 +41,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     const float radiusSource2 = jmin(width / 2.0f, height / 2.0f);
     const float radiusKnob = radiusSource2 * knobMargin;
     const float radiusSource1 = radiusKnob + (radiusSource2 - radiusKnob) / 2.0f;
+    Colour baseColour(s.findColour(Slider::rotarySliderFillColourId));
 
     Path knob;
     float r;
@@ -77,14 +78,13 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
         knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
         g.fillPath(knob);
 
-        Colour baseColour(s.findColour(Slider::rotarySliderFillColourId));
         g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         knob.clear();
         r = radiusKnob * knobMargin;
     }
     else
     {
-        g.setColour(s.isEnabled() ? Colours::white : Colours::white.withAlpha(0.5f));
+        g.setColour(s.isEnabled() ? baseColour : baseColour.withAlpha(0.5f));
         r = radiusSource2;
     }
 
@@ -158,7 +158,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
 
     // draw saturns
     Path saturn;
-    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : Colours::lightgrey);
+    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : SynthParams::getModSourceColour(source).withAlpha(0.5f));
     saturn.addPieSegment(centreX - radius, centreY - radius, radius * 2.0f, radius * 2.0f, modStartAngle, modEndAngle, innerCircleSize * 1.03f);
     g.fillPath(saturn);
 }
@@ -179,9 +179,9 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
         Colour baseColour(s.findColour(Slider::trackColourId));
         g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
 
+        // used for pan
         if (s.getMinimum() == -s.getMaximum())
         {
-            // TODO: wenn berhaupt am ende noch relevant ist, ansonsten lschen
             const float middleHeight = boxHeight * 0.65f;
             // create left and right part of pan
             path.addQuadrilateral(posX, posY,
@@ -198,7 +198,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
             path.clear();
 
             g.setColour(s.findColour(Slider::thumbColourId));
-            const float thumbWidthHalf = boxWidth / 15.0f;
+            const float thumbWidthHalf = boxWidth / 12.0f;
 
             // create left and right part of pan thumb
             offset1 = -abs(sliderPos - thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
@@ -218,15 +218,18 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
         }
         else
         {
+            // draw vol background
+            g.setColour(isMouseOver ? Colours::grey.brighter(0.2f) : Colours::grey);
+            path.addTriangle(posX + boxWidth, posY, posX, posY + boxHeight, posX + boxWidth, posY + boxHeight);
+            //g.strokePath(path, PathStrokeType::PathStrokeType(isMouseOver ? 1.4f : 0.7f));
+            g.fillPath(path);
+
             // fill vol triangle
+            g.setColour(Colours::white);
+            path.clear();
             offset1 = boxHeight - boxHeight * (sliderPos / (posX + boxWidth));
             path.addTriangle(posX, posY + boxHeight, sliderPos, posY + boxHeight, sliderPos, posY + offset1);
             g.fillPath(path);
-
-            // draw outline
-            path.clear();
-            path.addTriangle(posX + boxWidth, posY, posX, posY + boxHeight, posX + boxWidth, posY + boxHeight);
-            g.strokePath(path, PathStrokeType::PathStrokeType(isMouseOver ? 1.4f : 0.7f));
         }
     }
     else
@@ -275,7 +278,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
 
     Colour baseColour(s.findColour(Slider::thumbColourId));
 
-    // draw thumb at curretn position
+    // draw thumb at current position
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
     {
         g.setColour(s.isEnabled()? (s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));

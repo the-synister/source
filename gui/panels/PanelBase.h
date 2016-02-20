@@ -219,6 +219,11 @@ protected:
 
         if (it != dropDownReg.end()) {
             it->second->setUI(dropDownThatWasChanged->getText().getFloatValue());
+
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
             return true;
         }
         else {
@@ -259,6 +264,11 @@ protected:
 
         if (it != noteLengthReg.end()) {
             it->second->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
+
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
             return true;
         }
         else {
@@ -315,15 +325,19 @@ protected:
             it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
             it->first->setText(SynthParams::getShortModSrcName(it->first->getSelectedId() - COMBO_OFS), dontSendNotification);
 
-            auto temp = saturnSourceReg.find(comboboxThatWasChanged);
-
             // update saturn
+            auto temp = saturnSourceReg.find(comboboxThatWasChanged);
             if (temp != saturnSourceReg.end()) {
                 for (int i = 0; i < 3; ++i ) {
                     if (temp->second[i]) {
                         temp->second[i]->repaint();
                     }
                 }
+            }
+
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
             }
             return true;
         }

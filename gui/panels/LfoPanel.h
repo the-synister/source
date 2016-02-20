@@ -47,9 +47,9 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    String getNoteLengthAsString();
     void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
 	void updateLfoSyncToggle();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);

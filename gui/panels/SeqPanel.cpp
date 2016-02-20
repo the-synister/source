@@ -303,7 +303,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     playModes->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("Dotted"));
+    dottedNotes->setButtonText (TRANS("dot"));
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -946,7 +946,7 @@ BEGIN_JUCER_METADATA
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
                 virtualName="" explicitFocusOrder="0" pos="326 121 64 30" txtcol="ffffffff"
-                buttonText="Dotted" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 

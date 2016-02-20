@@ -271,25 +271,25 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
     fillModsourceBox(pitchModSrc1);
     fillModsourceBox(pitchModSrc2);
-    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr});
-    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr});
+    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
 
     fillModsourceBox(widthModSrc1);
     fillModsourceBox(widthModSrc2);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, nullptr, nullptr});
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, nullptr, nullptr});
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, nullptr, nullptr});
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, nullptr, nullptr});
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
 
     fillModsourceBox(panModSrc1);
     fillModsourceBox(panModSrc2);
-    registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr});
-    registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr});
+    registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
 
     fillModsourceBox(gainModSrc1);
     fillModsourceBox(gainModSrc2);
-    registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr});
-    registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr});
+    registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -374,7 +374,7 @@ void OscPanel::resized()
     pitchModAmount1->setBounds (65, 100, 18, 18);
     ctune1->setBounds (8, 100, 64, 64);
     waveformVisual->setBounds (75, 162, 123, 72);
-    waveformSwitch->setBounds (198, 169, 40, 54);
+    waveformSwitch->setBounds (195, 175, 40, 44);
     widthModAmount1->setBounds (184, 100, 18, 18);
     pitchModSrc1->setBounds (88, 100, 40, 18);
     pitchModSrc2->setBounds (88, 124, 40, 18);
@@ -543,19 +543,32 @@ void OscPanel::updateWFShapeControls()
 
     // TODO: replace with below after bug fix
     trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-    widthModAmount1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
-    widthModAmount2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
 
     // TODO: mouseOver widthKnob leads to redrawing parts of waveformVisual -> bad if is noise
     //       should save last noise and recalculate only if eOscWaves has changed or so
     //trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw || eWaveformKey == eOscWaves::eOscNoise);
     //trngAmount->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
-    //widthModAmount1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
-    //widthModAmount2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+
+    widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
+    widthModSrc1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    widthModSrc2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
 
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
+}
+
+void OscPanel::updateModAmountKnobs()
+{
+    gainModAmount1->setEnabled(osc.gainModSrc1.getStep() != eModSource::eNone);
+    gainModAmount2->setEnabled(osc.gainModSrc2.getStep() != eModSource::eNone);
+    panModAmount1->setEnabled(osc.panModSrc1.getStep() != eModSource::eNone);
+    panModAmount2->setEnabled(osc.panModSrc2.getStep() != eModSource::eNone);
+    pitchModAmount1->setEnabled(osc.pitchModSrc1.getStep() != eModSource::eNone);
+    pitchModAmount2->setEnabled(osc.pitchModSrc2.getStep() != eModSource::eNone);
+    widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
 }
 
 void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
@@ -563,9 +576,9 @@ void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
 
-    g.drawImageWithin(waveforms.getClippedImage(noiseFrame), centerX - 15, _waveformSwitch->getY() - 20, 30, 20, RectanglePlacement::centred);
-    g.drawImageWithin(waveforms.getClippedImage(sawFrame), _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2 + 10, centerY - 10, 30, 20, RectanglePlacement::centred);
-    g.drawImageWithin(waveforms.getClippedImage(squareFrame), centerX - 15, _waveformSwitch->getY() + _waveformSwitch->getHeight() - 2, 30, 20, RectanglePlacement::centred);
+    g.drawImageWithin(waveforms.getClippedImage(noiseFrame), centerX - 15, _waveformSwitch->getY() - 22, 30, 20, RectanglePlacement::centred);
+    g.drawImageWithin(waveforms.getClippedImage(sawFrame), _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2 + 12, centerY - 10, 30, 20, RectanglePlacement::centred);
+    g.drawImageWithin(waveforms.getClippedImage(squareFrame), centerX - 15, _waveformSwitch->getY() + _waveformSwitch->getHeight() - 1, 30, 20, RectanglePlacement::centred);
 }
 //[/MiscUserCode]
 
@@ -625,7 +638,7 @@ BEGIN_JUCER_METADATA
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 162 123 72"
                     class="Component" params="osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
-          virtualName="" explicitFocusOrder="0" pos="198 169 40 54" thumbcol="ff6c788c"
+          virtualName="" explicitFocusOrder="0" pos="195 175 40 44" thumbcol="ff6c788c"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>

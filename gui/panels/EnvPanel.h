@@ -48,6 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateCurve();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);

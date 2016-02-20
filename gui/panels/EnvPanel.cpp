@@ -179,8 +179,8 @@ EnvPanel::EnvPanel (SynthParams &p)
 
     fillModsourceBox(envSpeedModSrc1);
     fillModsourceBox(envSpeedModSrc2);
-    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1, {attackTime, decayTime, releaseTime});
-    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2, {attackTime, decayTime, releaseTime});
+    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
+    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (266, 252);
@@ -356,6 +356,11 @@ void EnvPanel::updateCurve()
     repaint();
 }
 
+void EnvPanel::updateModAmountKnobs()
+{
+    speedMod1->setEnabled(envVol.speedModSrc1.getStep() != eModSource::eNone);
+    speedMod2->setEnabled(envVol.speedModSrc2.getStep() != eModSource::eNone);
+}
 //[/MiscUserCode]
 
 

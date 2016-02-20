@@ -233,12 +233,12 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     fillModsourceBox(resModSrc1);
     fillModsourceBox(resModSrc2);
 
-    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr});
-    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr});
-    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr});
-    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr});
-    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr});
-    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr});
+    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
 
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -445,20 +445,36 @@ void FiltPanel::onOffSwitchChanged()
 	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
 	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
+    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
+    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
+    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
+    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
 
 	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
 	ladderLabel->setColour(Label::textColourId, col);
 	bandpassLabel->setColour(Label::textColourId, col);
 	highpassLabel->setColour(Label::textColourId, col);
 	lowpassLabel->setColour(Label::textColourId, col);
-
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
+
+void FiltPanel::updateModAmountKnobs()
+{
+    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
+    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
+    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
+    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
+    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
 }
 //[/MiscUserCode]
 
@@ -506,7 +522,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
-  <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
+  <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
             virtualName="" explicitFocusOrder="0" pos="132 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"

@@ -128,7 +128,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoGain->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("Dotted"));
+    dottedNotes->setButtonText (TRANS("dot"));
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -146,8 +146,8 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     fillModsourceBox(freqModSrc1);
     fillModsourceBox(freqModSrc2);
     fillModsourceBox(lfoGain);
-    registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr});
-    registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr});
+    registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
+    registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     registerNoteLength(noteLength, &lfo.noteLength);
@@ -175,7 +175,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoFadeIn->setSkewFactorFromMidPoint(1);
     freqModAmount1->setAlwaysOnTop(true);
     freqModAmount2->setAlwaysOnTop(true);
-    lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour);
+    lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour.brighter(0.1f));
     //[/Constructor]
 }
 
@@ -341,19 +341,14 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-String LfoPanel::getNoteLengthAsString()
-{
-    return "1/" + String(lfo.noteLength.getUI());
-}
-
 void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
 
-    g.drawImageWithin(sineWave, _waveformSwitch->getX() - 20, centerY - 8, 19, 16, RectanglePlacement::centred); //19x16
+    g.drawImageWithin(sineWave, _waveformSwitch->getX() - 21, centerY - 8, 19, 16, RectanglePlacement::centred); //19x16
     g.drawImageWithin(squareWave, centerX - 9, _waveformSwitch->getY() - 15, 17, 15, RectanglePlacement::centred); // 17x15
-    g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 1, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
+    g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 2, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
@@ -365,9 +360,19 @@ void LfoPanel::updateLfoSyncToggle()
     triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
     dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
     freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
-	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+
+    freqModSrc1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
+    freqModSrc2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
+    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
 }
 
+void LfoPanel::updateModAmountKnobs()
+{
+    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+}
 //[/MiscUserCode]
 
 
@@ -436,7 +441,7 @@ BEGIN_JUCER_METADATA
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
                 virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
-                buttonText="Dotted" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 
