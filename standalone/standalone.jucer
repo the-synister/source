@@ -98,7 +98,6 @@
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
         <FILE id="nVIuVz" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
-        <FILE id="gk21NT" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="jXROwI" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>

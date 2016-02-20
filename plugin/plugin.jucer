@@ -109,7 +109,6 @@
         <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
         <FILE id="j131qu" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
-        <FILE id="P8Z4lI" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>

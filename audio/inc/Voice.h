@@ -23,19 +23,16 @@ public:
     , env2(p.env[0], p.env[0].sustain, getSampleRate())
     , env3(p.env[1], p.env[1].sustain, getSampleRate())
     , modMatrix(p.globalModMatrix)
-    , filterModBuffer(1, blockSize)
     , envToVolBuffer(1, blockSize)
     , env2Buffer(1, blockSize)
     , env3Buffer(1, blockSize)
     , zeroMod(0.f)
+    , totalVoiceSamples(0)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
     {
-        for (size_t l = 0; l < lfo.size(); ++l) {
-            lfoBuffers[l] = AudioSampleBuffer(1, blockSize);
-            lfo[l].totSamples = 0;
+        for (Lfo &l : lfo) {
+            l.audioBuffer = AudioSampleBuffer(1, blockSize);
         }
-        // set all to velocity so that the modulation matrix does not crash
-        //std::fill(modSources.begin(), modSources.end(), &currentVelocity);
         std::fill(modSources.begin(), modSources.end(), &zeroMod);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
@@ -50,9 +47,9 @@ public:
         modSources[eModSource::eModwheel] = &modWheelValue;
         modSources[eModSource::ePitchbend] = &pitchBend;
         // internal
-        modSources[eModSource::eLFO1] = lfoBuffers[0].getWritePointer(0);
-        modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
-        modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
+        modSources[eModSource::eLFO1] = lfo[0].audioBuffer.getWritePointer(0);
+        modSources[eModSource::eLFO2] = lfo[1].audioBuffer.getWritePointer(0);
+        modSources[eModSource::eLFO3] = lfo[2].audioBuffer.getWritePointer(0);
         modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
         modSources[eModSource::eEnv2] = env2Buffer.getWritePointer(0);
         modSources[eModSource::eEnv3] = env3Buffer.getWritePointer(0);
@@ -72,10 +69,7 @@ public:
     void startNote(int midiNoteNumber, float velocity,
         SynthesiserSound*, int currentPitchWheelPosition) override{
 
-        for (size_t l = 0; l < lfo.size(); ++l) {
-            lfo[l].totSamples = 0;
-        }
-
+        totalVoiceSamples = 0;
         // reset attackDecayCounter
         envToVolume.startEnvelope();
         env2.startEnvelope();
@@ -261,7 +255,8 @@ public:
                             currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
                         }
                         break;
-                        case eOscWaves::eOscSaw:{
+                        case eOscWaves::eOscSaw:
+                        {
                                 // In case of triangle modulation
                                 float deltaTr = osc[o].saw.trngAmount > .5f
                                     ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
@@ -303,31 +298,21 @@ public:
                             outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
                         }
                     }
-                    if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter() &&
-                        env2.getReleaseSamples() <= env2.getReleaseCounter() &&
-                        env3.getReleaseSamples() <= env3.getReleaseCounter()) {
+                    if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter()) {
                         // next osc 
                         break;
                     }
                 }
             }
 
-            // blockwise from here again:
-            if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter() &&
-                env2.getReleaseSamples() <= env2.getReleaseCounter() &&
-                env3.getReleaseSamples() <= env3.getReleaseCounter()) {
-
+            if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter()){
                 clearCurrentNote();
                 for (size_t l = 0; l < lfo.size(); ++l) {
                     lfo[l].sine.reset();
                     lfo[l].square.reset();
                 }
             }
-
-            for (size_t l = 0; l < lfo.size(); ++l) {
-                //Update of the total samples variable
-                lfo[l].totSamples += numSamples;
-            }
+            totalVoiceSamples += numSamples;
         }
     }
 
@@ -336,23 +321,22 @@ protected:
 
         // Variables
         const float sRate = static_cast<float>(getSampleRate());
+        int samplesFadeIn[3] = { 0,0,0 };
+        float lfoGain[3] = { 0.f,0.f,0.f };
 
         // Init
         for (size_t l = 0; l < lfo.size(); ++l) {
-            lfo[l].factorFadeIn = 1.f;
+            lfo[l].audioBuffer.clear();
             // Length in samples of the LFO fade in
-            lfo[l].samplesFadeIn = static_cast<int>(params.lfo[l].fadeIn.get() * sRate);
+            samplesFadeIn[l] = static_cast<int>(params.lfo[l].fadeIn.get() * sRate);
             // Lfo Gain
-            lfo[l].lfoGain = params.lfo[l].gainModSrc.get() == eModSource::eNone
+            lfoGain[l] = params.lfo[l].gainModSrc.get() == eModSource::eNone
             ? 1.f
                 : *(modSources[static_cast<int>(params.lfo[l].gainModSrc.get())]);
         }
 
         //clear the buffers
         modDestBuffer.clear();
-        lfoBuffers[0].clear();
-        lfoBuffers[1].clear();
-        lfoBuffers[2].clear();
         envToVolBuffer.clear();
         env2Buffer.clear();
         env3Buffer.clear();
@@ -362,9 +346,9 @@ protected:
             modDestinations[u] = modDestBuffer.getWritePointer(u);
         }
 
-        modSources[eModSource::eLFO1] = lfoBuffers[0].getWritePointer(0);
-        modSources[eModSource::eLFO2] = lfoBuffers[1].getWritePointer(0);
-        modSources[eModSource::eLFO3] = lfoBuffers[2].getWritePointer(0);
+        modSources[eModSource::eLFO1] = lfo[0].audioBuffer.getWritePointer(0);
+        modSources[eModSource::eLFO2] = lfo[1].audioBuffer.getWritePointer(0);
+        modSources[eModSource::eLFO3] = lfo[2].audioBuffer.getWritePointer(0);
         modSources[eModSource::eVolEnv] = envToVolBuffer.getWritePointer(0);
         modSources[eModSource::eEnv2] = env2Buffer.getWritePointer(0);
         modSources[eModSource::eEnv3] = env3Buffer.getWritePointer(0);
@@ -373,30 +357,26 @@ protected:
         for (int s = 0; s < numSamples; ++s) {
 
             //calc lfo stuff
-            for (size_t l = 0; l < lfoBuffers.size(); ++l) {
+            for (size_t l = 0; l < lfo.size(); ++l) {
                 
-            // Fade in factor calculation
-                if (lfo[l].samplesFadeIn == 0 || (lfo[l].totSamples + s > lfo[l].samplesFadeIn))
-            {
-                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                    lfo[l].factorFadeIn = 1.f;
-            }
-            else
-            {
-                // Otherwise the factor is determined
-                lfo[l].factorFadeIn = static_cast<float>(lfo[l].totSamples + s) / static_cast<float>(lfo[l].samplesFadeIn);
-            }
+                float factorFadeIn[3] = { 1.f,1.f,1.f };
 
-            // calculate lfo values and fill the buffers
-                switch (params.lfo[l].wave.getStep()) {
+                if (samplesFadeIn[l] != 0 && (totalVoiceSamples + s < samplesFadeIn[l])){
+                // If the fade in is reached or no fade in is set, the factor is 1 (100%)
+                    factorFadeIn[l] = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
+                }
+
+                // calculate lfo values and fill the buffers
+                switch (params.lfo[l].wave.getStep()) 
+                {
                 case eLfoWaves::eLfoSine:
-                        lfoBuffers[l].setSample(0, s, lfo[l].sine.next() * lfo[l].factorFadeIn * lfo[l].lfoGain);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSampleHold:
-                        lfoBuffers[l].setSample(0, s, lfo[l].random.next() * lfo[l].factorFadeIn * lfo[l].lfoGain);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn[l] * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSquare:
-                        lfoBuffers[l].setSample(0, s, lfo[l].square.next() * lfo[l].factorFadeIn * lfo[l].lfoGain);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn[l] * lfoGain[l]);
                     break;
                 }
             }
@@ -439,6 +419,7 @@ public:
 
 private:
     SynthParams &params;
+    int totalVoiceSamples;
 
     struct Osc {
         Oscillator<&Waveforms::square> square;
@@ -452,10 +433,7 @@ private:
         Oscillator<&Waveforms::sinus> sine;
         Oscillator<&Waveforms::square> square;
         RandomOscillator<&Waveforms::square> random;
-        float factorFadeIn;
-        int samplesFadeIn;
-        float lfoGain;
-        int totSamples;
+        AudioSampleBuffer audioBuffer;
     };
     std::array<Lfo, 3> lfo;
 
@@ -479,8 +457,6 @@ private:
 
     // Buffers
     AudioSampleBuffer modDestBuffer;
-    AudioSampleBuffer filterModBuffer;
-    std::array<AudioSampleBuffer, 3> lfoBuffers;
     AudioSampleBuffer envToVolBuffer;
     AudioSampleBuffer env2Buffer;
     AudioSampleBuffer env3Buffer;
