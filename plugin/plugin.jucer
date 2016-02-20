@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="XJmPmE" name="plugin" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="de.tu-berlin.qu.synth.plugin" includeBinaryInAppConfig="1"
+              bundleIdentifier="de.tu-berlin.qu.synister" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
-              pluginName="plugin" pluginDesc="plugin" pluginManufacturer="qu.tu-berlin.de"
-              pluginManufacturerCode="Bitq" pluginCode="MiSp" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginName="synister" pluginDesc="synister" pluginManufacturer="qu.tu-berlin.de"
+              pluginManufacturerCode="Bitq" pluginCode="MiSp" pluginChannelConfigs="{0, 1}, {0, 2}"
               pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
-              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synth.plugin"
+              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synister"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
@@ -126,10 +126,10 @@
                vstFolder="../vst/">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="64BitUniversal"
-                       isDebug="1" optimisation="1" targetName="plugin" headerPath="../../../gui&#10;../../../audio/inc"/>
+                       isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
                        osxArchitecture="64BitUniversal" isDebug="0" optimisation="3"
-                       targetName="plugin" headerPath="../../../gui&#10;../../../audio/inc"/>
+                       targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../juce/modules"/>
@@ -152,10 +152,10 @@
     <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../vst/">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="plugin" libraryPath=""
+                       isDebug="1" optimisation="1" targetName="synister" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="plugin" libraryPath=""
+                       isDebug="0" optimisation="3" targetName="synister" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>

@@ -283,7 +283,6 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == tempoSyncSwitch)
     {
         //[UserButtonCode_tempoSyncSwitch] -- add your button handler code here..
-        //params.lfo1TempSync.setUI(std::round(static_cast<float>(tempoSyncSwitch->getToggleState())));
         //[/UserButtonCode_tempoSyncSwitch]
     }
     else if (buttonThatWasClicked == triplets)

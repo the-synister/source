@@ -1033,7 +1033,7 @@
 		ED5F37BC9599CD5BC9D1ADE1 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MemoryMappedAudioFormatReader.h"; path = "../../../juce/modules/juce_audio_formats/format/juce_MemoryMappedAudioFormatReader.h"; sourceTree = "SOURCE_ROOT"; };
 		F19DD1FD9179820DD10C9D4C = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../../audio/inc/PluginProcessor.h; sourceTree = "SOURCE_ROOT"; };
 		F4ABE7751D7D184C00E64D37 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		D3BC7428D0E49456B47E4DA7 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = plugin.component; sourceTree = "BUILT_PRODUCTS_DIR"; };
+		D3BC7428D0E49456B47E4DA7 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = synister.component; sourceTree = "BUILT_PRODUCTS_DIR"; };
 		E0E135053A084500F55FDED0 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ReadWriteLock.cpp"; path = "../../../juce/modules/juce_core/threads/juce_ReadWriteLock.cpp"; sourceTree = "SOURCE_ROOT"; };
 		E42E7A0989FEA2381706C198 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Time.h"; path = "../../../juce/modules/juce_core/time/juce_Time.h"; sourceTree = "SOURCE_ROOT"; };
 		E499C0AE5A70B1C84D447FBF = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_Logger.cpp"; path = "../../../juce/modules/juce_core/logging/juce_Logger.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -2458,7 +2458,7 @@
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				PRODUCT_NAME = "plugin";
+				PRODUCT_NAME = "synister";
 				WARNING_CFLAGS = -Wreorder;
 				ZERO_LINK = NO; }; name = Debug; };
 		E3A4E7D6578AD6DB38E642D6 = {isa = XCBuildConfiguration; buildSettings = {
@@ -2473,7 +2473,7 @@
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				PRODUCT_NAME = "plugin";
+				PRODUCT_NAME = "synister";
 				WARNING_CFLAGS = -Wreorder;
 				ZERO_LINK = NO; }; name = Release; };
 		49F944E52122062FBD521076 = {isa = XCConfigurationList; buildConfigurations = (

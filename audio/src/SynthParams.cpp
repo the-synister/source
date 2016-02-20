@@ -101,7 +101,7 @@ SynthParams::SynthParams()
     , clippingFactor("Clipping", "clippingFactor", "Clipping", "dB", 0.f, 25.f, 0.0f)
     , clippingActivation("Activation", "clippingActivation", "Clipping Active", eOnOffToggle::eOff, onoffnames)
     // sequencer
-    , seqPlaceHolder("Placeholder", "seqPlaceholder", "SeqPlaceholder", "", 0.0f, 127.0f, 127.0f)
+    , seqPlaceHolder("Placeholder", "seqPlaceholder", "SeqPlaceholder", "", 0.0f, 127.0f, 126.0f)
     , seqPlayNoHost("Play No Host", "seqPlayNoHost", "seqPlayNoHost", eOnOffToggle::eOff, onoffnames)
     , seqPlaySyncHost("Play Sync Host", "seqPlaySyncHost", "seqPlaySyncHost", eOnOffToggle::eOff, onoffnames)
     , seqPlayMode("SeqPlayMode", "seqPlayMode", "SeqPlayMode", eSeqPlayModes::eSequential, seqPlayModeNames)
