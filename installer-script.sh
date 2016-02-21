@@ -83,7 +83,7 @@ sudo xcodebuild -project standalone/Builds/MacOSX/standalone.xcodeproj -scheme s
 
 # gets the archive path
 ARCHIVE_DIR=~/Library/Developer/Xcode/Archives/$(ls -t ~/Library/Developer/Xcode/Archives/ | sed -n 1p)
-ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | grep xcarchive | sed -n 1p) # fix me
+ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | sed -n 1p) # fix me
 
 echo 'Exporting archive..'
 sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
