@@ -59,9 +59,31 @@ void MouseOverKnob::setModSource(ParamStepped<eModSource> *source, Param *amount
     modSourceValueConverted = conversion;
 }
 
+void MouseOverKnob::showBipolarValues(bool showBipolar)
+{
+    displayBipolarValue = showBipolar;
+}
+
 void MouseOverKnob::setDefaultValue(float val)
 {
     defaultValue = static_cast<double>(val);
+}
+
+String MouseOverKnob::getTextFromValue(double val)
+{
+    // calculate bipolar value, only makes sense if minimum is 0 since maximum is used for scaling
+    if (displayBipolarValue)
+    {
+        float coeff = toBipolar(static_cast<float>(this->getMinimum()), static_cast<float>(this->getMaximum()), static_cast<float>(val));
+        val = this->getMaximum() * coeff;
+    }
+
+    int decimal = getNumDecimalPlacesToDisplay();
+    if (decimal > 0)
+    {
+        return String(val, decimal) + getTextValueSuffix();
+    }
+    return String(roundToInt(val)) + getTextValueSuffix();
 }
 
 std::array<ParamStepped<eModSource>*, 2> MouseOverKnob::getModSources()
@@ -86,7 +108,8 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
     knobWidth = width;
     knobHeight = height;
 
-    if (height < 24)
+    // if no textbox then display popup on mouseDrag
+    if (this->getTextBoxWidth() == 0 || this->getTextBoxHeight() == 0)
     {
         this->setPopupDisplayEnabled(true, this->getParentComponent());
     }
@@ -96,6 +119,7 @@ void MouseOverKnob::setBounds(int x, int y, int width, int height)
 
 void MouseOverKnob::resized()
 {
+    // is mouseOver then reduce height according to textbox height otherwise knobSize is reduced
     if (!this->isMouseOver())
     {
         this->setSize(knobWidth, knobHeight - this->getTextBoxHeight());
@@ -154,10 +178,11 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
     Slider::mouseDown(e);
 
+    // create popup menu and item handling
     if (e.eventComponent == this && e.mods == ModifierKeys::rightButtonModifier && this->isEnabled())
     {
         PopupMenu main;
-        main.addSectionHeader("Current Value: " + String(this->getValue()) + this->getTextValueSuffix());
+        main.addSectionHeader("Current Value: " + String(getTextFromValue(this->getValue())));
         main.addItem(1, "reset value");
         main.addItem(2, "set min");
         main.addItem(3, "set max");

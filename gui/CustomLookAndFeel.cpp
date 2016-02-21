@@ -486,7 +486,7 @@ void CustomLookAndFeel::drawTickBox(Graphics &g, Component &/*c*/, float x, floa
 
 Font CustomLookAndFeel::getTextButtonFont(TextButton& /*t*/, int buttonHeight)
 {
-    return Font(jmin(20.0f, buttonHeight * 0.85f));
+    return Font(jmin(30.0f, buttonHeight * 0.95f));
 }
 
 //==============================================================================

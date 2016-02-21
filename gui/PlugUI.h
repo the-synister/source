@@ -70,8 +70,8 @@ private:
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<FoldablePanel> foldableComponent;
-    ScopedPointer<Slider> masterAmp;
-    ScopedPointer<Slider> masterPan;
+    ScopedPointer<MouseOverKnob> masterAmp;
+    ScopedPointer<MouseOverKnob> masterPan;
 
 
     //==============================================================================

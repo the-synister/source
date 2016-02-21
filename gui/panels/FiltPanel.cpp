@@ -470,11 +470,19 @@ void FiltPanel::onOffSwitchChanged()
 void FiltPanel::updateModAmountKnobs()
 {
     lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    lpModAmount1->showBipolarValues(isUnipolar(filter.lpCutModSrc1.getStep()));
     lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
+    lpModAmount2->showBipolarValues(isUnipolar(filter.lpCutModSrc2.getStep()));
+
     hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
+    hpModAmount1->showBipolarValues(isUnipolar(filter.hpCutModSrc1.getStep()));
     hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
+    hpModAmount2->showBipolarValues(isUnipolar(filter.hpCutModSrc2.getStep()));
+
     resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
+    resModAmount1->showBipolarValues(isUnipolar(filter.resonanceModSrc1.getStep()));
     resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
+    resModAmount2->showBipolarValues(isUnipolar(filter.resonanceModSrc2.getStep()));
 }
 //[/MiscUserCode]
 

@@ -36,7 +36,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (ftune1 = new MouseOverKnob ("fine tune 1"));
     ftune1->setRange (-100, 100, 0);
     ftune1->setSliderStyle (Slider::RotaryVerticalDrag);
-    ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    ftune1->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     ftune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     ftune1->setColour (Slider::textBoxTextColourId, Colours::white);
     ftune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -56,7 +56,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
     trngAmount->setRange (0, 1, 0);
     trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
-    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     trngAmount->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     trngAmount->setColour (Slider::textBoxTextColourId, Colours::white);
     trngAmount->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -66,7 +66,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (pulsewidth = new MouseOverKnob ("Pulse Width"));
     pulsewidth->setRange (0.01, 0.99, 0);
     pulsewidth->setSliderStyle (Slider::RotaryVerticalDrag);
-    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    pulsewidth->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     pulsewidth->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     pulsewidth->setColour (Slider::textBoxTextColourId, Colours::white);
     pulsewidth->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -86,7 +86,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
     ctune1->setRange (-11, 11, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
-    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     ctune1->setColour (Slider::textBoxTextColourId, Colours::white);
     ctune1->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -131,7 +131,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (gain = new MouseOverKnob ("gain knob"));
     gain->setRange (-96, 12, 0);
     gain->setSliderStyle (Slider::RotaryVerticalDrag);
-    gain->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    gain->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     gain->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     gain->setColour (Slider::textBoxTextColourId, Colours::white);
     gain->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -141,7 +141,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     addAndMakeVisible (pan = new MouseOverKnob ("pan knob"));
     pan->setRange (-100, 100, 0);
     pan->setSliderStyle (Slider::RotaryVerticalDrag);
-    pan->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    pan->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     pan->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
     pan->setColour (Slider::textBoxTextColourId, Colours::white);
     pan->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -562,13 +562,24 @@ void OscPanel::updateWFShapeControls()
 void OscPanel::updateModAmountKnobs()
 {
     gainModAmount1->setEnabled(osc.gainModSrc1.getStep() != eModSource::eNone);
+    gainModAmount1->showBipolarValues(isUnipolar(osc.gainModSrc1.getStep()));
     gainModAmount2->setEnabled(osc.gainModSrc2.getStep() != eModSource::eNone);
+    gainModAmount2->showBipolarValues(isUnipolar(osc.gainModSrc2.getStep()));
+
     panModAmount1->setEnabled(osc.panModSrc1.getStep() != eModSource::eNone);
+    panModAmount1->showBipolarValues(isUnipolar(osc.panModSrc1.getStep()));
     panModAmount2->setEnabled(osc.panModSrc2.getStep() != eModSource::eNone);
+    panModAmount2->showBipolarValues(isUnipolar(osc.panModSrc2.getStep()));
+
     pitchModAmount1->setEnabled(osc.pitchModSrc1.getStep() != eModSource::eNone);
+    pitchModAmount1->showBipolarValues(isUnipolar(osc.pitchModSrc1.getStep()));
     pitchModAmount2->setEnabled(osc.pitchModSrc2.getStep() != eModSource::eNone);
+    pitchModAmount2->showBipolarValues(isUnipolar(osc.pitchModSrc2.getStep()));
+
     widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount1->showBipolarValues(isUnipolar(osc.shapeModSrc1.getStep()));
     widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount2->showBipolarValues(isUnipolar(osc.shapeModSrc2.getStep()));
 }
 
 void OscPanel::drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch)
@@ -602,7 +613,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 170 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-100" max="100" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount2" id="523b9024be39c1b" memberName="pitchModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 124 18 18"
@@ -614,14 +625,14 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount1" id="29275125e377aaa" memberName="pitchModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 100 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -632,7 +643,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
                     virtualName="WaveformVisual" explicitFocusOrder="0" pos="75 162 123 72"
@@ -658,12 +669,12 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="8 34 64 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="-96" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pan knob" id="dd33a09584f4c2ff" memberName="pan" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="127 34 64 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="WidthModAmount2" id="ae5c9ce50e2de7e1" memberName="widthModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 124 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"

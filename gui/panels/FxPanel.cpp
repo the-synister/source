@@ -101,7 +101,7 @@ FxPanel::FxPanel (SynthParams &p)
     tripTggl->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (filtTggl = new ToggleButton ("filtTggl1"));
-    filtTggl->setButtonText (TRANS("Record Cutoff"));
+    filtTggl->setButtonText (TRANS("rec cutoff"));
     filtTggl->addListener (this);
     filtTggl->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -419,7 +419,7 @@ BEGIN_JUCER_METADATA
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
                 virtualName="" explicitFocusOrder="0" pos="214 138 100 30" txtcol="ffffffff"
-                buttonText="Record Cutoff" connectedEdges="0" needsCallback="1"
+                buttonText="rec cutoff" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
                 explicitFocusOrder="0" pos="214 102 65 30" txtcol="ffffffff"

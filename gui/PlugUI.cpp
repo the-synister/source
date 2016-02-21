@@ -73,10 +73,10 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (foldableComponent = new FoldablePanel ("foldablePanels"));
 
-    addAndMakeVisible (masterAmp = new Slider ("amp"));
+    addAndMakeVisible (masterAmp = new MouseOverKnob ("amp"));
     masterAmp->setRange (-96, 12, 0);
     masterAmp->setSliderStyle (Slider::LinearBar);
-    masterAmp->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    masterAmp->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     masterAmp->setColour (Slider::backgroundColourId, Colour (0x00ffffff));
     masterAmp->setColour (Slider::thumbColourId, Colours::grey);
     masterAmp->setColour (Slider::trackColourId, Colours::white);
@@ -86,10 +86,10 @@ PlugUI::PlugUI (SynthParams &p)
     masterAmp->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     masterAmp->addListener (this);
 
-    addAndMakeVisible (masterPan = new Slider ("pan"));
+    addAndMakeVisible (masterPan = new MouseOverKnob ("pan"));
     masterPan->setRange (-100, 100, 0);
     masterPan->setSliderStyle (Slider::LinearBar);
-    masterPan->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    masterPan->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     masterPan->setColour (Slider::thumbColourId, Colour (0xff292929));
     masterPan->setColour (Slider::trackColourId, Colours::white);
     masterPan->setColour (Slider::rotarySliderFillColourId, Colours::blue);
@@ -104,8 +104,6 @@ PlugUI::PlugUI (SynthParams &p)
     registerSlider(masterAmp, &params.masterAmp);
     registerSlider(masterPan, &params.masterPan);
 
-    masterAmp->setPopupDisplayEnabled(true, this);
-    masterPan->setPopupDisplayEnabled(true, this);
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     //[/UserPreSize]
 
@@ -176,8 +174,8 @@ void PlugUI::resized()
     savePresetButton->setBounds (25, 40, 65, 25);
     loadPresetButton->setBounds (25, 10, 65, 25);
     foldableComponent->setBounds (0, 72, 800, 624);
-    masterAmp->setBounds (575, 21, 100, 30);
-    masterPan->setBounds (700, 21, 70, 30);
+    masterAmp->setBounds (575, 21, 100, 32);
+    masterPan->setBounds (700, 21, 70, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -270,18 +268,18 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
-  <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="Slider"
-          explicitFocusOrder="0" pos="575 21 100 30" bkgcol="ffffff" thumbcol="ff808080"
+  <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="575 21 100 32" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="Slider"
-          explicitFocusOrder="0" pos="700 21 70 30" thumbcol="ff292929"
+          textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+  <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="MouseOverKnob"
+          explicitFocusOrder="0" pos="700 21 70 32" thumbcol="ff292929"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

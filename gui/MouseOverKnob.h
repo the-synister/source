@@ -44,7 +44,21 @@ public:
            e.g. octave to freq, percentage
     */
     void setModSource(ParamStepped<eModSource> *source, Param *amount, int sourceNumber, modAmountConversion conversion = modAmountConversion::noConversion);
+
+    /**
+    * Can be used to set the displayed value bipolar, only makes sense if minimum is 0 since maximum is used for scaling.
+    */
+    void showBipolarValues(bool showBipolar);
+
+    /**
+    * Save default value so popup menu can reset value.
+    */
     void setDefaultValue(float val);
+
+    /**
+    * Get text from current value. Used to calculate unipolar or bipolar knob values to display for mod amount sliders.
+    */
+    virtual String getTextFromValue(double value);
 
     std::array<ParamStepped<eModSource>*, 2> getModSources();
     std::array<Param*, 2> getModAmounts();
@@ -110,6 +124,9 @@ private:
     std::array<Param*, 2> modAmounts;
     std::array<ParamStepped<eModSource>*, 2> modSources;
     modAmountConversion modSourceValueConverted = modAmountConversion::noConversion;
+
+    // for mod amount knob (textBoxWidth or textBoxHeight is 0 && knobheight < 19)
+    bool displayBipolarValue = false;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED

@@ -468,7 +468,7 @@ void SeqPanel::resized()
     labelButton6->setBounds (648, 42, 48, 24);
     labelButton7->setBounds (688, 42, 48, 24);
     labelButton8->setBounds (728, 42, 48, 24);
-    genRandom->setBounds (118, 207, 150, 30);
+    genRandom->setBounds (104, 214, 176, 24);
     randomSeq->setBounds (40, 231, 300, 50);
     randMinLabel->setBounds (24, 207, 80, 36);
     randMaxLabel->setBounds (280, 207, 80, 36);
@@ -883,7 +883,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ffffff" textCol="ffffffff" textColOn="ff808080" buttonText="C4"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="118 207 150 30" bgColOff="ff564c43"
+              virtualName="" explicitFocusOrder="0" pos="104 214 176 24" bgColOff="ff564c43"
               textCol="ffffffff" textColOn="ffffffff" buttonText="generate sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"

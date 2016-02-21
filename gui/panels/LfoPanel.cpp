@@ -37,7 +37,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     freq->setColour (Slider::textBoxTextColourId, Colours::white);
     freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -60,7 +60,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
     lfoFadeIn->setRange (0, 10, 0);
     lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     lfoFadeIn->setColour (Slider::textBoxTextColourId, Colours::white);
     lfoFadeIn->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -371,7 +371,9 @@ void LfoPanel::updateLfoSyncToggle()
 void LfoPanel::updateModAmountKnobs()
 {
     freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount1->showBipolarValues(isUnipolar(lfo.freqModSrc1.getStep()));
     freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    freqModAmount2->showBipolarValues(isUnipolar(lfo.freqModSrc2.getStep()));
 }
 //[/MiscUserCode]
 
@@ -395,7 +397,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
           explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
@@ -409,7 +411,7 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="10 97 64 64"
           rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
                 explicitFocusOrder="0" pos="175 93 64 30" txtcol="ffffffff" buttonText=""

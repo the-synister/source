@@ -359,7 +359,9 @@ void EnvPanel::updateCurve()
 void EnvPanel::updateModAmountKnobs()
 {
     speedMod1->setEnabled(envVol.speedModSrc1.getStep() != eModSource::eNone);
+    speedMod1->showBipolarValues(isUnipolar(envVol.speedModSrc1.getStep()));
     speedMod2->setEnabled(envVol.speedModSrc2.getStep() != eModSource::eNone);
+    speedMod2->showBipolarValues(isUnipolar(envVol.speedModSrc2.getStep()));
 }
 //[/MiscUserCode]
 
