@@ -25,12 +25,12 @@ if [ $# -gt 0 ]; then
 		CURRENT_PATCH=0;
       		;;
 	--minor|-mi)
-		echo "Minor update" 2> /dev/null
+		echo "Minor update" 2>> /dev/null
 		((CURRENT_MINOR++));
 		CURRENT_PATCH=0;
 		;;
 	--patch|-pa)
-		echo "Patch update" 2> /dev/null
+		echo "Patch update" 2>> /dev/null
 		((CURRENT_PATCH++));
 		;;
 	--help|-h)
@@ -73,7 +73,7 @@ sudo xcodebuild -project standalone/Builds/MacOSX/standalone.xcodeproj -scheme s
 
 # gets the archive path
 ARCHIVE_DIR=~/Library/Developer/Xcode/Archives/$(ls -t ~/Library/Developer/Xcode/Archives/ | sed -n 1p)
-ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep xcarchive | sed -n 1p)
+ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | grep xcarchive | sed -n 1p)
 
 echo 'Exporting archive..'
 sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
@@ -133,14 +133,14 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 
 echo 'Finishing packages..'
 # productbuild is used to create from the existing packages and the distribution files the personalised installer package
-sudo productbuild --resources $(pwd) --distribution "${TEMP_PLUGIN}/distribution.xml" --package-path $(pwd) synister.pkg > /dev/null 2> installer-errors.log
-sudo productbuild --resources $(pwd) --distribution "${TEMP_STANDALONE}/distribution.xml" --package-path $(pwd) synisterStandalone.pkg > /dev/null 2> installer-errors.log
+sudo productbuild --resources $(pwd) --distribution "${TEMP_PLUGIN}/distribution.xml" --package-path $(pwd) synister.pkg > /dev/null 2>> installer-errors.log
+sudo productbuild --resources $(pwd) --distribution "${TEMP_STANDALONE}/distribution.xml" --package-path $(pwd) synisterStandalone.pkg > /dev/null 2>> installer-errors.log
 
 echo 'Deleting traces..'
 # not needed files
-sudo rm -rf "${TEMP_PLUGIN}" > /dev/null 2> installer-errors.log
-sudo rm -rf "${TEMP_STANDALONE}" > /dev/null 2> installer-errors.log
-sudo rm -rf plugin/Builds/MacOSX/build/plugin.build > /dev/null 2> installer-errors.log
-sudo rm -rf standalone/Builds/MacOSX/build/standalone.build > /dev/null 2> installer-errors.log
-sudo rm synister_build.pkg > /dev/null 2> installer-errors.log
-sudo rm synister_standalone_build.pkg > /dev/null 2> installer-errors.log
+sudo rm -rf "${TEMP_PLUGIN}" > /dev/null 2>> installer-errors.log
+sudo rm -rf "${TEMP_STANDALONE}" > /dev/null 2>> installer-errors.log
+sudo rm -rf plugin/Builds/MacOSX/build/plugin.build > /dev/null 2>> installer-errors.log
+sudo rm -rf standalone/Builds/MacOSX/build/standalone.build > /dev/null 2>> installer-errors.log
+sudo rm synister_build.pkg > /dev/null 2>> installer-errors.log
+sudo rm synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
