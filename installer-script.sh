@@ -10,7 +10,10 @@ CURRENT_MAJOR=$(cat .version | sed -n 1p);
 CURRENT_MINOR=$(cat .version | sed -n 2p);
 CURRENT_PATCH=$(cat .version | sed -n 3p);
 TEMP_PLUGIN=~/synister
+INFOPLIST_FILE=Info.plist
 TEMP_STANDALONE=~/synister_standalone
+STANDALONE_DIR=standalone/Builds/MacOSX
+PLUGIN_DIR=plugin/Builds/MacOSX
 
 # if no arguments were given, then it is only a patch update
 if [ $# -gt 0 ]; then
@@ -53,7 +56,14 @@ $CURRENT_PATCH" > .version
 
 VERSION=${CURRENT_MAJOR}.${CURRENT_MINOR}.${CURRENT_PATCH};
 
-echo $VERSION
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
+/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
+
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
+/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
+
+echo "Package version: $VERSION"
+echo ""
 echo 'Creating packages directories..'
 # creates directories where all the package are going to be created
 
@@ -73,7 +83,7 @@ sudo xcodebuild -project standalone/Builds/MacOSX/standalone.xcodeproj -scheme s
 
 # gets the archive path
 ARCHIVE_DIR=~/Library/Developer/Xcode/Archives/$(ls -t ~/Library/Developer/Xcode/Archives/ | sed -n 1p)
-ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | grep xcarchive | sed -n 1p)
+ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | grep xcarchive | sed -n 1p) # fix me
 
 echo 'Exporting archive..'
 sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
