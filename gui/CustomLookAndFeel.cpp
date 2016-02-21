@@ -171,7 +171,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
         const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
         const float posX = static_cast<float>(x);
         const float posY = static_cast<float>(y);
-        const float boxWidth = static_cast<float>(width);
+        float boxWidth = static_cast<float>(width);
         const float boxHeight = static_cast<float>(height);
         float offset1, offset2;
 
@@ -196,24 +196,36 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
             // create and fill pan pointer
             path.clear();
-
             g.setColour(s.findColour(Slider::thumbColourId));
-            const float thumbWidthHalf = boxWidth / 12.0f;
 
+            // reduce size to have a small border left at both sides
+            boxWidth -= 2;
+            const float thumbWidthHalf = boxWidth / 12.0f;
+            offset1 = toBipolar(0.0f, static_cast<float>(s.getMaximum()), static_cast<float>(s.getValue()));
+            offset2 = offset1 * ((boxWidth - 2.0f * thumbWidthHalf) / 4.0f) + ((boxWidth - 2.0f * thumbWidthHalf) / 4.0f);
+
+            // reset size to draw from the middle
+            boxWidth += 2;
+            sliderPos = 1 + boxWidth / 2.0f + offset2;
+
+            // draw parts seperately for having thumb height fit to pan background
             // create left and right part of pan thumb
-            offset1 = -abs(sliderPos - thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
-            offset2 = -abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset1 = -std::abs(sliderPos - thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset2 = -std::abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
             path.addQuadrilateral(sliderPos - thumbWidthHalf, posY + boxHeight,
                                   sliderPos - thumbWidthHalf, posY + offset1 - 1.f,
                                   sliderPos, posY + offset2 - 1.f,
                                   sliderPos, posY + boxHeight);
 
-            offset1 = -abs(sliderPos + thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
-            offset2 = -abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset1 = -std::abs(sliderPos + thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset2 = -std::abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
             path.addQuadrilateral(sliderPos + thumbWidthHalf, posY + boxHeight,
                                   sliderPos + thumbWidthHalf, posY + offset1 - 1.f,
                                   sliderPos, posY + offset2 - 1.f,
                                   sliderPos, posY + boxHeight);
+
+            // NOTE: short code version but not good if background is not one-coloured
+            //path.addRectangle(sliderPos - thumbWidthHalf, posY, 2 * thumbWidthHalf, boxHeight);
             g.fillPath(path);
         }
         else

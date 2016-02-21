@@ -23,7 +23,7 @@ IncDecDropDown::~IncDecDropDown()
 
 void IncDecDropDown::paint(Graphics &g)
 {
-    // do not show default text, since it is not centered
+    // do not show default text since it is not centered
     this->setColour(ComboBox::ColourIds::textColourId, Colours::transparentWhite);
 
     // set background colour as transparent

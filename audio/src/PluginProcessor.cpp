@@ -266,38 +266,38 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         chorus.render(buffer, 0); // adds the chorus to the outputBuffer
     }
 
-	// master volume
-	for (int c = 0; c < buffer.getNumChannels(); ++c)
-	{
-		for (int s = 0; s < buffer.getNumSamples(); ++s)
-		{
-			buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.get()) ) );
-		}
+    // master volume
+    for (int c = 0; c < buffer.getNumChannels(); ++c)
+    {
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.get()) ) );
+        }
 
-	}
+    }
 
-	// master pan
-	if (buffer.getNumChannels() == 2)
-	{
-		// Calculation of channel gain for constant power pan
-		float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
-		float rightGain = sin(p);
-		float leftGain = cos(p);
-		//linear pan
-		//float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
-		//float leftGain = 1.f - rightGain;
+    // master pan
+    if (buffer.getNumChannels() == 2)
+    {
+        // Calculation of channel gain for constant power pan
+        float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
+        float rightGain = sin(p);
+        float leftGain = cos(p);
+        //linear pan
+        //float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
+        //float leftGain = 1.f - rightGain;
 
-		// left
-		for (int s = 0; s < buffer.getNumSamples(); ++s)
-		{
-			buffer.setSample(0, s, (buffer.getSample(0, s) * leftGain));
-		}
-		// right
-		for (int s = 0; s < buffer.getNumSamples(); ++s)
-		{
-			buffer.setSample(1, s, (buffer.getSample(1, s) * rightGain));
-		}
-	}
+        // left
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(0, s, (buffer.getSample(0, s) * leftGain));
+        }
+        // right
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(1, s, (buffer.getSample(1, s) * rightGain));
+        }
+    }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
                           // should we set the JucePlugin_ProducesMidiOutput macro to 1 ?

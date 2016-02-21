@@ -106,21 +106,21 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     freqModAmount2->addListener (this);
 
-    addAndMakeVisible (freqModSrc1 = new ComboBox ("freqModSrc1"));
+    addAndMakeVisible (freqModSrc1 = new ModSourceBox ("freqModSrc1"));
     freqModSrc1->setEditableText (false);
     freqModSrc1->setJustificationType (Justification::centred);
     freqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
     freqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     freqModSrc1->addListener (this);
 
-    addAndMakeVisible (freqModSrc2 = new ComboBox ("freqModSrc2"));
+    addAndMakeVisible (freqModSrc2 = new ModSourceBox ("freqModSrc2"));
     freqModSrc2->setEditableText (false);
     freqModSrc2->setJustificationType (Justification::centred);
     freqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     freqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     freqModSrc2->addListener (this);
 
-    addAndMakeVisible (lfoGain = new ComboBox ("lfoGain"));
+    addAndMakeVisible (lfoGain = new ModSourceBox ("lfoGain"));
     lfoGain->setEditableText (false);
     lfoGain->setJustificationType (Justification::centred);
     lfoGain->setTextWhenNothingSelected (TRANS("No Mod"));
@@ -143,9 +143,6 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
     registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
 
-    fillModsourceBox(freqModSrc1);
-    fillModsourceBox(freqModSrc2);
-    fillModsourceBox(lfoGain);
     registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     registerCombobox(lfoGain, &lfo.gainModSrc);
@@ -220,6 +217,10 @@ void LfoPanel::paint (Graphics& g)
 void LfoPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    noteLength->setText("1/" + String(static_cast<int>(lfo.noteLength.get())));
+    dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    tempoSyncSwitch->setToggleState(lfo.tempSync.getStep() == eOnOffToggle::eOn, dontSendNotification);
     //[/UserPreResize]
 
     freq->setBounds (10, 35, 64, 64);
@@ -341,7 +342,7 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
@@ -433,12 +434,14 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="90 35 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 35 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="freqModSrc2" id="455e48a25414a454" memberName="freqModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="90 59 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName=""
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 59 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName="ModSourceBox"
             explicitFocusOrder="0" pos="100 6 40 18" editable="0" layout="36"
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"

@@ -169,13 +169,13 @@ void PlugUI::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (480, 8, 80, 64);
+    freq->setBounds (470, 8, 80, 64);
     keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (25, 40, 65, 25);
     loadPresetButton->setBounds (25, 10, 65, 25);
     foldableComponent->setBounds (0, 72, 800, 624);
-    masterAmp->setBounds (575, 21, 100, 32);
-    masterPan->setBounds (700, 21, 70, 32);
+    masterAmp->setBounds (570, 21, 100, 32);
+    masterPan->setBounds (690, 21, 80, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -250,7 +250,7 @@ BEGIN_JUCER_METADATA
                  initialHeight="900">
   <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="480 8 80 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="470 8 80 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
@@ -269,13 +269,13 @@ BEGIN_JUCER_METADATA
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="575 21 100 32" bkgcol="ffffff" thumbcol="ff808080"
+          explicitFocusOrder="0" pos="570 21 100 32" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="700 21 70 32" thumbcol="ff292929"
+          explicitFocusOrder="0" pos="690 21 80 32" thumbcol="ff292929"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"

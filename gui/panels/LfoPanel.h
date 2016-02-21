@@ -47,7 +47,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
 	void updateLfoSyncToggle();
     void updateModAmountKnobs();
     //[/UserMethods]
@@ -76,9 +76,9 @@ private:
     ScopedPointer<IncDecDropDown> noteLength;
     ScopedPointer<MouseOverKnob> freqModAmount1;
     ScopedPointer<MouseOverKnob> freqModAmount2;
-    ScopedPointer<ComboBox> freqModSrc1;
-    ScopedPointer<ComboBox> freqModSrc2;
-    ScopedPointer<ComboBox> lfoGain;
+    ScopedPointer<ModSourceBox> freqModSrc1;
+    ScopedPointer<ModSourceBox> freqModSrc2;
+    ScopedPointer<ModSourceBox> lfoGain;
     ScopedPointer<ToggleButton> dottedNotes;
 
 

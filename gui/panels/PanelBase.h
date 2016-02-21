@@ -8,6 +8,7 @@
 #include "SynthParams.h"
 #include "MouseOverKnob.h"
 #include "IncDecDropDown.h"
+#include "ModSourceBox.h"
 
 class PanelBase : public Component, protected Timer
 {
@@ -40,7 +41,7 @@ protected:
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
-        
+
         if (min) {
             slider->setMinValue(min->getUI());
         }
@@ -157,22 +158,22 @@ protected:
             }
         }
     }
-    
+
     //=======================================================================================================================================
 
     void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
     {
         toggleReg[toggle] = p;
-        
+
         if (hook) {
             postUpdateHook[toggle] = hook;
         }
     }
-    
+
     bool handleToggle(Button* buttonThatWasClicked)
     {
         auto it = toggleReg.find(buttonThatWasClicked);
-        
+
         if (it != toggleReg.end()) {
             it->second->setStep(it->second->getStep() == eOnOffToggle::eOn ? eOnOffToggle::eOff : eOnOffToggle::eOn);
             it->first->setToggleState(it->second->getStep() == eOnOffToggle::eOn, dontSendNotification);
@@ -181,19 +182,19 @@ protected:
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
             }
-            
+
             return true;
         }
-        
-        return false;  
+
+        return false;
     }
-    
+
     void updateDirtyToggles()
     {
         for (auto t2p : toggleReg) {
             if (t2p.second->isUIDirty()) {
                 t2p.first->setToggleState((t2p.second->getStep() == eOnOffToggle::eOn), dontSendNotification);
-                
+
                 auto itHook = postUpdateHook.find(t2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();
@@ -293,6 +294,7 @@ protected:
 
     //=======================================================================================================================================
 
+    // use only with ModSourceBox class
     void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, std::array<MouseOverKnob*, 3> modDest = {nullptr}, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
 
@@ -316,14 +318,13 @@ protected:
             // we gotta subtract 1 from the item id since the combobox ids start at 1 and the eModSources enum starts at 0
             it->second->setStep(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS));
 
+            // set colour of textBox background with some transparency if no mod source is selected
             if (it->second->getStep() == eModSource::eNone) {
                 it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(0.5f));
             }
             else {
                 it->first->setColour(ComboBox::ColourIds::backgroundColourId, it->first->findColour(ComboBox::ColourIds::backgroundColourId).withAlpha(1.0f));
             }
-            it->first->setColour(ComboBox::ColourIds::textColourId, SynthParams::getModSourceColour(static_cast<eModSource>(it->first->getSelectedId() - COMBO_OFS)));
-            it->first->setText(SynthParams::getShortModSrcName(it->first->getSelectedId() - COMBO_OFS), dontSendNotification);
 
             // update saturn
             auto temp = saturnSourceReg.find(comboboxThatWasChanged);
@@ -377,12 +378,6 @@ protected:
         updateDirtyNoteLength();
         updateDirtyDropDowns();
         updateDirtyToggles();
-    }
-
-    void fillModsourceBox(ComboBox* box) {
-        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
-            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
-        }
     }
 
     /**

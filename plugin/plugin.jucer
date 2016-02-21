@@ -32,24 +32,6 @@
         <FILE id="m17guR" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
         <FILE id="Ym6yJ5" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
       </GROUP>
-      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
-            file="../gui/FoldablePanel.cpp"/>
-      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
-      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
-      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
-            file="../gui/EnvelopeCurve.cpp"/>
-      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="../gui/CustomLookAndFeel.cpp"/>
-      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="../gui/CustomLookAndFeel.h"/>
-      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
-            file="../gui/IncDecDropDown.cpp"/>
-      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
-            file="../gui/IncDecDropDown.h"/>
-      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
-            file="../gui/WaveformVisual.cpp"/>
-      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
-            file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="TrQb2j" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
         <FILE id="xNUcDC" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
@@ -74,9 +56,30 @@
         <FILE id="LjV3LZ" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
         <FILE id="Hl9fwP" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
       </GROUP>
+      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
+      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
+      <FILE id="zfjtow" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="bBAIpb" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
+            file="../gui/WaveformVisual.cpp"/>
+      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
+            file="../gui/WaveformVisual.h"/>
+      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
+      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
+            file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>

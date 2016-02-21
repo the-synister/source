@@ -446,8 +446,21 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    for (int i = 0; i < 8; ++i)
+    {
+        labelButtonArray[i]->setToggleState(currStepOnOff[i]->getStep() == eOnOffToggle::eOn, dontSendNotification);
+    }
+
     seqPlay->setToggleState(isPlaying(), dontSendNotification);
-    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
+    syncHost->setToggleState(params.seqPlaySyncHost.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    triplets->setToggleState(params.seqTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    dottedNotes->setToggleState(params.seqDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+
+    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())));
+    seqStepSpeed->setText("1/" + String(static_cast<int>(params.seqStepSpeed.get())));
+    seqStepLength->setText("1/" + String(static_cast<int>(params.seqStepLength.get())));
+
+    randomSeq->setMinAndMaxValues(params.seqRandomMin.get(), params.seqRandomMax.get());
     //[/UserPreResize]
 
     seqStep1->setBounds (452, 68, 40, 210);

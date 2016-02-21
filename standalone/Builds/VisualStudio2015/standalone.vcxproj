@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;JucePlugin_Name=&quot;synister&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;_DEBUG;JucePlugin_Name=&quot;synister&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -97,7 +97,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;..\..\..\juce\modules;../../../gui;../../../audio/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;JucePlugin_Name=&quot;synister&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;JucePlugin_Name=&quot;synister&quot;;JUCER_VS2015_78A5022=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -142,11 +142,12 @@
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
-    <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
-    <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
+    <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
+    <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\inc\Voice.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
@@ -1312,11 +1313,12 @@
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
     <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
-    <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
-    <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
+    <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
+    <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>

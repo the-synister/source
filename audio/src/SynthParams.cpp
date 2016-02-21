@@ -79,8 +79,8 @@ SynthParams::SynthParams()
     , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , masterAmp("master amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, 0.f)
-	, masterPan("master pan", "masterPan", "Master pan", "%", -100.f, 100.f, 0.f)
-	, freq("master freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
+    , masterPan("master pan", "masterPan", "Master pan", "%", -100.f, 100.f, 0.f)
+    , freq("master freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
     // FX
     , delayDryWet("dry/wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)

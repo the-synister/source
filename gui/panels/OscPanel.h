@@ -79,21 +79,21 @@ private:
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<MouseOverKnob> widthModAmount1;
-    ScopedPointer<ComboBox> pitchModSrc1;
-    ScopedPointer<ComboBox> pitchModSrc2;
+    ScopedPointer<ModSourceBox> pitchModSrc1;
+    ScopedPointer<ModSourceBox> pitchModSrc2;
     ScopedPointer<MouseOverKnob> gain;
     ScopedPointer<MouseOverKnob> pan;
     ScopedPointer<MouseOverKnob> widthModAmount2;
-    ScopedPointer<ComboBox> widthModSrc1;
-    ScopedPointer<ComboBox> widthModSrc2;
+    ScopedPointer<ModSourceBox> widthModSrc1;
+    ScopedPointer<ModSourceBox> widthModSrc2;
     ScopedPointer<MouseOverKnob> gainModAmount2;
     ScopedPointer<MouseOverKnob> gainModAmount1;
-    ScopedPointer<ComboBox> gainModSrc1;
-    ScopedPointer<ComboBox> gainModSrc2;
+    ScopedPointer<ModSourceBox> gainModSrc1;
+    ScopedPointer<ModSourceBox> gainModSrc2;
     ScopedPointer<MouseOverKnob> panModAmount2;
     ScopedPointer<MouseOverKnob> panModAmount1;
-    ScopedPointer<ComboBox> panModSrc1;
-    ScopedPointer<ComboBox> panModSrc2;
+    ScopedPointer<ModSourceBox> panModSrc1;
+    ScopedPointer<ModSourceBox> panModSrc2;
 
 
     //==============================================================================
