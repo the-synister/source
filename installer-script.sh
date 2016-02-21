@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# use: ./installer-script.sh [[--major|-ma] [-minor|-mi] | [-patch|-pa] | [--help|-h]]
+# use: ./installer-script.sh [[--major|-ma] [--minor|-mi] | [--patch|-pa] | [--help|-h]]
 # if -major then it is a major update
 # if -minor then it is a minor update
 # if -patch or no arguments given at all then it is a patch update
@@ -56,11 +56,20 @@ $CURRENT_PATCH" > .version
 
 VERSION=${CURRENT_MAJOR}.${CURRENT_MINOR}.${CURRENT_PATCH};
 
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
+STANDALONE_PROJECT_VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "${STANDALONE_DIR}/${INFOPLIST_FILE}")
+PLUGIN_PROJECT_VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "${PLUGIN_DIR}/${INFOPLIST_FILE}")
 
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
+if [ "$VERSION" != "$STANDALONE_PROJECT_VERSION_NUMBER" ]; then
+    echo 'Updating standalone version number..';
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
+    /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${STANDALONE_DIR}/${INFOPLIST_FILE}"
+fi
+
+if [ "$VERSION" != "$PLUGIN_PROJECT_VERSION_NUMBER" ]; then
+    echo 'Updating plugin version number..';
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
+    /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "${PLUGIN_DIR}/${INFOPLIST_FILE}"
+fi
 
 echo "Package version: $VERSION"
 echo ""
@@ -79,11 +88,11 @@ sudo mkdir "${TEMP_STANDALONE}/Applications" &> /dev/null
 # creates archive of standalone
 
 echo 'Creating archive of standalone..'
-sudo xcodebuild -project standalone/Builds/MacOSX/standalone.xcodeproj -scheme standalone -configuration Release archive > /dev/null 2>> installer-errors.log 
+sudo xcodebuild -project "${STANDALONE_DIR}/standalone.xcodeproj" -scheme standalone -configuration Release archive > /dev/null 2>> installer-errors.log 
 
 # gets the archive path
 ARCHIVE_DIR=~/Library/Developer/Xcode/Archives/$(ls -t ~/Library/Developer/Xcode/Archives/ | sed -n 1p)
-ARCHIVE=$(ls -t ${ARCHIVE_DIR}  | grep standalone | sed -n 1p) # fix me
+ARCHIVE=$(ls -t ${ARCHIVE_DIR} | grep standalone | sed -n 1p) # fix me
 
 echo 'Exporting archive..'
 sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
@@ -91,7 +100,7 @@ sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${
 # creates a release build of the plugin; archive is not working, because it doesn't copy the VST files
 
 echo 'Creating archive of plugin..'
-sudo xcodebuild -project plugin/Builds/MacOSX/plugin.xcodeproj -scheme plugin -configuration Release archive > /dev/null 2>> installer-errors.log
+sudo xcodebuild -project "${PLUGIN_DIR}/plugin.xcodeproj" -scheme plugin -configuration Release archive > /dev/null 2>> installer-errors.log
 
 echo 'Creating application package..'
 # creates application package
@@ -150,7 +159,7 @@ echo 'Deleting traces..'
 # not needed files
 sudo rm -rf "${TEMP_PLUGIN}" > /dev/null 2>> installer-errors.log
 sudo rm -rf "${TEMP_STANDALONE}" > /dev/null 2>> installer-errors.log
-sudo rm -rf plugin/Builds/MacOSX/build/plugin.build > /dev/null 2>> installer-errors.log
-sudo rm -rf standalone/Builds/MacOSX/build/standalone.build > /dev/null 2>> installer-errors.log
+sudo rm -rf "${PLUGIN_DIR}/build/plugin.build" > /dev/null 2>> installer-errors.log
+sudo rm -rf "${STANDALONE_DIR}/build/standalone.build" > /dev/null 2>> installer-errors.log
 sudo rm synister_build.pkg > /dev/null 2>> installer-errors.log
 sudo rm synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
