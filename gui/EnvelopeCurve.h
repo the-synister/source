@@ -13,6 +13,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "Envelope.h"
 
 //==============================================================================
 /*
