@@ -26,7 +26,7 @@
 #include "MouseOverKnob.h"
 #include "FoldablePanel.h"
 #include "IncDecDropDown.h"
-#include "panels\PanelBase.h"
+#include "panels/PanelBase.h"
 //[/Headers]
 
 

@@ -107,7 +107,7 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     //[/UserPreSize]
 
-    setSize (800, 900);
+    setSize (810, 900);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -173,7 +173,7 @@ void PlugUI::resized()
     keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (25, 40, 65, 25);
     loadPresetButton->setBounds (25, 10, 65, 25);
-    foldableComponent->setBounds (0, 72, 800, 624);
+    foldableComponent->setBounds (0, 72, 810, 624);
     masterAmp->setBounds (570, 21, 100, 32);
     masterPan->setBounds (690, 21, 80, 32);
     //[UserResized] Add your own custom resize handling here..
@@ -246,7 +246,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="PlugUI" componentName=""
                  parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
                  variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="800"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="810"
                  initialHeight="900">
   <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
@@ -266,7 +266,7 @@ BEGIN_JUCER_METADATA
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
-                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 810 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="570 21 100 32" bkgcol="ffffff" thumbcol="ff808080"
