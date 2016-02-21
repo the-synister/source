@@ -54,7 +54,8 @@ protected:
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
-        slider->setDefaultValue(p->getUI());
+        slider->setDefaultValue(p->getDefaultUI());
+
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;

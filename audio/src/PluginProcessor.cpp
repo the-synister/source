@@ -271,9 +271,8 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     {
         for (int s = 0; s < buffer.getNumSamples(); ++s)
         {
-            buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.get()) ) );
+            buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.getUI()) ) );
         }
-
     }
 
     // master pan

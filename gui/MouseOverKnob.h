@@ -99,7 +99,7 @@ public:
     void mouseExit(const MouseEvent &e) override;
 
     /**
-    * Right click popup menu with some useful items.
+    * Right click popup menu with some useful items. If alt and ctrl are hold while click, then reset.
     */
     void mouseDown(const MouseEvent &e) override;
 
