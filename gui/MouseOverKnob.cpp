@@ -176,6 +176,11 @@ void MouseOverKnob::mouseExit(const MouseEvent &e)
 
 void MouseOverKnob::mouseDown(const MouseEvent &e)
 {
+    if (e.eventComponent == this && e.mods.isAltDown() && e.mods.isCtrlDown())
+    {
+        this->setValue(defaultValue, NotificationType::sendNotification);
+    }
+
     Slider::mouseDown(e);
 
     // create popup menu and item handling
@@ -194,15 +199,15 @@ void MouseOverKnob::mouseDown(const MouseEvent &e)
         }
         else if (result == 1)
         {
-            this->setValue(defaultValue);
+            this->setValue(defaultValue, NotificationType::sendNotification);
         }
         else if (result == 2)
         {
-            this->setValue(this->getMinimum());
+            this->setValue(this->getMinimum(), NotificationType::sendNotification);
         }
         else if (result == 3)
         {
-            this->setValue(this->getMaximum());
+            this->setValue(this->getMaximum(), NotificationType::sendNotification);
         }
     }
 }

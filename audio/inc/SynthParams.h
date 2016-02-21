@@ -68,7 +68,7 @@ public:
 
     static const char* getModSrcName(int index);
 
-    Param masterAmp; //!< master volume
+    ParamDb masterAmp; //!< master volume
     Param masterPan; //!< master pan
 
     Param freq;  //!< master tune in Hz
