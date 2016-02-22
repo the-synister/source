@@ -5,6 +5,11 @@
 # if -minor then it is a minor update
 # if -patch or no arguments given at all then it is a patch update
 
+# 1. make sure you have the VST SDK from http://www.steinberg.net/en/company/developers.html, if you don't download it,
+# and in the Introjucer > Tools > Global Preferences copy the path where you've download it. 
+# 2. make sure the schemes are ticked to Shared in XCode > Product > Scheme > Manage Schemes
+# 3. you are ready to go!
+
 # reads from .version file the last version
 CURRENT_MAJOR=$(cat .version | sed -n 1p);
 CURRENT_MINOR=$(cat .version | sed -n 2p);
@@ -79,28 +84,42 @@ echo 'Creating packages directories..'
 sudo mkdir "${TEMP_PLUGIN}" &> /dev/null
 sudo mkdir "${TEMP_PLUGIN}/VST" &> /dev/null
 sudo mkdir "${TEMP_PLUGIN}/Components" &> /dev/null
-sudo cp -r ~/Library/Audio/Plug-Ins/Components "${TEMP_PLUGIN}" &> /dev/null
-sudo cp -r ~/Library/Audio/Plug-Ins/VST "${TEMP_PLUGIN}" &> /dev/null
 
 sudo mkdir "${TEMP_STANDALONE}" &> /dev/null
 sudo mkdir "${TEMP_STANDALONE}/Applications" &> /dev/null
 
-# creates archive of standalone
+# deletes all current builds to avoid permissions problems
+sudo rm -rf "${STANDALONE_DIR}/build";
+sudo rm -rf "${PLUGIN_DIR}/build";
 
+# -------- STANDALONE ----------
+
+# creates archive of standalone
 echo 'Creating archive of standalone..'
-sudo xcodebuild -project "${STANDALONE_DIR}/standalone.xcodeproj" -scheme standalone -configuration Release archive > /dev/null 2>> installer-errors.log 
+sudo xcodebuild -project "${STANDALONE_DIR}/standalone.xcodeproj" -scheme standalone -configuration Release archive -archivePath "$(pwd)/standalone" > /dev/null 2>> installer-errors.log 
 
 # gets the archive path
-ARCHIVE_DIR=~/Library/Developer/Xcode/Archives/$(ls -t ~/Library/Developer/Xcode/Archives/ | sed -n 1p)
-ARCHIVE=$(ls -t ${ARCHIVE_DIR} | grep standalone | sed -n 1p) # fix me
+ARCHIVE=$(ls -t | grep xcarchive | sed -n 1p)
 
 echo 'Exporting archive..'
-sudo xcodebuild -exportArchive -exportFormat APP -archivePath "${ARCHIVE_DIR}/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
+sudo xcodebuild -exportArchive -exportFormat APP -archivePath "$(pwd)/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
 
-# creates a release build of the plugin; archive is not working, because it doesn't copy the VST files
+sudo rm -rf "$ARCHIVE"
+
+# -------- PLUGIN ----------
+
+# creates a release build of the plugin; archive needed but not to be exported
 
 echo 'Creating archive of plugin..'
 sudo xcodebuild -project "${PLUGIN_DIR}/plugin.xcodeproj" -scheme plugin -configuration Release archive > /dev/null 2>> installer-errors.log
+
+sudo cp -r "${PLUGIN_DIR}/build/Release/Components" "${TEMP_PLUGIN}"
+sudo cp -r "${PLUGIN_DIR}/build/Release/VST" "${TEMP_PLUGIN}"
+
+# sudo rm -rf "$ARCHIVE"
+
+#sudo cp -r ~/Library/Audio/Plug-Ins/Components "${TEMP_PLUGIN}" &> /dev/null
+#sudo cp -r ~/Library/Audio/Plug-Ins/VST "${TEMP_PLUGIN}" &> /dev/null
 
 echo 'Creating application package..'
 # creates application package
@@ -159,7 +178,7 @@ echo 'Deleting traces..'
 # not needed files
 sudo rm -rf "${TEMP_PLUGIN}" > /dev/null 2>> installer-errors.log
 sudo rm -rf "${TEMP_STANDALONE}" > /dev/null 2>> installer-errors.log
-sudo rm -rf "${PLUGIN_DIR}/build/plugin.build" > /dev/null 2>> installer-errors.log
-sudo rm -rf "${STANDALONE_DIR}/build/standalone.build" > /dev/null 2>> installer-errors.log
+sudo rm -rf "${PLUGIN_DIR}/build" > /dev/null 2>> installer-errors.log
+sudo rm -rf "${STANDALONE_DIR}/build" > /dev/null 2>> installer-errors.log
 sudo rm synister_build.pkg > /dev/null 2>> installer-errors.log
 sudo rm synister_standalone_build.pkg > /dev/null 2>> installer-errors.log

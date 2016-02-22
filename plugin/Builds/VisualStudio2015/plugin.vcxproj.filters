@@ -343,21 +343,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -388,7 +373,22 @@
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
@@ -1710,21 +1710,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1758,7 +1743,22 @@
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">

@@ -64,11 +64,6 @@
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
-      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
-            file="../gui/PluginEditor.cpp"/>
-      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
-      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
-      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
       <FILE id="JgEK6S" name="WaveformVisual.cpp" compile="1" resource="0"
             file="../gui/WaveformVisual.cpp"/>
       <FILE id="lcC6xj" name="WaveformVisual.h" compile="0" resource="0"
@@ -76,6 +71,11 @@
       <FILE id="hF2GW8" name="EnvelopeCurve.cpp" compile="1" resource="0"
             file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="a6cnlq" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
+      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
+            file="../gui/PluginEditor.cpp"/>
+      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
+      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
+      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
@@ -117,7 +117,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="">
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs=""
+               vst3Folder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="32BitUniversal"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"

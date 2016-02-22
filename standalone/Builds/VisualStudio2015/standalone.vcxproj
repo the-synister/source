@@ -143,10 +143,10 @@
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
-    <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
-    <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
+    <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
+    <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\inc\Voice.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
@@ -1313,10 +1313,10 @@
     <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
-    <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
-    <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
+    <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
+    <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>

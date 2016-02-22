@@ -131,11 +131,6 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
-    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
-    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp"/>
@@ -146,7 +141,12 @@
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
@@ -1317,11 +1317,6 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
-    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
-    <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h"/>
@@ -1333,7 +1328,12 @@
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h"/>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
+    <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
