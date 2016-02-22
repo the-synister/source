@@ -265,7 +265,8 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
     for (auto &param : parameters) {
         float value = param->getUI();
         if (param->serializationTag() != "") {
-        addElement(patch, param->serializationTag(), value);
+            String prefixedName = (param->prefix() + param->serializationTag()).replace(" ", "");
+            addElement(patch, prefixedName, value);
     }
 }
 }
@@ -314,8 +315,9 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 
 // adds the value if it exists in the xml
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
-    if (patch->getChildByName(paramName) != NULL) {
-        param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+    String prefixedName = (param.prefix() + param.serializationTag()).replace(" ", "");
+    if (patch->getChildByName(prefixedName) != NULL) {
+        param.setUI(static_cast<float>(patch->getChildByName(prefixedName)->getDoubleAttribute("value")));
         //! \todo dirty flag needs to be set! This is a bad hack, please use get/set instead of getUI/setUI
         param.set(param.get(),true);
         //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
