@@ -180,7 +180,7 @@ void PlugUI::paint (Graphics& g)
     g.setColour (Colours::black);
     jassert (drawable1 != 0);
     if (drawable1 != 0)
-        drawable1->drawWithin (g, Rectangle<float> (168, 15, 264, 41),
+        drawable1->drawWithin (g, Rectangle<float> (200, 16, 255, 40),
                                RectanglePlacement::stretchToFit, 1.000f);
 
     //[UserPaint] Add your own custom painting code here..
@@ -291,7 +291,7 @@ BEGIN_JUCER_METADATA
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
                  initialWidth="812" initialHeight="693">
   <BACKGROUND backgroundColour="ff292929">
-    <IMAGE pos="168 15 264 41" resource="BinaryData::synisterLogo_png" opacity="1"
+    <IMAGE pos="200 16 255 40" resource="BinaryData::synisterLogo_png" opacity="1"
            mode="0"/>
   </BACKGROUND>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"

@@ -283,17 +283,17 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
     registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
 
-    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(trngModSrc1, &osc.shapeModSrc1, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(trngModSrc2, &osc.shapeModSrc2, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-
+    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, { ctune1, nullptr, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, { ctune1, nullptr, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+
+    registerCombobox(trngModSrc1, &osc.shapeModSrc1, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc2, &osc.shapeModSrc2, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -556,22 +556,28 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void OscPanel::updateWFShapeControls()
 {
     eOscWaves eWaveformKey = osc.waveForm.getStep();
-    osc.waveForm.setStep(eWaveformKey);
+
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
 
-    // TODO: replace with below after bug fix
-    trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-
-    // TODO: mouseOver widthKnob leads to redrawing parts of waveformVisual -> bad if is noise
-    //       should save last noise and recalculate only if eOscWaves has changed or so
-    //trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw || eWaveformKey == eOscWaves::eOscNoise);
-    //trngAmount->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngModSrc2->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
 
     widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
     widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
-    widthModSrc1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
-    widthModSrc2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
 
+    // sync boxes of shapeModSrc
+    trngModSrc1->setSelectedId(static_cast<int>(osc.shapeModSrc1.getStep()) + COMBO_OFS);
+    trngModSrc2->setSelectedId(static_cast<int>(osc.shapeModSrc2.getStep()) + COMBO_OFS);
+    widthModSrc1->setSelectedId(static_cast<int>(osc.shapeModSrc1.getStep()) + COMBO_OFS);
+    widthModSrc2->setSelectedId(static_cast<int>(osc.shapeModSrc2.getStep()) + COMBO_OFS);
+
+    // update and repaint waveform
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
