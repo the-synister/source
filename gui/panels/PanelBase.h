@@ -313,8 +313,9 @@ protected:
         }
     }
 
-    void fillModsourceBox(ComboBox* box) {
+    void fillModsourceBox(ComboBox* box, bool noInternal) {
         for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            if (noInternal && i >= eModSource::eLFO1) break;
             box->addItem(params.getModSrcName(i), i + COMBO_OFS);
         }
     }

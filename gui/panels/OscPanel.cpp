@@ -271,25 +271,25 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(gainModAmount2, &osc.gainModAmount2);
 
     // fill and register mod selection boxes
-    fillModsourceBox(pitchModSrc1);
-    fillModsourceBox(pitchModSrc2);
+    fillModsourceBox(pitchModSrc1, false);
+    fillModsourceBox(pitchModSrc2, false);
     registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr});
     registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr});
 
-    fillModsourceBox(widthModSrc1);
-    fillModsourceBox(widthModSrc2);
+    fillModsourceBox(widthModSrc1, false);
+    fillModsourceBox(widthModSrc2, false);
     registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, nullptr, nullptr});
     registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, nullptr, nullptr});
     registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, nullptr, nullptr});
     registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, nullptr, nullptr});
 
-    fillModsourceBox(panModSrc1);
-    fillModsourceBox(panModSrc2);
+    fillModsourceBox(panModSrc1, false);
+    fillModsourceBox(panModSrc2, false);
     registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr});
     registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr});
 
-    fillModsourceBox(gainModSrc1);
-    fillModsourceBox(gainModSrc2);
+    fillModsourceBox(gainModSrc1, false);
+    fillModsourceBox(gainModSrc2, false);
     registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr});
     registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr});
     //[/UserPreSize]

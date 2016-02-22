@@ -178,8 +178,8 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     registerSlider(speedMod1, &env.speedModAmount1);
     registerSlider(speedMod2, &env.speedModAmount2);
 
-    fillModsourceBox(envSpeedModSrc1);
-    fillModsourceBox(envSpeedModSrc2);
+    fillModsourceBox(envSpeedModSrc1, true);
+    fillModsourceBox(envSpeedModSrc2, true);
 
     registerCombobox(envSpeedModSrc1, &env.speedModSrc1, {attackTime1, decayTime1, releaseTime1});
     registerCombobox(envSpeedModSrc2, &env.speedModSrc2, {attackTime1, decayTime1, releaseTime1});
