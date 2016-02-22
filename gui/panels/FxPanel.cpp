@@ -65,7 +65,7 @@ FxPanel::FxPanel (SynthParams &p)
     timeSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (syncToggle = new ToggleButton ("syncToggle1"));
-    syncToggle->setButtonText (TRANS("Sync"));
+    syncToggle->setButtonText (String::empty);
     syncToggle->addListener (this);
     syncToggle->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -113,7 +113,7 @@ FxPanel::FxPanel (SynthParams &p)
     cutoffSlider->setSkewFactor (0.33);
 
     addAndMakeVisible (tripTggl = new ToggleButton ("tripTggl1"));
-    tripTggl->setButtonText (TRANS("Triplet"));
+    tripTggl->setButtonText (String::empty);
     tripTggl->addListener (this);
     tripTggl->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -123,29 +123,52 @@ FxPanel::FxPanel (SynthParams &p)
     filtTggl->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (revTggl = new ToggleButton ("revTggl"));
-    revTggl->setButtonText (TRANS("Reverse"));
+    revTggl->setButtonText (String::empty);
     revTggl->addListener (this);
     revTggl->setColour (ToggleButton::textColourId, Colours::white);
+
+    addAndMakeVisible (onOffSwitch = new Slider ("delay switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
 
 
     //[UserPreSize]
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
-    registerSlider(cutoffSlider, &params.delayCutoff);
+	registerSlider(cutoffSlider, &params.delayCutoff);
+	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
-
-    dividend->setText(String("1"));
-    divisor->setText(String("4"));
-    dividend->setEnabled(false);
-    divisor->setEnabled(false);
-    tripTggl->setEnabled(false);
+    registerToggle(revTggl, &params.delayReverse);
+    registerToggle(filtTggl, &params.delayRecordFilter);
+    registerToggle(syncToggle, &params.delaySync, std::bind(&FxPanel::updateToggleState, this));
+    registerToggle(tripTggl, &params.delayTriplet);
+    onOffSwitchChanged();
     //[/UserPreSize]
 
     setSize (330, 200);
 
 
     //[Constructor] You can add your own custom stuff here..
+    syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPicOff = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
+    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    reversePicOff = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    syncPicOff.duplicateIfShared();
+    tripletPicOff.duplicateIfShared();
+    reversePicOff.duplicateIfShared();
+    syncPicOff.multiplyAllAlphas(0.5f);
+    tripletPicOff.multiplyAllAlphas(0.5f);
+    reversePicOff.multiplyAllAlphas(0.5f);
     //[/Constructor]
 }
 
@@ -164,6 +187,7 @@ FxPanel::~FxPanel()
     tripTggl = nullptr;
     filtTggl = nullptr;
     revTggl = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -181,6 +205,7 @@ void FxPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "delay", 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
+    drawPics(g, syncToggle, tripTggl, revTggl);
     //[/UserPaint]
 }
 
@@ -192,13 +217,14 @@ void FxPanel::resized()
     feedbackSlider->setBounds (173, 38, 64, 64);
     dryWetSlider->setBounds (17, 38, 64, 64);
     timeSlider->setBounds (95, 38, 64, 64);
-    syncToggle->setBounds (95, 111, 64, 24);
+    syncToggle->setBounds (100, 108, 65, 30);
     dividend->setBounds (17, 111, 64, 18);
     divisor->setBounds (17, 135, 64, 18);
     cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (173, 111, 64, 24);
-    filtTggl->setBounds (215, 144, 100, 16);
-    revTggl->setBounds (251, 111, 64, 24);
+    tripTggl->setBounds (176, 108, 65, 30);
+    filtTggl->setBounds (100, 141, 100, 30);
+    revTggl->setBounds (252, 108, 65, 30);
+    onOffSwitch->setBounds (17, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -229,6 +255,11 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_cutoffSlider] -- add your slider handling code here..
         //[/UserSliderCode_cutoffSlider]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -237,54 +268,27 @@ void FxPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void FxPanel::buttonClicked (Button* buttonThatWasClicked)
 {
     //[UserbuttonClicked_Pre]
+    handleToggle(buttonThatWasClicked);
     //[/UserbuttonClicked_Pre]
 
     if (buttonThatWasClicked == syncToggle)
     {
         //[UserButtonCode_syncToggle] -- add your button handler code here..
-        timeSlider->setEnabled(!timeSlider->isEnabled());
-        dividend->setEnabled(!dividend->isEnabled());
-        divisor->setEnabled(!divisor->isEnabled());
-        tripTggl->setEnabled(!tripTggl->isEnabled());
-
-        if (divisor->isEnabled()) {
-            params.delaySync.setStep(eOnOffToggle::eOn);
-            params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
-            params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
-        }
-        else {
-            params.delaySync.setStep(eOnOffToggle::eOff);
-            timeSlider->setValue(params.delayTime.get());
-            params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
-        }
-
         //[/UserButtonCode_syncToggle]
     }
     else if (buttonThatWasClicked == tripTggl)
     {
         //[UserButtonCode_tripTggl] -- add your button handler code here..
-        if (params.delayTriplet.getStep() == eOnOffToggle::eOff) {
-            params.delayTriplet.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayTriplet.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_tripTggl]
     }
     else if (buttonThatWasClicked == filtTggl)
     {
         //[UserButtonCode_filtTggl] -- add your button handler code here..
-        if (params.delayRecordFilter.getStep() == eOnOffToggle::eOff) {
-            params.delayRecordFilter.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayRecordFilter.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_filtTggl]
     }
     else if (buttonThatWasClicked == revTggl)
     {
         //[UserButtonCode_revTggl] -- add your button handler code here..
-        if (params.delayReverse.getStep() == eOnOffToggle::eOff) {
-            params.delayReverse.setStep(eOnOffToggle::eOn);
-        }
-        else { params.delayReverse.setStep(eOnOffToggle::eOff); }
         //[/UserButtonCode_revTggl]
     }
 
@@ -300,13 +304,13 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == dividend)
     {
         //[UserComboBoxCode_dividend] -- add your combo box handling code here..
-        params.delayDividend.set(dividend->getText().getFloatValue());
+		params.delayDividend.set(dividend->getText().getFloatValue());
         //[/UserComboBoxCode_dividend]
     }
     else if (comboBoxThatHasChanged == divisor)
     {
         //[UserComboBoxCode_divisor] -- add your combo box handling code here..
-        params.delayDivisor.set(divisor->getText().getFloatValue());
+		params.delayDivisor.set(divisor->getText().getFloatValue());
         //[/UserComboBoxCode_divisor]
     }
 
@@ -317,6 +321,59 @@ void FxPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FxPanel::updateToggleState()
+{
+    timeSlider->setEnabled(!(params.delaySync.getStep() == eOnOffToggle::eOn) && (static_cast<int>(onOffSwitch->getValue()) == 1));
+    tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
+    divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+    dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+
+    if (divisor->isEnabled()) {
+        params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
+        params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
+    }
+    else {
+        timeSlider->setValue(params.delayTime.get());
+        params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
+    }
+}
+
+void FxPanel::onOffSwitchChanged()
+{
+	// Switches that don't depend on syncToggle
+	feedbackSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	dryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	syncToggle->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	revTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    filtTggl->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	// If delay is on, these sliders depend on syncToggle
+	if (static_cast<int>(onOffSwitch->getValue()) == 1)
+	{
+		timeSlider->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOff);
+		divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+		dividend->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+		tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
+	}
+	// If delay is off, all the sliders are disabled
+	else
+	{
+		timeSlider->setEnabled(0);
+		divisor->setEnabled(0);
+		dividend->setEnabled(0);
+		tripTggl->setEnabled(0);
+	}
+
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
+
+void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
+{
+    g.drawImageWithin(syncT->isEnabled()? syncPic : syncPicOff, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(reverseT->isEnabled()? reversePic : reversePicOff, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
+}
 //[/MiscUserCode]
 
 
@@ -352,8 +409,8 @@ BEGIN_JUCER_METADATA
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="95 111 64 24" txtcol="ffffffff"
-                buttonText="Sync" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="100 108 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDividend" id="f2c88d87f26bec88" memberName="dividend"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="17 111 64 18"
@@ -370,17 +427,23 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="173 111 64 24" txtcol="ffffffff"
-                buttonText="Triplet" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="176 108 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="215 144 100 16" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="100 141 100 30" txtcol="ffffffff"
                 buttonText="Record Cutoff" connectedEdges="0" needsCallback="1"
                 radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="251 111 64 24" txtcol="ffffffff"
-                buttonText="Reverse" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                explicitFocusOrder="0" pos="252 108 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
+  <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="17 2 40 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

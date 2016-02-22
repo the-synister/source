@@ -27,8 +27,8 @@ public:
 protected:
     typedef std::function<void()> tHookFn;
 
-    void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn()) {
-        sliderReg[slider] = p;
+    void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn(), Param *min = nullptr, Param *max = nullptr) {
+        sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
         }
@@ -39,7 +39,16 @@ protected:
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
-        slider->setValue(p->getUI());
+
+        if (min) {
+            slider->setMinValue(min->getUI());
+        }
+        if (max) {
+            slider->setMaxValue(max->getUI());
+        }
+        if (!min && !max) {
+            slider->setValue(p->getUI());
+        }
     }
 
     void registerSlider(MouseOverKnob *slider, Param *p, const tHookFn hook = tHookFn()) {
@@ -53,8 +62,9 @@ protected:
 
     // NOTE: sourceNumber values 1 or 2
     // TODO: change it to an enum?
-    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, bool convert, int sourceNumber) {
-        dest->setModSource(modSource, modAmount, convert, sourceNumber);
+    void registerSaturnSource(MouseOverKnob *dest, Slider *source, ParamStepped<eModSource> *modSource, Param *modAmount, int sourceNumber
+        , MouseOverKnob::modAmountConversion convType = MouseOverKnob::modAmountConversion::noConversion) {
+        dest->setModSource(modSource, modAmount, sourceNumber, convType);
 
         auto temp = saturnReg.find(dest);
         if (temp == saturnReg.end()) {
@@ -68,10 +78,10 @@ protected:
 
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {
-            if (s2p.second->isUIDirty()) {
-                s2p.first->setValue(s2p.second->getUI());
-                if (s2p.second->hasLabels()) {
-                    s2p.first->setName(s2p.second->getUIString());
+            if (s2p.second[0]->isUIDirty() && !s2p.second[1] && !s2p.second[2]) {
+                s2p.first->setValue(s2p.second[0]->getUI());
+                if (s2p.second[0]->hasLabels()) {
+                    s2p.first->setName(s2p.second[0]->getUIString());
                 }
 
                 auto itHook = postUpdateHook.find(s2p.first);
@@ -80,6 +90,17 @@ protected:
                 }
             }
 
+            // if min and max params are set
+            if (s2p.second[1])  {
+                if (s2p.second[1]->isUIDirty()) {
+                    s2p.first->setMinValue(s2p.second[1]->getUI());
+                }
+            }
+            if (s2p.second[2]) {
+                if (s2p.second[2]->isUIDirty()) {
+                    s2p.first->setMaxValue(s2p.second[2]->getUI());
+                }
+            }
         }
     }
 
@@ -92,7 +113,7 @@ protected:
                 auto modSource = sliderReg.find(dest2saturn.second[i]);
 
                 //if the mod source is Dirty repaint
-                if (modSource != sliderReg.end() && modSource->second->isUIDirty()) {
+                if (modSource != sliderReg.end() && modSource->second[0]->isUIDirty()) {
                     dest2saturn.first->repaint();
                 }
             }
@@ -105,9 +126,13 @@ protected:
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
 
                 auto c2s = saturnSourceReg.find(c2p.first);
-
                 if (c2s != saturnSourceReg.end()) {
-                    c2s->second->repaint();
+                    for (int i = 0; i < 3; ++i ) {
+                        if (c2s->second[i]) {
+                            c2s->second[i]->repaint();
+                        }
+                    }
+
                 }
 
                 auto itHook = postUpdateHook.find(c2p.first);
@@ -137,9 +162,16 @@ protected:
     bool handleSlider(Slider* sliderThatWasMoved) {
         auto it = sliderReg.find(sliderThatWasMoved);
         if (it != sliderReg.end()) {
-            it->second->setUI(static_cast<float>(it->first->getValue()));
-            if (it->second->hasLabels()) {
-                it->first->setName(it->second->getUIString());
+            if (it->second[1] == nullptr && it->second[2] == nullptr) {
+                it->second[0]->setUI(static_cast<float>(it->first->getValue()));
+                if (it->second[0]->hasLabels()) {
+                    it->first->setName(it->second[0]->getUIString());
+                }
+            }
+
+            if (it->second[1] && it->second[2]) {
+                it->second[1]->setUI(static_cast<float>(it->first->getMinValue()));
+                it->second[2]->setUI(static_cast<float>(it->first->getMaxValue()));
             }
 
             for (auto saturn : saturnReg) {
@@ -159,6 +191,48 @@ protected:
         }
         else {
             return false;
+        }
+    }
+
+    void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
+    {
+        toggleReg[toggle] = p;
+
+        if (hook) {
+            postUpdateHook[toggle] = hook;
+        }
+    }
+
+    bool handleToggle(Button* buttonThatWasClicked)
+    {
+        auto it = toggleReg.find(buttonThatWasClicked);
+
+        if (it != toggleReg.end()) {
+            it->second->setStep(it->second->getStep() == eOnOffToggle::eOn ? eOnOffToggle::eOff : eOnOffToggle::eOn);
+            it->first->setToggleState(it->second->getStep() == eOnOffToggle::eOn, dontSendNotification);
+
+            auto itHook = postUpdateHook.find(it->first);
+            if (itHook != postUpdateHook.end()) {
+                itHook->second();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    void updateDirtyToggles()
+    {
+        for (auto t2p : toggleReg) {
+            if (t2p.second->isUIDirty()) {
+                t2p.first->setToggleState((t2p.second->getStep() == eOnOffToggle::eOn), dontSendNotification);
+
+                auto itHook = postUpdateHook.find(t2p.first);
+                if (itHook != postUpdateHook.end()) {
+                    itHook->second();
+                }
+            }
         }
     }
 
@@ -187,11 +261,11 @@ protected:
         }
     }
 
-    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, MouseOverKnob* modDest = nullptr, const tHookFn hook = tHookFn()) {
+    void registerCombobox(ComboBox* box, ParamStepped<eModSource> *p, std::array<MouseOverKnob*, 3> modDest = {nullptr}, const tHookFn hook = tHookFn()) {
         comboboxReg[box] = p;
 
         // couple combobox with saturn knob
-        if (modDest != nullptr) {
+        if (!modDest.empty()) {
             saturnSourceReg[box] = modDest;
         }
 
@@ -225,7 +299,11 @@ protected:
 
             // update saturn
             if (temp != saturnSourceReg.end()) {
-                temp->second->repaint();
+                for (int i = 0; i < 3; ++i ) {
+                    if (temp->second[i]) {
+                        temp->second[i]->repaint();
+                    }
+                }
             }
 
             return true;
@@ -246,6 +324,7 @@ protected:
         updateDirtySliders();
         updateDirtyBoxes();
         updateDirtyDropdowns();
+        updateDirtyToggles();
     }
 
     /**
@@ -274,11 +353,12 @@ protected:
             width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);
     }
 
-    std::map<Slider*, Param*> sliderReg;
+    std::map<Slider*, std::array<Param*, 3>> sliderReg;
+    std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
     std::map<ComboBox*, Param*> dropdownReg;
-    std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg;
-    std::map<ComboBox*, MouseOverKnob*> saturnSourceReg;
+    std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg; // 2 for each mod amount
+    std::map<ComboBox*, std::array<MouseOverKnob*, 3>> saturnSourceReg; // there are up to 3, because of the ADR
     SynthParams &params;
 };

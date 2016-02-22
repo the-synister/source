@@ -114,31 +114,40 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
         // calculate intensity for unipolar direction
         intensity = toBipolar(modAmount->getMin(), modAmount->getMax(), modAmount->get());
 
-        // if conversion is needed (for cases of octave to frequency)
-        if (s.isModSourceValueConverted())
+        // if conversion is needed due to unit differences of modAmount and target
+        switch (s.getConversionType())
         {
-            base = intensity < 0.0f ? 0.5f : 2.0f;
-            afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
-        }
-        else
-        {
-            afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
+            case MouseOverKnob::modAmountConversion::noConversion:
+                afterModVal1 = jmax(min, jmin(val + intensity * modAmount->getMax(), max));
+                break;
+            case MouseOverKnob::modAmountConversion::octToFreq:
+                base = intensity < 0.0f ? 0.5f : 2.0f;
+                afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
+                break;
+            default:
+                afterModVal1 = jmax(min, jmin(val + intensity * max, max));
+                break;
         }
         modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
         modPosition2 = std::pow((val - min) / (max - min), skew);
     }
     else
     {
-        // if conversion is needed (for cases of octave to frequency)
-        if (s.isModSourceValueConverted())
+        // if conversion is needed due to unit differences of modAmount and target
+        switch (s.getConversionType())
         {
-            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
-            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
-        }
-        else
-        {
+        case MouseOverKnob::modAmountConversion::noConversion:
             afterModVal1 = jmax(min, jmin(val + modAmount->get(), max));
             afterModVal2 = jmax(min, jmin(val - modAmount->get(), max));
+            break;
+        case MouseOverKnob::modAmountConversion::octToFreq:
+            afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
+            afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
+            break;
+        default:
+            afterModVal1 = jmax(min, jmin(val + modAmount->get() * max, max));
+            afterModVal2 = jmax(min, jmin(val - modAmount->get() * max, max));
+            break;
         }
         modPosition1 = std::pow((afterModVal1 - min) / (max - min), skew);
         modPosition2 = std::pow((afterModVal2 - min) / (max - min), skew);
@@ -231,7 +240,8 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
     const float sliderRadius = (float)(jmin(20, width, height) - 2);
-    g.setColour(s.findColour(Slider::trackColourId));
+    Colour baseColour(s.findColour(Slider::trackColourId));
+    g.setColour(s.isEnabled()? baseColour : baseColour.withAlpha(0.5f));
     Path indent;
 
     // set bounds and  draw slider background
@@ -268,7 +278,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
     // draw thumb at curretn position
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
     {
-        g.setColour(s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour);
+        g.setColour(s.isEnabled()? (s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         centreX = style == Slider::LinearVertical ? (x + width / 2.0f) : sliderPos;
         centreY = style == Slider::LinearVertical ? sliderPos : (y + height / 2.0f);
 
@@ -280,7 +290,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
         if (style == Slider::TwoValueHorizontal)
         {
             const float cornerSize = 10.0f;
-            const float r = (float)(jmin(20, width / 2, height / 2) - cornerSize);
+            const float r = (float)(jmin(20, width, height) - cornerSize);
             const float yOffset = y + height * 0.5f - r * 0.5f;
             centreY = y + height / 2.0f;
 
@@ -408,8 +418,11 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
     g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
 
     // draw outline
-    g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
-    g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    if (b.findColour(TextButton::ColourIds::buttonColourId) != b.findColour(TextButton::ColourIds::buttonOnColourId))
+    {
+        g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
+        g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    }
 }
 
 void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &b, bool isMouseOverButton, bool isButtonDown)

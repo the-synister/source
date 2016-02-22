@@ -68,7 +68,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     passtype->setRange (0, 3, 1);
     passtype->setSliderStyle (Slider::LinearVertical);
     passtype->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    passtype->setColour (Slider::thumbColourId, Colour (0xff40ae69));
+    passtype->setColour (Slider::thumbColourId, Colour (0xff5b7a47));
     passtype->setColour (Slider::trackColourId, Colours::white);
     passtype->addListener (this);
 
@@ -76,6 +76,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     lpModAmount1->setRange (0, 8, 0);
     lpModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     lpModAmount1->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    lpModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     lpModAmount1->addListener (this);
 
     addAndMakeVisible (lpModSrc1 = new ComboBox ("lpModSrcBox1"));
@@ -124,6 +125,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     lpModAmount2->setRange (0, 8, 0);
     lpModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     lpModAmount2->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    lpModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
     lpModAmount2->addListener (this);
 
     addAndMakeVisible (ladderLabel = new Label ("ladder filter label",
@@ -166,35 +168,52 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     hpModAmount1->setRange (0, 8, 0);
     hpModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     hpModAmount1->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    hpModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     hpModAmount1->addListener (this);
 
     addAndMakeVisible (hpModAmount2 = new MouseOverKnob ("hpModAmount2"));
     hpModAmount2->setRange (0, 8, 0);
     hpModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     hpModAmount2->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    hpModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
     hpModAmount2->addListener (this);
 
     addAndMakeVisible (resModAmount1 = new MouseOverKnob ("resModAmount1"));
     resModAmount1->setRange (0, 10, 0);
     resModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     resModAmount1->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    resModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     resModAmount1->addListener (this);
 
     addAndMakeVisible (resModAmount2 = new MouseOverKnob ("resModAmount2"));
     resModAmount2->setRange (0, 10, 0);
     resModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     resModAmount2->setTextBoxStyle (Slider::NoTextBox, true, 0, 0);
+    resModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
     resModAmount2->addListener (this);
+
+    addAndMakeVisible (onOffSwitch = new Slider ("filter switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
 
 
     //[UserPreSize]
-    registerSaturnSource(cutoffSlider, lpModAmount1, &filter.lpCutModSrc1, &filter.lpModAmount1, true, 1);
-    registerSaturnSource(cutoffSlider, lpModAmount2, &filter.lpCutModSrc2, &filter.lpModAmount2, true, 2);
-    registerSaturnSource(cutoffSlider2, hpModAmount1, &filter.hpCutModSrc1, &filter.hpModAmount1, true, 1);
-    registerSaturnSource(cutoffSlider2, hpModAmount2, &filter.hpCutModSrc2, &filter.hpModAmount2, true, 2);
-    registerSaturnSource(resonanceSlider, resModAmount1, &filter.resonanceModSrc1, &filter.resModAmount1, false, 1);
-    registerSaturnSource(resonanceSlider, resModAmount2, &filter.resonanceModSrc2, &filter.resModAmount2, false, 2);
+    registerSaturnSource(cutoffSlider, lpModAmount1, &filter.lpCutModSrc1, &filter.lpModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(cutoffSlider, lpModAmount2, &filter.lpCutModSrc2, &filter.lpModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(cutoffSlider2, hpModAmount1, &filter.hpCutModSrc1, &filter.hpModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(cutoffSlider2, hpModAmount2, &filter.hpCutModSrc2, &filter.hpModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(resonanceSlider, resModAmount1, &filter.resonanceModSrc1, &filter.resModAmount1, 1);
+    registerSaturnSource(resonanceSlider, resModAmount2, &filter.resonanceModSrc2, &filter.resModAmount2, 2);
 
+
+    registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(cutoffSlider2, &filter.hpCutoff);
     registerSlider(resonanceSlider, &filter.resonance);
@@ -205,6 +224,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(resModAmount1, &filter.resModAmount1);
     registerSlider(resModAmount2, &filter.resModAmount2);
     registerSlider(passtype, &filter.passtype);
+    registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
     fillModsourceBox(lpModSrc1);
     fillModsourceBox(lpModSrc2);
@@ -213,15 +233,17 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     fillModsourceBox(resModSrc1);
     fillModsourceBox(resModSrc2);
 
-    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, cutoffSlider);
-    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, cutoffSlider);
-    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, cutoffSlider2);
-    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, cutoffSlider2);
-    registerCombobox(resModSrc1, &filter.resonanceModSrc1, resonanceSlider);
-    registerCombobox(resModSrc2, &filter.resonanceModSrc2, resonanceSlider);
+    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr});
+    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr});
+    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr});
+    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr});
+    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr});
+    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr});
 
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
+
+    onOffSwitchChanged();
     //[/UserPreSize]
 
     setSize (400, 180);
@@ -256,6 +278,7 @@ FiltPanel::~FiltPanel()
     hpModAmount2 = nullptr;
     resModAmount1 = nullptr;
     resModAmount2 = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -268,7 +291,7 @@ void FiltPanel::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff40ae69));
+    g.fillAll (Colour (0xff5b7a47));
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, filter.name, 0, 0,
@@ -301,6 +324,7 @@ void FiltPanel::resized()
     hpModAmount2->setBounds (205, 120, 18, 18);
     resModAmount1->setBounds (301, 97, 18, 18);
     resModAmount2->setBounds (301, 120, 18, 18);
+    onOffSwitch->setBounds (9, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -361,6 +385,11 @@ void FiltPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_resModAmount2] -- add your slider handling code here..
         //[/UserSliderCode_resModAmount2]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -410,6 +439,27 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void FiltPanel::onOffSwitchChanged()
+{
+	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
+	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
+	ladderLabel->setColour(Label::textColourId, col);
+	bandpassLabel->setColour(Label::textColourId, col);
+	highpassLabel->setColour(Label::textColourId, col);
+	lowpassLabel->setColour(Label::textColourId, col);
+
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
 //[/MiscUserCode]
 
 
@@ -427,7 +477,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p),&#10;filter(p.filter[filterNumber])"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="400" initialHeight="180">
-  <BACKGROUND backgroundColour="ff40ae69"/>
+  <BACKGROUND backgroundColour="ff5b7a47"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="110 34 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -447,15 +497,16 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="passtype switch" id="163a0186fbf8b1b2" memberName="passtype"
-          virtualName="" explicitFocusOrder="0" pos="7 52 40 88" thumbcol="ff40ae69"
+          virtualName="" explicitFocusOrder="0" pos="7 52 40 88" thumbcol="ff5b7a47"
           trackcol="ffffffff" min="0" max="3" int="1" style="LinearVertical"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lpModAmount1" id="2634056a966d88f4" memberName="lpModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 97 18 18"
-          min="0" max="8" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
-  <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
+          rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
             virtualName="" explicitFocusOrder="0" pos="132 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
@@ -475,8 +526,9 @@ BEGIN_JUCER_METADATA
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <SLIDER name="lpModAmount2" id="c0e4229cc3539fbe" memberName="lpModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 120 18 18"
-          min="0" max="8" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+          rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <LABEL name="ladder filter label" id="26f319c896bbcef8" memberName="ladderLabel"
          virtualName="" explicitFocusOrder="0" pos="35 47 56 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="ladder" editableSingleClick="0"
@@ -499,20 +551,30 @@ BEGIN_JUCER_METADATA
          fontsize="15" bold="0" italic="0" justification="33"/>
   <SLIDER name="hpModAmount1" id="97ce06faacb3a64" memberName="hpModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="205 97 18 18"
-          min="0" max="8" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+          rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <SLIDER name="hpModAmount2" id="1777cf92b5592562" memberName="hpModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="205 120 18 18"
-          min="0" max="8" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+          rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <SLIDER name="resModAmount1" id="2c0f8bd5976b18e5" memberName="resModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="301 97 18 18"
-          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+          rotarysliderfill="ffffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
   <SLIDER name="resModAmount2" id="2d467fb2ef22f25b" memberName="resModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="301 120 18 18"
-          min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox"
-          textBoxEditable="0" textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+          rotarysliderfill="ffffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="1"/>
+  <SLIDER name="filter switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="9 2 40 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

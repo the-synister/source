@@ -47,8 +47,11 @@ PlugUI::PlugUI (SynthParams &p)
     addAndMakeVisible (freq = new MouseOverKnob ("frequency"));
     freq->setRange (220, 880, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 64, 20);
+    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
+    freq->setColour (Slider::textBoxTextColourId, Colours::white);
+    freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
+    freq->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     freq->addListener (this);
 
     addAndMakeVisible (keyboard = new MidiKeyboardComponent (params.keyboardState,
@@ -94,9 +97,6 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-
-    // NOTE: preferred sectionHeight should be set (introjucer's panelHeight - 22) due to section header
-    // see env panel. introjucer height is set to 252
     foldableComponent->addSection (TRANS("OSC"), new OscPanel (params, 0), SynthParams::oscColour, 250, true, 0);
     foldableComponent->addPanel(0, new OscPanel(params, 1));
     foldableComponent->addPanel(0, new OscPanel(params, 2));
@@ -112,7 +112,7 @@ PlugUI::PlugUI (SynthParams &p)
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 323, false, 5);
+    foldableComponent->addSection (TRANS("SEQ"), new SeqPanel (params), SynthParams::stepSeqColour, 300, false, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
@@ -155,7 +155,7 @@ void PlugUI::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    freq->setBounds (728, 0, 64, 64);
+    freq->setBounds (720, 0, 64, 64);
     keyboard->setBounds (0, 698, 800, 40);
     savePresetButton->setBounds (8, 8, 88, 24);
     loadPresetButton->setBounds (112, 8, 88, 24);
@@ -240,9 +240,10 @@ BEGIN_JUCER_METADATA
                  initialHeight="900">
   <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="728 0 64 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="720 0 64 64" rotarysliderfill="ff6c788c"
+          textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="64" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
                     virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>

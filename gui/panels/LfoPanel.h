@@ -48,8 +48,9 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     String getNoteLengthAsString();
-    void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox);
-    //[/UserMethods]
+    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+	void updateLfoSyncToggle();
+	//[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
@@ -59,9 +60,10 @@ public:
 
 
 
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image sineWave, squareWave, sampleHold, gainSign;
+    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic;
 
     SynthParams::Lfo& lfo;
     //[/UserVariables]

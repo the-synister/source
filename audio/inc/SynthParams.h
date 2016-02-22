@@ -16,7 +16,7 @@ enum class eLfoWaves : int {
     eLfoSquare = 1,
     eLfoSampleHold = 2,
     nSteps = 3
-    };
+};
 
 enum class eOscWaves : int {
     eOscSquare = 0,
@@ -37,13 +37,6 @@ enum class eOnOffToggle : int {
     eOff = 0,
     eOn = 1,
     nSteps = 2
-};
-
-enum class eSeqModes : int {
-    eSeqStop = 0,
-    eSeqPlay = 1,
-    eSeqSyncHost = 2,
-    nSteps = 3
 };
 
 enum class eSeqPlayModes : int {
@@ -94,7 +87,7 @@ public:
     static const Colour waveformLine;
     static const Colour waveformBackground;
     static const Colour otherModulation;
-    
+
     static const char* getModSrcName(int index);
 
     Param freq;  //!< master tune in Hz
@@ -166,6 +159,7 @@ public:
         Lfo();
         Param freq; //!< lfo frequency in Hz
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
+        ParamStepped<eOnOffToggle> lfoTriplets; //!< bool for triplet toggle in lfo
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
         Param fadeIn;   //!< The LFOs fade in with a range of [0..10s]
@@ -193,6 +187,7 @@ public:
 
     struct Filter : public BaseParamStruct {
         Filter();
+
         ParamStepped<eBiquadFilters> passtype; //!< passtype that decides whether lowpass, highpass or bandpass filter is used
         Param lpCutoff; //!< filter cutoff frequency in Hz
         Param hpCutoff; //!< filter cutoff frequency in Hz
@@ -210,6 +205,7 @@ public:
         ParamStepped<eModSource> hpCutModSrc2;  //! hp filter modulation source
         ParamStepped<eModSource> resonanceModSrc1;  //! biquad filter resonance modulation source
         ParamStepped<eModSource> resonanceModSrc2;  //! biquad filter resonance modulation source
+        ParamStepped<eOnOffToggle> filterActivation; //!< Activation of the filter
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
@@ -294,22 +290,26 @@ public:
     std::array<Osc, 3> osc;
 
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
+    ParamStepped<eOnOffToggle> clippingActivation; //!< Activation of the clipping effect
 
     Param chorDelayLength;
     Param chorDryWet;
     Param chorModRate;
     Param chorModDepth;
+    ParamStepped<eOnOffToggle> chorActivation; //!< Activation of the chorus effect
 
-    ParamStepped<eSeqModes> seqMode;         //!< 0 = pause, 1 = play no sync, 2 = sync host
-    ParamStepped<eSeqPlayModes> seqPlayMode; //!< 0 = sequential, 1 = upDown, 2 = random
-    Param seqLastPlayedStep;                 //!< index of last played sequencer step in [0..7]
-    Param seqNumSteps;                       //!< number of steps in [1..8] steps
-    Param seqStepSpeed;                      //!< step speed in [0.0625..4] quarter notes
-    Param seqStepLength;                     //!< step length in [0.0625..4] quarter notes
-    ParamStepped<eOnOffToggle> seqTriplets;  //!< activate triplet tempo? 0 = no, 1 = active
-    Param seqRandomMin;                      //!< randomMin value as int in [0..127]
-    Param seqRandomMax;                      //!< randomMax value as int in [0..127]
-    Param seqStep0;                          //!< midi note as int in [0..127]
+    Param seqPlaceHolder;                       //!< placeholder for register slider with exactly two thumb slider, value as int in [0..127]
+    ParamStepped<eOnOffToggle> seqPlayNoHost;   //!< play without host? 0 = no, 1 = yes
+    ParamStepped<eOnOffToggle> seqPlaySyncHost; //!< play synced with host? 0 = no, 1 = yes
+    ParamStepped<eSeqPlayModes> seqPlayMode;    //!< 0 = sequential, 1 = upDown, 2 = random
+    Param seqLastPlayedStep;                    //!< index of last played sequencer step in [0..7]
+    Param seqNumSteps;                          //!< number of steps in [1..8] steps
+    Param seqStepSpeed;                         //!< step speed in 1/[1 .. 64]
+    Param seqStepLength;                        //!< step length in 1/[1 .. 64]
+    ParamStepped<eOnOffToggle> seqTriplets;     //!< activate triplet tempo? 0 = no, 1 = active
+    Param seqRandomMin;                         //!< randomMin value as int in [0..127]
+    Param seqRandomMax;                         //!< randomMax value as int in [0..127]
+    Param seqStep0;                             //!< midi note as int in [0..127]
     Param seqStep1;
     Param seqStep2;
     Param seqStep3;
@@ -317,7 +317,7 @@ public:
     Param seqStep5;
     Param seqStep6;
     Param seqStep7;
-    ParamStepped<eOnOffToggle> seqStepActive0;    //!< seqStep should play? 0 = mute, 1 = active
+    ParamStepped<eOnOffToggle> seqStepActive0;  //!< seqStep should play? 0 = mute, 1 = active
     ParamStepped<eOnOffToggle> seqStepActive1;
     ParamStepped<eOnOffToggle> seqStepActive2;
     ParamStepped<eOnOffToggle> seqStepActive3;
@@ -344,6 +344,9 @@ public:
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
+    ParamStepped<eOnOffToggle> delayActivation;     //!< delay activation
+    ParamStepped<eOnOffToggle> syncToggle;          //!< delay sync toggle
+
     // list of current params, just add your new param here if you want it to be serialized
     std::vector<Param*> serializeParams; //!< vector of params to be serialized
     // list of only stepSeq params

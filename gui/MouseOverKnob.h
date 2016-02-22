@@ -18,6 +18,13 @@ class MouseOverKnob : public Slider,
                       public ComponentListener
 {
 public:
+    enum class modAmountConversion : int {
+        noConversion = 0,
+        octToFreq = 1,
+        percentage = 2,
+        nSteps = 3
+    };
+
     //==============================================================================
     MouseOverKnob(const String& name);
     ~MouseOverKnob();
@@ -32,16 +39,16 @@ public:
     * Init saturn parameters.
     @param source param of source kind
     @param amount modulation amount knob
-    @param convert if source unit is different from destination unit then needs conversion while drawing saturn
-           used for filter where source is in octave and destination is in freq
     @param sourceNumber 1 is inner saturn, 2 is outer saturn
+    @param conversion if source unit is different from destination unit then needs conversion while drawing saturn
+           e.g. octave to freq, percentage
     */
-    void setModSource(ParamStepped<eModSource> *source, Param *amount, bool convert, int sourceNumber);
+    void setModSource(ParamStepped<eModSource> *source, Param *amount, int sourceNumber, modAmountConversion conversion = modAmountConversion::noConversion);
     void setDefaultValue(float val);
 
     std::array<ParamStepped<eModSource>*, 2> getModSources();
     std::array<Param*, 2> getModAmounts();
-    bool isModSourceValueConverted();
+    modAmountConversion getConversionType();
 
     //==============================================================================
 
@@ -102,7 +109,7 @@ private:
 
     std::array<Param*, 2> modAmounts;
     std::array<ParamStepped<eModSource>*, 2> modSources;
-    bool modSourceValueConverted;
+    modAmountConversion modSourceValueConverted = modAmountConversion::noConversion;
 };
 
 #endif  // MOUSEOVERKNOB_H_INCLUDED
