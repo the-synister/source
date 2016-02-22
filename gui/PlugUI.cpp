@@ -38,8 +38,7 @@
 
 //==============================================================================
 PlugUI::PlugUI (SynthParams &p)
-    : PanelBase(p)
-    , params(p)
+    : PanelBase(p), params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     startTimerHz (30);
@@ -279,8 +278,8 @@ void PlugUI::textEditorFocusLost(TextEditor &editor)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PlugUI" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)&#10;, params(p)" snapPixels="8"
+                 parentClasses="public PanelBase, public TextEditorListener" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p), params(p)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
                  initialWidth="812" initialHeight="693">
   <BACKGROUND backgroundColour="ff292929"/>
