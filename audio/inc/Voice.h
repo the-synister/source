@@ -14,6 +14,16 @@ public:
     bool appliesToChannel(int /*midiChannel*/) override { return true; }
 };
 
+struct Lfo {
+    Lfo(int blockSize)
+        : audioBuffer(1, blockSize)
+    {}
+    Oscillator<&Waveforms::sinus> sine;
+    Oscillator<&Waveforms::square> square;
+    RandomOscillator<&Waveforms::square> random;
+    AudioSampleBuffer audioBuffer;
+};
+
 class Voice : public SynthesiserVoice {
 public:
     Voice(SynthParams &p, int blockSize)
@@ -114,22 +124,21 @@ public:
         }
             for (size_t o = 0; o < osc.size(); ++o) {
 
-                switch (params.osc[o].waveForm.getStep())
-                {
-                    case eOscWaves::eOscSquare:
-                        osc[o].square.phase = 0.f;
-                        osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                switch (params.osc[o].waveForm.getStep()){
+                case eOscWaves::eOscSquare:
+                    osc[o].square.phase = 0.f;
+                    osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                                                Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                    osc[o].square.width = params.osc[o].pulseWidth.get();
+                    break;
+                case eOscWaves::eOscSaw:
+                    osc[o].saw.phase = 0.f;
+                    osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
                                                     Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
-                        osc[o].square.width = params.osc[o].pulseWidth.get();
-                        break;
-                    case eOscWaves::eOscSaw:
-                        osc[o].saw.phase = 0.f;
-                        osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
-                                                    Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
-                        osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
-                        break;
-                    case eOscWaves::eOscNoise:
-                        break;
+                    osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
+                    break;
+                case eOscWaves::eOscNoise:
+                    break;
                 }
             }
         }
@@ -195,8 +204,7 @@ public:
     //Midi Control
     void controllerMoved(int controllerNumber, int newValue) override{
 
-        switch(controllerNumber)
-        {
+        switch(controllerNumber){
         //Modwheel
         case 1:
             modWheelValue = static_cast<float>(newValue) / 127.f;
@@ -236,37 +244,37 @@ public:
                     float currentSample = 0.0f;
 
                     switch (params.osc[o].waveForm.getStep()){
-                        case eOscWaves::eOscSquare:
-                        {
-                            // In case of pulse width modulation
-                            float deltaWidth = osc[o].square.width > .5f
-                            ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
-                            : osc[o].square.width - params.osc[o].pulseWidth.getMin();
-                            // Pulse width must not reach 0 or 1
-                            if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < 
-                                (.5f + params.osc[o].pulseWidth.getMin())) {
-                                deltaWidth = .49f;
-                            }
-                            // LFO mod has values [-1 .. 1], max amp for amount = 1
-                            deltaWidth = deltaWidth * shapeMod[s];
-                            // Next sample will be fetched with the new width
-                            currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
+                    case eOscWaves::eOscSquare:
+                    {
+                        // In case of pulse width modulation
+                        float deltaWidth = osc[o].square.width > .5f
+                        ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
+                        : osc[o].square.width - params.osc[o].pulseWidth.getMin();
+                        // Pulse width must not reach 0 or 1
+                        if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < 
+                            (.5f + params.osc[o].pulseWidth.getMin())) {
+                            deltaWidth = .49f;
                         }
+                        // LFO mod has values [-1 .. 1], max amp for amount = 1
+                        deltaWidth = deltaWidth * shapeMod[s];
+                        // Next sample will be fetched with the new width
+                        currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
+                    }
                         break;
-                        case eOscWaves::eOscSaw:
-                        {
-                            // In case of triangle modulation
-                            float deltaTr = osc[o].saw.trngAmount > .5f
-                            ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
-                            : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
-                            // LFO mod has values [-1 .. 1], max amp for amount = 1
-                                deltaTr = deltaTr * shapeMod[s];
-                            // Next sample will be fetch with the new width
-                            currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
-                        }
+                    case eOscWaves::eOscSaw:
+                    {
+                        // In case of triangle modulation
+                        float deltaTr = osc[o].saw.trngAmount > .5f
+                        ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
+                        : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
+                        // LFO mod has values [-1 .. 1], max amp for amount = 1
+                            deltaTr = deltaTr * shapeMod[s];
+                        // Next sample will be fetch with the new width
+                        currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
+                    }
                         break;
-                        case eOscWaves::eOscNoise:
-                            currentSample = (osc[o].noise.next(pitchMod[s]));
+                    case eOscWaves::eOscNoise:
+                        currentSample = (osc[o].noise.next(pitchMod[s]));
                         break;
                     }
 
@@ -275,7 +283,7 @@ public:
                         if (params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
                         const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
                         currentSample = filter[o][f].run(currentSample, filterMod[s]);
-                    }
+                        }
                     }
 
                     // gain + pan
@@ -365,8 +373,7 @@ protected:
                 }
 
                 // calculate lfo values and fill the buffers
-                switch (params.lfo[l].wave.getStep()) 
-                {
+                switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
                     lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
                     break;
@@ -412,21 +419,10 @@ protected:
                                     params.osc[2].pitchModAmount1.getMax()));
         }
     }
-
-public:
-    struct Lfo {
-        Lfo(int blockSize)
-            : audioBuffer(1, blockSize)
-        {}
-        Oscillator<&Waveforms::sinus> sine;
-        Oscillator<&Waveforms::square> square;
-        RandomOscillator<&Waveforms::square> random;
-        AudioSampleBuffer audioBuffer;
-    };
-    std::array<Lfo, 3> lfo;
 private:
     SynthParams &params;
     int totalVoiceSamples;
+    std::array<Lfo, 3> lfo;
 
     struct Osc {
         Oscillator<&Waveforms::square> square;
