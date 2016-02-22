@@ -64,10 +64,8 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
 
-    float lastBpmInfo;
     void timerCallback() override;
     void updateDirtyPatchname(const String patchName);
-    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
     void textEditorFocusLost(TextEditor &editor);
 
     ScopedPointer<CustomLookAndFeel> lnf;
