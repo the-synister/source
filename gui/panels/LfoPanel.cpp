@@ -86,7 +86,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addListener (this);
 
     addAndMakeVisible (freqModAmount1 = new MouseOverKnob ("freqModAmount1"));
-    freqModAmount1->setRange (0, 8, 0);
+    freqModAmount1->setRange (0, 4, 0);
     freqModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount1->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -96,7 +96,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount1->addListener (this);
 
     addAndMakeVisible (freqModAmount2 = new MouseOverKnob ("freqModAmount2"));
-    freqModAmount2->setRange (0, 8, 0);
+    freqModAmount2->setRange (0, 4, 0);
     freqModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount2->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -406,13 +406,13 @@ BEGIN_JUCER_METADATA
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 35 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="freqModAmount2" id="ae5c9ce50e2de7e1" memberName="freqModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 59 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"
