@@ -151,6 +151,12 @@
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="0" optimisation="3" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
+        <CONFIGURATION name="Debug64" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="synister64" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath=""/>
+        <CONFIGURATION name="Release64" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       targetName="synister64" headerPath="../../../gui&#10;../../../audio/inc"
+                       optimisation="3"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../juce/modules"/>
