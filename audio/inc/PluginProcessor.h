@@ -73,7 +73,7 @@ private:
     class Synth : public Synthesiser {
     public:
         Synth(MidiState& mS) : midiState(mS) {}
-        void handleController(int /*midiChannel*/, int controllerNumber, int newValue) override {
+        void handleController(int midiChannel, int controllerNumber, int newValue) override {
             switch (controllerNumber)
             {
                 
@@ -89,9 +89,11 @@ private:
             default:
                 break;
             }
+            Synthesiser::handleController(midiChannel, controllerNumber, newValue);
         }
-        void handleChannelPressure(int /*midiChannel*/, int channelPressureValue) override {
+        void handleChannelPressure(int midiChannel, int channelPressureValue) override {
             midiState.values[MidiState::eAftertouch] = channelPressureValue;
+            Synthesiser::handleChannelPressure(midiChannel, channelPressureValue);
         }
     private:
         MidiState& midiState;

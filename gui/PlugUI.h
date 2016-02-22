@@ -40,6 +40,7 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public PanelBase,
+                public TextEditorListener,
                 public SliderListener,
                 public ButtonListener
 {

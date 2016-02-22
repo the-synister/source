@@ -38,8 +38,7 @@
 
 //==============================================================================
 PlugUI::PlugUI (SynthParams &p)
-    : PanelBase(p)
-    , params(p)
+    : PanelBase(p), params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     startTimerHz (30);
@@ -123,7 +122,7 @@ PlugUI::PlugUI (SynthParams &p)
     //patchNameEditor->addListener (this);
     //[/UserPreSize]
 
-    setSize (810, 900);
+    setSize (812, 693);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -194,10 +193,10 @@ void PlugUI::resized()
     //[/UserPreResize]
 
     freq->setBounds (470, 8, 80, 64);
-    keyboard->setBounds (0, 698, 800, 40);
+    keyboard->setBounds (-1, 651, 812, 40);
     savePresetButton->setBounds (107, 40, 65, 25);
     loadPresetButton->setBounds (107, 10, 65, 25);
-    foldableComponent->setBounds (0, 72, 810, 624);
+    foldableComponent->setBounds (0, 72, 812, 576);
     masterAmp->setBounds (570, 21, 100, 32);
     masterPan->setBounds (690, 21, 80, 32);
     patchNameEditor->setBounds (8, 24, 96, 24);
@@ -287,10 +286,10 @@ void PlugUI::textEditorFocusLost(TextEditor &editor)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PlugUI" componentName=""
-                 parentClasses="public PanelBase" constructorParams="SynthParams &amp;p"
-                 variableInitialisers="PanelBase(p)" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="810"
-                 initialHeight="900">
+                 parentClasses="public PanelBase, public TextEditorListener" constructorParams="SynthParams &amp;p"
+                 variableInitialisers="PanelBase(p), params(p)" snapPixels="8"
+                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
+                 initialWidth="812" initialHeight="693">
   <BACKGROUND backgroundColour="ff292929">
     <IMAGE pos="168 15 264 41" resource="BinaryData::synisterLogo_png" opacity="1"
            mode="0"/>
@@ -301,7 +300,7 @@ BEGIN_JUCER_METADATA
           min="220" max="880" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="midi keyboard" id="1a69e94e9d15e3be" memberName="keyboard"
-                    virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
+                    virtualName="" explicitFocusOrder="0" pos="-1 651 812 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
               virtualName="" explicitFocusOrder="0" pos="107 40 65 25" bgColOff="ffffffff"
@@ -312,7 +311,7 @@ BEGIN_JUCER_METADATA
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
-                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 810 624"
+                    virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 812 576"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="570 21 100 32" bkgcol="ffffff" thumbcol="ff808080"

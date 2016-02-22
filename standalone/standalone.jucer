@@ -5,12 +5,10 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
+      <FILE id="nfw2du" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="Q0yjqR" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
-        <FILE id="PaTNqw" name="synisterLogo.png" compile="0" resource="1"
-              file="../png/synisterLogo.png"/>
-        <FILE id="CrkyRG" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
-        <FILE id="ehBgVb" name="recordCutoff.png" compile="0" resource="1"
-              file="../png/recordCutoff.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
@@ -66,12 +64,14 @@
             file="../gui/IncDecDropDown.cpp"/>
       <FILE id="A7CmiH" name="IncDecDropDown.h" compile="0" resource="0"
             file="../gui/IncDecDropDown.h"/>
-      <FILE id="hX7XGU" name="ModSourceBox.cpp" compile="1" resource="0"
-            file="../gui/ModSourceBox.cpp"/>
-      <FILE id="teeZ50" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
+            file="../gui/PluginEditor.cpp"/>
+      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
+      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
+      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
       <FILE id="JgEK6S" name="WaveformVisual.cpp" compile="1" resource="0"
             file="../gui/WaveformVisual.cpp"/>
       <FILE id="lcC6xj" name="WaveformVisual.h" compile="0" resource="0"
@@ -79,11 +79,6 @@
       <FILE id="hF2GW8" name="EnvelopeCurve.cpp" compile="1" resource="0"
             file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="a6cnlq" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
-      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
-            file="../gui/PluginEditor.cpp"/>
-      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
-      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
-      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
@@ -126,13 +121,12 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="32BitUniversal"
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="32BitUniversal"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
-                       libraryPath=""/>
-        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
-                       osxArchitecture="32BitUniversal" isDebug="0" optimisation="3"
-                       targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
-                       libraryPath=""/>
+                       libraryPath="" cppLanguageStandard="c++14" cppLibType="libc++"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="32BitUniversal"
+                       isDebug="0" optimisation="3" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
+                       libraryPath="" cppLanguageStandard="c++14" cppLibType="libc++"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../juce/modules"/>

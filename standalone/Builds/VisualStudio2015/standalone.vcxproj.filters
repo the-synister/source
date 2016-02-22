@@ -331,6 +331,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -370,22 +373,19 @@
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
@@ -1662,6 +1662,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -1704,22 +1707,19 @@
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
-      <Filter>standalone\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
-      <Filter>standalone\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
-      <Filter>standalone\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Filter.h">
@@ -3143,15 +3143,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\png\synisterLogo.png">
-      <Filter>standalone\Gui\png</Filter>
-    </None>
-    <None Include="..\..\..\png\dottedNote.png">
-      <Filter>standalone\Gui\png</Filter>
-    </None>
-    <None Include="..\..\..\png\recordCutoff.png">
-      <Filter>standalone\Gui\png</Filter>
-    </None>
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
