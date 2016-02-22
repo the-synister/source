@@ -72,11 +72,10 @@ protected:
             lpFreq = Param::bipolarToFreq(lcModValue, filter.lpCutoff.get(), filter.lpModAmount1.getMax());
             hpFreq = Param::bipolarToFreq(hcModValue, filter.hpCutoff.get(), filter.hpModAmount1.getMax());
             cutoffFreq = sqrt(lpFreq * hpFreq);
-            
-            if (filter.lpCutoff.get() < filter.hpCutoff.get()) {
-                return 0.f;
-            }
+            if (lpFreq < hpFreq)
+                lpFreq = hpFreq;
             break;
+
         default: // should never happen if everybody uses it correctly! but in case it does, don't crash but return no sound instead
             return 0.f;
         }
