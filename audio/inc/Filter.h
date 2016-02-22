@@ -56,6 +56,9 @@ protected:
 
         // get mod frequency from active filter type
         float cutoffFreq;
+        float lpFreq;
+        float hpFreq;
+
         switch (filter.passtype.getStep()) {
         case eBiquadFilters::eLowpass:
             cutoffFreq = filter.lpCutoff.get();
@@ -66,7 +69,15 @@ protected:
             cutoffFreq = Param::bipolarToFreq(hcModValue, cutoffFreq, filter.hpModAmount1.getMax());
             break;
         case eBiquadFilters::eBandpass:
+            lpFreq = Param::bipolarToFreq(lcModValue, filter.lpCutoff.get(), filter.lpModAmount1.getMax());
+            hpFreq = Param::bipolarToFreq(hcModValue, filter.hpCutoff.get(), filter.hpModAmount1.getMax());
+            cutoffFreq = sqrt(lpFreq * hpFreq);
+            
+#if 0
+            /*changed for modulation*/
+            cutoffFreq = (lpFreq + hpFreq) / 2.f;
             cutoffFreq = (filter.lpCutoff.get() + filter.hpCutoff.get()) / 2.f;
+#endif
             if (filter.lpCutoff.get() < filter.hpCutoff.get()) {
                 return 0.f;
             }
@@ -128,9 +139,15 @@ protected:
         else if (filter.passtype.getStep() == eBiquadFilters::eBandpass) {
 
             // coefficients for bandpass, depending on low- and highcut frequency
-            w0 = 2.f * float_Pi*cutoffFreq;
+            w0 = 2.f * float_Pi * cutoffFreq;
+            bw = (log2(lpFreq / hpFreq)); // bandwidth in octaves
+            coeff1 = sin(w0) * sinh(log(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
+
+#if 0
+            /*changed for the modulation*/
             bw = (log2(filter.lpCutoff.get() / filter.hpCutoff.get())); // bandwidth in octaves
-            coeff1 = sin(w0)*sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
+            coeff1 = sin(w0) * sinh(log10(2.f) / 2.f * bw * w0 / sin(w0)); // intermediate value for coefficient calc
+#endif
 
             b0 = coeff1;
             b1 = 0.f;
