@@ -226,12 +226,12 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(passtype, &filter.passtype);
     registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
-    fillModsourceBox(lpModSrc1);
-    fillModsourceBox(lpModSrc2);
-    fillModsourceBox(hpModSrc1);
-    fillModsourceBox(hpModSrc2);
-    fillModsourceBox(resModSrc1);
-    fillModsourceBox(resModSrc2);
+    fillModsourceBox(lpModSrc1, false);
+    fillModsourceBox(lpModSrc2, false);
+    fillModsourceBox(hpModSrc1, false);
+    fillModsourceBox(hpModSrc2, false);
+    fillModsourceBox(resModSrc1, false);
+    fillModsourceBox(resModSrc2, false);
 
     registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr});
     registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr});

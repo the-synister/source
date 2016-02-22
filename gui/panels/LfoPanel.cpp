@@ -147,11 +147,11 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
 
     lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour);
 
-    fillModsourceBox(freqModSrc1);
-    fillModsourceBox(freqModSrc2);
+    fillModsourceBox(freqModSrc1, true);
+    fillModsourceBox(freqModSrc2, true);
     registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr});
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr});
-    fillModsourceBox(lfoGain);
+    fillModsourceBox(lfoGain, true);
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     noteLength->setEnabled(false);
