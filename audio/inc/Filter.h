@@ -86,6 +86,8 @@ protected:
 
         float currentResonance = pow(10.f, (-(filter.resonance.get() + resModValue * filter.resModAmount1.getMax()) * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
 
+        cutoffFreq /= sampleRate;
+
         // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
@@ -175,7 +177,7 @@ protected:
         }
         else if (currentResonance > filter.resonance.getMax())
         {
-            currentResonance = filter.resonance.getMin();
+            currentResonance = filter.resonance.getMax();
         }
 
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
