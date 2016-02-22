@@ -29,10 +29,8 @@ public:
     , zeroMod(0.f)
     , totalVoiceSamples(0)
     , modDestBuffer(destinations::MAX_DESTINATIONS, blockSize)
+    , lfo({ { { blockSize},{ blockSize },{ blockSize } } })
     {
-        for (Lfo &l : lfo) {
-            l.audioBuffer = AudioSampleBuffer(1, blockSize);
-        }
         std::fill(modSources.begin(), modSources.end(), &zeroMod);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
@@ -320,7 +318,6 @@ public:
 protected:
     void renderModulation(int numSamples) {
 
-        // Variables
         const float sRate = static_cast<float>(getSampleRate());
         int samplesFadeIn[3] = { 0,0,0 };
         float lfoGain[3] = { 0.f,0.f,0.f };
@@ -360,24 +357,24 @@ protected:
             //calc lfo stuff
             for (size_t l = 0; l < lfo.size(); ++l) {
                 
-                float factorFadeIn[3] = { 1.f,1.f,1.f };
+                float factorFadeIn = 1.f;
 
                 if (samplesFadeIn[l] != 0 && (totalVoiceSamples + s < samplesFadeIn[l])){
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
-                    factorFadeIn[l] = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
+                    factorFadeIn = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
                 }
 
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) 
                 {
                 case eLfoWaves::eLfoSine:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn[l] * lfoGain[l]);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSampleHold:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn[l] * lfoGain[l]);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSquare:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn[l] * lfoGain[l]);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
                     break;
                 }
             }
@@ -417,7 +414,16 @@ protected:
     }
 
 public:
-
+    struct Lfo {
+        Lfo(int blockSize)
+            : audioBuffer(1, blockSize)
+        {}
+        Oscillator<&Waveforms::sinus> sine;
+        Oscillator<&Waveforms::square> square;
+        RandomOscillator<&Waveforms::square> random;
+        AudioSampleBuffer audioBuffer;
+    };
+    std::array<Lfo, 3> lfo;
 private:
     SynthParams &params;
     int totalVoiceSamples;
@@ -430,16 +436,8 @@ private:
     };
     std::array<Osc, 3> osc;
 
-    struct Lfo {
-        Oscillator<&Waveforms::sinus> sine;
-        Oscillator<&Waveforms::square> square;
-        RandomOscillator<&Waveforms::square> random;
-        AudioSampleBuffer audioBuffer;
-    };
-    std::array<Lfo, 3> lfo;
-
     std::array<std::array<Filter,2>,3> filter;
-    std::array<float*, eModSource::nSteps> modSources;
+    std::array<const float*, eModSource::nSteps> modSources;
     std::array<float*, MAX_DESTINATIONS> modDestinations;
 
     // Midi

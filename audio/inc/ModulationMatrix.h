@@ -130,13 +130,13 @@ public:
     inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
     inline void changeSource(const String &comboBoxName, eModSource source);
     inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
-    inline void doModulationsMatrix(float** src, float** dst) const;
+    inline void doModulationsMatrix(const float** src, float** dst) const;
 
 private:
     std::vector<ModMatrixRow> matrixCore;
 };
 
-inline void ModulationMatrix::doModulationsMatrix(float** const src, float** dst) const
+inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst) const
 {
     for (const ModMatrixRow &row : matrixCore)
     {
