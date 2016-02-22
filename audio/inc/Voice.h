@@ -156,15 +156,19 @@ public:
             if (envToVolume.getReleaseCounter() == -1)      
             {                                               
                 envToVolume.resetReleaseCounter();
+                env2.resetReleaseCounter();
+                env3.resetReleaseCounter();
             }
+#if 0
             if (env2.getReleaseCounter() == -1)
             {
-                env2.resetReleaseCounter();
+                
             }
             if (env3.getReleaseCounter() == -1)
             {
-                env3.resetReleaseCounter();
+                
             }
+#endif
         }
         else
         {

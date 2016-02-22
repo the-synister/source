@@ -47,11 +47,15 @@ const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
         if (releaseShrinkRate < 1.0f)
         {
             releaseShrinkRate = 1 / releaseShrinkRate;
-            envCoeff = valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
+            envCoeff = releaseCounter >= releaseSamples
+                ? 0.f
+                : valueAtRelease * (1 - interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, true));
         }
         else
         {
-            envCoeff = valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
+            envCoeff = releaseCounter >= releaseSamples
+                ? 0.f
+                : valueAtRelease * interpolateLog(releaseCounter, releaseSamples, releaseShrinkRate, false);
         }
         releaseCounter++;
     }
