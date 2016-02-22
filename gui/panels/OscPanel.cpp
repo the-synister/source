@@ -28,8 +28,7 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
-    : PanelBase(p)
-    , osc(p.osc[oscillatorNumber])
+    : PanelBase(p), osc(p.osc[oscillatorNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -45,7 +44,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     ftune1->addListener (this);
 
     addAndMakeVisible (pitchModAmount2 = new MouseOverKnob ("PitchModAmount2"));
-    pitchModAmount2->setRange (0, 12, 0);
+    pitchModAmount2->setRange (0, 48, 0);
     pitchModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     pitchModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     pitchModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -75,7 +74,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     pulsewidth->addListener (this);
 
     addAndMakeVisible (pitchModAmount1 = new MouseOverKnob ("PitchModAmount1"));
-    pitchModAmount1->setRange (0, 12, 0);
+    pitchModAmount1->setRange (0, 48, 0);
     pitchModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     pitchModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     pitchModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -85,7 +84,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     pitchModAmount1->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
-    ctune1->setRange (-11, 11, 1);
+    ctune1->setRange (-48, 48, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
@@ -588,7 +587,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="PitchModAmount2" id="523b9024be39c1b" memberName="pitchModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 124 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="48" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
@@ -600,19 +599,19 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
+          textboxoutline="ffffff" min="0.010000000000000000208" max="0.98999999999999999112"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount1" id="29275125e377aaa" memberName="pitchModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 100 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="48" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="-11" max="11" int="1" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="-48" max="48" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
