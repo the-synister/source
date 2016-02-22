@@ -22,21 +22,14 @@
     can be use to modulate the cutoff frequency of the lowpass filter
 */
 
-class Envelope {
+class Envelope{
 public:
-    Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release,
-        Param &_attackShape, Param &_decayShape, Param &_releaseShape, Param &_keyVelToEnv)
-        :releaseCounter(-1)
-        ,attackDecayCounter(0)
-        ,sampleRate(_sampleRate)
-        ,attack(_attack)
-        ,decay(_decay)
-        ,sustain(_sustain)
-        ,release(_release)
-        ,attackShape(_attackShape)
-        ,decayShape(_decayShape)
-        ,releaseShape(_releaseShape)
-        ,keyVelToEnv(_keyVelToEnv)
+    Envelope(SynthParams::EnvBase &_env, Param &_sustain, double _sampleRate)
+        : releaseCounter(-1)
+        , attackDecayCounter(0)
+        , sampleRate(_sampleRate)
+        , env(_env)
+        , sustain(_sustain)
     {
     }
 
@@ -44,38 +37,39 @@ public:
     ~Envelope(){}
 
     //! resets the sample counters and sets the current velocity for each new note
-    void startEnvelope(float currVel);
+    void startEnvelope();
 
     //! get and reset the release counters for the volume envelope
     int getReleaseCounter() const { return releaseCounter; }
+    int getReleaseSamples() const { return releaseSamples; }
     void resetReleaseCounter();
 
 
     //! calculation of the volume envelope coefficients (with shape control)
-    const float calcEnvCoeff();
+    const float calcEnvCoeff(float modValue1, float modValue2);
 
-    //! sets the passed buffer for the modulation depending on calculated coefficients
-    void render(AudioSampleBuffer &buffer, int numSamples);
-    
     static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
-
+    
 private:
-    //References for required Params for the envelope
-    Param &attack;          //!< attack reference
-    Param &decay;           //!< decay reference
-    Param &sustain;         //!< sustain reference
-    Param &release;         //!< release reference
-    Param &attackShape;     //!< attack shape reference
-    Param &decayShape;      //!< decay shape reference
-    Param &releaseShape;    //!< release shape reference
-
-    Param &keyVelToEnv;     //!< key velocity to envelope reference
-
-    float sampleRate;       //!< sample rate
-    float currentVelocity;  //!< current Veloctiy
-
+    inline int calcModRange(float modValue, int sInput, float tRange, float modAmount) {
+        int samples = static_cast<int>(sInput * std::pow(2.f, modValue * tRange * modAmount));
+        int maxSamples = static_cast<int>(tRange * sampleRate);
+        samples = samples > maxSamples
+            ? maxSamples
+            : samples;
+        samples = samples <= 0
+            ? 0
+            : samples;
+        return samples;
+    }
+    SynthParams::EnvBase& env;   //!< local params
+    Param& sustain;         
+    double sampleRate;       //!< sample rate
     float valueAtRelease;   //!< amplitude value once release phase starts
     int attackDecayCounter; //!< sample counter during the attack and decay phase
+    int attackSamples;
+    int decaySamples;
+    int releaseSamples;     //!< total Amount of release samples
     int releaseCounter;     //!< sample counter during the release phase
 };
 

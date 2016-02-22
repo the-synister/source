@@ -50,7 +50,7 @@ const Colour SynthParams::otherModulation(180, 180, 180); // add more different 
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
-    // TODO: Think of another way to register all the struct params?
+        // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
@@ -188,21 +188,21 @@ SynthParams::EnvBase::EnvBase()
     : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
     , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
     , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-    , attackShape("Attack Shape", "envAttackShape", "attack shape", "", 0.01f, 10.0f, 1.0f)
-    , decayShape("Decay Shape", "envDecayShape", "decay shape", "", 0.01f, 10.0f, 1.0f)
-    , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
+    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
     , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 1.f, 0.5f)
-    , speedModAmount2("SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 1.f, 0.5f)
-    , speedModSrc1("Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 8.f, 0.f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 8.f, 0.f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 {
 }
 
@@ -260,6 +260,8 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
 void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // set version of the patch
     patch->setAttribute("version", version);
+    // TODO check patchname for chars that need to be replaced/escaped for correct XML
+    patch->setAttribute("patchname", patchName);
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
@@ -341,9 +343,12 @@ void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSer
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
-{
+    {
         parameters = stepSeqParams;
     }
+
+    patchName = patch->getStringAttribute("patchname");
+    patchNameDirty = true;
 
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : parameters) {

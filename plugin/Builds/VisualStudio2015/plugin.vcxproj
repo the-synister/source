@@ -155,7 +155,6 @@
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
@@ -1339,12 +1338,10 @@
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h"/>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>

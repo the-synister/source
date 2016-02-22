@@ -388,8 +388,8 @@
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
-      <Filter>standalone\Audio\inc</Filter>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
@@ -400,16 +400,10 @@
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
@@ -1728,6 +1722,12 @@
     <ClInclude Include="..\..\..\gui\PlugUI.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Filter.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
+      <Filter>standalone\Audio\inc</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
@@ -1738,9 +1738,6 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">

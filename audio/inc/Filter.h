@@ -74,7 +74,7 @@ protected:
         }
 
         //! \todo mod range must come from somewhere else
-        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
+        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, filter.lpModAmount1.getMax());
 
         // check range
         if (cutoffFreq < filter.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters

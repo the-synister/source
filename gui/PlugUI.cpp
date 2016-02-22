@@ -39,8 +39,10 @@
 //==============================================================================
 PlugUI::PlugUI (SynthParams &p)
     : PanelBase(p)
+    , params(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
+    startTimerHz (30);
     //[/Constructor_pre]
 
     addAndMakeVisible (freq = new MouseOverKnob ("frequency"));
@@ -98,6 +100,15 @@ PlugUI::PlugUI (SynthParams &p)
     masterPan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     masterPan->addListener (this);
 
+    addAndMakeVisible (patchNameEditor = new TextEditor ("new text editor"));
+    patchNameEditor->setMultiLine (false);
+    patchNameEditor->setReturnKeyStartsNewLine (false);
+    patchNameEditor->setReadOnly (false);
+    patchNameEditor->setScrollbarsShown (true);
+    patchNameEditor->setCaretVisible (true);
+    patchNameEditor->setPopupMenuEnabled (true);
+    patchNameEditor->setText (String::empty);
+
 
     //[UserPreSize]
     registerSlider(freq, &params.freq);
@@ -105,6 +116,10 @@ PlugUI::PlugUI (SynthParams &p)
     registerSlider(masterPan, &params.masterPan);
 
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
+    freq->initTextBox();
+    freq->setDefaultValue(params.freq.getDefault());
+
+    //patchNameEditor->addListener (this);
     //[/UserPreSize]
 
     setSize (810, 900);
@@ -146,6 +161,7 @@ PlugUI::~PlugUI()
     foldableComponent = nullptr;
     masterAmp = nullptr;
     masterPan = nullptr;
+    patchNameEditor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -171,11 +187,12 @@ void PlugUI::resized()
 
     freq->setBounds (470, 8, 80, 64);
     keyboard->setBounds (0, 698, 800, 40);
-    savePresetButton->setBounds (25, 40, 65, 25);
-    loadPresetButton->setBounds (25, 10, 65, 25);
+    savePresetButton->setBounds (107, 40, 65, 25);
+    loadPresetButton->setBounds (107, 10, 65, 25);
     foldableComponent->setBounds (0, 72, 810, 624);
     masterAmp->setBounds (570, 21, 100, 32);
     masterPan->setBounds (690, 21, 80, 32);
+    patchNameEditor->setBounds (8, 24, 96, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -214,6 +231,7 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == savePresetButton)
     {
         //[UserButtonCode_savePresetButton] -- add your button handler code here..
+        params.patchName = patchNameEditor->getText();
         params.writeXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_savePresetButton]
     }
@@ -231,6 +249,23 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void PlugUI::timerCallback()
+{
+    if (params.patchNameDirty) {
+        updateDirtyPatchname(params.patchName);
+        params.patchNameDirty = 0;
+    }
+}
+
+void PlugUI::updateDirtyPatchname(const String patchName)
+{
+    patchNameEditor->setText(patchName);
+}
+
+void PlugUI::textEditorFocusLost(TextEditor &editor)
+{
+    params.patchName = editor.getText();
+}
 //[/MiscUserCode]
 
 
@@ -258,11 +293,11 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="25 40 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="107 40 65 25" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="save" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="25 10 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="107 10 65 25" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
@@ -280,6 +315,10 @@ BEGIN_JUCER_METADATA
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
+  <TEXTEDITOR name="new text editor" id="3f8916006abe85bf" memberName="patchNameEditor"
+              virtualName="" explicitFocusOrder="0" pos="8 24 96 24" initialText=""
+              multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
+              caret="1" popupmenu="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

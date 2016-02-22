@@ -47,6 +47,28 @@ enum class eSeqPlayModes : int {
 };
 
 
+struct MidiState {
+    MidiState()
+    {
+        std::fill(values.begin(), values.end(), 0);
+    }
+
+    enum eMsg : int {
+        eAftertouch,
+        eFoot,
+        eExpPedal,
+        eModwheel,
+        nSteps
+    };
+
+    float get(eMsg e) const {
+        jassert(e >= eAftertouch && e < nSteps);
+        return static_cast<float>(values[e]);
+    }
+
+    std::array<int, eMsg::nSteps> values;
+};
+
 class SynthParams {
 public:
     SynthParams();
@@ -80,8 +102,8 @@ public:
     struct BaseParamStruct {
         void setName(const String& s) {
             name = s;
+            //! \todo set prefix of every param to name
         }
-
         String name;
     };
 
@@ -142,6 +164,7 @@ public:
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
         ParamStepped<eOnOffToggle> lfoTriplets; //!< bool for triplet toggle in lfo
         ParamStepped<eOnOffToggle> lfoDottedLength; //!< bool for triplet toggle in lfo
+
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
         Param fadeIn;   //!< The LFOs fade in with a range of [0..10s]
@@ -212,7 +235,6 @@ public:
 
     struct Osc : public BaseParamStruct {
         Osc();
-
         Param fine;      //!< fine tune in [-100..100] ct
         Param coarse;    //!< coarse tune in [-11..11] st
         ParamStepped<eOscWaves> waveForm; //! waveform of the oscillator, it can be either square, saw, or noise
@@ -315,6 +337,7 @@ public:
 
     ModulationMatrix globalModMatrix;
     MidiKeyboardState keyboardState;
+    MidiState midiState;
 
     Param delayFeedback;    //!< delay feedback amount
     Param delayDryWet;      //!< delay wet signal
@@ -336,6 +359,9 @@ public:
     // list of only stepSeq params
     std::vector<Param*> stepSeqParams;
 
+
+    String patchName = "";
+    bool patchNameDirty = false;
     const float version = 1.1f; // version of the program, to be written into the xml
 
     static Colour getModSourceColour(eModSource source);

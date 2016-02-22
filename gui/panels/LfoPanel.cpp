@@ -397,8 +397,14 @@ BEGIN_JUCER_METADATA
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
+<<<<<<< HEAD
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
+=======
+          min="0.010000000000000000208" max="50" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="1"/>
+>>>>>>> master
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
           explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
