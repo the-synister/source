@@ -187,7 +187,7 @@ echo 'Deleting traces..'
 # not needed files
 rm -rf "${TEMP_PLUGIN}" > /dev/null 2>> installer-errors.log
 rm -rf "${TEMP_STANDALONE}" > /dev/null 2>> installer-errors.log
-rm -rf "${PLUGIN_DIR}/build" > /dev/null 2>> installer-errors.log
-rm -rf "${STANDALONE_DIR}/build" > /dev/null 2>> installer-errors.log
+rm -rf "${PLUGIN_DIR}/build/plugin.build" > /dev/null 2>> installer-errors.log
+rm -rf "${STANDALONE_DIR}/build/standalone.build" > /dev/null 2>> installer-errors.log
 rm synister_plugin_build.pkg > /dev/null 2>> installer-errors.log
 rm synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
