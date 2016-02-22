@@ -100,7 +100,6 @@ PlugUI::PlugUI (SynthParams &p)
     masterPan->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     masterPan->addListener (this);
 
-<<<<<<< HEAD
     addAndMakeVisible (patchNameEditor = new TextEditor ("new text editor"));
     patchNameEditor->setMultiLine (false);
     patchNameEditor->setReturnKeyStartsNewLine (false);
@@ -110,9 +109,7 @@ PlugUI::PlugUI (SynthParams &p)
     patchNameEditor->setPopupMenuEnabled (true);
     patchNameEditor->setText (String::empty);
 
-=======
     drawable1 = Drawable::createFromImageData (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize);
->>>>>>> eec54836811e9236acd4a33aab7fd6ee2dac2914
 
     //[UserPreSize]
     registerSlider(freq, &params.freq);
@@ -165,11 +162,8 @@ PlugUI::~PlugUI()
     foldableComponent = nullptr;
     masterAmp = nullptr;
     masterPan = nullptr;
-<<<<<<< HEAD
     patchNameEditor = nullptr;
-=======
     drawable1 = nullptr;
->>>>>>> eec54836811e9236acd4a33aab7fd6ee2dac2914
 
 
     //[Destructor]. You can add your own custom destruction code here..
