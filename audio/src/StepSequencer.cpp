@@ -69,7 +69,12 @@ void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sam
     seqStepLength = jmin(4.0f / params.seqStepLength.get(), seqStepSpeed);
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
 
-    if (isTripletActive())
+    if (params.seqDottedLength.getStep() == eOnOffToggle::eOn)
+    {
+        seqStepSpeed *= 1.5f;
+        seqStepLength *= 1.5f;
+    }
+    if (params.seqTriplets.getStep() == eOnOffToggle::eOn)
     {
         seqStepSpeed *= 2.0f / 3.0f;
         seqStepLength *= 2.0f / 3.0f;

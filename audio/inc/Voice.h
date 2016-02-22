@@ -75,7 +75,7 @@ public:
     }
 
     void startNote(int midiNoteNumber, float velocity,
-        SynthesiserSound*, int currentPitchWheelPosition) override{
+        SynthesiserSound*, int currentPitchWheelPosition) override {
 
         totalVoiceSamples = 0;
         // reset attackDecayCounter
@@ -94,6 +94,7 @@ public:
         pitchBend = (currentPitchWheelPosition - 8192.0f) / 8192.0f;
 
         const float sRate = static_cast<float>(getSampleRate());
+        const float bpm = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm);
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
@@ -111,8 +112,7 @@ public:
                 lfo[l].random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
                     (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
-            }
-            else {
+            } else {
                 lfo[l].sine.phase = .5f*float_Pi;
                 lfo[l].sine.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
                 lfo[l].square.phase = .5f*float_Pi;
@@ -122,9 +122,11 @@ public:
                 lfo[l].random.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
             }
-            for (size_t o = 0; o < osc.size(); ++o) {
+        }
 
-                switch (params.osc[o].waveForm.getStep()){
+        for (size_t o = 0; o < osc.size(); ++o) {
+
+            switch (params.osc[o].waveForm.getStep()) {
                 case eOscWaves::eOscSquare:
                     osc[o].square.phase = 0.f;
                     osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
@@ -139,7 +141,6 @@ public:
                 break;
                 case eOscWaves::eOscNoise:
                     break;
-                }
             }
         }
 

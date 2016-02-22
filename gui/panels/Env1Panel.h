@@ -48,6 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateCurve();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -63,8 +64,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<ComboBox> envSpeedModSrc2;
-    ScopedPointer<ComboBox> envSpeedModSrc1;
+    ScopedPointer<ModSourceBox> envSpeedModSrc2;
+    ScopedPointer<ModSourceBox> envSpeedModSrc1;
     ScopedPointer<MouseOverKnob> attackTime1;
     ScopedPointer<MouseOverKnob> decayTime1;
     ScopedPointer<MouseOverKnob> sustainLevel1;

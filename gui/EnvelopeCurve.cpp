@@ -23,14 +23,13 @@ void EnvelopeCurve::setSamples()
 
     float samplesSection = getWidth() / 4.0f;
 
-    attackSamples = (attack_ * samplesSection/5) > 0.5f ?
-    static_cast<int>(ceil(attack_ * samplesSection/5)) :
+    attackSamples = (attack_ * samplesSection/4) != 0.f ?
+    static_cast<int>(ceil(attack_ * samplesSection/4)) :
     1;
 
-    decaySamples = static_cast<int>(decay_ * samplesSection/5);
-
-    releaseSamples = (release_ * (samplesSection)/5 ) > 0.5f ?
-    static_cast<int>(ceil(release_ * samplesSection/5)) :
+    decaySamples = static_cast<int>(decay_ * samplesSection/4);
+    releaseSamples = (release_ * (samplesSection)/4 ) != 0.f ?
+    static_cast<int>(ceil(release_ * samplesSection/4)) :
     1;
 
     // NOTE: the 2 at the end are responsible for the ending of the curve
@@ -85,11 +84,11 @@ float EnvelopeCurve::getEnvCoef()
         if (attackShape_ < 1.0f)
         {
             float attackGrowthRate = 1 / attackShape_;
-            envCoeff = interpolateLog(samplesCounter_, attackSamples, attackGrowthRate, true);
+            envCoeff = Envelope::interpolateLog(samplesCounter_, attackSamples, attackGrowthRate, true);
         }
         else
         {
-            envCoeff = 1.0f - interpolateLog(samplesCounter_, attackSamples, attackShape_, false);
+            envCoeff = 1.0f - Envelope::interpolateLog(samplesCounter_, attackSamples, attackShape_, false);
         }
         valueAtRelease_ = envCoeff;
         samplesCounter_++;
@@ -100,11 +99,11 @@ float EnvelopeCurve::getEnvCoef()
         if (decayShape_ < 1.0f)
         {
             float decayShrinkRate = 1 / decayShape_;
-            envCoeff = 1 - interpolateLog(samplesCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel_);
+            envCoeff = 1 - Envelope::interpolateLog(samplesCounter_ - attackSamples, decaySamples, decayShrinkRate, true) * (1.0f - sustainLevel_);
         }
         else
         {
-            envCoeff = interpolateLog(samplesCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - sustainLevel_) + sustainLevel_;
+            envCoeff = Envelope::interpolateLog(samplesCounter_ - attackSamples, decaySamples, decayShape_, false) * (1.0f - sustainLevel_) + sustainLevel_;
 
         }
         valueAtRelease_ = envCoeff;
@@ -123,11 +122,11 @@ float EnvelopeCurve::getEnvCoef()
         if (releaseShape_ < 1.0f)
         {
             float releaseShrinkRate = 1 / releaseShape_;
-            envCoeff = valueAtRelease_ * (1 - interpolateLog(samplesCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShrinkRate, true));
+            envCoeff = valueAtRelease_ * (1 - Envelope::interpolateLog(samplesCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShrinkRate, true));
         }
         else
         {
-            envCoeff = valueAtRelease_ * interpolateLog(samplesCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShape_, false);
+            envCoeff = valueAtRelease_ * Envelope::interpolateLog(samplesCounter_ - attackSamples - decaySamples - sustainSamples, releaseSamples, releaseShape_, false);
         }
         samplesCounter_++;
     }
@@ -139,19 +138,6 @@ float EnvelopeCurve::getEnvCoef()
     return envCoeff;
 
 }
-
-float EnvelopeCurve::interpolateLog(int c, int t, float k, bool slow)
-{
-    if (slow)
-    {
-        return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
-    }
-    else
-    {
-        return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
-    }
-}
-
 
 void EnvelopeCurve::paint (Graphics& g)
 {
