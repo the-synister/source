@@ -188,11 +188,11 @@ public:
     }
 
     void channelPressureChanged(int newValue) override {
-        channelAfterTouch = static_cast<float>(newValue) / 127.f;
+        channelAfterTouch = static_cast<float>(newValue) / 128.f;
     }
 
     void pitchWheelMoved(int newValue) override{
-        pitchBend = (newValue - 8192.f) / 8192.f;
+        pitchBend = (newValue - 8192.f) / 8192.0f;
     }
 
     //Midi Control
@@ -201,15 +201,15 @@ public:
         switch(controllerNumber){
         //Modwheel
         case 1:
-            modWheelValue = static_cast<float>(newValue) / 127.f;
+            modWheelValue = static_cast<float>(newValue) / 128.f;
             break;
         //Foot Controller
         case 4:
-            footControlValue = (static_cast<float>(newValue) / 127.f); //TODO: test
+            footControlValue = (static_cast<float>(newValue) / 128.f); //TODO: test
             break;
         //Expression Control
         case 11:
-            expPedalValue = static_cast<float>(newValue) / 127.f; //TODO: test
+            expPedalValue = static_cast<float>(newValue) / 128.f; //TODO: test
             break;
         }
     }
@@ -411,7 +411,7 @@ protected:
                                     params.osc[0].pitchModAmount1.getMax()));
             modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
                                     params.osc[1].pitchModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
+            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC3_PI, s) * 
                                     params.osc[2].pitchModAmount1.getMax()));
         }
     }
