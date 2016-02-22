@@ -275,8 +275,9 @@ public:
                     // filter
                     for (size_t f = 0; f < params.filter.size(); ++f) 
                     {
-                        const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
-                        currentSample = filter[o][f].run(currentSample, filterMod[s]);
+                        const float *filterMod1 = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                        const float *resMod = modDestBuffer.getReadPointer(DEST_FILTER1_RES + f);
+                        currentSample = filter[o][f].run(currentSample, filterMod1[s], resMod[s]);
                     }
 
                     // gain + pan

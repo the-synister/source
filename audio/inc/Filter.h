@@ -43,16 +43,16 @@ public:
      *  \param modValue cutoff modulation in abstract modulation range (i.e., [-1;1] per modulation source)
      *  \return filtered audio sample
      */
-    float run(float inputSignal, float modValue) {
+    float run(float inputSignal, float modValue, float resModValue) {
         if (filter.passtype.getStep() == eBiquadFilters::eLadder) {
-            return ladderFilter(inputSignal, modValue);
+            return ladderFilter(inputSignal, modValue, resModValue);
         } else {
-            return biquadFilter(inputSignal, modValue);
+            return biquadFilter(inputSignal, modValue, resModValue);
         }
     }
 
 protected:
-    float biquadFilter(float inputSignal, float modValue) {
+    float biquadFilter(float inputSignal, float modValue, float resModValue) {
 
         // get mod frequency from active filter type
         float cutoffFreq;
@@ -84,13 +84,12 @@ protected:
             cutoffFreq = filter.lpCutoff.getMax();
         }
 
-        cutoffFreq /= sampleRate;
+        float currentResonance = pow(10.f, (-(filter.resonance.get() + resModValue * filter.resModAmount1.getMax()) * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
 
         // LP and HP: Filter Design: Biquad (2 delays) Source: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=259
         // BP: based on http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt, except for bw calculation
         float k, coeff1, coeff2, coeff3, b0 = 0.0f, b1 = 0.0f, b2 = 0.0f, a0 = 0.0f, a1 = 0.0f, a2 = 0.0f, bw, w0;
 
-        const float currentResonance = pow(10.f, (-filter.resonance.get() * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
 
         if (static_cast<eBiquadFilters>(filter.passtype.getStep()) == eBiquadFilters::eLowpass) {
 
@@ -164,10 +163,20 @@ protected:
 
     //apply ladder filter to the current Sample in renderNextBlock() - Zavalishin approach
     //naive 1 pole filters wigh a hyperbolic tangent saturator
-    float ladderFilter(float ladderIn, float modValue)
+    float ladderFilter(float ladderIn, float modValue, float resModValue)
     {
         float cutoffFreq = filter.lpCutoff.get();
-        float currentResonance = filter.resonance.get();
+        float currentResonance = filter.resonance.get() + resModValue * filter.resModAmount1.getMax();
+
+        //Check for  Resonance Clipping
+        if (currentResonance < filter.resonance.getMin())
+        {
+            currentResonance = filter.resonance.getMin();
+        }
+        else if (currentResonance > filter.resonance.getMax())
+        {
+            currentResonance = filter.resonance.getMin();
+        }
 
         cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
 
