@@ -41,7 +41,8 @@
 class PlugUI  : public Component,
                 private Timer,
                 public SliderListener,
-                public ButtonListener
+                public ButtonListener,
+                public TextEditorListener
 {
 public:
     //==============================================================================
@@ -67,6 +68,7 @@ private:
     void timerCallback() override;
     void updateDirtyPatchname(const String patchName);
     void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+    void PlugUI::textEditorFocusLost(TextEditor &editor);
 
     ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]

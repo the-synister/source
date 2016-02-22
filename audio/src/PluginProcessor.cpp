@@ -297,7 +297,6 @@ AudioProcessorEditor* PluginAudioProcessor::createEditor()
 //==============================================================================
 void PluginAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    SynthParams::patchName = patchNameEditor->getText();
     SynthParams::writeXMLPatchHost(destData, eSerializationParams::eAll);
 }
 

@@ -82,6 +82,8 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     freq->initTextBox();
     freq->setDefaultValue(params.freq.getDefault());
+
+    patchNameEditor->addListener(this);
     //[/UserPreSize]
 
     setSize (800, 900);
@@ -199,7 +201,10 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PlugUI::timerCallback()
 {
-    if(params.patchNameDirty) updateDirtyPatchname(params.patchName);
+    if (params.patchNameDirty) {
+        updateDirtyPatchname(params.patchName);
+        params.patchNameDirty = 0;
+    }
 }
 
 void PlugUI::updateDirtyPatchname(const String patchName)
@@ -207,6 +212,10 @@ void PlugUI::updateDirtyPatchname(const String patchName)
     patchNameEditor->setText(patchName);
 }
 
+void PlugUI::textEditorFocusLost(TextEditor &editor) 
+{
+    params.patchName = editor.getText();
+}
 //[/MiscUserCode]
 
 
