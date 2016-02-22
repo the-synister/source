@@ -137,7 +137,7 @@ SynthParams::SynthParams()
     osc[1].setName("osc 2");
     osc[2].setName("osc 3");
 
-    envVol[0].setName("vol env");
+    envVol[0].setName("env 1");
     env[0].setName("env 2");
     env[1].setName("env 3");
 
