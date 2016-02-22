@@ -6,6 +6,11 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="PaTNqw" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
+        <FILE id="CrkyRG" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
+        <FILE id="ehBgVb" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>

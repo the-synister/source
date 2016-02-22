@@ -50,7 +50,7 @@ public:
     void updateToggleState();
     void updateNoteNameLabels();
     void updateMinMaxLabels();
-    void drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT);
 
     /**
     * timerCallback() is needed here to display the currently playing note step.
@@ -82,7 +82,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image syncPic, tripletPic, sequentialPic, upDownPic, randomPic;
+    Image syncPic, tripletPic, dotPic, sequentialPic, upDownPic, randomPic;
 
     std::array<ScopedPointer<Slider>, 8> seqStepArray;
     std::array<ScopedPointer<TextButton>, 8> labelButtonArray;

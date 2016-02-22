@@ -72,6 +72,7 @@ private:
     ScopedPointer<FoldablePanel> foldableComponent;
     ScopedPointer<MouseOverKnob> masterAmp;
     ScopedPointer<MouseOverKnob> masterPan;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================

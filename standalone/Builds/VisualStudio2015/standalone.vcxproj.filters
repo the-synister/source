@@ -3146,6 +3146,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\synisterLogo.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\png\recordCutoff.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\png</Filter>
     </None>

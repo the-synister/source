@@ -47,7 +47,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox,
+        ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT);
 	void updateLfoSyncToggle();
     void updateModAmountKnobs();
     //[/UserMethods]
@@ -62,7 +63,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic, tripletPicOff;
+    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic, tripletPicOff, dotPic, dotPicOff;
 
     SynthParams::Lfo& lfo;
     //[/UserVariables]
