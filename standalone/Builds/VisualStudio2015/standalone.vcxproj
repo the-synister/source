@@ -1793,14 +1793,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\delayReverse.png"/>
+    <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
     <None Include="..\..\..\png\lfoSampleHold.png"/>
     <None Include="..\..\..\png\lfoSineWave.png"/>
     <None Include="..\..\..\png\lfoSquareWave.png"/>
     <None Include="..\..\..\png\oscWaveForms.png"/>
+    <None Include="..\..\..\png\recordCutoff.png"/>
     <None Include="..\..\..\png\seqRandom.png"/>
     <None Include="..\..\..\png\seqSequential.png"/>
     <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\synisterLogo.png"/>
     <None Include="..\..\..\png\tempoSync.png"/>
     <None Include="..\..\..\png\toggleOff.png"/>
     <None Include="..\..\..\png\toggleOn.png"/>

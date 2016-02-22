@@ -11,6 +11,7 @@
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
+        <FILE id="yZMnlT" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -19,10 +20,14 @@
               file="../png/lfoSquareWave.png"/>
         <FILE id="raV8fg" name="oscWaveForms.png" compile="0" resource="1"
               file="../png/oscWaveForms.png"/>
+        <FILE id="BdnGLt" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="X7bbhn" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
         <FILE id="mF0MIl" name="seqSequential.png" compile="0" resource="1"
               file="../png/seqSequential.png"/>
         <FILE id="qoR5L9" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="bp0c29" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
         <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
