@@ -12,6 +12,9 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="FuGFHw" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="tmZ1gO" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
@@ -67,9 +70,6 @@
             file="../gui/IncDecDropDown.cpp"/>
       <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
             file="../gui/IncDecDropDown.h"/>
-      <FILE id="zfjtow" name="ModSourceBox.cpp" compile="1" resource="0"
-            file="../gui/ModSourceBox.cpp"/>
-      <FILE id="bBAIpb" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
