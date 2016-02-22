@@ -287,7 +287,6 @@ public:
                             currentSample = filter[o][f].run(currentSample, filterMod1[s], resMod[s]);
                         }
                     }
-                    }
 
                     // gain + pan
                     const float currentAmp =    params.osc[o].vol.get() * Param::fromDb(gainMod[s] * 
