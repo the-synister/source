@@ -69,7 +69,36 @@ public:
 
 private:
     //==============================================================================
-    Synthesiser synth;
+    class Synth : public Synthesiser {
+    public:
+        Synth(MidiState& mS) : midiState(mS) {}
+        void handleController(int midiChannel, int controllerNumber, int newValue) override {
+            switch (controllerNumber)
+            {
+                
+            case 1: //Modwheel
+                midiState.values[MidiState::eModwheel] = newValue;
+                break;
+            case 4: //Foot Controller
+                midiState.values[MidiState::eFoot] = newValue;
+                break;
+            case 11: //Expression Control
+                midiState.values[MidiState::eExpPedal] = newValue;
+                break;
+            default:
+                break;
+            }
+            Synthesiser::handleController(midiChannel, controllerNumber, newValue);
+        }
+        void handleChannelPressure(int midiChannel, int channelPressureValue) override {
+            midiState.values[MidiState::eAftertouch] = channelPressureValue;
+            Synthesiser::handleChannelPressure(midiChannel, channelPressureValue);
+        }
+    private:
+        MidiState& midiState;
+    };
+
+    Synth synth;
 
     // FX
     FxDelay delay;

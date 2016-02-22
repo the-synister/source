@@ -41,7 +41,8 @@
 class PlugUI  : public Component,
                 private Timer,
                 public SliderListener,
-                public ButtonListener
+                public ButtonListener,
+                public TextEditorListener
 {
 public:
     //==============================================================================
@@ -63,9 +64,9 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
 
-    float lastBpmInfo;
     void timerCallback() override;
-    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+    void updateDirtyPatchname(const String patchName);
+    void textEditorFocusLost(TextEditor &editor);
 
     ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]
@@ -75,9 +76,8 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
-    ScopedPointer<Label> bpmLabel;
-    ScopedPointer<Label> bpmDisplay;
     ScopedPointer<FoldablePanel> foldableComponent;
+    ScopedPointer<TextEditor> patchNameEditor;
 
 
     //==============================================================================

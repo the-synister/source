@@ -39,7 +39,7 @@ protected:
             slider->setName(p->name());
             slider->setTextValueSuffix(String(" ") + p->unit());
         }
-        
+
         if (min) {
             slider->setMinValue(min->getUI());
         }
@@ -168,7 +168,7 @@ protected:
                     it->first->setName(it->second[0]->getUIString());
                 }
             }
-            
+
             if (it->second[1] && it->second[2]) {
                 it->second[1]->setUI(static_cast<float>(it->first->getMinValue()));
                 it->second[2]->setUI(static_cast<float>(it->first->getMaxValue()));
@@ -193,20 +193,20 @@ protected:
             return false;
         }
     }
-    
+
     void registerToggle(Button* toggle, ParamStepped<eOnOffToggle>* p, const tHookFn hook = tHookFn())
     {
         toggleReg[toggle] = p;
-        
+
         if (hook) {
             postUpdateHook[toggle] = hook;
         }
     }
-    
+
     bool handleToggle(Button* buttonThatWasClicked)
     {
         auto it = toggleReg.find(buttonThatWasClicked);
-        
+
         if (it != toggleReg.end()) {
             it->second->setStep(it->second->getStep() == eOnOffToggle::eOn ? eOnOffToggle::eOff : eOnOffToggle::eOn);
             it->first->setToggleState(it->second->getStep() == eOnOffToggle::eOn, dontSendNotification);
@@ -215,19 +215,19 @@ protected:
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
             }
-            
+
             return true;
         }
-        
-        return false;  
+
+        return false;
     }
-    
+
     void updateDirtyToggles()
     {
         for (auto t2p : toggleReg) {
             if (t2p.second->isUIDirty()) {
                 t2p.first->setToggleState((t2p.second->getStep() == eOnOffToggle::eOn), dontSendNotification);
-                
+
                 auto itHook = postUpdateHook.find(t2p.first);
                 if (itHook != postUpdateHook.end()) {
                     itHook->second();

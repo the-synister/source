@@ -412,9 +412,6 @@
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
@@ -1770,9 +1767,6 @@
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
@@ -1783,9 +1777,6 @@
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">

@@ -376,15 +376,15 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Attack Time" id="c3597517f8c98b63" memberName="attackTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="9731927ce4f75586" memberName="decayTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="69 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="c5800da9b4223b05" memberName="sustainLevel1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="132 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -394,9 +394,9 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Release Time" id="b706f933608906" memberName="releaseTime1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="195 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="bd17ed6e5bdc4910" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
           rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"

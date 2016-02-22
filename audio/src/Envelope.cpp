@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
+==============================================================================
 
-    Envelope.cpp
-    Created: 11 Dec 2015 3:14:14pm
-    Author:  Nhat Duc Tran and Anton Schmied
+Envelope.cpp
+Created: 11 Dec 2015 3:14:14pm
+Author:  Nhat Duc Tran and Anton Schmied
 
-  ==============================================================================
+==============================================================================
 */
 
 #include "Envelope.h"
@@ -15,27 +15,31 @@ void Envelope::resetReleaseCounter()
     releaseCounter = 0;
 }
 
-void Envelope::startEnvelope(float currVel)
+void Envelope::startEnvelope()
 {
     releaseCounter = -1;
     attackDecayCounter = 0;
-    currentVelocity = currVel;
 }
 
-const float Envelope::calcEnvCoeff()
+const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
 {
     float envCoeff;
     float sustainLevel = sustain.get();
 
     // number of samples for all phases
-    int attackSamples = static_cast<int>(sampleRate * attack.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-    int decaySamples = static_cast<int>(sampleRate * decay.get() * (1.0f - currentVelocity * keyVelToEnv.get()));
-    int releaseSamples = static_cast<int>(sampleRate * release.get());
+    attackSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.attack.get()), env.attack.getMax(), env.speedModAmount1.get());
+    attackSamples = calcModRange(modValue2, attackSamples, env.attack.getMax(), env.speedModAmount2.get());
+
+    decaySamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.decay.get()), env.decay.getMax(), env.speedModAmount1.get());
+    decaySamples = calcModRange(modValue2, decaySamples, env.decay.getMax(), env.speedModAmount2.get());
+
+    releaseSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.release.get()), env.release.getMax(), env.speedModAmount1.get());
+    releaseSamples = calcModRange(modValue2, releaseSamples, env.release.getMax(), env.speedModAmount2.get());
 
     // get growth/shrink rate from knobs
-    float attackGrowthRate = attackShape.get();
-    float decayShrinkRate = decayShape.get();
-    float releaseShrinkRate = releaseShape.get();
+    float attackGrowthRate = env.attackShape.get();
+    float decayShrinkRate = env.decayShape.get();
+    float releaseShrinkRate = env.releaseShape.get();
 
     // release phase sets envCoeff from valueAtRelease to 0.0f
     if (releaseCounter > -1)
@@ -112,14 +116,4 @@ float Envelope::interpolateLog(int c, int t, float k, bool slow)
     {
         return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
     }
-}
-
-
-void Envelope::render(AudioSampleBuffer &buffer, int numSamples) {
-
-    for (int s = 0; s < numSamples; ++s)
-    {
-        buffer.setSample(0, s, calcEnvCoeff());
-    }
-
 }

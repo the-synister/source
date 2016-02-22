@@ -64,25 +64,16 @@ PlugUI::PlugUI (SynthParams &p)
     addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
     loadPresetButton->addListener (this);
 
-    addAndMakeVisible (bpmLabel = new Label ("bpm label",
-                                             TRANS("BPM:")));
-    bpmLabel->setFont (Font (20.00f, Font::plain));
-    bpmLabel->setJustificationType (Justification::centredLeft);
-    bpmLabel->setEditable (false, false, false);
-    bpmLabel->setColour (Label::textColourId, Colours::white);
-    bpmLabel->setColour (TextEditor::textColourId, Colours::black);
-    bpmLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (bpmDisplay = new Label ("bpm display",
-                                               String::empty));
-    bpmDisplay->setFont (Font (20.00f, Font::plain));
-    bpmDisplay->setJustificationType (Justification::centredLeft);
-    bpmDisplay->setEditable (false, false, false);
-    bpmDisplay->setColour (Label::textColourId, Colours::white);
-    bpmDisplay->setColour (TextEditor::textColourId, Colours::black);
-    bpmDisplay->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (foldableComponent = new FoldablePanel ("foldablePanels"));
+
+    addAndMakeVisible (patchNameEditor = new TextEditor ("new text editor"));
+    patchNameEditor->setMultiLine (false);
+    patchNameEditor->setReturnKeyStartsNewLine (false);
+    patchNameEditor->setReadOnly (false);
+    patchNameEditor->setScrollbarsShown (true);
+    patchNameEditor->setCaretVisible (true);
+    patchNameEditor->setPopupMenuEnabled (true);
+    patchNameEditor->setText (String::empty);
 
 
     //[UserPreSize]
@@ -91,6 +82,8 @@ PlugUI::PlugUI (SynthParams &p)
     freq->setSkewFactorFromMidPoint(params.freq.getDefault());
     freq->initTextBox();
     freq->setDefaultValue(params.freq.getDefault());
+
+    patchNameEditor->addListener(this);
     //[/UserPreSize]
 
     setSize (800, 900);
@@ -129,9 +122,8 @@ PlugUI::~PlugUI()
     keyboard = nullptr;
     savePresetButton = nullptr;
     loadPresetButton = nullptr;
-    bpmLabel = nullptr;
-    bpmDisplay = nullptr;
     foldableComponent = nullptr;
+    patchNameEditor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -157,11 +149,10 @@ void PlugUI::resized()
 
     freq->setBounds (720, 0, 64, 64);
     keyboard->setBounds (0, 698, 800, 40);
-    savePresetButton->setBounds (8, 8, 88, 24);
+    savePresetButton->setBounds (112, 40, 88, 24);
     loadPresetButton->setBounds (112, 8, 88, 24);
-    bpmLabel->setBounds (222, 6, 58, 24);
-    bpmDisplay->setBounds (274, 6, 64, 24);
     foldableComponent->setBounds (0, 72, 800, 624);
+    patchNameEditor->setBounds (8, 24, 96, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -190,6 +181,7 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == savePresetButton)
     {
         //[UserButtonCode_savePresetButton] -- add your button handler code here..
+        params.patchName = patchNameEditor->getText();
         params.writeXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_savePresetButton]
     }
@@ -209,17 +201,20 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PlugUI::timerCallback()
 {
-    updateBpmDisplay (params.positionInfo[params.getGUIIndex()]);
+    if (params.patchNameDirty) {
+        updateDirtyPatchname(params.patchName);
+        params.patchNameDirty = 0;
+    }
 }
 
-void PlugUI::updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo &currentPos)
+void PlugUI::updateDirtyPatchname(const String patchName)
 {
-    lastBpmInfo = static_cast<float>(currentPos.bpm);
+    patchNameEditor->setText(patchName);
+}
 
-    MemoryOutputStream bpmDisplayText;
-
-    bpmDisplayText << String(currentPos.bpm, 2);
-    bpmDisplay->setText(bpmDisplayText.toString(), dontSendNotification);
+void PlugUI::textEditorFocusLost(TextEditor &editor) 
+{
+    params.patchName = editor.getText();
 }
 //[/MiscUserCode]
 
@@ -248,24 +243,18 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="0 698 800 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="8 8 88 24" buttonText="Save preset"
+              virtualName="" explicitFocusOrder="0" pos="112 40 88 24" buttonText="Save preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
               virtualName="" explicitFocusOrder="0" pos="112 8 88 24" buttonText="Load preset"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <LABEL name="bpm label" id="a8863f99ab598bc6" memberName="bpmLabel"
-         virtualName="" explicitFocusOrder="0" pos="222 6 58 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="BPM:" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="20" bold="0" italic="0" justification="33"/>
-  <LABEL name="bpm display" id="68b77dd638977b94" memberName="bpmDisplay"
-         virtualName="" explicitFocusOrder="0" pos="274 6 64 24" textCol="ffffffff"
-         edTextCol="ff000000" edBkgCol="0" labelText="" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="20" bold="0" italic="0" justification="33"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 800 624"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
+  <TEXTEDITOR name="new text editor" id="3f8916006abe85bf" memberName="patchNameEditor"
+              virtualName="" explicitFocusOrder="0" pos="8 24 96 24" initialText=""
+              multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
+              caret="1" popupmenu="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

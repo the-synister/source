@@ -28,7 +28,8 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
-    : PanelBase(p), osc(p.osc[oscillatorNumber])
+    : PanelBase(p)
+    , osc(p.osc[oscillatorNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
