@@ -51,6 +51,7 @@ class Envelope{
     private:
     inline int calcModRange(float modValue, int sInput, float tRange, float modAmount) {
         int samples = static_cast<int>(sInput * std::pow(2.f, modValue * tRange * modAmount));
+
         int maxSamples = static_cast<int>(tRange * sampleRate);
         samples = samples > maxSamples
             ? maxSamples
@@ -58,6 +59,7 @@ class Envelope{
         samples = samples <= 0
             ? 0
             : samples;
+
         return samples;
     }
     SynthParams::EnvBase& env;   //!< local params
