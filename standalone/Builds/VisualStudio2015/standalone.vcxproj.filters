@@ -370,6 +370,9 @@
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
@@ -1705,6 +1708,9 @@
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">

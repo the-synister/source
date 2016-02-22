@@ -68,6 +68,9 @@ public:
 
     static const char* getModSrcName(int index);
 
+    ParamDb masterAmp; //!< master volume
+    Param masterPan; //!< master pan
+
     Param freq;  //!< master tune in Hz
 
                        //Param lfoChorfreq; // delay-lfo frequency in Hz
@@ -137,7 +140,8 @@ public:
         Lfo();
         Param freq; //!< lfo frequency in Hz
         ParamStepped<eOnOffToggle> tempSync; //!< bool if checked or not
-		ParamStepped<eOnOffToggle> lfoTriplets; //!< bool for triplet toggle in lfo
+        ParamStepped<eOnOffToggle> lfoTriplets; //!< bool for triplet toggle in lfo
+        ParamStepped<eOnOffToggle> lfoDottedLength; //!< bool for triplet toggle in lfo
         Param noteLength; //!< denominator of selected note length 1/x [1 ... 32]
         ParamStepped<eLfoWaves> wave; //!< lfo wave switch 0 = sine wave, 1 = random, or 2 = square wave
         Param fadeIn;   //!< The LFOs fade in with a range of [0..10s]
@@ -286,6 +290,7 @@ public:
     Param seqStepSpeed;                         //!< step speed in 1/[1 .. 64]
     Param seqStepLength;                        //!< step length in 1/[1 .. 64]
     ParamStepped<eOnOffToggle> seqTriplets;     //!< activate triplet tempo? 0 = no, 1 = active
+    ParamStepped<eOnOffToggle> seqDottedLength;       //!< activate dotted tempo? 0 = no, 1 = active
     Param seqRandomMin;                         //!< randomMin value as int in [0..127]
     Param seqRandomMax;                         //!< randomMax value as int in [0..127]
     Param seqStep0;                             //!< midi note as int in [0..127]
@@ -320,6 +325,7 @@ public:
     Param delayCutoff;       //!< delay Cutoff Frequency
     Param delayResonance;   //!< delay Resonance Frequency
     ParamStepped<eOnOffToggle> delayTriplet;        //!< delay triplet toggle
+    ParamStepped<eOnOffToggle> delayDottedLength;   //!< delay dotted note length toggle
     ParamStepped<eOnOffToggle> delayRecordFilter;   //!< delay filter record toggle
     ParamStepped<eOnOffToggle> delayReverse;        //!< delay reverse modo toggle
     ParamStepped<eOnOffToggle> delayActivation;     //!< delay activation

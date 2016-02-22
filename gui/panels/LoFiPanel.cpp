@@ -101,7 +101,7 @@ void LoFiPanel::resized()
     //[/UserPreResize]
 
     nBitsLowFi->setBounds (35, 63, 64, 64);
-    onOffSwitch->setBounds (17, 2, 40, 30);
+    onOffSwitch->setBounds (14, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -160,7 +160,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lofi switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="17 2 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

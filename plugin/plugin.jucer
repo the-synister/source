@@ -67,6 +67,9 @@
             file="../gui/IncDecDropDown.cpp"/>
       <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
             file="../gui/IncDecDropDown.h"/>
+      <FILE id="zfjtow" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="bBAIpb" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
