@@ -117,7 +117,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     releaseShape1->setSkewFactor (0.3);
 
     addAndMakeVisible (speedMod1 = new MouseOverKnob ("speedMod1"));
-    speedMod1->setRange (0, 1, 0);
+    speedMod1->setRange (0, 8, 0);
     speedMod1->setSliderStyle (Slider::RotaryVerticalDrag);
     speedMod1->setTextBoxStyle (Slider::TextBoxBelow, true, 0, 0);
     speedMod1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -140,7 +140,7 @@ Env1Panel::Env1Panel (SynthParams &p, int envelopeNumber)
     shapeLabel1->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (speedMod2 = new MouseOverKnob ("speedMod2"));
-    speedMod2->setRange (0, 1, 0);
+    speedMod2->setRange (0, 8, 0);
     speedMod2->setSliderStyle (Slider::RotaryVerticalDrag);
     speedMod2->setTextBoxStyle (Slider::TextBoxBelow, true, 0, 0);
     speedMod2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -399,23 +399,23 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="bd17ed6e5bdc4910" memberName="attackShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
-          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
-          skewFactor="0.29999999999999999"/>
+          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
+          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="Decay Shape" id="9bd5989569f5223c" memberName="decayShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="91 111 20 20"
-          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
-          skewFactor="0.29999999999999999"/>
+          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
+          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="Release Shape" id="fb9fa6b3328d7d27" memberName="releaseShape1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="216 111 20 20"
-          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
-          skewFactor="0.29999999999999999"/>
+          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
+          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
   <SLIDER name="speedMod1" id="bee5e0860811e660" memberName="speedMod1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 146 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
@@ -429,7 +429,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <LABEL name="new label" id="4eec3e2c98c3d079" memberName="speedModLabel"

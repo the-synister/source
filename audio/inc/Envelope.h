@@ -46,12 +46,24 @@ class Envelope{
 
 
     //! calculation of the volume envelope coefficients (with shape control)
-    const float calcEnvCoeff(float modValue1, float modValue2);
+    const float calcEnvCoeff(float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2);
 
     private:
-    inline int calcModRange(float modValue, int sInput, float tRange, float modAmount) {
-        int samples = static_cast<int>(sInput * std::pow(2.f, modValue * tRange * modAmount));
-        int maxSamples = static_cast<int>(tRange * sampleRate);
+    inline int calcModRange(float modValue, float modAmount, int sInput, bool isUnipolar) {
+
+        float intensity;
+        if (isUnipolar) {
+            // if the source is unipolar, transform the intensity to bipolar
+            intensity = toBipolar(env.speedModAmount1.getMin(), env.speedModAmount1.getMax(), modAmount);
+        }
+        else {
+            // else the source is bipolar, transform the intensity to unipolar
+            intensity = toUnipolar(env.speedModAmount1.getMin(), env.speedModAmount1.getMax(), modAmount);
+        }
+        float dModValue = modValue*intensity;
+
+        int samples = static_cast<int>(sInput * std::pow(2.f, env.speedModAmount1.getMax() * dModValue));
+        int maxSamples = static_cast<int>(env.speedModAmount1.getMax() * sampleRate);
         samples = samples > maxSamples
             ? maxSamples
             : samples;

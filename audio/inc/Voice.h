@@ -391,11 +391,11 @@ protected:
             // Calculate the Envelope coefficients and fill the buffers
             // this is a temporary (and fugly) solution, because env-array init lists are evil!
             envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
-                                    *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())])));
+                                    *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]), isUnipolar(params.envVol[0].speedModSrc1.getStep()), isUnipolar(params.envVol[0].speedModSrc2.getStep())));
             env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())])));
+                                    *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())]), isUnipolar(params.env[0].speedModSrc1.getStep()), isUnipolar(params.env[0].speedModSrc2.getStep())));
             env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())])));
+                                    *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]), isUnipolar(params.env[1].speedModSrc1.getStep()), isUnipolar(params.env[1].speedModSrc2.getStep())));
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());

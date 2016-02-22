@@ -445,7 +445,7 @@ void FiltPanel::onOffSwitchChanged()
 	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
@@ -506,7 +506,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
-  <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
+  <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
             virtualName="" explicitFocusOrder="0" pos="132 97 40 18" editable="0"
             layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"

@@ -102,7 +102,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
     globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
 
     for (size_t l = 0; l < lfo.size(); ++l) {
         String boxName = String::formatted("lfo %u", l + 1);

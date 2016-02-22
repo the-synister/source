@@ -21,20 +21,17 @@ void Envelope::startEnvelope()
     attackDecayCounter = 0;
 }
 
-const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
+const float Envelope::calcEnvCoeff(float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2)
 {
-    float envCoeff;
-    float sustainLevel = sustain.get();
+    // speed mod calculation
+    attackSamples = calcModRange(modValue1, env.speedModAmount1.get(), static_cast<int>(sampleRate * env.attack.get()), isUnipolar1);
+    attackSamples = calcModRange(modValue2, env.speedModAmount2.get(), attackSamples, isUnipolar2);
 
-    // number of samples for all phases
-    attackSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.attack.get()), env.attack.getMax(), env.speedModAmount1.get());
-    attackSamples = calcModRange(modValue2, attackSamples, env.attack.getMax(), env.speedModAmount2.get());
+    decaySamples = calcModRange(modValue1, env.speedModAmount1.get(), static_cast<int>(sampleRate * env.decay.get()), isUnipolar1);
+    decaySamples = calcModRange(modValue2, env.speedModAmount1.get(), decaySamples, isUnipolar2);
 
-    decaySamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.decay.get()), env.decay.getMax(), env.speedModAmount1.get());
-    decaySamples = calcModRange(modValue2, decaySamples, env.decay.getMax(), env.speedModAmount2.get());
-
-    releaseSamples = calcModRange(modValue1, static_cast<int>(sampleRate * env.release.get()), env.release.getMax(), env.speedModAmount1.get());
-    releaseSamples = calcModRange(modValue2, releaseSamples, env.release.getMax(), env.speedModAmount2.get());
+    releaseSamples = calcModRange(modValue1, env.speedModAmount1.get(), static_cast<int>(sampleRate * env.release.get()), isUnipolar1);
+    releaseSamples = calcModRange(modValue2, env.speedModAmount1.get(), releaseSamples, isUnipolar2);
 
     // get growth/shrink rate from knobs
     float attackGrowthRate = env.attackShape.get();
@@ -42,6 +39,7 @@ const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
     float releaseShrinkRate = env.releaseShape.get();
 
     // release phase sets envCoeff from valueAtRelease to 0.0f
+    float envCoeff;
     if (releaseCounter > -1)
     {
         if (releaseShrinkRate < 1.0f)
@@ -72,11 +70,11 @@ const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
             valueAtRelease = envCoeff;
             attackDecayCounter++;
         }
-        else
-        {
+        else{
+            
+            float sustainLevel = sustain.get();
             // decay phase sets envCoeff from 1.0f to sustain level
-            if (attackDecayCounter <= attackSamples + decaySamples)
-            {
+            if (attackDecayCounter <= attackSamples + decaySamples){
                 if (decayShrinkRate < 1.0f)
                 {
                     decayShrinkRate = 1 / decayShrinkRate;
