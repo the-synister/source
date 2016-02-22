@@ -343,6 +343,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
@@ -1707,6 +1710,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\FoldablePanel.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>

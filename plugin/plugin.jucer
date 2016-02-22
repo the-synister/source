@@ -12,6 +12,9 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
+      <FILE id="DkzK23" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="OT5koY" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
