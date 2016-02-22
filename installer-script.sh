@@ -23,8 +23,8 @@ PLUGIN_DIR=plugin/Builds/MacOSX
 usage() {
     echo 'Usage: ./installer-script.sh [[--major|-ma] [--minor|-mi] | [--patch|-pa] | [--help|-h]]
         Before you run it: 
-        1. make sure you have the VST SDK from http://www.steinberg.net/en/company/developers.html, if you do not download it,
-        and in the Introjucer > Tools > Global Preferences copy the path where you have download it. 
+        1. make sure you have the VST SDK from http://www.steinberg.net/en/company/developers.html, if you do not have it, download it,
+        and in the Plugin Introjucer > MacOSX Configuration > VST copy the path where you have download it. 
         2. make sure the schemes are ticked to Shared in XCode > Product > Scheme > Manage Schemes
         3. you are ready to go!';
 }
@@ -110,13 +110,13 @@ rm -rf "${PLUGIN_DIR}/build/Release";
 
 # creates archive of standalone
 echo 'Creating archive of standalone..'
-xcodebuild -project "${STANDALONE_DIR}/standalone.xcodeproj" -scheme standalone -configuration Release archive -archivePath "$(pwd)/standalone" #> /dev/null 2>> installer-errors.log 
+xcodebuild -project "${STANDALONE_DIR}/standalone.xcodeproj" -scheme standalone -configuration Release archive -archivePath "$(pwd)/standalone" > /dev/null 2>> installer-errors.log 
 
 # gets the archive path
 ARCHIVE=$(ls -t | grep xcarchive | sed -n 1p)
 
 echo 'Exporting archive..'
-xcodebuild -exportArchive -exportFormat APP -archivePath "$(pwd)/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" #> /dev/null 2>> installer-errors.log 
+xcodebuild -exportArchive -exportFormat APP -archivePath "$(pwd)/${ARCHIVE}" -exportPath "${TEMP_STANDALONE}/Applications/synister" > /dev/null 2>> installer-errors.log 
 
 rm -rf "$ARCHIVE"
 
@@ -125,18 +125,18 @@ rm -rf "$ARCHIVE"
 # creates a release build of the plugin; archive needed but not to be exported
 
 echo 'Creating archive of plugin..'
-xcodebuild -project "${PLUGIN_DIR}/plugin.xcodeproj" -scheme plugin -configuration Release archive #> /dev/null 2>> installer-errors.log
+xcodebuild -project "${PLUGIN_DIR}/plugin.xcodeproj" -scheme plugin -configuration Release archive > /dev/null 2>> installer-errors.log
 
 cp -r "${PLUGIN_DIR}/build/Release/Components" "${TEMP_PLUGIN}"
 cp -r "${PLUGIN_DIR}/build/Release/VST" "${TEMP_PLUGIN}"
 
 echo 'Creating application package..'
 # creates application package
-pkgbuild --install-location / --version "${VERSION}" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg #> /dev/null 2>> installer-errors.log
+pkgbuild --install-location / --version "${VERSION}" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
 
 # creates plugin package
 echo 'Creating plugin package..'
-pkgbuild --install-location /Library/Audio/Plug-Ins --version "${VERSION}" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_build.pkg #> /dev/null 2>> installer-errors.log
+pkgbuild --install-location /Library/Audio/Plug-Ins --version "${VERSION}" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_plugin_build.pkg > /dev/null 2>> installer-errors.log
 
 echo 'Creating distribution files..'
 # distribution files are for the personalized installer process
@@ -154,7 +154,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
         <line choice="install"/>
     </choices-outline>
     <choice id="install" visible="true" title="Install" description="Installation description goes here">
-        <pkg-ref id="de.tu-berlin.qu.synister.plugin" version="'$VERSION'">synister_build.pkg</pkg-ref>
+        <pkg-ref id="de.tu-berlin.qu.synister.plugin" version="'$VERSION'">synister_plugin_build.pkg</pkg-ref>
     </choice>
 </installer-gui-script>
 ' > "${TEMP_PLUGIN}/distribution.xml"
@@ -180,14 +180,14 @@ echo '<?xml version="1.0" encoding="utf-8"?>
 
 echo 'Finishing packages..'
 # productbuild is used to create from the existing packages and the distribution files the personalised installer package
-productbuild --resources $(pwd) --distribution "${TEMP_PLUGIN}/distribution.xml" --package-path $(pwd) synister.pkg #> /dev/null 2>> installer-errors.log
-productbuild --resources $(pwd) --distribution "${TEMP_STANDALONE}/distribution.xml" --package-path $(pwd) synisterStandalone.pkg #> /dev/null 2>> installer-errors.log
+productbuild --resources $(pwd) --distribution "${TEMP_PLUGIN}/distribution.xml" --package-path $(pwd) synisterPlugin.pkg > /dev/null 2>> installer-errors.log
+productbuild --resources $(pwd) --distribution "${TEMP_STANDALONE}/distribution.xml" --package-path $(pwd) synisterStandalone.pkg > /dev/null 2>> installer-errors.log
 
 echo 'Deleting traces..'
 # not needed files
-rm -rf "${TEMP_PLUGIN}" #> /dev/null 2>> installer-errors.log
-rm -rf "${TEMP_STANDALONE}" #> /dev/null 2>> installer-errors.log
-rm -rf "${PLUGIN_DIR}/build" #> /dev/null 2>> installer-errors.log
-rm -rf "${STANDALONE_DIR}/build" #> /dev/null 2>> installer-errors.log
-rm synister_build.pkg #> /dev/null 2>> installer-errors.log
-rm synister_standalone_build.pkg #> /dev/null 2>> installer-errors.log
+rm -rf "${TEMP_PLUGIN}" > /dev/null 2>> installer-errors.log
+rm -rf "${TEMP_STANDALONE}" > /dev/null 2>> installer-errors.log
+rm -rf "${PLUGIN_DIR}/build" > /dev/null 2>> installer-errors.log
+rm -rf "${STANDALONE_DIR}/build" > /dev/null 2>> installer-errors.log
+rm synister_plugin_build.pkg > /dev/null 2>> installer-errors.log
+rm synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
