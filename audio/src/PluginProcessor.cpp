@@ -80,8 +80,8 @@ PluginAudioProcessor::PluginAudioProcessor()
         String boxName = String::formatted("filter %u", f + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].lpModAmount1, boxName + " hpModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].lpModAmount2, boxName + " hpModSrcBox2");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount1, boxName + " hpModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount2, boxName + " hpModSrcBox2");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount1, boxName + " resModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount2, boxName + " resModSrcBox2");
     }

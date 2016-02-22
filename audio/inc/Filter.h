@@ -43,25 +43,27 @@ public:
      *  \param modValue cutoff modulation in abstract modulation range (i.e., [-1;1] per modulation source)
      *  \return filtered audio sample
      */
-    float run(float inputSignal, float modValue, float resModValue) {
+    float run(float inputSignal, float lcModValue, float hcModValue, float resModValue) {
         if (filter.passtype.getStep() == eBiquadFilters::eLadder) {
-            return ladderFilter(inputSignal, modValue, resModValue);
+            return ladderFilter(inputSignal, lcModValue, resModValue);
         } else {
-            return biquadFilter(inputSignal, modValue, resModValue);
+            return biquadFilter(inputSignal, lcModValue, hcModValue, resModValue);
         }
     }
 
 protected:
-    float biquadFilter(float inputSignal, float modValue, float resModValue) {
+    float biquadFilter(float inputSignal, float lcModValue, float hcModValue, float resModValue) {
 
         // get mod frequency from active filter type
         float cutoffFreq;
         switch (filter.passtype.getStep()) {
         case eBiquadFilters::eLowpass:
             cutoffFreq = filter.lpCutoff.get();
+            cutoffFreq = Param::bipolarToFreq(lcModValue, cutoffFreq, filter.lpModAmount1.getMax());
             break;
         case eBiquadFilters::eHighpass:
             cutoffFreq = filter.hpCutoff.get();
+            cutoffFreq = Param::bipolarToFreq(hcModValue, cutoffFreq, filter.hpModAmount1.getMax());
             break;
         case eBiquadFilters::eBandpass:
             cutoffFreq = (filter.lpCutoff.get() + filter.hpCutoff.get()) / 2.f;
@@ -74,7 +76,7 @@ protected:
         }
 
         //! \todo mod range must come from somewhere else
-        cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, filter.lpModAmount1.getMax());
+        //cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, filter.lpModAmount1.getMax());
 
         // check range
         if (cutoffFreq < filter.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
