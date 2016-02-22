@@ -159,16 +159,6 @@ public:
                 env2.resetReleaseCounter();
                 env3.resetReleaseCounter();
             }
-#if 0
-            if (env2.getReleaseCounter() == -1)
-            {
-                
-            }
-            if (env3.getReleaseCounter() == -1)
-            {
-                
-            }
-#endif
         }
         else
         {
