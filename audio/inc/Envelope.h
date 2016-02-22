@@ -22,8 +22,8 @@
     can be use to modulate the cutoff frequency of the lowpass filter
 */
 
-class Envelope{
-    public:
+class Envelope {
+public:
     Envelope(float _sampleRate, Param &_attack, Param &_decay, Param &_sustain, Param &_release,
         Param &_attackShape, Param &_decayShape, Param &_releaseShape, Param &_keyVelToEnv)
         :releaseCounter(-1)
@@ -56,9 +56,10 @@ class Envelope{
 
     //! sets the passed buffer for the modulation depending on calculated coefficients
     void render(AudioSampleBuffer &buffer, int numSamples);
+    
+    static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
 
-    private:
-
+private:
     //References for required Params for the envelope
     Param &attack;          //!< attack reference
     Param &decay;           //!< decay reference
@@ -76,8 +77,6 @@ class Envelope{
     float valueAtRelease;   //!< amplitude value once release phase starts
     int attackDecayCounter; //!< sample counter during the attack and decay phase
     int releaseCounter;     //!< sample counter during the release phase
-
-    static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
 };
 
 #endif  // ENVELOPE_H_INCLUDED

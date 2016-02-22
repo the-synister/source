@@ -41,6 +41,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
     const float radiusSource2 = jmin(width / 2.0f, height / 2.0f);
     const float radiusKnob = radiusSource2 * knobMargin;
     const float radiusSource1 = radiusKnob + (radiusSource2 - radiusKnob) / 2.0f;
+    Colour baseColour(s.findColour(Slider::rotarySliderFillColourId));
 
     Path knob;
     float r;
@@ -77,14 +78,13 @@ void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, i
         knob.addEllipse(centreX - radiusKnob, centreY - radiusKnob, radiusKnob * 2.0f, radiusKnob * 2.0f);
         g.fillPath(knob);
 
-        Colour baseColour(s.findColour(Slider::rotarySliderFillColourId));
         g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         knob.clear();
         r = radiusKnob * knobMargin;
     }
     else
     {
-        g.setColour(s.isEnabled() ? Colours::white : Colours::grey);
+        g.setColour(s.isEnabled() ? baseColour : baseColour.withAlpha(0.5f));
         r = radiusSource2;
     }
 
@@ -124,7 +124,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
                 base = intensity < 0.0f ? 0.5f : 2.0f;
                 afterModVal1 = jmax(min, jmin(val * std::pow(base, std::abs(intensity * modAmount->getMax())), max));
                 break;
-            case MouseOverKnob::modAmountConversion::percentage:
+            default:
                 afterModVal1 = jmax(min, jmin(val + intensity * max, max));
                 break;
         }
@@ -144,7 +144,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
             afterModVal1 = jmax(min, jmin(val * std::pow(0.5f, modAmount->get()), max));
             afterModVal2 = jmax(min, jmin(val * std::pow(2.0f, modAmount->get()), max));
             break;
-        case MouseOverKnob::modAmountConversion::percentage:
+        default:
             afterModVal1 = jmax(min, jmin(val + modAmount->get() * max, max));
             afterModVal2 = jmax(min, jmin(val - modAmount->get() * max, max));
             break;
@@ -158,7 +158,7 @@ void CustomLookAndFeel::drawModSource(Graphics &g, eModSource source, MouseOverK
 
     // draw saturns
     Path saturn;
-    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : Colours::lightgrey);
+    g.setColour(s.isEnabled() ? SynthParams::getModSourceColour(source) : SynthParams::getModSourceColour(source).withAlpha(0.5f));
     saturn.addPieSegment(centreX - radius, centreY - radius, radius * 2.0f, radius * 2.0f, modStartAngle, modEndAngle, innerCircleSize * 1.03f);
     g.fillPath(saturn);
 }
@@ -171,7 +171,7 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
         const bool isMouseOver = s.isMouseOverOrDragging() && s.isEnabled();
         const float posX = static_cast<float>(x);
         const float posY = static_cast<float>(y);
-        const float boxWidth = static_cast<float>(width);
+        float boxWidth = static_cast<float>(width);
         const float boxHeight = static_cast<float>(height);
         float offset1, offset2;
 
@@ -179,9 +179,9 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
         Colour baseColour(s.findColour(Slider::trackColourId));
         g.setColour(s.isEnabled() ? (isMouseOver ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
 
+        // used for pan
         if (s.getMinimum() == -s.getMaximum())
         {
-            // TODO: wenn berhaupt am ende noch relevant ist, ansonsten lschen
             const float middleHeight = boxHeight * 0.65f;
             // create left and right part of pan
             path.addQuadrilateral(posX, posY,
@@ -196,37 +196,52 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 
             // create and fill pan pointer
             path.clear();
-
             g.setColour(s.findColour(Slider::thumbColourId));
-            const float thumbWidthHalf = boxWidth / 15.0f;
 
+            // reduce size to have a small border left at both sides
+            boxWidth -= 2;
+            const float thumbWidthHalf = boxWidth / 12.0f;
+            offset1 = toBipolar(0.0f, static_cast<float>(s.getMaximum()), static_cast<float>(s.getValue()));
+            offset2 = offset1 * ((boxWidth - 2.0f * thumbWidthHalf) / 4.0f) + ((boxWidth - 2.0f * thumbWidthHalf) / 4.0f);
+
+            // reset size to draw from the middle
+            boxWidth += 2;
+            sliderPos = 1 + boxWidth / 2.0f + offset2;
+
+            // draw parts seperately for having thumb height fit to pan background
             // create left and right part of pan thumb
-            offset1 = -abs(sliderPos - thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
-            offset2 = -abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset1 = -std::abs(sliderPos - thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset2 = -std::abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
             path.addQuadrilateral(sliderPos - thumbWidthHalf, posY + boxHeight,
                                   sliderPos - thumbWidthHalf, posY + offset1 - 1.f,
                                   sliderPos, posY + offset2 - 1.f,
                                   sliderPos, posY + boxHeight);
 
-            offset1 = -abs(sliderPos + thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
-            offset2 = -abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset1 = -std::abs(sliderPos + thumbWidthHalf - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
+            offset2 = -std::abs(sliderPos - posX - boxWidth / 2.0f) * middleHeight / (boxWidth / 2.0f) + middleHeight;
             path.addQuadrilateral(sliderPos + thumbWidthHalf, posY + boxHeight,
                                   sliderPos + thumbWidthHalf, posY + offset1 - 1.f,
                                   sliderPos, posY + offset2 - 1.f,
                                   sliderPos, posY + boxHeight);
+
+            // NOTE: short code version but not good if background is not one-coloured
+            //path.addRectangle(sliderPos - thumbWidthHalf, posY, 2 * thumbWidthHalf, boxHeight);
             g.fillPath(path);
         }
         else
         {
+            // draw vol background
+            g.setColour(isMouseOver ? Colours::grey.brighter(0.2f) : Colours::grey);
+            path.addTriangle(posX + boxWidth, posY, posX, posY + boxHeight, posX + boxWidth, posY + boxHeight);
+            //g.strokePath(path, PathStrokeType::PathStrokeType(isMouseOver ? 1.4f : 0.7f));
+            g.fillPath(path);
+
             // fill vol triangle
+            g.setColour(Colours::white);
+            path.clear();
             offset1 = boxHeight - boxHeight * (sliderPos / (posX + boxWidth));
             path.addTriangle(posX, posY + boxHeight, sliderPos, posY + boxHeight, sliderPos, posY + offset1);
             g.fillPath(path);
-
-            // draw outline
-            path.clear();
-            path.addTriangle(posX + boxWidth, posY, posX, posY + boxHeight, posX + boxWidth, posY + boxHeight);
-            g.strokePath(path, PathStrokeType::PathStrokeType(isMouseOver ? 1.4f : 0.7f));
         }
     }
     else
@@ -240,7 +255,8 @@ void CustomLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, i
 void CustomLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int width, int height, float /*sliderPos*/, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle /*style*/, Slider &s)
 {
     const float sliderRadius = (float)(jmin(20, width, height) - 2);
-    g.setColour(s.findColour(Slider::trackColourId));
+    Colour baseColour(s.findColour(Slider::trackColourId));
+    g.setColour(s.isEnabled()? baseColour : baseColour.withAlpha(0.5f));
     Path indent;
 
     // set bounds and  draw slider background
@@ -274,10 +290,10 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
 
     Colour baseColour(s.findColour(Slider::thumbColourId));
 
-    // draw thumb at curretn position
+    // draw thumb at current position
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)
     {
-        g.setColour(s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour);
+        g.setColour(s.isEnabled()? (s.isMouseOver() ? baseColour.brighter(0.1f) : baseColour) : baseColour.withAlpha(0.5f));
         centreX = style == Slider::LinearVertical ? (x + width / 2.0f) : sliderPos;
         centreY = style == Slider::LinearVertical ? sliderPos : (y + height / 2.0f);
 
@@ -289,7 +305,7 @@ void CustomLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int wid
         if (style == Slider::TwoValueHorizontal)
         {
             const float cornerSize = 10.0f;
-            const float r = (float)(jmin(20, width / 2, height / 2) - cornerSize);
+            const float r = (float)(jmin(20, width, height) - cornerSize);
             const float yOffset = y + height * 0.5f - r * 0.5f;
             centreY = y + height / 2.0f;
 
@@ -417,8 +433,11 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
     g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
 
     // draw outline
-    g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
-    g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    if (b.findColour(TextButton::ColourIds::buttonColourId) != b.findColour(TextButton::ColourIds::buttonOnColourId))
+    {
+        g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
+        g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+    }
 }
 
 void CustomLookAndFeel::drawToggleButton(Graphics &g, ToggleButton &b, bool isMouseOverButton, bool isButtonDown)
@@ -479,7 +498,7 @@ void CustomLookAndFeel::drawTickBox(Graphics &g, Component &/*c*/, float x, floa
 
 Font CustomLookAndFeel::getTextButtonFont(TextButton& /*t*/, int buttonHeight)
 {
-    return Font(jmin(20.0f, buttonHeight * 0.85f));
+    return Font(jmin(30.0f, buttonHeight * 0.95f));
 }
 
 //==============================================================================

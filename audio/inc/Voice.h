@@ -91,19 +91,28 @@ public:
         channelAfterTouch = 0.f;
 #endif
         const float sRate = static_cast<float>(getSampleRate());
+        const float bpm = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm);
         float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
 
         if (params.lfo[0].tempSync.get() == 1.f) {
 
+            float coeff = 1.0f;
+            if (params.lfo[0].lfoDottedLength.getStep() == eOnOffToggle::eOn) {
+                coeff /= 1.5f;
+            }
+            if (params.lfo[0].lfoTriplets.getStep() == eOnOffToggle::eOn) {
+                coeff /= (2.0f / 3.0f);
+            }
+
             lfo1sine.phase = .5f*float_Pi;
             lfo1square.phase = 0.f;
             lfo1random.phase = 0.f;
 
-            lfo1sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
-            lfo1random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi;
+            lfo1sine.phaseDelta = bpm / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi*coeff;
+            lfo1square.phaseDelta = bpm / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi*coeff;
+            lfo1random.phaseDelta = bpm / (60.f*sRate)*(params.lfo[0].noteLength.get() / 4.f)*2.f*float_Pi*coeff;
             lfo1random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
         }
         else{
@@ -279,8 +288,10 @@ public:
 
                     // filter
                     for (size_t f = 0;f < params.filter.size();++f) {
-                        const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
-                        currentSample = filter[o][f].run(currentSample, filterMod[s]);
+                        if (params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
+                            const float *filterMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                            currentSample = filter[o][f].run(currentSample, filterMod[s]);
+                        }
                     }
 
                     // gain + pan

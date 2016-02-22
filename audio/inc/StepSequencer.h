@@ -43,23 +43,6 @@ public:
     void loadSeqState();
     //==============================================================================
     /**
-    * Stop stepSequencer from playing.
-    */
-    void stopPlaying();
-
-    /**
-    * Set whether stepSequencer should play without needing a host, otherwise stop stepSequencer.
-      stepSequencer is stopped if syncToHost(true) is called and playNoHost() cannot be called as long as stepSequencer isHostSynced().
-    */
-    void playNoHost(bool play);
-
-    /**
-    * Set whether stepSequencer should play synchronized with host, otherwise stop stepSequencer.
-      If this is called then playNoHost() is deactivated and cannot be called as long as stepSequencer isHostSynced().
-    */
-    void syncToHost(bool sync);
-
-    /**
     * Play the sequence in sequential order.
     */
     void playSequential();

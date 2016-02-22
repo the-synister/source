@@ -46,6 +46,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void onOffSwitchChanged();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -66,12 +68,12 @@ private:
     ScopedPointer<MouseOverKnob> cutoffSlider2;
     ScopedPointer<Slider> passtype;
     ScopedPointer<MouseOverKnob> lpModAmount1;
-    ScopedPointer<ComboBox> lp1ModSrc1;
-    ScopedPointer<ComboBox> hp1ModSrc1;
-    ScopedPointer<ComboBox> lp1ModSrc2;
-    ScopedPointer<ComboBox> hp1ModSrc2;
-    ScopedPointer<ComboBox> res1ModSrc1;
-    ScopedPointer<ComboBox> res1ModSrc2;
+    ScopedPointer<ModSourceBox> lpModSrc1;
+    ScopedPointer<ModSourceBox> hpModSrc1;
+    ScopedPointer<ModSourceBox> lpModSrc2;
+    ScopedPointer<ModSourceBox> hpModSrc2;
+    ScopedPointer<ModSourceBox> resModSrc1;
+    ScopedPointer<ModSourceBox> resModSrc2;
     ScopedPointer<MouseOverKnob> lpModAmount2;
     ScopedPointer<Label> ladderLabel;
     ScopedPointer<Label> bandpassLabel;
@@ -81,6 +83,7 @@ private:
     ScopedPointer<MouseOverKnob> hpModAmount2;
     ScopedPointer<MouseOverKnob> resModAmount1;
     ScopedPointer<MouseOverKnob> resModAmount2;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

@@ -77,14 +77,14 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     /*Create ModMatrixRows here*/
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "lp1ModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "lp1ModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount1, "filter 1 lpModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_FILTER1_LC, &filter[0].lpModAmount2, "filter 1 lpModSrcBox2");
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "oscPitchModSrc1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "oscPitchModSrc2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount1, "osc 1 oscPitchModSrc1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_OSC1_PI, &osc[0].pitchModAmount2, "osc 1 oscPitchModSrc2");
 
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "envSpeedModSrcBox2");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount1, "vol env envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, DEST_VOL_ENV_SPEED, &env[0].speedModAmount2, "vol env envSpeedModSrcBox2");
 
 #if 0
     //old Style, just for reference!!!
@@ -253,17 +253,49 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         lowFi.bitReduction(buffer);
     }
 
-    if (clippingFactor.get() > 0.f) {
+    if (clippingActivation.getStep() == eOnOffToggle::eOn) {
         clip.clipSignal(buffer, 0, buffer.getNumSamples());
     }
     // fx
     // delay
-    if (delayDryWet.get() > 0.f) {
+    if (delayActivation.getStep() == eOnOffToggle::eOn) {
         delay.render(buffer, 0, buffer.getNumSamples()); // adds the delay to the outputBuffer
     }
     // chorus
-    if (chorDryWet.get() > 0.f) {
+    if (chorActivation.getStep() == eOnOffToggle::eOn) {
         chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+    }
+
+    // master volume
+    for (int c = 0; c < buffer.getNumChannels(); ++c)
+    {
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.getUI()) ) );
+        }
+    }
+
+    // master pan
+    if (buffer.getNumChannels() == 2)
+    {
+        // Calculation of channel gain for constant power pan
+        float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
+        float rightGain = sin(p);
+        float leftGain = cos(p);
+        //linear pan
+        //float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
+        //float leftGain = 1.f - rightGain;
+
+        // left
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(0, s, (buffer.getSample(0, s) * leftGain));
+        }
+        // right
+        for (int s = 0; s < buffer.getNumSamples(); ++s)
+        {
+            buffer.setSample(1, s, (buffer.getSample(1, s) * rightGain));
+        }
     }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain

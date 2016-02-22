@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="XJmPmE" name="plugin" projectType="audioplug" version="1.0.0"
-              bundleIdentifier="de.tu-berlin.qu.synth.plugin" includeBinaryInAppConfig="1"
+              bundleIdentifier="de.tu-berlin.qu.synister" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
-              pluginName="plugin" pluginDesc="plugin" pluginManufacturer="qu.tu-berlin.de"
-              pluginManufacturerCode="Bitq" pluginCode="MiSp" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginName="synister" pluginDesc="synister" pluginManufacturer="qu.tu-berlin.de"
+              pluginManufacturerCode="Bitq" pluginCode="MiSp" pluginChannelConfigs="{0, 1}, {0, 2}"
               pluginIsSynth="1" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
-              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synth.plugin"
+              pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synister"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
@@ -15,7 +15,6 @@
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
-        <FILE id="Z8L7Ow" name="knobstrip.png" compile="0" resource="1" file="../png/knobstrip.png"/>
         <FILE id="dmjcIv" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="wIJ89r" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -33,24 +32,6 @@
         <FILE id="m17guR" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
         <FILE id="Ym6yJ5" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
       </GROUP>
-      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
-            file="../gui/FoldablePanel.cpp"/>
-      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
-      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
-      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
-            file="../gui/EnvelopeCurve.cpp"/>
-      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="../gui/CustomLookAndFeel.cpp"/>
-      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="../gui/CustomLookAndFeel.h"/>
-      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
-            file="../gui/IncDecDropDown.cpp"/>
-      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
-            file="../gui/IncDecDropDown.h"/>
-      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
-            file="../gui/WaveformVisual.cpp"/>
-      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
-            file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="TrQb2j" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
         <FILE id="xNUcDC" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
@@ -75,9 +56,30 @@
         <FILE id="LjV3LZ" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
         <FILE id="Hl9fwP" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
       </GROUP>
+      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
+      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
+      <FILE id="zfjtow" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="bBAIpb" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
+            file="../gui/WaveformVisual.cpp"/>
+      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
+            file="../gui/WaveformVisual.h"/>
+      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
+      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
+            file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
@@ -127,10 +129,10 @@
                vstFolder="../vst/">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="64BitUniversal"
-                       isDebug="1" optimisation="1" targetName="plugin" headerPath="../../../gui&#10;../../../audio/inc"/>
+                       isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
                        osxArchitecture="64BitUniversal" isDebug="0" optimisation="3"
-                       targetName="plugin" headerPath="../../../gui&#10;../../../audio/inc"/>
+                       targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../juce/modules"/>
@@ -153,10 +155,10 @@
     <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../vst/">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="plugin" libraryPath=""
+                       isDebug="1" optimisation="1" targetName="synister" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="plugin" libraryPath=""
+                       isDebug="0" optimisation="3" targetName="synister" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
