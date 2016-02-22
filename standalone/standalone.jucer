@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.0"
-              bundleIdentifier="de.tu-berlin.qu.synth.standalone" includeBinaryInAppConfig="1"
+              bundleIdentifier="de.tu-berlin.qu.synister.standalone" includeBinaryInAppConfig="1"
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
@@ -79,13 +79,13 @@
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
-        <FILE id="HgFz6a" name="Voice.cpp" compile="1" resource="0" file="../audio/inc/Voice.cpp"/>
+        <FILE id="fS6a0P" name="Filter.h" compile="0" resource="0" file="../audio/inc/Filter.h"/>
+        <FILE id="dzqkeQ" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="h2p1M5" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="faRDeB" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="Nve2qm" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="D0jWIv" name="ModulationMatrix.h" compile="0" resource="0"
               file="../audio/inc/ModulationMatrix.h"/>
-        <FILE id="BmexyK" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
@@ -97,15 +97,14 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="nVIuVz" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="jXROwI" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="H1vwFf" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
-        <FILE id="MpmMNj" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="ArScIV" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
-        <FILE id="E9FvPM" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="l4JJxp" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
@@ -120,11 +119,11 @@
     <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="32BitUniversal"
-                       isDebug="1" optimisation="1" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
                        osxArchitecture="32BitUniversal" isDebug="0" optimisation="3"
-                       targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -144,13 +143,13 @@
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;QUSynth&quot;">
+    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="standalone" headerPath="../../../gui&#10;../../../audio/inc"
+                       isDebug="0" optimisation="3" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
                        libraryPath=""/>
       </CONFIGURATIONS>
       <MODULEPATHS>

@@ -50,7 +50,7 @@ const Colour SynthParams::otherModulation(180, 180, 180); // add more different 
 
 SynthParams::SynthParams()
     : serializeParams{ &freq,
-    // TODO: Think of another way to register all the struct params?
+        // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
@@ -69,7 +69,7 @@ SynthParams::SynthParams()
     //Filters Params
     &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
     &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
-    //Others
+//Others
     &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
@@ -150,12 +150,12 @@ SynthParams::SynthParams()
 }
 
 SynthParams::Osc::Osc()
-    : fine("fine", "fine", "f.tune", "ct", -100.f, 100.f, 0.f)
-    , coarse("coarse", "coarse", "c.tune", "st", -11.f, 11.f, 0.f)
-    , trngAmount("trianlge", "trngAmount", "triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-    , pulseWidth("width", "pulseWidth", "pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
-    , waveForm("Waveform", "oscWaveform", "Waveform", eOscWaves::eOscSquare, waveformNames)
-    , panDir("pan", "panDir", "pan direction", "%", -100.f, 100.f, 0.f)
+    : fine("fine", "fine", "OSC1 f.tune", "ct", -100.f, 100.f, 0.f)
+    , coarse("coarse", "coarse", "OSC1 c.tune", "st", -11.f, 11.f, 0.f)
+    , trngAmount("trianlge", "trngAmount", "OSC triangle amount", "prct", 0.0f, 1.0f, 0.0f)
+    , pulseWidth("width", "pulseWidth", "OSC pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , waveForm("Waveform", "oscWaveform", "OSC1 Waveform", eOscWaves::eOscSquare, waveformNames)
+    , panDir("pan", "panDir", "pan direction", "pct", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
     // ModAmounts and ModSources
     , panModAmount1("PanModAmount1", "OSCPanModAmount1", "Pan ModAmount 1", "", 0.f, 100.f, 50.f)
@@ -181,21 +181,21 @@ SynthParams::EnvBase::EnvBase()
     : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
     , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
     , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-    , attackShape("Attack Shape", "envAttackShape", "attack shape", "", 0.01f, 10.0f, 1.0f)
-    , decayShape("Decay Shape", "envDecayShape", "decay shape", "", 0.01f, 10.0f, 1.0f)
-    , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
+    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
     , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 1.f, 0.5f)
-    , speedModAmount2("SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 1.f, 0.5f)
-    , speedModSrc1("Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 8.f, 0.f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 8.f, 0.f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 {
 }
 
@@ -209,7 +209,7 @@ SynthParams::Lfo::Lfo()
     : freq("Freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
     , wave("Wave", "lfo1wave", "waveform", eLfoWaves::eLfoSine, lfowavenames)
     , tempSync("TempoSync", "tempoSyncSwitch", "TempoSync", eOnOffToggle::eOff, onoffnames)
-	, lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
+    , lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
     , noteLength("Note Length", "notelength", "Note Length", "", 1.f, 32.f, 4.f)
     , fadeIn("FadeIn", "lfoFadein", "fade-in", "s", 0.f, 10.f, 0.f)
     // ModAmounts and Sources
@@ -222,10 +222,10 @@ SynthParams::Lfo::Lfo()
 }
 
 SynthParams::Filter::Filter()
-    : passtype("Type", "FILTERType", "Type", eBiquadFilters::eLowpass, biquadFilters)
+    : passtype("FILTER Type", "FILTERType", "FILTER Type", eBiquadFilters::eLowpass, biquadFilters)
     , lpCutoff("LP Cutoff", "lpCutoff", "LP Cutoff", "Hz", 10.f, 20000.f, 20000.f)
     , hpCutoff("HP Cutoff", "hpCutoff", "HP Cutoff", "Hz", 10.f, 20000.f, 10.f)
-    , resonance("Res", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
+    , resonance("FILTER Res", "FILTERResonance", "FILTER Resonance", "", 0.f, 10.f, 0.f)
     // ModAmounts and ModSources
     , lpModAmount1("Lc ModAmount1", "FILTERLcModAmount1", "Lc ModAmount 1", "oct", 0.f, 8.f, 4.f)
     , lpModAmount2("Lc ModAmnout2", "FILTERLcModAmount2", "Lc ModAmount 2", "oct", 0.f, 8.f, 4.f)

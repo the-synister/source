@@ -112,8 +112,6 @@ public:
     ModulationMatrix();
     ~ModulationMatrix();
 
-
-
     struct ModMatrixRow
     {
         eModSource sourceIndex;
@@ -129,19 +127,16 @@ public:
         {}
     };
 
-
-
     inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
-    inline void changeSource(String comboboxName, eModSource source);
+    inline void changeSource(const String &comboBoxName, eModSource source);
     inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
-    inline void doModulationsMatrix(float** src, float** dst) const;
+    inline void doModulationsMatrix(const float** src, float** dst) const;
 
 private:
     std::vector<ModMatrixRow> matrixCore;
 };
 
-
-inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) const
+inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst) const
 {
     for (const ModMatrixRow &row : matrixCore)
     {
@@ -166,16 +161,13 @@ inline void ModulationMatrix::doModulationsMatrix(float** src, float** dst) cons
 
             float dModValue = source*intensity;
             /*we are just adding the modified values into the predefined buffers
-              the conversion and application is apllied outside of the matrix*/
+              the conversion and application is applied outside of the matrix*/
             *(dst[row.destinationIndex]) += dModValue;
         }
-
-
     }
 }
 
 // config changes
-
 inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const
 {
     for (const ModMatrixRow &row : matrixCore)
@@ -189,17 +181,16 @@ inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destina
     return false;
 }
 
-inline void ModulationMatrix::changeSource(String comboboxName, eModSource source) {
+inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSource source) {
     for (ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (row.modSrcBox == comboboxName)
+        if (row.modSrcBox == comboBoxName)
         {
             row.sourceIndex = source;
         }
     }
 }
-
 
 inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
 {

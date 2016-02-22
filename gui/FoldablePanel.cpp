@@ -155,7 +155,7 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             section->setBounds (0, y, width, section->getSectionHeight());
             y = section->getBottom();
         }
-        
+
         setSize(width, y);
 
         repaint();
