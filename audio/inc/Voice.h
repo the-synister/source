@@ -33,10 +33,11 @@ public:
         for (Lfo &l : lfo) {
             l.audioBuffer = AudioSampleBuffer(1, blockSize);
         }
-        std::fill(modSources.begin(), modSources.end(), &zeroMod);
+        std::fill(modSources.begin(), modSources.end(), nullptr);
         std::fill(modDestinations.begin(), modDestinations.end(), nullptr);
 
         //set connection bewtween source and matrix here
+        modSources[eModSource::eNone] = &zeroMod;
         // midi
         modSources[eModSource::eAftertouch] = &channelAfterTouch;
         modSources[eModSource::eKeyBipolar] = &keyBipolar;
@@ -405,7 +406,7 @@ protected:
                                     params.osc[0].pitchModAmount1.getMax()));
             modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
                                     params.osc[1].pitchModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
+            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC3_PI, s) * 
                                     params.osc[2].pitchModAmount1.getMax()));
         }
     }
