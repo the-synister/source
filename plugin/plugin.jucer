@@ -13,6 +13,11 @@
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
+        <FILE id="MWGXJR" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
+        <FILE id="RUluND" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
+        <FILE id="kYjOGV" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="dmjcIv" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>

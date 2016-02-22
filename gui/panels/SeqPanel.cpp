@@ -303,7 +303,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     playModes->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->setButtonText (String::empty);
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -369,6 +369,7 @@ SeqPanel::SeqPanel (SynthParams &p)
     //[Constructor] You can add your own custom stuff here..
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    dotPic = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
     sequentialPic = ImageCache::getFromMemory(BinaryData::seqSequential_png, BinaryData::seqSequential_pngSize);
     upDownPic = ImageCache::getFromMemory(BinaryData::seqUpDown_png, BinaryData::seqUpDown_pngSize);
     randomPic = ImageCache::getFromMemory(BinaryData::seqRandom_png, BinaryData::seqRandom_pngSize);
@@ -439,7 +440,7 @@ void SeqPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "step sequencer", 0, 0,
         this->getWidth(), this->getHeight(), 30.0f, 30.0f, 5.0f, 3.0f, SynthParams::stepSeqColour);
-    drawPics(g, playModes, syncHost, triplets);
+    drawPics(g, playModes, syncHost, triplets, dottedNotes);
     //[/UserPaint]
 }
 
@@ -735,7 +736,7 @@ void SeqPanel::updateMinMaxLabels()
     randMaxLabel->setText(MidiMessage::getMidiNoteName(static_cast<int>(params.seqRandomMax.get()), true, true, 3), dontSendNotification);
 }
 
-void SeqPanel::drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+void SeqPanel::drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT)
 {
     int centerX = seqPlayMode->getX() + seqPlayMode->getWidth() / 2;
     int centerY = seqPlayMode->getY() + seqPlayMode->getHeight() / 2;
@@ -746,6 +747,7 @@ void SeqPanel::drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedP
 
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
     g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(dotPic, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }
 
 void SeqPanel::timerCallback()
@@ -953,13 +955,13 @@ BEGIN_JUCER_METADATA
               textCol="ff808080" textColOn="ff808080" buttonText="load seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="playModes" id="8b30775dcc59763b" memberName="playModes"
-          virtualName="" explicitFocusOrder="0" pos="328 175 64 24" thumbcol="ff564c43"
-          trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
-          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          virtualName="Slider" explicitFocusOrder="0" pos="328 175 64 24"
+          thumbcol="ff564c43" trackcol="ffffffff" min="0" max="2" int="1"
+          style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
                 virtualName="" explicitFocusOrder="0" pos="326 121 64 30" txtcol="ffffffff"
-                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 

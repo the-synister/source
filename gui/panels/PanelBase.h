@@ -30,6 +30,8 @@ protected:
 
     //=======================================================================================================================================
     void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn(), Param *min = nullptr, Param *max = nullptr) {
+        slider->setScrollWheelEnabled(false);
+
         sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
