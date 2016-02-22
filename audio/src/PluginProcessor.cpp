@@ -96,6 +96,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
+
     for (size_t e = 0; e < env.size(); ++e) {
         String boxName = String::formatted("env %u", e + 2);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");

@@ -70,6 +70,7 @@ class Envelope{
         samples = samples <= 0
             ? 0
             : samples;
+
         return samples;
     }
     SynthParams::EnvBase& env;   //!< local params

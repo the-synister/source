@@ -163,13 +163,7 @@ public:
             if (envToVolume.getReleaseCounter() == -1)      
             {                                               
                 envToVolume.resetReleaseCounter();
-            }
-            if (env2.getReleaseCounter() == -1)
-            {
                 env2.resetReleaseCounter();
-            }
-            if (env3.getReleaseCounter() == -1)
-            {
                 env3.resetReleaseCounter();
             }
         }
