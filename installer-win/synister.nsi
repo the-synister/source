@@ -138,7 +138,7 @@ Section "standalone"
   SetOutPath "$2"
   
   ;ADD YOUR OWN FILES HERE...
-  File standalone-32\synister.exe
+  File synister.exe
   
   ;Store installation folder
   WriteRegStr HKCU "Software\QULab\Synister" "" $2
@@ -180,7 +180,7 @@ ${EndIf}
   WriteRegStr HKCU "Software\QULab\SynisterVst32" "" $OUTDIR
   
   ;ADD YOUR OWN FILES HERE...
-  File vst-32\synister.dll
+  File synister.dll
 SectionEnd
 
 
@@ -208,7 +208,7 @@ ${EndIf}
   WriteRegStr HKCU "Software\QULab\SynisterVst64" "" $OUTDIR
   
   ;ADD YOUR OWN FILES HERE...
-  File vst-64\synister.dll
+  File synister64.dll
 
 No64Bit:
 SectionEnd
@@ -229,7 +229,7 @@ Section "Uninstall"
   Delete "$0\synister.dll"
 
   ReadRegStr $0 HKCU "Software\QULab\SynisterVst64" ""
-  Delete "$0\synister.dll"
+  Delete "$0\synister64.dll"
 
   ReadRegStr $0 HKCU "Software\QULab\Synister" ""
   Delete "$0\synister.exe"
