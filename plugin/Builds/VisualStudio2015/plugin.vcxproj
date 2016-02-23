@@ -63,9 +63,9 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">synister</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">synister</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">synister64</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">synister</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">synister64</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
@@ -182,18 +182,18 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\synister.dll</OutputFile>
+      <OutputFile>$(OutDir)\synister64.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\synister.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\synister64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalOptions>/FORCE:multiple %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\synister.bsc</OutputFile>
+      <OutputFile>$(IntDir)\synister64.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -222,11 +222,11 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\synister.dll</OutputFile>
+      <OutputFile>$(OutDir)\synister64.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)\synister.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(IntDir)\synister64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -235,7 +235,7 @@
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(IntDir)\synister.bsc</OutputFile>
+      <OutputFile>$(IntDir)\synister64.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -255,6 +255,7 @@
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
@@ -1441,6 +1442,7 @@
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h"/>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>

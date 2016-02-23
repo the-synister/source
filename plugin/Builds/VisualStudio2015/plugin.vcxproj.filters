@@ -391,6 +391,9 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
@@ -1756,6 +1759,9 @@
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">

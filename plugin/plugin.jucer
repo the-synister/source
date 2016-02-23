@@ -77,6 +77,9 @@
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="YSdlLH" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="asdYH8" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
@@ -155,10 +158,10 @@
                        isDebug="0" optimisation="3" targetName="synister" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="synister" libraryPath=""
+                       isDebug="1" optimisation="1" targetName="synister64" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="synister" libraryPath=""
+                       isDebug="0" optimisation="3" targetName="synister64" libraryPath=""
                        headerPath="../../../gui&#10;../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
