@@ -386,8 +386,8 @@ protected:
 
     virtual void timerCallback() override
     {
-        updateDirtySaturns();
         updateDirtySliders();
+        updateDirtySaturns();
         updateDirtyBoxes();
         updateDirtyNoteLength();
         updateDirtyDropDowns();
