@@ -37,7 +37,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     freq->setColour (Slider::textBoxTextColourId, Colours::white);
     freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -60,7 +60,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (lfoFadeIn = new MouseOverKnob ("LFO Fade In"));
     lfoFadeIn->setRange (0, 10, 0);
     lfoFadeIn->setSliderStyle (Slider::RotaryVerticalDrag);
-    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
+    lfoFadeIn->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     lfoFadeIn->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     lfoFadeIn->setColour (Slider::textBoxTextColourId, Colours::white);
     lfoFadeIn->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -83,6 +83,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addItem (TRANS("1/8"), 4);
     noteLength->addItem (TRANS("1/16"), 5);
     noteLength->addItem (TRANS("1/32"), 6);
+    noteLength->addItem (TRANS("1/64"), 7);
     noteLength->addListener (this);
 
     addAndMakeVisible (freqModAmount1 = new MouseOverKnob ("freqModAmount1"));
@@ -105,61 +106,56 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     freqModAmount2->addListener (this);
 
-    addAndMakeVisible (freqModSrc1 = new ComboBox ("freqModSrc1"));
+    addAndMakeVisible (freqModSrc1 = new ModSourceBox ("freqModSrc1"));
     freqModSrc1->setEditableText (false);
     freqModSrc1->setJustificationType (Justification::centred);
     freqModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
     freqModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     freqModSrc1->addListener (this);
 
-    addAndMakeVisible (freqModSrc2 = new ComboBox ("freqModSrc2"));
+    addAndMakeVisible (freqModSrc2 = new ModSourceBox ("freqModSrc2"));
     freqModSrc2->setEditableText (false);
     freqModSrc2->setJustificationType (Justification::centred);
     freqModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     freqModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     freqModSrc2->addListener (this);
 
-    addAndMakeVisible (lfoGain = new ComboBox ("lfoGain"));
+    addAndMakeVisible (lfoGain = new ModSourceBox ("lfoGain"));
     lfoGain->setEditableText (false);
     lfoGain->setJustificationType (Justification::centred);
     lfoGain->setTextWhenNothingSelected (TRANS("No Mod"));
     lfoGain->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     lfoGain->addListener (this);
 
+    addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
+    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->addListener (this);
+    dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
-    registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
-    registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
-
     registerSlider(freq, &lfo.freq);
     registerSlider(wave, &lfo.wave);
     registerSlider(lfoFadeIn, &lfo.fadeIn);
     registerSlider(freqModAmount1, &lfo.freqModAmount1);
     registerSlider(freqModAmount2, &lfo.freqModAmount2);
 
-    freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
-    wave->setValue(lfo.wave.getUI());
-	tempoSyncSwitch->setToggleState(0, dontSendNotification);
-    noteLength->setText(getNoteLengthAsString(), dontSendNotification);
-    registerDropdown(noteLength, &lfo.noteLength);
-
-    lfoFadeIn->setSkewFactorFromMidPoint(1); // Sets the LFOFadeIn slider to logarithmic scale with value 1 in the middle of the slider
-
-    lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour);
+    registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
+    registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
 
     fillModsourceBox(freqModSrc1, true);
     fillModsourceBox(freqModSrc2, true);
-    registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr});
-    registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr});
+    registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
+    registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     fillModsourceBox(lfoGain, true);
+
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
-    noteLength->setEnabled(false);
+    registerNoteLength(noteLength, &lfo.noteLength);
 
 	registerToggle(tempoSyncSwitch, &lfo.tempSync, std::bind(&LfoPanel::updateLfoSyncToggle, this));
-	registerToggle(triplets, &lfo.lfoTriplets);
-
-
+    registerToggle(triplets, &lfo.lfoTriplets);
+    registerToggle(dottedNotes, &lfo.lfoDottedLength);
     //[/UserPreSize]
 
     setSize (267, 197);
@@ -172,6 +168,15 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     gainSign = ImageCache::getFromMemory(BinaryData::lfoGain_png, BinaryData::lfoGain_pngSize);
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    tripletPicOff.duplicateIfShared();
+    tripletPicOff.multiplyAllAlphas(0.5f);
+
+    freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
+    lfoFadeIn->setSkewFactorFromMidPoint(1);
+    freqModAmount1->setAlwaysOnTop(true);
+    freqModAmount2->setAlwaysOnTop(true);
+    lfoGain->setColour(ComboBox::ColourIds::backgroundColourId, SynthParams::lfoColour.brighter(0.1f));
     //[/Constructor]
 }
 
@@ -191,6 +196,7 @@ LfoPanel::~LfoPanel()
     freqModSrc1 = nullptr;
     freqModSrc2 = nullptr;
     lfoGain = nullptr;
+    dottedNotes = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -215,19 +221,24 @@ void LfoPanel::paint (Graphics& g)
 void LfoPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    noteLength->setText("1/" + String(static_cast<int>(lfo.noteLength.get())));
+    dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    tempoSyncSwitch->setToggleState(lfo.tempSync.getStep() == eOnOffToggle::eOn, dontSendNotification);
     //[/UserPreResize]
 
     freq->setBounds (10, 35, 64, 64);
     wave->setBounds (168, 58, 60, 24);
-    tempoSyncSwitch->setBounds (85, 100, 64, 30);
+    tempoSyncSwitch->setBounds (85, 93, 64, 30);
     lfoFadeIn->setBounds (10, 97, 64, 64);
-    triplets->setBounds (175, 100, 64, 30);
-    noteLength->setBounds (122, 135, 87, 24);
+    triplets->setBounds (175, 93, 64, 30);
+    noteLength->setBounds (79, 128, 85, 24);
     freqModAmount1->setBounds (67, 35, 18, 18);
     freqModAmount2->setBounds (67, 59, 18, 18);
     freqModSrc1->setBounds (90, 35, 40, 18);
     freqModSrc2->setBounds (90, 59, 40, 18);
     lfoGain->setBounds (100, 6, 40, 18);
+    dottedNotes->setBounds (175, 126, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -284,6 +295,11 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_triplets] -- add your button handler code here..
         //[/UserButtonCode_triplets]
     }
+    else if (buttonThatWasClicked == dottedNotes)
+    {
+        //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        //[/UserButtonCode_dottedNotes]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -294,7 +310,7 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     //[UsercomboBoxChanged_Pre]
     if (comboBoxThatHasChanged == noteLength)
     {
-        handleDropdown(comboBoxThatHasChanged);
+        handleNoteLength(comboBoxThatHasChanged);
     }
     else
     {
@@ -330,32 +346,40 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-String LfoPanel::getNoteLengthAsString()
-{
-    return "1/" + String(lfo.noteLength.getUI());
-}
-
-void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
 
-    g.drawImageWithin(sineWave, _waveformSwitch->getX() - 20, centerY - 8, 19, 16, RectanglePlacement::centred); //19x16
+    g.drawImageWithin(sineWave, _waveformSwitch->getX() - 21, centerY - 8, 19, 16, RectanglePlacement::centred); //19x16
     g.drawImageWithin(squareWave, centerX - 9, _waveformSwitch->getY() - 15, 17, 15, RectanglePlacement::centred); // 17x15
-    g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 1, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
+    g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 2, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
 }
 
 void LfoPanel::updateLfoSyncToggle()
 {
-	triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-	freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
-	noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
+    noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+
+    freqModSrc1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
+    freqModSrc2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
+    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
 }
 
+void LfoPanel::updateModAmountKnobs()
+{
+    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount1->showBipolarValues(isUnipolar(lfo.freqModSrc1.getStep()));
+    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    freqModAmount2->showBipolarValues(isUnipolar(lfo.freqModSrc2.getStep()));
+}
 //[/MiscUserCode]
 
 
@@ -377,31 +401,29 @@ BEGIN_JUCER_METADATA
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
-          min="0.010000000000000000208" max="50" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="1"/>
+          min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
           explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="85 100 64 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="85 93 64 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="10 97 64 64"
           rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="175 100 64 30" txtcol="ffffffff"
-                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
-                state="0"/>
+                explicitFocusOrder="0" pos="175 93 64 30" txtcol="ffffffff" buttonText=""
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="122 135 87 24"
-            editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="79 128 85 24"
+            editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 35 18 18"
@@ -416,14 +438,20 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="90 35 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 35 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="freqModSrc2" id="455e48a25414a454" memberName="freqModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="90 59 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName=""
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 59 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName="ModSourceBox"
             explicitFocusOrder="0" pos="100 6 40 18" editable="0" layout="36"
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
+                virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
+                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

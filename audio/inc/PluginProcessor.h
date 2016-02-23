@@ -20,6 +20,7 @@
 #include "StepSequencer.h"
 #include "FxChorus.h"
 #include "LowFidelity.h"
+#include <math.h>
 
 //==============================================================================
 /**

@@ -126,6 +126,7 @@ private:
     ScopedPointer<TextButton> saveSeq;
     ScopedPointer<TextButton> loadSeq;
     ScopedPointer<Slider> playModes;
+    ScopedPointer<ToggleButton> dottedNotes;
 
 
     //==============================================================================

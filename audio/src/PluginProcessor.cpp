@@ -76,7 +76,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-    for (size_t f = 0; f < filter.size(); ++f) {      
+    for (size_t f = 0; f < filter.size(); ++f) {
         String boxName = String::formatted("filter %u", f + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
@@ -271,6 +271,29 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // chorus
     if (chorActivation.getStep() == eOnOffToggle::eOn) {
         chorus.render(buffer, 0); // adds the chorus to the outputBuffer
+    }
+
+    // master volume
+    for (int c = 0; c < buffer.getNumChannels(); ++c)
+    {
+        FloatVectorOperations::multiply(buffer.getWritePointer(c, 0), Param::fromDb(masterAmp.getUI()), buffer.getNumSamples());
+    }
+
+    // master pan
+    if (buffer.getNumChannels() == 2)
+    {
+        // Linear pan
+        float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
+        float leftGain = 1.f - rightGain;
+        // Constant power pan
+        //float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
+        //float rightGain = sin(p);
+        //float leftGain = cos(p);
+
+        // left
+        FloatVectorOperations::multiply(buffer.getWritePointer(0, 0), leftGain, buffer.getNumSamples());
+        // right
+        FloatVectorOperations::multiply(buffer.getWritePointer(1, 0), rightGain, buffer.getNumSamples());
     }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain
