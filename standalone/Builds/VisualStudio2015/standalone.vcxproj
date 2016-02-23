@@ -1803,6 +1803,7 @@
     <None Include="..\..\..\png\seqRandom.png"/>
     <None Include="..\..\..\png\seqSequential.png"/>
     <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\Synister-Logo_block.png"/>
     <None Include="..\..\..\png\synisterLogo.png"/>
     <None Include="..\..\..\png\tempoSync.png"/>
     <None Include="..\..\..\png\toggleOff.png"/>
@@ -1822,6 +1823,7 @@
     <None Include="..\..\..\juce\modules\juce_gui_extra\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_opengl\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_video\juce_module_info"/>
+    <None Include=".\icon.ico"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc"/>

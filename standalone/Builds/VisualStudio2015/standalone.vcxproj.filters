@@ -3176,6 +3176,9 @@
     <None Include="..\..\..\png\seqUpDown.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
+    <None Include="..\..\..\png\Synister-Logo_block.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\synisterLogo.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
@@ -3232,6 +3235,9 @@
     </None>
     <None Include="..\..\..\juce\modules\juce_video\juce_module_info">
       <Filter>Juce Modules\juce_video</Filter>
+    </None>
+    <None Include=".\icon.ico">
+      <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

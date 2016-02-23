@@ -276,7 +276,7 @@ protected:
             }
             return true;
         }
-        
+
         return false;
     }
 
@@ -346,7 +346,7 @@ protected:
             }
             return true;
         }
-        
+
         return false;
     }
 
