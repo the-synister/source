@@ -331,9 +331,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -1665,9 +1662,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
-      <Filter>standalone\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>

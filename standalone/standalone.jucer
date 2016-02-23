@@ -5,9 +5,6 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
-      <FILE id="nfw2du" name="ModSourceBox.cpp" compile="1" resource="0"
-            file="../gui/ModSourceBox.cpp"/>
-      <FILE id="Q0yjqR" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
