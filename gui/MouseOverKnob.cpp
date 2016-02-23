@@ -26,6 +26,7 @@ MouseOverKnob::MouseOverKnob(const String& name)
     knobLabel->attachToComponent(this, false);
     knobLabel->addComponentListener(this);
 
+    this->setScrollWheelEnabled(false);
     initTextBox();
 }
 

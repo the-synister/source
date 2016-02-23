@@ -376,20 +376,20 @@
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
-      <Filter>standalone\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
       <Filter>standalone\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp">
-      <Filter>standalone\Audio\inc</Filter>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
+      <Filter>standalone\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
+      <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
       <Filter>standalone\Audio\src</Filter>
@@ -400,16 +400,10 @@
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
-      <Filter>standalone\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
       <Filter>standalone\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
@@ -1716,17 +1710,23 @@
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\PluginEditor.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\PlugUI.h">
+      <Filter>standalone\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>standalone\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\PluginEditor.h">
-      <Filter>standalone\Gui</Filter>
+    <ClInclude Include="..\..\..\audio\inc\Filter.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\PlugUI.h">
-      <Filter>standalone\Gui</Filter>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
+      <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
       <Filter>standalone\Audio\inc</Filter>
@@ -1738,9 +1738,6 @@
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>standalone\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
       <Filter>standalone\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
@@ -3149,6 +3146,9 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
@@ -3164,6 +3164,9 @@
     <None Include="..\..\..\png\oscWaveForms.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
+    <None Include="..\..\..\png\recordCutoff.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\seqRandom.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
@@ -3171,6 +3174,12 @@
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\png\Synister-Logo_block.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\png\synisterLogo.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\tempoSync.png">
@@ -3226,6 +3235,9 @@
     </None>
     <None Include="..\..\..\juce\modules\juce_video\juce_module_info">
       <Filter>Juce Modules\juce_video</Filter>
+    </None>
+    <None Include=".\icon.ico">
+      <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -37,8 +37,8 @@ Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class OscPanel  : public PanelBase,
-                  public SliderListener,
-                  public ComboBoxListener
+                  public ComboBoxListener,
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -54,8 +54,8 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -70,6 +70,10 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<ModSourceBox> trngModSrc1;
+    ScopedPointer<ModSourceBox> widthModSrc1;
+    ScopedPointer<ModSourceBox> trngModSrc2;
+    ScopedPointer<ModSourceBox> widthModSrc2;
     ScopedPointer<MouseOverKnob> ftune1;
     ScopedPointer<MouseOverKnob> pitchModAmount2;
     ScopedPointer<MouseOverKnob> trngAmount;
@@ -84,8 +88,6 @@ private:
     ScopedPointer<MouseOverKnob> gain;
     ScopedPointer<MouseOverKnob> pan;
     ScopedPointer<MouseOverKnob> widthModAmount2;
-    ScopedPointer<ModSourceBox> widthModSrc1;
-    ScopedPointer<ModSourceBox> widthModSrc2;
     ScopedPointer<MouseOverKnob> gainModAmount2;
     ScopedPointer<MouseOverKnob> gainModAmount1;
     ScopedPointer<ModSourceBox> gainModSrc1;

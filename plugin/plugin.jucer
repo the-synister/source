@@ -12,12 +12,13 @@
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
-      <FILE id="FuGFHw" name="ModSourceBox.cpp" compile="1" resource="0"
+      <FILE id="DkzK23" name="ModSourceBox.cpp" compile="1" resource="0"
             file="../gui/ModSourceBox.cpp"/>
-      <FILE id="tmZ1gO" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
+      <FILE id="OT5koY" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
+        <FILE id="lyu2mA" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="dmjcIv" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="wIJ89r" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -26,15 +27,39 @@
               file="../png/lfoSquareWave.png"/>
         <FILE id="YgLUep" name="oscWaveForms.png" compile="0" resource="1"
               file="../png/oscWaveForms.png"/>
+        <FILE id="ifl6xS" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="fANenm" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
         <FILE id="dESjwD" name="seqSequential.png" compile="0" resource="1"
               file="../png/seqSequential.png"/>
         <FILE id="i2q4KN" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="sAWopY" name="Synister-Logo_block.png" compile="0" resource="1"
+              file="../png/Synister-Logo_block.png"/>
+        <FILE id="l9EeqD" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
         <FILE id="OSvW0D" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="BuGbcx" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="m17guR" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
         <FILE id="Ym6yJ5" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
       </GROUP>
+      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
+            file="../gui/FoldablePanel.cpp"/>
+      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
+      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
+      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
+            file="../gui/EnvelopeCurve.cpp"/>
+      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="../gui/CustomLookAndFeel.cpp"/>
+      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
+            file="../gui/CustomLookAndFeel.h"/>
+      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
+            file="../gui/IncDecDropDown.cpp"/>
+      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
+            file="../gui/IncDecDropDown.h"/>
+      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
+            file="../gui/WaveformVisual.cpp"/>
+      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
+            file="../gui/WaveformVisual.h"/>
       <GROUP id="{7A59E0F2-EA6A-28AF-4E95-FC51A5401B96}" name="panels">
         <FILE id="TrQb2j" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
         <FILE id="xNUcDC" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
@@ -59,27 +84,9 @@
         <FILE id="LjV3LZ" name="SeqPanel.cpp" compile="1" resource="0" file="../gui/panels/SeqPanel.cpp"/>
         <FILE id="Hl9fwP" name="SeqPanel.h" compile="0" resource="0" file="../gui/panels/SeqPanel.h"/>
       </GROUP>
-      <FILE id="VMB4qg" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="../gui/CustomLookAndFeel.cpp"/>
-      <FILE id="PBxmWJ" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="../gui/CustomLookAndFeel.h"/>
-      <FILE id="pxOAKh" name="FoldablePanel.cpp" compile="1" resource="0"
-            file="../gui/FoldablePanel.cpp"/>
-      <FILE id="QtsLlH" name="FoldablePanel.h" compile="0" resource="0" file="../gui/FoldablePanel.h"/>
-      <FILE id="OI3GB4" name="IncDecDropDown.cpp" compile="1" resource="0"
-            file="../gui/IncDecDropDown.cpp"/>
-      <FILE id="CRCQPx" name="IncDecDropDown.h" compile="0" resource="0"
-            file="../gui/IncDecDropDown.h"/>
       <FILE id="kY4hqF" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="i0yQUF" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
-      <FILE id="f4bsQs" name="WaveformVisual.cpp" compile="1" resource="0"
-            file="../gui/WaveformVisual.cpp"/>
-      <FILE id="Q5fEJp" name="WaveformVisual.h" compile="0" resource="0"
-            file="../gui/WaveformVisual.h"/>
-      <FILE id="vN2xqE" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
-      <FILE id="gsMiOj" name="EnvelopeCurve.cpp" compile="1" resource="0"
-            file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="IFz2Ea" name="PluginEditor.cpp" compile="1" resource="0"
             file="../gui/PluginEditor.cpp"/>
       <FILE id="C7QFBX" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
@@ -90,13 +97,10 @@
       <GROUP id="{B810726F-87B4-284E-870E-8BE0D67A873E}" name="inc">
         <FILE id="kjkjZy" name="ModulationMatrix.h" compile="0" resource="0"
               file="../audio/inc/ModulationMatrix.h"/>
-        <FILE id="TF6p7U" name="Envelope.h" compile="0" resource="0" file="../audio/inc/Envelope.h"/>
         <FILE id="cLkCeP" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="NNdGXy" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="vSOsHd" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="KGYPH3" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
-        <FILE id="ssKU2v" name="ModulationMatrix.h" compile="0" resource="0"
-              file="../audio/inc/ModulationMatrix.h"/>
         <FILE id="eXN6xq" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="ettrMG" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="P0vVMP" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
@@ -114,7 +118,6 @@
         <FILE id="rOZ0Dz" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
         <FILE id="j131qu" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
-        <FILE id="P8Z4lI" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="lxaD9A" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="NRuK5g" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
@@ -125,8 +128,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="&#10;# This script takes the build product and copies it to the AU, VST, VST3, RTAS and AAX folders, depending on &#10;# which plugin types you've built&#10;&#10;original=$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME&#10;&#10;# this looks inside the binary to detect which platforms are needed.. &#10;copyAU=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'AudioUnit' | wc -l&#96;&#10;copyVST=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'VSTPlugin' | wc -l&#96;&#10;copyVST3=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'GetPluginFactory' | wc -l&#96;&#10;copyRTAS=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'CProcess' | wc -l&#96;&#10;copyAAX=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'ACFStartup' | wc -l&#96;&#10;&#10;if [ $copyAU -gt 0 ]; then&#10;  echo &quot;Copying to AudioUnit folder...&quot;&#10;  AUDir=~/Library/Audio/Plug-Ins/Components&#10;  mkdir -p &quot;$AUDir&quot;&#10;  AU=$AUDir/$PRODUCT_NAME.component&#10;  if [ -d &quot;$AU&quot; ]; then &#10;    rm -r &quot;$AU&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$AU&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$AU/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$AU/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyVST -gt 0 ]; then&#10;  echo &quot;Copying to VST folder...&quot;&#10;  VSTDir=~/Library/Audio/Plug-Ins/VST&#10;  mkdir -p &quot;$VSTDir&quot;&#10;  VST=$VSTDir/$PRODUCT_NAME.vst&#10;  if [ -d &quot;$VST&quot; ]; then &#10;    rm -r &quot;$VST&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$VST&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$VST/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$VST/Contents/$INFOPLIST_FILE&quot;&#10;&#10;  mkdir &quot;$CONFIGURATION_BUILD_DIR/VST&quot;&#10;  mkdir &quot;$CONFIGURATION_BUILD_DIR/Components&quot;&#10;&#10;  cp -r &quot;$original&quot; &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst/Contents/$INFOPLIST_FILE&quot;&#10;&#10;  cp -r &quot;$original&quot; &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyVST3 -gt 0 ]; then&#10;  echo &quot;Copying to VST3 folder...&quot;&#10;  VST3Dir=~/Library/Audio/Plug-Ins/VST3&#10;  mkdir -p &quot;$VST3Dir&quot;&#10;  VST3=$VST3Dir/$PRODUCT_NAME.vst3&#10;  if [ -d &quot;$VST3&quot; ]; then &#10;    rm -r &quot;$VST3&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$VST3&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$VST3/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$VST3/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyRTAS -gt 0 ]; then&#10;  echo &quot;Copying to RTAS folder...&quot;&#10;  RTASDir=/Library/Application\ Support/Digidesign/Plug-Ins&#10;  if [ -d &quot;$RTASDir&quot; ]; then&#10;    RTAS=$RTASDir/$PRODUCT_NAME.dpm&#10;    if [ -d &quot;$RTAS&quot; ]; then&#10;      rm -r &quot;$RTAS&quot;&#10;    fi&#10;&#10;    cp -r &quot;$original&quot; &quot;$RTAS&quot;&#10;  fi&#10;fi&#10;&#10;if [ $copyAAX -gt 0 ]; then&#10;  echo &quot;Copying to AAX folder...&quot;&#10;&#10;  if [ -d &quot;/Applications/ProTools_3PDev/Plug-Ins&quot; ]; then&#10;    AAX1=&quot;/Applications/ProTools_3PDev/Plug-Ins/$PRODUCT_NAME.aaxplugin&quot;&#10;&#10;    if [ -d &quot;$AAX1&quot; ]; then&#10;      rm -r &quot;$AAX1&quot;&#10;    fi&#10;&#10;    cp -R -H &quot;$original&quot; &quot;$AAX1&quot;&#10;  fi&#10;&#10;  if [ -d &quot;/Library/Application Support/Avid/Audio/Plug-Ins&quot; ]; then&#10;    AAX2=&quot;/Library/Application Support/Avid/Audio/Plug-Ins/$PRODUCT_NAME.aaxplugin&quot;&#10;&#10;    if [ -d &quot;$AAX2&quot; ]; then&#10;      rm -r &quot;$AAX2&quot;&#10;    fi&#10;&#10;    cp -R -H &quot;$original&quot; &quot;$AAX2&quot;&#10;  fi&#10;fi&#10;"
-               vstFolder="../vst/" vst3Folder="">
+    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="&#10;# This script takes the build product and copies it to the AU, VST, VST3, RTAS and AAX folders, depending on &#10;# which plugin types you've built&#10;&#10;original=$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME&#10;&#10;# this looks inside the binary to detect which platforms are needed.. &#10;copyAU=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'AudioUnit' | wc -l&#96;&#10;copyVST=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'VSTPlugin' | wc -l&#96;&#10;copyVST3=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'GetPluginFactory' | wc -l&#96;&#10;copyRTAS=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'CProcess' | wc -l&#96;&#10;copyAAX=&#96;nm -g &quot;$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH&quot; | grep -i 'ACFStartup' | wc -l&#96;&#10;&#10;if [ $copyAU -gt 0 ]; then&#10;  echo &quot;Copying to AudioUnit folder...&quot;&#10;  AUDir=~/Library/Audio/Plug-Ins/Components&#10;  mkdir -p &quot;$AUDir&quot;&#10;  AU=$AUDir/$PRODUCT_NAME.component&#10;  if [ -d &quot;$AU&quot; ]; then &#10;    rm -r &quot;$AU&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$AU&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$AU/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$AU/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyVST -gt 0 ]; then&#10;  echo &quot;Copying to VST folder...&quot;&#10;  VSTDir=~/Library/Audio/Plug-Ins/VST&#10;  mkdir -p &quot;$VSTDir&quot;&#10;  VST=$VSTDir/$PRODUCT_NAME.vst&#10;  if [ -d &quot;$VST&quot; ]; then &#10;    rm -r &quot;$VST&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$VST&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$VST/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$VST/Contents/$INFOPLIST_FILE&quot;&#10;&#10;  mkdir -p &quot;$CONFIGURATION_BUILD_DIR/VST&quot;&#10;  mkdir -p &quot;$CONFIGURATION_BUILD_DIR/Components&quot;&#10;&#10;  cp -r &quot;$original&quot; &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$CONFIGURATION_BUILD_DIR/VST/$PRODUCT_NAME.vst/Contents/$INFOPLIST_FILE&quot;&#10;&#10;  cp -r &quot;$original&quot; &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$CONFIGURATION_BUILD_DIR/Components/$PRODUCT_NAME.component/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyVST3 -gt 0 ]; then&#10;  echo &quot;Copying to VST3 folder...&quot;&#10;  VST3Dir=~/Library/Audio/Plug-Ins/VST3&#10;  mkdir -p &quot;$VST3Dir&quot;&#10;  VST3=$VST3Dir/$PRODUCT_NAME.vst3&#10;  if [ -d &quot;$VST3&quot; ]; then &#10;    rm -r &quot;$VST3&quot;&#10;  fi&#10;&#10;  cp -r &quot;$original&quot; &quot;$VST3&quot;&#10;  sed -i &quot;&quot; -e 's/TDMwPTul/BNDLPTul/g' &quot;$VST3/Contents/PkgInfo&quot;&#10;  sed -i &quot;&quot; -e 's/TDMw/BNDL/g' &quot;$VST3/Contents/$INFOPLIST_FILE&quot;&#10;fi&#10;&#10;if [ $copyRTAS -gt 0 ]; then&#10;  echo &quot;Copying to RTAS folder...&quot;&#10;  RTASDir=/Library/Application\ Support/Digidesign/Plug-Ins&#10;  if [ -d &quot;$RTASDir&quot; ]; then&#10;    RTAS=$RTASDir/$PRODUCT_NAME.dpm&#10;    if [ -d &quot;$RTAS&quot; ]; then&#10;      rm -r &quot;$RTAS&quot;&#10;    fi&#10;&#10;    cp -r &quot;$original&quot; &quot;$RTAS&quot;&#10;  fi&#10;fi&#10;&#10;if [ $copyAAX -gt 0 ]; then&#10;  echo &quot;Copying to AAX folder...&quot;&#10;&#10;  if [ -d &quot;/Applications/ProTools_3PDev/Plug-Ins&quot; ]; then&#10;    AAX1=&quot;/Applications/ProTools_3PDev/Plug-Ins/$PRODUCT_NAME.aaxplugin&quot;&#10;&#10;    if [ -d &quot;$AAX1&quot; ]; then&#10;      rm -r &quot;$AAX1&quot;&#10;    fi&#10;&#10;    cp -R -H &quot;$original&quot; &quot;$AAX1&quot;&#10;  fi&#10;&#10;  if [ -d &quot;/Library/Application Support/Avid/Audio/Plug-Ins&quot; ]; then&#10;    AAX2=&quot;/Library/Application Support/Avid/Audio/Plug-Ins/$PRODUCT_NAME.aaxplugin&quot;&#10;&#10;    if [ -d &quot;$AAX2&quot; ]; then&#10;      rm -r &quot;$AAX2&quot;&#10;    fi&#10;&#10;    cp -R -H &quot;$original&quot; &quot;$AAX2&quot;&#10;  fi&#10;fi&#10;"
+               vstFolder="../vst/" smallIcon="sAWopY" bigIcon="sAWopY">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="64BitUniversal"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
@@ -153,7 +156,8 @@
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../vst/">
+    <VS2015 targetFolder="Builds/VisualStudio2015" vstFolder="../vst/" smallIcon="sAWopY"
+            bigIcon="sAWopY">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="synister" libraryPath=""

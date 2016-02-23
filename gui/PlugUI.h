@@ -40,6 +40,7 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public PanelBase,
+                public TextEditorListener,
                 public SliderListener,
                 public ButtonListener
 {
@@ -61,6 +62,12 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    SynthParams &params;
+
+    void timerCallback() override;
+    void updateDirtyPatchname(const String patchName);
+    void textEditorFocusLost(TextEditor &editor);
+
     ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]
 
@@ -72,6 +79,8 @@ private:
     ScopedPointer<FoldablePanel> foldableComponent;
     ScopedPointer<MouseOverKnob> masterAmp;
     ScopedPointer<MouseOverKnob> masterPan;
+    ScopedPointer<TextEditor> patchNameEditor;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================

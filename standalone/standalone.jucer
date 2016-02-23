@@ -11,6 +11,7 @@
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
+        <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -19,10 +20,16 @@
               file="../png/lfoSquareWave.png"/>
         <FILE id="raV8fg" name="oscWaveForms.png" compile="0" resource="1"
               file="../png/oscWaveForms.png"/>
+        <FILE id="tDzga7" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="X7bbhn" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
         <FILE id="mF0MIl" name="seqSequential.png" compile="0" resource="1"
               file="../png/seqSequential.png"/>
         <FILE id="qoR5L9" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="Mh4ekB" name="Synister-Logo_block.png" compile="0" resource="1"
+              file="../png/Synister-Logo_block.png"/>
+        <FILE id="mJAKsc" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
         <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
@@ -67,6 +74,11 @@
       <FILE id="XiugqJ" name="MouseOverKnob.cpp" compile="1" resource="0"
             file="../gui/MouseOverKnob.cpp"/>
       <FILE id="h79zEg" name="MouseOverKnob.h" compile="0" resource="0" file="../gui/MouseOverKnob.h"/>
+      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
+            file="../gui/PluginEditor.cpp"/>
+      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
+      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
+      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
       <FILE id="JgEK6S" name="WaveformVisual.cpp" compile="1" resource="0"
             file="../gui/WaveformVisual.cpp"/>
       <FILE id="lcC6xj" name="WaveformVisual.h" compile="0" resource="0"
@@ -74,21 +86,16 @@
       <FILE id="hF2GW8" name="EnvelopeCurve.cpp" compile="1" resource="0"
             file="../gui/EnvelopeCurve.cpp"/>
       <FILE id="a6cnlq" name="EnvelopeCurve.h" compile="0" resource="0" file="../gui/EnvelopeCurve.h"/>
-      <FILE id="n7laUR" name="PluginEditor.cpp" compile="1" resource="0"
-            file="../gui/PluginEditor.cpp"/>
-      <FILE id="HvpoVQ" name="PluginEditor.h" compile="0" resource="0" file="../gui/PluginEditor.h"/>
-      <FILE id="YTuXUM" name="PlugUI.cpp" compile="1" resource="0" file="../gui/PlugUI.cpp"/>
-      <FILE id="vfQN5i" name="PlugUI.h" compile="0" resource="0" file="../gui/PlugUI.h"/>
     </GROUP>
     <GROUP id="{A17B4200-41A4-127E-7F51-C72C43246B17}" name="Audio">
       <GROUP id="{473CFC0B-F33B-4430-D2EC-3E31B7A1E254}" name="inc">
-        <FILE id="HgFz6a" name="Voice.cpp" compile="1" resource="0" file="../audio/inc/Voice.cpp"/>
+        <FILE id="fS6a0P" name="Filter.h" compile="0" resource="0" file="../audio/inc/Filter.h"/>
+        <FILE id="dzqkeQ" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="h2p1M5" name="LowFidelity.h" compile="0" resource="0" file="../audio/inc/LowFidelity.h"/>
         <FILE id="faRDeB" name="FxClipping.h" compile="0" resource="0" file="../audio/inc/FxClipping.h"/>
         <FILE id="Nve2qm" name="FxChorus.h" compile="0" resource="0" file="../audio/inc/FxChorus.h"/>
         <FILE id="D0jWIv" name="ModulationMatrix.h" compile="0" resource="0"
               file="../audio/inc/ModulationMatrix.h"/>
-        <FILE id="BmexyK" name="Oscillator.h" compile="0" resource="0" file="../audio/inc/Oscillator.h"/>
         <FILE id="lqCWPs" name="FxDelay.h" compile="0" resource="0" file="../audio/inc/FxDelay.h"/>
         <FILE id="aUO9Sd" name="StepSequencer.h" compile="0" resource="0" file="../audio/inc/StepSequencer.h"/>
         <FILE id="OJgr9W" name="HostParam.h" compile="0" resource="0" file="../audio/inc/HostParam.h"/>
@@ -100,15 +107,14 @@
         <FILE id="eSgeNA" name="SynthParams.h" compile="0" resource="0" file="../audio/inc/SynthParams.h"/>
       </GROUP>
       <GROUP id="{FE819EBE-F0EC-5FAF-34D1-78E5D7893711}" name="src">
+        <FILE id="nVIuVz" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="jXROwI" name="LowFidelity.cpp" compile="1" resource="0" file="../audio/src/LowFidelity.cpp"/>
         <FILE id="ucOzzR" name="ModulationMatrix.cpp" compile="1" resource="0"
               file="../audio/src/ModulationMatrix.cpp"/>
         <FILE id="H1vwFf" name="FxClipping.cpp" compile="1" resource="0" file="../audio/src/FxClipping.cpp"/>
-        <FILE id="MpmMNj" name="Oscillator.cpp" compile="1" resource="0" file="../audio/src/Oscillator.cpp"/>
         <FILE id="D2K3uQ" name="FxDelay.cpp" compile="1" resource="0" file="../audio/src/FxDelay.cpp"/>
         <FILE id="ArScIV" name="StepSequencer.cpp" compile="1" resource="0"
               file="../audio/src/StepSequencer.cpp"/>
-        <FILE id="E9FvPM" name="Envelope.cpp" compile="1" resource="0" file="../audio/src/Envelope.cpp"/>
         <FILE id="l4JJxp" name="FxChorus.cpp" compile="1" resource="0" file="../audio/src/FxChorus.cpp"/>
         <FILE id="uD2fCx" name="PluginProcessor.cpp" compile="1" resource="0"
               file="../audio/src/PluginProcessor.cpp"/>
@@ -121,7 +127,7 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs=""
-               vst3Folder="">
+               smallIcon="Mh4ekB" bigIcon="Mh4ekB">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="32BitUniversal"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
@@ -147,7 +153,8 @@
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;">
+    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;"
+            smallIcon="Mh4ekB" bigIcon="Mh4ekB">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"

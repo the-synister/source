@@ -30,6 +30,8 @@ protected:
 
     //=======================================================================================================================================
     void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn(), Param *min = nullptr, Param *max = nullptr) {
+        slider->setScrollWheelEnabled(false);
+
         sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
@@ -171,6 +173,7 @@ protected:
         }
     }
 
+
     bool handleToggle(Button* buttonThatWasClicked)
     {
         auto it = toggleReg.find(buttonThatWasClicked);
@@ -226,11 +229,11 @@ protected:
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
             }
+
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     void updateDirtyDropDowns()
@@ -273,9 +276,8 @@ protected:
             }
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
@@ -311,7 +313,8 @@ protected:
         }
     }
 
-    bool handleCombobox(ComboBox* comboboxThatWasChanged) {
+    bool handleCombobox(ComboBox* comboboxThatWasChanged)
+    {
         auto it = comboboxReg.find(comboboxThatWasChanged);
         if (it != comboboxReg.end()) {
             // we gotta subtract 2 from the item id since the combobox ids start at 1 and the sources enum starts at -1
@@ -343,12 +346,12 @@ protected:
             }
             return true;
         }
-        else {
-            return false;
-        }
+
+        return false;
     }
 
-    void updateDirtyBoxes() {
+    void updateDirtyBoxes()
+    {
         for (auto c2p : comboboxReg) {
             if (c2p.second->isUIDirty()) {
                 c2p.first->setSelectedId(static_cast<int>(c2p.second->getStep()) + COMBO_OFS);
@@ -372,9 +375,10 @@ protected:
 
     //=======================================================================================================================================
 
-    virtual void timerCallback() override {
-        updateDirtySaturns();
+    virtual void timerCallback() override
+    {
         updateDirtySliders();
+        updateDirtySaturns();
         updateDirtyBoxes();
         updateDirtyNoteLength();
         updateDirtyDropDowns();

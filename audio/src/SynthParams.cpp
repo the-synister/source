@@ -49,8 +49,8 @@ const Colour SynthParams::waveformBackground(85, 93, 104);
 const Colour SynthParams::otherModulation(180, 180, 180); // add more different colours
 
 SynthParams::SynthParams()
-    : serializeParams{ &freq,
-    // TODO: Think of another way to register all the struct params?
+    : serializeParams{
+        // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
     &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
@@ -67,15 +67,15 @@ SynthParams::SynthParams()
     &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc, &lfo[1].lfoTriplets, &lfo[1].lfoDottedLength,
     &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc, &lfo[2].lfoTriplets, &lfo[2].lfoDottedLength,
     //Filters Params
-    &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
-    &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
+    &filter[0].passtype, &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
+    &filter[1].passtype, &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
     //Step Sequencer
     &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     //Delay
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayDottedLength, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
     //Others
-    &masterAmp, &masterPan, &lowFiActivation, &nBitsLowFi, &clippingActivation, &chorActivation }
+    &freq, &masterAmp, &masterPan, &chorActivation, &chorActivation, &chorDelayLength, &chorDryWet, &chorModDepth, &chorModRate, &lowFiActivation, &nBitsLowFi, &clippingActivation, &clippingFactor}
     , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , masterAmp("master amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, -6.f)
@@ -188,21 +188,21 @@ SynthParams::EnvBase::EnvBase()
     : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
     , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
     , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-    , attackShape("Attack Shape", "envAttackShape", "attack shape", "", 0.01f, 10.0f, 1.0f)
-    , decayShape("Decay Shape", "envDecayShape", "decay shape", "", 0.01f, 10.0f, 1.0f)
-    , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
+    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
     , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 1.f, 0.5f)
-    , speedModAmount2("SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 1.f, 0.5f)
-    , speedModSrc1("Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 8.f, 0.f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 8.f, 0.f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
 {
 }
 
@@ -260,6 +260,8 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
 void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // set version of the patch
     patch->setAttribute("version", version);
+    // TODO check patchname for chars that need to be replaced/escaped for correct XML
+    patch->setAttribute("patchname", patchName);
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
@@ -271,7 +273,8 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
     for (auto &param : parameters) {
         float value = param->getUI();
         if (param->serializationTag() != "") {
-        addElement(patch, param->serializationTag(), value);
+            String prefixedName = (param->prefix() + param->serializationTag()).replace(" ", "");
+            addElement(patch, prefixedName, value);
     }
 }
 }
@@ -320,8 +323,9 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 
 // adds the value if it exists in the xml
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
-    if (patch->getChildByName(paramName) != NULL) {
-        param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+    String prefixedName = (param.prefix() + param.serializationTag()).replace(" ", "");
+    if (patch->getChildByName(prefixedName) != NULL) {
+        param.setUI(static_cast<float>(patch->getChildByName(prefixedName)->getDoubleAttribute("value")));
         //! \todo dirty flag needs to be set! This is a bad hack, please use get/set instead of getUI/setUI
         param.set(param.get(),true);
         //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
@@ -341,9 +345,12 @@ void SynthParams::fillValues(XmlElement* patch, eSerializationParams paramsToSer
 
     std::vector<Param*> parameters = serializeParams;
     if (paramsToSerialize == eSerializationParams::eSequencerOnly)
-{
+    {
         parameters = stepSeqParams;
     }
+
+    patchName = patch->getStringAttribute("patchname");
+    patchNameDirty = true;
 
     // iterate over all params and set the values if they exist in the xml
     for (auto &param : parameters) {

@@ -144,18 +144,16 @@
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp"/>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp"/>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp"/>
-    <ClCompile Include="..\..\..\audio\inc\Voice.cpp"/>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp"/>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
+    <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp"/>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp"/>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp"/>
-    <ClCompile Include="..\..\..\audio\src\Envelope.cpp"/>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp"/>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp"/>
@@ -1315,15 +1313,16 @@
     <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h"/>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h"/>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
     <ClInclude Include="..\..\..\gui\PluginEditor.h"/>
     <ClInclude Include="..\..\..\gui\PlugUI.h"/>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h"/>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
+    <ClInclude Include="..\..\..\audio\inc\Filter.h"/>
+    <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h"/>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h"/>
-    <ClInclude Include="..\..\..\audio\inc\Oscillator.h"/>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h"/>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h"/>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h"/>
@@ -1794,14 +1793,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\delayReverse.png"/>
+    <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
     <None Include="..\..\..\png\lfoSampleHold.png"/>
     <None Include="..\..\..\png\lfoSineWave.png"/>
     <None Include="..\..\..\png\lfoSquareWave.png"/>
     <None Include="..\..\..\png\oscWaveForms.png"/>
+    <None Include="..\..\..\png\recordCutoff.png"/>
     <None Include="..\..\..\png\seqRandom.png"/>
     <None Include="..\..\..\png\seqSequential.png"/>
     <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\Synister-Logo_block.png"/>
+    <None Include="..\..\..\png\synisterLogo.png"/>
     <None Include="..\..\..\png\tempoSync.png"/>
     <None Include="..\..\..\png\toggleOff.png"/>
     <None Include="..\..\..\png\toggleOn.png"/>
@@ -1820,6 +1823,7 @@
     <None Include="..\..\..\juce\modules\juce_gui_extra\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_opengl\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_video\juce_module_info"/>
+    <None Include=".\icon.ico"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc"/>

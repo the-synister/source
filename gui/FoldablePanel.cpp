@@ -82,7 +82,7 @@ struct FoldablePanel::SectionComponent  : public Component
 
             if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>()) {
                 pp->resized();
-                
+
                 pp->getBackToPoint(getY(), (open) ? getSectionHeight() - 22 : 0);
             }
         }

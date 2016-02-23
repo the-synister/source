@@ -346,6 +346,21 @@
     <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -376,22 +391,7 @@
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>plugin\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
@@ -413,9 +413,6 @@
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
-      <Filter>plugin\Audio\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\audio\src\Oscillator.cpp">
       <Filter>plugin\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
@@ -1716,6 +1713,21 @@
     <ClInclude Include="..\..\..\gui\ModSourceBox.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
@@ -1749,22 +1761,7 @@
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
       <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\FoldablePanel.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\WaveformVisual.h">
-      <Filter>plugin\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
@@ -1774,9 +1771,6 @@
       <Filter>plugin\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\Envelope.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
@@ -1789,9 +1783,6 @@
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
-      <Filter>plugin\Audio\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
       <Filter>plugin\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
@@ -3227,6 +3218,9 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3242,6 +3236,9 @@
     <None Include="..\..\..\png\oscWaveForms.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\recordCutoff.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\seqRandom.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3249,6 +3246,12 @@
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\Synister-Logo_block.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\synisterLogo.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\tempoSync.png">
@@ -3309,6 +3312,9 @@
       <Filter>Juce Modules\juce_video</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr">
+      <Filter>Juce Library Code</Filter>
+    </None>
+    <None Include=".\icon.ico">
       <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>
