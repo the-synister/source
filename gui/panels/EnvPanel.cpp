@@ -125,14 +125,14 @@ EnvPanel::EnvPanel (SynthParams &p)
     shapeLabel1->setColour (TextEditor::textColourId, Colours::black);
     shapeLabel1->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (envSpeedModSrc2 = new ComboBox ("envSpeedModSrcBox2"));
+    addAndMakeVisible (envSpeedModSrc2 = new ModSourceBox ("envSpeedModSrcBox2"));
     envSpeedModSrc2->setEditableText (false);
     envSpeedModSrc2->setJustificationType (Justification::centred);
     envSpeedModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     envSpeedModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     envSpeedModSrc2->addListener (this);
 
-    addAndMakeVisible (envSpeedModSrc1 = new ComboBox ("envSpeedModSrcBox1"));
+    addAndMakeVisible (envSpeedModSrc1 = new ModSourceBox ("envSpeedModSrcBox1"));
     envSpeedModSrc1->setEditableText (false);
     envSpeedModSrc1->setJustificationType (Justification::centred);
     envSpeedModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
@@ -160,13 +160,6 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSaturnSource(attackTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(attackTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-
     registerSlider(attackTime, &envVol.attack, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayTime, &envVol.decay, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(sustainLevel, &envVol.sustain, std::bind(&EnvPanel::updateCurve, this));
@@ -174,21 +167,26 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(attackShape, &envVol.attackShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
-
     registerSlider(speedMod1, &envVol.speedModAmount1);
     registerSlider(speedMod2, &envVol.speedModAmount2);
 
-    fillModsourceBox(envSpeedModSrc1);
-    fillModsourceBox(envSpeedModSrc2);
+    registerSaturnSource(attackTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(attackTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
 
-    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1, {attackTime, decayTime, releaseTime});
-    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2, {attackTime, decayTime, releaseTime});
+    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
+    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (266, 252);
 
 
     //[Constructor] You can add your own custom stuff here..
+    speedMod1->setAlwaysOnTop(true);
+    speedMod2->setAlwaysOnTop(true);
     //[/Constructor]
 }
 
@@ -356,6 +354,13 @@ void EnvPanel::updateCurve()
     repaint();
 }
 
+void EnvPanel::updateModAmountKnobs()
+{
+    speedMod1->setEnabled(envVol.speedModSrc1.getStep() != eModSource::eNone);
+    speedMod1->showBipolarValues(isUnipolar(envVol.speedModSrc1.getStep()));
+    speedMod2->setEnabled(envVol.speedModSrc2.getStep() != eModSource::eNone);
+    speedMod2->showBipolarValues(isUnipolar(envVol.speedModSrc2.getStep()));
+}
 //[/MiscUserCode]
 
 
@@ -428,11 +433,13 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="53 172 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 172 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="53 146 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 146 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"

@@ -50,6 +50,7 @@ public:
         if(notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const { return get(); }
+    virtual float getDefaultUI() const { return getDefault(); }
     virtual String getUIString() const { return getUIString(get()); }
     virtual String getUIString(float v) const { return String::formatted("%f", v); }
     virtual bool hasLabels() const { return false; }
@@ -126,6 +127,7 @@ public:
         if (notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const override { return toDb(get()); }
+    virtual float getDefaultUI() const { return toDb(getDefault()); }
 };
 
 template<typename _enum>

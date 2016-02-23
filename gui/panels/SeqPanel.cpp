@@ -302,6 +302,11 @@ SeqPanel::SeqPanel (SynthParams &p)
     playModes->setColour (Slider::trackColourId, Colours::white);
     playModes->addListener (this);
 
+    addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
+    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->addListener (this);
+    dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
     // save some params, sliders and buttons in arrays for easier access
@@ -351,13 +356,11 @@ SeqPanel::SeqPanel (SynthParams &p)
 
     registerToggle(syncHost, &params.seqPlaySyncHost, std::bind(&SeqPanel::updateToggleState, this));
     registerToggle(triplets, &params.seqTriplets);
+    registerToggle(dottedNotes, &params.seqDottedLength);
 
-    registerDropdown(seqStepSpeed, &params.seqStepSpeed);
-    registerDropdown(seqStepLength, &params.seqStepLength);
-
-    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
-    seqPlay->setToggleState(isPlaying(), dontSendNotification);
-    genRandom->setAlwaysOnTop(true);
+    registerDropDowns(seqNumSteps, &params.seqNumSteps);
+    registerNoteLength(seqStepSpeed, &params.seqStepSpeed);
+    registerNoteLength(seqStepLength, &params.seqStepLength);
     //[/UserPreSize]
 
     setSize (800, 300);
@@ -369,6 +372,8 @@ SeqPanel::SeqPanel (SynthParams &p)
     sequentialPic = ImageCache::getFromMemory(BinaryData::seqSequential_png, BinaryData::seqSequential_pngSize);
     upDownPic = ImageCache::getFromMemory(BinaryData::seqUpDown_png, BinaryData::seqUpDown_pngSize);
     randomPic = ImageCache::getFromMemory(BinaryData::seqRandom_png, BinaryData::seqRandom_pngSize);
+
+    genRandom->setAlwaysOnTop(true);
     //[/Constructor]
 }
 
@@ -416,6 +421,7 @@ SeqPanel::~SeqPanel()
     saveSeq = nullptr;
     loadSeq = nullptr;
     playModes = nullptr;
+    dottedNotes = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -440,8 +446,21 @@ void SeqPanel::paint (Graphics& g)
 void SeqPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    for (int i = 0; i < 8; ++i)
+    {
+        labelButtonArray[i]->setToggleState(currStepOnOff[i]->getStep() == eOnOffToggle::eOn, dontSendNotification);
+    }
+
     seqPlay->setToggleState(isPlaying(), dontSendNotification);
-    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())), dontSendNotification);
+    syncHost->setToggleState(params.seqPlaySyncHost.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    triplets->setToggleState(params.seqTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+    dottedNotes->setToggleState(params.seqDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+
+    seqNumSteps->setText(String(static_cast<int>(params.seqNumSteps.get())));
+    seqStepSpeed->setText("1/" + String(static_cast<int>(params.seqStepSpeed.get())));
+    seqStepLength->setText("1/" + String(static_cast<int>(params.seqStepLength.get())));
+
+    randomSeq->setMinAndMaxValues(params.seqRandomMin.get(), params.seqRandomMax.get());
     //[/UserPreResize]
 
     seqStep1->setBounds (452, 68, 40, 210);
@@ -453,7 +472,7 @@ void SeqPanel::resized()
     seqStep7->setBounds (692, 68, 40, 210);
     seqStep8->setBounds (732, 68, 40, 210);
     seqPlay->setBounds (55, 7, 100, 23);
-    syncHost->setBounds (326, 64, 64, 30);
+    syncHost->setBounds (326, 53, 64, 30);
     labelButton1->setBounds (448, 42, 48, 24);
     labelButton2->setBounds (488, 42, 48, 24);
     labelButton3->setBounds (528, 42, 48, 24);
@@ -462,7 +481,7 @@ void SeqPanel::resized()
     labelButton6->setBounds (648, 42, 48, 24);
     labelButton7->setBounds (688, 42, 48, 24);
     labelButton8->setBounds (728, 42, 48, 24);
-    genRandom->setBounds (118, 207, 150, 30);
+    genRandom->setBounds (104, 214, 176, 24);
     randomSeq->setBounds (40, 231, 300, 50);
     randMinLabel->setBounds (24, 207, 80, 36);
     randMaxLabel->setBounds (280, 207, 80, 36);
@@ -472,10 +491,11 @@ void SeqPanel::resized()
     labelSeqSpeed->setBounds (33, 106, 103, 20);
     labelSeqLength->setBounds (33, 149, 103, 20);
     labelSeqStepNum->setBounds (33, 63, 103, 20);
-    triplets->setBounds (326, 104, 64, 30);
+    triplets->setBounds (326, 87, 64, 30);
     saveSeq->setBounds (170, 7, 100, 23);
     loadSeq->setBounds (280, 7, 100, 23);
-    playModes->setBounds (328, 168, 64, 24);
+    playModes->setBounds (328, 175, 64, 24);
+    dottedNotes->setBounds (326, 121, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -644,6 +664,11 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
         params.readXMLPatchStandalone(eSerializationParams::eSequencerOnly);
         //[/UserButtonCode_loadSeq]
     }
+    else if (buttonThatWasClicked == dottedNotes)
+    {
+        //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        //[/UserButtonCode_dottedNotes]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -652,9 +677,13 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
 void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     //[UsercomboBoxChanged_Pre]
-    if (comboBoxThatHasChanged != seqNumSteps)
+    if (comboBoxThatHasChanged == seqNumSteps)
     {
-        handleDropdown(comboBoxThatHasChanged);
+        handleDropDowns(comboBoxThatHasChanged);
+    }
+    else
+    {
+        handleNoteLength(comboBoxThatHasChanged);
     }
     //[/UsercomboBoxChanged_Pre]
 
@@ -671,7 +700,6 @@ void SeqPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     else if (comboBoxThatHasChanged == seqNumSteps)
     {
         //[UserComboBoxCode_seqNumSteps] -- add your combo box handling code here..
-        params.seqNumSteps.set(jmax(1.0f, jmin(comboBoxThatHasChanged->getText().getFloatValue(), 8.0f)));
         //[/UserComboBoxCode_seqNumSteps]
     }
 
@@ -730,12 +758,12 @@ void SeqPanel::timerCallback()
             // colour current playing seqNote slider
             for (int i = 0; i < 8; ++i)
             {
-                seqStepArray[i]->setColour(Slider::trackColourId, Colours::white);
+                seqStepArray[i]->setColour(Slider::thumbColourId, Colours::grey);
             }
 
             lastSeqNotePos = static_cast<int>(params.seqLastPlayedStep.get());
             lastSeqNotePos = jmax(0, jmin(lastSeqNotePos, 7));
-            seqStepArray[lastSeqNotePos]->setColour(Slider::trackColourId, Colour(0xff60ff60));
+            seqStepArray[lastSeqNotePos]->setColour(Slider::thumbColourId, Colour(0xff60ff60));
         }
     }
     else
@@ -744,7 +772,7 @@ void SeqPanel::timerCallback()
         if (lastSeqNotePos != -1)
         {
             seqPlay->setToggleState(isPlaying(), dontSendNotification);
-            seqStepArray.at(lastSeqNotePos)->setColour(Slider::trackColourId, Colours::white);
+            seqStepArray.at(lastSeqNotePos)->setColour(Slider::thumbColourId, Colours::grey);
             lastSeqNotePos = -1;
         }
     }
@@ -832,7 +860,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="play"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
-                virtualName="" explicitFocusOrder="0" pos="326 64 64 30" txtcol="ff000000"
+                virtualName="" explicitFocusOrder="0" pos="326 53 64 30" txtcol="ff000000"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TEXTBUTTON name="label button 1" id="ecf21a7d0b29e004" memberName="labelButton1"
@@ -868,7 +896,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ffffff" textCol="ffffffff" textColOn="ff808080" buttonText="C4"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="118 207 150 30" bgColOff="ff564c43"
+              virtualName="" explicitFocusOrder="0" pos="104 214 176 24" bgColOff="ff564c43"
               textCol="ffffffff" textColOn="ffffffff" buttonText="generate sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
@@ -914,7 +942,7 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="326 104 64 30" buttonText="" connectedEdges="0"
+                explicitFocusOrder="0" pos="326 87 64 30" buttonText="" connectedEdges="0"
                 needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
               virtualName="" explicitFocusOrder="0" pos="170 7 100 23" bgColOff="ffffffff"
@@ -925,10 +953,14 @@ BEGIN_JUCER_METADATA
               textCol="ff808080" textColOn="ff808080" buttonText="load seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="playModes" id="8b30775dcc59763b" memberName="playModes"
-          virtualName="" explicitFocusOrder="0" pos="328 168 64 24" thumbcol="ff564c43"
+          virtualName="" explicitFocusOrder="0" pos="328 175 64 24" thumbcol="ff564c43"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
+  <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
+                virtualName="" explicitFocusOrder="0" pos="326 121 64 30" txtcol="ffffffff"
+                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

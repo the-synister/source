@@ -26,6 +26,7 @@
 #include "MouseOverKnob.h"
 #include "FoldablePanel.h"
 #include "IncDecDropDown.h"
+#include "panels/PanelBase.h"
 //[/Headers]
 
 
@@ -38,11 +39,10 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PlugUI  : public Component,
-                private Timer,
+class PlugUI  : public PanelBase,
+                public TextEditorListener,
                 public SliderListener,
-                public ButtonListener,
-                public TextEditorListener
+                public ButtonListener
 {
 public:
     //==============================================================================
@@ -77,6 +77,8 @@ private:
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
     ScopedPointer<FoldablePanel> foldableComponent;
+    ScopedPointer<MouseOverKnob> masterAmp;
+    ScopedPointer<MouseOverKnob> masterPan;
     ScopedPointer<TextEditor> patchNameEditor;
 
 

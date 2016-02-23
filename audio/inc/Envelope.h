@@ -23,7 +23,7 @@
 */
 
 class Envelope{
-    public:
+public:
     Envelope(SynthParams::EnvBase &_env, Param &_sustain, double _sampleRate)
         : releaseCounter(-1)
         , attackDecayCounter(0)
@@ -48,7 +48,9 @@ class Envelope{
     //! calculation of the volume envelope coefficients (with shape control)
     const float calcEnvCoeff(float modValue1, float modValue2);
 
-    private:
+    static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
+    
+private:
     inline int calcModRange(float modValue, int sInput, float tRange, float modAmount) {
         int samples = static_cast<int>(sInput * std::pow(2.f, modValue * tRange * modAmount));
         int maxSamples = static_cast<int>(tRange * sampleRate);
@@ -69,8 +71,6 @@ class Envelope{
     int decaySamples;
     int releaseSamples;     //!< total Amount of release samples
     int releaseCounter;     //!< sample counter during the release phase
-
-    static float interpolateLog(int c, int t, float k, bool slow); //!< interpolates logarithmically from 1.0 to 0.0f in t samples (with shape control)
 };
 
 #endif  // ENVELOPE_H_INCLUDED

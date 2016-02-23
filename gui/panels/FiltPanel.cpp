@@ -79,42 +79,42 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     lpModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
     lpModAmount1->addListener (this);
 
-    addAndMakeVisible (lpModSrc1 = new ComboBox ("lpModSrcBox1"));
+    addAndMakeVisible (lpModSrc1 = new ModSourceBox ("lpModSrcBox1"));
     lpModSrc1->setEditableText (false);
     lpModSrc1->setJustificationType (Justification::centred);
     lpModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
     lpModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     lpModSrc1->addListener (this);
 
-    addAndMakeVisible (hpModSrc1 = new ComboBox ("hpModSrcBox1"));
+    addAndMakeVisible (hpModSrc1 = new ModSourceBox ("hpModSrcBox1"));
     hpModSrc1->setEditableText (false);
     hpModSrc1->setJustificationType (Justification::centred);
     hpModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
     hpModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     hpModSrc1->addListener (this);
 
-    addAndMakeVisible (lpModSrc2 = new ComboBox ("lpModSrcBox2"));
+    addAndMakeVisible (lpModSrc2 = new ModSourceBox ("lpModSrcBox2"));
     lpModSrc2->setEditableText (false);
     lpModSrc2->setJustificationType (Justification::centred);
     lpModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     lpModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     lpModSrc2->addListener (this);
 
-    addAndMakeVisible (hpModSrc2 = new ComboBox ("hpModSrcBox2"));
+    addAndMakeVisible (hpModSrc2 = new ModSourceBox ("hpModSrcBox2"));
     hpModSrc2->setEditableText (false);
     hpModSrc2->setJustificationType (Justification::centred);
     hpModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     hpModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     hpModSrc2->addListener (this);
 
-    addAndMakeVisible (resModSrc1 = new ComboBox ("resModSrcBox1"));
+    addAndMakeVisible (resModSrc1 = new ModSourceBox ("resModSrcBox1"));
     resModSrc1->setEditableText (false);
     resModSrc1->setJustificationType (Justification::centred);
     resModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
     resModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     resModSrc1->addListener (this);
 
-    addAndMakeVisible (resModSrc2 = new ComboBox ("resModSrcBox2"));
+    addAndMakeVisible (resModSrc2 = new ModSourceBox ("resModSrcBox2"));
     resModSrc2->setEditableText (false);
     resModSrc2->setJustificationType (Justification::centred);
     resModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
@@ -226,19 +226,12 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(passtype, &filter.passtype);
     registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
-    fillModsourceBox(lpModSrc1);
-    fillModsourceBox(lpModSrc2);
-    fillModsourceBox(hpModSrc1);
-    fillModsourceBox(hpModSrc2);
-    fillModsourceBox(resModSrc1);
-    fillModsourceBox(resModSrc2);
-
-    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr});
-    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr});
-    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr});
-    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr});
-    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr});
-    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr});
+    registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(hpModSrc2, &filter.hpCutModSrc2, {cutoffSlider2, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(resModSrc1, &filter.resonanceModSrc1, {resonanceSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
+    registerCombobox(resModSrc2, &filter.resonanceModSrc2, {resonanceSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
 
     cutoffSlider->setSkewFactorFromMidPoint(1000.0);
     cutoffSlider2->setSkewFactorFromMidPoint(1000.0);
@@ -324,7 +317,7 @@ void FiltPanel::resized()
     hpModAmount2->setBounds (205, 120, 18, 18);
     resModAmount1->setBounds (301, 97, 18, 18);
     resModAmount2->setBounds (301, 120, 18, 18);
-    onOffSwitch->setBounds (9, 2, 40, 30);
+    onOffSwitch->setBounds (14, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -445,20 +438,44 @@ void FiltPanel::onOffSwitchChanged()
 	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+
 	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
+    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
+    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
+    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
+    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
 
 	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
 	ladderLabel->setColour(Label::textColourId, col);
 	bandpassLabel->setColour(Label::textColourId, col);
 	highpassLabel->setColour(Label::textColourId, col);
 	lowpassLabel->setColour(Label::textColourId, col);
-
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+}
+
+void FiltPanel::updateModAmountKnobs()
+{
+    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    lpModAmount1->showBipolarValues(isUnipolar(filter.lpCutModSrc1.getStep()));
+    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
+    lpModAmount2->showBipolarValues(isUnipolar(filter.lpCutModSrc2.getStep()));
+
+    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
+    hpModAmount1->showBipolarValues(isUnipolar(filter.hpCutModSrc1.getStep()));
+    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
+    hpModAmount2->showBipolarValues(isUnipolar(filter.hpCutModSrc2.getStep()));
+
+    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
+    resModAmount1->showBipolarValues(isUnipolar(filter.resonanceModSrc1.getStep()));
+    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
+    resModAmount2->showBipolarValues(isUnipolar(filter.resonanceModSrc2.getStep()));
 }
 //[/MiscUserCode]
 
@@ -506,24 +523,30 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
-  <COMBOBOX name="lp1ModSrcBox1" id="11f9848905955e67" memberName="lp1ModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="132 97 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="132 97 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="226 97 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="226 97 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lpModSrcBox2" id="6dae6bde5fbe8153" memberName="lpModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="132 120 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="132 120 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox2" id="f1f85630e066837c" memberName="hpModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="226 120 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="226 120 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="resModSrcBox1" id="733eefe1cee8bab3" memberName="resModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="322 97 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="322 97 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="resModSrcBox2" id="cf210285cf2d4ef" memberName="resModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="322 120 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="322 120 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <SLIDER name="lpModAmount2" id="c0e4229cc3539fbe" memberName="lpModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 120 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
@@ -570,7 +593,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="filter switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="9 2 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

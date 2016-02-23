@@ -66,6 +66,9 @@ void FxDelay::calcTime()
         params.delayTime.set(static_cast<float>(4000.0 * (1. / (bpmIn / 60.)) *
             static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
 
+        if (params.delayDottedLength.getStep() == eOnOffToggle::eOn) {
+            params.delayTime.set(params.delayTime.get() * 1.5f);
+        }
         if (params.delayTriplet.getStep() == eOnOffToggle::eOn) {
             params.delayTime.set(params.delayTime.get()*(2.f/3.f));
         }

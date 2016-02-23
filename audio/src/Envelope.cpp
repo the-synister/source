@@ -108,12 +108,7 @@ const float Envelope::calcEnvCoeff(float modValue1, float modValue2)
 */
 float Envelope::interpolateLog(int c, int t, float k, bool slow)
 {
-    if (slow)
-    {
-        return std::exp(std::log(static_cast<float>(c) / static_cast<float>(t)) * k);
-    }
-    else
-    {
-        return std::exp(std::log(1.0f - static_cast<float>(c) / static_cast<float>(t)) * k);
-    }
+    float coefficent = static_cast<float>(c) / static_cast<float>(t);
+    
+    return std::exp(std::log((slow) ? coefficent : 1.0f - coefficent) * k);
 }
