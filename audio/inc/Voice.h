@@ -376,6 +376,7 @@ protected:
                 bool source2Unipolar = isUnipolar(params.lfo[l].freqModSrc2.getStep());
 
 
+#if 0
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
@@ -390,6 +391,20 @@ protected:
                         source1Unipolar, source2Unipolar, params.lfo[l].freqModAmount1, params.lfo[l].freqModAmount2) * factorFadeIn * lfoGain[l]);
                     break;
                 }
+#else
+                // calculate lfo values and fill the buffers
+                switch (params.lfo[l].wave.getStep()) {
+                    case eLfoWaves::eLfoSine:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                    case eLfoWaves::eLfoSampleHold:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                    case eLfoWaves::eLfoSquare:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                }
+#endif
             }
 
             // Calculate the Envelope coefficients and fill the buffers
