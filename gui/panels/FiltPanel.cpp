@@ -226,6 +226,13 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(passtype, &filter.passtype);
     registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
+    fillModsourceBox(lpModSrc1, false);
+    fillModsourceBox(lpModSrc2, false);
+    fillModsourceBox(hpModSrc1, false);
+    fillModsourceBox(hpModSrc2, false);
+    fillModsourceBox(resModSrc1, false);
+    fillModsourceBox(resModSrc2, false);
+
     registerCombobox(lpModSrc1, &filter.lpCutModSrc1, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
     registerCombobox(lpModSrc2, &filter.lpCutModSrc2, {cutoffSlider, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
     registerCombobox(hpModSrc1, &filter.hpCutModSrc1, {cutoffSlider2, nullptr, nullptr}, std::bind(&FiltPanel::updateModAmountKnobs, this));
@@ -438,7 +445,6 @@ void FiltPanel::onOffSwitchChanged()
 	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-
 	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));

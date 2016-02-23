@@ -40,6 +40,7 @@
                                                                     //[/Comments]
 */
 class PlugUI  : public PanelBase,
+                public TextEditorListener,
                 public SliderListener,
                 public ButtonListener
 {
@@ -79,6 +80,7 @@ private:
     ScopedPointer<MouseOverKnob> masterAmp;
     ScopedPointer<MouseOverKnob> masterPan;
     ScopedPointer<TextEditor> patchNameEditor;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================

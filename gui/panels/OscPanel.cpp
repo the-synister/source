@@ -28,11 +28,38 @@
 
 //==============================================================================
 OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
-    : PanelBase(p)
-    , osc(p.osc[oscillatorNumber])
+    : PanelBase(p), osc(p.osc[oscillatorNumber])
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
+
+    addAndMakeVisible (trngModSrc1 = new ModSourceBox ("TrngModSrc1"));
+    trngModSrc1->setEditableText (false);
+    trngModSrc1->setJustificationType (Justification::centred);
+    trngModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    trngModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    trngModSrc1->addListener (this);
+
+    addAndMakeVisible (widthModSrc1 = new ModSourceBox ("WidthModSrc1"));
+    widthModSrc1->setEditableText (false);
+    widthModSrc1->setJustificationType (Justification::centred);
+    widthModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
+    widthModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    widthModSrc1->addListener (this);
+
+    addAndMakeVisible (trngModSrc2 = new ModSourceBox ("TrngModSrc2"));
+    trngModSrc2->setEditableText (false);
+    trngModSrc2->setJustificationType (Justification::centred);
+    trngModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    trngModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    trngModSrc2->addListener (this);
+
+    addAndMakeVisible (widthModSrc2 = new ModSourceBox ("WidthModSrc2"));
+    widthModSrc2->setEditableText (false);
+    widthModSrc2->setJustificationType (Justification::centred);
+    widthModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
+    widthModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    widthModSrc2->addListener (this);
 
     addAndMakeVisible (ftune1 = new MouseOverKnob ("fine tune 1"));
     ftune1->setRange (-100, 100, 0);
@@ -45,7 +72,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     ftune1->addListener (this);
 
     addAndMakeVisible (pitchModAmount2 = new MouseOverKnob ("PitchModAmount2"));
-    pitchModAmount2->setRange (0, 12, 0);
+    pitchModAmount2->setRange (0, 48, 0);
     pitchModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     pitchModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     pitchModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -75,7 +102,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     pulsewidth->addListener (this);
 
     addAndMakeVisible (pitchModAmount1 = new MouseOverKnob ("PitchModAmount1"));
-    pitchModAmount1->setRange (0, 12, 0);
+    pitchModAmount1->setRange (0, 48, 0);
     pitchModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     pitchModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     pitchModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -85,7 +112,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     pitchModAmount1->addListener (this);
 
     addAndMakeVisible (ctune1 = new MouseOverKnob ("coarse tune 1"));
-    ctune1->setRange (-12, 12, 1);
+    ctune1->setRange (-36, 36, 1);
     ctune1->setSliderStyle (Slider::RotaryVerticalDrag);
     ctune1->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
     ctune1->setColour (Slider::rotarySliderFillColourId, Colour (0xff6c788c));
@@ -158,20 +185,6 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     widthModAmount2->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
     widthModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     widthModAmount2->addListener (this);
-
-    addAndMakeVisible (widthModSrc1 = new ModSourceBox ("WidthModSrc1"));
-    widthModSrc1->setEditableText (false);
-    widthModSrc1->setJustificationType (Justification::centred);
-    widthModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
-    widthModSrc1->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    widthModSrc1->addListener (this);
-
-    addAndMakeVisible (widthModSrc2 = new ModSourceBox ("WidthModSrc2"));
-    widthModSrc2->setEditableText (false);
-    widthModSrc2->setJustificationType (Justification::centred);
-    widthModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
-    widthModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    widthModSrc2->addListener (this);
 
     addAndMakeVisible (gainModAmount2 = new MouseOverKnob ("GainModAmount2"));
     gainModAmount2->setRange (0, 96, 0);
@@ -259,6 +272,32 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(gainModAmount1, &osc.gainModAmount1);
     registerSlider(gainModAmount2, &osc.gainModAmount2);
 
+
+    // fill and register mod selection boxes
+    fillModsourceBox(pitchModSrc1, false);
+    fillModsourceBox(pitchModSrc2, false);
+    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+
+    fillModsourceBox(widthModSrc1, false);
+    fillModsourceBox(widthModSrc2, false);
+    fillModsourceBox(trngModSrc1, false);
+    fillModsourceBox(trngModSrc2, false);
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc1, &osc.shapeModSrc1, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc2, &osc.shapeModSrc2, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+
+    fillModsourceBox(panModSrc1, false);
+    fillModsourceBox(panModSrc2, false);
+    registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+
+    fillModsourceBox(gainModSrc1, false);
+    fillModsourceBox(gainModSrc2, false);
+    registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+
     registerSaturnSource(ctune1, pitchModAmount1, &osc.pitchModSrc1, &osc.pitchModAmount1, 1);
     registerSaturnSource(ctune1, pitchModAmount2, &osc.pitchModSrc2, &osc.pitchModAmount2, 2);
     registerSaturnSource(gain, gainModAmount1, &osc.gainModSrc1, &osc.gainModAmount1, 1);
@@ -269,17 +308,6 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
     registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
     registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
-
-    registerCombobox(pitchModSrc1, &osc.pitchModSrc1, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(pitchModSrc2, &osc.pitchModSrc2, {ctune1, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(panModSrc1, &osc.panModSrc1, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(panModSrc2, &osc.panModSrc2, {pan, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(gainModSrc1, &osc.gainModSrc1, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(gainModSrc2, &osc.gainModSrc2, {gain, nullptr, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -305,6 +333,10 @@ OscPanel::~OscPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    trngModSrc1 = nullptr;
+    widthModSrc1 = nullptr;
+    trngModSrc2 = nullptr;
+    widthModSrc2 = nullptr;
     ftune1 = nullptr;
     pitchModAmount2 = nullptr;
     trngAmount = nullptr;
@@ -319,8 +351,6 @@ OscPanel::~OscPanel()
     gain = nullptr;
     pan = nullptr;
     widthModAmount2 = nullptr;
-    widthModSrc1 = nullptr;
-    widthModSrc2 = nullptr;
     gainModAmount2 = nullptr;
     gainModAmount1 = nullptr;
     gainModSrc1 = nullptr;
@@ -357,6 +387,10 @@ void OscPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
+    trngModSrc1->setBounds (207, 100, 40, 18);
+    widthModSrc1->setBounds (207, 100, 40, 18);
+    trngModSrc2->setBounds (207, 124, 40, 18);
+    widthModSrc2->setBounds (207, 124, 40, 18);
     ftune1->setBounds (8, 170, 64, 64);
     pitchModAmount2->setBounds (65, 124, 18, 18);
     trngAmount->setBounds (127, 100, 64, 64);
@@ -371,8 +405,6 @@ void OscPanel::resized()
     gain->setBounds (8, 34, 64, 64);
     pan->setBounds (127, 34, 64, 64);
     widthModAmount2->setBounds (184, 124, 18, 18);
-    widthModSrc1->setBounds (207, 100, 40, 18);
-    widthModSrc2->setBounds (207, 124, 40, 18);
     gainModAmount2->setBounds (65, 58, 18, 18);
     gainModAmount1->setBounds (65, 34, 18, 18);
     gainModSrc1->setBounds (88, 34, 40, 18);
@@ -383,6 +415,67 @@ void OscPanel::resized()
     panModSrc2->setBounds (207, 58, 40, 18);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
+}
+
+void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+{
+    //[UsercomboBoxChanged_Pre]
+    handleCombobox(comboBoxThatHasChanged);
+    //[/UsercomboBoxChanged_Pre]
+
+    if (comboBoxThatHasChanged == trngModSrc1)
+    {
+        //[UserComboBoxCode_trngModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_trngModSrc1]
+    }
+    else if (comboBoxThatHasChanged == widthModSrc1)
+    {
+        //[UserComboBoxCode_widthModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_widthModSrc1]
+    }
+    else if (comboBoxThatHasChanged == trngModSrc2)
+    {
+        //[UserComboBoxCode_trngModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_trngModSrc2]
+    }
+    else if (comboBoxThatHasChanged == widthModSrc2)
+    {
+        //[UserComboBoxCode_widthModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_widthModSrc2]
+    }
+    else if (comboBoxThatHasChanged == pitchModSrc1)
+    {
+        //[UserComboBoxCode_pitchModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_pitchModSrc1]
+    }
+    else if (comboBoxThatHasChanged == pitchModSrc2)
+    {
+        //[UserComboBoxCode_pitchModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_pitchModSrc2]
+    }
+    else if (comboBoxThatHasChanged == gainModSrc1)
+    {
+        //[UserComboBoxCode_gainModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_gainModSrc1]
+    }
+    else if (comboBoxThatHasChanged == gainModSrc2)
+    {
+        //[UserComboBoxCode_gainModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_gainModSrc2]
+    }
+    else if (comboBoxThatHasChanged == panModSrc1)
+    {
+        //[UserComboBoxCode_panModSrc1] -- add your combo box handling code here..
+        //[/UserComboBoxCode_panModSrc1]
+    }
+    else if (comboBoxThatHasChanged == panModSrc2)
+    {
+        //[UserComboBoxCode_panModSrc2] -- add your combo box handling code here..
+        //[/UserComboBoxCode_panModSrc2]
+    }
+
+    //[UsercomboBoxChanged_Post]
+    //[/UsercomboBoxChanged_Post]
 }
 
 void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
@@ -471,79 +564,34 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
-void OscPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
-{
-    //[UsercomboBoxChanged_Pre]
-    handleCombobox(comboBoxThatHasChanged);
-    //[/UsercomboBoxChanged_Pre]
-
-    if (comboBoxThatHasChanged == pitchModSrc1)
-    {
-        //[UserComboBoxCode_pitchModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_pitchModSrc1]
-    }
-    else if (comboBoxThatHasChanged == pitchModSrc2)
-    {
-        //[UserComboBoxCode_pitchModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_pitchModSrc2]
-    }
-    else if (comboBoxThatHasChanged == widthModSrc1)
-    {
-        //[UserComboBoxCode_widthModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_widthModSrc1]
-    }
-    else if (comboBoxThatHasChanged == widthModSrc2)
-    {
-        //[UserComboBoxCode_widthModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_widthModSrc2]
-    }
-    else if (comboBoxThatHasChanged == gainModSrc1)
-    {
-        //[UserComboBoxCode_gainModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_gainModSrc1]
-    }
-    else if (comboBoxThatHasChanged == gainModSrc2)
-    {
-        //[UserComboBoxCode_gainModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_gainModSrc2]
-    }
-    else if (comboBoxThatHasChanged == panModSrc1)
-    {
-        //[UserComboBoxCode_panModSrc1] -- add your combo box handling code here..
-        //[/UserComboBoxCode_panModSrc1]
-    }
-    else if (comboBoxThatHasChanged == panModSrc2)
-    {
-        //[UserComboBoxCode_panModSrc2] -- add your combo box handling code here..
-        //[/UserComboBoxCode_panModSrc2]
-    }
-
-    //[UsercomboBoxChanged_Post]
-    //[/UsercomboBoxChanged_Post]
-}
-
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void OscPanel::updateWFShapeControls()
 {
     eOscWaves eWaveformKey = osc.waveForm.getStep();
-    osc.waveForm.setStep(eWaveformKey);
+
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
 
-    // TODO: replace with below after bug fix
-    trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw);
-
-    // TODO: mouseOver widthKnob leads to redrawing parts of waveformVisual -> bad if is noise
-    //       should save last noise and recalculate only if eOscWaves has changed or so
-    //trngAmount->setVisible(eWaveformKey == eOscWaves::eOscSaw || eWaveformKey == eOscWaves::eOscNoise);
-    //trngAmount->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
+    trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngModSrc2->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
 
     widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
     widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
-    widthModSrc1->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
-    widthModSrc2->setEnabled(eWaveformKey != eOscWaves::eOscNoise);
 
+    // sync boxes of shapeModSrc
+    trngModSrc1->setSelectedId(static_cast<int>(osc.shapeModSrc1.getStep()) + COMBO_OFS);
+    trngModSrc2->setSelectedId(static_cast<int>(osc.shapeModSrc2.getStep()) + COMBO_OFS);
+    widthModSrc1->setSelectedId(static_cast<int>(osc.shapeModSrc1.getStep()) + COMBO_OFS);
+    widthModSrc2->setSelectedId(static_cast<int>(osc.shapeModSrc2.getStep()) + COMBO_OFS);
+
+    // update and repaint waveform
     waveformVisual->setWaveformKey(eWaveformKey);
     waveformVisual->setPulseWidth(static_cast<float>(pulsewidth->getValue()));
     waveformVisual->setTrngAmount(static_cast<float>(trngAmount->getValue()));
@@ -599,6 +647,22 @@ BEGIN_JUCER_METADATA
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="267" initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>
+  <COMBOBOX name="TrngModSrc1" id="45d3fe360f9a8e44" memberName="trngModSrc1"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 100 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="WidthModSrc1" id="928cd04bb7b23ab9" memberName="widthModSrc1"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 100 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="TrngModSrc2" id="7e124307f2c9f46b" memberName="trngModSrc2"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 124 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="WidthModSrc2" id="455e48a25414a454" memberName="widthModSrc2"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 124 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 170 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -608,7 +672,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="PitchModAmount2" id="523b9024be39c1b" memberName="pitchModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 124 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="48" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
@@ -620,19 +684,19 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
+          textboxoutline="ffffff" min="0.010000000000000000208" max="0.98999999999999999112"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount1" id="29275125e377aaa" memberName="pitchModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 100 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="48" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="-12" max="12" int="1" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="-36" max="36" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
@@ -673,14 +737,6 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
-  <COMBOBOX name="WidthModSrc1" id="928cd04bb7b23ab9" memberName="widthModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 100 40 18"
-            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="WidthModSrc2" id="455e48a25414a454" memberName="widthModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 124 40 18"
-            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
   <SLIDER name="GainModAmount2" id="93ff4adc6f243ee3" memberName="gainModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 58 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"

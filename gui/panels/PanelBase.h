@@ -30,6 +30,8 @@ protected:
 
     //=======================================================================================================================================
     void registerSlider(Slider *slider, Param *p, const tHookFn hook = tHookFn(), Param *min = nullptr, Param *max = nullptr) {
+        slider->setScrollWheelEnabled(false);
+
         sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
@@ -274,7 +276,7 @@ protected:
             }
             return true;
         }
-        
+
         return false;
     }
 
@@ -344,10 +346,19 @@ protected:
             }
             return true;
         }
-        
+
         return false;
     }
 
+
+    void fillModsourceBox(ComboBox* box, bool noInternal) {
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            if (noInternal && i >= eModSource::eLFO1) break;
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
+        }
+    }
+
+    
     void updateDirtyBoxes()
     {
         for (auto c2p : comboboxReg) {
@@ -375,8 +386,8 @@ protected:
 
     virtual void timerCallback() override
     {
-        updateDirtySaturns();
         updateDirtySliders();
+        updateDirtySaturns();
         updateDirtyBoxes();
         updateDirtyNoteLength();
         updateDirtyDropDowns();

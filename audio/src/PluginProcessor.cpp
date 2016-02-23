@@ -76,7 +76,7 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
-    for (size_t f = 0; f < filter.size(); ++f) {      
+    for (size_t f = 0; f < filter.size(); ++f) {
         String boxName = String::formatted("filter %u", f + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
@@ -96,11 +96,15 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
+
     for (size_t e = 0; e < env.size(); ++e) {
-        String boxName = String::formatted("env %u", e + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
+        String boxName = String::formatted("env %u", e + 2);
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
+    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
+
     for (size_t l = 0; l < lfo.size(); ++l) {
         String boxName = String::formatted("lfo %u", l + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
@@ -272,33 +276,24 @@ void PluginAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     // master volume
     for (int c = 0; c < buffer.getNumChannels(); ++c)
     {
-        for (int s = 0; s < buffer.getNumSamples(); ++s)
-        {
-            buffer.setSample(c, s, ( buffer.getSample(c, s) * Param::fromDb(masterAmp.getUI()) ) );
-        }
+        FloatVectorOperations::multiply(buffer.getWritePointer(c, 0), Param::fromDb(masterAmp.getUI()), buffer.getNumSamples());
     }
 
     // master pan
     if (buffer.getNumChannels() == 2)
     {
-        // Calculation of channel gain for constant power pan
-        float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
-        float rightGain = sin(p);
-        float leftGain = cos(p);
-        //linear pan
-        //float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
-        //float leftGain = 1.f - rightGain;
+        // Linear pan
+        float rightGain = ( (masterPan.get() / 100.f) + 1.f) / 2.f;
+        float leftGain = 1.f - rightGain;
+        // Constant power pan
+        //float p = (float_Pi * ((masterPan.get() / 100.f) + 1.f)) / 4.f;
+        //float rightGain = sin(p);
+        //float leftGain = cos(p);
 
         // left
-        for (int s = 0; s < buffer.getNumSamples(); ++s)
-        {
-            buffer.setSample(0, s, (buffer.getSample(0, s) * leftGain));
-        }
+        FloatVectorOperations::multiply(buffer.getWritePointer(0, 0), leftGain, buffer.getNumSamples());
         // right
-        for (int s = 0; s < buffer.getNumSamples(); ++s)
-        {
-            buffer.setSample(1, s, (buffer.getSample(1, s) * rightGain));
-        }
+        FloatVectorOperations::multiply(buffer.getWritePointer(1, 0), rightGain, buffer.getNumSamples());
     }
 
     //midiMessages.clear(); // NOTE: for now so debugger does not complain

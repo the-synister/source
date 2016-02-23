@@ -5,9 +5,13 @@
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
+      <FILE id="nfw2du" name="ModSourceBox.cpp" compile="1" resource="0"
+            file="../gui/ModSourceBox.cpp"/>
+      <FILE id="Q0yjqR" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
+        <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -16,10 +20,16 @@
               file="../png/lfoSquareWave.png"/>
         <FILE id="raV8fg" name="oscWaveForms.png" compile="0" resource="1"
               file="../png/oscWaveForms.png"/>
+        <FILE id="tDzga7" name="recordCutoff.png" compile="0" resource="1"
+              file="../png/recordCutoff.png"/>
         <FILE id="X7bbhn" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
         <FILE id="mF0MIl" name="seqSequential.png" compile="0" resource="1"
               file="../png/seqSequential.png"/>
         <FILE id="qoR5L9" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
+        <FILE id="Mh4ekB" name="Synister-Logo_block.png" compile="0" resource="1"
+              file="../png/Synister-Logo_block.png"/>
+        <FILE id="mJAKsc" name="synisterLogo.png" compile="0" resource="1"
+              file="../png/synisterLogo.png"/>
         <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
@@ -119,7 +129,8 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs="">
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="" extraDefs=""
+               smallIcon="Mh4ekB" bigIcon="Mh4ekB">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.7 SDK" osxArchitecture="32BitUniversal"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"
@@ -145,7 +156,8 @@
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;">
+    <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;"
+            smallIcon="Mh4ekB" bigIcon="Mh4ekB">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="synister" headerPath="../../../gui&#10;../../../audio/inc"

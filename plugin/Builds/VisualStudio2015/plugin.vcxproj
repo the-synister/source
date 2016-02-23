@@ -239,6 +239,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp"/>
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp"/>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp"/>
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp"/>
@@ -1425,6 +1426,7 @@
     <ClCompile Include="..\..\..\juce\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h"/>
     <ClInclude Include="..\..\..\gui\FoldablePanel.h"/>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h"/>
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h"/>
@@ -1929,14 +1931,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\delayReverse.png"/>
+    <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
     <None Include="..\..\..\png\lfoSampleHold.png"/>
     <None Include="..\..\..\png\lfoSineWave.png"/>
     <None Include="..\..\..\png\lfoSquareWave.png"/>
     <None Include="..\..\..\png\oscWaveForms.png"/>
+    <None Include="..\..\..\png\recordCutoff.png"/>
     <None Include="..\..\..\png\seqRandom.png"/>
     <None Include="..\..\..\png\seqSequential.png"/>
     <None Include="..\..\..\png\seqUpDown.png"/>
+    <None Include="..\..\..\png\Synister-Logo_block.png"/>
+    <None Include="..\..\..\png\synisterLogo.png"/>
     <None Include="..\..\..\png\tempoSync.png"/>
     <None Include="..\..\..\png\toggleOff.png"/>
     <None Include="..\..\..\png\toggleOn.png"/>
@@ -1957,6 +1963,7 @@
     <None Include="..\..\..\juce\modules\juce_opengl\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_video\juce_module_info"/>
     <None Include="..\..\..\juce\modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr"/>
+    <None Include=".\icon.ico"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc"/>

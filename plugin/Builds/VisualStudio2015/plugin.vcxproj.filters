@@ -343,6 +343,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
+      <Filter>plugin\Gui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
@@ -1710,6 +1713,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\ModSourceBox.h">
+      <Filter>plugin\Gui</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\FoldablePanel.h">
       <Filter>plugin\Gui</Filter>
     </ClInclude>
@@ -3218,6 +3224,9 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3233,6 +3242,9 @@
     <None Include="..\..\..\png\oscWaveForms.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\recordCutoff.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\seqRandom.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3240,6 +3252,12 @@
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\Synister-Logo_block.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\synisterLogo.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\tempoSync.png">
@@ -3300,6 +3318,9 @@
       <Filter>Juce Modules\juce_video</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr">
+      <Filter>Juce Library Code</Filter>
+    </None>
+    <None Include=".\icon.ico">
       <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>

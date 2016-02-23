@@ -87,7 +87,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addListener (this);
 
     addAndMakeVisible (freqModAmount1 = new MouseOverKnob ("freqModAmount1"));
-    freqModAmount1->setRange (0, 8, 0);
+    freqModAmount1->setRange (0, 4, 0);
     freqModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount1->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -97,7 +97,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount1->addListener (this);
 
     addAndMakeVisible (freqModAmount2 = new MouseOverKnob ("freqModAmount2"));
-    freqModAmount2->setRange (0, 8, 0);
+    freqModAmount2->setRange (0, 4, 0);
     freqModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount2->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -128,7 +128,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoGain->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->setButtonText (String::empty);
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -143,8 +143,12 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
     registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
 
+    fillModsourceBox(freqModSrc1, true);
+    fillModsourceBox(freqModSrc2, true);
     registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
+    fillModsourceBox(lfoGain, true);
+
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     registerNoteLength(noteLength, &lfo.noteLength);
@@ -167,6 +171,10 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     tripletPicOff.duplicateIfShared();
     tripletPicOff.multiplyAllAlphas(0.5f);
+    dotPic = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
+    dotPicOff = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
+    dotPicOff.duplicateIfShared();
+    dotPicOff.multiplyAllAlphas(0.5f);
 
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     lfoFadeIn->setSkewFactorFromMidPoint(1);
@@ -210,7 +218,7 @@ void LfoPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, lfo.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::lfoColour);
-    drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets);
+    drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets, dottedNotes);
     //[/UserPaint]
 }
 
@@ -342,7 +350,8 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox,
+    ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
@@ -353,7 +362,8 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(tripletT->isEnabled() ? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(dotT->isEnabled() ? dotPic : dotPicOff, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }
 
 void LfoPanel::updateLfoSyncToggle()
@@ -397,14 +407,8 @@ BEGIN_JUCER_METADATA
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
-<<<<<<< HEAD
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
-=======
-          min="0.010000000000000000208" max="50" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="1"/>
->>>>>>> master
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
           explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
@@ -430,13 +434,13 @@ BEGIN_JUCER_METADATA
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 35 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="freqModAmount2" id="ae5c9ce50e2de7e1" memberName="freqModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 59 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="4" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"
@@ -452,7 +456,7 @@ BEGIN_JUCER_METADATA
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
                 virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
-                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 

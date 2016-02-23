@@ -101,7 +101,7 @@ FxPanel::FxPanel (SynthParams &p)
     tripTggl->setColour (ToggleButton::textColourId, Colours::white);
 
     addAndMakeVisible (filtTggl = new ToggleButton ("filtTggl1"));
-    filtTggl->setButtonText (TRANS("rec cutoff"));
+    filtTggl->setButtonText (String::empty);
     filtTggl->addListener (this);
     filtTggl->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -122,7 +122,7 @@ FxPanel::FxPanel (SynthParams &p)
     onOffSwitch->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->setButtonText (String::empty);
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -151,16 +151,27 @@ FxPanel::FxPanel (SynthParams &p)
     //[Constructor] You can add your own custom stuff here..
     syncPic = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPic = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    dotPic = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
     reversePic = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    recordPic = ImageCache::getFromMemory(BinaryData::recordCutoff_png, BinaryData::recordCutoff_pngSize);
+
     syncPicOff = ImageCache::getFromMemory(BinaryData::tempoSync_png, BinaryData::tempoSync_pngSize);
     tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
+    dotPicOff = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
     reversePicOff = ImageCache::getFromMemory(BinaryData::delayReverse_png, BinaryData::delayReverse_pngSize);
+    recordPicOff = ImageCache::getFromMemory(BinaryData::recordCutoff_png, BinaryData::recordCutoff_pngSize);
+
     syncPicOff.duplicateIfShared();
     tripletPicOff.duplicateIfShared();
+    dotPicOff.duplicateIfShared();
     reversePicOff.duplicateIfShared();
+    recordPicOff.duplicateIfShared();
+
     syncPicOff.multiplyAllAlphas(0.5f);
     tripletPicOff.multiplyAllAlphas(0.5f);
+    dotPicOff.multiplyAllAlphas(0.5f);
     reversePicOff.multiplyAllAlphas(0.5f);
+    recordPicOff.multiplyAllAlphas(0.5f);
     //[/Constructor]
 }
 
@@ -197,7 +208,7 @@ void FxPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "delay", 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
-    drawPics(g, syncToggle, tripTggl, revTggl);
+    drawPics(g, syncToggle, tripTggl, dottedNotes, revTggl, filtTggl);
     //[/UserPaint]
 }
 
@@ -218,11 +229,11 @@ void FxPanel::resized()
     syncToggle->setBounds (39, 102, 65, 30);
     divisor->setBounds (26, 138, 85, 24);
     cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (122, 102, 65, 30);
-    filtTggl->setBounds (214, 138, 100, 30);
-    revTggl->setBounds (214, 102, 65, 30);
+    tripTggl->setBounds (131, 102, 65, 30);
+    filtTggl->setBounds (224, 138, 65, 30);
+    revTggl->setBounds (224, 102, 65, 30);
     onOffSwitch->setBounds (14, 2, 40, 30);
-    dottedNotes->setBounds (122, 138, 64, 30);
+    dottedNotes->setBounds (131, 138, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -365,11 +376,14 @@ void FxPanel::onOffSwitchChanged()
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
 }
 
-void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& reverseT)
+void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT,
+    ScopedPointer<ToggleButton>& reverseT, ScopedPointer<ToggleButton>& recordT)
 {
     g.drawImageWithin(syncT->isEnabled()? syncPic : syncPicOff, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
     g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(dotT->isEnabled() ? dotPic : dotPicOff, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
     g.drawImageWithin(reverseT->isEnabled()? reversePic : reversePicOff, reverseT->getX() + 22, reverseT->getY() + reverseT->getHeight() / 2 - 14, 29, 26, Justification::centred); // 29x26
+    g.drawImageWithin(recordT->isEnabled() ? recordPic : recordPicOff, recordT->getX() + 22, recordT->getY() + recordT->getHeight() / 2 - 13, 25, 25, Justification::centred); // 28x25
 }
 //[/MiscUserCode]
 
@@ -420,26 +434,26 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="122 102 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="131 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="214 138 100 30" txtcol="ffffffff"
-                buttonText="rec cutoff" connectedEdges="0" needsCallback="1"
-                radioGroupId="0" state="0"/>
+                virtualName="" explicitFocusOrder="0" pos="224 138 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="214 102 65 30" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="224 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
-          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
-          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
-          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          virtualName="Slider" explicitFocusOrder="0" pos="14 2 40 30"
+          thumbcol="ffdadada" trackcol="ff666666" rotarysliderfill="ffffffff"
+          rotaryslideroutline="fff20000" textboxbkgd="fffff4f4" min="0"
+          max="1" int="1" style="LinearHorizontal" textBoxPos="NoTextBox"
+          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
-                virtualName="" explicitFocusOrder="0" pos="122 138 64 30" txtcol="ffffffff"
-                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                virtualName="" explicitFocusOrder="0" pos="131 138 65 30" txtcol="ffffffff"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 

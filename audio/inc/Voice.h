@@ -17,11 +17,19 @@ public:
 struct Lfo {
     Lfo(int blockSize)
         : audioBuffer(1, blockSize)
-    {}
+    {
+        reset();
+    }
     Oscillator<&Waveforms::sinus> sine;
     Oscillator<&Waveforms::square> square;
     RandomOscillator<&Waveforms::square> random;
     AudioSampleBuffer audioBuffer;
+    
+    void reset() {
+        sine.reset();
+        square.reset();
+        random.reset();
+    }
 };
 
 class Voice : public SynthesiserVoice {
@@ -78,10 +86,6 @@ public:
         SynthesiserSound*, int currentPitchWheelPosition) override {
 
         totalVoiceSamples = 0;
-        // reset attackDecayCounter
-        envToVolume.startEnvelope();
-        env2.startEnvelope();
-        env3.startEnvelope();
 
         // Initialization of midi values
         channelAfterTouch = params.midiState.get(MidiState::eAftertouch)/128.f;
@@ -124,6 +128,17 @@ public:
             }
         }
 
+        // reset attackDecayCounter
+        envToVolume.startEnvelope();
+        envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
+                                 *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]), isUnipolar(params.envVol[0].speedModSrc1.getStep()), isUnipolar(params.envVol[0].speedModSrc2.getStep()));
+        env2.startEnvelope();
+        env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]),
+                          *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())]), isUnipolar(params.env[0].speedModSrc1.getStep()), isUnipolar(params.env[0].speedModSrc2.getStep()));
+        env3.startEnvelope();
+        env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]),
+                          *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]), isUnipolar(params.env[1].speedModSrc1.getStep()), isUnipolar(params.env[1].speedModSrc2.getStep()));
+
         for (size_t o = 0; o < osc.size(); ++o) {
 
             switch (params.osc[o].waveForm.getStep()) {
@@ -164,13 +179,7 @@ public:
             if (envToVolume.getReleaseCounter() == -1)      
             {                                               
                 envToVolume.resetReleaseCounter();
-            }
-            if (env2.getReleaseCounter() == -1)
-            {
                 env2.resetReleaseCounter();
-            }
-            if (env3.getReleaseCounter() == -1)
-            {
                 env3.resetReleaseCounter();
             }
         }
@@ -180,9 +189,7 @@ public:
             clearCurrentNote();
 
             for (Lfo& l : lfo) {
-                l.sine.reset();
-                l.square.reset();
-                l.random.reset();
+                l.reset();
             }
 
             for (Osc& o : osc) 
@@ -195,11 +202,11 @@ public:
     }
 
     void channelPressureChanged(int newValue) override {
-        channelAfterTouch = static_cast<float>(newValue) / 127.f;
+        channelAfterTouch = static_cast<float>(newValue) / 128.f;
     }
 
     void pitchWheelMoved(int newValue) override{
-        pitchBend = (newValue - 8192.f) / 8192.f;
+        pitchBend = (newValue - 8192.f) / 8192.0f;
     }
 
     //Midi Control
@@ -208,15 +215,15 @@ public:
         switch(controllerNumber){
         //Modwheel
         case 1:
-            modWheelValue = static_cast<float>(newValue) / 127.f;
+            modWheelValue = static_cast<float>(newValue) / 128.f;
             break;
         //Foot Controller
         case 4:
-            footControlValue = (static_cast<float>(newValue) / 127.f); //TODO: test
+            footControlValue = (static_cast<float>(newValue) / 128.f); //TODO: test
             break;
         //Expression Control
         case 11:
-            expPedalValue = static_cast<float>(newValue) / 127.f; //TODO: test
+            expPedalValue = static_cast<float>(newValue) / 128.f; //TODO: test
             break;
         }
     }
@@ -282,10 +289,11 @@ public:
                     // filter
                     for (size_t f = 0; f < params.filter.size(); ++f) 
                     {
-                        if (params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
-                            const float *filterMod1 = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                        if(params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
+                            const float *filterLCMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                            const float *filterHCMod = modDestBuffer.getReadPointer(DEST_FILTER1_HC + f);
                             const float *resMod = modDestBuffer.getReadPointer(DEST_FILTER1_RES + f);
-                            currentSample = filter[o][f].run(currentSample, filterMod1[s], resMod[s]);
+                            currentSample = filter[o][f].run(currentSample, filterLCMod[s], filterHCMod[s], resMod[s]);
                         }
                     }
 
@@ -374,29 +382,49 @@ protected:
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                     factorFadeIn = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
                 }
+#if 0
+                // Calculate the Lfo freq mod
+                //float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2, Param &freqMod1, Param &freqMod2
+                float lfoModVal1 = *(modSources[static_cast<int>(params.lfo[0].freqModAmount1.get())]);
+                float lfoModVal2 = *(modSources[static_cast<int>(params.lfo[0].freqModAmount1.get())]);
+                bool source1Unipolar = isUnipolar(params.lfo[l].freqModSrc1.getStep());
+                bool source2Unipolar = isUnipolar(params.lfo[l].freqModSrc2.getStep());
 
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next(lfoModVal1, lfoModVal2, 
+                        source1Unipolar, source2Unipolar, params.lfo[l].freqModAmount1, params.lfo[l].freqModAmount2) * factorFadeIn * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSampleHold:
                     lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
                     break;
                 case eLfoWaves::eLfoSquare:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
+                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next(lfoModVal1, lfoModVal2, 
+                        source1Unipolar, source2Unipolar, params.lfo[l].freqModAmount1, params.lfo[l].freqModAmount2) * factorFadeIn * lfoGain[l]);
                     break;
                 }
+#else
+                // calculate lfo values and fill the buffers
+                switch (params.lfo[l].wave.getStep()) {
+                    case eLfoWaves::eLfoSine:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                    case eLfoWaves::eLfoSampleHold:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                    case eLfoWaves::eLfoSquare:
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
+                        break;
+                }
+#endif
             }
 
             // Calculate the Envelope coefficients and fill the buffers
-            // this is a temporary (and fugly) solution, because env-array init lists are evil!
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
-                                    *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())])));
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())])));
-            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())])));
+            // alternative: second matrix with external controls only
+            envToVolBuffer.setSample(0, s, envToVolume.getNextEnvCoeff());
+            env2Buffer.setSample(0, s, env2.getNextEnvCoeff());
+            env3Buffer.setSample(0, s, env3.getNextEnvCoeff());
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
@@ -418,7 +446,7 @@ protected:
                                     params.osc[0].pitchModAmount1.getMax()));
             modDestBuffer.setSample(DEST_OSC2_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
                                     params.osc[1].pitchModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC2_PI, s) * 
+            modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC3_PI, s) * 
                                     params.osc[2].pitchModAmount1.getMax()));
         }
     }
