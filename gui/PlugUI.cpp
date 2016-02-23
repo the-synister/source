@@ -108,6 +108,7 @@ PlugUI::PlugUI (SynthParams &p)
     patchNameEditor->setPopupMenuEnabled (true);
     patchNameEditor->setText (String::empty);
 
+    drawable1 = Drawable::createFromImageData (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize);
 
     //[UserPreSize]
     registerSlider(freq, &params.freq);
@@ -161,6 +162,7 @@ PlugUI::~PlugUI()
     masterAmp = nullptr;
     masterPan = nullptr;
     patchNameEditor = nullptr;
+    drawable1 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -174,6 +176,12 @@ void PlugUI::paint (Graphics& g)
     //[/UserPrePaint]
 
     g.fillAll (Colour (0xff292929));
+
+    g.setColour (Colours::black);
+    jassert (drawable1 != 0);
+    if (drawable1 != 0)
+        drawable1->drawWithin (g, Rectangle<float> (200, 16, 255, 40),
+                               RectanglePlacement::stretchToFit, 1.000f);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -282,7 +290,10 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p), params(p)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
                  initialWidth="812" initialHeight="693">
-  <BACKGROUND backgroundColour="ff292929"/>
+  <BACKGROUND backgroundColour="ff292929">
+    <IMAGE pos="200 16 255 40" resource="BinaryData::synisterLogo_png" opacity="1"
+           mode="0"/>
+  </BACKGROUND>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="470 8 80 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"

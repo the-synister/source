@@ -3218,6 +3218,9 @@
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\lfoGain.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3233,6 +3236,9 @@
     <None Include="..\..\..\png\oscWaveForms.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
+    <None Include="..\..\..\png\recordCutoff.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\seqRandom.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
@@ -3240,6 +3246,12 @@
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqUpDown.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\Synister-Logo_block.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\synisterLogo.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\tempoSync.png">
@@ -3300,6 +3312,9 @@
       <Filter>Juce Modules\juce_video</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr">
+      <Filter>Juce Library Code</Filter>
+    </None>
+    <None Include=".\icon.ico">
       <Filter>Juce Library Code</Filter>
     </None>
   </ItemGroup>

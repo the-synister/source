@@ -50,7 +50,8 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void onOffSwitchChanged();
     void updateToggleState();
-    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncToggle, ScopedPointer<ToggleButton>& tripletToggle, ScopedPointer<ToggleButton>& reverseToggle);
+    void drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT,
+        ScopedPointer<ToggleButton>& reverseT, ScopedPointer<ToggleButton>& recordT);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -63,7 +64,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image syncPic, syncPicOff, tripletPic, tripletPicOff, reversePic, reversePicOff;
+    Image syncPic, syncPicOff, tripletPic, tripletPicOff, dotPic, dotPicOff, reversePic, reversePicOff, recordPic, recordPicOff;
 
     ScopedPointer<FxDelay> delay;
     //[/UserVariables]

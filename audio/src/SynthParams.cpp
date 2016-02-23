@@ -49,7 +49,7 @@ const Colour SynthParams::waveformBackground(85, 93, 104);
 const Colour SynthParams::otherModulation(180, 180, 180); // add more different colours
 
 SynthParams::SynthParams()
-    : serializeParams{ &freq,
+    : serializeParams{
         // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
@@ -67,15 +67,15 @@ SynthParams::SynthParams()
     &lfo[1].fadeIn, &lfo[1].freq, &lfo[1].freqModSrc1, &lfo[1].freqModSrc2, &lfo[1].freqModAmount1, &lfo[1].freqModAmount2, &lfo[1].tempSync, &lfo[1].wave, &lfo[1].noteLength, &lfo[1].gainModSrc, &lfo[1].lfoTriplets, &lfo[1].lfoDottedLength,
     &lfo[2].fadeIn, &lfo[2].freq, &lfo[2].freqModSrc1, &lfo[2].freqModSrc2, &lfo[2].freqModAmount1, &lfo[2].freqModAmount2, &lfo[2].tempSync, &lfo[2].wave, &lfo[2].noteLength, &lfo[2].gainModSrc, &lfo[2].lfoTriplets, &lfo[2].lfoDottedLength,
     //Filters Params
-    &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
-    &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
+    &filter[0].passtype, &filter[0].lpCutoff, &filter[0].hpCutoff, &filter[0].resonance, &filter[0].lpModAmount1, &filter[0].lpModAmount2, &filter[0].lpCutModSrc1, &filter[0].lpCutModSrc2, &filter[0].hpModAmount1, &filter[0].hpModAmount2, &filter[0].hpCutModSrc1, &filter[0].hpCutModSrc2, &filter[0].resModAmount1, &filter[0].resModAmount2, &filter[0].resonanceModSrc1, &filter[0].resonanceModSrc2, &filter[0].filterActivation,
+    &filter[1].passtype, &filter[1].lpCutoff, &filter[1].hpCutoff, &filter[1].resonance, &filter[1].lpModAmount1, &filter[1].lpModAmount2, &filter[1].lpCutModSrc1, &filter[1].lpCutModSrc2, &filter[1].hpModAmount1, &filter[1].hpModAmount2, &filter[1].hpCutModSrc1, &filter[1].hpCutModSrc2, &filter[1].resModAmount1, &filter[1].resModAmount2, &filter[1].resonanceModSrc1, &filter[1].resonanceModSrc2, &filter[1].filterActivation,
     //Step Sequencer
     &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax,
     //Delay
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayDottedLength, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
     //Others
-    &masterAmp, &masterPan, &lowFiActivation, &nBitsLowFi, &clippingActivation, &chorActivation }
+    &freq, &masterAmp, &masterPan, &chorActivation, &chorActivation, &chorDelayLength, &chorDryWet, &chorModDepth, &chorModRate, &lowFiActivation, &nBitsLowFi, &clippingActivation, &clippingFactor}
     , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
     , masterAmp("master amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, -6.f)
@@ -273,7 +273,8 @@ void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams para
     for (auto &param : parameters) {
         float value = param->getUI();
         if (param->serializationTag() != "") {
-        addElement(patch, param->serializationTag(), value);
+            String prefixedName = (param->prefix() + param->serializationTag()).replace(" ", "");
+            addElement(patch, prefixedName, value);
     }
 }
 }
@@ -322,8 +323,9 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 
 // adds the value if it exists in the xml
 void SynthParams::fillValueIfExists(XmlElement* patch, String paramName, Param& param) {
-    if (patch->getChildByName(paramName) != NULL) {
-        param.setUI(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")));
+    String prefixedName = (param.prefix() + param.serializationTag()).replace(" ", "");
+    if (patch->getChildByName(prefixedName) != NULL) {
+        param.setUI(static_cast<float>(patch->getChildByName(prefixedName)->getDoubleAttribute("value")));
         //! \todo dirty flag needs to be set! This is a bad hack, please use get/set instead of getUI/setUI
         param.set(param.get(),true);
         //param.set(static_cast<float>(patch->getChildByName(paramName)->getDoubleAttribute("value")), true); // NOTE: needed at least for seq standalone and envShape params but then at least
