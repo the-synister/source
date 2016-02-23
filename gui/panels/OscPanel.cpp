@@ -281,10 +281,12 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
 
     fillModsourceBox(widthModSrc1, false);
     fillModsourceBox(widthModSrc2, false);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    fillModsourceBox(trngModSrc1, false);
+    fillModsourceBox(trngModSrc2, false);
     registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc1, &osc.shapeModSrc1, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc2, &osc.shapeModSrc2, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
 
     fillModsourceBox(panModSrc1, false);
     fillModsourceBox(panModSrc2, false);
