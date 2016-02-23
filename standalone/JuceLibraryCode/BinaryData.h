@@ -42,6 +42,9 @@ namespace BinaryData
     extern const char*   seqUpDown_png;
     const int            seqUpDown_pngSize = 300;
 
+    extern const char*   SynisterLogo_block_png;
+    const int            SynisterLogo_block_pngSize = 3499;
+
     extern const char*   synisterLogo_png;
     const int            synisterLogo_pngSize = 2844;
 
@@ -61,7 +64,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 16;
+    const int namedResourceListSize = 17;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).
