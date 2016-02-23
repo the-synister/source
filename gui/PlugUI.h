@@ -80,6 +80,7 @@ private:
     ScopedPointer<MouseOverKnob> masterAmp;
     ScopedPointer<MouseOverKnob> masterPan;
     ScopedPointer<TextEditor> patchNameEditor;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================

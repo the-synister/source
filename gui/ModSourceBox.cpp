@@ -27,7 +27,10 @@ void ModSourceBox::paint(Graphics &g)
     ComboBox::paint(g);
 
     // draw short text with specific colour
-    Rectangle<int> fittedArea = { 0, 0, this->getWidth() - this->getWidth() / 4, this->getHeight() };
-    g.setColour(SynthParams::getModSourceColour(static_cast<eModSource>(this->getSelectedId() - COMBO_OFS)));
-    g.drawFittedText(SynthParams::getShortModSrcName(this->getSelectedId() - COMBO_OFS), fittedArea, Justification::centred, 1);
+    if (this->isEnabled())
+    {
+        Rectangle<int> fittedArea = { 0, 0, this->getWidth() - this->getWidth() / 4, this->getHeight() };
+        g.setColour(SynthParams::getModSourceColour(static_cast<eModSource>(this->getSelectedId() - COMBO_OFS)));
+        g.drawFittedText(SynthParams::getShortModSrcName(this->getSelectedId() - COMBO_OFS), fittedArea, Justification::centred, 1);
+    }
 }

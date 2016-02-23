@@ -128,7 +128,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     lfoGain->addListener (this);
 
     addAndMakeVisible (dottedNotes = new ToggleButton ("dottedNotes"));
-    dottedNotes->setButtonText (TRANS("dot"));
+    dottedNotes->setButtonText (String::empty);
     dottedNotes->addListener (this);
     dottedNotes->setColour (ToggleButton::textColourId, Colours::white);
 
@@ -171,6 +171,10 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     tripletPicOff = ImageCache::getFromMemory(BinaryData::triplets_png, BinaryData::triplets_pngSize);
     tripletPicOff.duplicateIfShared();
     tripletPicOff.multiplyAllAlphas(0.5f);
+    dotPic = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
+    dotPicOff = ImageCache::getFromMemory(BinaryData::dottedNote_png, BinaryData::dottedNote_pngSize);
+    dotPicOff.duplicateIfShared();
+    dotPicOff.multiplyAllAlphas(0.5f);
 
     freq->setSkewFactorFromMidPoint(lfo.freq.getDefault());
     lfoFadeIn->setSkewFactorFromMidPoint(1);
@@ -214,7 +218,7 @@ void LfoPanel::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, lfo.name, 0, 0,
                     this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::lfoColour);
-    drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets);
+    drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets, dottedNotes);
     //[/UserPaint]
 }
 
@@ -346,7 +350,8 @@ void LfoPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT)
+void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox,
+    ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT)
 {
     int centerX = _waveformSwitch->getX() + _waveformSwitch->getWidth() / 2;
     int centerY = _waveformSwitch->getY() + _waveformSwitch->getHeight() / 2;
@@ -357,7 +362,8 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
     g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
-    g.drawImageWithin(tripletT->isEnabled()? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(tripletT->isEnabled() ? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
+    g.drawImageWithin(dotT->isEnabled() ? dotPic : dotPicOff, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }
 
 void LfoPanel::updateLfoSyncToggle()
@@ -450,7 +456,7 @@ BEGIN_JUCER_METADATA
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
                 virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
-                buttonText="dot" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>
 
