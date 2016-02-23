@@ -288,6 +288,7 @@ public:
                             const float *filterHCMod = modDestBuffer.getReadPointer(DEST_FILTER1_HC + f);
                             const float *resMod = modDestBuffer.getReadPointer(DEST_FILTER1_RES + f);
                             currentSample = filter[o][f].run(currentSample, filterLCMod[s], filterHCMod[s], resMod[s]);
+                            //currentSample = filter[o][f].run(currentSample, filterLCMod[s], 0.f, 0.f);
                         }
                     }
 
@@ -442,6 +443,14 @@ protected:
                                     params.osc[1].pitchModAmount1.getMax()));
             modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC3_PI, s) * 
                                     params.osc[2].pitchModAmount1.getMax()));
+
+            //do the same for filters
+            modDestBuffer.setSample(DEST_FILTER1_LC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER1_LC, s), params.filter[0].lpCutoff.get(), params.filter[0].lpModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_FILTER2_LC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER2_LC, s), params.filter[1].lpCutoff.get(), params.filter[1].lpModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_FILTER1_HC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER1_HC, s), params.filter[0].hpCutoff.get(), params.filter[0].hpModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_FILTER2_HC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER2_HC, s), params.filter[1].hpCutoff.get(), params.filter[1].hpModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_FILTER1_RES, s, (params.filter[0].resonance.get() + modDestBuffer.getSample(DEST_FILTER1_RES, s) * params.filter[0].resModAmount1.getMax()));
+            modDestBuffer.setSample(DEST_FILTER2_RES, s, (params.filter[1].resonance.get() + modDestBuffer.getSample(DEST_FILTER2_RES, s) * params.filter[1].resModAmount1.getMax()));
         }
     }
 private:
