@@ -24,7 +24,7 @@ public:
     }
     virtual ~Param() {}
 
-    void setPrefix(const String &s) { prefix_ = s; }
+    void setPrefix(const String &s) { prefix_ = s; serializationTag_ = s + serializationTag_; }
     const String& prefix() { return prefix_; }
 
     const String& name() const { return name_; }
