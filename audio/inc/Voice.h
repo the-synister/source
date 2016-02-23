@@ -78,10 +78,6 @@ public:
         SynthesiserSound*, int currentPitchWheelPosition) override {
 
         totalVoiceSamples = 0;
-        // reset attackDecayCounter
-        envToVolume.startEnvelope();
-        env2.startEnvelope();
-        env3.startEnvelope();
 
         // Initialization of midi values
         channelAfterTouch = params.midiState.get(MidiState::eAftertouch)/128.f;
@@ -123,6 +119,17 @@ public:
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
             }
         }
+
+        // reset attackDecayCounter
+        envToVolume.startEnvelope();
+        envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
+                                 *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]), isUnipolar(params.envVol[0].speedModSrc1.getStep()), isUnipolar(params.envVol[0].speedModSrc2.getStep()));
+        env2.startEnvelope();
+        env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]),
+                          *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())]), isUnipolar(params.env[0].speedModSrc1.getStep()), isUnipolar(params.env[0].speedModSrc2.getStep()));
+        env3.startEnvelope();
+        env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]),
+                          *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]), isUnipolar(params.env[1].speedModSrc1.getStep()), isUnipolar(params.env[1].speedModSrc2.getStep()));
 
         for (size_t o = 0; o < osc.size(); ++o) {
 
@@ -367,7 +374,7 @@ protected:
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                     factorFadeIn = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
                 }
-
+#if 0
                 // Calculate the Lfo freq mod
                 //float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2, Param &freqMod1, Param &freqMod2
                 float lfoModVal1 = *(modSources[static_cast<int>(params.lfo[0].freqModAmount1.get())]);
@@ -375,8 +382,6 @@ protected:
                 bool source1Unipolar = isUnipolar(params.lfo[l].freqModSrc1.getStep());
                 bool source2Unipolar = isUnipolar(params.lfo[l].freqModSrc2.getStep());
 
-
-#if 0
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                 case eLfoWaves::eLfoSine:
@@ -409,12 +414,9 @@ protected:
 
             // Calculate the Envelope coefficients and fill the buffers
             // alternative: second matrix with external controls only
-            envToVolBuffer.setSample(0, s, envToVolume.calcEnvCoeff(*(modSources[static_cast<int>(params.envVol[0].speedModSrc1.get())]),
-                                    *(modSources[static_cast<int>(params.envVol[0].speedModSrc2.get())]), isUnipolar(params.envVol[0].speedModSrc1.getStep()), isUnipolar(params.envVol[0].speedModSrc2.getStep())));
-            env2Buffer.setSample(0, s, env2.calcEnvCoeff(*(modSources[static_cast<int>(params.env[0].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[0].speedModSrc2.get())]), isUnipolar(params.env[0].speedModSrc1.getStep()), isUnipolar(params.env[0].speedModSrc2.getStep())));
-            env3Buffer.setSample(0, s, env3.calcEnvCoeff(*(modSources[static_cast<int>(params.env[1].speedModSrc1.get())]), 
-                                    *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]), isUnipolar(params.env[1].speedModSrc1.getStep()), isUnipolar(params.env[1].speedModSrc2.getStep())));
+            envToVolBuffer.setSample(0, s, envToVolume.getNextEnvCoeff());
+            env2Buffer.setSample(0, s, env2.getNextEnvCoeff());
+            env3Buffer.setSample(0, s, env3.getNextEnvCoeff());
 
             //run the matrix
             modMatrix.doModulationsMatrix(&*modSources.begin(), &*modDestinations.begin());
