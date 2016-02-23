@@ -85,7 +85,7 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
-inline bool isUnipolar(eModSource source) {
+static inline bool isUnipolar(eModSource source) {
     switch (source) {
     case eModSource::eVolEnv:
     case eModSource::eEnv2:
