@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.1"
               bundleIdentifier="de.tu-berlin.qu.synister.standalone" includeBinaryInAppConfig="1"
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
@@ -142,15 +142,12 @@
         <MODULEPATH id="juce_graphics" path="../juce/modules"/>
         <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../juce/modules"/>
-        <MODULEPATH id="juce_video" path="../juce/modules"/>
-        <MODULEPATH id="juce_opengl" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2015 targetFolder="Builds/VisualStudio2015" externalLibraries="" extraDefs="JucePlugin_Name=&quot;synister&quot;"
@@ -175,15 +172,12 @@
         <MODULEPATH id="juce_graphics" path="../juce/modules"/>
         <MODULEPATH id="juce_data_structures" path="../juce/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../juce/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../juce/modules"/>
-        <MODULEPATH id="juce_video" path="../juce/modules"/>
-        <MODULEPATH id="juce_opengl" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../juce/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../juce/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../juce/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../juce/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../juce/modules"/>
       </MODULEPATHS>
     </VS2015>
   </EXPORTFORMATS>
@@ -194,14 +188,11 @@
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS/>
 </JUCERPROJECT>
