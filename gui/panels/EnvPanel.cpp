@@ -125,14 +125,14 @@ EnvPanel::EnvPanel (SynthParams &p)
     shapeLabel1->setColour (TextEditor::textColourId, Colours::black);
     shapeLabel1->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (envSpeedModSrc2 = new ComboBox ("envSpeedModSrcBox2"));
+    addAndMakeVisible (envSpeedModSrc2 = new ModSourceBox ("envSpeedModSrcBox2"));
     envSpeedModSrc2->setEditableText (false);
     envSpeedModSrc2->setJustificationType (Justification::centred);
     envSpeedModSrc2->setTextWhenNothingSelected (TRANS("No Mod"));
     envSpeedModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     envSpeedModSrc2->addListener (this);
 
-    addAndMakeVisible (envSpeedModSrc1 = new ComboBox ("envSpeedModSrcBox1"));
+    addAndMakeVisible (envSpeedModSrc1 = new ModSourceBox ("envSpeedModSrcBox1"));
     envSpeedModSrc1->setEditableText (false);
     envSpeedModSrc1->setJustificationType (Justification::centred);
     envSpeedModSrc1->setTextWhenNothingSelected (TRANS("No Mod"));
@@ -160,13 +160,6 @@ EnvPanel::EnvPanel (SynthParams &p)
 
 
     //[UserPreSize]
-    registerSaturnSource(attackTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(attackTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(decayTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
-    registerSaturnSource(releaseTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
-
     registerSlider(attackTime, &envVol.attack, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayTime, &envVol.decay, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(sustainLevel, &envVol.sustain, std::bind(&EnvPanel::updateCurve, this));
@@ -174,22 +167,26 @@ EnvPanel::EnvPanel (SynthParams &p)
     registerSlider(attackShape, &envVol.attackShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(decayShape, &envVol.decayShape, std::bind(&EnvPanel::updateCurve, this));
     registerSlider(releaseShape, &envVol.releaseShape, std::bind(&EnvPanel::updateCurve, this));
-
     registerSlider(speedMod1, &envVol.speedModAmount1);
     registerSlider(speedMod2, &envVol.speedModAmount2);
 
-    fillModsourceBox(envSpeedModSrc1);
-    fillModsourceBox(envSpeedModSrc2);
+    registerSaturnSource(attackTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(attackTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(decayTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod1, &envVol.speedModSrc1, &envVol.speedModAmount1, 1, MouseOverKnob::modAmountConversion::percentage);
+    registerSaturnSource(releaseTime, speedMod2, &envVol.speedModSrc2, &envVol.speedModAmount2, 2, MouseOverKnob::modAmountConversion::percentage);
 
-    // TODO: register all 3 ADR knobs to same combobox
-    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1);
-    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2);
+    registerCombobox(envSpeedModSrc1, &envVol.speedModSrc1, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
+    registerCombobox(envSpeedModSrc2, &envVol.speedModSrc2, { attackTime, decayTime, releaseTime }, std::bind(&EnvPanel::updateModAmountKnobs, this));
     //[/UserPreSize]
 
     setSize (266, 252);
 
 
     //[Constructor] You can add your own custom stuff here..
+    speedMod1->setAlwaysOnTop(true);
+    speedMod2->setAlwaysOnTop(true);
     //[/Constructor]
 }
 
@@ -357,6 +354,13 @@ void EnvPanel::updateCurve()
     repaint();
 }
 
+void EnvPanel::updateModAmountKnobs()
+{
+    speedMod1->setEnabled(envVol.speedModSrc1.getStep() != eModSource::eNone);
+    speedMod1->showBipolarValues(isUnipolar(envVol.speedModSrc1.getStep()));
+    speedMod2->setEnabled(envVol.speedModSrc2.getStep() != eModSource::eNone);
+    speedMod2->showBipolarValues(isUnipolar(envVol.speedModSrc2.getStep()));
+}
 //[/MiscUserCode]
 
 
@@ -378,15 +382,15 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="69 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="132 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
@@ -396,9 +400,9 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="195 38 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
+          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
           rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
@@ -429,11 +433,13 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="" explicitFocusOrder="0" pos="53 172 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 172 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="" explicitFocusOrder="0" pos="53 146 40 18" editable="0"
-            layout="36" items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 146 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"

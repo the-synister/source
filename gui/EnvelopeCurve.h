@@ -13,6 +13,7 @@
 
 #include "JuceHeader.h"
 #include "SynthParams.h"
+#include "Envelope.h"
 
 //==============================================================================
 /*
@@ -62,8 +63,6 @@ private:
 
     float getEnvCoef();
     void setSamples();
-
-    float interpolateLog(int c, int t, float k, bool slow);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvelopeCurve)
 };

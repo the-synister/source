@@ -48,6 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateCurve();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -73,8 +74,8 @@ private:
     ScopedPointer<MouseOverKnob> speedMod1;
     ScopedPointer<EnvelopeCurve> envelopeCurve;
     ScopedPointer<Label> shapeLabel1;
-    ScopedPointer<ComboBox> envSpeedModSrc2;
-    ScopedPointer<ComboBox> envSpeedModSrc1;
+    ScopedPointer<ModSourceBox> envSpeedModSrc2;
+    ScopedPointer<ModSourceBox> envSpeedModSrc1;
     ScopedPointer<MouseOverKnob> speedMod2;
     ScopedPointer<Label> speedModLabel;
 

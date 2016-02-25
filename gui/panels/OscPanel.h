@@ -37,8 +37,8 @@ Describe your class and how it works here!
                                                                     //[/Comments]
 */
 class OscPanel  : public PanelBase,
-                  public SliderListener,
-                  public ComboBoxListener
+                  public ComboBoxListener,
+                  public SliderListener
 {
 public:
     //==============================================================================
@@ -48,13 +48,14 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateWFShapeControls();
+    void updateModAmountKnobs();
     void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch);
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -69,6 +70,10 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<ModSourceBox> trngModSrc1;
+    ScopedPointer<ModSourceBox> widthModSrc1;
+    ScopedPointer<ModSourceBox> trngModSrc2;
+    ScopedPointer<ModSourceBox> widthModSrc2;
     ScopedPointer<MouseOverKnob> ftune1;
     ScopedPointer<MouseOverKnob> pitchModAmount2;
     ScopedPointer<MouseOverKnob> trngAmount;
@@ -78,21 +83,19 @@ private:
     ScopedPointer<WaveformVisual> waveformVisual;
     ScopedPointer<Slider> waveformSwitch;
     ScopedPointer<MouseOverKnob> widthModAmount1;
-    ScopedPointer<ComboBox> pitchModSrc1;
-    ScopedPointer<ComboBox> pitchModSrc2;
+    ScopedPointer<ModSourceBox> pitchModSrc1;
+    ScopedPointer<ModSourceBox> pitchModSrc2;
     ScopedPointer<MouseOverKnob> gain;
     ScopedPointer<MouseOverKnob> pan;
     ScopedPointer<MouseOverKnob> widthModAmount2;
-    ScopedPointer<ComboBox> widthModSrc1;
-    ScopedPointer<ComboBox> widthModSrc2;
     ScopedPointer<MouseOverKnob> gainModAmount2;
     ScopedPointer<MouseOverKnob> gainModAmount1;
-    ScopedPointer<ComboBox> gainModSrc1;
-    ScopedPointer<ComboBox> gainModSrc2;
+    ScopedPointer<ModSourceBox> gainModSrc1;
+    ScopedPointer<ModSourceBox> gainModSrc2;
     ScopedPointer<MouseOverKnob> panModAmount2;
     ScopedPointer<MouseOverKnob> panModAmount1;
-    ScopedPointer<ComboBox> panModSrc1;
-    ScopedPointer<ComboBox> panModSrc2;
+    ScopedPointer<ModSourceBox> panModSrc1;
+    ScopedPointer<ModSourceBox> panModSrc2;
 
 
     //==============================================================================

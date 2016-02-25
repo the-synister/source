@@ -53,8 +53,8 @@ StepSequencer::StepSequencer(SynthParams &p)
     }
 
     // get GUI params
-    seqStepSpeed = params.seqStepSpeed.get();
-    seqStepLength = jmin(params.seqStepLength.get(), seqStepSpeed);
+    seqStepSpeed = 4.0f / params.seqStepSpeed.get(); // internally working with 1/4 = 1.0f
+    seqStepLength = jmin(4.0f / params.seqStepLength.get(), seqStepSpeed);
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
 }
 
@@ -65,27 +65,32 @@ StepSequencer::~StepSequencer()
 void StepSequencer::runSeq(MidiBuffer & midiMessages, int bufferSize, double sampleRate)
 {
     // get GUI params
-    seqStepSpeed = params.seqStepSpeed.get();
-    seqStepLength = jmin(params.seqStepLength.get(), seqStepSpeed);
+    seqStepSpeed = 4.0f / params.seqStepSpeed.get(); // internally working with 1/4 = 1.0f
+    seqStepLength = jmin(4.0f / params.seqStepLength.get(), seqStepSpeed);
     seqNumSteps = static_cast<int>(params.seqNumSteps.get());
 
-    if (isTripletActive())
+    if (params.seqDottedLength.getStep() == eOnOffToggle::eOn)
+    {
+        seqStepSpeed *= 1.5f;
+        seqStepLength *= 1.5f;
+    }
+    if (params.seqTriplets.getStep() == eOnOffToggle::eOn)
     {
         seqStepSpeed *= 2.0f / 3.0f;
         seqStepLength *= 2.0f / 3.0f;
     }
 
-    switch (params.seqMode.getStep())
+    if (params.seqPlaySyncHost.getStep() == eOnOffToggle::eOn)
     {
-    case eSeqModes::eSeqPlay:
-        seqNoHostSync(midiMessages, bufferSize, sampleRate);
-        break;
-    case eSeqModes::eSeqSyncHost:
         seqHostSync(midiMessages);
-        break;
-    default:
+    }
+    else if (params.seqPlayNoHost.getStep() == eOnOffToggle::eOn)
+    {
+        seqNoHostSync(midiMessages, bufferSize, sampleRate);
+    }
+    else
+    {
         stopSeq(midiMessages);
-        break;
     }
 }
 
@@ -99,38 +104,6 @@ void StepSequencer::loadSeqState()
     params.readXMLPatchStandalone(eSerializationParams::eSequencerOnly);
 }
 //==============================================================================
-void StepSequencer::stopPlaying()
-{
-    params.seqMode.setStep(eSeqModes::eSeqStop);
-}
-
-void StepSequencer::playNoHost(bool play)
-{
-    if (params.seqMode.getStep() != eSeqModes::eSeqSyncHost)
-    {
-        if (play)
-        {
-            params.seqMode.setStep(eSeqModes::eSeqPlay);
-        }
-        else
-        {
-            stopPlaying();
-        }
-    }
-}
-
-void StepSequencer::syncToHost(bool sync)
-{
-    if (sync)
-    {
-        params.seqMode.setStep(eSeqModes::eSeqSyncHost);
-    }
-    else
-    {
-        stopPlaying();
-    }
-}
-
 void StepSequencer::playSequential()
 {
     params.seqPlayMode.setStep(eSeqPlayModes::eSequential);
@@ -176,7 +149,7 @@ void StepSequencer::setStepRandom(int step)
 
     Random r = Random();
     r.setSeedRandomly();
-    currMidiStepSeq[step]->set(r.nextFloat() * (max - min) + min, true); // TODO: nochmal min und max abchecken (hier oder im panel)
+    currMidiStepSeq[step]->set(r.nextFloat() * (max - min) + min, true);
 }
 
 void StepSequencer::setStepActive(int step, bool active)
@@ -299,7 +272,7 @@ bool StepSequencer::isPlaying()
 {
     AudioPlayHead::CurrentPositionInfo hostPlayHead = params.positionInfo[params.getAudioIndex()];
 
-    if ((params.seqMode.getStep() == eSeqModes::eSeqPlay) || ((params.seqMode.getStep() == eSeqModes::eSeqSyncHost) && hostPlayHead.isPlaying))
+    if ((params.seqPlayNoHost.getStep() == eOnOffToggle::eOn) || ((params.seqPlaySyncHost.getStep() == eOnOffToggle::eOn) && hostPlayHead.isPlaying))
     {
         return true;
     }
@@ -311,7 +284,7 @@ bool StepSequencer::isPlaying()
 
 bool StepSequencer::isHostSynced()
 {
-    return params.seqMode.getStep() == eSeqModes::eSeqSyncHost;
+    return params.seqPlaySyncHost.getStep() == eOnOffToggle::eOn;
 }
 
 bool StepSequencer::isPlayUpDown()

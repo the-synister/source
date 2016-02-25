@@ -47,8 +47,10 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    String getNoteLengthAsString();
-    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ComboBox>& _gainBox, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT);
+    void drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, ScopedPointer<ModSourceBox>& _gainBox,
+        ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT);
+	void updateLfoSyncToggle();
+    void updateModAmountKnobs();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -61,7 +63,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic;
+    Image sineWave, squareWave, sampleHold, gainSign, syncPic, tripletPic, tripletPicOff, dotPic, dotPicOff;
 
     SynthParams::Lfo& lfo;
     //[/UserVariables]
@@ -75,9 +77,10 @@ private:
     ScopedPointer<IncDecDropDown> noteLength;
     ScopedPointer<MouseOverKnob> freqModAmount1;
     ScopedPointer<MouseOverKnob> freqModAmount2;
-    ScopedPointer<ComboBox> freqModSrc1;
-    ScopedPointer<ComboBox> freqModSrc2;
-    ScopedPointer<ComboBox> lfoGain;
+    ScopedPointer<ModSourceBox> freqModSrc1;
+    ScopedPointer<ModSourceBox> freqModSrc2;
+    ScopedPointer<ModSourceBox> lfoGain;
+    ScopedPointer<ToggleButton> dottedNotes;
 
 
     //==============================================================================

@@ -18,7 +18,7 @@ PluginAudioProcessorEditor::PluginAudioProcessorEditor (PluginAudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 900);
+    setSize (812, 693);
 
     addAndMakeVisible(ui = new PlugUI(p));
 }

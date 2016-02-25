@@ -80,8 +80,11 @@ struct FoldablePanel::SectionComponent  : public Component
                 panel->setVisible(open);
             }
 
-           if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>())
-               pp->resized();
+            if (FoldablePanel* const pp = findParentComponentOfClass<FoldablePanel>()) {
+                pp->resized();
+
+                pp->getBackToPoint(getY(), (open) ? getSectionHeight() - 22 : 0);
+            }
         }
     }
 
@@ -156,6 +159,8 @@ struct FoldablePanel::PanelHolderComponent  : public Component
             y = section->getBottom();
         }
 
+        setSize(width, y);
+
         repaint();
     }
 
@@ -177,7 +182,13 @@ struct FoldablePanel::PanelHolderComponent  : public Component
 
 FoldablePanel::FoldablePanel (const String& name)  : Component (name)
 {
-    addAndMakeVisible (panelHolderComponent = new PanelHolderComponent());
+    addAndMakeVisible (viewport);
+    viewport.setViewedComponent (panelHolderComponent = new PanelHolderComponent());
+    viewport.setScrollBarsShown(true, false, false, false);
+    ScrollBar* scrollbarY = viewport.getVerticalScrollBar();
+    scrollbarY->setAutoHide(false);
+    viewport.setScrollBarThickness(10);
+    viewport.setFocusContainer(true);
 }
 
 FoldablePanel::~FoldablePanel()
@@ -191,10 +202,11 @@ void FoldablePanel::paint (Graphics& /*g*/)
 
 void FoldablePanel::resized()
 {
-    Rectangle<int> content (getLocalBounds());
+    lastPosY = viewport.getViewPositionY();
+    viewport.setBounds (getLocalBounds());
 
-    panelHolderComponent->setBounds (content);
-    panelHolderComponent->updateLayout (getWidth());
+    panelHolderComponent->setBounds (viewport.getLocalBounds());
+    panelHolderComponent->updateLayout (viewport.getWidth());
 }
 
 bool FoldablePanel::isEmpty() const
@@ -227,6 +239,13 @@ void FoldablePanel::addSection (const String& sectionTitle,
     panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
     resized();
     updateLayout();
+}
+
+void FoldablePanel::getBackToPoint(const int y, int height)
+{
+    if (lastPosY + y + height > viewport.getViewHeight()) {
+        viewport.setViewPosition(viewport.getX(), lastPosY + height);
+    }
 }
 
 void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)

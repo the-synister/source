@@ -26,6 +26,7 @@
 #include "MouseOverKnob.h"
 #include "FoldablePanel.h"
 #include "IncDecDropDown.h"
+#include "panels/PanelBase.h"
 //[/Headers]
 
 
@@ -38,8 +39,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class PlugUI  : public Component,
-                private Timer,
+class PlugUI  : public PanelBase,
+                public TextEditorListener,
                 public SliderListener,
                 public ButtonListener
 {
@@ -63,9 +64,9 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     SynthParams &params;
 
-    float lastBpmInfo;
     void timerCallback() override;
-    void updateBpmDisplay(const AudioPlayHead::CurrentPositionInfo&);
+    void updateDirtyPatchname(const String patchName);
+    void textEditorFocusLost(TextEditor &editor);
 
     ScopedPointer<CustomLookAndFeel> lnf;
     //[/UserVariables]
@@ -75,9 +76,11 @@ private:
     ScopedPointer<MidiKeyboardComponent> keyboard;
     ScopedPointer<TextButton> savePresetButton;
     ScopedPointer<TextButton> loadPresetButton;
-    ScopedPointer<Label> bpmLabel;
-    ScopedPointer<Label> bpmDisplay;
     ScopedPointer<FoldablePanel> foldableComponent;
+    ScopedPointer<MouseOverKnob> masterAmp;
+    ScopedPointer<MouseOverKnob> masterPan;
+    ScopedPointer<TextEditor> patchNameEditor;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================

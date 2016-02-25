@@ -29,19 +29,16 @@ public:
                      bool shouldSectionInitiallyBeOpen = true,
                      int indexToInsertAt = -1);
 
-    StringArray getSectionNames() const;
 
     bool isEmpty() const;
     void addPanel(const int sectionIndex, Component* const newPanel);
-    bool isSectionOpen (const int sectionIndex) const;
-    void setSectionOpen (int sectionIndex, bool shouldBeOpen);
-    void setSectionEnabled (int sectionIndex, bool shouldBeEnabled);
-    XmlElement* getOpennessState() const;
-    void restoreOpennessState (const XmlElement& newState);
+    void getBackToPoint(const int y, int height);
     void paint (Graphics&) override;
     void resized() override;
 
 private:
+    Viewport viewport;
+    int lastPosY;
     struct SectionComponent;
     struct PanelHolderComponent;
     ScopedPointer<PanelHolderComponent> panelHolderComponent;

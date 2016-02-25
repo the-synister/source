@@ -18,7 +18,7 @@ public:
     {
     }
 
-    void setWaveformKey(eOscWaves waveformKey) { m_iWaveformKey = waveformKey; repaint(); }
+    void setWaveformKey(eOscWaves waveformKey) { m_iWaveformKey = waveformKey; needNewNoise = true; repaint(); }
     void setPulseWidth(float pulseWidth) { m_fPulseWidth = pulseWidth; repaint(); }
     void setTrngAmount(float trngAmount) { m_fTrngAmount = trngAmount; repaint(); }
 
@@ -30,6 +30,8 @@ private:
     float m_fPulseWidth;
     float m_fTrngAmount;
 
+    Path noise;
+    bool needNewNoise = true;
 };
 
 
