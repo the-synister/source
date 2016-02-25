@@ -87,7 +87,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
     cutoffSlider->setRange (1, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 90, 20);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     cutoffSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     cutoffSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -131,7 +131,7 @@ FxPanel::FxPanel (SynthParams &p)
     registerSlider(feedbackSlider, &params.delayFeedback);
     registerSlider(dryWetSlider, &params.delayDryWet);
     registerSlider(timeSlider, &params.delayTime);
-    registerSlider(cutoffSlider, &params.delayCutoff);
+	registerSlider(cutoffSlider, &params.delayCutoff);
 	registerSlider(onOffSwitch, &params.delayActivation , std::bind(&FxPanel::onOffSwitchChanged, this));
 
     registerToggle(revTggl, &params.delayReverse);
@@ -299,7 +299,7 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_revTggl] -- add your button handler code here..
         //[/UserButtonCode_revTggl]
-        }
+    }
     else if (buttonThatWasClicked == dottedNotes)
     {
         //[UserButtonCode_dottedNotes] -- add your button handler code here..
@@ -347,7 +347,7 @@ void FxPanel::updateToggleState()
 }
 
 void FxPanel::onOffSwitchChanged()
-    {
+{
 	// Switches that don't depend on syncToggle
 	feedbackSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	dryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
@@ -365,8 +365,8 @@ void FxPanel::onOffSwitchChanged()
         dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
     }
 	// If delay is off, all the sliders are disabled
-    else
-    {
+	else
+	{
 		timeSlider->setEnabled(0);
 		divisor->setEnabled(0);
 		tripTggl->setEnabled(0);
@@ -374,7 +374,7 @@ void FxPanel::onOffSwitchChanged()
 	}
 
 	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
-    }
+}
 
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT,
     ScopedPointer<ToggleButton>& reverseT, ScopedPointer<ToggleButton>& recordT)
@@ -418,7 +418,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="39 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -431,8 +431,8 @@ BEGIN_JUCER_METADATA
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 38 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
+          textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="131 102 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
