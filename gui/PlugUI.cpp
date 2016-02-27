@@ -62,15 +62,15 @@ PlugUI::PlugUI (SynthParams &p)
     savePresetButton->setButtonText (TRANS("save"));
     savePresetButton->addListener (this);
     savePresetButton->setColour (TextButton::buttonColourId, Colours::white);
-    savePresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c78bc));
-    savePresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c78bc));
+    savePresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c788c));
+    savePresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c788c));
 
     addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
     loadPresetButton->setButtonText (TRANS("load"));
     loadPresetButton->addListener (this);
     loadPresetButton->setColour (TextButton::buttonColourId, Colours::white);
-    loadPresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c78bc));
-    loadPresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c78bc));
+    loadPresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c788c));
+    loadPresetButton->setColour (TextButton::textColourOffId, Colour (0xff6c788c));
 
     addAndMakeVisible (foldableComponent = new FoldablePanel ("foldablePanels"));
 
@@ -181,7 +181,7 @@ void PlugUI::paint (Graphics& g)
     jassert (drawable1 != 0);
     if (drawable1 != 0)
         drawable1->drawWithin (g, Rectangle<float> (200, 16, 255, 40),
-                               RectanglePlacement::stretchToFit, 1.000f);
+                               RectanglePlacement::centred, 1.000f);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -194,12 +194,12 @@ void PlugUI::resized()
 
     freq->setBounds (470, 8, 80, 64);
     keyboard->setBounds (-1, 651, 812, 40);
-    savePresetButton->setBounds (107, 40, 65, 25);
-    loadPresetButton->setBounds (107, 10, 65, 25);
+    savePresetButton->setBounds (118, 40, 65, 25);
+    loadPresetButton->setBounds (118, 10, 65, 25);
     foldableComponent->setBounds (0, 72, 812, 576);
     masterAmp->setBounds (570, 21, 100, 32);
     masterPan->setBounds (690, 21, 80, 32);
-    patchNameEditor->setBounds (8, 24, 96, 24);
+    patchNameEditor->setBounds (8, 24, 100, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -303,11 +303,11 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="-1 651 812 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="107 40 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="118 40 65 25" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="save" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="107 10 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="118 10 65 25" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
@@ -326,7 +326,7 @@ BEGIN_JUCER_METADATA
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <TEXTEDITOR name="new text editor" id="3f8916006abe85bf" memberName="patchNameEditor"
-              virtualName="" explicitFocusOrder="0" pos="8 24 96 24" initialText=""
+              virtualName="" explicitFocusOrder="0" pos="8 24 100 24" initialText=""
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
 </JUCER_COMPONENT>

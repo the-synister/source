@@ -601,30 +601,52 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
     g.fillRect(0, 0, width, height);
 
     // draw arrow
-    const float buttonSize = height * 0.65f;
-    const float buttonIndent = (height - buttonSize) * 0.5f;
-    const float x = buttonIndent * 2.0f;
-    const float y = (height - buttonSize) * 0.5f;
+    
+	/*const float buttonSize = height * 0.65f;
+    
+    
     const float arrowThickness = buttonIndent * 2.0f;
+	*/
+	const float buttonSize = height * .7f;
+	const float buttonIndent = (height - buttonSize) * 0.5f;
+	const float x = buttonIndent * 2.0f;
+    const float y = (height - buttonSize) * 0.5f;
+	const float buttonCenterx = x + buttonSize / 2.f;
+	const float buttonCentery = y + buttonSize / 2.f;
+	const float arrowOffset = buttonSize * .2f;
+	const float arrowThickness = buttonSize * .3f;
 
     Path arrow;
     if (isOpen)
     {
-        arrow.addQuadrilateral(x, y,
-                               x + buttonSize * 0.5f, y + buttonSize - arrowThickness,
-                               x + buttonSize, y,
-                               x + buttonSize * 0.5f, y + buttonSize);
+        arrow.addQuadrilateral(x, y + arrowOffset,
+			buttonCenterx, buttonCentery,
+			buttonCenterx, buttonCentery + arrowThickness,
+			x, y + arrowOffset + arrowThickness
+			);
+		arrow.addQuadrilateral(buttonCenterx, buttonCentery,
+			x + buttonSize, y + arrowOffset,
+			x + buttonSize, y + arrowOffset + arrowThickness,
+			buttonCenterx, buttonCentery + arrowThickness
+			);
     }
     else
     {
-        arrow.addQuadrilateral(x, y,
-                               x + buttonSize - arrowThickness, y + buttonSize * 0.5f,
-                               x, y + buttonSize,
-                               x + buttonSize, y + buttonSize * 0.5f);
+        arrow.addQuadrilateral(x + arrowOffset, y,
+			x + arrowOffset + arrowThickness, y,
+			buttonCenterx + arrowThickness, buttonCentery,
+			buttonCenterx, buttonCentery);
+		arrow.addQuadrilateral(buttonCenterx, buttonCentery,
+			buttonCenterx + arrowThickness, buttonCentery,
+			x + arrowOffset + arrowThickness, y + buttonSize,
+			x + arrowOffset, y + buttonSize
+			);
     }
 
-    g.setColour(Colours::grey);
+    g.setColour(Colours::black);
     g.fillPath(arrow);
+	
+
 
     // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
 }
