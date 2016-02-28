@@ -380,7 +380,7 @@ protected:
                 intensity = toUnipolar(min, max, intensity);
             }
 
-
+            lfoFreqMod[l] = std::pow(2.f, source * intensity / 4.f);
         }
 
         //clear the buffers
@@ -413,42 +413,19 @@ protected:
                 // If the fade in is reached or no fade in is set, the factor is 1 (100%)
                     factorFadeIn = static_cast<float>(totalVoiceSamples + s) / static_cast<float>(samplesFadeIn[l]);
                 }
-#if 0
-                // Calculate the Lfo freq mod
-                //float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2, Param &freqMod1, Param &freqMod2
-                float lfoModVal1 = *(modSources[static_cast<int>(params.lfo[0].freqModAmount1.get())]);
-                float lfoModVal2 = *(modSources[static_cast<int>(params.lfo[0].freqModAmount1.get())]);
-                bool source1Unipolar = isUnipolar(params.lfo[l].freqModSrc1.getStep());
-                bool source2Unipolar = isUnipolar(params.lfo[l].freqModSrc2.getStep());
 
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
-                case eLfoWaves::eLfoSine:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next(lfoModVal1, lfoModVal2, 
-                        source1Unipolar, source2Unipolar, params.lfo[l].freqModAmount1, params.lfo[l].freqModAmount2) * factorFadeIn * lfoGain[l]);
-                    break;
-                case eLfoWaves::eLfoSampleHold:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
-                    break;
-                case eLfoWaves::eLfoSquare:
-                    lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next(lfoModVal1, lfoModVal2, 
-                        source1Unipolar, source2Unipolar, params.lfo[l].freqModAmount1, params.lfo[l].freqModAmount2) * factorFadeIn * lfoGain[l]);
-                    break;
-                }
-#else
-                // calculate lfo values and fill the buffers
-                switch (params.lfo[l].wave.getStep()) {
                     case eLfoWaves::eLfoSine:
-                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSampleHold:
                         lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSquare:
-                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
                         break;
                 }
-#endif
             }
 
             // Calculate the Envelope coefficients and fill the buffers
