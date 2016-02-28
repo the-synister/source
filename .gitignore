@@ -9,3 +9,5 @@ xcuserdata/
 project.xcworkspace/
 resources.aps
 *.opendb
+installer-errors.log
+*.pkg

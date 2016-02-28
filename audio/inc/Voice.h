@@ -17,11 +17,19 @@ public:
 struct Lfo {
     Lfo(int blockSize)
         : audioBuffer(1, blockSize)
-    {}
+    {
+        reset();
+    }
     Oscillator<&Waveforms::sinus> sine;
     Oscillator<&Waveforms::square> square;
     RandomOscillator<&Waveforms::square> random;
     AudioSampleBuffer audioBuffer;
+    
+    void reset() {
+        sine.reset();
+        square.reset();
+        random.reset();
+    }
 };
 
 class Voice : public SynthesiserVoice {
@@ -181,9 +189,7 @@ public:
             clearCurrentNote();
 
             for (Lfo& l : lfo) {
-                l.sine.reset();
-                l.square.reset();
-                l.random.reset();
+                l.reset();
             }
 
             for (Osc& o : osc) 

@@ -54,6 +54,8 @@ public:
     void reset() {
         phase = 0.f;
         phaseDelta = 0.f;
+        width = .5f;
+        trngAmount = .0f;
     }
 
     bool isActive() const {
