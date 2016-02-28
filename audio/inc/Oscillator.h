@@ -65,7 +65,7 @@ public:
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-
+#if 0
     float next(float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2, Param &freqMod1, Param &freqMod2) {
         
         float phaseDeltaMod = calcModRange(modValue1, freqMod1, phaseDelta, isUnipolar1);
@@ -73,6 +73,7 @@ public:
         phase = std::fmod(phase + phaseDeltaMod, float_Pi * 2.0f);
         return _waveform(phase, trngAmount, width);
     }
+#endif
 
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
