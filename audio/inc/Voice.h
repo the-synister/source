@@ -362,7 +362,7 @@ protected:
         for (size_t l = 0; l < lfo.size(); ++l) {
             lfo[l].audioBuffer.clear();
             
-            //Set the deltaPhase for realtime changes
+            //Set the deltaPhase for realtime LFO Changes
             if (params.lfo[l].tempSync.get() == 1.f) {
 
                 lfo[l].sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
@@ -391,22 +391,6 @@ protected:
             float freqModVal1 = calcFreqModVal(params.lfo[l].freqModSrc1, params.lfo[l].freqModAmount1);
             float freqModVal2 = calcFreqModVal(params.lfo[l].freqModSrc2, params.lfo[l].freqModAmount2);
 
-
-#if 0
-            float source = *(modSources[static_cast<int>(params.lfo[0].freqModSrc1.get())]);
-            float intensity = params.lfo[l].freqModAmount1.get();
-            float min = params.lfo[l].freqModAmount1.getMin();
-            float max = params.lfo[l].freqModAmount1.getMax();
-
-            if (isUnipolar(params.lfo[l].freqModSrc1.getStep()))
-            {
-                intensity = toBipolar(min, max, intensity);
-            }
-            else
-            {
-                intensity = toUnipolar(min, max, intensity);
-            }
-#endif
             lfoFreqMod[l] = std::pow(2.f, (freqModVal1 + freqModVal2) * params.lfo[l].freqModAmount1.getMax());
         }
 
