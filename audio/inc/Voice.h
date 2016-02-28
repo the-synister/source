@@ -337,7 +337,7 @@ public:
 
 protected:
 
-    float calcFreqModVal(ParamStepped<eModSource>& _source, Param& _intensity) {
+    float calcModVal(ParamStepped<eModSource>& _source, Param& _intensity) {
 
         float source = *(modSources[static_cast<int>(_source.get())]);
         float intensity = _intensity.get();
@@ -394,8 +394,8 @@ protected:
                 : *(modSources[static_cast<int>(params.lfo[l].gainModSrc.get())]);
             
             // Lfo FreqMod
-            float freqModVal1 = calcFreqModVal(params.lfo[l].freqModSrc1, params.lfo[l].freqModAmount1);
-            float freqModVal2 = calcFreqModVal(params.lfo[l].freqModSrc2, params.lfo[l].freqModAmount2);
+            float freqModVal1 = calcModVal(params.lfo[l].freqModSrc1, params.lfo[l].freqModAmount1);
+            float freqModVal2 = calcModVal(params.lfo[l].freqModSrc2, params.lfo[l].freqModAmount2);
 
             lfoFreqMod[l] = std::pow(2.f, (freqModVal1 + freqModVal2) * params.lfo[l].freqModAmount1.getMax());
         }
