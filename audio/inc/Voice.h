@@ -341,6 +341,22 @@ protected:
         for (size_t l = 0; l < lfo.size(); ++l) {
             lfo[l].audioBuffer.clear();
             
+            if (params.lfo[l].tempSync.get() == 1.f) {
+
+                lfo[l].sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                lfo[l].square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                lfo[l].random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+            }
+            else 
+            {
+                lfo[l].sine.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
+                lfo[l].square.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
+                lfo[l].random.phaseDelta = params.lfo[l].freq.get() / sRate * 2.f * float_Pi;
+            }
+
             // Length in samples of the LFO fade in
             samplesFadeIn[l] = static_cast<int>(params.lfo[l].fadeIn.get() * sRate);
             
@@ -423,13 +439,13 @@ protected:
                 // calculate lfo values and fill the buffers
                 switch (params.lfo[l].wave.getStep()) {
                     case eLfoWaves::eLfoSine:
-                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next() * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSampleHold:
                         lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSquare:
-                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next() * factorFadeIn * lfoGain[l]);
                         break;
                 }
 #endif
