@@ -15,11 +15,7 @@ Author:  nj
 #include "Param.h"
 #include <map>
 
-//! Modulation Matrix
-/*! this fixed size mod matrix is based on the book
-"Designing Software Synthesizer Plug-Ins in C++"
-*/
-
+//! Enumeration of all mod sources
 enum eModSource : int {
     eNone = 0,
 
@@ -46,7 +42,7 @@ enum eModSource : int {
     nSteps
 };
 
-
+//! Enumeration of all mod destinations
 enum destinations : int {
     DEST_NONE = -1,
 
@@ -85,6 +81,13 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
+//! mapping for mod sources to uni-/bipolar.
+/*!
+The static mapping function that returns whether a modulation source if uni- or bipolar. 
+This can  be used to determine how a modulation amount might have to be transformed.
+@param source the source to be mapped
+@returns true if unipolar, else false
+*/
 static inline bool isUnipolar(eModSource source) {
     switch (source) {
     case eModSource::eVolEnv:
@@ -103,22 +106,49 @@ static inline bool isUnipolar(eModSource source) {
 }
 
 // TODO: need inline?
+
+//! Transformation for mod amounts to unipolar.
+/*!
+The static transformation function that returns a unipolar value, transformed from the range and current value of a mod amount.
+@param min the minimum value of the mod amount
+@param max the maximum value of the mod amount
+@param value the current value of the mod amount
+@returns transformed value between 0 and 1
+*/
 static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
+
+//! Transformation for mod amounts to bipolar.
+/*!
+The static transformation function that returns a bipolar value, transformed from the range and current value of a mod amount.
+@param min the minimum value of the mod amount
+@param max the maximum value of the mod amount
+@param value the current value of the mod amount
+@returns transformed value between -1 and 1
+*/
 static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
-// core
+//! Modulation Matrix Class
+/*! This fixed size mod matrix is based on the book "Designing Software Synthesizer Plug-Ins in C++".
+It contains a row for each possible modulation source setting in the GUI, together with its amount and the name of its corresponding Combobox.
+Within the synister synthesizer, it is maintained and instanced in the SynthParams as a global modulation matrix. Its doModulationsMatrix method
+that applies the modulation is called from the Voice for each sample.
+*/
 class ModulationMatrix {
 public:
+    //! ModulationMatrix constructor.
     ModulationMatrix();
+    //! ModulationMatrix destructor.
     ~ModulationMatrix();
 
+    //! ModMatrixRow structure.
     struct ModMatrixRow
     {
-        eModSource sourceIndex;
-        destinations destinationIndex;
-        Param* modIntensity;
-        String modSrcBox;
+        eModSource sourceIndex; //!< mod source enum/index
+        destinations destinationIndex; //!< mod destination enum/index
+        Param* modIntensity; //!< pointer to mod intensity param
+        String modSrcBox; //!< mod source box name
 
+        //! ModMatrixRow constructor.
         ModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
             : sourceIndex(s)
             , destinationIndex(d)
@@ -127,13 +157,43 @@ public:
         {}
     };
 
+    //! Check whether a ModMatrixRow exists.
+    /*!
+    @param sourceIndex the minimum value of the mod amount
+    @param destinationIndex the maximum value of the mod amount
+    @returns true if a row exists, else false
+    */
     inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
+
+    //! Changes the source of a destination that belongs to a specific combobox.
+    /*!
+    Method that is called when the user selects a new source in a combobox. This combobox belongs to a
+    row in the matrix, which is then updated.
+    @param comboBoxName name of the combobox the information comes from
+    @param source the source to be changed to
+    */
     inline void changeSource(const String &comboBoxName, eModSource source);
+
+    //! Adds a row to the modulation matrix.
+    /*!
+    Method that is called for each row to be added when the matrix is initialized.
+    @param s the initial source
+    @oaram d the destination
+    @param intensity the initial intensity value
+    @param comboboxName the name of the combobox the row belongs to
+    */
     inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
+
+    //! Applies the modulation for a sample.
+    /*!
+    Method that is called for each sample when the modulation of all sources to all destinations has to be applied.
+    @param src the pointer to the source values
+    @oaram dst the pointer to the destination the results are written to
+    */
     inline void doModulationsMatrix(const float** src, float** dst) const;
 
 private:
-    std::vector<ModMatrixRow> matrixCore;
+    std::vector<ModMatrixRow> matrixCore; //!< matrix core that keeps all the rows of the matrix in a vector
 };
 
 inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst) const
