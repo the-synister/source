@@ -103,7 +103,7 @@ public:
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         for (size_t l = 0; l < lfo.size(); ++l) {
-            if (params.lfo[l].tempSync.get() == 1.f) {
+            if (params.lfo[l].tempSync.getStep() == eOnOffToggle::eOn) {
 
                 lfo[l].sine.phase = .5f*float_Pi;
                 lfo[l].square.phase = 0.f;
@@ -369,7 +369,7 @@ protected:
             lfo[l].audioBuffer.clear();
             
             //Set the deltaPhase for realtime LFO Changes
-            if (params.lfo[l].tempSync.get() == 1.f) {
+            if (params.lfo[l].tempSync.getStep() == eOnOffToggle::eOn) {
 
                 lfo[l].sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
                     (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
@@ -437,7 +437,7 @@ protected:
                         lfo[l].audioBuffer.setSample(0, s, lfo[l].sine.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSampleHold:
-                        lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next() * factorFadeIn * lfoGain[l]);
+                        lfo[l].audioBuffer.setSample(0, s, lfo[l].random.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);
                         break;
                     case eLfoWaves::eLfoSquare:
                         lfo[l].audioBuffer.setSample(0, s, lfo[l].square.next(lfoFreqMod[l]) * factorFadeIn * lfoGain[l]);

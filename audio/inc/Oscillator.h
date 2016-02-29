@@ -23,30 +23,6 @@ public:
     float trngAmount;
     float width;
 
-    inline float calcModRange(float modValue, Param& modAmount, float phaseIn, bool isUnipolar) {
-
-        float intensity;
-        if (isUnipolar) {
-            // if the source is unipolar, transform the intensity to bipolar
-            intensity = toBipolar(modAmount.getMin(), modAmount.getMax(), modAmount.get());
-        }
-        else {
-            // else the source is bipolar, transform the intensity to unipolar
-            intensity = toUnipolar(modAmount.getMin(), modAmount.getMax(), modAmount.get());
-        }
-        float dModValue = modValue*intensity;
-
-        float phaseDeltaMod = phaseIn * std::pow(2.f, modAmount.getMax() * dModValue);
-        phaseDeltaMod = phaseDeltaMod > 50.f
-            ? 50.f
-            : phaseDeltaMod;
-        phaseDeltaMod = phaseDeltaMod <= 0.f
-            ? 0.01f
-            : phaseDeltaMod;
-
-        return phaseDeltaMod;
-    }
-
     Oscillator() : phase(0.f)
         , phaseDelta(0.f)
     {}
@@ -67,15 +43,6 @@ public:
         phase = std::fmod(phase + phaseDelta, float_Pi * 2.0f);
         return result;
     }
-#if 0
-    float next(float modValue1, float modValue2, bool isUnipolar1, bool isUnipolar2, Param &freqMod1, Param &freqMod2) {
-        
-        float phaseDeltaMod = calcModRange(modValue1, freqMod1, phaseDelta, isUnipolar1);
-        phaseDeltaMod = calcModRange(modValue2, freqMod2, phaseDeltaMod, isUnipolar2);
-        phase = std::fmod(phase + phaseDeltaMod, float_Pi * 2.0f);
-        return _waveform(phase, trngAmount, width);
-    }
-#endif
 
     float next(float pitchMod) {
         const float result = _waveform(phase, trngAmount, width);
@@ -88,7 +55,6 @@ public:
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
-
 };
 
 
@@ -148,6 +114,14 @@ public:
         return heldValue;
     }
 
+    float next(float pitchMod) {
+        if (phase + phaseDelta > 2.0f * float_Pi) {
+            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
+        }
+
+        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
+        return heldValue;
+    }
 };
 
 
