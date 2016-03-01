@@ -18,6 +18,17 @@
   Name "synister"
   OutFile "synister-install.exe"
 
+  RequestExecutionLevel admin
+  ManifestSupportedOS all
+  VIAddVersionKey "ProductName" "Synister"
+  VIAddVersionKey "CompanyName" "QU Lab, TU Berlin"
+  VIAddVersionKey "LegalCopyright" "(c) 2016 QU Lab, TU Berlin"
+  VIAddVersionKey "FileDescription" "Synth Plugin Installer"
+  VIAddVersionKey "FileVersion" "1.0.1.0"
+  
+  VIProductVersion "1.0.1.0"
+  VIFileVersion "1.0.1.0"
+  
   ;Default installation folder
   ;InstallDir "$PROGRAMFILES\QULab\Synister"
   
