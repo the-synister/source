@@ -56,8 +56,16 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<Label> supervisorLabelWhite;
+    ScopedPointer<Label> supervisorLabelBlack;
+    ScopedPointer<Label> teamLabelBlack;
+    ScopedPointer<Label> teamLabelWhite;
+    ScopedPointer<Label> byStudentLabel;
+    ScopedPointer<Label> comingSoonLabel;
     ScopedPointer<HyperlinkButton> hyperlinkButton;
-    ScopedPointer<Label> label1;
+    ScopedPointer<Label> betaLabel;
+    ScopedPointer<Label> dateLabel;
+    ScopedPointer<Label> versionLabel;
     ScopedPointer<Drawable> drawable1;
     ScopedPointer<Drawable> drawable2;
 
