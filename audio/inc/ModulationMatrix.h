@@ -244,9 +244,46 @@ inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destina
 inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSource source) {
     for (ModMatrixRow &row : matrixCore)
     {
+
+
         // find matching source/destination pairs
         if (row.modSrcBox == comboBoxName)
         {
+            // before we change the old source, we gotta check whether it is a switch between unipolar<->bipolar (for conversion reasons)
+            eModSource oldSource = row.sourceIndex;
+            Param* modAmountParam = row.modIntensity;
+            float newModAmountValue;
+
+            // derived from the initial values, eNone should be considered as "unipolar" here since the  initial modAmount is set to a value fit for unipolar sources
+            bool newSourcePolarity = (source == eNone) ? true : isUnipolar(source);
+            bool oldSourcePolarity = (oldSource == eNone) ? true : isUnipolar(oldSource);
+
+            if (newSourcePolarity < oldSourcePolarity) {
+                // uni- to bipolar source -> mod amount [-x, x] to [0, x]
+                newModAmountValue = modAmountParam->getUI();
+
+                // find the middle
+                float middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
+
+                // get the absolute value if it's negative
+                if (modAmountParam->getUI() < middle) newModAmountValue = modAmountParam->getUI() + 2.f * (middle - modAmountParam->getUI());
+
+                // transform
+                newModAmountValue = (newModAmountValue - middle) * 2.f;
+                modAmountParam->setHost(newModAmountValue);
+            }
+            else if (newSourcePolarity > oldSourcePolarity) {
+                // bi- to unipolar source -> mod amount [0, x] to [-x, x]
+
+                // find the middle
+                int middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
+
+                // transform
+                newModAmountValue = middle + (modAmountParam->getUI() / 2.f);
+                modAmountParam->setHost(newModAmountValue);
+            }
+            
+            // set the new source
             row.sourceIndex = source;
         }
     }
