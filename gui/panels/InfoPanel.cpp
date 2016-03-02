@@ -41,7 +41,7 @@ InfoPanel::InfoPanel (SynthParams &p)
     supervisorLabelWhite->setFont (Font ("Berlin Sans FB", 20.00f, Font::plain));
     supervisorLabelWhite->setJustificationType (Justification::topLeft);
     supervisorLabelWhite->setEditable (false, false, false);
-    supervisorLabelWhite->setColour (Label::textColourId, Colour (0xffcccccc));
+    supervisorLabelWhite->setColour (Label::textColourId, Colours::black);
     supervisorLabelWhite->setColour (TextEditor::textColourId, Colours::black);
     supervisorLabelWhite->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -53,6 +53,7 @@ InfoPanel::InfoPanel (SynthParams &p)
     supervisorLabelBlack->setFont (Font ("Berlin Sans FB", 20.00f, Font::plain));
     supervisorLabelBlack->setJustificationType (Justification::topLeft);
     supervisorLabelBlack->setEditable (false, false, false);
+    supervisorLabelBlack->setColour (Label::textColourId, Colour (0xffcccccc));
     supervisorLabelBlack->setColour (TextEditor::textColourId, Colours::black);
     supervisorLabelBlack->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
@@ -257,13 +258,13 @@ BEGIN_JUCER_METADATA
            mode="0"/>
   </BACKGROUND>
   <LABEL name="supervisor label white" id="6134a59c4377e3f2" memberName="supervisorLabelWhite"
-         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" textCol="ffcccccc"
+         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" textCol="ff000000"
          edTextCol="ff000000" edBkgCol="0" labelText="SUPERVISORS {&#10;    Marc Halbr&#252;gge,&#10;&#10;}&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="supervisor label black" id="c5fe9a3e3d382d57" memberName="supervisorLabelBlack"
-         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" edTextCol="ff000000"
-         edBkgCol="0" labelText="SUPERVISORS {&#10;&#10;    Gabriel Reimers&#10;&#10;"
+         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" textCol="ffcccccc"
+         edTextCol="ff000000" edBkgCol="0" labelText="SUPERVISORS {&#10;&#10;    Gabriel Reimers&#10;&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="team label black" id="699e317fae603b03" memberName="teamLabelBlack"
