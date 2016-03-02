@@ -28,6 +28,7 @@
 #include "panels/LoFiPanel.h"
 #include "panels/ChorusPanel.h"
 #include "panels/ClippingPanel.h"
+#include "panels/InfoPanel.h"
 //[/Headers]
 
 #include "PlugUI.h"
@@ -108,7 +109,14 @@ PlugUI::PlugUI (SynthParams &p)
     patchNameEditor->setPopupMenuEnabled (true);
     patchNameEditor->setText (String::empty);
 
-    drawable1 = Drawable::createFromImageData (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize);
+    addAndMakeVisible (logoInfoButton = new ImageButton ("logo info button"));
+    logoInfoButton->setButtonText (String::empty);
+    logoInfoButton->addListener (this);
+
+    logoInfoButton->setImages (false, true, true,
+                               ImageCache::getFromMemory (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize), 1.000f, Colour (0xfff0f0f0),
+                               ImageCache::getFromMemory (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize), 1.000f, Colours::white,
+                               ImageCache::getFromMemory (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize), 1.000f, Colours::white);
 
     //[UserPreSize]
     registerSlider(freq, &params.freq);
@@ -146,12 +154,23 @@ PlugUI::PlugUI (SynthParams &p)
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();
     LookAndFeel::setDefaultLookAndFeel(lnf);
+
+    // sub window as info panel screen
+    addAndMakeVisible(infoScreen = new InfoWindow("Info Screen", Colours::black, InfoWindow::TitleBarButtons::closeButton));
+    infoScreen->setAlwaysOnTop(true);
+    //infoScreen->setDraggable(false);
+
+    // create infoscreen gui component and set as content of sub window
+    infoScreen->setContentOwned(new InfoPanel(params), true);
+    infoScreen->centreWithSize(infoScreen->getWidth(), infoScreen->getHeight());
+    infoScreen->setVisible(false);
     //[/Constructor]
 }
 
 PlugUI::~PlugUI()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
+    infoScreen = nullptr;
     //[/Destructor_pre]
 
     freq = nullptr;
@@ -162,7 +181,7 @@ PlugUI::~PlugUI()
     masterAmp = nullptr;
     masterPan = nullptr;
     patchNameEditor = nullptr;
-    drawable1 = nullptr;
+    logoInfoButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -176,12 +195,6 @@ void PlugUI::paint (Graphics& g)
     //[/UserPrePaint]
 
     g.fillAll (Colour (0xff292929));
-
-    g.setColour (Colours::black);
-    jassert (drawable1 != 0);
-    if (drawable1 != 0)
-        drawable1->drawWithin (g, Rectangle<float> (200, 16, 255, 40),
-                               RectanglePlacement::stretchToFit, 1.000f);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -200,6 +213,7 @@ void PlugUI::resized()
     masterAmp->setBounds (570, 21, 100, 32);
     masterPan->setBounds (690, 21, 80, 32);
     patchNameEditor->setBounds (8, 24, 96, 24);
+    logoInfoButton->setBounds (200, 6, 255, 60);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -248,6 +262,14 @@ void PlugUI::buttonClicked (Button* buttonThatWasClicked)
         params.readXMLPatchStandalone(eSerializationParams::eAll);
         //[/UserButtonCode_loadPresetButton]
     }
+    else if (buttonThatWasClicked == logoInfoButton)
+    {
+        //[UserButtonCode_logoInfoButton] -- add your button handler code here..
+        infoScreen->centreWithSize(infoScreen->getWidth(), infoScreen->getHeight());
+        infoScreen->setVisible(true);
+        infoScreen->grabKeyboardFocus();
+        //[/UserButtonCode_logoInfoButton]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -290,10 +312,7 @@ BEGIN_JUCER_METADATA
                  variableInitialisers="PanelBase(p), params(p)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
                  initialWidth="812" initialHeight="693">
-  <BACKGROUND backgroundColour="ff292929">
-    <IMAGE pos="200 16 255 40" resource="BinaryData::synisterLogo_png" opacity="1"
-           mode="0"/>
-  </BACKGROUND>
+  <BACKGROUND backgroundColour="ff292929"/>
   <SLIDER name="frequency" id="b1ff18d26373a382" memberName="freq" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="470 8 80 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
@@ -329,6 +348,13 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="8 24 96 24" initialText=""
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
+  <IMAGEBUTTON name="logo info button" id="a24de2ae6a78130c" memberName="logoInfoButton"
+               virtualName="" explicitFocusOrder="0" pos="200 6 255 60" buttonText=""
+               connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
+               resourceNormal="BinaryData::synisterLogo_png" opacityNormal="1"
+               colourNormal="fff0f0f0" resourceOver="BinaryData::synisterLogo_png"
+               opacityOver="1" colourOver="ffffffff" resourceDown="BinaryData::synisterLogo_png"
+               opacityDown="1" colourDown="ffffffff"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

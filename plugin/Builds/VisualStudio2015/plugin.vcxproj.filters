@@ -322,6 +322,9 @@
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
       <Filter>plugin\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\gui\panels\InfoPanel.cpp">
+      <Filter>plugin\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>plugin\Gui\panels</Filter>
     </ClCompile>
@@ -1613,6 +1616,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
       <Filter>plugin\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\gui\panels\InfoPanel.h">
+      <Filter>plugin\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>plugin\Gui\panels</Filter>
@@ -3005,6 +3011,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\QUL_Logo.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>

@@ -6,6 +6,7 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="Hh7Srt" name="QUL_Logo.png" compile="0" resource="1" file="../png/QUL_Logo.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
@@ -34,6 +35,8 @@
       </GROUP>
       <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets"/>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
+        <FILE id="CXKdUa" name="InfoPanel.cpp" compile="1" resource="0" file="../gui/panels/InfoPanel.cpp"/>
+        <FILE id="OYUokK" name="InfoPanel.h" compile="0" resource="0" file="../gui/panels/InfoPanel.h"/>
         <FILE id="uzwNv9" name="ChorusPanel.cpp" compile="1" resource="0" file="../gui/panels/ChorusPanel.cpp"/>
         <FILE id="gAiDGO" name="ChorusPanel.h" compile="0" resource="0" file="../gui/panels/ChorusPanel.h"/>
         <FILE id="DQF3P0" name="ClippingPanel.cpp" compile="1" resource="0"

@@ -295,6 +295,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\gui\panels\InfoPanel.cpp">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
       <Filter>standalone\Gui\panels</Filter>
     </ClCompile>
@@ -1551,6 +1554,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\gui\panels\InfoPanel.h">
+      <Filter>standalone\Gui\panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
       <Filter>standalone\Gui\panels</Filter>
     </ClInclude>
@@ -2933,6 +2939,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\QUL_Logo.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
