@@ -215,16 +215,16 @@ void InfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    supervisorLabelWhite->setBounds (14, 140, 192, 112);
-    supervisorLabelBlack->setBounds (14, 140, 192, 112);
-    teamLabelBlack->setBounds (14, 228, 192, 225);
-    teamLabelWhite->setBounds (14, 228, 192, 225);
-    byStudentLabel->setBounds (143, 135, 394, 24);
-    comingSoonLabel->setBounds (331, 315, 200, 24);
-    hyperlinkButton->setBounds (181, 291, 377, 27);
-    betaLabel->setBounds (205, 424, 328, 24);
-    dateLabel->setBounds (331, 372, 200, 24);
-    versionLabel->setBounds (331, 353, 200, 24);
+    supervisorLabelWhite->setBounds (14, 371, 177, 84);
+    supervisorLabelBlack->setBounds (14, 371, 177, 84);
+    teamLabelBlack->setBounds (14, 138, 177, 225);
+    teamLabelWhite->setBounds (14, 138, 177, 225);
+    byStudentLabel->setBounds (213, 135, 321, 24);
+    comingSoonLabel->setBounds (331, 320, 200, 24);
+    hyperlinkButton->setBounds (216, 291, 315, 27);
+    betaLabel->setBounds (216, 424, 317, 24);
+    dateLabel->setBounds (331, 380, 200, 24);
+    versionLabel->setBounds (331, 356, 200, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -257,51 +257,51 @@ BEGIN_JUCER_METADATA
            mode="0"/>
   </BACKGROUND>
   <LABEL name="supervisor label white" id="6134a59c4377e3f2" memberName="supervisorLabelWhite"
-         virtualName="" explicitFocusOrder="0" pos="14 140 192 112" textCol="ffcccccc"
+         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" textCol="ffcccccc"
          edTextCol="ff000000" edBkgCol="0" labelText="SUPERVISORS {&#10;    Marc Halbr&#252;gge,&#10;&#10;}&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="supervisor label black" id="c5fe9a3e3d382d57" memberName="supervisorLabelBlack"
-         virtualName="" explicitFocusOrder="0" pos="14 140 192 112" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="14 371 177 84" edTextCol="ff000000"
          edBkgCol="0" labelText="SUPERVISORS {&#10;&#10;    Gabriel Reimers&#10;&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="team label black" id="699e317fae603b03" memberName="teamLabelBlack"
-         virtualName="" explicitFocusOrder="0" pos="14 228 192 225" textCol="ffcccccc"
+         virtualName="" explicitFocusOrder="0" pos="14 138 177 225" textCol="ffcccccc"
          edTextCol="ff000000" edBkgCol="0" labelText="TEAM {&#10;    Florian B&#252;tow,&#10;&#10;    Luc Guy,&#10;&#10;    Martin Keil,&#10;&#10;    Xavier Presser,&#10;&#10;    Nhat D. Tran&#10;}"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="team label white" id="bfe0f06b1dd18385" memberName="teamLabelWhite"
-         virtualName="" explicitFocusOrder="0" pos="14 228 192 225" textCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="14 138 177 225" textCol="ff000000"
          edTextCol="ff000000" edBkgCol="0" labelText="TEAM {&#10;&#10;    Juan Cabello,&#10;&#10;    Nils Jessen,&#10;&#10;    Christian Kn&#246;rzer,&#10;&#10;    Anton Schmied,&#10;&#10;}"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="9"/>
   <LABEL name="by students label" id="8f1673969ba85117" memberName="byStudentLabel"
-         virtualName="" explicitFocusOrder="0" pos="143 135 394 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="213 135 321 24" edTextCol="ff000000"
          edBkgCol="0" labelText="...A SYNTH BY STUDENTS OF THE TU-BERLIN."
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="34"/>
   <LABEL name="coming soon label" id="e66f52edead82122" memberName="comingSoonLabel"
-         virtualName="" explicitFocusOrder="0" pos="331 315 200 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="331 320 200 24" edTextCol="ff000000"
          edBkgCol="0" labelText="...COMING SOON!" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Berlin Sans FB"
          fontsize="16" bold="0" italic="0" justification="34"/>
   <HYPERLINKBUTTON name="new hyperlink" id="996ba2dd79b0f075" memberName="hyperlinkButton"
-                   virtualName="" explicitFocusOrder="0" pos="181 291 377 27" tooltip="http://www.synister-thesynth.de"
+                   virtualName="" explicitFocusOrder="0" pos="216 291 315 27" tooltip="http://www.synister-thesynth.de"
                    textCol="ffffffff" buttonText="VISIT HTTPS://WWW.SYNISTER-THESYNTH.DE"
                    connectedEdges="0" needsCallback="0" radioGroupId="0" url="http://www.synister-thesynth.de"/>
   <LABEL name="beta label" id="67bd518906f00cc6" memberName="betaLabel"
-         virtualName="" explicitFocusOrder="0" pos="205 424 328 24" textCol="ffcccccc"
+         virtualName="" explicitFocusOrder="0" pos="216 424 317 24" textCol="ffcccccc"
          edTextCol="ff000000" edBkgCol="0" labelText="SPECIAL THANKS TO OUR BETA TESTERS!"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Berlin Sans FB" fontsize="20" bold="0" italic="0" justification="34"/>
   <LABEL name="date label" id="f9720aab4a14ffa7" memberName="dateLabel"
-         virtualName="" explicitFocusOrder="0" pos="331 372 200 24" textCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="331 380 200 24" textCol="ff000000"
          edTextCol="ff000000" edBkgCol="0" labelText="MARCH 2016" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Berlin Sans FB"
          fontsize="18" bold="0" italic="0" justification="34"/>
   <LABEL name="version label" id="81e1b9415143c8eb" memberName="versionLabel"
-         virtualName="" explicitFocusOrder="0" pos="331 353 200 24" textCol="ffcccccc"
+         virtualName="" explicitFocusOrder="0" pos="331 356 200 24" textCol="ffcccccc"
          edTextCol="ff000000" edBkgCol="0" labelText="VERSION: " editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Berlin Sans FB"
          fontsize="26" bold="0" italic="0" justification="34"/>
