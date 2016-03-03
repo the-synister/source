@@ -1804,6 +1804,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\infoScreen.png"/>
     <None Include="..\..\..\png\QUL_Logo.png"/>
     <None Include="..\..\..\png\delayReverse.png"/>
     <None Include="..\..\..\png\dottedNote.png"/>

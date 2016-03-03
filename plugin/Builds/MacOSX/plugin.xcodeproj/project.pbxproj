@@ -790,6 +790,7 @@
 		A3B30DECCC753F030F59CE41 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModSourceBox.h; path = ../../../gui/ModSourceBox.h; sourceTree = "SOURCE_ROOT"; };
 		A3D1BAF474DDB92649BBA384 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ApplicationCommandTarget.cpp"; path = "../../../juce/modules/juce_gui_basics/commands/juce_ApplicationCommandTarget.cpp"; sourceTree = "SOURCE_ROOT"; };
 		A418BF638D995507C437A97E = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_RelativePointPath.h"; path = "../../../juce/modules/juce_gui_basics/positioning/juce_RelativePointPath.h"; sourceTree = "SOURCE_ROOT"; };
+		A42E1BCD01712AA240445B59 = {isa = PBXFileReference; lastKnownFileType = image.png; name = infoScreen.png; path = ../../../png/infoScreen.png; sourceTree = "SOURCE_ROOT"; };
 		A472EBD8C4E15DC16702F3EE = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_QuickTimeAudioFormat.h"; path = "../../../juce/modules/juce_audio_formats/codecs/juce_QuickTimeAudioFormat.h"; sourceTree = "SOURCE_ROOT"; };
 		A4A1738F9599C5CB2ACC4D80 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_CodeTokeniser.h"; path = "../../../juce/modules/juce_gui_extra/code_editor/juce_CodeTokeniser.h"; sourceTree = "SOURCE_ROOT"; };
 		A4A3C8A88B6D13B34A14C626 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ValueTree.cpp"; path = "../../../juce/modules/juce_data_structures/values/juce_ValueTree.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -1133,6 +1134,7 @@
 		FFE0D69D63039854268EB4C9 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MidiMessageSequence.h"; path = "../../../juce/modules/juce_audio_basics/midi/juce_MidiMessageSequence.h"; sourceTree = "SOURCE_ROOT"; };
 		FFFF7B0E4040D1D68B417E81 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_DirectSound.cpp"; path = "../../../juce/modules/juce_audio_devices/native/juce_win32_DirectSound.cpp"; sourceTree = "SOURCE_ROOT"; };
 		70A59E2E4213564844F4D98A = {isa = PBXGroup; children = (
+					A42E1BCD01712AA240445B59,
 					341E8C6457A08C55237A11C0,
 					1460A7FB09F497EAF6415E18,
 					2C439F1355BBFC34602D9134,

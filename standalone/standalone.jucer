@@ -6,6 +6,7 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="mL7dKx" name="infoScreen.png" compile="0" resource="1" file="../png/infoScreen.png"/>
         <FILE id="Hh7Srt" name="QUL_Logo.png" compile="0" resource="1" file="../png/QUL_Logo.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>

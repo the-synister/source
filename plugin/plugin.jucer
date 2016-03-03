@@ -13,6 +13,7 @@
   <MAINGROUP id="nqiOAf" name="plugin">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
+        <FILE id="FNkScc" name="infoScreen.png" compile="0" resource="1" file="../png/infoScreen.png"/>
         <FILE id="gA9nZs" name="QUL_Logo.png" compile="0" resource="1" file="../png/QUL_Logo.png"/>
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
