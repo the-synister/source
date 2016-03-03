@@ -3169,12 +3169,4 @@
       <Filter>Juce Library Code</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\png\folding_array_closed.png">
-      <Filter>standalone\Gui\png</Filter>
-    </Image>
-    <Image Include="..\..\..\png\folding_array_open.png">
-      <Filter>standalone\Gui\png</Filter>
-    </Image>
-  </ItemGroup>
 </Project>

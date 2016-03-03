@@ -1826,10 +1826,6 @@
   <ItemGroup>
     <ResourceCompile Include=".\resources.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\png\folding_array_closed.png" />
-    <Image Include="..\..\..\png\folding_array_open.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
