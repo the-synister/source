@@ -207,7 +207,7 @@ void FxPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "delay", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, SynthParams::fxColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 50,SynthParams::fxColour);
     drawPics(g, syncToggle, tripTggl, dottedNotes, revTggl, filtTggl);
     //[/UserPaint]
 }
@@ -232,7 +232,7 @@ void FxPanel::resized()
     tripTggl->setBounds (135, 100, 65, 30);
     filtTggl->setBounds (232, 136, 65, 30);
     revTggl->setBounds (232, 100, 65, 30);
-    onOffSwitch->setBounds (25, 1, 40, 30);
+    onOffSwitch->setBounds (30, 1, 40, 30);
     dottedNotes->setBounds (135, 136, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -446,7 +446,7 @@ BEGIN_JUCER_METADATA
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="Slider" explicitFocusOrder="0" pos="25 1 40 30"
+          virtualName="Slider" explicitFocusOrder="0" pos="30 1 40 30"
           thumbcol="ffdadada" trackcol="ff666666" rotarysliderfill="ffffffff"
           rotaryslideroutline="fff20000" textboxbkgd="fffff4f4" min="0"
           max="1" int="1" style="LinearHorizontal" textBoxPos="NoTextBox"

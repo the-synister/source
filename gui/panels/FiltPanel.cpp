@@ -288,7 +288,7 @@ void FiltPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, filter.name, 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, SynthParams::filterColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 27.0f, 4.0f, 3.0f, 50,SynthParams::filterColour);
     //[/UserPaint]
 }
 
@@ -317,7 +317,7 @@ void FiltPanel::resized()
     hpModAmount2->setBounds (212, 119, 18, 18);
     resModAmount1->setBounds (304, 96, 18, 18);
     resModAmount2->setBounds (304, 119, 18, 18);
-    onOffSwitch->setBounds (25, 1, 40, 30);
+    onOffSwitch->setBounds (33, 1, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -593,7 +593,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="filter switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="25 1 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="33 1 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

@@ -127,7 +127,7 @@ void ChorusPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "chorus", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, SynthParams::fxColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 45, SynthParams::fxColour);
     //[/UserPaint]
 }
 
@@ -140,7 +140,7 @@ void ChorusPanel::resized()
     chorDepthSlider->setBounds (111, 35, 64, 64);
     chorDelayLengthSlider->setBounds (25, 99, 64, 64);
     chorModRateSlider->setBounds (113, 99, 64, 64);
-    onOffSwitch->setBounds (25, 1, 40, 30);
+    onOffSwitch->setBounds (30, 1, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -235,7 +235,7 @@ BEGIN_JUCER_METADATA
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="chorus switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="25 1 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="30 1 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

@@ -388,7 +388,7 @@ protected:
     /**
     * Draw white group border with group name alligned right.
     */
-    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, Colour c)
+    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, int offset, Colour c)
     {
         float posX = static_cast<float>(x) + padding;
         float posY = static_cast<float>(y) + padding;
@@ -405,7 +405,7 @@ protected:
         g.fillRoundedRectangle(rect, cornerSize);
 
         // draw group name text
-        int offset = 2 * static_cast<int>(cornerSize);
+        //int offset = 2 * static_cast<int>(cornerSize);
         g.setFont(headHeight * 0.85f);
         g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY),
             width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);

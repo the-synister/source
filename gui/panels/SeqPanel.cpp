@@ -439,7 +439,7 @@ void SeqPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "step sequencer", 0, 0,
-        this->getWidth(), this->getHeight(), 30.0f, 30.0f, 4.0f, 3.0f, SynthParams::stepSeqColour);
+        this->getWidth(), this->getHeight(), 27.0f, 30.0f, 4.0f, 3.0f, 50, SynthParams::stepSeqColour);
     drawPics(g, playModes, syncHost, triplets, dottedNotes);
     //[/UserPaint]
 }
@@ -472,7 +472,7 @@ void SeqPanel::resized()
     seqStep6->setBounds (652, 68, 40, 210);
     seqStep7->setBounds (692, 68, 40, 210);
     seqStep8->setBounds (732, 68, 40, 210);
-    seqPlay->setBounds (55, 7, 100, 23);
+    seqPlay->setBounds (55, 5, 100, 23);
     syncHost->setBounds (326, 53, 64, 30);
     labelButton1->setBounds (448, 42, 48, 24);
     labelButton2->setBounds (488, 42, 48, 24);
@@ -493,9 +493,9 @@ void SeqPanel::resized()
     labelSeqLength->setBounds (33, 149, 103, 20);
     labelSeqStepNum->setBounds (33, 63, 103, 20);
     triplets->setBounds (326, 87, 64, 30);
-    saveSeq->setBounds (170, 7, 100, 23);
-    loadSeq->setBounds (280, 7, 100, 23);
-    playModes->setBounds (328, 175, 64, 24);
+    saveSeq->setBounds (170, 5, 100, 23);
+    loadSeq->setBounds (280, 5, 100, 23);
+    playModes->setBounds (328, 177, 64, 24);
     dottedNotes->setBounds (326, 121, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -858,7 +858,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TEXTBUTTON name="play sequencer" id="4552dd6439420b59" memberName="seqPlay"
-              virtualName="" explicitFocusOrder="0" pos="55 7 100 23" bgColOff="ff9a9a9a"
+              virtualName="" explicitFocusOrder="0" pos="55 5 100 23" bgColOff="ff9a9a9a"
               bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="play"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
@@ -947,15 +947,15 @@ BEGIN_JUCER_METADATA
                 explicitFocusOrder="0" pos="326 87 64 30" buttonText="" connectedEdges="0"
                 needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
-              virtualName="" explicitFocusOrder="0" pos="170 7 100 23" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="170 5 100 23" bgColOff="ffffffff"
               textCol="ff808080" textColOn="ff808080" buttonText="save seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="load button" id="aa37b372c2030ee9" memberName="loadSeq"
-              virtualName="" explicitFocusOrder="0" pos="280 7 100 23" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="280 5 100 23" bgColOff="ffffffff"
               textCol="ff808080" textColOn="ff808080" buttonText="load seq"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="playModes" id="8b30775dcc59763b" memberName="playModes"
-          virtualName="Slider" explicitFocusOrder="0" pos="328 175 64 24"
+          virtualName="Slider" explicitFocusOrder="0" pos="328 177 64 24"
           thumbcol="ff564c43" trackcol="ffffffff" min="0" max="2" int="1"
           style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>

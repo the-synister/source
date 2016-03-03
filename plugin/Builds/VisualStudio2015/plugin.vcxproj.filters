@@ -3215,6 +3215,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\folding_array_closed.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\folding_array_open.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\delayReverse.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>

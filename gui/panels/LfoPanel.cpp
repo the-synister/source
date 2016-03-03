@@ -213,7 +213,7 @@ void LfoPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, lfo.name, 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, SynthParams::lfoColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, 50,SynthParams::lfoColour);
     drawPics(g, wave, lfoGain, tempoSyncSwitch, triplets, dottedNotes);
     //[/UserPaint]
 }

@@ -361,7 +361,7 @@ void OscPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, osc.name, 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, SynthParams::oscColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 40,SynthParams::oscColour);
 
     // draw waveform symbols
     drawWaves(g, waveformSwitch);

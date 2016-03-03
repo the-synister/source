@@ -16,6 +16,10 @@
             file="../gui/ModSourceBox.cpp"/>
       <FILE id="OT5koY" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
+        <FILE id="QWwUAp" name="folding_array_closed.png" compile="0" resource="1"
+              file="../png/folding_array_closed.png"/>
+        <FILE id="p5J5wq" name="folding_array_open.png" compile="0" resource="1"
+              file="../png/folding_array_open.png"/>
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="lyu2mA" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
