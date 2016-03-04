@@ -180,6 +180,8 @@ public:
             freq.setPrefix(s);
             tempSync.setPrefix(s);
             noteLength.setPrefix(s);
+            lfoTriplets.setPrefix(s);
+            lfoDottedLength.setPrefix(s);
             wave.setPrefix(s);
             fadeIn.setPrefix(s);
             freqModAmount1.setPrefix(s);

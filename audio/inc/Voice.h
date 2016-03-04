@@ -105,16 +105,24 @@ public:
         for (size_t l = 0; l < lfo.size(); ++l) {
             if (params.lfo[l].tempSync.getStep() == eOnOffToggle::eOn) {
 
+                float coeff = 1.0f;
+                if (params.lfo[l].lfoDottedLength.getStep() == eOnOffToggle::eOn) {
+                    coeff /= 1.5f;
+                }
+                if (params.lfo[l].lfoTriplets.getStep() == eOnOffToggle::eOn) {
+                    coeff /= (2.0f / 3.0f);
+                }
+
                 lfo[l].sine.phase = .5f*float_Pi;
                 lfo[l].square.phase = 0.f;
                 lfo[l].random.phase = 0.f;
 
                 lfo[l].sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
                 lfo[l].square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
                 lfo[l].random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
                 lfo[l].random.heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
             } else {
                 lfo[l].sine.phase = .5f*float_Pi;
@@ -371,12 +379,20 @@ protected:
             //Set the deltaPhase for realtime LFO Changes
             if (params.lfo[l].tempSync.getStep() == eOnOffToggle::eOn) {
 
+                float coeff = 1.0f;
+                if (params.lfo[l].lfoDottedLength.getStep() == eOnOffToggle::eOn) {
+                    coeff /= 1.5f;
+                }
+                if (params.lfo[l].lfoTriplets.getStep() == eOnOffToggle::eOn) {
+                    coeff /= (2.0f / 3.0f);
+                }
+
                 lfo[l].sine.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
                 lfo[l].square.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
                 lfo[l].random.phaseDelta = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm) /
-                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi;
+                    (60.f*sRate)*(params.lfo[l].noteLength.get() / 4.f)*2.f*float_Pi * coeff;
             }
             else 
             {
