@@ -19,8 +19,9 @@ public:
     , numSteps_(numSteps)
     {
         jassert(minval < maxval);
-        jassert(minval <= defaultval);
-        jassert(defaultval <= maxval);
+        // this is broken for ParamDb because minval and maxval are in the dB range, but defaultval is already transformed
+        //jassert(minval <= defaultval);
+        //jassert(defaultval <= maxval);
     }
     virtual ~Param() {}
 
