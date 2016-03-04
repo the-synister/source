@@ -29,7 +29,7 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(osc[i].coarse));
         addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[i].waveForm));
         addParameter(new HostParam<Param>(osc[i].pitchModAmount2));
-        addParameter(new HostParam<Param>(osc[i].vol));
+        addParameter(new HostParamLog<Param>(osc[i].vol));
         addParameter(new HostParam<Param>(osc[i].panDir));
         addParameter(new HostParam<Param>(osc[i].trngAmount));
         addParameter(new HostParam<Param>(osc[i].pulseWidth));
@@ -47,21 +47,22 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     for (int i = 0; i < 3; ++i) {
         addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo[i].wave));
-        addParameter(new HostParam<Param>(lfo[i].freq));
+        addParameter(new HostParamLog<Param>(lfo[i].freq));
         addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo[i].tempSync));
         addParameter(new HostParam<Param>(lfo[i].noteLength));
         addParameter(new HostParam<Param>(lfo[i].fadeIn));
     }
 
     for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(filter[i].lpCutoff));
-        addParameter(new HostParam<Param>(filter[i].hpCutoff));
+        addParameter(new HostParamLog<Param>(filter[i].lpCutoff));
+        addParameter(new HostParamLog<Param>(filter[i].hpCutoff));
         addParameter(new HostParam<Param>(filter[i].resonance));
         addParameter(new HostParam<Param>(filter[i].passtype));
     }
 
     addParameter(new HostParam<Param>(envVol[0].attack));
     addParameter(new HostParam<Param>(envVol[0].decay));
+    addParameter(new HostParam<ParamDb>(envVol[0].sustain));
     addParameter(new HostParam<Param>(envVol[0].release));
 
     addParameter(new HostParam<Param>(clippingFactor));

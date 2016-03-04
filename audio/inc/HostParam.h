@@ -71,3 +71,21 @@ protected:
 
     _par &param;
 };
+
+template<typename _par>
+class HostParamLog : public HostParam<_par> {
+public:
+    HostParamLog(_par &p) : HostParam(p) {}
+
+protected:
+    float engineToHost(float engineVal) const {
+        jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
+        return (log(engineVal) - log(param.getMin())) / (log(param.getMax()) - log(param.getMin()));
+    }
+    float hostToEngine(float hostVal) const {
+        jassert(hostVal >= 0.f && hostVal <= 1.f);
+        jassert(param.getNumSteps() == 0);
+
+        return exp(log(param.getMin()) + hostVal*(log(param.getMax()) - log(param.getMin())));
+    }
+};
