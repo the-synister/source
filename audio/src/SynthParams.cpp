@@ -202,7 +202,7 @@ SynthParams::EnvBase::EnvBase()
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", -96.f, 0.f, -6.f)
 {
 }
 

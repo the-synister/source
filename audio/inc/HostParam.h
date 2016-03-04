@@ -75,7 +75,7 @@ protected:
 template<typename _par>
 class HostParamLog : public HostParam<_par> {
 public:
-    HostParamLog(_par &p) : HostParam(p) {}
+    using HostParam<_par>::HostParam;
 
 protected:
     float engineToHost(float engineVal) const {

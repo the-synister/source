@@ -62,7 +62,7 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<Param>(envVol[0].attack));
     addParameter(new HostParam<Param>(envVol[0].decay));
-    addParameter(new HostParam<ParamDb>(envVol[0].sustain));
+    addParameter(new HostParam<Param>(envVol[0].sustain));
     addParameter(new HostParam<Param>(envVol[0].release));
 
     addParameter(new HostParam<Param>(clippingFactor));
