@@ -221,7 +221,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     gainModSrc2->addListener (this);
 
     addAndMakeVisible (panModAmount2 = new MouseOverKnob ("PanModAmount2"));
-    panModAmount2->setRange (0, 100, 0);
+    panModAmount2->setRange (0, 200, 0);
     panModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     panModAmount2->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     panModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -231,7 +231,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     panModAmount2->addListener (this);
 
     addAndMakeVisible (panModAmount1 = new MouseOverKnob ("PanModAmount1"));
-    panModAmount1->setRange (0, 100, 0);
+    panModAmount1->setRange (0, 200, 0);
     panModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     panModAmount1->setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     panModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -393,7 +393,7 @@ void OscPanel::resized()
     widthModSrc2->setColour(cID, widthModSrc2->findColour(cID).withAlpha(osc.shapeModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     trngModSrc1->setColour(cID, trngModSrc1->findColour(cID).withAlpha(osc.shapeModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     trngModSrc2->setColour(cID, trngModSrc2->findColour(cID).withAlpha(osc.shapeModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
-    
+
     panModSrc1->setColour(cID, panModSrc1->findColour(cID).withAlpha(osc.panModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     panModSrc2->setColour(cID, panModSrc2->findColour(cID).withAlpha(osc.panModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
 
@@ -774,13 +774,13 @@ BEGIN_JUCER_METADATA
   <SLIDER name="PanModAmount2" id="373f8321765bf923" memberName="panModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 58 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="100" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="200" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="PanModAmount1" id="3d939a1eb44dbbb0" memberName="panModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 34 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="100" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="200" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <COMBOBOX name="PanModSrc1" id="9c99fb5c7e8aa9ca" memberName="panModSrc1"
