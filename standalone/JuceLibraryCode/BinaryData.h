@@ -10,7 +10,7 @@
 namespace BinaryData
 {
     extern const char*   infoScreen_png;
-    const int            infoScreen_pngSize = 52739;
+    const int            infoScreen_pngSize = 54976;
 
     extern const char*   QUL_Logo_png;
     const int            QUL_Logo_pngSize = 82009;

@@ -87,7 +87,7 @@ void InfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    hyperlinkButton->setBounds (298, 304, 361, 20);
+    hyperlinkButton->setBounds (299, 228, 360, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -117,7 +117,7 @@ BEGIN_JUCER_METADATA
            mode="0"/>
   </BACKGROUND>
   <HYPERLINKBUTTON name="new hyperlink" id="996ba2dd79b0f075" memberName="hyperlinkButton"
-                   virtualName="" explicitFocusOrder="0" pos="298 304 361 20" tooltip="http://www.synister-thesynth.de"
+                   virtualName="" explicitFocusOrder="0" pos="299 228 360 24" tooltip="http://www.synister-thesynth.de"
                    textCol="ffffffff" buttonText="" connectedEdges="0" needsCallback="0"
                    radioGroupId="0" url="http://www.synister-thesynth.de"/>
 </JUCER_COMPONENT>
