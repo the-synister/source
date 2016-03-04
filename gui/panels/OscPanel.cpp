@@ -385,6 +385,20 @@ void OscPanel::paint (Graphics& g)
 void OscPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    pitchModSrc1->setColour(cID, pitchModSrc1->findColour(cID).withAlpha(osc.pitchModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    pitchModSrc2->setColour(cID, pitchModSrc2->findColour(cID).withAlpha(osc.pitchModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+
+    widthModSrc1->setColour(cID, widthModSrc1->findColour(cID).withAlpha(osc.shapeModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    widthModSrc2->setColour(cID, widthModSrc2->findColour(cID).withAlpha(osc.shapeModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    trngModSrc1->setColour(cID, trngModSrc1->findColour(cID).withAlpha(osc.shapeModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    trngModSrc2->setColour(cID, trngModSrc2->findColour(cID).withAlpha(osc.shapeModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    
+    panModSrc1->setColour(cID, panModSrc1->findColour(cID).withAlpha(osc.panModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    panModSrc2->setColour(cID, panModSrc2->findColour(cID).withAlpha(osc.panModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+
+    gainModSrc1->setColour(cID, gainModSrc1->findColour(cID).withAlpha(osc.gainModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    gainModSrc2->setColour(cID, gainModSrc2->findColour(cID).withAlpha(osc.gainModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     trngModSrc1->setBounds (207, 100, 40, 18);

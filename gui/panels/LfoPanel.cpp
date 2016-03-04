@@ -229,6 +229,11 @@ void LfoPanel::resized()
     dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
     triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
     tempoSyncSwitch->setToggleState(lfo.tempSync.getStep() == eOnOffToggle::eOn, dontSendNotification);
+
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    freqModSrc1->setColour(cID, freqModSrc1->findColour(cID).withAlpha(lfo.freqModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    freqModSrc2->setColour(cID, freqModSrc2->findColour(cID).withAlpha(lfo.freqModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    lfoGain->setColour(cID, lfoGain->findColour(cID).withAlpha(lfo.gainModSrc.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     freq->setBounds (10, 35, 64, 64);
@@ -297,11 +302,21 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == triplets)
     {
         //[UserButtonCode_triplets] -- add your button handler code here..
+        if (lfo.lfoTriplets.getStep() == eOnOffToggle::eOn)
+        {
+            lfo.lfoDottedLength.setStep(eOnOffToggle::eOff);
+            dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_triplets]
     }
     else if (buttonThatWasClicked == dottedNotes)
     {
         //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        if (lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn)
+        {
+            lfo.lfoTriplets.setStep(eOnOffToggle::eOff);
+            triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_dottedNotes]
     }
 
@@ -368,22 +383,17 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
 
 void LfoPanel::updateLfoSyncToggle()
 {
-    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
     freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
     noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-
-    freqModSrc1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
-    freqModSrc2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
-    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
-    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
 }
 
 void LfoPanel::updateModAmountKnobs()
 {
-    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount1->setEnabled(lfo.freqModSrc1.getStep() != eModSource::eNone);
     freqModAmount1->showBipolarValues(isUnipolar(lfo.freqModSrc1.getStep()));
-    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    freqModAmount2->setEnabled(lfo.freqModSrc2.getStep() != eModSource::eNone);
     freqModAmount2->showBipolarValues(isUnipolar(lfo.freqModSrc2.getStep()));
 }
 //[/MiscUserCode]

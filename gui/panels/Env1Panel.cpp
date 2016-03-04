@@ -240,6 +240,9 @@ void Env1Panel::paint (Graphics& g)
 void Env1Panel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    envSpeedModSrc1->setColour(cID, envSpeedModSrc1->findColour(cID).withAlpha(env.speedModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    envSpeedModSrc2->setColour(cID, envSpeedModSrc2->findColour(cID).withAlpha(env.speedModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     envSpeedModSrc2->setBounds (53, 172, 40, 18);

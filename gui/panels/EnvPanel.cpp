@@ -245,6 +245,9 @@ void EnvPanel::paint (Graphics& g)
 void EnvPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    envSpeedModSrc1->setColour(cID, envSpeedModSrc1->findColour(cID).withAlpha(envVol.speedModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    envSpeedModSrc2->setColour(cID, envSpeedModSrc2->findColour(cID).withAlpha(envVol.speedModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     attackTime->setBounds (8, 38, 64, 64);
