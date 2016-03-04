@@ -33,12 +33,6 @@ InfoPanel::InfoPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (hyperlinkButton = new HyperlinkButton (String::empty,
-                                                              URL ("http://www.synister-thesynth.de")));
-    hyperlinkButton->setTooltip (TRANS("http://www.synister-thesynth.de"));
-    hyperlinkButton->setButtonText (String::empty);
-    hyperlinkButton->setColour (HyperlinkButton::textColourId, Colours::white);
-
     drawable1 = Drawable::createFromImageData (BinaryData::infoScreen_png, BinaryData::infoScreen_pngSize);
 
     //[UserPreSize]
@@ -56,7 +50,6 @@ InfoPanel::~InfoPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    hyperlinkButton = nullptr;
     drawable1 = nullptr;
 
 
@@ -87,7 +80,6 @@ void InfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    hyperlinkButton->setBounds (299, 228, 360, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -116,10 +108,6 @@ BEGIN_JUCER_METADATA
     <IMAGE pos="0 0 685 555" resource="BinaryData::infoScreen_png" opacity="1"
            mode="0"/>
   </BACKGROUND>
-  <HYPERLINKBUTTON name="new hyperlink" id="996ba2dd79b0f075" memberName="hyperlinkButton"
-                   virtualName="" explicitFocusOrder="0" pos="299 228 360 24" tooltip="http://www.synister-thesynth.de"
-                   textCol="ffffffff" buttonText="" connectedEdges="0" needsCallback="0"
-                   radioGroupId="0" url="http://www.synister-thesynth.de"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

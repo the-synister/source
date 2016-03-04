@@ -56,7 +56,6 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<HyperlinkButton> hyperlinkButton;
     ScopedPointer<Drawable> drawable1;
 
 
