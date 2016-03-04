@@ -36,6 +36,14 @@ PluginAudioProcessor::PluginAudioProcessor()
     }
 
     for (int i = 0; i < 2; ++i) {
+        addParameter(new HostParamLog<Param>(filter[i].lpCutoff));
+        addParameter(new HostParamLog<Param>(filter[i].hpCutoff));
+        addParameter(new HostParam<Param>(filter[i].resonance));
+        addParameter(new HostParam<Param>(filter[i].passtype));
+    }
+
+#if 0
+    for (int i = 0; i < 2; ++i) {
         addParameter(new HostParam<Param>(env[i].attack));
         addParameter(new HostParam<Param>(env[i].decay));
         addParameter(new HostParam<Param>(env[i].sustain));
@@ -53,13 +61,6 @@ PluginAudioProcessor::PluginAudioProcessor()
         addParameter(new HostParam<Param>(lfo[i].fadeIn));
     }
 
-    for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParamLog<Param>(filter[i].lpCutoff));
-        addParameter(new HostParamLog<Param>(filter[i].hpCutoff));
-        addParameter(new HostParam<Param>(filter[i].resonance));
-        addParameter(new HostParam<Param>(filter[i].passtype));
-    }
-
     addParameter(new HostParam<Param>(envVol[0].attack));
     addParameter(new HostParam<Param>(envVol[0].decay));
     addParameter(new HostParam<Param>(envVol[0].sustain));
@@ -71,10 +72,12 @@ PluginAudioProcessor::PluginAudioProcessor()
     addParameter(new HostParam<Param>(delayDryWet));
     addParameter(new HostParam<Param>(delayTime));
 
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
+#endif
+
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
-    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
     for (size_t f = 0; f < filter.size(); ++f) {

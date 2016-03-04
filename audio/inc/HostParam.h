@@ -56,11 +56,11 @@ public:
     }
 
 protected:
-    float engineToHost(float engineVal) const {
+    virtual float engineToHost(float engineVal) const {
         jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
         return (engineVal - param.getMin()) / (param.getMax() - param.getMin());
     }
-    float hostToEngine(float hostVal) const {
+    virtual float hostToEngine(float hostVal) const {
         jassert(hostVal >= 0.f && hostVal <= 1.f);
         if(param.getNumSteps()==0) {
             return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
@@ -78,14 +78,14 @@ public:
     using HostParam<_par>::HostParam;
 
 protected:
-    float engineToHost(float engineVal) const {
+    float engineToHost(float engineVal) const override {
         jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
-        return (log(engineVal) - log(param.getMin())) / (log(param.getMax()) - log(param.getMin()));
+        return log(engineVal - param.getMin() + 1e-1f) / log(param.getMax() - param.getMin() + 1e-1f);
     }
-    float hostToEngine(float hostVal) const {
+    float hostToEngine(float hostVal) const override {
         jassert(hostVal >= 0.f && hostVal <= 1.f);
         jassert(param.getNumSteps() == 0);
 
-        return exp(log(param.getMin()) + hostVal*(log(param.getMax()) - log(param.getMin())));
+        return param.getMin() + exp(hostVal * log(param.getMax() - param.getMin() + 1e-1f)) - 1e-1f;
     }
 };
