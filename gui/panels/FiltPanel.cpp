@@ -302,6 +302,15 @@ void FiltPanel::paint (Graphics& g)
 void FiltPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    lpModSrc1->setColour(cID, lpModSrc1->findColour(cID).withAlpha(filter.lpCutModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    lpModSrc2->setColour(cID, lpModSrc2->findColour(cID).withAlpha(filter.lpCutModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+
+    hpModSrc1->setColour(cID, hpModSrc1->findColour(cID).withAlpha(filter.hpCutModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    hpModSrc2->setColour(cID, hpModSrc2->findColour(cID).withAlpha(filter.hpCutModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+
+    resModSrc1->setColour(cID, resModSrc1->findColour(cID).withAlpha(filter.resonanceModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    resModSrc2->setColour(cID, resModSrc2->findColour(cID).withAlpha(filter.resonanceModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     cutoffSlider->setBounds (110, 34, 64, 64);
