@@ -11,20 +11,13 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
-    <GROUP id="{AEEF7321-CE16-CBDC-E0D6-7EE28F7E0DCB}" name="png">
-      <FILE id="UfDVWz" name="synisterLogoSmall.png" compile="0" resource="1"
-            file="../png/synisterLogoSmall.png"/>
-      <FILE id="uUeMcX" name="Info_Screen.png" compile="0" resource="0" file="../png/Info_Screen.png"/>
-    </GROUP>
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <FILE id="DkzK23" name="ModSourceBox.cpp" compile="1" resource="0"
             file="../gui/ModSourceBox.cpp"/>
       <FILE id="OT5koY" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
-        <FILE id="QWwUAp" name="folding_array_closed.png" compile="0" resource="1"
-              file="../png/folding_array_closed.png"/>
-        <FILE id="p5J5wq" name="folding_array_open.png" compile="0" resource="1"
-              file="../png/folding_array_open.png"/>
+        <FILE id="UfDVWz" name="synisterLogoSmall.png" compile="0" resource="1"
+              file="../png/synisterLogoSmall.png"/>
         <FILE id="ghHsgm" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="lyu2mA" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>

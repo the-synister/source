@@ -1821,9 +1821,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\png\synisterLogoSmall.png"/>
-    <None Include="..\..\..\png\Info_Screen.png"/>
-    <None Include="..\..\..\png\folding_array_closed.png"/>
-    <None Include="..\..\..\png\folding_array_open.png"/>
     <None Include="..\..\..\png\delayReverse.png"/>
     <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
