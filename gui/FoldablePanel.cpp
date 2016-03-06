@@ -251,8 +251,6 @@ void FoldablePanel::getBackToPoint(const int y, int height)
     }
 }
 
-voi
-
 void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
 {
     if (SectionComponent* s = panelHolderComponent->getSection (sectionIndex)) {
