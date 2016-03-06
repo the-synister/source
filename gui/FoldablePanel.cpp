@@ -18,11 +18,12 @@ struct FoldablePanel::SectionComponent  : public Component
                       Component* const newPanel,
                       const Colour sectionColour,
                       const int sectionHeight,
-                      const bool sectionIsOpen)
+                      ParamStepped<eSectionState>& sectionState)
     : Component (sectionTitle),
     positionIndex(0),
+    _sectionState(sectionState),
     titleHeight (22),
-    isOpen (sectionIsOpen),
+    isOpen (sectionState.getStep() == eSectionState::eExpanded),
     _sectionHeight(sectionHeight + titleHeight),
     _sectionColour(sectionColour)
     {
@@ -75,6 +76,7 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
+            _sectionState.setStep(open ? eSectionState::eExpanded : eSectionState::eCollapsed);
             for (int i = 0; i < panels.size(); ++i ) {
                 Component* const panel = panels.getUnchecked(i);
                 panel->setVisible(open);
@@ -119,6 +121,7 @@ struct FoldablePanel::SectionComponent  : public Component
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
+    ParamStepped<eSectionState>& _sectionState;
     const Colour _sectionColour;
 
     JUCE_DECLARE_NON_COPYABLE (SectionComponent)
@@ -227,7 +230,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
                                 Component* const newPanel,
                                 const Colour sectionColour,
                                 const int sectionHeight,
-                                const bool shouldBeOpen,
+                                ParamStepped<eSectionState>& sectionState,
                                 const int indexToInsertAt)
 {
     jassert (sectionTitle.isNotEmpty());
@@ -236,7 +239,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
         repaint();
     }
 
-    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
+    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, sectionState));
     resized();
     updateLayout();
 }
@@ -247,6 +250,8 @@ void FoldablePanel::getBackToPoint(const int y, int height)
         viewport.setViewPosition(viewport.getX(), lastPosY + height);
     }
 }
+
+voi
 
 void FoldablePanel::addPanel(const int sectionIndex, Component* const newPanel)
 {

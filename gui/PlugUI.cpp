@@ -134,22 +134,22 @@ PlugUI::PlugUI (SynthParams &p)
 
 
     //[Constructor] You can add your own custom stuff here..
-    foldableComponent->addSection (TRANS("oscillators"), new OscPanel (params, 0), SynthParams::oscColour, 250, true, 0);
+    foldableComponent->addSection (TRANS("oscillators"), new OscPanel (params, 0), SynthParams::oscColour, 250, params.oscSection, 0);
     foldableComponent->addPanel(0, new OscPanel(params, 1));
     foldableComponent->addPanel(0, new OscPanel(params, 2));
-    foldableComponent->addSection (TRANS("envelopes"), new EnvPanel (params), SynthParams::envColour, 230, false, 1);
+    foldableComponent->addSection (TRANS("envelopes"), new EnvPanel (params), SynthParams::envColour, 230, params.envSection, 1);
     foldableComponent->addPanel(1, new Env1Panel(params, 0));
     foldableComponent->addPanel(1, new Env1Panel(params, 1));
-    foldableComponent->addSection (TRANS("LFOs"), new LfoPanel (params, 0), SynthParams::lfoColour, 175, false, 2);
+    foldableComponent->addSection (TRANS("LFOs"), new LfoPanel (params, 0), SynthParams::lfoColour, 175, params.lfoSection, 2);
     foldableComponent->addPanel(2, new LfoPanel(params, 1));
     foldableComponent->addPanel(2, new LfoPanel(params, 2));
-    foldableComponent->addSection (TRANS("filters"), new FiltPanel (params, 0), SynthParams::filterColour, 158, false, 3);
+    foldableComponent->addSection (TRANS("filters"), new FiltPanel (params, 0), SynthParams::filterColour, 158, params.filterSection, 3);
     foldableComponent->addPanel(3, new FiltPanel (params, 1));
-    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), SynthParams::fxColour, 178, false, 4);
+    foldableComponent->addSection (TRANS("FX"), new FxPanel (params), SynthParams::fxColour, 178, params.fxSection, 4);
     foldableComponent->addPanel(4, new ChorusPanel(params));
     foldableComponent->addPanel(4, new LoFiPanel(params));
     foldableComponent->addPanel(4, new ClippingPanel(params));
-    foldableComponent->addSection (TRANS("step sequencer"), new SeqPanel (params), SynthParams::stepSeqColour, 300, false, 5);
+    foldableComponent->addSection (TRANS("step sequencer"), new SeqPanel (params), SynthParams::stepSeqColour, 300, params.seqSection, 5);
 
     // set whole design from very parent GUI component
     lnf = new CustomLookAndFeel();

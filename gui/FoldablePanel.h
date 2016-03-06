@@ -12,6 +12,7 @@
 #define FOLDABLECOMPONENT_H_INCLUDED
 
 #include "JuceHeader.h"
+#include "SynthParams.h"
 
 class FoldablePanel : public Component
 {
@@ -26,7 +27,7 @@ public:
                      Component* const newPanel,
                      const Colour sectionColour,
                      const int sectionHeight,
-                     bool shouldSectionInitiallyBeOpen = true,
+                     ParamStepped<eSectionState>& sectionState,
                      int indexToInsertAt = -1);
 
 

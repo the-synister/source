@@ -9,6 +9,10 @@ namespace {
     static const char *onoffnames[] = {
         "Off", "On", nullptr
     };
+    
+    static const char *sectionStateNames[] = {
+        "Expanded", "Collapsed", nullptr
+    };
 
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
@@ -78,6 +82,13 @@ SynthParams::SynthParams()
     &freq, &masterAmp, &masterPan, &chorActivation, &chorActivation, &chorDelayLength, &chorDryWet, &chorModDepth, &chorModRate, &lowFiActivation, &nBitsLowFi, &clippingActivation, &clippingFactor}
     , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
+    // section states
+    , oscSection("oscillator section", "oscSection", "oscillator section", eSectionState::eExpanded, sectionStateNames)
+    , envSection("envelopes section", "envSection", "envelopes section", eSectionState::eCollapsed, sectionStateNames)
+    , lfoSection("lfo section", "lfoSection", "lfo section", eSectionState::eCollapsed, sectionStateNames)
+    , filterSection("filter section", "filterSection", "filter section", eSectionState::eCollapsed, sectionStateNames)
+    , fxSection("fx section", "fxSection", "fx section", eSectionState::eCollapsed, sectionStateNames)
+    , seqSection("sequencer section", "seqSection", "sequencer section", eSectionState::eCollapsed, sectionStateNames)
     , masterAmp("master amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, -6.f)
     , masterPan("master pan", "masterPan", "Master pan", "%", -100.f, 100.f, 0.f)
     , freq("master freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
@@ -136,7 +147,7 @@ SynthParams::SynthParams()
     , seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
     //Others
     , positionIndex(0)
-{
+{    
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
