@@ -99,7 +99,7 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         const float bpm = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm);
-        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
+        freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         for (size_t l = 0; l < lfo.size(); ++l) {
@@ -500,6 +500,8 @@ protected:
         }
     }
 private:
+    float freqHz;
+
     SynthParams &params;
     int totalVoiceSamples;
     std::array<Lfo, 3> lfo;
