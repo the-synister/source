@@ -254,6 +254,17 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     panModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     panModSrc2->addListener (this);
 
+    addAndMakeVisible (onOffSwitch = new Slider ("osc switch"));
+    onOffSwitch->setRange (0, 1, 1);
+    onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
+    onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    onOffSwitch->setColour (Slider::thumbColourId, Colour (0xffdadada));
+    onOffSwitch->setColour (Slider::trackColourId, Colour (0xff666666));
+    onOffSwitch->setColour (Slider::rotarySliderFillColourId, Colours::white);
+    onOffSwitch->setColour (Slider::rotarySliderOutlineColourId, Colour (0xfff20000));
+    onOffSwitch->setColour (Slider::textBoxBackgroundColourId, Colour (0xfffff4f4));
+    onOffSwitch->addListener (this);
+
 
     //[UserPreSize]
     registerSlider(gain, &osc.vol);
@@ -272,7 +283,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSlider(gainModAmount1, &osc.gainModAmount1);
     registerSlider(gainModAmount2, &osc.gainModAmount2);
 
-
+    registerSlider(onOffSwitch, &osc.oscActivation, std::bind(&OscPanel::onOffSwitchChanged, this));
+    
     // fill and register mod selection boxes
     fillModsourceBox(pitchModSrc1, false);
     fillModsourceBox(pitchModSrc2, false);
@@ -308,6 +320,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     registerSaturnSource(pulsewidth, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
     registerSaturnSource(trngAmount, widthModAmount1, &osc.shapeModSrc1, &osc.shapeModAmount1, 1);
     registerSaturnSource(trngAmount, widthModAmount2, &osc.shapeModSrc2, &osc.shapeModAmount2, 2);
+    
+    onOffSwitchChanged();
     //[/UserPreSize]
 
     setSize (267, 272);
@@ -359,6 +373,7 @@ OscPanel::~OscPanel()
     panModAmount1 = nullptr;
     panModSrc1 = nullptr;
     panModSrc2 = nullptr;
+    onOffSwitch = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -427,6 +442,7 @@ void OscPanel::resized()
     panModAmount1->setBounds (184, 34, 18, 18);
     panModSrc1->setBounds (207, 34, 40, 18);
     panModSrc2->setBounds (207, 58, 40, 18);
+    onOffSwitch->setBounds (14, 2, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -573,6 +589,11 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_panModAmount1] -- add your slider handling code here..
         //[/UserSliderCode_panModAmount1]
     }
+    else if (sliderThatWasMoved == onOffSwitch)
+    {
+        //[UserSliderCode_onOffSwitch] -- add your slider handling code here..
+        //[/UserSliderCode_onOffSwitch]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -581,6 +602,42 @@ void OscPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void OscPanel::onOffSwitchChanged()
+{
+
+    ftune1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngAmount->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    pulsewidth->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    ctune1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    waveformVisual->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    waveformSwitch->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    gain->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    pan->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    
+    pitchModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.pitchModSrc1.getStep() != eModSource::eNone);
+    pitchModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.pitchModSrc2.getStep() != eModSource::eNone);
+    widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone);
+    widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone);
+    gainModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc1.getStep() != eModSource::eNone);
+    gainModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc2.getStep() != eModSource::eNone);
+    panModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc1.getStep() != eModSource::eNone);
+    panModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc2.getStep() != eModSource::eNone);
+    
+    panModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    panModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    gainModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    gainModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    pitchModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    pitchModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+
+}
+
 void OscPanel::updateWFShapeControls()
 {
     eOscWaves eWaveformKey = osc.waveForm.getStep();
@@ -791,6 +848,12 @@ BEGIN_JUCER_METADATA
             virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 58 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
+  <SLIDER name="osc switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
+          trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
+          textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

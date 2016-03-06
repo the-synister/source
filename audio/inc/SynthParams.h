@@ -262,6 +262,8 @@ public:
         Param gainModAmount2; //!< gain mod amount
         ParamStepped<eModSource> gainModSrc1; //!< gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< gain mod source
+        
+        ParamStepped<eOnOffToggle> oscActivation; //!< toggle osc activation
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
