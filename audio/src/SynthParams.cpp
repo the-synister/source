@@ -40,7 +40,7 @@ const Colour SynthParams::lfoColour (0xff855050);
 const Colour SynthParams::filterColour (0xff5b7a47);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
-const Colour SynthParams::onOffSwitchEnabled (96, 192, 96);
+const Colour SynthParams::onOffSwitchEnabled (0xff5b7a47);
 const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
 const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
