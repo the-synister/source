@@ -136,10 +136,10 @@ void ChorusPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    chorDryWetSlider->setBounds (25, 35, 64, 64);
-    chorDepthSlider->setBounds (111, 35, 64, 64);
-    chorDelayLengthSlider->setBounds (25, 99, 64, 64);
-    chorModRateSlider->setBounds (113, 99, 64, 64);
+    chorDryWetSlider->setBounds (26, 35, 64, 64);
+    chorDepthSlider->setBounds (112, 35, 64, 64);
+    chorDelayLengthSlider->setBounds (26, 99, 64, 64);
+    chorModRateSlider->setBounds (114, 99, 64, 64);
     onOffSwitch->setBounds (30, 1, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -211,25 +211,25 @@ BEGIN_JUCER_METADATA
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 35 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="26 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 35 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="112 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="5" max="20" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 99 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="26 99 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.025000000000000001" max="0.080000000000000002"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="113 99 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="114 99 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.10000000000000001" max="1.5" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"

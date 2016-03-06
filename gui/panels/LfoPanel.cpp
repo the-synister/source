@@ -37,7 +37,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     addAndMakeVisible (freq = new MouseOverKnob ("LFO freq"));
     freq->setRange (0.01, 50, 0);
     freq->setSliderStyle (Slider::RotaryVerticalDrag);
-    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
+    freq->setTextBoxStyle (Slider::TextBoxBelow, false, 56, 20);
     freq->setColour (Slider::rotarySliderFillColourId, Colour (0xff855050));
     freq->setColour (Slider::textBoxTextColourId, Colours::white);
     freq->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -227,18 +227,18 @@ void LfoPanel::resized()
     tempoSyncSwitch->setToggleState(lfo.tempSync.getStep() == eOnOffToggle::eOn, dontSendNotification);
     //[/UserPreResize]
 
-    freq->setBounds (10, 35, 64, 64);
-    wave->setBounds (168, 58, 60, 24);
-    tempoSyncSwitch->setBounds (85, 93, 64, 30);
-    lfoFadeIn->setBounds (10, 97, 64, 64);
-    triplets->setBounds (175, 93, 64, 30);
-    noteLength->setBounds (79, 128, 85, 24);
-    freqModAmount1->setBounds (67, 35, 18, 18);
-    freqModAmount2->setBounds (67, 59, 18, 18);
-    freqModSrc1->setBounds (90, 35, 40, 18);
-    freqModSrc2->setBounds (90, 59, 40, 18);
-    lfoGain->setBounds (100, 6, 40, 18);
-    dottedNotes->setBounds (175, 126, 64, 30);
+    freq->setBounds (13, 38, 64, 64);
+    wave->setBounds (170, 57, 60, 24);
+    tempoSyncSwitch->setBounds (96, 95, 64, 30);
+    lfoFadeIn->setBounds (13, 99, 64, 64);
+    triplets->setBounds (186, 95, 64, 30);
+    noteLength->setBounds (90, 130, 85, 24);
+    freqModAmount1->setBounds (70, 41, 18, 18);
+    freqModAmount2->setBounds (70, 65, 18, 18);
+    freqModSrc1->setBounds (93, 41, 40, 18);
+    freqModSrc2->setBounds (93, 65, 40, 18);
+    lfoGain->setBounds (56, 7, 40, 18);
+    dottedNotes->setBounds (186, 128, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -401,63 +401,57 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="267" initialHeight="197">
   <BACKGROUND backgroundColour="ff855050"/>
   <SLIDER name="LFO freq" id="d136f7fae1b8db84" memberName="freq" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="10 35 64 64" rotarysliderfill="ff855050"
+          explicitFocusOrder="0" pos="13 38 64 64" rotarysliderfill="ff855050"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
-<<<<<<< HEAD
           min="0.01" max="50" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
-=======
-          min="0.010000000000000000208" max="50" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
-          textBoxHeight="20" skewFactor="1"/>
->>>>>>> master
+          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="wave switch" id="221421ebd522cd9a" memberName="wave" virtualName="Slider"
-          explicitFocusOrder="0" pos="168 58 60 24" thumbcol="ff855050"
+          explicitFocusOrder="0" pos="170 57 60 24" thumbcol="ff855050"
           trackcol="ffffffff" min="0" max="2" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="tempoSyncSwitch" id="79c4ab6638da99ef" memberName="tempoSyncSwitch"
-                virtualName="" explicitFocusOrder="0" pos="85 93 64 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="96 95 64 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="LFO Fade In" id="16de18984b3c12ef" memberName="lfoFadeIn"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="10 97 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="13 99 64 64"
           rotarysliderfill="ff855050" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
-                explicitFocusOrder="0" pos="175 93 64 30" txtcol="ffffffff" buttonText=""
+                explicitFocusOrder="0" pos="186 95 64 30" txtcol="ffffffff" buttonText=""
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <COMBOBOX name="note length" id="9cc1e82a498c26a7" memberName="noteLength"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="79 128 85 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="90 130 85 24"
             editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="Note Length" textWhenNoItems="(no choices)"/>
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 35 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="70 41 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="freqModAmount2" id="ae5c9ce50e2de7e1" memberName="freqModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="67 59 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="70 65 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 35 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="93 41 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="freqModSrc2" id="455e48a25414a454" memberName="freqModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="90 59 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="93 65 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lfoGain" id="3c7a245d6d4ecf90" memberName="lfoGain" virtualName="ModSourceBox"
-            explicitFocusOrder="0" pos="100 6 40 18" editable="0" layout="36"
+            explicitFocusOrder="0" pos="56 7 40 18" editable="0" layout="36"
             items="" textWhenNonSelected="No Mod" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
-                virtualName="" explicitFocusOrder="0" pos="175 126 64 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="186 128 64 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>

@@ -233,7 +233,7 @@ SynthParams::Filter::Filter()
     : passtype("Type", "FILTERType", "Type", eBiquadFilters::eLowpass, biquadFilters)
     , lpCutoff("low cut", "lpCutoff", "LP Cutoff", "Hz", 10.f, 20000.f, 20000.f)
     , hpCutoff("high cut", "hpCutoff", "HP Cutoff", "Hz", 10.f, 20000.f, 10.f)
-    , resonance("resonance", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
+    , resonance("reson.", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
     // ModAmounts and ModSources
     , lpModAmount1("Lc ModAmount1", "FILTERLcModAmount1", "Lc ModAmount 1", "oct", 0.f, 8.f, 4.f)
     , lpModAmount2("Lc ModAmnout2", "FILTERLcModAmount2", "Lc ModAmount 2", "oct", 0.f, 8.f, 4.f)

@@ -226,14 +226,14 @@ void FxPanel::resized()
     feedbackSlider->setBounds (173, 35, 64, 64);
     dryWetSlider->setBounds (17, 35, 64, 64);
     timeSlider->setBounds (95, 35, 64, 64);
-    syncToggle->setBounds (39, 100, 65, 30);
-    divisor->setBounds (26, 136, 85, 24);
+    syncToggle->setBounds (41, 100, 65, 30);
+    divisor->setBounds (28, 136, 85, 24);
     cutoffSlider->setBounds (251, 35, 64, 64);
-    tripTggl->setBounds (135, 100, 65, 30);
-    filtTggl->setBounds (232, 136, 65, 30);
-    revTggl->setBounds (232, 100, 65, 30);
+    tripTggl->setBounds (143, 100, 65, 30);
+    filtTggl->setBounds (238, 136, 65, 30);
+    revTggl->setBounds (238, 100, 65, 30);
     onOffSwitch->setBounds (30, 1, 40, 30);
-    dottedNotes->setBounds (135, 136, 65, 30);
+    dottedNotes->setBounds (143, 136, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -420,11 +420,11 @@ BEGIN_JUCER_METADATA
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="39 100 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="41 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="26 136 85 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="28 136 85 24"
             tooltip="Divisor" editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
@@ -434,15 +434,15 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="135 100 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="143 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="232 136 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="238 136 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="232 100 65 30" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="238 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
@@ -452,7 +452,7 @@ BEGIN_JUCER_METADATA
           max="1" int="1" style="LinearHorizontal" textBoxPos="NoTextBox"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
-                virtualName="" explicitFocusOrder="0" pos="135 136 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="143 136 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>

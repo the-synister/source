@@ -251,7 +251,7 @@ SeqPanel::SeqPanel (SynthParams &p)
 
     addAndMakeVisible (labelSeqSpeed = new Label ("new seq speed",
                                                   TRANS("step speed")));
-    labelSeqSpeed->setFont (Font (18.00f, Font::plain));
+    labelSeqSpeed->setFont (Font ("Bauhaus LightA", 18.00f, Font::plain));
     labelSeqSpeed->setJustificationType (Justification::centredLeft);
     labelSeqSpeed->setEditable (false, false, false);
     labelSeqSpeed->setColour (Label::textColourId, Colours::white);
@@ -260,7 +260,7 @@ SeqPanel::SeqPanel (SynthParams &p)
 
     addAndMakeVisible (labelSeqLength = new Label ("new seq length",
                                                    TRANS("step length")));
-    labelSeqLength->setFont (Font (18.00f, Font::plain));
+    labelSeqLength->setFont (Font ("Bauhaus LightA", 18.00f, Font::plain));
     labelSeqLength->setJustificationType (Justification::centredLeft);
     labelSeqLength->setEditable (false, false, false);
     labelSeqLength->setColour (Label::textColourId, Colours::white);
@@ -269,7 +269,7 @@ SeqPanel::SeqPanel (SynthParams &p)
 
     addAndMakeVisible (labelSeqStepNum = new Label ("new seq step num",
                                                     TRANS("numb. steps")));
-    labelSeqStepNum->setFont (Font (18.00f, Font::plain));
+    labelSeqStepNum->setFont (Font ("Bauhaus LightA", 18.00f, Font::plain));
     labelSeqStepNum->setJustificationType (Justification::centredLeft);
     labelSeqStepNum->setEditable (false, false, false);
     labelSeqStepNum->setColour (Label::textColourId, Colours::white);
@@ -482,10 +482,10 @@ void SeqPanel::resized()
     labelButton6->setBounds (648, 42, 48, 24);
     labelButton7->setBounds (688, 42, 48, 24);
     labelButton8->setBounds (728, 42, 48, 24);
-    genRandom->setBounds (104, 214, 176, 24);
-    randomSeq->setBounds (40, 231, 300, 50);
-    randMinLabel->setBounds (24, 207, 80, 36);
-    randMaxLabel->setBounds (280, 207, 80, 36);
+    genRandom->setBounds (104, 219, 176, 24);
+    randomSeq->setBounds (40, 236, 300, 50);
+    randMinLabel->setBounds (24, 212, 80, 36);
+    randMaxLabel->setBounds (280, 212, 80, 36);
     seqStepSpeed->setBounds (142, 102, 98, 28);
     seqStepLength->setBounds (142, 145, 98, 28);
     seqNumSteps->setBounds (142, 59, 98, 28);
@@ -898,21 +898,21 @@ BEGIN_JUCER_METADATA
               bgColOn="ffffff" textCol="ffffffff" textColOn="ff808080" buttonText="C4"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="104 214 176 24" bgColOff="ff564c43"
+              virtualName="" explicitFocusOrder="0" pos="104 219 176 24" bgColOff="ff564c43"
               textCol="ffffffff" textColOn="ffffffff" buttonText="generate sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
-          virtualName="" explicitFocusOrder="0" pos="40 231 300 50" thumbcol="ff808080"
+          virtualName="" explicitFocusOrder="0" pos="40 236 300 50" thumbcol="ff808080"
           trackcol="ff000000" rotarysliderfill="ffffffff" min="0" max="127"
           int="1" style="TwoValueHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="random min label" id="4207acbbe3318ad" memberName="randMinLabel"
-         virtualName="" explicitFocusOrder="0" pos="24 207 80 36" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="24 212 80 36" edTextCol="ff000000"
          edBkgCol="0" labelText="C-2" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="24"
          bold="1" italic="0" justification="36"/>
   <LABEL name="random max label" id="b241e58f05db2570" memberName="randMaxLabel"
-         virtualName="" explicitFocusOrder="0" pos="280 207 80 36" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="280 212 80 36" edTextCol="ff000000"
          edBkgCol="0" labelText="G8" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="24"
          bold="1" italic="0" justification="36"/>
@@ -931,17 +931,17 @@ BEGIN_JUCER_METADATA
   <LABEL name="new seq speed" id="af187074393a392a" memberName="labelSeqSpeed"
          virtualName="" explicitFocusOrder="0" pos="33 106 103 20" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="step speed" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq length" id="52118a8deceb9da1" memberName="labelSeqLength"
          virtualName="" explicitFocusOrder="0" pos="33 149 103 20" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="step length" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <LABEL name="new seq step num" id="c5b4cbd8722afa9c" memberName="labelSeqStepNum"
          virtualName="" explicitFocusOrder="0" pos="33 63 103 20" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="numb. steps" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="18" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="triplets" id="9c9e2393225a5b09" memberName="triplets" virtualName=""
                 explicitFocusOrder="0" pos="326 87 64 30" buttonText="" connectedEdges="0"

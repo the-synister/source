@@ -373,32 +373,32 @@ void OscPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    trngModSrc1->setBounds (207, 100, 40, 18);
-    widthModSrc1->setBounds (207, 101, 40, 18);
-    trngModSrc2->setBounds (207, 124, 40, 18);
-    widthModSrc2->setBounds (207, 125, 40, 18);
+    trngModSrc1->setBounds (207, 101, 40, 18);
+    widthModSrc1->setBounds (207, 103, 40, 18);
+    trngModSrc2->setBounds (207, 125, 40, 18);
+    widthModSrc2->setBounds (207, 127, 40, 18);
     ftune1->setBounds (8, 170, 64, 64);
-    pitchModAmount2->setBounds (65, 125, 18, 18);
-    trngAmount->setBounds (127, 100, 64, 64);
-    pulsewidth->setBounds (127, 100, 64, 64);
-    pitchModAmount1->setBounds (65, 101, 18, 18);
-    ctune1->setBounds (8, 100, 64, 64);
-    waveformVisual->setBounds (70, 162, 123, 72);
+    pitchModAmount2->setBounds (65, 127, 18, 18);
+    trngAmount->setBounds (127, 101, 64, 64);
+    pulsewidth->setBounds (127, 101, 64, 64);
+    pitchModAmount1->setBounds (65, 103, 18, 18);
+    ctune1->setBounds (8, 101, 64, 64);
+    waveformVisual->setBounds (69, 163, 123, 72);
     waveformSwitch->setBounds (195, 175, 40, 44);
-    widthModAmount1->setBounds (184, 101, 18, 18);
-    pitchModSrc1->setBounds (88, 101, 40, 18);
-    pitchModSrc2->setBounds (88, 125, 40, 18);
-    gain->setBounds (8, 34, 64, 64);
-    pan->setBounds (127, 34, 64, 64);
-    widthModAmount2->setBounds (184, 125, 18, 18);
-    gainModAmount2->setBounds (65, 60, 18, 18);
-    gainModAmount1->setBounds (65, 36, 18, 18);
-    gainModSrc1->setBounds (88, 36, 40, 18);
-    gainModSrc2->setBounds (88, 60, 40, 18);
-    panModAmount2->setBounds (184, 60, 18, 18);
-    panModAmount1->setBounds (184, 36, 18, 18);
-    panModSrc1->setBounds (207, 36, 40, 18);
-    panModSrc2->setBounds (207, 60, 40, 18);
+    widthModAmount1->setBounds (184, 103, 18, 18);
+    pitchModSrc1->setBounds (88, 103, 40, 18);
+    pitchModSrc2->setBounds (88, 127, 40, 18);
+    gain->setBounds (8, 36, 64, 64);
+    pan->setBounds (127, 36, 64, 64);
+    widthModAmount2->setBounds (184, 127, 18, 18);
+    gainModAmount2->setBounds (65, 64, 18, 18);
+    gainModAmount1->setBounds (65, 40, 18, 18);
+    gainModSrc1->setBounds (88, 40, 40, 18);
+    gainModSrc2->setBounds (88, 64, 40, 18);
+    panModAmount2->setBounds (184, 64, 18, 18);
+    panModAmount1->setBounds (184, 40, 18, 18);
+    panModSrc1->setBounds (207, 40, 40, 18);
+    panModSrc2->setBounds (207, 64, 40, 18);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -634,19 +634,19 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="267" initialHeight="272">
   <BACKGROUND backgroundColour="ff6c788c"/>
   <COMBOBOX name="TrngModSrc1" id="45d3fe360f9a8e44" memberName="trngModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 100 40 18"
-            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="WidthModSrc1" id="928cd04bb7b23ab9" memberName="widthModSrc1"
             virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 101 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="WidthModSrc1" id="928cd04bb7b23ab9" memberName="widthModSrc1"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 103 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="TrngModSrc2" id="7e124307f2c9f46b" memberName="trngModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 124 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 125 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="WidthModSrc2" id="455e48a25414a454" memberName="widthModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 125 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 127 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="fine tune 1" id="3c32cde7173ddbe6" memberName="ftune1"
@@ -656,37 +656,37 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount2" id="523b9024be39c1b" memberName="pitchModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 125 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 127 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 101 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Pulse Width" id="96badb5ea7640431" memberName="pulsewidth"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 101 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.01" max="0.98999999999999999"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="PitchModAmount1" id="29275125e377aaa" memberName="pitchModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 101 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 103 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="12" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="coarse tune 1" id="52a6628a22cee304" memberName="ctune1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 100 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 101 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-12" max="12" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="58"
           textBoxHeight="20" skewFactor="1"/>
   <GENERICCOMPONENT name="Waveform Visual" id="dc40e7918cb34428" memberName="waveformVisual"
-                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="70 162 123 72"
+                    virtualName="WaveformVisual" explicitFocusOrder="0" pos="69 163 123 72"
                     class="Component" params="osc.waveForm.getStep(), osc.pulseWidth.get(), osc.trngAmount.get()"/>
   <SLIDER name="Waveform Switch" id="df460155fcb1ed38" memberName="waveformSwitch"
           virtualName="" explicitFocusOrder="0" pos="195 175 40 44" thumbcol="ff6c788c"
@@ -694,73 +694,73 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="WidthModAmount1" id="ea500ea6791045c2" memberName="widthModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 101 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 103 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="oscPitchModSrc1" id="4e9e1857f51fc7f4" memberName="pitchModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 101 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 103 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="oscPitchModSrc2" id="58dc64c4649ad205" memberName="pitchModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 125 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 127 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="gain knob" id="da94529625060498" memberName="gain" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="8 34 64 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="8 36 64 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="-96" max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="pan knob" id="dd33a09584f4c2ff" memberName="pan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="127 34 64 64" rotarysliderfill="ff6c788c"
+          explicitFocusOrder="0" pos="127 36 64 64" rotarysliderfill="ff6c788c"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="-100" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="58" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="WidthModAmount2" id="ae5c9ce50e2de7e1" memberName="widthModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 125 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 127 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="GainModAmount2" id="93ff4adc6f243ee3" memberName="gainModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 60 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 64 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="96" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="GainModAmount1" id="6604fe537dac0d1e" memberName="gainModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 36 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="65 40 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="96" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <COMBOBOX name="GainModSrc1" id="66da971c3fe90ee6" memberName="gainModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 36 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 40 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="GainModSrc2" id="7fad32464e7c032" memberName="gainModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 60 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="88 64 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="PanModAmount2" id="373f8321765bf923" memberName="panModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 60 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 64 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="100" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="PanModAmount1" id="3d939a1eb44dbbb0" memberName="panModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 36 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="184 40 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="100" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <COMBOBOX name="PanModSrc1" id="9c99fb5c7e8aa9ca" memberName="panModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 36 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 40 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="PanModSrc2" id="48da71ae7732f1b" memberName="panModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 60 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 64 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>

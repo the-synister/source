@@ -1820,6 +1820,8 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\synisterLogoSmall.png"/>
+    <None Include="..\..\..\png\Info_Screen.png"/>
     <None Include="..\..\..\png\folding_array_closed.png"/>
     <None Include="..\..\..\png\folding_array_open.png"/>
     <None Include="..\..\..\png\delayReverse.png"/>

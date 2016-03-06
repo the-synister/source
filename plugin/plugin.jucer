@@ -11,6 +11,11 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="nqiOAf" name="plugin">
+    <GROUP id="{AEEF7321-CE16-CBDC-E0D6-7EE28F7E0DCB}" name="png">
+      <FILE id="UfDVWz" name="synisterLogoSmall.png" compile="0" resource="1"
+            file="../png/synisterLogoSmall.png"/>
+      <FILE id="uUeMcX" name="Info_Screen.png" compile="0" resource="0" file="../png/Info_Screen.png"/>
+    </GROUP>
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <FILE id="DkzK23" name="ModSourceBox.cpp" compile="1" resource="0"
             file="../gui/ModSourceBox.cpp"/>

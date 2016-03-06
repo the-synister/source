@@ -9,6 +9,8 @@
             file="../gui/ModSourceBox.cpp"/>
       <FILE id="Q0yjqR" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="Z6YY3w" name="synisterLogoSmall.png" compile="0" resource="1"
+              file="../png/synisterLogoSmall.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
         <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>

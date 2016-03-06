@@ -108,7 +108,7 @@ PlugUI::PlugUI (SynthParams &p)
     patchNameEditor->setPopupMenuEnabled (true);
     patchNameEditor->setText (String::empty);
 
-    drawable1 = Drawable::createFromImageData (BinaryData::synisterLogo_png, BinaryData::synisterLogo_pngSize);
+    drawable1 = Drawable::createFromImageData (BinaryData::synisterLogoSmall_png, BinaryData::synisterLogoSmall_pngSize);
 
     //[UserPreSize]
     registerSlider(freq, &params.freq);
@@ -180,7 +180,7 @@ void PlugUI::paint (Graphics& g)
     g.setColour (Colours::black);
     jassert (drawable1 != 0);
     if (drawable1 != 0)
-        drawable1->drawWithin (g, Rectangle<float> (318, 13, 210, 40),
+        drawable1->drawWithin (g, Rectangle<float> (294, 16, 255, 40),
                                RectanglePlacement::centred, 1.000f);
 
     //[UserPaint] Add your own custom painting code here..
@@ -197,8 +197,8 @@ void PlugUI::resized()
     savePresetButton->setBounds (118, 40, 65, 25);
     loadPresetButton->setBounds (118, 10, 65, 25);
     foldableComponent->setBounds (0, 72, 812, 576);
-    masterAmp->setBounds (222, 22, 100, 32);
-    masterPan->setBounds (521, 22, 80, 32);
+    masterAmp->setBounds (222, 24, 100, 32);
+    masterPan->setBounds (521, 24, 80, 32);
     patchNameEditor->setBounds (8, 24, 100, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -314,13 +314,13 @@ BEGIN_JUCER_METADATA
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 812 576"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="222 22 100 32" bkgcol="ffffff" thumbcol="ff808080"
+          explicitFocusOrder="0" pos="222 24 100 32" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="521 22 80 32" thumbcol="ff292929"
+          explicitFocusOrder="0" pos="521 24 80 32" thumbcol="ff292929"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"

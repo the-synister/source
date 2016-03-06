@@ -130,7 +130,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
     addAndMakeVisible (ladderLabel = new Label ("ladder filter label",
                                                 TRANS("ladder")));
-    ladderLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    ladderLabel->setFont (Font ("Bauhaus LightA", 17.00f, Font::plain));
     ladderLabel->setJustificationType (Justification::centredLeft);
     ladderLabel->setEditable (false, false, false);
     ladderLabel->setColour (Label::textColourId, Colours::white);
@@ -139,7 +139,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
     addAndMakeVisible (bandpassLabel = new Label ("bandpass filter label",
                                                   TRANS("bandpass")));
-    bandpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    bandpassLabel->setFont (Font ("Bauhaus LightA", 17.00f, Font::plain));
     bandpassLabel->setJustificationType (Justification::centredLeft);
     bandpassLabel->setEditable (false, false, false);
     bandpassLabel->setColour (Label::textColourId, Colours::white);
@@ -148,7 +148,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
     addAndMakeVisible (highpassLabel = new Label ("highpass filter label",
                                                   TRANS("highpass")));
-    highpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    highpassLabel->setFont (Font ("Bauhaus LightA", 17.00f, Font::plain));
     highpassLabel->setJustificationType (Justification::centredLeft);
     highpassLabel->setEditable (false, false, false);
     highpassLabel->setColour (Label::textColourId, Colours::white);
@@ -157,7 +157,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
 
     addAndMakeVisible (lowpassLabel = new Label ("lowpass filter label",
                                                  TRANS("lowpass\n")));
-    lowpassLabel->setFont (Font ("Bauhaus 93", 15.00f, Font::plain));
+    lowpassLabel->setFont (Font ("Bauhaus LightA", 17.00f, Font::plain));
     lowpassLabel->setJustificationType (Justification::centredLeft);
     lowpassLabel->setEditable (false, false, false);
     lowpassLabel->setColour (Label::textColourId, Colours::white);
@@ -297,26 +297,26 @@ void FiltPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    cutoffSlider->setBounds (120, 33, 64, 64);
-    resonanceSlider->setBounds (304, 33, 64, 64);
-    cutoffSlider2->setBounds (212, 33, 64, 64);
+    cutoffSlider->setBounds (127, 33, 64, 64);
+    resonanceSlider->setBounds (311, 33, 64, 64);
+    cutoffSlider2->setBounds (219, 33, 64, 64);
     passtype->setBounds (12, 46, 40, 88);
-    lpModAmount1->setBounds (120, 96, 18, 18);
-    lpModSrc1->setBounds (141, 96, 40, 18);
-    hpModSrc1->setBounds (233, 96, 40, 18);
-    lpModSrc2->setBounds (141, 119, 40, 18);
-    hpModSrc2->setBounds (233, 119, 40, 18);
-    resModSrc1->setBounds (325, 96, 40, 18);
-    resModSrc2->setBounds (325, 119, 40, 18);
-    lpModAmount2->setBounds (120, 119, 18, 18);
-    ladderLabel->setBounds (40, 42, 56, 24);
-    bandpassLabel->setBounds (40, 66, 72, 24);
-    highpassLabel->setBounds (40, 90, 72, 24);
-    lowpassLabel->setBounds (40, 114, 72, 24);
-    hpModAmount1->setBounds (212, 96, 18, 18);
-    hpModAmount2->setBounds (212, 119, 18, 18);
-    resModAmount1->setBounds (304, 96, 18, 18);
-    resModAmount2->setBounds (304, 119, 18, 18);
+    lpModAmount1->setBounds (127, 96, 18, 18);
+    lpModSrc1->setBounds (148, 96, 40, 18);
+    hpModSrc1->setBounds (240, 96, 40, 18);
+    lpModSrc2->setBounds (148, 119, 40, 18);
+    hpModSrc2->setBounds (240, 119, 40, 18);
+    resModSrc1->setBounds (332, 96, 40, 18);
+    resModSrc2->setBounds (332, 119, 40, 18);
+    lpModAmount2->setBounds (127, 119, 18, 18);
+    ladderLabel->setBounds (44, 42, 56, 24);
+    bandpassLabel->setBounds (44, 66, 72, 24);
+    highpassLabel->setBounds (44, 90, 72, 24);
+    lowpassLabel->setBounds (44, 114, 72, 24);
+    hpModAmount1->setBounds (219, 96, 18, 18);
+    hpModAmount2->setBounds (219, 119, 18, 18);
+    resModAmount1->setBounds (311, 96, 18, 18);
+    resModAmount2->setBounds (311, 119, 18, 18);
     onOffSwitch->setBounds (33, 1, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -496,19 +496,19 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="400" initialHeight="180">
   <BACKGROUND backgroundColour="ff5b7a47"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="120 33 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 33 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="10" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Resonance" id="858a131fc3b886bf" memberName="resonanceSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="304 33 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="311 33 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="212 33 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 33 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="10" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
@@ -519,76 +519,76 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lpModAmount1" id="2634056a966d88f4" memberName="lpModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="120 96 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 96 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="141 96 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 96 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="233 96 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="240 96 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lpModSrcBox2" id="6dae6bde5fbe8153" memberName="lpModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="141 119 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 119 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox2" id="f1f85630e066837c" memberName="hpModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="233 119 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="240 119 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="resModSrcBox1" id="733eefe1cee8bab3" memberName="resModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="325 96 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="332 96 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="resModSrcBox2" id="cf210285cf2d4ef" memberName="resModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="325 119 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="332 119 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="lpModAmount2" id="c0e4229cc3539fbe" memberName="lpModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="120 119 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 119 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <LABEL name="ladder filter label" id="26f319c896bbcef8" memberName="ladderLabel"
-         virtualName="" explicitFocusOrder="0" pos="40 42 56 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="44 42 56 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="ladder" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
+         fontsize="17" bold="0" italic="0" justification="33"/>
   <LABEL name="bandpass filter label" id="136829ecbbe3f920" memberName="bandpassLabel"
-         virtualName="" explicitFocusOrder="0" pos="40 66 72 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="44 66 72 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="bandpass" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
+         fontsize="17" bold="0" italic="0" justification="33"/>
   <LABEL name="highpass filter label" id="3ebea5764d8cff7e" memberName="highpassLabel"
-         virtualName="" explicitFocusOrder="0" pos="40 90 72 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="44 90 72 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="highpass" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
+         fontsize="17" bold="0" italic="0" justification="33"/>
   <LABEL name="lowpass filter label" id="e56ff6668718e91a" memberName="lowpassLabel"
-         virtualName="" explicitFocusOrder="0" pos="40 114 72 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="44 114 72 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="lowpass&#10;" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
+         fontsize="17" bold="0" italic="0" justification="33"/>
   <SLIDER name="hpModAmount1" id="97ce06faacb3a64" memberName="hpModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="212 96 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 96 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="hpModAmount2" id="1777cf92b5592562" memberName="hpModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="212 119 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 119 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="resModAmount1" id="2c0f8bd5976b18e5" memberName="resModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="304 96 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="311 96 18 18"
           rotarysliderfill="ffffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="resModAmount2" id="2d467fb2ef22f25b" memberName="resModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="304 119 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="311 119 18 18"
           rotarysliderfill="ffffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>

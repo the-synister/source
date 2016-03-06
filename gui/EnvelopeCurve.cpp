@@ -147,8 +147,24 @@ void EnvelopeCurve::paint (Graphics& g)
     g.setFillType(backgroundFill);
     g.fillAll();
 
+	const int width = getWidth();
+
+	Path grid;
+	//grid.startNewSubPath(0.0f, static_cast<float>(getHeight()/2));
+	//grid.lineTo(width, static_cast<float>(getHeight() / 2));
+	
+	grid.addLineSegment(Line< float >::Line(0.f, static_cast<float>(getHeight() / 2), width, static_cast<float>(getHeight() / 2)), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width/2), 0, static_cast<float>(width / 2), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width / 4), 0, static_cast<float>(width / 4), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width*3 / 4), 0, static_cast<float>(width*3 / 4), static_cast<float>(getHeight())), 1.f);
+
+	g.setColour(SynthParams::envColour);
+	g.setOpacity(.3f);
+	g.strokePath(grid, PathStrokeType(1.f));
+	
+
     Path curvePath;
-    const int width = getWidth();
+    
     setSamples();
     curvePath.startNewSubPath(0.0f, static_cast<float>(getHeight()));
 
@@ -158,6 +174,7 @@ void EnvelopeCurve::paint (Graphics& g)
 
     g.setColour(SynthParams::envelopeCurveLine);
     g.strokePath(curvePath, PathStrokeType(2.5f));
+	
 }
 
 void EnvelopeCurve::resized()

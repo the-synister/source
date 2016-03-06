@@ -5,6 +5,9 @@
     <Filter Include="plugin">
       <UniqueIdentifier>{98FF9CA0-02E8-5D5A-F182-E923E1BFA803}</UniqueIdentifier>
     </Filter>
+    <Filter Include="plugin\png">
+      <UniqueIdentifier>{2BCFE984-CE7A-3C37-FFAA-0BFE7DE8293F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="plugin\Gui">
       <UniqueIdentifier>{E1BCBC1C-A163-9876-D70B-F5372500C76A}</UniqueIdentifier>
     </Filter>
@@ -3215,6 +3218,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\synisterLogoSmall.png">
+      <Filter>plugin\png</Filter>
+    </None>
+    <None Include="..\..\..\png\Info_Screen.png">
+      <Filter>plugin\png</Filter>
+    </None>
     <None Include="..\..\..\png\folding_array_closed.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>

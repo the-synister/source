@@ -16,7 +16,7 @@ CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
     // set custom default font typeface
-    this->setDefaultSansSerifTypefaceName("Bauhaus 93");
+    this->setDefaultSansSerifTypefaceName("Bauhaus LightA");
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
