@@ -9,11 +9,12 @@
             file="../gui/ModSourceBox.cpp"/>
       <FILE id="Q0yjqR" name="ModSourceBox.h" compile="0" resource="0" file="../gui/ModSourceBox.h"/>
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="MZQndb" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
+        <FILE id="Dbndgz" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="Z6YY3w" name="synisterLogoSmall.png" compile="0" resource="1"
               file="../png/synisterLogoSmall.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
-        <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -32,7 +33,6 @@
               file="../png/Synister-Logo_block.png"/>
         <FILE id="mJAKsc" name="synisterLogo.png" compile="0" resource="1"
               file="../png/synisterLogo.png"/>
-        <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
         <FILE id="QdjsBI" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>

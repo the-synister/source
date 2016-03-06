@@ -1051,9 +1051,10 @@
 		FF0988F722220953888E9580 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_mac_Threads.mm"; path = "../../../juce/modules/juce_core/native/juce_mac_Threads.mm"; sourceTree = "SOURCE_ROOT"; };
 		FF2D252B78441F87A807BA8A = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Logger.h"; path = "../../../juce/modules/juce_core/logging/juce_Logger.h"; sourceTree = "SOURCE_ROOT"; };
 		0CAEB19C977F1AB15BFE4CF0 = {isa = PBXGroup; children = (
+					308F1BB9FCFABFDA6D26C1D9,
+					82137E2D0A67A9111C92E451,
 					1A56CA87F9C06CE1F3F8CAEC,
 					8CB6D3DAD0C1943401B7362A,
-					82137E2D0A67A9111C92E451,
 					CC95D25374DB8EC1F6618D5F,
 					7109C65E000B282AA344C5AD,
 					2B63857C5C1DF80A67DAA384,
@@ -1065,7 +1066,6 @@
 					5EB46AFA3107D8F9E746257D,
 					51709B514F31CF467D401EBB,
 					984A474D0EEFB9160BF027DD,
-					308F1BB9FCFABFDA6D26C1D9,
 					AAA2C06AB514A03AAFFF8D85,
 					283FED2B4820185D45B7931A,
 					667D495CE3ABAE1CABF3DC08, ); name = png; sourceTree = "<group>"; };

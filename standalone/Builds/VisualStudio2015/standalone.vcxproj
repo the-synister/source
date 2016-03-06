@@ -1792,9 +1792,10 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\tempoSync.png"/>
+    <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\synisterLogoSmall.png"/>
     <None Include="..\..\..\png\delayReverse.png"/>
-    <None Include="..\..\..\png\dottedNote.png"/>
     <None Include="..\..\..\png\lfoGain.png"/>
     <None Include="..\..\..\png\lfoSampleHold.png"/>
     <None Include="..\..\..\png\lfoSineWave.png"/>
@@ -1806,7 +1807,6 @@
     <None Include="..\..\..\png\seqUpDown.png"/>
     <None Include="..\..\..\png\Synister-Logo_block.png"/>
     <None Include="..\..\..\png\synisterLogo.png"/>
-    <None Include="..\..\..\png\tempoSync.png"/>
     <None Include="..\..\..\png\toggleOff.png"/>
     <None Include="..\..\..\png\toggleOn.png"/>
     <None Include="..\..\..\png\triplets.png"/>

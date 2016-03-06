@@ -3143,13 +3143,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\tempoSync.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\png\dottedNote.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\synisterLogoSmall.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\delayReverse.png">
-      <Filter>standalone\Gui\png</Filter>
-    </None>
-    <None Include="..\..\..\png\dottedNote.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\lfoGain.png">
@@ -3183,9 +3186,6 @@
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\synisterLogo.png">
-      <Filter>standalone\Gui\png</Filter>
-    </None>
-    <None Include="..\..\..\png\tempoSync.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
     <None Include="..\..\..\png\toggleOff.png">

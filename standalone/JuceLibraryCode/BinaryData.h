@@ -9,14 +9,17 @@
 
 namespace BinaryData
 {
+    extern const char*   tempoSync_png;
+    const int            tempoSync_pngSize = 439;
+
+    extern const char*   dottedNote_png;
+    const int            dottedNote_pngSize = 229;
+
     extern const char*   synisterLogoSmall_png;
     const int            synisterLogoSmall_pngSize = 1356;
 
     extern const char*   delayReverse_png;
     const int            delayReverse_pngSize = 362;
-
-    extern const char*   dottedNote_png;
-    const int            dottedNote_pngSize = 229;
 
     extern const char*   lfoGain_png;
     const int            lfoGain_pngSize = 525;
@@ -50,9 +53,6 @@ namespace BinaryData
 
     extern const char*   synisterLogo_png;
     const int            synisterLogo_pngSize = 2844;
-
-    extern const char*   tempoSync_png;
-    const int            tempoSync_pngSize = 439;
 
     extern const char*   toggleOff_png;
     const int            toggleOff_pngSize = 465;
