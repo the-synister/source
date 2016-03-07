@@ -75,17 +75,17 @@ protected:
 template<typename _par>
 class HostParamLog : public HostParam<_par> {
 public:
-    HostParamLog(_par &p, float midPoint) : HostParam(p) {
+    HostParamLog(_par &p, float midPoint) : HostParam<_par>(p) {
         skew = log(0.5f) / log((midPoint - p.getMin()) / (p.getMax() - p.getMin()));
         jassert(skew > 1.f || skew < 1.f);
-        jassert(param.getNumSteps() == 0);
+        jassert(p.getNumSteps() == 0);
     }
 
 protected:
     float skew;
 
     float engineToHost(float engineVal) const override {
-        jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
+        jassert(engineVal >= HostParam<_par>::param.getMin() && engineVal <= HostParam<_par>::param.getMax());
         float proportion = HostParam<_par>::engineToHost(engineVal);
         // copied from juce::Slider::valueToProportionOfLength
         return pow(proportion, skew);
