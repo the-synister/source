@@ -288,6 +288,11 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == tripTggl)
     {
         //[UserButtonCode_tripTggl] -- add your button handler code here..
+        if (params.delayTriplet.getStep() == eOnOffToggle::eOn)
+        {
+            params.delayDottedLength.setStep(eOnOffToggle::eOff);
+            dottedNotes->setToggleState(params.delayDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_tripTggl]
     }
     else if (buttonThatWasClicked == filtTggl)
@@ -303,6 +308,11 @@ void FxPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == dottedNotes)
     {
         //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        if (params.delayDottedLength.getStep() == eOnOffToggle::eOn)
+        {
+            params.delayTriplet.setStep(eOnOffToggle::eOff);
+            tripTggl->setToggleState(params.delayTriplet.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_dottedNotes]
     }
 

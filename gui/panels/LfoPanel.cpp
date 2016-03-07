@@ -87,7 +87,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     noteLength->addListener (this);
 
     addAndMakeVisible (freqModAmount1 = new MouseOverKnob ("freqModAmount1"));
-    freqModAmount1->setRange (0, 8, 0);
+    freqModAmount1->setRange (0, 10, 0);
     freqModAmount1->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount1->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount1->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -97,7 +97,7 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     freqModAmount1->addListener (this);
 
     addAndMakeVisible (freqModAmount2 = new MouseOverKnob ("freqModAmount2"));
-    freqModAmount2->setRange (0, 8, 0);
+    freqModAmount2->setRange (0, 10, 0);
     freqModAmount2->setSliderStyle (Slider::RotaryVerticalDrag);
     freqModAmount2->setTextBoxStyle (Slider::TextBoxBelow, false, 0, 0);
     freqModAmount2->setColour (Slider::rotarySliderFillColourId, Colours::white);
@@ -143,8 +143,12 @@ LfoPanel::LfoPanel (SynthParams &p, int lfoNumber)
     registerSaturnSource(freq, freqModAmount1, &lfo.freqModSrc1, &lfo.freqModAmount1, 1, MouseOverKnob::modAmountConversion::octToFreq);
     registerSaturnSource(freq, freqModAmount2, &lfo.freqModSrc2, &lfo.freqModAmount2, 2, MouseOverKnob::modAmountConversion::octToFreq);
 
+    fillModsourceBox(freqModSrc1, true);
+    fillModsourceBox(freqModSrc2, true);
     registerCombobox(freqModSrc1, &lfo.freqModSrc1, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
     registerCombobox(freqModSrc2, &lfo.freqModSrc2, {freq, nullptr, nullptr}, std::bind(&LfoPanel::updateModAmountKnobs, this));
+    fillModsourceBox(lfoGain, true);
+
     registerCombobox(lfoGain, &lfo.gainModSrc);
 
     registerNoteLength(noteLength, &lfo.noteLength);
@@ -225,6 +229,11 @@ void LfoPanel::resized()
     dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
     triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
     tempoSyncSwitch->setToggleState(lfo.tempSync.getStep() == eOnOffToggle::eOn, dontSendNotification);
+
+    int cID = ComboBox::ColourIds::backgroundColourId;
+    freqModSrc1->setColour(cID, freqModSrc1->findColour(cID).withAlpha(lfo.freqModSrc1.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    freqModSrc2->setColour(cID, freqModSrc2->findColour(cID).withAlpha(lfo.freqModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
+    lfoGain->setColour(cID, lfoGain->findColour(cID).withAlpha(lfo.gainModSrc.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
     freq->setBounds (13, 38, 64, 64);
@@ -293,11 +302,21 @@ void LfoPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == triplets)
     {
         //[UserButtonCode_triplets] -- add your button handler code here..
+        if (lfo.lfoTriplets.getStep() == eOnOffToggle::eOn)
+        {
+            lfo.lfoDottedLength.setStep(eOnOffToggle::eOff);
+            dottedNotes->setToggleState(lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_triplets]
     }
     else if (buttonThatWasClicked == dottedNotes)
     {
         //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        if (lfo.lfoDottedLength.getStep() == eOnOffToggle::eOn)
+        {
+            lfo.lfoTriplets.setStep(eOnOffToggle::eOff);
+            triplets->setToggleState(lfo.lfoTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_dottedNotes]
     }
 
@@ -364,22 +383,17 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
 
 void LfoPanel::updateLfoSyncToggle()
 {
-    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
     freq->setEnabled(!(lfo.tempSync.getStep() == eOnOffToggle::eOn));
     noteLength->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
-
-    freqModSrc1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
-    freqModSrc2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn);
-    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
-    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    dottedNotes->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
+    triplets->setEnabled(lfo.tempSync.getStep() == eOnOffToggle::eOn);
 }
 
 void LfoPanel::updateModAmountKnobs()
 {
-    freqModAmount1->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc1.getStep() != eModSource::eNone);
+    freqModAmount1->setEnabled(lfo.freqModSrc1.getStep() != eModSource::eNone);
     freqModAmount1->showBipolarValues(isUnipolar(lfo.freqModSrc1.getStep()));
-    freqModAmount2->setEnabled(lfo.tempSync.getStep() != eOnOffToggle::eOn && lfo.freqModSrc2.getStep() != eModSource::eNone);
+    freqModAmount2->setEnabled(lfo.freqModSrc2.getStep() != eModSource::eNone);
     freqModAmount2->showBipolarValues(isUnipolar(lfo.freqModSrc2.getStep()));
 }
 //[/MiscUserCode]
@@ -430,13 +444,13 @@ BEGIN_JUCER_METADATA
   <SLIDER name="freqModAmount1" id="ea500ea6791045c2" memberName="freqModAmount1"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="70 41 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="freqModAmount2" id="ae5c9ce50e2de7e1" memberName="freqModAmount2"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="70 65 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="0" max="10" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <COMBOBOX name="freqModSrc1" id="928cd04bb7b23ab9" memberName="freqModSrc1"

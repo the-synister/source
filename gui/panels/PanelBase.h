@@ -350,6 +350,15 @@ protected:
         return false;
     }
 
+
+    void fillModsourceBox(ComboBox* box, bool noInternal) {
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            if (noInternal && i >= eModSource::eLFO1) break;
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
+        }
+    }
+
+    
     void updateDirtyBoxes()
     {
         for (auto c2p : comboboxReg) {

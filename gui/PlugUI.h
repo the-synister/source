@@ -51,6 +51,21 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+
+    /*
+    * Derived small window class only to implement closeButtonPressed for now.
+      In this, we only need to set the window invisible if the close button was pressed.
+    */
+    class InfoWindow : public DocumentWindow
+    {
+    public:
+        InfoWindow(const String &name, Colour c, int requiredButtons, bool addToDesktop = true) : DocumentWindow(name, c, requiredButtons, addToDesktop) {}
+
+        ~InfoWindow() {}
+
+        virtual void closeButtonPressed() { this->setVisible(false); }
+    };
+
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -69,6 +84,7 @@ private:
     void textEditorFocusLost(TextEditor &editor);
 
     ScopedPointer<CustomLookAndFeel> lnf;
+    ScopedPointer<DocumentWindow> infoScreen;
     //[/UserVariables]
 
     //==============================================================================
@@ -80,7 +96,7 @@ private:
     ScopedPointer<MouseOverKnob> masterAmp;
     ScopedPointer<MouseOverKnob> masterPan;
     ScopedPointer<TextEditor> patchNameEditor;
-    ScopedPointer<Drawable> drawable1;
+    ScopedPointer<ImageButton> logoInfoButton;
 
 
     //==============================================================================

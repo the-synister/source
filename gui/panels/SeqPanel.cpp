@@ -651,6 +651,11 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == triplets)
     {
         //[UserButtonCode_triplets] -- add your button handler code here..
+        if (params.seqTriplets.getStep() == eOnOffToggle::eOn)
+        {
+            params.seqDottedLength.setStep(eOnOffToggle::eOff);
+            dottedNotes->setToggleState(params.seqDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_triplets]
     }
     else if (buttonThatWasClicked == saveSeq)
@@ -668,6 +673,11 @@ void SeqPanel::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == dottedNotes)
     {
         //[UserButtonCode_dottedNotes] -- add your button handler code here..
+        if (params.seqDottedLength.getStep() == eOnOffToggle::eOn)
+        {
+            params.seqTriplets.setStep(eOnOffToggle::eOff);
+            triplets->setToggleState(params.seqTriplets.getStep() == eOnOffToggle::eOn, dontSendNotification);
+        }
         //[/UserButtonCode_dottedNotes]
     }
 

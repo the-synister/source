@@ -96,11 +96,15 @@ PluginAudioProcessor::PluginAudioProcessor()
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
+
     for (size_t e = 0; e < env.size(); ++e) {
-        String boxName = String::formatted("env %u", e + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
+        String boxName = String::formatted("env %u", e + 2);
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
+        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
+    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
+
     for (size_t l = 0; l < lfo.size(); ++l) {
         String boxName = String::formatted("lfo %u", l + 1);
         globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
