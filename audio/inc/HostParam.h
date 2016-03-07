@@ -77,7 +77,7 @@ class HostParamLog : public HostParam<_par> {
 public:
     HostParamLog(_par &p, float midPoint) : HostParam(p) {
         skew = log(0.5f) / log((midPoint - p.getMin()) / (p.getMax() - p.getMin()));
-        jassert(skew > 0.f && skew < 1.f);
+        jassert(skew > 1.f || skew < 1.f);
         jassert(param.getNumSteps() == 0);
     }
 

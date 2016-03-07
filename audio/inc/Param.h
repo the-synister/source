@@ -123,8 +123,11 @@ public:
     {}
 
     virtual void setUI(float f, bool notifyHost = true) override {
-        if (fromDb(f) >= min_ && fromDb(f) <= max_) set(fromDb(f));
-        else set(default_);
+        if (f >= min_ && f <= max_) {
+            set(fromDb(f));
+        } else {
+            jassert(false);
+        }
         if (notifyHost) listener.call(&Listener::paramUIChanged);
     }
     virtual float getUI() const override { return toDb(get()); }
