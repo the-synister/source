@@ -185,24 +185,23 @@ SynthParams::Osc::Osc()
 }
 
 SynthParams::EnvBase::EnvBase()
-    : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-    , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-    , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
-    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
-    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-    , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+    : attack("att.", "envAttack", "attack", "s", 0.001f, 5.0f, 0.005f)
+    , release("rel.", "envRelease", "release", "s", 0.001f, 5.0f, 0.5f)
+    , attackShape("Attack Shape", "envAttackShape", "attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
+    , decay("dec.", "envDecay", "decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 8.f, 4.f)
-    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 8.f, 4.f)
-    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 8.f, 4.f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 8.f, 4.f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "sustain", "dB", -96.f, 0.f, -6.f)
 {
 }
 
