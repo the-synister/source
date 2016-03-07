@@ -81,7 +81,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     pitchModAmount2->setColour (Slider::textBoxOutlineColourId, Colour (0x00ffffff));
     pitchModAmount2->addListener (this);
 
-    addAndMakeVisible (trngAmount = new MouseOverKnob ("Osc1 Triangle Amount"));
+    addAndMakeVisible (trngAmount = new MouseOverKnob ("Triangle Amount"));
     trngAmount->setRange (0, 1, 0);
     trngAmount->setSliderStyle (Slider::RotaryVerticalDrag);
     trngAmount->setTextBoxStyle (Slider::TextBoxBelow, false, 58, 20);
@@ -254,7 +254,7 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     panModSrc2->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     panModSrc2->addListener (this);
 
-    addAndMakeVisible (onOffSwitch = new Slider ("osc switch"));
+    addAndMakeVisible (onOffSwitch = new Slider ("switch"));
     onOffSwitch->setRange (0, 1, 1);
     onOffSwitch->setSliderStyle (Slider::LinearHorizontal);
     onOffSwitch->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
@@ -295,8 +295,8 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     fillModsourceBox(widthModSrc2, false);
     fillModsourceBox(trngModSrc1, false);
     fillModsourceBox(trngModSrc2, false);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(trngModSrc1, &osc.shapeModSrc1, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
     registerCombobox(trngModSrc2, &osc.shapeModSrc2, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
 
@@ -606,8 +606,8 @@ void OscPanel::onOffSwitchChanged()
 {
 
     ftune1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    trngAmount->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    pulsewidth->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngAmount->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSaw);
+    pulsewidth->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
     ctune1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     waveformVisual->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     waveformSwitch->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
@@ -618,17 +618,17 @@ void OscPanel::onOffSwitchChanged()
     pitchModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.pitchModSrc2.getStep() != eModSource::eNone);
     widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone);
     widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone);
-    gainModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc1.getStep() != eModSource::eNone);
-    gainModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc2.getStep() != eModSource::eNone);
-    panModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc1.getStep() != eModSource::eNone);
-    panModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc2.getStep() != eModSource::eNone);
+    gainModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc1.getStep() != eModSource::eNone);
+    gainModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc2.getStep() != eModSource::eNone);
+    panModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc1.getStep() != eModSource::eNone);
+    panModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc2.getStep() != eModSource::eNone);
     
     panModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     panModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     gainModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     gainModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     pitchModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
@@ -646,8 +646,8 @@ void OscPanel::updateWFShapeControls()
     widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
 
-    trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
     trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
@@ -746,7 +746,7 @@ BEGIN_JUCER_METADATA
           textboxoutline="ffffff" min="0" max="48" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
-  <SLIDER name="Osc1 Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
+  <SLIDER name="Triangle Amount" id="d81a0f8c69078b3c" memberName="trngAmount"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 100 64 64"
           rotarysliderfill="ff6c788c" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
@@ -848,7 +848,7 @@ BEGIN_JUCER_METADATA
             virtualName="ModSourceBox" explicitFocusOrder="0" pos="207 58 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
-  <SLIDER name="osc switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
+  <SLIDER name="switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
           virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"

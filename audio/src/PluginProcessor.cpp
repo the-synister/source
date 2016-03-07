@@ -24,56 +24,65 @@ PluginAudioProcessor::PluginAudioProcessor()
     , lowFi(*this)
     , synth(midiState)
 {
-    for (int i = 0; i < 3; ++i) {
+    for (size_t i = 0; i < osc.size(); ++i) {
         addParameter(new HostParam<Param>(osc[i].fine));
         addParameter(new HostParam<Param>(osc[i].coarse));
         addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[i].waveForm));
-        addParameter(new HostParam<Param>(osc[i].pitchModAmount2));
-        addParameter(new HostParam<Param>(osc[i].vol));
+        //! \todo midpoint copied from UI, should be refactored
+        addParameter(new HostParamLog<Param>(osc[i].vol, -6.f));
         addParameter(new HostParam<Param>(osc[i].panDir));
         addParameter(new HostParam<Param>(osc[i].trngAmount));
         addParameter(new HostParam<Param>(osc[i].pulseWidth));
     }
 
-    for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(env[i].attack));
-        addParameter(new HostParam<Param>(env[i].decay));
-        addParameter(new HostParam<Param>(env[i].sustain));
-        addParameter(new HostParam<Param>(env[i].release));
-        addParameter(new HostParam<Param>(env[i].attackShape));
-        addParameter(new HostParam<Param>(env[i].decayShape));
-        addParameter(new HostParam<Param>(env[i].releaseShape));
+    addParameter(new HostParamLog<Param>(envVol[0].attack, 1.2f));
+    addParameter(new HostParamLog<Param>(envVol[0].decay, 1.2f));
+    addParameter(new HostParamLog<Param>(envVol[0].sustain, -18.f));
+    addParameter(new HostParamLog<Param>(envVol[0].release, 1.2f));
+
+    for (size_t i = 0; i < env.size(); ++i) {
+        addParameter(new HostParamLog<Param>(env[i].attack, 1.2f));
+        addParameter(new HostParamLog<Param>(env[i].decay, 1.2f));
+        addParameter(new HostParamLog<Param>(env[i].sustain, .8f));
+        addParameter(new HostParamLog<Param>(env[i].release, 1.2f));
     }
 
-    for (int i = 0; i < 3; ++i) {
+    for (size_t i = 0; i < lfo.size(); ++i) {
         addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo[i].wave));
-        addParameter(new HostParam<Param>(lfo[i].freq));
-        addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo[i].tempSync));
-        addParameter(new HostParam<Param>(lfo[i].noteLength));
-        addParameter(new HostParam<Param>(lfo[i].fadeIn));
+        addParameter(new HostParamLog<Param>(lfo[i].freq, 1.f));
+        addParameter(new HostParamLog<Param>(lfo[i].fadeIn, 1.f));
     }
 
-    for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(filter[i].lpCutoff));
-        addParameter(new HostParam<Param>(filter[i].hpCutoff));
+    for (size_t i = 0; i < filter.size(); ++i) {
+        addParameter(new HostParamLog<Param>(filter[i].lpCutoff, 1e3f));
+        addParameter(new HostParamLog<Param>(filter[i].hpCutoff, 1e3f));
         addParameter(new HostParam<Param>(filter[i].resonance));
         addParameter(new HostParam<Param>(filter[i].passtype));
     }
 
-    addParameter(new HostParam<Param>(envVol[0].attack));
-    addParameter(new HostParam<Param>(envVol[0].decay));
-    addParameter(new HostParam<Param>(envVol[0].release));
+    
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(delayActivation));
+    addParameter(new HostParam<Param>(delayDryWet));
+    addParameter(new HostParamLog<Param>(delayTime, 500.f));
+    addParameter(new HostParam<Param>(delayFeedback));
+    addParameter(new HostParamLog<Param>(delayCutoff, 2e3f));
 
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(chorActivation));
+    addParameter(new HostParam<Param>(chorDryWet));
+    addParameter(new HostParam<Param>(chorModDepth));
+    addParameter(new HostParam<Param>(chorDelayLength));
+    addParameter(new HostParam<Param>(chorModRate));
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
+    addParameter(new HostParam<Param>(nBitsLowFi));
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(clippingActivation));
     addParameter(new HostParam<Param>(clippingFactor));
 
-    addParameter(new HostParam<Param>(delayFeedback));
-    addParameter(new HostParam<Param>(delayDryWet));
-    addParameter(new HostParam<Param>(delayTime));
 
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
-    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
     for (size_t f = 0; f < filter.size(); ++f) {

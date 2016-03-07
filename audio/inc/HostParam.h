@@ -56,11 +56,11 @@ public:
     }
 
 protected:
-    float engineToHost(float engineVal) const {
+    virtual float engineToHost(float engineVal) const {
         jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
         return (engineVal - param.getMin()) / (param.getMax() - param.getMin());
     }
-    float hostToEngine(float hostVal) const {
+    virtual float hostToEngine(float hostVal) const {
         jassert(hostVal >= 0.f && hostVal <= 1.f);
         if(param.getNumSteps()==0) {
             return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
@@ -70,4 +70,32 @@ protected:
     }
 
     _par &param;
+};
+
+template<typename _par>
+class HostParamLog : public HostParam<_par> {
+public:
+    HostParamLog(_par &p, float midPoint) : HostParam<_par>(p) {
+        skew = log(0.5f) / log((midPoint - p.getMin()) / (p.getMax() - p.getMin()));
+        jassert(skew > 1.f || skew < 1.f);
+        jassert(p.getNumSteps() == 0);
+    }
+
+protected:
+    float skew;
+
+    float engineToHost(float engineVal) const override {
+        jassert(engineVal >= HostParam<_par>::param.getMin() && engineVal <= HostParam<_par>::param.getMax());
+        float proportion = HostParam<_par>::engineToHost(engineVal);
+        // copied from juce::Slider::valueToProportionOfLength
+        return pow(proportion, skew);
+    }
+    float hostToEngine(float hostVal) const override {
+        jassert(hostVal >= 0.f && hostVal <= 1.f);
+        // copied from juce::Slider::proportionOfLengthToValue
+        if (hostVal > 0.f) {
+            hostVal = exp(log(hostVal) / skew);
+        }
+        return HostParam<_par>::hostToEngine(hostVal);
+    }
 };
