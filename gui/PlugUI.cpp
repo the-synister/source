@@ -113,8 +113,8 @@ PlugUI::PlugUI (SynthParams &p)
     logoInfoButton->setButtonText (String::empty);
     logoInfoButton->addListener (this);
 
-    logoInfoButton->setImages (false, false, true,
-                               ImageCache::getFromMemory (BinaryData::synisterLogoSmall_png, BinaryData::synisterLogoSmall_pngSize), 1.000f,Colours::transparentBlack,
+    logoInfoButton->setImages (false, true, true,
+                               ImageCache::getFromMemory (BinaryData::synisterLogoSmall_png, BinaryData::synisterLogoSmall_pngSize), 1.000f, Colour (0x00ffffff),
                                ImageCache::getFromMemory (BinaryData::synisterLogoSmall_png, BinaryData::synisterLogoSmall_pngSize), 1.000f, Colours::white,
                                ImageCache::getFromMemory (BinaryData::synisterLogoSmall_png, BinaryData::synisterLogoSmall_pngSize), 1.000f, Colours::white);
 
@@ -213,7 +213,7 @@ void PlugUI::resized()
     masterAmp->setBounds (222, 24, 100, 32);
     masterPan->setBounds (521, 24, 80, 32);
     patchNameEditor->setBounds (8, 24, 100, 24);
-    logoInfoButton->setBounds (294, 6, 255, 60);
+    logoInfoButton->setBounds (345, 16, 153, 40);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -349,11 +349,11 @@ BEGIN_JUCER_METADATA
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <IMAGEBUTTON name="logo info button" id="a24de2ae6a78130c" memberName="logoInfoButton"
-               virtualName="" explicitFocusOrder="0" pos="294 6 255 60" buttonText=""
+               virtualName="" explicitFocusOrder="0" pos="345 16 153 40" buttonText=""
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
-               resourceNormal="BinaryData::synisterLogo_png" opacityNormal="1"
-               colourNormal="fff0f0f0" resourceOver="BinaryData::synisterLogo_png"
-               opacityOver="1" colourOver="ffffffff" resourceDown="BinaryData::synisterLogo_png"
+               resourceNormal="BinaryData::synisterLogoSmall_png" opacityNormal="1"
+               colourNormal="ffffff" resourceOver="BinaryData::synisterLogoSmall_png"
+               opacityOver="1" colourOver="ffffffff" resourceDown="BinaryData::synisterLogoSmall_png"
                opacityDown="1" colourDown="ffffffff"/>
 </JUCER_COMPONENT>
 
