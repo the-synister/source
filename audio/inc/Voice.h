@@ -99,7 +99,7 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         const float bpm = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm);
-        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
+        freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         for (size_t l = 0; l < lfo.size(); ++l) {
@@ -237,6 +237,9 @@ public:
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override{
+        
+        const float sRate = static_cast<float>(getSampleRate());            //should be maybe global ... is also used in startNote() and renderModulation()
+
         // if voice active
         if (lfo[0].sine.isActive() || lfo[0].square.isActive() ||
             lfo[1].sine.isActive() || lfo[1].square.isActive() ||
@@ -249,6 +252,24 @@ public:
 
             // oscillators
             for (size_t o = 0; o < params.osc.size(); ++o) {
+
+                // oscillators phaseDelta and squareWidth / tiangleAmount update
+                switch (params.osc[o].waveForm.getStep()) {
+                case eOscWaves::eOscSquare:
+                {
+                    osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) *
+                        Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                    osc[o].square.width = params.osc[o].pulseWidth.get();
+                }
+                break;
+                case eOscWaves::eOscSaw:
+                {
+                    osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) *
+                        Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                    osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
+                }
+                break;
+                }
 
                 const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
                 const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
@@ -491,6 +512,8 @@ protected:
         }
     }
 private:
+    float freqHz;
+
     SynthParams &params;
     int totalVoiceSamples;
     std::array<Lfo, 3> lfo;

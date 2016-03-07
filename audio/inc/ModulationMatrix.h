@@ -276,7 +276,7 @@ inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSourc
                 // bi- to unipolar source -> mod amount [0, x] to [-x, x]
 
                 // find the middle
-                int middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
+                float middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
 
                 // transform
                 newModAmountValue = middle + (modAmountParam->getUI() / 2.f);
