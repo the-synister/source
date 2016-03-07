@@ -313,24 +313,24 @@ void FiltPanel::resized()
     resModSrc2->setColour(cID, resModSrc2->findColour(cID).withAlpha(filter.resonanceModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
-    cutoffSlider->setBounds (127, 33, 64, 64);
+    cutoffSlider->setBounds (219, 33, 64, 64);
     resonanceSlider->setBounds (311, 33, 64, 64);
-    cutoffSlider2->setBounds (219, 33, 64, 64);
+    cutoffSlider2->setBounds (127, 33, 64, 64);
     passtype->setBounds (12, 46, 40, 88);
-    lpModAmount1->setBounds (127, 96, 18, 18);
-    lpModSrc1->setBounds (148, 96, 40, 18);
-    hpModSrc1->setBounds (240, 96, 40, 18);
-    lpModSrc2->setBounds (148, 119, 40, 18);
-    hpModSrc2->setBounds (240, 119, 40, 18);
+    lpModAmount1->setBounds (219, 96, 18, 18);
+    lpModSrc1->setBounds (240, 96, 40, 18);
+    hpModSrc1->setBounds (148, 96, 40, 18);
+    lpModSrc2->setBounds (240, 119, 40, 18);
+    hpModSrc2->setBounds (148, 119, 40, 18);
     resModSrc1->setBounds (332, 96, 40, 18);
     resModSrc2->setBounds (332, 119, 40, 18);
-    lpModAmount2->setBounds (127, 119, 18, 18);
+    lpModAmount2->setBounds (219, 119, 18, 18);
     ladderLabel->setBounds (44, 42, 56, 24);
     bandpassLabel->setBounds (44, 66, 72, 24);
     highpassLabel->setBounds (44, 90, 72, 24);
     lowpassLabel->setBounds (44, 114, 72, 24);
-    hpModAmount1->setBounds (219, 96, 18, 18);
-    hpModAmount2->setBounds (219, 119, 18, 18);
+    hpModAmount1->setBounds (127, 96, 18, 18);
+    hpModAmount2->setBounds (127, 119, 18, 18);
     resModAmount1->setBounds (311, 96, 18, 18);
     resModAmount2->setBounds (311, 119, 18, 18);
     onOffSwitch->setBounds (33, 1, 40, 30);
@@ -511,7 +511,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="400" initialHeight="180">
   <BACKGROUND backgroundColour="ff5b7a47"/>
   <SLIDER name="Cutoff" id="f7fb929bf25ff4a4" memberName="cutoffSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 33 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 33 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="10" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
@@ -523,7 +523,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Cutoff2" id="113357b68931ad03" memberName="cutoffSlider2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 33 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 33 64 64"
           rotarysliderfill="ff5b7a47" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="10" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
@@ -534,24 +534,24 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="lpModAmount1" id="2634056a966d88f4" memberName="lpModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 96 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 96 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <COMBOBOX name="lpModSrcBox1" id="11f9848905955e67" memberName="lpModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 96 40 18"
-            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
             virtualName="ModSourceBox" explicitFocusOrder="0" pos="240 96 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="hpModSrcBox1" id="85c37cba161b4f29" memberName="hpModSrc1"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 96 40 18"
+            editable="0" layout="36" items="" textWhenNonSelected="No Mod"
+            textWhenNoItems="(no choices)"/>
   <COMBOBOX name="lpModSrcBox2" id="6dae6bde5fbe8153" memberName="lpModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 119 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="240 119 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="hpModSrcBox2" id="f1f85630e066837c" memberName="hpModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="240 119 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="148 119 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="resModSrcBox1" id="733eefe1cee8bab3" memberName="resModSrc1"
@@ -563,7 +563,7 @@ BEGIN_JUCER_METADATA
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="lpModAmount2" id="c0e4229cc3539fbe" memberName="lpModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 119 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 119 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
@@ -588,12 +588,12 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="17" bold="0" italic="0" justification="33"/>
   <SLIDER name="hpModAmount1" id="97ce06faacb3a64" memberName="hpModAmount1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 96 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 96 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
   <SLIDER name="hpModAmount2" id="1777cf92b5592562" memberName="hpModAmount2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="219 119 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="127 119 18 18"
           rotarysliderfill="ffffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="0" textBoxHeight="0"
           skewFactor="1"/>
