@@ -634,7 +634,7 @@ void OscPanel::onOffSwitchChanged()
     pitchModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     pitchModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     
-    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::oscColour : SynthParams::onOffSwitchDisabled));
 
 }
 

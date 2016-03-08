@@ -37,7 +37,7 @@ namespace {
 const Colour SynthParams::oscColour (0xff6c788c);
 const Colour SynthParams::envColour (0xffbfa65a);
 const Colour SynthParams::lfoColour (0xff855050);
-const Colour SynthParams::filterColour (0xff5b7a47);
+const Colour SynthParams::filterColour (0xff557144);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
 const Colour SynthParams::onOffSwitchEnabled (0xff557144);
@@ -57,7 +57,7 @@ SynthParams::SynthParams()
     &osc[1].fine, &osc[1].coarse, &osc[1].panDir,&osc[1].vol,&osc[1].trngAmount,&osc[1].pulseWidth,&osc[1].waveForm,&osc[1].pitchModAmount1, &osc[1].pitchModAmount2,&osc[1].pitchModSrc1, &osc[1].pitchModSrc2,
     &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2, &osc[1].oscActivation,
     &osc[2].fine, &osc[2].coarse, &osc[2].panDir,&osc[2].vol,&osc[2].trngAmount,&osc[2].pulseWidth,&osc[2].waveForm,&osc[2].pitchModAmount1, &osc[2].pitchModAmount2,&osc[2].pitchModSrc1, &osc[2].pitchModSrc2,
-    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[0].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2, &osc[2].oscActivation,
+    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[2].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2, &osc[2].oscActivation,
     //Envelopes Params
     &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModAmount1, &env[0].speedModAmount2, &env[0].speedModSrc1, &env[0].speedModSrc2,
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
@@ -179,9 +179,9 @@ SynthParams::Osc::Osc()
     , pitchModSrc2("PitchModSrc2", "OSCPitchModSrc2", "Pitch ModSource 2", eModSource::eNone, modsourcenames)
     , gainModAmount1("GainModAmount1", "OSCGainModAmount1", "Gain ModAmount 1", "dB", 0.f, 96.f, 48.0f)
     , gainModAmount2("GainModAmount2", "OSCGainModAmount2", "Gain ModAmount 2", "dB", 0.f, 96.f, 48.0f)
-    , gainModSrc1("GainModSrc1", "OSCGainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
-    , gainModSrc2("GainModSrc2", "OSCGainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
-    , oscActivation("Osc Activation", "oscActivation", "Oscillator Active", eOnOffToggle::eOn, onoffnames)
+    , gainModSrc1("GainModSrc1", "GainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
+    , gainModSrc2("GainModSrc2", "GainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , oscActivation("Activation", "Activation", "Active", eOnOffToggle::eOn, onoffnames)
 {
 }
 
