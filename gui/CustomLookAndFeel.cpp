@@ -429,7 +429,7 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
 {
     const int width = b.getWidth();
     const int height = b.getHeight();
-    const float cornerSize = 7.0f;
+    const float cornerSize = 5.0f;
     const float outlineThickness = isMouseOverButton ? 2.5f : 2.0f;
     const float halfThickness = outlineThickness * 0.5f;
 

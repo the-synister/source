@@ -207,13 +207,13 @@ void PlugUI::resized()
 
     freq->setBounds (712, 8, 80, 64);
     keyboard->setBounds (-1, 651, 812, 40);
-    savePresetButton->setBounds (118, 40, 65, 25);
-    loadPresetButton->setBounds (118, 10, 65, 25);
+    savePresetButton->setBounds (60, 14, 50, 20);
+    loadPresetButton->setBounds (8, 14, 50, 20);
     foldableComponent->setBounds (0, 72, 812, 576);
-    masterAmp->setBounds (222, 24, 100, 32);
-    masterPan->setBounds (521, 24, 80, 32);
-    patchNameEditor->setBounds (8, 24, 100, 24);
-    logoInfoButton->setBounds (345, 16, 153, 40);
+    masterAmp->setBounds (199, 24, 100, 32);
+    masterPan->setBounds (498, 24, 80, 32);
+    patchNameEditor->setBounds (8, 37, 102, 24);
+    logoInfoButton->setBounds (322, 16, 153, 40);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -322,34 +322,34 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="-1 651 812 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="118 40 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="60 14 50 20" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="save" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="118 10 65 25" bgColOff="ffffffff"
+              virtualName="" explicitFocusOrder="0" pos="8 14 50 20" bgColOff="ffffffff"
               textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 812 576"
                     class="FoldablePanel" params="&quot;foldablePanels&quot;"/>
   <SLIDER name="amp" id="3279e0342166e50f" memberName="masterAmp" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="222 24 100 32" bkgcol="ffffff" thumbcol="ff808080"
+          explicitFocusOrder="0" pos="199 24 100 32" bkgcol="ffffff" thumbcol="ff808080"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-96" max="12"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <SLIDER name="pan" id="d8f72bae093dfe35" memberName="masterPan" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="521 24 80 32" thumbcol="ff292929"
+          explicitFocusOrder="0" pos="498 24 80 32" thumbcol="ff292929"
           trackcol="ffffffff" rotarysliderfill="ff0000ff" textboxtext="ffffffff"
           textboxbkgd="ffffff" textboxoutline="ffffff" min="-100" max="100"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="0" textBoxHeight="0" skewFactor="1"/>
   <TEXTEDITOR name="new text editor" id="3f8916006abe85bf" memberName="patchNameEditor"
-              virtualName="" explicitFocusOrder="0" pos="8 24 100 24" initialText=""
+              virtualName="" explicitFocusOrder="0" pos="8 37 102 24" initialText=""
               multiline="0" retKeyStartsLine="0" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <IMAGEBUTTON name="logo info button" id="a24de2ae6a78130c" memberName="logoInfoButton"
-               virtualName="" explicitFocusOrder="0" pos="345 16 153 40" buttonText=""
+               virtualName="" explicitFocusOrder="0" pos="322 16 153 40" buttonText=""
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
                resourceNormal="BinaryData::synisterLogoSmall_png" opacityNormal="1"
                colourNormal="ffffff" resourceOver="BinaryData::synisterLogoSmall_png"

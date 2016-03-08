@@ -8,10 +8,24 @@ void WaveformVisual::paint(Graphics &g)
     g.setFillType(backgroundFill);
     g.fillAll();
 
+	const int width = getWidth();
+
+	Path grid;
+	//grid.startNewSubPath(0.0f, static_cast<float>(getHeight()/2));
+	//grid.lineTo(width, static_cast<float>(getHeight() / 2));
+
+	grid.addLineSegment(Line< float >::Line(0.f, static_cast<float>(getHeight() / 2), width, static_cast<float>(getHeight() / 2)), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width / 2), 0, static_cast<float>(width / 2), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width / 4), 0, static_cast<float>(width / 4), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >::Line(static_cast<float>(width * 3 / 4), 0, static_cast<float>(width * 3 / 4), static_cast<float>(getHeight())), 1.f);
+
+	g.setColour(SynthParams::oscColour);
+	g.setOpacity(.4f);
+	g.strokePath(grid, PathStrokeType(1.f));
+
     Path wavePath;
     const float centreY = getHeight() / 2.0f;
     const float amplitude = 0.4f;
-    const int width = getWidth();
     const float step = 4*float_Pi / width;
     wavePath.startNewSubPath(0, centreY);
 
