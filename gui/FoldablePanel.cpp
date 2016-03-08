@@ -115,6 +115,13 @@ struct FoldablePanel::SectionComponent  : public Component
     {
         return (isOpen ? _sectionHeight : titleHeight);
     }
+    
+    void updateOpennessState()
+    {
+        if (_sectionState.isUIDirty()) {
+            setOpen(_sectionState.getStep() == eSectionState::eExpanded);
+        }
+    }
 
     int positionIndex;
     OwnedArray<Component> panels;
@@ -128,9 +135,12 @@ struct FoldablePanel::SectionComponent  : public Component
 };
 
 //==============================================================================
-struct FoldablePanel::PanelHolderComponent  : public Component
+struct FoldablePanel::PanelHolderComponent  : public Component, private Timer
 {
-    PanelHolderComponent() {}
+    PanelHolderComponent()
+    {
+        startTimerHz(60);
+    }
 
     void paint (Graphics& g) override
     {
@@ -176,6 +186,14 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     SectionComponent* getSection (const int targetIndex) const noexcept
     {
         return sections.getUnchecked (targetIndex);
+    }
+    
+    void timerCallback() override
+    {
+        for (int i = 0; i < sections.size(); ++i) {
+            SectionComponent* const section = sections.getUnchecked(i);
+            section->updateOpennessState();
+        }
     }
 
     OwnedArray<SectionComponent> sections;
