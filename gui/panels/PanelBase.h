@@ -259,9 +259,12 @@ protected:
     //=======================================================================================================================================
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
-    void registerNoteLength(ComboBox* noteLengthBox, Param* p, const tHookFn hook = tHookFn())
+    void registerNoteLength(ComboBox* noteLengthBox, Param* divisor, Param* bar = nullptr, const tHookFn hook = tHookFn())
     {
-        noteLengthReg[noteLengthBox] = p;
+
+        noteLengthReg[noteLengthBox][0] = bar;
+        
+        noteLengthReg[noteLengthBox][1] = divisor;
 
         if (hook) {
             postUpdateHook[noteLengthBox] = hook;
@@ -275,7 +278,11 @@ protected:
         auto it = noteLengthReg.find(noteLengthThatWasChanged);
 
         if (it != noteLengthReg.end()) {
-            it->second->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
+            it->second[1]->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
+            
+            if (it->second[0] != nullptr) {
+                it->second[0]->setUI(noteLengthThatWasChanged->getText().substring(0, 1).getFloatValue());
+            }
 
             auto itHook = postUpdateHook.find(it->first);
             if (itHook != postUpdateHook.end()) {
@@ -291,8 +298,20 @@ protected:
     void updateDirtyNoteLength()
     {
         for (auto d2p : noteLengthReg) {
-            if (d2p.second->isUIDirty()) {
-                d2p.first->setText("1/" + String(d2p.second->getUI()));
+            if (d2p.second[1] != nullptr) {
+                if (d2p.second[0]->isUIDirty() || d2p.second[1]->isUIDirty()) {
+                    // get bar numbers
+                    int numBars = d2p.first->getNumItems() / 7; // 7 is the number of items pro bar
+                    // IDEA : New Param with the bar numbers and get that from there
+                    
+                   
+                }
+            } else {
+                if (d2p.second[0]->isUIDirty()) {
+                    String barNumber = d2p.second[0] == nullptr ? "1" : String(d2p.second[0]->getUI());
+                    
+                    d2p.first->setText(barNumber + "/" + String(d2p.second[1]->getUI()));
+                }
             }
 
             auto itHook = postUpdateHook.find(d2p.first);
@@ -432,7 +451,7 @@ protected:
     std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
-    std::map<ComboBox*, Param*> noteLengthReg;
+    std::map<ComboBox*, std::array<Param*, 2>> noteLengthReg;
     std::map<ComboBox*, Param*> dropDownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg; // 2 for each mod amount
     std::map<ComboBox*, std::array<MouseOverKnob*, 3>> saturnSourceReg; // there are up to 3, because of the ADR
