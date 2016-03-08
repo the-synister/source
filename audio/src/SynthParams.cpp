@@ -50,7 +50,7 @@ const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
 const Colour SynthParams::waveformLine (185, 189, 190);
 const Colour SynthParams::waveformBackground(85, 93, 104);
-const Colour SynthParams::otherModulation(180, 180, 180); // add more different colours
+const Colour SynthParams::otherModulation(150, 150, 150); // add more different colours
 
 SynthParams::SynthParams()
     : serializeParams{
