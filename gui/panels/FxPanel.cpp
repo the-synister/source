@@ -229,7 +229,7 @@ void FxPanel::paint (Graphics& g)
 void FxPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-    divisor->setText("1/" + String(static_cast<int>(params.delayDivisor.get())));
+    divisor->setText(String(static_cast<int>(params.delayDividend.get())) + "/" + String(static_cast<int>(params.delayDivisor.get())));
     dottedNotes->setToggleState(params.delayDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
     revTggl->setToggleState(params.delayReverse.getStep() == eOnOffToggle::eOn, dontSendNotification);
     syncToggle->setToggleState(params.delaySync.getStep() == eOnOffToggle::eOn, dontSendNotification);
@@ -442,7 +442,7 @@ BEGIN_JUCER_METADATA
           explicitFocusOrder="0" pos="95 35 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="41 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
@@ -456,7 +456,7 @@ BEGIN_JUCER_METADATA
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="40" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="143 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
