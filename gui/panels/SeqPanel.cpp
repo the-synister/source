@@ -755,7 +755,7 @@ void SeqPanel::drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedP
     g.drawImageWithin(upDownPic, centerX - 8, seqPlayMode->getY() - 17, 20, 15, RectanglePlacement::centred); // 17x13 -> 20x15
     g.drawImageWithin(randomPic, seqPlayMode->getX() + seqPlayMode->getWidth() + 2, centerY - 13, 15, 25, RectanglePlacement::centred);// 12x20 -> 15x25
 
-    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 32, 22, Justification::centred); // 34x23
     g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
     g.drawImageWithin(dotPic, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }

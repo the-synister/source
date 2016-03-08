@@ -376,7 +376,7 @@ void LfoPanel::drawPics(Graphics& g, ScopedPointer<Slider>& _waveformSwitch, Sco
     g.drawImageWithin(sampleHold, _waveformSwitch->getX() + _waveformSwitch->getWidth() + 2, centerY - 5, 14, 11, RectanglePlacement::centred);// 14x11
 
     g.drawImageWithin(gainSign, _gainBox->getX() - 19, _gainBox->getY() + _gainBox->getHeight() / 2 - 8, 17, 17, RectanglePlacement::centred); // 17x17
-    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 32, 22, Justification::centred); // 32x22
     g.drawImageWithin(tripletT->isEnabled() ? tripletPic : tripletPicOff, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
     g.drawImageWithin(dotT->isEnabled() ? dotPic : dotPicOff, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }
