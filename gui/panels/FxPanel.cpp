@@ -85,7 +85,7 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
-    cutoffSlider->setRange (1, 20000, 1);
+    cutoffSlider->setRange (40, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -383,7 +383,7 @@ void FxPanel::onOffSwitchChanged()
         dottedNotes->setEnabled(0);
 	}
 
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::fxColour : SynthParams::onOffSwitchDisabled));
 }
 
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT,
@@ -440,7 +440,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
+          textboxoutline="ffffff" min="40" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
           textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"

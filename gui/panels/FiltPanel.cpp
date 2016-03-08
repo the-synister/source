@@ -472,7 +472,7 @@ void FiltPanel::onOffSwitchChanged()
 	bandpassLabel->setColour(Label::textColourId, col);
 	highpassLabel->setColour(Label::textColourId, col);
 	lowpassLabel->setColour(Label::textColourId, col);
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::filterColour : SynthParams::onOffSwitchDisabled));
 }
 
 void FiltPanel::updateModAmountKnobs()

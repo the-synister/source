@@ -35,6 +35,7 @@ protected:
         sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
+            hook();
         }
         if (p->hasLabels()) {
             slider->setName(p->getUIString());
@@ -61,6 +62,7 @@ protected:
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;
+            hook();
         }
         slider->initTextBox();
     }
@@ -170,6 +172,7 @@ protected:
 
         if (hook) {
             postUpdateHook[toggle] = hook;
+            hook();
         }
     }
 
@@ -212,9 +215,12 @@ protected:
     void registerDropDowns(ComboBox* dropDown, Param* p, const tHookFn hook = tHookFn())
     {
         dropDownReg[dropDown] = p;
+        
+        dropDown->setText(String(p->getUI()));
 
         if (hook) {
             postUpdateHook[dropDown] = hook;
+            hook();
         }
     }
 
@@ -259,6 +265,7 @@ protected:
 
         if (hook) {
             postUpdateHook[noteLengthBox] = hook;
+            hook();
         }
     }
 
@@ -310,6 +317,7 @@ protected:
 
         if (hook) {
             postUpdateHook[box] = hook;
+            hook();
         }
     }
 

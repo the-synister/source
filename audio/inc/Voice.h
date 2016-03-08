@@ -99,7 +99,7 @@ public:
 
         const float sRate = static_cast<float>(getSampleRate());
         const float bpm = static_cast<float>(params.positionInfo[params.getGUIIndex()].bpm);
-        float freqHz = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
+        const float midiNoteFreq = static_cast<float>(MidiMessage::getMidiNoteInHertz(midiNoteNumber, params.freq.get()));
 
         // change the phases of both lfo waveforms, in case the user switches them during a note
         for (size_t l = 0; l < lfo.size(); ++l) {
@@ -148,20 +148,19 @@ public:
                           *(modSources[static_cast<int>(params.env[1].speedModSrc2.get())]), isUnipolar(params.env[1].speedModSrc1.getStep()), isUnipolar(params.env[1].speedModSrc2.getStep()));
 
         for (size_t o = 0; o < osc.size(); ++o) {
-
             switch (params.osc[o].waveForm.getStep()) {
                 case eOscWaves::eOscSquare:
                     osc[o].square.phase = 0.f;
-                    osc[o].square.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                    osc[o].square.phaseDelta = midiNoteFreq * Param::fromCent(params.osc[o].fine.get()) * 
                                                 Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                     osc[o].square.width = params.osc[o].pulseWidth.get();
-                break;
+                    break;
                 case eOscWaves::eOscSaw:
                     osc[o].saw.phase = 0.f;
-                    osc[o].saw.phaseDelta = freqHz * Param::fromCent(params.osc[o].fine.get()) * 
+                    osc[o].saw.phaseDelta = midiNoteFreq * Param::fromCent(params.osc[o].fine.get()) * 
                                                 Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
                     osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
-                break;
+                    break;
                 case eOscWaves::eOscNoise:
                     break;
             }
@@ -237,6 +236,10 @@ public:
     }
 
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override{
+        
+        const float sRate = static_cast<float>(getSampleRate());
+        const float midiNoteFreq = static_cast<float>(MidiMessage::getMidiNoteInHertz(SynthesiserVoice::getCurrentlyPlayingNote(), params.freq.get()));
+
         // if voice active
         if (lfo[0].sine.isActive() || lfo[0].square.isActive() ||
             lfo[1].sine.isActive() || lfo[1].square.isActive() ||
@@ -249,85 +252,103 @@ public:
 
             // oscillators
             for (size_t o = 0; o < params.osc.size(); ++o) {
-
-                const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
-                const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
-                const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
-                const float *gainMod = modDestBuffer.getReadPointer(DEST_OSC1_GAIN + o);
-
-                for (int s = 0; s < numSamples; ++s) {
-
-                    float currentSample = 0.0f;
-
-                    switch (params.osc[o].waveForm.getStep()){
+                if (params.osc[o].oscActivation.getStep() == eOnOffToggle::eOn) {
+                     // oscillators phaseDelta and squareWidth / tiangleAmount update
+                    switch (params.osc[o].waveForm.getStep()) {
                         case eOscWaves::eOscSquare:
                         {
-                            // In case of pulse width modulation
-                            float deltaWidth = osc[o].square.width > .5f
-                                ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
-                                : osc[o].square.width - params.osc[o].pulseWidth.getMin();
-                            // Pulse width must not reach 0 or 1
-                            if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth < 
-                                (.5f + params.osc[o].pulseWidth.getMin())) {
-                                deltaWidth = .49f;
-                            }
-                            // LFO mod has values [-1 .. 1], max amp for amount = 1
-                            deltaWidth = deltaWidth * shapeMod[s];
-                            // Next sample will be fetched with the new width
-                            currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
+                            osc[o].square.phaseDelta = midiNoteFreq * Param::fromCent(params.osc[o].fine.get()) *
+                                Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                            osc[o].square.width = params.osc[o].pulseWidth.get();
                         }
                         break;
                         case eOscWaves::eOscSaw:
                         {
+                            osc[o].saw.phaseDelta = midiNoteFreq * Param::fromCent(params.osc[o].fine.get()) *
+                                Param::fromSemi(params.osc[o].coarse.get()) / sRate * 2.f * float_Pi;
+                            osc[o].saw.trngAmount = params.osc[o].trngAmount.get();
+                        }
+                        break;
+                    }
+
+                    const float *pitchMod = modDestBuffer.getReadPointer(DEST_OSC1_PI + o);
+                    const float *shapeMod = modDestBuffer.getReadPointer(DEST_OSC1_PW + o);
+                    const float *panMod = modDestBuffer.getReadPointer(DEST_OSC1_PAN + o);
+                    const float *gainMod = modDestBuffer.getReadPointer(DEST_OSC1_GAIN + o);
+                    
+                    for (int s = 0; s < numSamples; ++s) {
+                        
+                        float currentSample = 0.0f;
+                        
+                        switch (params.osc[o].waveForm.getStep()) {
+                            case eOscWaves::eOscSquare: 
+                            {
+                                // In case of pulse width modulation
+                                float deltaWidth = osc[o].square.width > .5f 
+                                ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
+                                : osc[o].square.width - params.osc[o].pulseWidth.getMin();
+                                // Pulse width must not reach 0 or 1
+                                if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth <
+                                    (.5f + params.osc[o].pulseWidth.getMin())) {
+                                    deltaWidth = .49f;
+                                }
+                                // LFO mod has values [-1 .. 1], max amp for amount = 1
+                                deltaWidth = deltaWidth * shapeMod[s];
+                                // Next sample will be fetched with the new width
+                                currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
+                            }
+                                break;
+                            case eOscWaves::eOscSaw:
+                            {
                                 // In case of triangle modulation
                                 float deltaTr = osc[o].saw.trngAmount > .5f
-                                    ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
-                                    : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
+                                ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
+                                : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
                                 // LFO mod has values [-1 .. 1], max amp for amount = 1
                                 deltaTr = deltaTr * shapeMod[s];
                                 // Next sample will be fetch with the new width
                                 currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
-                        }
-                        break;
-                        case eOscWaves::eOscNoise:
+                            }
+                                break;
+                            case eOscWaves::eOscNoise:
                                 currentSample = (osc[o].noise.next(pitchMod[s]));
                                 break;
-                    }
-
-                    // filter
-                    for (size_t f = 0; f < params.filter.size(); ++f) 
-                    {
-                        if(params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
-                            const float *filterLCMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
-                            const float *filterHCMod = modDestBuffer.getReadPointer(DEST_FILTER1_HC + f);
-                            const float *resMod = modDestBuffer.getReadPointer(DEST_FILTER1_RES + f);
-                            currentSample = filter[o][f].run(currentSample, filterLCMod[s], filterHCMod[s], resMod[s]);
-                            //currentSample = filter[o][f].run(currentSample, filterLCMod[s], 0.f, 0.f);
                         }
-                    }
-
-                    // gain + pan
-                    const float currentAmp =    params.osc[o].vol.get() * Param::fromDb(gainMod[s] * 
-                                                params.osc[o].gainModAmount1.getMax()) * envToVolMod[s];
-
-                    // check if the output is a stereo output
-                    if (outputBuffer.getNumChannels() == 2){
-                        // Pan Influence
-                        const float currentPan = params.osc[o].panDir.get() + panMod[s] * 100.f;
-                        //const float currentPan = panMod[s] * 100.f;
-                        const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
-                        const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
-                        outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
-                        outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
-                    }
-                    else {
-                        for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
-                            outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                        
+                        // filter
+                        for (size_t f = 0; f < params.filter.size(); ++f)
+                        {
+                            if(params.filter[f].filterActivation.getStep() == eOnOffToggle::eOn) {
+                                const float *filterLCMod = modDestBuffer.getReadPointer(DEST_FILTER1_LC + f);
+                                const float *filterHCMod = modDestBuffer.getReadPointer(DEST_FILTER1_HC + f);
+                                const float *resMod = modDestBuffer.getReadPointer(DEST_FILTER1_RES + f);
+                                currentSample = filter[o][f].run(currentSample, filterLCMod[s], filterHCMod[s], resMod[s]);
+                            }
                         }
-                    }
-                    if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter()) {
-                        // next osc 
-                        break;
+                        
+                        // gain + pan
+                        const float currentAmp =    params.osc[o].vol.get() * Param::fromDb(gainMod[s] *
+                                                                                            params.osc[o].gainModAmount1.getMax()) * envToVolMod[s];
+                        
+                        // check if the output is a stereo output
+                        if (outputBuffer.getNumChannels() == 2){
+                            // Pan Influence
+                            const float currentPan = params.osc[o].panDir.get() + panMod[s] * 100.f;
+                            //const float currentPan = panMod[s] * 100.f;
+                            const float currentAmpRight = currentAmp + (currentAmp / 100.f * currentPan);
+                            const float currentAmpLeft = currentAmp - (currentAmp / 100.f * currentPan);
+                            outputBuffer.addSample(0, startSample + s, currentSample*currentAmpLeft);
+                            outputBuffer.addSample(1, startSample + s, currentSample*currentAmpRight);
+                        }
+                        else {
+                            for (int c = 0; c < outputBuffer.getNumChannels(); ++c) {
+                                outputBuffer.addSample(c, startSample + s, currentSample * currentAmp);
+                            }
+                        }
+                        if (envToVolume.getReleaseSamples() <= envToVolume.getReleaseCounter()) {
+                            // next osc 
+                            break;
+                        }
                     }
                 }
             }
@@ -489,17 +510,11 @@ protected:
                                     params.osc[1].pitchModAmount1.getMax()));
             modDestBuffer.setSample(DEST_OSC3_PI, s, Param::fromSemi(modDestBuffer.getSample(DEST_OSC3_PI, s) * 
                                     params.osc[2].pitchModAmount1.getMax()));
-
-            //do the same for filters
-            modDestBuffer.setSample(DEST_FILTER1_LC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER1_LC, s), params.filter[0].lpCutoff.get(), params.filter[0].lpModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_FILTER2_LC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER2_LC, s), params.filter[1].lpCutoff.get(), params.filter[1].lpModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_FILTER1_HC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER1_HC, s), params.filter[0].hpCutoff.get(), params.filter[0].hpModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_FILTER2_HC, s, Param::bipolarToFreq(modDestBuffer.getSample(DEST_FILTER2_HC, s), params.filter[1].hpCutoff.get(), params.filter[1].hpModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_FILTER1_RES, s, (params.filter[0].resonance.get() + modDestBuffer.getSample(DEST_FILTER1_RES, s) * params.filter[0].resModAmount1.getMax()));
-            modDestBuffer.setSample(DEST_FILTER2_RES, s, (params.filter[1].resonance.get() + modDestBuffer.getSample(DEST_FILTER2_RES, s) * params.filter[1].resModAmount1.getMax()));
         }
     }
 private:
+    //float midiNoteFreq;
+
     SynthParams &params;
     int totalVoiceSamples;
     std::array<Lfo, 3> lfo;

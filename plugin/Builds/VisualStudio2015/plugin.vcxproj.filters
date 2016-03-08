@@ -3011,10 +3011,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\gui\assets\world_of_water.ttf">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
     <None Include="..\..\..\png\infoScreen.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\QUL_Logo.png">
+      <Filter>plugin\Gui\assets</Filter>
+    </None>
+    <None Include="..\..\..\png\synisterLogoSmall.png">
       <Filter>plugin\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\delayReverse.png">
