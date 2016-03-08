@@ -143,14 +143,14 @@ public:
     //! ModMatrixRow structure.
     struct ModMatrixRow
     {
-        eModSource sourceIndex; //!< mod source enum/index
+        ParamStepped<eModSource>* modSrc; //!< mod source enum/index
         destinations destinationIndex; //!< mod destination enum/index
         Param* modIntensity; //!< pointer to mod intensity param
         String modSrcBox; //!< mod source box name
 
         //! ModMatrixRow constructor.
-        ModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
-            : sourceIndex(s)
+        ModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String boxname)
+            : modSrc(s)
             , destinationIndex(d)
             , modIntensity(intensity)
             , modSrcBox(boxname)
@@ -182,7 +182,7 @@ public:
     @param intensity the initial intensity value
     @param comboboxName the name of the combobox the row belongs to
     */
-    inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
+    inline void addModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String comboboxName);
 
     //! Applies the modulation for a sample.
     /*!
@@ -191,6 +191,7 @@ public:
     @oaram dst the pointer to the destination the results are written to
     */
     inline void doModulationsMatrix(const float** src, float** dst) const;
+
 
 private:
     std::vector<ModMatrixRow> matrixCore; //!< matrix core that keeps all the rows of the matrix in a vector
@@ -201,16 +202,16 @@ inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst
     for (const ModMatrixRow &row : matrixCore)
     {
         // get the source value & mod intensity
-        if (row.sourceIndex > eModSource::eNone && row.sourceIndex < eModSource::nSteps
+        if (row.modSrc->getStep() > eModSource::eNone && row.modSrc->getStep() < eModSource::nSteps
             && row.destinationIndex > DEST_NONE && row.destinationIndex < MAX_DESTINATIONS) {
-            float source = *(src[row.sourceIndex]);
+            float source = *(src[row.modSrc->getStep()]);
             float intensity = row.modIntensity->get();
 
             // get the min max values for the intensity for transformation
             float min = row.modIntensity->getMin();
             float max = row.modIntensity->getMax();
 
-            if (isUnipolar(row.sourceIndex)) {
+            if (isUnipolar(row.modSrc->getStep())) {
                 // if the source is unipolar, transform the intensity to bipolar
                 intensity = toBipolar(min, max, intensity);
             }
@@ -233,7 +234,7 @@ inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destina
     for (const ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
+        if (row.modSrc->getStep() == sourceIndex && row.destinationIndex == destinationIndex)
         {
             return true;
         }
@@ -244,13 +245,11 @@ inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destina
 inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSource source) {
     for (ModMatrixRow &row : matrixCore)
     {
-
-
         // find matching source/destination pairs
         if (row.modSrcBox == comboBoxName)
         {
             // before we change the old source, we gotta check whether it is a switch between unipolar<->bipolar (for conversion reasons)
-            eModSource oldSource = row.sourceIndex;
+            eModSource oldSource = row.modSrc->getStep();
             Param* modAmountParam = row.modIntensity;
             float newModAmountValue;
 
@@ -283,13 +282,12 @@ inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSourc
                 modAmountParam->setHost(newModAmountValue);
             }
             
-            // set the new source
-            row.sourceIndex = source;
+            // the new source is already set, since it's a Param*
         }
     }
 }
 
-inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
+inline void ModulationMatrix::addModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String boxname)
 {
     matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
 }
