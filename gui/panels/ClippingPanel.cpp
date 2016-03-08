@@ -133,7 +133,7 @@ void ClippingPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void ClippingPanel::onOffSwitchChanged()
 {
 	clippingFactor->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::fxColour : SynthParams::onOffSwitchDisabled));
 }
 //[/MiscUserCode]
 
