@@ -9,6 +9,15 @@
 
 namespace BinaryData
 {
+    extern const char*   seqRandom_png;
+    const int            seqRandom_pngSize = 374;
+
+    extern const char*   seqSequential_png;
+    const int            seqSequential_pngSize = 300;
+
+    extern const char*   seqUpDown_png;
+    const int            seqUpDown_pngSize = 319;
+
     extern const char*   synisterLogoSmall_png;
     const int            synisterLogoSmall_pngSize = 1356;
 
@@ -41,15 +50,6 @@ namespace BinaryData
 
     extern const char*   recordCutoff_png;
     const int            recordCutoff_pngSize = 491;
-
-    extern const char*   seqRandom_png;
-    const int            seqRandom_pngSize = 335;
-
-    extern const char*   seqSequential_png;
-    const int            seqSequential_pngSize = 266;
-
-    extern const char*   seqUpDown_png;
-    const int            seqUpDown_pngSize = 300;
 
     extern const char*   SynisterLogo_block_png;
     const int            SynisterLogo_block_pngSize = 3499;
