@@ -27,7 +27,7 @@ public:
                      Component* const newPanel,
                      const Colour sectionColour,
                      const int sectionHeight,
-                     ParamStepped<eSectionState>& sectionState,
+                     ParamStepped<eSectionState>* sectionState,
                      int indexToInsertAt = -1);
 
 

@@ -18,12 +18,12 @@ struct FoldablePanel::SectionComponent  : public Component
                       Component* const newPanel,
                       const Colour sectionColour,
                       const int sectionHeight,
-                      ParamStepped<eSectionState>& sectionState)
+                      ParamStepped<eSectionState>* sectionState)
     : Component (sectionTitle),
     positionIndex(0),
     _sectionState(sectionState),
     titleHeight (22),
-    isOpen (sectionState.getStep() == eSectionState::eExpanded),
+    isOpen (sectionState->getStep() == eSectionState::eExpanded),
     _sectionHeight(sectionHeight + titleHeight),
     _sectionColour(sectionColour)
     {
@@ -76,7 +76,7 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
-            _sectionState.setStep(open ? eSectionState::eExpanded : eSectionState::eCollapsed);
+            _sectionState->setStep(open ? eSectionState::eExpanded : eSectionState::eCollapsed);
             for (int i = 0; i < panels.size(); ++i ) {
                 Component* const panel = panels.getUnchecked(i);
                 panel->setVisible(open);
@@ -118,8 +118,8 @@ struct FoldablePanel::SectionComponent  : public Component
     
     void updateOpennessState()
     {
-        if (_sectionState.isUIDirty()) {
-            setOpen(_sectionState.getStep() == eSectionState::eExpanded);
+        if (_sectionState->isUIDirty()) {
+            setOpen(_sectionState->getStep() == eSectionState::eExpanded);
         }
     }
 
@@ -128,7 +128,7 @@ struct FoldablePanel::SectionComponent  : public Component
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
-    ParamStepped<eSectionState>& _sectionState;
+    ParamStepped<eSectionState>* _sectionState;
     const Colour _sectionColour;
 
     JUCE_DECLARE_NON_COPYABLE (SectionComponent)
@@ -248,7 +248,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
                                 Component* const newPanel,
                                 const Colour sectionColour,
                                 const int sectionHeight,
-                                ParamStepped<eSectionState>& sectionState,
+                                ParamStepped<eSectionState>* sectionState,
                                 const int indexToInsertAt)
 {
     jassert (sectionTitle.isNotEmpty());
