@@ -83,7 +83,7 @@ enum destinations : int {
 
 //! mapping for mod sources to uni-/bipolar.
 /*!
-The static mapping function that returns whether a modulation source if uni- or bipolar. 
+The mapping function that returns whether a modulation source if uni- or bipolar. 
 This can  be used to determine how a modulation amount might have to be transformed.
 @param source the source to be mapped
 @returns true if unipolar, else false
@@ -109,7 +109,7 @@ static inline bool isUnipolar(eModSource source) {
 
 //! Transformation for mod amounts to unipolar.
 /*!
-The static transformation function that returns a unipolar value, transformed from the range and current value of a mod amount.
+The transformation function that returns a unipolar value, transformed from the range and current value of a mod amount.
 @param min the minimum value of the mod amount
 @param max the maximum value of the mod amount
 @param value the current value of the mod amount
@@ -119,7 +119,7 @@ static float toUnipolar(float min, float max, float value) { return (value - min
 
 //! Transformation for mod amounts to bipolar.
 /*!
-The static transformation function that returns a bipolar value, transformed from the range and current value of a mod amount.
+The transformation function that returns a bipolar value, transformed from the range and current value of a mod amount.
 @param min the minimum value of the mod amount
 @param max the maximum value of the mod amount
 @param value the current value of the mod amount
@@ -140,7 +140,7 @@ public:
     //! ModulationMatrix destructor.
     ~ModulationMatrix();
 
-    //! ModMatrixRow structure.
+    //! ModMatrixRow structure that carries the data associated with one modulation source combobox on the GUI, connecting one source with one destination.
     struct ModMatrixRow
     {
         eModSource sourceIndex; //!< mod source enum/index
