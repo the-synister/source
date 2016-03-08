@@ -18,11 +18,12 @@ struct FoldablePanel::SectionComponent  : public Component
                       Component* const newPanel,
                       const Colour sectionColour,
                       const int sectionHeight,
-                      const bool sectionIsOpen)
+                      ParamStepped<eSectionState>* sectionState)
     : Component (sectionTitle),
     positionIndex(0),
+    _sectionState(sectionState),
     titleHeight (28),
-    isOpen (sectionIsOpen),
+    isOpen (sectionState->getStep() == eSectionState::eExpanded),
     _sectionHeight(sectionHeight + titleHeight),
     _sectionColour(sectionColour)
     {
@@ -75,6 +76,7 @@ struct FoldablePanel::SectionComponent  : public Component
         if (isOpen != open)
         {
             isOpen = open;
+            _sectionState->setStep(open ? eSectionState::eExpanded : eSectionState::eCollapsed);
             for (int i = 0; i < panels.size(); ++i ) {
                 Component* const panel = panels.getUnchecked(i);
                 panel->setVisible(open);
@@ -113,21 +115,32 @@ struct FoldablePanel::SectionComponent  : public Component
     {
         return (isOpen ? _sectionHeight : titleHeight);
     }
+    
+    void updateOpennessState()
+    {
+        if (_sectionState->isUIDirty()) {
+            setOpen(_sectionState->getStep() == eSectionState::eExpanded);
+        }
+    }
 
     int positionIndex;
     OwnedArray<Component> panels;
     const int titleHeight;
     bool isOpen;
     const int _sectionHeight;
+    ParamStepped<eSectionState>* _sectionState;
     const Colour _sectionColour;
 
     JUCE_DECLARE_NON_COPYABLE (SectionComponent)
 };
 
 //==============================================================================
-struct FoldablePanel::PanelHolderComponent  : public Component
+struct FoldablePanel::PanelHolderComponent  : public Component, private Timer
 {
-    PanelHolderComponent() {}
+    PanelHolderComponent()
+    {
+        startTimerHz(60);
+    }
 
     void paint (Graphics& g) override
     {
@@ -173,6 +186,14 @@ struct FoldablePanel::PanelHolderComponent  : public Component
     SectionComponent* getSection (const int targetIndex) const noexcept
     {
         return sections.getUnchecked (targetIndex);
+    }
+    
+    void timerCallback() override
+    {
+        for (int i = 0; i < sections.size(); ++i) {
+            SectionComponent* const section = sections.getUnchecked(i);
+            section->updateOpennessState();
+        }
     }
 
     OwnedArray<SectionComponent> sections;
@@ -227,7 +248,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
                                 Component* const newPanel,
                                 const Colour sectionColour,
                                 const int sectionHeight,
-                                const bool shouldBeOpen,
+                                ParamStepped<eSectionState>* sectionState,
                                 const int indexToInsertAt)
 {
     jassert (sectionTitle.isNotEmpty());
@@ -236,7 +257,7 @@ void FoldablePanel::addSection (const String& sectionTitle,
         repaint();
     }
 
-    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, shouldBeOpen));
+    panelHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newPanel, sectionColour, sectionHeight, sectionState));
     resized();
     updateLayout();
 }

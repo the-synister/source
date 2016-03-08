@@ -24,91 +24,107 @@ PluginAudioProcessor::PluginAudioProcessor()
     , lowFi(*this)
     , synth(midiState)
 {
-    for (int i = 0; i < 3; ++i) {
+    for (size_t i = 0; i < osc.size(); ++i) {
         addParameter(new HostParam<Param>(osc[i].fine));
         addParameter(new HostParam<Param>(osc[i].coarse));
         addParameter(new HostParam<ParamStepped<eOscWaves>>(osc[i].waveForm));
-        addParameter(new HostParam<Param>(osc[i].pitchModAmount2));
-        addParameter(new HostParam<Param>(osc[i].vol));
+        //! \todo midpoint copied from UI, should be refactored
+        addParameter(new HostParamLog<Param>(osc[i].vol, -6.f));
         addParameter(new HostParam<Param>(osc[i].panDir));
         addParameter(new HostParam<Param>(osc[i].trngAmount));
         addParameter(new HostParam<Param>(osc[i].pulseWidth));
     }
 
-    for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(env[i].attack));
-        addParameter(new HostParam<Param>(env[i].decay));
-        addParameter(new HostParam<Param>(env[i].sustain));
-        addParameter(new HostParam<Param>(env[i].release));
-        addParameter(new HostParam<Param>(env[i].attackShape));
-        addParameter(new HostParam<Param>(env[i].decayShape));
-        addParameter(new HostParam<Param>(env[i].releaseShape));
+    addParameter(new HostParamLog<Param>(envVol[0].attack, 1.2f));
+    addParameter(new HostParamLog<Param>(envVol[0].decay, 1.2f));
+    addParameter(new HostParamLog<Param>(envVol[0].sustain, -18.f));
+    addParameter(new HostParamLog<Param>(envVol[0].release, 1.2f));
+
+    for (size_t i = 0; i < env.size(); ++i) {
+        addParameter(new HostParamLog<Param>(env[i].attack, 1.2f));
+        addParameter(new HostParamLog<Param>(env[i].decay, 1.2f));
+        addParameter(new HostParamLog<Param>(env[i].sustain, .8f));
+        addParameter(new HostParamLog<Param>(env[i].release, 1.2f));
     }
 
-    for (int i = 0; i < 3; ++i) {
+    for (size_t i = 0; i < lfo.size(); ++i) {
         addParameter(new HostParam<ParamStepped<eLfoWaves>>(lfo[i].wave));
-        addParameter(new HostParam<Param>(lfo[i].freq));
-        addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lfo[i].tempSync));
-        addParameter(new HostParam<Param>(lfo[i].noteLength));
-        addParameter(new HostParam<Param>(lfo[i].fadeIn));
+        addParameter(new HostParamLog<Param>(lfo[i].freq, 1.f));
+        addParameter(new HostParamLog<Param>(lfo[i].fadeIn, 1.f));
     }
 
-    for (int i = 0; i < 2; ++i) {
-        addParameter(new HostParam<Param>(filter[i].lpCutoff));
-        addParameter(new HostParam<Param>(filter[i].hpCutoff));
+    for (size_t i = 0; i < filter.size(); ++i) {
+        addParameter(new HostParamLog<Param>(filter[i].lpCutoff, 1e3f));
+        addParameter(new HostParamLog<Param>(filter[i].hpCutoff, 1e3f));
         addParameter(new HostParam<Param>(filter[i].resonance));
         addParameter(new HostParam<Param>(filter[i].passtype));
     }
 
-    addParameter(new HostParam<Param>(envVol[0].attack));
-    addParameter(new HostParam<Param>(envVol[0].decay));
-    addParameter(new HostParam<Param>(envVol[0].release));
-
-    addParameter(new HostParam<Param>(clippingFactor));
-
-    addParameter(new HostParam<Param>(delayFeedback));
+    
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(delayActivation));
     addParameter(new HostParam<Param>(delayDryWet));
-    addParameter(new HostParam<Param>(delayTime));
+    addParameter(new HostParamLog<Param>(delayTime, 500.f));
+    addParameter(new HostParam<Param>(delayFeedback));
+    addParameter(new HostParamLog<Param>(delayCutoff, 2e3f));
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(chorActivation));
+    addParameter(new HostParam<Param>(chorDryWet));
+    addParameter(new HostParam<Param>(chorModDepth));
+    addParameter(new HostParam<Param>(chorDelayLength));
+    addParameter(new HostParam<Param>(chorModRate));
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
+    addParameter(new HostParam<Param>(nBitsLowFi));
+
+    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(clippingActivation));
+    addParameter(new HostParam<Param>(clippingFactor));
+    
+    addParameter(new HostParam<ParamStepped<eSectionState>>(oscSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(envSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(lfoSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(filterSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(fxSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(seqSection));
+
 
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
-    addParameter(new HostParam<ParamStepped<eOnOffToggle>>(lowFiActivation));
 
     /*Create ModMatrixRows here*/
     for (size_t f = 0; f < filter.size(); ++f) {
         String boxName = String::formatted("filter %u", f + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount1, boxName + " hpModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount2, boxName + " hpModSrcBox2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount1, boxName + " resModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount2, boxName + " resModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].lpCutModSrc1, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].lpCutModSrc2, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].hpCutModSrc1, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount1, boxName + " hpModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].hpCutModSrc2, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount2, boxName + " hpModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].resonanceModSrc1, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount1, boxName + " resModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].resonanceModSrc2, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount2, boxName + " resModSrcBox2");
     }
     for (size_t o = 0; o < osc.size(); ++o) {
         String boxName = String::formatted("osc %u", o + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, boxName + " GainModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, boxName + " GainModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, boxName + " PanModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount2, boxName + " PanModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount1, boxName + " oscPitchModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount2, boxName + " oscPitchModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].gainModSrc1, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, boxName + " GainModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].gainModSrc2, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, boxName + " GainModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].panModSrc1, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, boxName + " PanModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].panModSrc2, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount2, boxName + " PanModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].pitchModSrc1, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount1, boxName + " oscPitchModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].pitchModSrc2, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount2, boxName + " oscPitchModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].shapeModSrc1, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].shapeModSrc2, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
 
     for (size_t e = 0; e < env.size(); ++e) {
         String boxName = String::formatted("env %u", e + 2);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
+        globalModMatrix.addModMatrixRow(&env[e].speedModSrc1, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
+        globalModMatrix.addModMatrixRow(&env[e].speedModSrc2, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
-    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(&envVol[0].speedModSrc1, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(&envVol[0].speedModSrc2, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
 
     for (size_t l = 0; l < lfo.size(); ++l) {
         String boxName = String::formatted("lfo %u", l + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, boxName + " freqModSrc2");
+        globalModMatrix.addModMatrixRow(&lfo[l].freqModSrc1, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
+        globalModMatrix.addModMatrixRow(&lfo[l].freqModSrc2, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, boxName + " freqModSrc2");
         // LFO Gain is handled in directly @ voice.renderModulation()
     }
 }

@@ -61,20 +61,17 @@ protected:
 
         switch (filter.passtype.getStep()) {
         case eBiquadFilters::eLowpass:
-            cutoffFreq = lcModValue;
-            //cutoffFreq = filter.lpCutoff.get();
-            //cutoffFreq = Param::bipolarToFreq(lcModValue, cutoffFreq, filter.lpModAmount1.getMax());
+            cutoffFreq = filter.lpCutoff.get();
+            cutoffFreq = Param::bipolarToFreq(lcModValue, cutoffFreq, filter.lpModAmount1.getMax());
             break;
         case eBiquadFilters::eHighpass:
-            cutoffFreq = hcModValue;
-            //cutoffFreq = filter.hpCutoff.get();
-            //cutoffFreq = Param::bipolarToFreq(hcModValue, cutoffFreq, filter.hpModAmount1.getMax());
+            cutoffFreq = filter.hpCutoff.get();
+            cutoffFreq = Param::bipolarToFreq(hcModValue, cutoffFreq, filter.hpModAmount1.getMax());
             break;
         case eBiquadFilters::eBandpass:
-            //lpFreq = Param::bipolarToFreq(lcModValue, filter.lpCutoff.get(), filter.lpModAmount1.getMax());
-            //hpFreq = Param::bipolarToFreq(hcModValue, filter.hpCutoff.get(), filter.hpModAmount1.getMax());
-            lpFreq = lcModValue;
-            hpFreq = hcModValue;
+            lpFreq = Param::bipolarToFreq(lcModValue, filter.lpCutoff.get(), filter.lpModAmount1.getMax());
+            hpFreq = Param::bipolarToFreq(hcModValue, filter.hpCutoff.get(), filter.hpModAmount1.getMax());
+
             cutoffFreq = sqrt(lpFreq * hpFreq);
             if (lpFreq < hpFreq)
                 lpFreq = hpFreq;
@@ -84,9 +81,6 @@ protected:
             return 0.f;
         }
 
-        //! \todo mod range must come from somewhere else
-        //cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, filter.lpModAmount1.getMax());
-
         // check range
         if (cutoffFreq < filter.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters
             cutoffFreq = filter.lpCutoff.getMin();
@@ -95,8 +89,7 @@ protected:
             cutoffFreq = filter.lpCutoff.getMax();
         }
 
-        //float currentResonance = pow(10.f, (-(filter.resonance.get() + resModValue * filter.resModAmount1.getMax()) * 2.5f) / 20.f); /*so ist die resonanz bei 10 maximal*/
-        float currentResonance = pow(10.f, (-resModValue * 2.5f) / 20.f);
+        float currentResonance = pow(10.f, (-(filter.resonance.get() + resModValue * filter.resModAmount1.getMax()) * 2.5f) / 20.f); 
         
         cutoffFreq /= sampleRate;
 
@@ -123,9 +116,9 @@ protected:
         else if (filter.passtype.getStep() == eBiquadFilters::eHighpass) {
 
             // coefficients for highpass, depending on resonance and highcut frequency
-            k = 0.5f * currentResonance * sin(float_Pi * cutoffFreq);
+            k = 0.5f * currentResonance * sin(2.f * float_Pi * cutoffFreq);
             coeff1 = 0.5f * (1.f - k) / (1.f + k);
-            coeff2 = (0.5f + coeff1) * cos(float_Pi * cutoffFreq);
+            coeff2 = (0.5f + coeff1) * cos(2.f * float_Pi * cutoffFreq);
             coeff3 = (0.5f + coeff1 + coeff2) * 0.25f;
 
             b0 = 2.f * coeff3;
@@ -153,7 +146,7 @@ protected:
         lastSample = inputSignal;
 
         // different biquad form for bandpass filter, it has more coefficients as well
-          if (filter.passtype.getStep() == eBiquadFilters::eBandpass) {
+        if (filter.passtype.getStep() == eBiquadFilters::eBandpass) {
             inputSignal = (b0 / a0)* inputSignal + (b1 / a0)*inputDelay1 + (b2 / a0)*inputDelay2 - (a1 / a0)*outputDelay1 - (a2 / a0)*outputDelay2;
         }
         else {
@@ -179,11 +172,8 @@ protected:
     //naive 1 pole filters wigh a hyperbolic tangent saturator
     float ladderFilter(float ladderIn, float lcModValue, float resModValue)
     {
-        //float cutoffFreq = filter.lpCutoff.get(); 
-        //float currentResonance = filter.resonance.get() + resModValue * filter.resModAmount1.getMax();
-        
-        float cutoffFreq = lcModValue;
-        float currentResonance = resModValue;
+        float cutoffFreq = filter.lpCutoff.get(); 
+        float currentResonance = filter.resonance.get() + resModValue * filter.resModAmount1.getMax();
 
         //Check for  Resonance Clipping
         if (currentResonance < filter.resonance.getMin())
@@ -195,7 +185,7 @@ protected:
             currentResonance = filter.resonance.getMax();
         }
 
-        //cutoffFreq = Param::bipolarToFreq(modValue, cutoffFreq, 8.f);
+        cutoffFreq = Param::bipolarToFreq(lcModValue, cutoffFreq, 8.f);
 
         // TODO can't this be shortened?
         if (cutoffFreq < filter.lpCutoff.getMin()) { // assuming that min/max are identical for low and high pass filters

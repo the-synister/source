@@ -133,7 +133,7 @@ void LoFiPanel::sliderValueChanged (Slider* sliderThatWasMoved)
 void LoFiPanel::onOffSwitchChanged()
 {
     nBitsLowFi->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled :  SynthParams::onOffSwitchDisabled));
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::fxColour :  SynthParams::onOffSwitchDisabled));
 }
 //[/MiscUserCode]
 
