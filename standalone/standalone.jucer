@@ -6,14 +6,13 @@
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
-        <FILE id="MZQndb" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
-        <FILE id="Dbndgz" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
-        <FILE id="Z6YY3w" name="synisterLogoSmall.png" compile="0" resource="1"
+        <FILE id="ZqXvPA" name="synisterLogoSmall.png" compile="0" resource="1"
               file="../png/synisterLogoSmall.png"/>
         <FILE id="mL7dKx" name="infoScreen.png" compile="0" resource="1" file="../png/infoScreen.png"/>
         <FILE id="Hh7Srt" name="QUL_Logo.png" compile="0" resource="1" file="../png/QUL_Logo.png"/>
         <FILE id="nuOhsk" name="delayReverse.png" compile="0" resource="1"
               file="../png/delayReverse.png"/>
+        <FILE id="S0aCOk" name="dottedNote.png" compile="0" resource="1" file="../png/dottedNote.png"/>
         <FILE id="eUIiRI" name="lfoGain.png" compile="0" resource="1" file="../png/lfoGain.png"/>
         <FILE id="j1wUa4" name="lfoSampleHold.png" compile="0" resource="1"
               file="../png/lfoSampleHold.png"/>
@@ -32,11 +31,15 @@
               file="../png/Synister-Logo_block.png"/>
         <FILE id="mJAKsc" name="synisterLogo.png" compile="0" resource="1"
               file="../png/synisterLogo.png"/>
+        <FILE id="UrNn7r" name="tempoSync.png" compile="0" resource="1" file="../png/tempoSync.png"/>
         <FILE id="fieMEU" name="toggleOff.png" compile="0" resource="1" file="../png/toggleOff.png"/>
         <FILE id="J9Totn" name="toggleOn.png" compile="0" resource="1" file="../png/toggleOn.png"/>
         <FILE id="QdjsBI" name="triplets.png" compile="0" resource="1" file="../png/triplets.png"/>
       </GROUP>
-      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets"/>
+      <GROUP id="{FDC09702-1CAC-A589-71CB-F308C255A881}" name="assets">
+        <FILE id="ihzKya" name="world of water.ttf" compile="0" resource="1"
+              file="../world of water.ttf"/>
+      </GROUP>
       <GROUP id="{D2E9A9DC-C5CA-7DC0-A80F-EF051C6D021A}" name="panels">
         <FILE id="CXKdUa" name="InfoPanel.cpp" compile="1" resource="0" file="../gui/panels/InfoPanel.cpp"/>
         <FILE id="OYUokK" name="InfoPanel.h" compile="0" resource="0" file="../gui/panels/InfoPanel.h"/>

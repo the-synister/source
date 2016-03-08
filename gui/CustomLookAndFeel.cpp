@@ -15,8 +15,12 @@
 CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
-    // set custom default font typeface
-    this->setDefaultSansSerifTypefaceName("Bauhaus LightA");
+	newFont = Typeface::createSystemTypefaceFor(BinaryData::world_of_water_ttf, BinaryData::world_of_water_ttfSize);
+}
+
+Typeface::Ptr CustomLookAndFeel::getTypefaceForFont(const Font & font)
+{
+	return newFont;
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
@@ -24,6 +28,7 @@ CustomLookAndFeel::~CustomLookAndFeel()
     // release ressources
 }
 //==============================================================================
+
 void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &s)
 {
     const float centreX = x + width * 0.5f;

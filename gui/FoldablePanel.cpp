@@ -21,7 +21,7 @@ struct FoldablePanel::SectionComponent  : public Component
                       const bool sectionIsOpen)
     : Component (sectionTitle),
     positionIndex(0),
-    titleHeight (27),
+    titleHeight (28),
     isOpen (sectionIsOpen),
     _sectionHeight(sectionHeight + titleHeight),
     _sectionColour(sectionColour)
@@ -48,8 +48,8 @@ struct FoldablePanel::SectionComponent  : public Component
             // draw section header text
             const int textX = (int)(buttonIndent * 4.0f + buttonSize);
             g.setColour(getSectionColour().withSaturation(.5f).brighter(0.3f));
-            g.setFont(Font(titleHeight * 0.75f, Font::plain));
-            g.drawText(getName(), textX, 0, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
+            g.setFont(Font(titleHeight * 0.7f, Font::plain));
+            g.drawText(getName(), textX, -1, getWidth() - textX - 4, titleHeight, Justification::centredLeft, true);
         }
     }
 
