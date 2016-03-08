@@ -295,10 +295,10 @@ OscPanel::OscPanel (SynthParams &p, int oscillatorNumber)
     fillModsourceBox(widthModSrc2, false);
     fillModsourceBox(trngModSrc1, false);
     fillModsourceBox(trngModSrc2, false);
-    registerCombobox(widthModSrc1, &osc.shapeModSrc1, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(widthModSrc2, &osc.shapeModSrc2, { pulsewidth, trngAmount, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(trngModSrc1, &osc.shapeModSrc1, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
-    registerCombobox(trngModSrc2, &osc.shapeModSrc2, { trngAmount, pulsewidth, nullptr }, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc1, &osc.shapeModSrc1, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(widthModSrc2, &osc.shapeModSrc2, {pulsewidth, trngAmount, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc1, &osc.shapeModSrc1, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
+    registerCombobox(trngModSrc2, &osc.shapeModSrc2, {trngAmount, pulsewidth, nullptr}, std::bind(&OscPanel::updateModAmountKnobs, this));
 
     fillModsourceBox(panModSrc1, false);
     fillModsourceBox(panModSrc2, false);
@@ -625,10 +625,10 @@ void OscPanel::onOffSwitchChanged()
     
     panModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     panModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
+    widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
+    widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
+    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSaw);
+    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSaw);
     gainModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     gainModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
     pitchModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
@@ -641,13 +641,15 @@ void OscPanel::onOffSwitchChanged()
 void OscPanel::updateWFShapeControls()
 {
     eOscWaves eWaveformKey = osc.waveForm.getStep();
-
+    
     pulsewidth->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    pulsewidth->setEnabled(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
-
-    trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    
     trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
+    trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    
     trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
     trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
