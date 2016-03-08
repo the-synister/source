@@ -259,10 +259,10 @@ protected:
     //=======================================================================================================================================
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
-    void registerNoteLength(ComboBox* noteLengthBox, Param* divisor, Param* bar = nullptr, const tHookFn hook = tHookFn())
+    void registerNoteLength(ComboBox* noteLengthBox, Param* divisor, Param* dividend = nullptr, const tHookFn hook = tHookFn())
     {
 
-        noteLengthReg[noteLengthBox][0] = bar;
+        noteLengthReg[noteLengthBox][0] = dividend;
         
         noteLengthReg[noteLengthBox][1] = divisor;
 
@@ -298,22 +298,14 @@ protected:
     void updateDirtyNoteLength()
     {
         for (auto d2p : noteLengthReg) {
-            if (d2p.second[1] != nullptr) {
-                if (d2p.second[0]->isUIDirty() || d2p.second[1]->isUIDirty()) {
-                    // get bar numbers
-                    int numBars = d2p.first->getNumItems() / 7; // 7 is the number of items pro bar
-                    // IDEA : New Param with the bar numbers and get that from there
-                    
-                   
-                }
-            } else {
-                if (d2p.second[0]->isUIDirty()) {
-                    String barNumber = d2p.second[0] == nullptr ? "1" : String(d2p.second[0]->getUI());
-                    
-                    d2p.first->setText(barNumber + "/" + String(d2p.second[1]->getUI()));
-                }
+            if ((d2p.second[0] != nullptr && d2p.second[0]->isUIDirty()) || d2p.second[1]->isUIDirty()) {
+                // IDEA : New Param with the bar numbers and get that from there
+                String barNumber = d2p.second[0] == nullptr ? "1" : String(d2p.second[0]->getUI());
+                
+                d2p.first->setText(barNumber + "/" + String(d2p.second[1]->getUI()));
+                
             }
-
+            
             auto itHook = postUpdateHook.find(d2p.first);
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
