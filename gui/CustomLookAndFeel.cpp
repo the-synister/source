@@ -612,14 +612,14 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
     
     const float arrowThickness = buttonIndent * 2.0f;
 	*/
-	const float buttonSize = height * .7f;
+	const float buttonSize = height * .65f;
 	const float buttonIndent = (height - buttonSize) * 0.5f;
 	const float x = buttonIndent * 2.0f;
     const float y = (height - buttonSize) * 0.5f;
 	const float buttonCenterx = x + buttonSize / 2.f;
 	const float buttonCentery = y + buttonSize / 2.f;
 	const float arrowOffset = buttonSize * .2f;
-	const float arrowThickness = buttonSize * .3f;
+	const float arrowThickness = buttonSize * .25f;
 
     Path arrow;
     if (isOpen)
