@@ -41,10 +41,10 @@ namespace {
 const Colour SynthParams::oscColour (0xff6c788c);
 const Colour SynthParams::envColour (0xffbfa65a);
 const Colour SynthParams::lfoColour (0xff855050);
-const Colour SynthParams::filterColour (0xff5b7a47);
+const Colour SynthParams::filterColour (0xff557144);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
-const Colour SynthParams::onOffSwitchEnabled (96, 192, 96);
+const Colour SynthParams::onOffSwitchEnabled (0xff557144);
 const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
 const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
@@ -57,11 +57,11 @@ SynthParams::SynthParams()
         // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
-    &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
+    &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2, &osc[0].oscActivation,
     &osc[1].fine, &osc[1].coarse, &osc[1].panDir,&osc[1].vol,&osc[1].trngAmount,&osc[1].pulseWidth,&osc[1].waveForm,&osc[1].pitchModAmount1, &osc[1].pitchModAmount2,&osc[1].pitchModSrc1, &osc[1].pitchModSrc2,
-    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2,
+    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2, &osc[1].oscActivation,
     &osc[2].fine, &osc[2].coarse, &osc[2].panDir,&osc[2].vol,&osc[2].trngAmount,&osc[2].pulseWidth,&osc[2].waveForm,&osc[2].pitchModAmount1, &osc[2].pitchModAmount2,&osc[2].pitchModSrc1, &osc[2].pitchModSrc2,
-    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[0].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2,
+    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[2].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2, &osc[2].oscActivation,
     //Envelopes Params
     &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModAmount1, &env[0].speedModAmount2, &env[0].speedModSrc1, &env[0].speedModSrc2,
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
@@ -102,7 +102,7 @@ SynthParams::SynthParams()
     , delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
     , delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
     , delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 64, 4)
-    , delayCutoff("cutoff", "delCut", "Delay cutoff", "Hz", 10.f, 20000.f, 20000.f)
+    , delayCutoff("lp cutoff", "delCut", "Delay cutoff", "Hz", 40.f, 20000.f, 20000.f)
     , delayResonance("resonance", "delRes", "Delay resonance", "dB", -25.f, 0.f, 0.f)
     , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
     , delayDottedLength("Delay Dotted Length", "delDot", "Delay dotted length", eOnOffToggle::eOff, onoffnames)
@@ -173,8 +173,8 @@ SynthParams::SynthParams()
 SynthParams::Osc::Osc()
     : fine("fine", "fine", "f.tune", "ct", -100.f, 100.f, 0.f)
     , coarse("coarse", "coarse", "c.tune", "st", -36.f, 36.f, 0.f)
-    , trngAmount("triangle", "trngAmount", "triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-    , pulseWidth("width", "pulseWidth", "pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , trngAmount("triangle", "trngAmount", "triangle amount", "", 0.0f, 1.0f, 0.0f)
+    , pulseWidth("width", "pulseWidth", "pulsewidth", "", 0.01f, 0.99f, 0.5f)
     , waveForm("Waveform", "oscWaveform", "Waveform", eOscWaves::eOscSquare, waveformNames)
     , panDir("pan", "panDir", "pan direction", "%", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
@@ -193,30 +193,30 @@ SynthParams::Osc::Osc()
     , pitchModSrc2("PitchModSrc2", "OSCPitchModSrc2", "Pitch ModSource 2", eModSource::eNone, modsourcenames)
     , gainModAmount1("GainModAmount1", "OSCGainModAmount1", "Gain ModAmount 1", "dB", 0.f, 96.f, 48.0f)
     , gainModAmount2("GainModAmount2", "OSCGainModAmount2", "Gain ModAmount 2", "dB", 0.f, 96.f, 48.0f)
-    , gainModSrc1("GainModSrc1", "OSCGainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
-    , gainModSrc2("GainModSrc2", "OSCGainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , gainModSrc1("GainModSrc1", "GainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
+    , gainModSrc2("GainModSrc2", "GainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , oscActivation("Activation", "Activation", "Active", eOnOffToggle::eOn, onoffnames)
 {
 }
 
 SynthParams::EnvBase::EnvBase()
-    : attack("att.", "envAttack", "Amp Env attack", "s", 0.001f, 5.0f, 0.005f)
-    , release("rel.", "envRelease", "Amp Env release", "s", 0.001f, 5.0f, 0.5f)
-    , keyVelToEnv("keyVel to Env", "", "Key velocity to Amp Env", "", 0.0f, 1.0f, 0.0f)
-    , attackShape("Attack Shape", "envAttackShape", "Amp Env attack shape", "", 0.01f, 10.0f, 1.0f)
-    , decayShape("Decay Shape", "envDecayShape", "Amp Env decay shape", "", 0.01f, 10.0f, 1.0f)
-    , releaseShape("Release Shape", "envReleaseShape", "Amp Env release shape", "", 0.01f, 10.0f, 1.0f)
-    , decay("dec.", "envDecay", "Amp Env decay", "s", 0.001f, 5.0f, 0.05f)
+    : attack("att.", "envAttack", "attack", "s", 0.001f, 5.0f, 0.005f)
+    , release("rel.", "envRelease", "release", "s", 0.001f, 5.0f, 0.5f)
+    , attackShape("Attack Shape", "envAttackShape", "attack shape", "", 0.01f, 10.0f, 1.0f)
+    , decayShape("Decay Shape", "envDecayShape", "decay shape", "", 0.01f, 10.0f, 1.0f)
+    , releaseShape("Release Shape", "envReleaseShape", "release shape", "", 0.01f, 10.0f, 1.0f)
+    , decay("dec.", "envDecay", "decay", "s", 0.001f, 5.0f, 0.05f)
     // ModAmounts and Sources
-    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "ENV Speed ModAmount 1", "", 0.f, 8.f, 4.f)
-    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "ENV Speed ModAmount 2", "", 0.f, 8.f, 4.f)
-    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "ENV Speed ModSource 1", eModSource::eNone, modsourcenames)
-    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "ENV Speed ModSource 2", eModSource::eNone, modsourcenames)
+    , speedModAmount1("ENV SpeedModAmount1", "ENVSpeedModAmount1", "Speed ModAmount 1", "", 0.f, 8.f, 4.f)
+    , speedModAmount2("ENV SpeedModAmount2", "ENVSpeedModAmount2", "Speed ModAmount 2", "", 0.f, 8.f, 4.f)
+    , speedModSrc1("ENV Speed ModSrc1", "ENVSpeedModSrc1", "Speed ModSource 1", eModSource::eNone, modsourcenames)
+    , speedModSrc2("ENV Speed ModSrc2", "ENVSpeedModSrc2", "Speed ModSource 2", eModSource::eNone, modsourcenames)
 {
 }
 
 SynthParams::EnvVol::EnvVol()
     : EnvBase()
-    , sustain("sust.", "envSustain", "Amp Env sustain", "dB", 0.f, 1.f, -6.f)
+    , sustain("sust.", "envSustain", "sustain", "dB", -96.f, 0.f, -6.f)
 {
 }
 

@@ -115,7 +115,6 @@ public:
 
     struct EnvBase : public BaseParamStruct {
         EnvBase();
-        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1] \todo remove this!
         Param attack;    //!< env attack in [0.001..5]s
         Param decay;     //!< env decay in [0.001..5]s
         Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
@@ -130,7 +129,6 @@ public:
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
-            keyVelToEnv.setPrefix(s);
             attack.setPrefix(s);
             decay.setPrefix(s);
             release.setPrefix(s);
@@ -268,6 +266,8 @@ public:
         Param gainModAmount2; //!< gain mod amount
         ParamStepped<eModSource> gainModSrc1; //!< gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< gain mod source
+        
+        ParamStepped<eOnOffToggle> oscActivation; //!< toggle osc activation
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);

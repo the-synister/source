@@ -13,7 +13,19 @@ public:
     }
 
     ~HostParam() {
-        param.removeListener(this);
+        /* Problem in the destruction sequence: 
+         * The Param instances belong to SynthParams, a superclass of PluginAudioProcessor
+         * The HostParam instances are held in a pointer array that is a private member of 
+         * the Juce class AudioProcessor, which is also a superclass of PluginAudioProcessor.
+         * 
+         * This means that when the destructor of AudioProcessor is called, the Param instances
+         * are already gone. We must therefore not access param at HostParam destruction time.
+         *
+         * A better solution would be clearing AudioProcessor::managedParameters within the 
+         * PluginAudioProcessor destructor. This is currently not possible because 
+         * managedParameters is private.
+         */
+        //param.removeListener(this);
     }
 
     float getValue() const override {
@@ -56,11 +68,11 @@ public:
     }
 
 protected:
-    float engineToHost(float engineVal) const {
+    virtual float engineToHost(float engineVal) const {
         jassert(engineVal >= param.getMin() && engineVal <= param.getMax());
         return (engineVal - param.getMin()) / (param.getMax() - param.getMin());
     }
-    float hostToEngine(float hostVal) const {
+    virtual float hostToEngine(float hostVal) const {
         jassert(hostVal >= 0.f && hostVal <= 1.f);
         if(param.getNumSteps()==0) {
             return (param.getMin() + hostVal*(param.getMax() - param.getMin()));
@@ -70,4 +82,32 @@ protected:
     }
 
     _par &param;
+};
+
+template<typename _par>
+class HostParamLog : public HostParam<_par> {
+public:
+    HostParamLog(_par &p, float midPoint) : HostParam<_par>(p) {
+        skew = log(0.5f) / log((midPoint - p.getMin()) / (p.getMax() - p.getMin()));
+        jassert(skew > 1.f || skew < 1.f);
+        jassert(p.getNumSteps() == 0);
+    }
+
+protected:
+    float skew;
+
+    float engineToHost(float engineVal) const override {
+        jassert(engineVal >= HostParam<_par>::param.getMin() && engineVal <= HostParam<_par>::param.getMax());
+        float proportion = HostParam<_par>::engineToHost(engineVal);
+        // copied from juce::Slider::valueToProportionOfLength
+        return pow(proportion, skew);
+    }
+    float hostToEngine(float hostVal) const override {
+        jassert(hostVal >= 0.f && hostVal <= 1.f);
+        // copied from juce::Slider::proportionOfLengthToValue
+        if (hostVal > 0.f) {
+            hostVal = exp(log(hostVal) / skew);
+        }
+        return HostParam<_par>::hostToEngine(hostVal);
+    }
 };

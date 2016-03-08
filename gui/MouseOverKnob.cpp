@@ -155,6 +155,16 @@ void MouseOverKnob::enablementChanged()
     }
 }
 
+void MouseOverKnob::visibilityChanged()
+{
+    if (this->isVisible()) {
+        knobLabel->setVisible(false);
+        setTextBoxStyle(MouseOverKnob::TextBoxBelow, false, this->getTextBoxWidth(), this->getTextBoxHeight());
+        knobLabel->setVisible(true);
+        setTextBoxStyle(MouseOverKnob::NoTextBox, true, this->getTextBoxWidth(), this->getTextBoxHeight());
+    }
+}
+
 //==============================================================================
 
 void MouseOverKnob::mouseEnter(const MouseEvent &e)
