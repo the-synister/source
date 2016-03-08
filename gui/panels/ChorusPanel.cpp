@@ -126,8 +126,8 @@ void ChorusPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "chorus", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 45, SynthParams::fxColour);
+    drawGroupBorder(g, "chor./flang.", 0, 0,
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 30, SynthParams::fxColour);
     //[/UserPaint]
 }
 

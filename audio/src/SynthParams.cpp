@@ -213,7 +213,7 @@ SynthParams::Env::Env()
 }
 
 SynthParams::Lfo::Lfo()
-    : freq("Freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
+    : freq("freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
     , wave("Wave", "lfo1wave", "waveform", eLfoWaves::eLfoSine, lfowavenames)
     , tempSync("TempoSync", "tempoSyncSwitch", "TempoSync", eOnOffToggle::eOff, onoffnames)
     , lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
