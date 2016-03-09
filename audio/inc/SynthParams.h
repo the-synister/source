@@ -6,6 +6,12 @@
 #include <array>
 #include "ModulationMatrix.h"
 
+enum class eSectionState : int {
+    eExpanded = 0,
+    eCollapsed = 1,
+    nSteps = 2
+};
+
 enum class eSerializationParams : int {
     eAll = 0,
     eSequencerOnly = 1
@@ -109,7 +115,6 @@ public:
 
     struct EnvBase : public BaseParamStruct {
         EnvBase();
-        Param keyVelToEnv;  //!< key velocity influence on env [0 ... 1] \todo remove this!
         Param attack;    //!< env attack in [0.001..5]s
         Param decay;     //!< env decay in [0.001..5]s
         Param release;   //!< env release in [0.001..5]s (logarithmic scaling)
@@ -124,7 +129,6 @@ public:
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
-            keyVelToEnv.setPrefix(s);
             attack.setPrefix(s);
             decay.setPrefix(s);
             release.setPrefix(s);
@@ -180,6 +184,8 @@ public:
             freq.setPrefix(s);
             tempSync.setPrefix(s);
             noteLength.setPrefix(s);
+            lfoTriplets.setPrefix(s);
+            lfoDottedLength.setPrefix(s);
             wave.setPrefix(s);
             fadeIn.setPrefix(s);
             freqModAmount1.setPrefix(s);
@@ -214,6 +220,7 @@ public:
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
+            filterActivation.setPrefix(s);
             passtype.setPrefix(s);
             lpCutoff.setPrefix(s);
             hpCutoff.setPrefix(s);
@@ -259,6 +266,8 @@ public:
         Param gainModAmount2; //!< gain mod amount
         ParamStepped<eModSource> gainModSrc1; //!< gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< gain mod source
+        
+        ParamStepped<eOnOffToggle> oscActivation; //!< toggle osc activation
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
@@ -285,6 +294,7 @@ public:
             gainModAmount2.setPrefix(s);
             gainModSrc1.setPrefix(s);
             gainModSrc2.setPrefix(s);
+            oscActivation.setPrefix(s);
         }
     };
 
@@ -294,6 +304,13 @@ public:
     std::array<Env, 2> env;
     std::array<Osc, 3> osc;
 
+    ParamStepped<eSectionState> oscSection;
+    ParamStepped<eSectionState> envSection;
+    ParamStepped<eSectionState> lfoSection;
+    ParamStepped<eSectionState> filterSection;
+    ParamStepped<eSectionState> fxSection;
+    ParamStepped<eSectionState> seqSection;
+    
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
     ParamStepped<eOnOffToggle> clippingActivation; //!< Activation of the clipping effect
 

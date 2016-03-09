@@ -86,6 +86,11 @@ public:
     */
     void enablementChanged() override;
 
+    /**
+     * Toggles the mouseEnter and mouseExit function at once, because of lack of synchronisation.
+     */
+    void visibilityChanged() override;
+
     //==============================================================================
 
     /**

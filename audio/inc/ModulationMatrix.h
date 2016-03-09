@@ -15,11 +15,7 @@ Author:  nj
 #include "Param.h"
 #include <map>
 
-//! Modulation Matrix
-/*! this fixed size mod matrix is based on the book
-"Designing Software Synthesizer Plug-Ins in C++"
-*/
-
+//! Enumeration of all mod sources
 enum eModSource : int {
     eNone = 0,
 
@@ -46,7 +42,7 @@ enum eModSource : int {
     nSteps
 };
 
-
+//! Enumeration of all mod destinations
 enum destinations : int {
     DEST_NONE = -1,
 
@@ -85,7 +81,14 @@ enum destinations : int {
     MAX_DESTINATIONS
 };
 
-inline bool isUnipolar(eModSource source) {
+//! mapping for mod sources to uni-/bipolar.
+/*!
+The mapping function that returns whether a modulation source if uni- or bipolar. 
+This can  be used to determine how a modulation amount might have to be transformed.
+@param source the source to be mapped
+@returns true if unipolar, else false
+*/
+static inline bool isUnipolar(eModSource source) {
     switch (source) {
     case eModSource::eVolEnv:
     case eModSource::eEnv2:
@@ -103,37 +106,95 @@ inline bool isUnipolar(eModSource source) {
 }
 
 // TODO: need inline?
+
+//! Transformation for mod amounts to unipolar.
+/*!
+The transformation function that returns a unipolar value, transformed from the range and current value of a mod amount.
+@param min the minimum value of the mod amount
+@param max the maximum value of the mod amount
+@param value the current value of the mod amount
+@returns transformed value between 0 and 1
+*/
 static float toUnipolar(float min, float max, float value) { return (value - min) / max - min; }
+
+//! Transformation for mod amounts to bipolar.
+/*!
+The transformation function that returns a bipolar value, transformed from the range and current value of a mod amount.
+@param min the minimum value of the mod amount
+@param max the maximum value of the mod amount
+@param value the current value of the mod amount
+@returns transformed value between -1 and 1
+*/
 static float toBipolar(float min, float max, float value) { return (2.0f*(value - min) / max - min) - 1.0f; }
 
-// core
+//! Modulation Matrix Class
+/*! This fixed size mod matrix is based on the book "Designing Software Synthesizer Plug-Ins in C++".
+It contains a row for each possible modulation source setting in the GUI, together with its amount and the name of its corresponding Combobox.
+Within the synister synthesizer, it is maintained and instanced in the SynthParams as a global modulation matrix. Its doModulationsMatrix method
+that applies the modulation is called from the Voice for each sample.
+*/
 class ModulationMatrix {
 public:
+    //! ModulationMatrix constructor.
     ModulationMatrix();
+    //! ModulationMatrix destructor.
     ~ModulationMatrix();
 
+    //! ModMatrixRow structure that carries the data associated with one modulation source combobox on the GUI, connecting one source with one destination.
     struct ModMatrixRow
     {
-        eModSource sourceIndex;
-        destinations destinationIndex;
-        Param* modIntensity;
-        String modSrcBox;
+        ParamStepped<eModSource>* modSrc; //!< mod source enum/index
+        destinations destinationIndex; //!< mod destination enum/index
+        Param* modIntensity; //!< pointer to mod intensity param
+        String modSrcBox; //!< mod source box name
 
-        ModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
-            : sourceIndex(s)
+        //! ModMatrixRow constructor.
+        ModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String boxname)
+            : modSrc(s)
             , destinationIndex(d)
             , modIntensity(intensity)
             , modSrcBox(boxname)
         {}
     };
 
+    //! Check whether a ModMatrixRow exists.
+    /*!
+    @param sourceIndex the minimum value of the mod amount
+    @param destinationIndex the maximum value of the mod amount
+    @returns true if a row exists, else false
+    */
     inline bool modMatrixRowExists(eModSource sourceIndex, destinations destinationIndex) const;
+
+    //! Changes the source of a destination that belongs to a specific combobox.
+    /*!
+    Method that is called when the user selects a new source in a combobox. This combobox belongs to a
+    row in the matrix, which is then updated.
+    @param comboBoxName name of the combobox the information comes from
+    @param source the source to be changed to
+    */
     inline void changeSource(const String &comboBoxName, eModSource source);
-    inline void addModMatrixRow(eModSource s, destinations d, Param *intensity, String comboboxName);
+
+    //! Adds a row to the modulation matrix.
+    /*!
+    Method that is called for each row to be added when the matrix is initialized.
+    @param s the initial source
+    @oaram d the destination
+    @param intensity the initial intensity value
+    @param comboboxName the name of the combobox the row belongs to
+    */
+    inline void addModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String comboboxName);
+
+    //! Applies the modulation for a sample.
+    /*!
+    Method that is called for each sample when the modulation of all sources to all destinations has to be applied.
+    @param src the pointer to the source values
+    @oaram dst the pointer to the destination the results are written to
+    */
     inline void doModulationsMatrix(const float** src, float** dst) const;
 
+
 private:
-    std::vector<ModMatrixRow> matrixCore;
+    std::vector<ModMatrixRow> matrixCore; //!< matrix core that keeps all the rows of the matrix in a vector
 };
 
 inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst) const
@@ -141,16 +202,16 @@ inline void ModulationMatrix::doModulationsMatrix(const float** src, float** dst
     for (const ModMatrixRow &row : matrixCore)
     {
         // get the source value & mod intensity
-        if (row.sourceIndex > eModSource::eNone && row.sourceIndex < eModSource::nSteps
+        if (row.modSrc->getStep() > eModSource::eNone && row.modSrc->getStep() < eModSource::nSteps
             && row.destinationIndex > DEST_NONE && row.destinationIndex < MAX_DESTINATIONS) {
-            float source = *(src[row.sourceIndex]);
+            float source = *(src[row.modSrc->getStep()]);
             float intensity = row.modIntensity->get();
 
             // get the min max values for the intensity for transformation
             float min = row.modIntensity->getMin();
             float max = row.modIntensity->getMax();
 
-            if (isUnipolar(row.sourceIndex)) {
+            if (isUnipolar(row.modSrc->getStep())) {
                 // if the source is unipolar, transform the intensity to bipolar
                 intensity = toBipolar(min, max, intensity);
             }
@@ -173,7 +234,7 @@ inline bool ModulationMatrix::modMatrixRowExists(eModSource sourceIndex, destina
     for (const ModMatrixRow &row : matrixCore)
     {
         // find matching source/destination pairs
-        if (row.sourceIndex == sourceIndex && row.destinationIndex == destinationIndex)
+        if (row.modSrc->getStep() == sourceIndex && row.destinationIndex == destinationIndex)
         {
             return true;
         }
@@ -187,12 +248,46 @@ inline void ModulationMatrix::changeSource(const String &comboBoxName, eModSourc
         // find matching source/destination pairs
         if (row.modSrcBox == comboBoxName)
         {
-            row.sourceIndex = source;
+            // before we change the old source, we gotta check whether it is a switch between unipolar<->bipolar (for conversion reasons)
+            eModSource oldSource = row.modSrc->getStep();
+            Param* modAmountParam = row.modIntensity;
+            float newModAmountValue;
+
+            // derived from the initial values, eNone should be considered as "unipolar" here since the  initial modAmount is set to a value fit for unipolar sources
+            bool newSourcePolarity = (source == eNone) ? true : isUnipolar(source);
+            bool oldSourcePolarity = (oldSource == eNone) ? true : isUnipolar(oldSource);
+
+            if (newSourcePolarity < oldSourcePolarity) {
+                // uni- to bipolar source -> mod amount [-x, x] to [0, x]
+                newModAmountValue = modAmountParam->getUI();
+
+                // find the middle
+                float middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
+
+                // get the absolute value if it's negative
+                if (modAmountParam->getUI() < middle) newModAmountValue = modAmountParam->getUI() + 2.f * (middle - modAmountParam->getUI());
+
+                // transform
+                newModAmountValue = (newModAmountValue - middle) * 2.f;
+                modAmountParam->setHost(newModAmountValue);
+            }
+            else if (newSourcePolarity > oldSourcePolarity) {
+                // bi- to unipolar source -> mod amount [0, x] to [-x, x]
+
+                // find the middle
+                float middle = (modAmountParam->getMax() + modAmountParam->getMin()) / 2.f;
+
+                // transform
+                newModAmountValue = middle + (modAmountParam->getUI() / 2.f);
+                modAmountParam->setHost(newModAmountValue);
+            }
+            
+            // the new source is already set, since it's a Param*
         }
     }
 }
 
-inline void ModulationMatrix::addModMatrixRow(eModSource s, destinations d, Param *intensity, String boxname)
+inline void ModulationMatrix::addModMatrixRow(ParamStepped<eModSource> *s, destinations d, Param *intensity, String boxname)
 {
     matrixCore.push_back(ModMatrixRow(s, d, intensity, boxname));
 }

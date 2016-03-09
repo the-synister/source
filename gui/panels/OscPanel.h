@@ -49,6 +49,7 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void updateWFShapeControls();
     void updateModAmountKnobs();
+    void onOffSwitchChanged();
     void drawWaves(Graphics& g, ScopedPointer<Slider>& _waveformSwitch);
     //[/UserMethods]
 
@@ -96,6 +97,7 @@ private:
     ScopedPointer<MouseOverKnob> panModAmount1;
     ScopedPointer<ModSourceBox> panModSrc1;
     ScopedPointer<ModSourceBox> panModSrc2;
+    ScopedPointer<Slider> onOffSwitch;
 
 
     //==============================================================================

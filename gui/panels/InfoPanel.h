@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_7B9503E899CF8C9A__
-#define __JUCE_HEADER_7B9503E899CF8C9A__
+#ifndef __JUCE_HEADER_959FD8A3ECDD8990__
+#define __JUCE_HEADER_959FD8A3ECDD8990__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -30,68 +30,40 @@
 //==============================================================================
 /**
                                                                     //[Comments]
-An auto-generated component, created by the Introjucer.
+    An auto-generated component, created by the Introjucer.
 
-Describe your class and how it works here!
+    Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FiltPanel  : public PanelBase,
-                   public SliderListener,
-                   public ComboBoxListener
+class InfoPanel  : public PanelBase
 {
 public:
     //==============================================================================
-    FiltPanel (SynthParams &p, int filterNumber);
-    ~FiltPanel();
+    InfoPanel (SynthParams &p);
+    ~InfoPanel();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void onOffSwitchChanged();
-    void updateModAmountKnobs();
-    void filterKnobEnabler();
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    SynthParams::Filter& filter;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<MouseOverKnob> cutoffSlider;
-    ScopedPointer<MouseOverKnob> resonanceSlider;
-    ScopedPointer<MouseOverKnob> cutoffSlider2;
-    ScopedPointer<Slider> passtype;
-    ScopedPointer<MouseOverKnob> lpModAmount1;
-    ScopedPointer<ModSourceBox> lpModSrc1;
-    ScopedPointer<ModSourceBox> hpModSrc1;
-    ScopedPointer<ModSourceBox> lpModSrc2;
-    ScopedPointer<ModSourceBox> hpModSrc2;
-    ScopedPointer<ModSourceBox> resModSrc1;
-    ScopedPointer<ModSourceBox> resModSrc2;
-    ScopedPointer<MouseOverKnob> lpModAmount2;
-    ScopedPointer<Label> ladderLabel;
-    ScopedPointer<Label> bandpassLabel;
-    ScopedPointer<Label> highpassLabel;
-    ScopedPointer<Label> lowpassLabel;
-    ScopedPointer<MouseOverKnob> hpModAmount1;
-    ScopedPointer<MouseOverKnob> hpModAmount2;
-    ScopedPointer<MouseOverKnob> resModAmount1;
-    ScopedPointer<MouseOverKnob> resModAmount2;
-    ScopedPointer<Slider> onOffSwitch;
+    ScopedPointer<Drawable> drawable1;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InfoPanel)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_7B9503E899CF8C9A__
+#endif   // __JUCE_HEADER_959FD8A3ECDD8990__

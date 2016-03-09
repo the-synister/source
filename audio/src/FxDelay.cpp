@@ -47,7 +47,7 @@ void FxDelay::init(int channelsIn, double sampleRateIn)
 {
     channels = channelsIn;
     sampleRate = sampleRateIn;
-    delayBuffer.setSize(channels, static_cast<int>(sampleRate * 5.0));
+    delayBuffer.setSize(channels, static_cast<int>(sampleRate * 20.0));
     currentDelayLength = static_cast<int>(params.delayTime.get()*(sampleRate / 1000.0));
     delayBuffer.clear();
 }

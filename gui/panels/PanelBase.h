@@ -35,6 +35,7 @@ protected:
         sliderReg[slider] = {p, min, max};
         if (hook) {
             postUpdateHook[slider] = hook;
+            hook();
         }
         if (p->hasLabels()) {
             slider->setName(p->getUIString());
@@ -61,6 +62,7 @@ protected:
         registerSlider(static_cast<Slider*>(slider), p);
         if (hook) {
             postUpdateHook[slider] = hook;
+            hook();
         }
         slider->initTextBox();
     }
@@ -170,6 +172,7 @@ protected:
 
         if (hook) {
             postUpdateHook[toggle] = hook;
+            hook();
         }
     }
 
@@ -213,8 +216,11 @@ protected:
     {
         dropDownReg[dropDown] = p;
 
+        dropDown->setText(String(p->getUI()));
+
         if (hook) {
             postUpdateHook[dropDown] = hook;
+            hook();
         }
     }
 
@@ -253,12 +259,16 @@ protected:
     //=======================================================================================================================================
 
     // TODO: Change for ParamStepped? It might be just useful for the notelength, so maybe a general solution should be better.
-    void registerNoteLength(ComboBox* noteLengthBox, Param* p, const tHookFn hook = tHookFn())
+    void registerNoteLength(ComboBox* noteLengthBox, Param* divisor, Param* dividend = nullptr, const tHookFn hook = tHookFn())
     {
-        noteLengthReg[noteLengthBox] = p;
+
+        noteLengthReg[noteLengthBox][0] = dividend;
+        
+        noteLengthReg[noteLengthBox][1] = divisor;
 
         if (hook) {
             postUpdateHook[noteLengthBox] = hook;
+            hook();
         }
     }
 
@@ -268,7 +278,11 @@ protected:
         auto it = noteLengthReg.find(noteLengthThatWasChanged);
 
         if (it != noteLengthReg.end()) {
-            it->second->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
+            it->second[1]->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
+            
+            if (it->second[0] != nullptr) {
+                it->second[0]->setUI(noteLengthThatWasChanged->getText().substring(0, 1).getFloatValue());
+            }
 
             auto itHook = postUpdateHook.find(it->first);
             if (itHook != postUpdateHook.end()) {
@@ -284,10 +298,14 @@ protected:
     void updateDirtyNoteLength()
     {
         for (auto d2p : noteLengthReg) {
-            if (d2p.second->isUIDirty()) {
-                d2p.first->setText("1/" + String(d2p.second->getUI()));
+            if ((d2p.second[0] != nullptr && d2p.second[0]->isUIDirty()) || d2p.second[1]->isUIDirty()) {
+                // IDEA : New Param with the bar numbers and get that from there
+                String barNumber = d2p.second[0] == nullptr ? "1" : String(d2p.second[0]->getUI());
+                
+                d2p.first->setText(barNumber + "/" + String(d2p.second[1]->getUI()));
+                
             }
-
+            
             auto itHook = postUpdateHook.find(d2p.first);
             if (itHook != postUpdateHook.end()) {
                 itHook->second();
@@ -310,6 +328,7 @@ protected:
 
         if (hook) {
             postUpdateHook[box] = hook;
+            hook();
         }
     }
 
@@ -350,6 +369,15 @@ protected:
         return false;
     }
 
+
+    void fillModsourceBox(ComboBox* box, bool noInternal) {
+        for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
+            if (noInternal && i >= eModSource::eLFO1) break;
+            box->addItem(params.getModSrcName(i), i + COMBO_OFS);
+        }
+    }
+
+
     void updateDirtyBoxes()
     {
         for (auto c2p : comboboxReg) {
@@ -377,8 +405,8 @@ protected:
 
     virtual void timerCallback() override
     {
-        updateDirtySaturns();
         updateDirtySliders();
+        updateDirtySaturns();
         updateDirtyBoxes();
         updateDirtyNoteLength();
         updateDirtyDropDowns();
@@ -388,7 +416,7 @@ protected:
     /**
     * Draw white group border with group name alligned right.
     */
-    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, Colour c)
+    void drawGroupBorder(Graphics &g, const String &name, int x, int y, int width, int height, float headHeight, float cornerSize, float borderThickness, float padding, int offset, Colour c)
     {
         float posX = static_cast<float>(x) + padding;
         float posY = static_cast<float>(y) + padding;
@@ -405,7 +433,7 @@ protected:
         g.fillRoundedRectangle(rect, cornerSize);
 
         // draw group name text
-        int offset = 2 * static_cast<int>(cornerSize);
+        //int offset = 2 * static_cast<int>(cornerSize);
         g.setFont(headHeight * 0.85f);
         g.drawText(name, static_cast<int>(posX) + offset, static_cast<int>(posY),
             width - 2 * offset, static_cast<int>(posY) + static_cast<int>(headHeight - (headHeight - headHeight * 0.85f) * 0.5f), Justification::centredRight);
@@ -415,7 +443,7 @@ protected:
     std::map<Button*, ParamStepped<eOnOffToggle>*> toggleReg;
     std::map<ComboBox*, ParamStepped<eModSource>*> comboboxReg;
     std::map<Component*, tHookFn> postUpdateHook;
-    std::map<ComboBox*, Param*> noteLengthReg;
+    std::map<ComboBox*, std::array<Param*, 2>> noteLengthReg;
     std::map<ComboBox*, Param*> dropDownReg;
     std::map<MouseOverKnob*, std::array<Slider*, 2>> saturnReg; // 2 for each mod amount
     std::map<ComboBox*, std::array<MouseOverKnob*, 3>> saturnSourceReg; // there are up to 3, because of the ADR

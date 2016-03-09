@@ -22,6 +22,7 @@ class CustomLookAndFeel : public LookAndFeel_V2 // our default design
 public:
     //==============================================================================
     CustomLookAndFeel();
+	Typeface::Ptr getTypefaceForFont(const Font & font);
     virtual ~CustomLookAndFeel();
     //==============================================================================
 
@@ -134,8 +135,14 @@ public:
     */
     void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height);
 
+    /*
+    * Draw custom titlebar buttons.
+    */
+    Button* createDocumentWindowButton(int buttonType);
+
 //==============================================================================
 private:
+	Typeface::Ptr newFont;
     /**
     * Draw modSources of rotary slider as saturn.
     @param g canvas to draw on

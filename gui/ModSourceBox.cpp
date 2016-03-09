@@ -14,9 +14,6 @@
 // contructer & destructer
 ModSourceBox::ModSourceBox(const String& name) : ComboBox(name)
 {
-    for (int i = eModSource::eNone; i < eModSource::nSteps; i++) {
-        this->addItem(SynthParams::getModSrcName(i), i + COMBO_OFS);
-    }
 }
 
 ModSourceBox::~ModSourceBox()

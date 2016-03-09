@@ -30,6 +30,8 @@ public:
     void reset() {
         phase = 0.f;
         phaseDelta = 0.f;
+        width = .5f;
+        trngAmount = .0f;
     }
 
     bool isActive() const {
@@ -53,7 +55,6 @@ public:
         phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
         return result;
     }
-
 };
 
 
@@ -113,6 +114,14 @@ public:
         return heldValue;
     }
 
+    float next(float pitchMod) {
+        if (phase + phaseDelta > 2.0f * float_Pi) {
+            heldValue = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 2.f)) - 1.f;
+        }
+
+        phase = std::fmod(phase + phaseDelta*pitchMod, float_Pi * 2.0f);
+        return heldValue;
+    }
 };
 
 
