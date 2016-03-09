@@ -22,6 +22,7 @@ class CustomLookAndFeel : public LookAndFeel_V2 // our default design
 public:
     //==============================================================================
     CustomLookAndFeel();
+	Typeface::Ptr getTypefaceForFont(const Font & font);
     virtual ~CustomLookAndFeel();
     //==============================================================================
 
@@ -136,6 +137,7 @@ public:
 
 //==============================================================================
 private:
+	Typeface::Ptr newFont;
     /**
     * Draw modSources of rotary slider as saturn.
     @param g canvas to draw on

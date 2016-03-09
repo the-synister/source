@@ -13,7 +13,19 @@ public:
     }
 
     ~HostParam() {
-        param.removeListener(this);
+        /* Problem in the destruction sequence: 
+         * The Param instances belong to SynthParams, a superclass of PluginAudioProcessor
+         * The HostParam instances are held in a pointer array that is a private member of 
+         * the Juce class AudioProcessor, which is also a superclass of PluginAudioProcessor.
+         * 
+         * This means that when the destructor of AudioProcessor is called, the Param instances
+         * are already gone. We must therefore not access param at HostParam destruction time.
+         *
+         * A better solution would be clearing AudioProcessor::managedParameters within the 
+         * PluginAudioProcessor destructor. This is currently not possible because 
+         * managedParameters is private.
+         */
+        //param.removeListener(this);
     }
 
     float getValue() const override {

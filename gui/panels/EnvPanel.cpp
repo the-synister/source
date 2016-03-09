@@ -118,7 +118,7 @@ EnvPanel::EnvPanel (SynthParams &p)
 
     addAndMakeVisible (shapeLabel1 = new Label ("new label",
                                                 TRANS("shape")));
-    shapeLabel1->setFont (Font ("Bauhaus 93", 20.00f, Font::plain));
+    shapeLabel1->setFont (Font ("Bauhaus LightA", 20.00f, Font::plain));
     shapeLabel1->setJustificationType (Justification::centred);
     shapeLabel1->setEditable (false, false, false);
     shapeLabel1->setColour (Label::textColourId, Colours::white);
@@ -151,7 +151,7 @@ EnvPanel::EnvPanel (SynthParams &p)
 
     addAndMakeVisible (speedModLabel = new Label ("new label",
                                                   TRANS("speed mod")));
-    speedModLabel->setFont (Font ("Bauhaus 93", 20.00f, Font::plain));
+    speedModLabel->setFont (Font ("Bauhaus LightA", 20.00f, Font::plain));
     speedModLabel->setJustificationType (Justification::centred);
     speedModLabel->setEditable (false, false, false);
     speedModLabel->setColour (Label::textColourId, Colours::white);
@@ -228,11 +228,11 @@ void EnvPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, envVol.name, 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::envColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 4.0f, 3.0f, 50,SynthParams::envColour);
 
     int smallBorderHeight = 40;
-    drawGroupBorder(g, "", 10, (this->getHeight() - 22) / 2 - (smallBorderHeight - 12) / 2,
-        this->getWidth() - 20, smallBorderHeight, 3.0f, 10.0f, 3.0f, 3.0f, SynthParams::envColour);
+    drawGroupBorder(g, "", 10, (this->getHeight() - 24) / 2 - (smallBorderHeight - 12) / 2,
+        this->getWidth() - 20, smallBorderHeight, 3.0f, 10.0f, 3.0f, 3.0f, 50,SynthParams::envColour);
     // NOTE: debug
     // TODO: panel is cutoff 22 pixel from below
     //g.setColour(Colours::red);
@@ -250,20 +250,20 @@ void EnvPanel::resized()
     envSpeedModSrc2->setColour(cID, envSpeedModSrc2->findColour(cID).withAlpha(envVol.speedModSrc2.getStep() == eModSource::eNone ? 0.5f : 1.0f));
     //[/UserPreResize]
 
-    attackTime->setBounds (8, 38, 64, 64);
-    decayTime->setBounds (69, 38, 64, 64);
-    sustainLevel->setBounds (132, 38, 64, 64);
-    releaseTime->setBounds (195, 38, 64, 64);
-    attackShape->setBounds (30, 111, 20, 20);
-    decayShape->setBounds (91, 111, 20, 20);
-    releaseShape->setBounds (216, 111, 20, 20);
-    speedMod1->setBounds (32, 146, 18, 18);
-    envelopeCurve->setBounds (117, 146, 128, 64);
-    shapeLabel1->setBounds (137, 108, 51, 24);
-    envSpeedModSrc2->setBounds (53, 172, 40, 18);
-    envSpeedModSrc1->setBounds (53, 146, 40, 18);
-    speedMod2->setBounds (32, 172, 18, 18);
-    speedModLabel->setBounds (23, 192, 80, 24);
+    attackTime->setBounds (8, 36, 64, 64);
+    decayTime->setBounds (69, 36, 64, 64);
+    sustainLevel->setBounds (132, 36, 64, 64);
+    releaseTime->setBounds (195, 36, 64, 64);
+    attackShape->setBounds (30, 110, 20, 20);
+    decayShape->setBounds (91, 110, 20, 20);
+    releaseShape->setBounds (216, 110, 20, 20);
+    speedMod1->setBounds (32, 148, 18, 18);
+    envelopeCurve->setBounds (117, 147, 128, 64);
+    shapeLabel1->setBounds (134, 107, 60, 24);
+    envSpeedModSrc2->setBounds (53, 174, 40, 18);
+    envSpeedModSrc1->setBounds (53, 148, 40, 18);
+    speedMod2->setBounds (32, 174, 18, 18);
+    speedModLabel->setBounds (20, 194, 95, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -386,76 +386,76 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="266" initialHeight="252">
   <BACKGROUND backgroundColour="ffbfa65a"/>
   <SLIDER name="Attack Time" id="3c32cde7173ddbe6" memberName="attackTime"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="8 36 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Decay Time" id="84a4159bee0728d6" memberName="decayTime"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="69 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="69 36 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Sustain" id="4bc867c016d7595f" memberName="sustainLevel"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="132 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="132 36 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="-96" max="0" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
           textBoxHeight="20" skewFactor="3"/>
   <SLIDER name="Release Time" id="c8bc1120a33101cd" memberName="releaseTime"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="195 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="195 36 64 64"
           rotarysliderfill="ffbfa65a" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="0.0010000000000000000208" max="5"
-          int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="56" textBoxHeight="20" skewFactor="0.5"/>
+          textboxoutline="ffffff" min="0.001" max="5" int="0" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="56"
+          textBoxHeight="20" skewFactor="0.5"/>
   <SLIDER name="Attack Shape" id="27ef7f1857e5d79b" memberName="attackShape"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 111 20 20"
-          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="30 110 20 20"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="Decay Shape" id="18adbff3650623b1" memberName="decayShape"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="91 111 20 20"
-          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="91 110 20 20"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="Release Shape" id="adb5f4f555fb76d1" memberName="releaseShape"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="216 111 20 20"
-          rotarysliderfill="ffffffff" min="0.010000000000000000208" max="10"
-          int="0" style="RotaryVerticalDrag" textBoxPos="NoTextBox" textBoxEditable="1"
-          textBoxWidth="0" textBoxHeight="0" skewFactor="0.2999999999999999889"/>
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="216 110 20 20"
+          rotarysliderfill="ffffffff" min="0.01" max="10" int="0" style="RotaryVerticalDrag"
+          textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="0" textBoxHeight="0"
+          skewFactor="0.29999999999999999"/>
   <SLIDER name="speedMod1" id="595a20e744f094d5" memberName="speedMod1"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 146 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 148 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <GENERICCOMPONENT name="Envelope Curve" id="c0212157938fff27" memberName="envelopeCurve"
-                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="117 146 128 64"
+                    virtualName="EnvelopeCurve" explicitFocusOrder="0" pos="117 147 128 64"
                     class="Component" params="envVol.attack.get(), envVol.decay.get(), envVol.sustain.get(), envVol.release.get(),  envVol.attackShape.get(), envVol.decayShape.get(), envVol.releaseShape.get()&#10;"/>
   <LABEL name="new label" id="79aa8d544da4882d" memberName="shapeLabel1"
-         virtualName="" explicitFocusOrder="0" pos="137 108 51 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="134 107 60 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="shape" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="20" bold="0" italic="0" justification="36"/>
   <COMBOBOX name="envSpeedModSrcBox2" id="6dae6bde5fbe8153" memberName="envSpeedModSrc2"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 172 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 174 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="envSpeedModSrcBox1" id="401dffa72d979c97" memberName="envSpeedModSrc1"
-            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 146 40 18"
+            virtualName="ModSourceBox" explicitFocusOrder="0" pos="53 148 40 18"
             editable="0" layout="36" items="" textWhenNonSelected="No Mod"
             textWhenNoItems="(no choices)"/>
   <SLIDER name="speedMod2" id="b297d9c76ec18bf9" memberName="speedMod2"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 172 18 18"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="32 174 18 18"
           rotarysliderfill="ffffffff" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="8" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="0"
           textBoxHeight="0" skewFactor="1"/>
   <LABEL name="new label" id="4eec3e2c98c3d079" memberName="speedModLabel"
-         virtualName="" explicitFocusOrder="0" pos="23 192 80 24" textCol="ffffffff"
+         virtualName="" explicitFocusOrder="0" pos="20 194 95 24" textCol="ffffffff"
          edTextCol="ff000000" edBkgCol="0" labelText="speed mod" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus 93"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Bauhaus LightA"
          fontsize="20" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 

@@ -9,6 +9,10 @@ namespace {
     static const char *onoffnames[] = {
         "Off", "On", nullptr
     };
+    
+    static const char *sectionStateNames[] = {
+        "Expanded", "Collapsed", nullptr
+    };
 
     static const char *seqPlayModeNames[] = {
         "Sequential", "Up/Down", "Random", nullptr
@@ -37,10 +41,10 @@ namespace {
 const Colour SynthParams::oscColour (0xff6c788c);
 const Colour SynthParams::envColour (0xffbfa65a);
 const Colour SynthParams::lfoColour (0xff855050);
-const Colour SynthParams::filterColour (0xff5b7a47);
+const Colour SynthParams::filterColour (0xff557144);
 const Colour SynthParams::fxColour (0xff2b3240);
 const Colour SynthParams::stepSeqColour (0xff564c43);
-const Colour SynthParams::onOffSwitchEnabled (96, 192, 96);
+const Colour SynthParams::onOffSwitchEnabled (0xff557144);
 const Colour SynthParams::onOffSwitchDisabled (102, 102, 102);
 const Colour SynthParams::envelopeCurveLine (216, 202, 155);
 const Colour SynthParams::envelopeCurveBackground (116, 101, 60);
@@ -53,11 +57,11 @@ SynthParams::SynthParams()
         // TODO: Think of another way to register all the struct params?
     //Oscillators PArams
     &osc[0].fine, &osc[0].coarse, &osc[0].panDir,&osc[0].vol,&osc[0].trngAmount,&osc[0].pulseWidth,&osc[0].waveForm,&osc[0].pitchModAmount1, &osc[0].pitchModAmount2,&osc[0].pitchModSrc1, &osc[0].pitchModSrc2,
-    &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2,
+    &osc[0].panModAmount1, &osc[0].panModAmount2, &osc[0].panModSrc1,&osc[0].panModSrc2,&osc[0].shapeModAmount1,&osc[0].shapeModAmount2,&osc[0].shapeModSrc1, &osc[0].shapeModSrc2,&osc[0].gainModAmount1,&osc[0].gainModAmount2,&osc[0].gainModSrc1,&osc[0].gainModSrc2, &osc[0].oscActivation,
     &osc[1].fine, &osc[1].coarse, &osc[1].panDir,&osc[1].vol,&osc[1].trngAmount,&osc[1].pulseWidth,&osc[1].waveForm,&osc[1].pitchModAmount1, &osc[1].pitchModAmount2,&osc[1].pitchModSrc1, &osc[1].pitchModSrc2,
-    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2,
+    &osc[1].panModAmount1, &osc[1].panModAmount2, &osc[1].panModSrc1, &osc[1].panModSrc2,&osc[1].shapeModAmount1,&osc[1].shapeModAmount2,&osc[1].shapeModSrc1, &osc[1].shapeModSrc2,&osc[1].gainModAmount1,&osc[1].gainModAmount2,&osc[1].gainModSrc1,&osc[1].gainModSrc2, &osc[1].oscActivation,
     &osc[2].fine, &osc[2].coarse, &osc[2].panDir,&osc[2].vol,&osc[2].trngAmount,&osc[2].pulseWidth,&osc[2].waveForm,&osc[2].pitchModAmount1, &osc[2].pitchModAmount2,&osc[2].pitchModSrc1, &osc[2].pitchModSrc2,
-    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[2].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2,
+    &osc[2].panModAmount1, &osc[2].panModAmount2, &osc[2].panModSrc1, &osc[2].panModSrc2, &osc[2].shapeModAmount1,&osc[2].shapeModAmount2,&osc[2].shapeModSrc1, &osc[2].shapeModSrc2,&osc[2].gainModAmount1,&osc[2].gainModAmount2,&osc[2].gainModSrc1,&osc[2].gainModSrc2, &osc[2].oscActivation,
     //Envelopes Params
     &env[0].attack, &env[0].decay, &env[0].sustain, &env[0].release, &env[0].attackShape, &env[0].decayShape, &env[0].releaseShape, &env[0].speedModAmount1, &env[0].speedModAmount2, &env[0].speedModSrc1, &env[0].speedModSrc2,
     &env[1].attack, &env[1].decay, &env[1].sustain, &env[1].release, &env[1].attackShape, &env[1].decayShape, &env[1].releaseShape, &env[1].speedModAmount1, &env[1].speedModAmount2, &env[1].speedModSrc1, &env[1].speedModSrc2,
@@ -75,12 +79,22 @@ SynthParams::SynthParams()
     //Delay
     &delayDryWet, &delayFeedback, &delayTime, &delaySync, &delayDividend, &delayDivisor, &delayCutoff, &delayResonance, &delayTriplet, &delayDottedLength, &delayRecordFilter, &delayReverse, &delayActivation, &syncToggle,
     //Others
-    &freq, &masterAmp, &masterPan, &chorActivation, &chorActivation, &chorDelayLength, &chorDryWet, &chorModDepth, &chorModRate, &lowFiActivation, &nBitsLowFi, &clippingActivation, &clippingFactor}
+    &freq, &masterAmp, &masterPan, &chorActivation, &chorActivation, &chorDelayLength, &chorDryWet, &chorModDepth, &chorModRate, &lowFiActivation, &nBitsLowFi, &clippingActivation, &clippingFactor,
+    //Sections
+    &oscSection, &envSection, &lfoSection, &filterSection, &fxSection, &seqSection
+    }
     , stepSeqParams{ &seqPlaySyncHost, &seqPlayMode, &seqNumSteps, &seqStepSpeed, &seqStepLength, &seqTriplets, &seqDottedLength, &seqStep0, &seqStep1, &seqStep2, &seqStep3, &seqStep4, &seqStep5, &seqStep6, &seqStep7,
     &seqStepActive0, &seqStepActive1, &seqStepActive2, &seqStepActive3, &seqStepActive4, &seqStepActive5, &seqStepActive6, &seqStepActive7, &seqRandomMin, &seqRandomMax }
+    // section states
+    , oscSection("oscillator section", "oscSection", "oscillator section", eSectionState::eExpanded, sectionStateNames)
+    , envSection("envelopes section", "envSection", "envelopes section", eSectionState::eCollapsed, sectionStateNames)
+    , lfoSection("lfo section", "lfoSection", "lfo section", eSectionState::eCollapsed, sectionStateNames)
+    , filterSection("filter section", "filterSection", "filter section", eSectionState::eCollapsed, sectionStateNames)
+    , fxSection("fx section", "fxSection", "fx section", eSectionState::eCollapsed, sectionStateNames)
+    , seqSection("sequencer section", "seqSection", "sequencer section", eSectionState::eCollapsed, sectionStateNames)
     , masterAmp("master amp", "masterAmp", "Master amp", "dB", -96.f, 12.f, -6.f)
     , masterPan("master pan", "masterPan", "Master pan", "%", -100.f, 100.f, 0.f)
-    , freq("master freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
+    , freq("main freq", "freq", "freq", "Hz", 220.f, 880.f, 440.f)
     // FX
     , delayDryWet("dry/wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
@@ -88,7 +102,7 @@ SynthParams::SynthParams()
     , delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
     , delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
     , delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 64, 4)
-    , delayCutoff("cutoff", "delCut", "Delay cutoff", "Hz", 10.f, 20000.f, 20000.f)
+    , delayCutoff("lp cutoff", "delCut", "Delay cutoff", "Hz", 40.f, 20000.f, 20000.f)
     , delayResonance("resonance", "delRes", "Delay resonance", "dB", -25.f, 0.f, 0.f)
     , delayTriplet("Delay Triplet", "delTrip", "Delay triplet", eOnOffToggle::eOff, onoffnames)
     , delayDottedLength("Delay Dotted Length", "delDot", "Delay dotted length", eOnOffToggle::eOff, onoffnames)
@@ -136,7 +150,7 @@ SynthParams::SynthParams()
     , seqStepActive7("Step 7 Active", "seqStepActive7", "Step 7 Active", eOnOffToggle::eOn, onoffnames)
     //Others
     , positionIndex(0)
-{
+{    
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();
 
@@ -159,8 +173,8 @@ SynthParams::SynthParams()
 SynthParams::Osc::Osc()
     : fine("fine", "fine", "f.tune", "ct", -100.f, 100.f, 0.f)
     , coarse("coarse", "coarse", "c.tune", "st", -36.f, 36.f, 0.f)
-    , trngAmount("triangle", "trngAmount", "triangle amount", "prct", 0.0f, 1.0f, 0.0f)
-    , pulseWidth("width", "pulseWidth", "pulsewidth", "prct", 0.01f, 0.99f, 0.5f)
+    , trngAmount("triangle", "trngAmount", "triangle amount", "", 0.0f, 1.0f, 0.0f)
+    , pulseWidth("width", "pulseWidth", "pulsewidth", "", 0.01f, 0.99f, 0.5f)
     , waveForm("Waveform", "oscWaveform", "Waveform", eOscWaves::eOscSquare, waveformNames)
     , panDir("pan", "panDir", "pan direction", "%", -100.f, 100.f, 0.f)
     , vol("gain", "vol", "Vol", "dB", -96.f, 12.f, -6.f)
@@ -179,8 +193,9 @@ SynthParams::Osc::Osc()
     , pitchModSrc2("PitchModSrc2", "OSCPitchModSrc2", "Pitch ModSource 2", eModSource::eNone, modsourcenames)
     , gainModAmount1("GainModAmount1", "OSCGainModAmount1", "Gain ModAmount 1", "dB", 0.f, 96.f, 48.0f)
     , gainModAmount2("GainModAmount2", "OSCGainModAmount2", "Gain ModAmount 2", "dB", 0.f, 96.f, 48.0f)
-    , gainModSrc1("GainModSrc1", "OSCGainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
-    , gainModSrc2("GainModSrc2", "OSCGainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , gainModSrc1("GainModSrc1", "GainModSrc1", "Gain ModSource 1", eModSource::eNone, modsourcenames)
+    , gainModSrc2("GainModSrc2", "GainModSrc2", "Gain ModSource 2", eModSource::eNone, modsourcenames)
+    , oscActivation("Activation", "Activation", "Active", eOnOffToggle::eOn, onoffnames)
 {
 }
 
@@ -212,7 +227,7 @@ SynthParams::Env::Env()
 }
 
 SynthParams::Lfo::Lfo()
-    : freq("Freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
+    : freq("freq", "lfo1freq", "freq", "Hz", .01f, 50.f, 1.f)
     , wave("Wave", "lfo1wave", "waveform", eLfoWaves::eLfoSine, lfowavenames)
     , tempSync("TempoSync", "tempoSyncSwitch", "TempoSync", eOnOffToggle::eOff, onoffnames)
     , lfoTriplets("Lfo Triplet", "lfoTriplet", "Lfo Triplet", eOnOffToggle::eOff, onoffnames)
@@ -230,9 +245,9 @@ SynthParams::Lfo::Lfo()
 
 SynthParams::Filter::Filter()
     : passtype("Type", "FILTERType", "Type", eBiquadFilters::eLowpass, biquadFilters)
-    , lpCutoff("lp cutoff", "lpCutoff", "LP Cutoff", "Hz", 10.f, 20000.f, 20000.f)
-    , hpCutoff("hp cutoff", "hpCutoff", "HP Cutoff", "Hz", 10.f, 20000.f, 10.f)
-    , resonance("resonance", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
+    , lpCutoff("LPcutoff", "lpCutoff", "LP Cutoff", "Hz", 10.f, 20000.f, 20000.f)
+    , hpCutoff("HPcutoff", "hpCutoff", "HP Cutoff", "Hz", 10.f, 20000.f, 10.f)
+    , resonance("reson.", "FILTERResonance", "Resonance", "", 0.f, 10.f, 0.f)
     // ModAmounts and ModSources
     , lpModAmount1("Lc ModAmount1", "FILTERLcModAmount1", "Lc ModAmount 1", "oct", 0.f, 10.f, 5.f)
     , lpModAmount2("Lc ModAmnout2", "FILTERLcModAmount2", "Lc ModAmount 2", "oct", 0.f, 10.f, 5.f)

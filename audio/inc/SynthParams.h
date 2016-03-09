@@ -6,6 +6,12 @@
 #include <array>
 #include "ModulationMatrix.h"
 
+enum class eSectionState : int {
+    eExpanded = 0,
+    eCollapsed = 1,
+    nSteps = 2
+};
+
 enum class eSerializationParams : int {
     eAll = 0,
     eSequencerOnly = 1
@@ -260,6 +266,8 @@ public:
         Param gainModAmount2; //!< gain mod amount
         ParamStepped<eModSource> gainModSrc1; //!< gain mod source
         ParamStepped<eModSource> gainModSrc2; //!< gain mod source
+        
+        ParamStepped<eOnOffToggle> oscActivation; //!< toggle osc activation
 
         void setName(const String& s) {
             BaseParamStruct::setName(s);
@@ -295,6 +303,13 @@ public:
     std::array<Env, 2> env;
     std::array<Osc, 3> osc;
 
+    ParamStepped<eSectionState> oscSection;
+    ParamStepped<eSectionState> envSection;
+    ParamStepped<eSectionState> lfoSection;
+    ParamStepped<eSectionState> filterSection;
+    ParamStepped<eSectionState> fxSection;
+    ParamStepped<eSectionState> seqSection;
+    
     ParamDb clippingFactor;     //!< overdrive factor of the amplitude of the signal in [0..30] dB
     ParamStepped<eOnOffToggle> clippingActivation; //!< Activation of the clipping effect
 

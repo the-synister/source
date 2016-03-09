@@ -15,8 +15,12 @@
 CustomLookAndFeel::CustomLookAndFeel()
     : LookAndFeel_V2()
 {
-    // set custom default font typeface
-    this->setDefaultSansSerifTypefaceName("Bauhaus 93");
+	newFont = Typeface::createSystemTypefaceFor(BinaryData::world_of_water_ttf, BinaryData::world_of_water_ttfSize);
+}
+
+Typeface::Ptr CustomLookAndFeel::getTypefaceForFont(const Font & font)
+{
+	return newFont;
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
@@ -24,6 +28,7 @@ CustomLookAndFeel::~CustomLookAndFeel()
     // release ressources
 }
 //==============================================================================
+
 void CustomLookAndFeel::drawRotarySlider(Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &s)
 {
     const float centreX = x + width * 0.5f;
@@ -424,7 +429,7 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
 {
     const int width = b.getWidth();
     const int height = b.getHeight();
-    const float cornerSize = 7.0f;
+    const float cornerSize = 5.0f;
     const float outlineThickness = isMouseOverButton ? 2.5f : 2.0f;
     const float halfThickness = outlineThickness * 0.5f;
 
@@ -515,7 +520,7 @@ void CustomLookAndFeel::drawComboBox(Graphics &g, int width, int height, bool /*
     g.fillRect(rect);
 
     // draw arrow background rectangle on right side
-    g.drawRect(0.f, 0.f, width+ 0.f, height+ 0.f, outlineThickness);
+    //g.drawRect(0.f, 0.f, width+ 0.f, height+ 0.f, halfThickness);
 
     // draw arrow
     if (c.isEnabled())
@@ -601,30 +606,52 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
     g.fillRect(0, 0, width, height);
 
     // draw arrow
-    const float buttonSize = height * 0.65f;
-    const float buttonIndent = (height - buttonSize) * 0.5f;
-    const float x = buttonIndent * 2.0f;
-    const float y = (height - buttonSize) * 0.5f;
+    
+	/*const float buttonSize = height * 0.65f;
+    
+    
     const float arrowThickness = buttonIndent * 2.0f;
+	*/
+	const float buttonSize = height * .7f;
+	const float buttonIndent = (height - buttonSize) * 0.5f;
+	const float x = buttonIndent * 2.0f;
+    const float y = (height - buttonSize) * 0.5f;
+	const float buttonCenterx = x + buttonSize / 2.f;
+	const float buttonCentery = y + buttonSize / 2.f;
+	const float arrowOffset = buttonSize * .2f;
+	const float arrowThickness = buttonSize * .3f;
 
     Path arrow;
     if (isOpen)
     {
-        arrow.addQuadrilateral(x, y,
-                               x + buttonSize * 0.5f, y + buttonSize - arrowThickness,
-                               x + buttonSize, y,
-                               x + buttonSize * 0.5f, y + buttonSize);
+        arrow.addQuadrilateral(x, y + arrowOffset,
+			buttonCenterx, buttonCentery,
+			buttonCenterx, buttonCentery + arrowThickness,
+			x, y + arrowOffset + arrowThickness
+			);
+		arrow.addQuadrilateral(buttonCenterx, buttonCentery,
+			x + buttonSize, y + arrowOffset,
+			x + buttonSize, y + arrowOffset + arrowThickness,
+			buttonCenterx, buttonCentery + arrowThickness
+			);
     }
     else
     {
-        arrow.addQuadrilateral(x, y,
-                               x + buttonSize - arrowThickness, y + buttonSize * 0.5f,
-                               x, y + buttonSize,
-                               x + buttonSize, y + buttonSize * 0.5f);
+        arrow.addQuadrilateral(x + arrowOffset, y,
+			x + arrowOffset + arrowThickness, y,
+			buttonCenterx + arrowThickness, buttonCentery,
+			buttonCenterx, buttonCentery);
+		arrow.addQuadrilateral(buttonCenterx, buttonCentery,
+			buttonCenterx + arrowThickness, buttonCentery,
+			x + arrowOffset + arrowThickness, y + buttonSize,
+			x + arrowOffset, y + buttonSize
+			);
     }
 
-    g.setColour(Colours::grey);
+    g.setColour(Colours::black);
     g.fillPath(arrow);
+	
+
 
     // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
 }

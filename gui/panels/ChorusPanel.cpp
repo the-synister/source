@@ -126,8 +126,8 @@ void ChorusPanel::paint (Graphics& g)
     g.fillAll (Colour (0xff2b3240));
 
     //[UserPaint] Add your own custom painting code here..
-    drawGroupBorder(g, "chorus", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
+    drawGroupBorder(g, "chor./flang.", 0, 0,
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 30, SynthParams::fxColour);
     //[/UserPaint]
 }
 
@@ -136,11 +136,11 @@ void ChorusPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    chorDryWetSlider->setBounds (25, 31, 64, 64);
-    chorDepthSlider->setBounds (111, 31, 64, 64);
-    chorDelayLengthSlider->setBounds (25, 95, 64, 64);
-    chorModRateSlider->setBounds (113, 95, 64, 64);
-    onOffSwitch->setBounds (14, 2, 40, 30);
+    chorDryWetSlider->setBounds (26, 35, 64, 64);
+    chorDepthSlider->setBounds (112, 35, 64, 64);
+    chorDelayLengthSlider->setBounds (26, 99, 64, 64);
+    chorModRateSlider->setBounds (114, 99, 64, 64);
+    onOffSwitch->setBounds (30, 1, 40, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -190,7 +190,7 @@ void ChorusPanel::onOffSwitchChanged()
 	chorDepthSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	chorDryWetSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	chorModRateSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::fxColour : SynthParams::onOffSwitchDisabled));
 }
 //[/MiscUserCode]
 
@@ -211,31 +211,31 @@ BEGIN_JUCER_METADATA
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Chorus Dry / Wet" id="d1b572a8e8671301" memberName="chorDryWetSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 31 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="26 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Depth" id="d8e8d503fe1af0f3" memberName="chorDepthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="111 31 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="112 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="5" max="20" int="0" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Width" id="16cb41f7d7598aa9" memberName="chorDelayLengthSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="25 95 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="26 99 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.025000000000000001" max="0.080000000000000002"
           int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Chorus Rate" id="ec42991e35f3fab6" memberName="chorModRateSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="113 95 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="114 99 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0.10000000000000001" max="1.5" int="0"
           style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="chorus switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="" explicitFocusOrder="0" pos="14 2 40 30" thumbcol="ffdadada"
+          virtualName="" explicitFocusOrder="0" pos="30 1 40 30" thumbcol="ffdadada"
           trackcol="ff666666" rotarysliderfill="ffffffff" rotaryslideroutline="fff20000"
           textboxbkgd="fffff4f4" min="0" max="1" int="1" style="LinearHorizontal"
           textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"

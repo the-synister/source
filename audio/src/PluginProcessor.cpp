@@ -78,6 +78,13 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(clippingActivation));
     addParameter(new HostParam<Param>(clippingFactor));
+    
+    addParameter(new HostParam<ParamStepped<eSectionState>>(oscSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(envSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(lfoSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(filterSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(fxSection));
+    addParameter(new HostParam<ParamStepped<eSectionState>>(seqSection));
 
 
     positionInfo[0].resetToDefault();
@@ -87,37 +94,37 @@ PluginAudioProcessor::PluginAudioProcessor()
     /*Create ModMatrixRows here*/
     for (size_t f = 0; f < filter.size(); ++f) {
         String boxName = String::formatted("filter %u", f + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount1, boxName + " hpModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount2, boxName + " hpModSrcBox2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount1, boxName + " resModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount2, boxName + " resModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].lpCutModSrc1, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount1, boxName + " lpModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].lpCutModSrc2, static_cast<destinations>(DEST_FILTER1_LC + f), &filter[f].lpModAmount2, boxName + " lpModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].hpCutModSrc1, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount1, boxName + " hpModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].hpCutModSrc2, static_cast<destinations>(DEST_FILTER1_HC + f), &filter[f].hpModAmount2, boxName + " hpModSrcBox2");
+        globalModMatrix.addModMatrixRow(&filter[f].resonanceModSrc1, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount1, boxName + " resModSrcBox1");
+        globalModMatrix.addModMatrixRow(&filter[f].resonanceModSrc2, static_cast<destinations>(DEST_FILTER1_RES + f), &filter[f].resModAmount2, boxName + " resModSrcBox2");
     }
     for (size_t o = 0; o < osc.size(); ++o) {
         String boxName = String::formatted("osc %u", o + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, boxName + " GainModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, boxName + " GainModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, boxName + " PanModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount2, boxName + " PanModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount1, boxName + " oscPitchModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount2, boxName + " oscPitchModSrc2");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].gainModSrc1, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount1, boxName + " GainModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].gainModSrc2, static_cast<destinations>(DEST_OSC1_GAIN + o), &osc[o].gainModAmount2, boxName + " GainModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].panModSrc1, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount1, boxName + " PanModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].panModSrc2, static_cast<destinations>(DEST_OSC1_PAN + o), &osc[o].panModAmount2, boxName + " PanModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].pitchModSrc1, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount1, boxName + " oscPitchModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].pitchModSrc2, static_cast<destinations>(DEST_OSC1_PI + o), &osc[o].pitchModAmount2, boxName + " oscPitchModSrc2");
+        globalModMatrix.addModMatrixRow(&osc[o].shapeModSrc1, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount1, boxName + " WidthModSrc1");
+        globalModMatrix.addModMatrixRow(&osc[o].shapeModSrc2, static_cast<destinations>(DEST_OSC1_PW + o), &osc[o].shapeModAmount2, boxName + " WidthModSrc2");
     }
 
     for (size_t e = 0; e < env.size(); ++e) {
         String boxName = String::formatted("env %u", e + 2);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
+        globalModMatrix.addModMatrixRow(&env[e].speedModSrc1, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount1, boxName + " envSpeedModSrcBox1");
+        globalModMatrix.addModMatrixRow(&env[e].speedModSrc2, static_cast<destinations>(DEST_ENV2_SPEED + e), &env[e].speedModAmount2, boxName + " envSpeedModSrcBox2");
     }
-    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
-    globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(&envVol[0].speedModSrc1, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount1, "env vol envSpeedModSrcBox1");
+    globalModMatrix.addModMatrixRow(&envVol[0].speedModSrc2, static_cast<destinations>(DEST_VOL_ENV_SPEED), &envVol[0].speedModAmount2, "env vol envSpeedModSrcBox1");
 
     for (size_t l = 0; l < lfo.size(); ++l) {
         String boxName = String::formatted("lfo %u", l + 1);
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
-        globalModMatrix.addModMatrixRow(eModSource::eNone, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, boxName + " freqModSrc2");
+        globalModMatrix.addModMatrixRow(&lfo[l].freqModSrc1, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount1, boxName + " freqModSrc1");
+        globalModMatrix.addModMatrixRow(&lfo[l].freqModSrc2, static_cast<destinations>(DEST_LFO1_FREQ + l), &lfo[l].freqModAmount2, boxName + " freqModSrc2");
         // LFO Gain is handled in directly @ voice.renderModulation()
     }
 }

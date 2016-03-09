@@ -36,7 +36,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (feedbackSlider = new MouseOverKnob ("Feedback"));
     feedbackSlider->setRange (0, 1, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     feedbackSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     feedbackSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     feedbackSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -46,7 +46,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (dryWetSlider = new MouseOverKnob ("Wet"));
     dryWetSlider->setRange (0, 1, 0);
     dryWetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    dryWetSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     dryWetSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     dryWetSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     dryWetSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -56,7 +56,7 @@ FxPanel::FxPanel (SynthParams &p)
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
     timeSlider->setRange (1, 5000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     timeSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     timeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -85,9 +85,9 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
-    cutoffSlider->setRange (1, 20000, 1);
+    cutoffSlider->setRange (40, 20000, 1);
     cutoffSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 80, 20);
+    cutoffSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     cutoffSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
     cutoffSlider->setColour (Slider::textBoxTextColourId, Colours::white);
     cutoffSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x00ffffff));
@@ -207,7 +207,7 @@ void FxPanel::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     drawGroupBorder(g, "delay", 0, 0,
-                    this->getWidth(), this->getHeight() - 22, 25.0f, 20.0f, 5.0f, 3.0f, SynthParams::fxColour);
+                    this->getWidth(), this->getHeight() - 22, 25.0f, 24.0f, 4.0f, 3.0f, 50,SynthParams::fxColour);
     drawPics(g, syncToggle, tripTggl, dottedNotes, revTggl, filtTggl);
     //[/UserPaint]
 }
@@ -223,17 +223,17 @@ void FxPanel::resized()
     filtTggl->setToggleState(params.delayRecordFilter.getStep() == eOnOffToggle::eOn, dontSendNotification);
     //[/UserPreResize]
 
-    feedbackSlider->setBounds (173, 38, 64, 64);
-    dryWetSlider->setBounds (17, 38, 64, 64);
-    timeSlider->setBounds (95, 38, 64, 64);
-    syncToggle->setBounds (39, 102, 65, 30);
-    divisor->setBounds (26, 138, 85, 24);
-    cutoffSlider->setBounds (251, 38, 64, 64);
-    tripTggl->setBounds (131, 102, 65, 30);
-    filtTggl->setBounds (224, 138, 65, 30);
-    revTggl->setBounds (224, 102, 65, 30);
-    onOffSwitch->setBounds (14, 2, 40, 30);
-    dottedNotes->setBounds (131, 138, 65, 30);
+    feedbackSlider->setBounds (173, 35, 64, 64);
+    dryWetSlider->setBounds (17, 35, 64, 64);
+    timeSlider->setBounds (95, 35, 64, 64);
+    syncToggle->setBounds (41, 100, 65, 30);
+    divisor->setBounds (28, 136, 85, 24);
+    cutoffSlider->setBounds (251, 35, 64, 64);
+    tripTggl->setBounds (143, 100, 65, 30);
+    filtTggl->setBounds (238, 136, 65, 30);
+    revTggl->setBounds (238, 100, 65, 30);
+    onOffSwitch->setBounds (30, 1, 40, 30);
+    dottedNotes->setBounds (143, 136, 65, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -383,7 +383,7 @@ void FxPanel::onOffSwitchChanged()
         dottedNotes->setEnabled(0);
 	}
 
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
+	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::fxColour : SynthParams::onOffSwitchDisabled));
 }
 
 void FxPanel::drawPics(Graphics& g, ScopedPointer<ToggleButton>& syncT, ScopedPointer<ToggleButton>& tripletT, ScopedPointer<ToggleButton>& dotT,
@@ -414,55 +414,55 @@ BEGIN_JUCER_METADATA
                  initialHeight="200">
   <BACKGROUND backgroundColour="ff2b3240"/>
   <SLIDER name="Feedback" id="9c0383d8383ea645" memberName="feedbackSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="173 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="173 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="0" max="1" int="0" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
           textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Wet" id="38a3801ec95e842b" memberName="dryWetSlider" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="17 38 64 64" rotarysliderfill="ff2b3240"
+          explicitFocusOrder="0" pos="17 35 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="0" max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
-          explicitFocusOrder="0" pos="95 38 64 64" rotarysliderfill="ff2b3240"
+          explicitFocusOrder="0" pos="95 35 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
           min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
-                virtualName="" explicitFocusOrder="0" pos="39 102 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="41 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
-            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="26 138 85 24"
+            virtualName="IncDecDropDown" explicitFocusOrder="0" pos="28 136 85 24"
             tooltip="Divisor" editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
-          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 38 64 64"
+          virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
-          textboxoutline="ffffff" min="1" max="20000" int="1" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
+          textboxoutline="ffffff" min="40" max="20000" int="1" style="RotaryVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
+          textBoxHeight="20" skewFactor="0.33000000000000002"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
-                virtualName="" explicitFocusOrder="0" pos="131 102 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="143 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="filtTggl1" id="14d5d3ba9ac30e1f" memberName="filtTggl"
-                virtualName="" explicitFocusOrder="0" pos="224 138 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="238 136 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <TOGGLEBUTTON name="revTggl" id="abad5a425656f18e" memberName="revTggl" virtualName=""
-                explicitFocusOrder="0" pos="224 102 65 30" txtcol="ffffffff"
+                explicitFocusOrder="0" pos="238 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <SLIDER name="delay switch" id="f46e9c55275d8f7b" memberName="onOffSwitch"
-          virtualName="Slider" explicitFocusOrder="0" pos="14 2 40 30"
+          virtualName="Slider" explicitFocusOrder="0" pos="30 1 40 30"
           thumbcol="ffdadada" trackcol="ff666666" rotarysliderfill="ffffffff"
           rotaryslideroutline="fff20000" textboxbkgd="fffff4f4" min="0"
           max="1" int="1" style="LinearHorizontal" textBoxPos="NoTextBox"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <TOGGLEBUTTON name="dottedNotes" id="ef5b938fe294c4b4" memberName="dottedNotes"
-                virtualName="" explicitFocusOrder="0" pos="131 138 65 30" txtcol="ffffffff"
+                virtualName="" explicitFocusOrder="0" pos="143 136 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
 </JUCER_COMPONENT>

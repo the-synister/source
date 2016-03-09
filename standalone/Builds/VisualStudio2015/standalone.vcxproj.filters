@@ -2939,6 +2939,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\png\synisterLogoSmall.png">
+      <Filter>standalone\Gui\png</Filter>
+    </None>
     <None Include="..\..\..\png\infoScreen.png">
       <Filter>standalone\Gui\png</Filter>
     </None>
@@ -2995,6 +2998,9 @@
     </None>
     <None Include="..\..\..\png\triplets.png">
       <Filter>standalone\Gui\png</Filter>
+    </None>
+    <None Include="..\..\..\world of water.ttf">
+      <Filter>standalone\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>

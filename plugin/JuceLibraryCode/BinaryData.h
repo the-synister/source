@@ -9,11 +9,17 @@
 
 namespace BinaryData
 {
+    extern const char*   world_of_water_ttf;
+    const int            world_of_water_ttfSize = 83900;
+
     extern const char*   infoScreen_png;
     const int            infoScreen_pngSize = 54884;
 
     extern const char*   QUL_Logo_png;
     const int            QUL_Logo_pngSize = 82009;
+
+    extern const char*   synisterLogoSmall_png;
+    const int            synisterLogoSmall_pngSize = 1356;
 
     extern const char*   delayReverse_png;
     const int            delayReverse_pngSize = 362;
@@ -55,7 +61,7 @@ namespace BinaryData
     const int            synisterLogo_pngSize = 2844;
 
     extern const char*   tempoSync_png;
-    const int            tempoSync_pngSize = 552;
+    const int            tempoSync_pngSize = 439;
 
     extern const char*   toggleOff_png;
     const int            toggleOff_pngSize = 465;
@@ -70,7 +76,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 19;
+    const int namedResourceListSize = 21;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).
