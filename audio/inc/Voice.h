@@ -284,30 +284,20 @@ public:
                             case eOscWaves::eOscSquare: 
                             {
                                 // In case of pulse width modulation
-                                float deltaWidth = osc[o].square.width > .5f 
-                                ? params.osc[o].pulseWidth.getMax() - osc[o].square.width
-                                : osc[o].square.width - params.osc[o].pulseWidth.getMin();
-                                // Pulse width must not reach 0 or 1
-                                if (deltaWidth > (.5f - params.osc[o].pulseWidth.getMin()) && deltaWidth <
-                                    (.5f + params.osc[o].pulseWidth.getMin())) {
-                                    deltaWidth = .49f;
-                                }
-                                // LFO mod has values [-1 .. 1], max amp for amount = 1
-                                deltaWidth = deltaWidth * shapeMod[s];
-                                // Next sample will be fetched with the new width
-                                currentSample = (osc[o].square.next(pitchMod[s], deltaWidth));
+                                float delta = shapeMod[s];
+                                delta = std::min(osc[o].square.width + delta, params.osc[o].pulseWidth.getMax()) - osc[o].square.width;
+                                delta = std::max(osc[o].square.width + delta, params.osc[o].pulseWidth.getMin()) - osc[o].square.width;
+                                currentSample = (osc[o].square.next(pitchMod[s], delta));
                             }
                                 break;
                             case eOscWaves::eOscSaw:
                             {
                                 // In case of triangle modulation
-                                float deltaTr = osc[o].saw.trngAmount > .5f
-                                ? params.osc[o].trngAmount.getMax() - osc[o].saw.trngAmount
-                                : osc[o].saw.trngAmount - params.osc[o].trngAmount.getMin();
-                                // LFO mod has values [-1 .. 1], max amp for amount = 1
-                                deltaTr = deltaTr * shapeMod[s];
+                                float delta = shapeMod[s];
+                                delta = std::min(osc[o].saw.trngAmount + delta, params.osc[o].trngAmount.getMax()) - osc[o].saw.trngAmount;
+                                delta = std::max(osc[o].saw.trngAmount + delta, params.osc[o].trngAmount.getMin()) - osc[o].saw.trngAmount;
                                 // Next sample will be fetch with the new width
-                                currentSample = (osc[o].saw.next(pitchMod[s], deltaTr));
+                                currentSample = (osc[o].saw.next(pitchMod[s], delta));
                             }
                                 break;
                             case eOscWaves::eOscNoise:
