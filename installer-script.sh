@@ -20,6 +20,7 @@ TEMP_STANDALONE=~/synister_standalone
 STANDALONE_DIR=standalone/Builds/MacOSX
 PLUGIN_DIR=plugin/Builds/MacOSX
 PATCHES_DIR=inst-patchfiles
+SCRIPTS_DIR=resources-mac/Scripts
 
 usage() {
     echo 'Usage: ./installer-script.sh [[--major|-ma] [--minor|-mi] | [--patch|-pa] | [--help|-h]]
@@ -140,11 +141,11 @@ cp -r "${PLUGIN_DIR}/build/Release/VST" "${TEMP_PLUGIN}"
 
 echo 'Creating application package..'
 # creates application package
-pkgbuild --install-location / --version "${VERSION}" --scripts "resources-mac/Scripts" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
+pkgbuild --install-location / --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg # > /dev/null 2>> installer-errors.log
 
 # creates plugin package
 echo 'Creating plugin package..'
-pkgbuild --install-location /Library/Audio/Plug-Ins --version "${VERSION}" --scripts "resources-mac/Scripts" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_plugin_build.pkg > /dev/null 2>> installer-errors.log
+pkgbuild --install-location /Library/Audio/Plug-Ins --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_plugin_build.pkg # > /dev/null 2>> installer-errors.log
 
 echo 'Creating distribution files..'
 # distribution files are for the personalized installer process
@@ -155,7 +156,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
     <title>Synister</title>
     <license file="LICENSE.txt" mime-type="text/plain"/>
     <allowed-os-versions>
-        <os-version min="10.4" />	
+        <os-version min="10.7" />	
     </allowed-os-versions>
     <options customize="never" />
     <choices-outline>
@@ -174,7 +175,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>
     <title>Synister</title>
     <license file="LICENSE.txt" mime-type="text/plain"/>
     <allowed-os-versions>
-        <os-version min="10.4" />
+        <os-version min="10.7" />
     </allowed-os-versions>
     <options customize="never" />
     <choices-outline>
