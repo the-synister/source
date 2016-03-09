@@ -239,7 +239,7 @@ public:
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override{
         
         const float sRate = static_cast<float>(getSampleRate());
-        const float midiNoteFreq = static_cast<float>(MidiMessage::getMidiNoteInHertz(SynthesiserVoice::getCurrentlyPlayingNote(), params.freq.get()));
+        const float midiNoteFreq = static_cast<float>(MidiMessage::getMidiNoteInHertz(getCurrentlyPlayingNote(), params.freq.get()));
 
         // if voice active
         if (lfo[0].sine.isActive() || lfo[0].square.isActive() ||
@@ -513,7 +513,6 @@ protected:
         }
     }
 private:
-    //float midiNoteFreq;
 
     SynthParams &params;
     int totalVoiceSamples;
