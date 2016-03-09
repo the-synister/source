@@ -34,7 +34,7 @@ public:
         // This method is where you should put your application's initialisation code..
         
         mainWindow = new StandaloneFilterWindow(getApplicationName(),Colours::black,nullptr,false);
-        mainWindow->setSize(812, 693 + mainWindow->getTitleBarHeight());
+        mainWindow->setSize(814, 693 + mainWindow->getTitleBarHeight());
 		mainWindow->setTopLeftPosition(200,20);
         mainWindow->setVisible(true);
     }
