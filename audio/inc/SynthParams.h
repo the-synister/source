@@ -294,6 +294,7 @@ public:
             gainModAmount2.setPrefix(s);
             gainModSrc1.setPrefix(s);
             gainModSrc2.setPrefix(s);
+            oscActivation.setPrefix(s);
         }
     };
 
