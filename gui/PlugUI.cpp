@@ -61,6 +61,7 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (savePresetButton = new TextButton ("Save preset"));
     savePresetButton->setButtonText (TRANS("save"));
+    savePresetButton->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     savePresetButton->addListener (this);
     savePresetButton->setColour (TextButton::buttonColourId, Colours::white);
     savePresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c788c));
@@ -68,6 +69,7 @@ PlugUI::PlugUI (SynthParams &p)
 
     addAndMakeVisible (loadPresetButton = new TextButton ("Load preset"));
     loadPresetButton->setButtonText (TRANS("load"));
+    loadPresetButton->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
     loadPresetButton->addListener (this);
     loadPresetButton->setColour (TextButton::buttonColourId, Colours::white);
     loadPresetButton->setColour (TextButton::textColourOnId, Colour (0xff6c788c));
@@ -207,8 +209,8 @@ void PlugUI::resized()
 
     freq->setBounds (712, 8, 80, 64);
     keyboard->setBounds (-1, 651, 812, 40);
-    savePresetButton->setBounds (61, 13, 50, 20);
-    loadPresetButton->setBounds (9, 13, 50, 20);
+    savePresetButton->setBounds (60, 13, 51, 20);
+    loadPresetButton->setBounds (9, 13, 51, 20);
     foldableComponent->setBounds (0, 72, 812, 576);
     masterAmp->setBounds (203, 24, 100, 32);
     masterPan->setBounds (502, 24, 80, 32);
@@ -322,12 +324,12 @@ BEGIN_JUCER_METADATA
                     virtualName="" explicitFocusOrder="0" pos="-1 651 812 40" class="MidiKeyboardComponent"
                     params="params.keyboardState,&#10;MidiKeyboardComponent::horizontalKeyboard"/>
   <TEXTBUTTON name="Save preset" id="f92394121ad5ea71" memberName="savePresetButton"
-              virtualName="" explicitFocusOrder="0" pos="61 13 50 20" bgColOff="ffffffff"
-              textCol="ff6c788c" textColOn="ff6c788c" buttonText="save" connectedEdges="0"
+              virtualName="" explicitFocusOrder="0" pos="60 13 51 20" bgColOff="ffffffff"
+              textCol="ff6c788c" textColOn="ff6c788c" buttonText="save" connectedEdges="3"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Load preset" id="75d257760189a81c" memberName="loadPresetButton"
-              virtualName="" explicitFocusOrder="0" pos="9 13 50 20" bgColOff="ffffffff"
-              textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="0"
+              virtualName="" explicitFocusOrder="0" pos="9 13 51 20" bgColOff="ffffffff"
+              textCol="ff6c788c" textColOn="ff6c788c" buttonText="load" connectedEdges="3"
               needsCallback="1" radioGroupId="0"/>
   <GENERICCOMPONENT name="" id="8fab73fbef5d680a" memberName="foldableComponent"
                     virtualName="FoldablePanel" explicitFocusOrder="0" pos="0 72 812 576"

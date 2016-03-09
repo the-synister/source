@@ -432,16 +432,33 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g, Button& b, const Colou
     const float cornerSize = 5.0f;
     const float outlineThickness = isMouseOverButton ? 2.5f : 2.0f;
     const float halfThickness = outlineThickness * 0.5f;
+    const bool roundedButton = !(b.isConnectedOnLeft() && b.isConnectedOnRight()) || (b.isConnectedOnTop() && b.isConnectedOnBottom());
 
     // background colour
     g.setColour(b.isEnabled() ? (isMouseOverButton ? c.brighter(0.1f) : c) : c.withAlpha(0.5f));
-    g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
+
+    if (roundedButton)
+    {
+        g.fillRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize);
+    }
+    else
+    {
+        g.fillRect(outlineThickness, outlineThickness, width - outlineThickness * 2.0f, height - outlineThickness * 2.0f);
+    }
 
     // draw outline
     if (b.findColour(TextButton::ColourIds::buttonColourId) != b.findColour(TextButton::ColourIds::buttonOnColourId))
     {
         g.setColour(b.isEnabled() ? b.findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId) : c.withAlpha(0.5f));
-        g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+
+        if (roundedButton)
+        {
+            g.drawRoundedRectangle(halfThickness, halfThickness, width - halfThickness * 2.0f, height - halfThickness * 2.0f, cornerSize, outlineThickness);
+        }
+        else
+        {
+            g.drawRect(outlineThickness, outlineThickness, width - outlineThickness * 2.0f, height - outlineThickness * 2.0f);
+        }
     }
 }
 
@@ -606,10 +623,10 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
     g.fillRect(0, 0, width, height);
 
     // draw arrow
-    
+
 	/*const float buttonSize = height * 0.65f;
-    
-    
+
+
     const float arrowThickness = buttonIndent * 2.0f;
 	*/
 	const float buttonSize = height * .7f;
@@ -650,8 +667,105 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
 
     g.setColour(Colours::black);
     g.fillPath(arrow);
-	
+
 
 
     // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
+}
+
+//==============================================================================
+class PaintButton : public Button
+{
+public:
+    PaintButton(const String& name, Colour col,
+        const Path& normalShape_,
+        const Path& toggledShape_) noexcept
+        : Button(name),
+        colour(col),
+        normalShape(normalShape_),
+        toggledShape(toggledShape_)
+    {
+    }
+
+    //==============================================================================
+    void paintButton(Graphics& g, bool isMouseOverButton, bool isButtonDown) override
+    {
+        float alpha = isMouseOverButton ? 1.0f : 0.85f;
+
+        if (!isEnabled())
+            alpha *= 0.5f;
+
+        float x = 0, y = 0, diam;
+
+        if (getWidth() < getHeight())
+        {
+            diam = (float)getWidth();
+            y = (getHeight() - getWidth()) * 0.5f;
+        }
+        else
+        {
+            diam = (float)getHeight();
+            y = (getWidth() - getHeight()) * 0.5f;
+        }
+
+        x += diam * 0.05f + 2.0f;
+        y += diam * 0.05f + 2.0f;
+        diam *= 0.9f;
+        diam -= 4.0f;
+
+        Path& p = getToggleState() ? toggledShape : normalShape;
+
+        const AffineTransform t(p.getTransformToScaleToFit(x + diam * 0.2f, y + diam * 0.2f,
+            diam * 0.6f, diam * 0.6f, true));
+
+        g.setColour(Colours::white.withAlpha(alpha));
+        g.fillPath(p, t);
+    }
+
+private:
+    Colour colour;
+    Path normalShape, toggledShape;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PaintButton)
+};
+
+Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
+{
+    Path shape;
+    const float crossThickness = 0.25f;
+
+    if (buttonType == DocumentWindow::closeButton)
+    {
+        shape.addLineSegment(Line<float>(0.0f, 0.0f, 1.0f, 1.0f), crossThickness * 1.4f);
+        shape.addLineSegment(Line<float>(1.0f, 0.0f, 0.0f, 1.0f), crossThickness * 1.4f);
+
+        return new PaintButton("close", Colours::white, shape, shape);
+    }
+
+    if (buttonType == DocumentWindow::minimiseButton)
+    {
+        shape.addLineSegment(Line<float>(0.0f, 0.0f, 1.0f, 0.0f), crossThickness);
+
+        return new PaintButton("minimise", Colours::white, shape, shape);
+    }
+
+    if (buttonType == DocumentWindow::maximiseButton)
+    {
+        shape.addLineSegment(Line<float>(0.5f, 0.0f, 0.5f, 1.0f), crossThickness);
+        shape.addLineSegment(Line<float>(0.0f, 0.5f, 1.0f, 0.5f), crossThickness);
+
+        Path fullscreenShape;
+        fullscreenShape.startNewSubPath(45.0f, 100.0f);
+        fullscreenShape.lineTo(0.0f, 100.0f);
+        fullscreenShape.lineTo(0.0f, 0.0f);
+        fullscreenShape.lineTo(100.0f, 0.0f);
+        fullscreenShape.lineTo(100.0f, 45.0f);
+        fullscreenShape.addRectangle(45.0f, 45.0f, 100.0f, 100.0f);
+        PathStrokeType(30.0f).createStrokedPath(fullscreenShape, fullscreenShape);
+
+        return new PaintButton("maximise", Colours::white, shape, fullscreenShape);
+    }
+
+    jassertfalse;
+    return nullptr;
 }
