@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PATCHES_DIR=$2/Patches
+
+echo 'Entering script..' > /tmp/logger.log
+
+mkdir -p "$3/Users/Shared/Synister"; >> /tmp/logger.log
+
+cp -r "${PATCHES_DIR}"/* "$3/Users/Shared/Synister/";  >> /tmp/logger.log
+
+rm -rf "${PATCHES_DIR}"; >> /tmp/logger.log
+
+echo 'Exiting script..' >> /tmp/logger.log
+
+exit 0;
