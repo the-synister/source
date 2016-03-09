@@ -326,7 +326,7 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
 
     // create the output
     FileChooser saveDirChooser("Please select the place you want to save!", 
-        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister"), "*.xml");
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister").getChildFile(patchName), "*.xml");
     if (saveDirChooser.browseForFileToSave(true))
     {
         File saveFile(saveDirChooser.getResult());
