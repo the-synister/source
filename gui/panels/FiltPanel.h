@@ -86,6 +86,7 @@ private:
     ScopedPointer<MouseOverKnob> resModAmount2;
     ScopedPointer<Slider> onOffSwitch;
 
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)
 };

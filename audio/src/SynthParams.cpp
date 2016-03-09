@@ -98,7 +98,7 @@ SynthParams::SynthParams()
     // FX
     , delayDryWet("dry/wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
-    , delayTime("time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
+    , delayTime("time", "delTime", "Delay time", "ms", 1., 20000., 1000.)
     , delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
     , delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
     , delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 64, 4)
