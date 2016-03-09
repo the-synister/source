@@ -623,10 +623,10 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
     g.fillRect(0, 0, width, height);
 
     // draw arrow
-    
+
 	/*const float buttonSize = height * 0.65f;
-    
-    
+
+
     const float arrowThickness = buttonIndent * 2.0f;
 	*/
 	const float buttonSize = height * .7f;
@@ -667,7 +667,7 @@ void CustomLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const String
 
     g.setColour(Colours::black);
     g.fillPath(arrow);
-	
+
 
 
     // draw text is done in FoldablePanel::SectionComponent::paint() due to text colour
@@ -769,4 +769,3 @@ Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
     jassertfalse;
     return nullptr;
 }
-

@@ -115,7 +115,7 @@ struct FoldablePanel::SectionComponent  : public Component
     {
         return (isOpen ? _sectionHeight : titleHeight);
     }
-    
+
     void updateOpennessState()
     {
         if (_sectionState->isUIDirty()) {
@@ -187,7 +187,7 @@ struct FoldablePanel::PanelHolderComponent  : public Component, private Timer
     {
         return sections.getUnchecked (targetIndex);
     }
-    
+
     void timerCallback() override
     {
         for (int i = 0; i < sections.size(); ++i) {

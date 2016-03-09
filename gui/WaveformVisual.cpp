@@ -56,7 +56,7 @@ void WaveformVisual::paint(Graphics &g)
                         noise.clear();
                     }
                     noise.lineTo(static_cast<float>(x), centreY - amplitude * static_cast<float>(getHeight()) * Waveforms::whiteNoise(0.0f, 0.0f, 0.0f));
-                    
+
                     if (x == width - 1) {
                         wavePath = Path(noise);
                         needNewNoise = false;

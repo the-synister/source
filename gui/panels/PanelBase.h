@@ -215,7 +215,7 @@ protected:
     void registerDropDowns(ComboBox* dropDown, Param* p, const tHookFn hook = tHookFn())
     {
         dropDownReg[dropDown] = p;
-        
+
         dropDown->setText(String(p->getUI()));
 
         if (hook) {
@@ -366,7 +366,7 @@ protected:
         }
     }
 
-    
+
     void updateDirtyBoxes()
     {
         for (auto c2p : comboboxReg) {
