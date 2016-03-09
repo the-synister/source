@@ -479,14 +479,14 @@ void FiltPanel::filterKnobEnabler()
     bool isOn = filter.filterActivation.getStep() == eOnOffToggle::eOn;
 
     // on: lp, bp, ladder
-    cutoffSlider->setEnabled(isOn && (filterType != eBiquadFilters::eHighpass)); 
+    cutoffSlider->setEnabled(isOn && (filterType != eBiquadFilters::eHighpass));
 
     // on: hp, bp
-    cutoffSlider2->setEnabled(isOn && (filterType == eBiquadFilters::eHighpass || filterType == eBiquadFilters::eBandpass)); 
-    
+    cutoffSlider2->setEnabled(isOn && (filterType == eBiquadFilters::eHighpass || filterType == eBiquadFilters::eBandpass));
+
     // on: lp, hp, ladder
-    resonanceSlider->setEnabled(isOn && (filterType != eBiquadFilters::eBandpass)); 
-    
+    resonanceSlider->setEnabled(isOn && (filterType != eBiquadFilters::eBandpass));
+
     lpModSrc1->setEnabled(cutoffSlider->isEnabled());
     lpModSrc2->setEnabled(cutoffSlider->isEnabled());
     hpModSrc1->setEnabled(cutoffSlider2->isEnabled());

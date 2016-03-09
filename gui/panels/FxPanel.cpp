@@ -54,7 +54,7 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
-    timeSlider->setRange (1, 5000, 1);
+    timeSlider->setRange (1, 20000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -429,7 +429,7 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="95 35 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
-          min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="41 100 65 30" txtcol="ffffffff"
