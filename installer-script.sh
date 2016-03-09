@@ -20,7 +20,7 @@ TEMP_STANDALONE=~/synister_standalone
 STANDALONE_DIR=standalone/Builds/MacOSX
 PLUGIN_DIR=plugin/Builds/MacOSX
 PATCHES_DIR=inst-patchfiles
-SCRIPTS_DIR=resources-mac/Scripts
+SCRIPTS_DIR=installer-mac/Scripts
 
 usage() {
     echo 'Usage: ./installer-script.sh [[--major|-ma] [--minor|-mi] | [--patch|-pa] | [--help|-h]]
