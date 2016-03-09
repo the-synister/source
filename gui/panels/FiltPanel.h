@@ -48,6 +48,7 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void onOffSwitchChanged();
     void updateModAmountKnobs();
+    void filterKnobEnabler();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -84,7 +85,6 @@ private:
     ScopedPointer<MouseOverKnob> resModAmount1;
     ScopedPointer<MouseOverKnob> resModAmount2;
     ScopedPointer<Slider> onOffSwitch;
-
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FiltPanel)

@@ -212,8 +212,6 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSaturnSource(resonanceSlider, resModAmount1, &filter.resonanceModSrc1, &filter.resModAmount1, 1);
     registerSaturnSource(resonanceSlider, resModAmount2, &filter.resonanceModSrc2, &filter.resModAmount2, 2);
 
-
-    registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(cutoffSlider, &filter.lpCutoff);
     registerSlider(cutoffSlider2, &filter.hpCutoff);
     registerSlider(resonanceSlider, &filter.resonance);
@@ -223,7 +221,7 @@ FiltPanel::FiltPanel (SynthParams &p, int filterNumber)
     registerSlider(hpModAmount2, &filter.hpModAmount2);
     registerSlider(resModAmount1, &filter.resModAmount1);
     registerSlider(resModAmount2, &filter.resModAmount2);
-    registerSlider(passtype, &filter.passtype);
+    registerSlider(passtype, &filter.passtype, std::bind(&FiltPanel::filterKnobEnabler, this));
     registerSlider(onOffSwitch, &filter.filterActivation, std::bind(&FiltPanel::onOffSwitchChanged, this));
 
     fillModsourceBox(lpModSrc1, false);
@@ -450,47 +448,58 @@ void FiltPanel::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void FiltPanel::onOffSwitchChanged()
 {
-	cutoffSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	cutoffSlider2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	resonanceSlider->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
 	passtype->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	lpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	lpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	hpModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	hpModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	resModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-	resModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1));
-    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
-    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
-    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
-    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
-    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
-    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
 
-	juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
-	ladderLabel->setColour(Label::textColourId, col);
-	bandpassLabel->setColour(Label::textColourId, col);
-	highpassLabel->setColour(Label::textColourId, col);
-	lowpassLabel->setColour(Label::textColourId, col);
-	onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::filterColour : SynthParams::onOffSwitchDisabled));
+    filterKnobEnabler();
+
+    juce::Colour col = (static_cast<int>(onOffSwitch->getValue()) == 1) ? Colours::white : Colours::white.withAlpha(0.5f);
+    ladderLabel->setColour(Label::textColourId, col);
+    bandpassLabel->setColour(Label::textColourId, col);
+    highpassLabel->setColour(Label::textColourId, col);
+    lowpassLabel->setColour(Label::textColourId, col);
+    onOffSwitch->setColour(Slider::trackColourId, ((onOffSwitch->getValue() == 1) ? SynthParams::onOffSwitchEnabled : SynthParams::onOffSwitchDisabled));
 }
 
 void FiltPanel::updateModAmountKnobs()
 {
-    lpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc1.getStep() != eModSource::eNone);
+    filterKnobEnabler();
     lpModAmount1->showBipolarValues(isUnipolar(filter.lpCutModSrc1.getStep()));
-    lpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.lpCutModSrc2.getStep() != eModSource::eNone);
     lpModAmount2->showBipolarValues(isUnipolar(filter.lpCutModSrc2.getStep()));
 
-    hpModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc1.getStep() != eModSource::eNone);
     hpModAmount1->showBipolarValues(isUnipolar(filter.hpCutModSrc1.getStep()));
-    hpModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.hpCutModSrc2.getStep() != eModSource::eNone);
     hpModAmount2->showBipolarValues(isUnipolar(filter.hpCutModSrc2.getStep()));
 
-    resModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc1.getStep() != eModSource::eNone);
     resModAmount1->showBipolarValues(isUnipolar(filter.resonanceModSrc1.getStep()));
-    resModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && filter.resonanceModSrc2.getStep() != eModSource::eNone);
     resModAmount2->showBipolarValues(isUnipolar(filter.resonanceModSrc2.getStep()));
+}
+
+void FiltPanel::filterKnobEnabler()
+{
+    eBiquadFilters filterType = filter.passtype.getStep();
+    bool isOn = filter.filterActivation.getStep() == eOnOffToggle::eOn;
+
+    // on: lp, bp, ladder
+    cutoffSlider->setEnabled(isOn && (filterType != eBiquadFilters::eHighpass)); 
+
+    // on: hp, bp
+    cutoffSlider2->setEnabled(isOn && (filterType == eBiquadFilters::eHighpass || filterType == eBiquadFilters::eBandpass)); 
+    
+    // on: lp, hp, ladder
+    resonanceSlider->setEnabled(isOn && (filterType != eBiquadFilters::eBandpass)); 
+    
+    lpModSrc1->setEnabled(cutoffSlider->isEnabled());
+    lpModSrc2->setEnabled(cutoffSlider->isEnabled());
+    hpModSrc1->setEnabled(cutoffSlider2->isEnabled());
+    hpModSrc2->setEnabled(cutoffSlider2->isEnabled());
+    resModSrc1->setEnabled(resonanceSlider->isEnabled());
+    resModSrc2->setEnabled(resonanceSlider->isEnabled());
+
+    lpModAmount1->setEnabled(cutoffSlider->isEnabled() && (filter.lpCutModSrc1.getStep() != eModSource::eNone) && lpModSrc1->isEnabled());
+    lpModAmount2->setEnabled(cutoffSlider->isEnabled() && (filter.lpCutModSrc2.getStep() != eModSource::eNone) && lpModSrc2->isEnabled());
+    hpModAmount1->setEnabled(cutoffSlider2->isEnabled() && (filter.hpCutModSrc1.getStep() != eModSource::eNone) && hpModSrc1->isEnabled());
+    hpModAmount2->setEnabled(cutoffSlider2->isEnabled() && (filter.hpCutModSrc2.getStep() != eModSource::eNone) && hpModSrc2->isEnabled());
+    resModAmount1->setEnabled(resonanceSlider->isEnabled() && (filter.resonanceModSrc1.getStep() != eModSource::eNone) && resModSrc1->isEnabled());
+    resModAmount2->setEnabled(resonanceSlider->isEnabled() && (filter.resonanceModSrc2.getStep() != eModSource::eNone) && resModSrc2->isEnabled());
 }
 //[/MiscUserCode]
 
