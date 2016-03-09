@@ -75,27 +75,15 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->setJustificationType (Justification::centred);
     divisor->setTextWhenNothingSelected (TRANS("4"));
     divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
-    divisor->addItem (TRANS("1/1"), 1);
-    divisor->addItem (TRANS("1/2"), 2);
-    divisor->addItem (TRANS("1/4"), 3);
-    divisor->addItem (TRANS("1/8"), 4);
-    divisor->addItem (TRANS("1/16"), 5);
-    divisor->addItem (TRANS("1/32"), 6);
-    divisor->addItem (TRANS("1/64"), 7);
-    divisor->addItem (TRANS("2/1"), 8);
-    divisor->addItem (TRANS("2/2"), 9);
-    divisor->addItem (TRANS("2/4"), 10);
-    divisor->addItem (TRANS("2/8"), 11);
-    divisor->addItem (TRANS("2/16"), 12);
-    divisor->addItem (TRANS("2/32"), 13);
-    divisor->addItem (TRANS("2/64"), 14);
-    divisor->addItem (TRANS("4/1"), 15);
-    divisor->addItem (TRANS("4/2"), 16);
-    divisor->addItem (TRANS("4/4"), 17);
-    divisor->addItem (TRANS("4/8"), 18);
-    divisor->addItem (TRANS("4/16"), 19);
-    divisor->addItem (TRANS("4/32"), 20);
-    divisor->addItem (TRANS("4/64"), 21);
+    divisor->addItem (TRANS("4/1"), 1);
+    divisor->addItem (TRANS("2/1"), 2);
+    divisor->addItem (TRANS("1/1"), 3);
+    divisor->addItem (TRANS("1/2"), 4);
+    divisor->addItem (TRANS("1/4"), 5);
+    divisor->addItem (TRANS("1/8"), 6);
+    divisor->addItem (TRANS("1/16"), 7);
+    divisor->addItem (TRANS("1/32"), 8);
+    divisor->addItem (TRANS("1/64"), 9);
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
@@ -449,7 +437,7 @@ BEGIN_JUCER_METADATA
                 state="0"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="28 136 85 24"
-            tooltip="Divisor" editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64&#10;2/1&#10;2/2&#10;2/4&#10;2/8&#10;2/16&#10;2/32&#10;2/64&#10;4/1&#10;4/2&#10;4/4&#10;4/8&#10;4/16&#10;4/32&#10;4/64"
+            tooltip="Divisor" editable="0" layout="36" items="4/1&#10;2/1&#10;1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 35 64 64"
