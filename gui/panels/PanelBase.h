@@ -263,7 +263,7 @@ protected:
     {
 
         noteLengthReg[noteLengthBox][0] = dividend;
-        
+
         noteLengthReg[noteLengthBox][1] = divisor;
 
         if (hook) {
@@ -279,7 +279,7 @@ protected:
 
         if (it != noteLengthReg.end()) {
             it->second[1]->setUI(noteLengthThatWasChanged->getText().substring(2).getFloatValue());
-            
+
             if (it->second[0] != nullptr) {
                 it->second[0]->setUI(noteLengthThatWasChanged->getText().substring(0, 1).getFloatValue());
             }
@@ -301,11 +301,11 @@ protected:
             if ((d2p.second[0] != nullptr && d2p.second[0]->isUIDirty()) || d2p.second[1]->isUIDirty()) {
                 // IDEA : New Param with the bar numbers and get that from there
                 String barNumber = d2p.second[0] == nullptr ? "1" : String(d2p.second[0]->getUI());
-                
+
                 d2p.first->setText(barNumber + "/" + String(d2p.second[1]->getUI()));
-                
+
             }
-            
+
             auto itHook = postUpdateHook.find(d2p.first);
             if (itHook != postUpdateHook.end()) {
                 itHook->second();

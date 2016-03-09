@@ -325,7 +325,8 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
     writeXMLPatchTree(patch, paramsToSerialize);
 
     // create the output
-    FileChooser saveDirChooser("Please select the place you want to save!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
+    FileChooser saveDirChooser("Please select the place you want to save!", 
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister").getChildFile(patchName), "*.xml");
     if (saveDirChooser.browseForFileToSave(true))
     {
         File saveFile(saveDirChooser.getResult());
@@ -381,7 +382,8 @@ void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes, eSerializa
 
 void SynthParams::readXMLPatchStandalone(eSerializationParams paramsToSerialize) {
     // read the xml params into the synth params
-    FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
+    FileChooser openFileChooser("Please select the patch you want to read!", 
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister"), "*.xml");
     if (openFileChooser.browseForFileToOpen()) {
         File openedFile(openFileChooser.getResult());
         ScopedPointer<XmlElement> patch = XmlDocument::parse(openedFile);
