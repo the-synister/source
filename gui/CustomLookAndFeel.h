@@ -135,6 +135,11 @@ public:
     */
     void drawPropertyPanelSectionHeader(Graphics& g, const String& name, bool isOpen, int width, int height);
 
+    /*
+    * Draw custom titlebar buttons.
+    */
+    Button* createDocumentWindowButton(int buttonType);
+
 //==============================================================================
 private:
 	Typeface::Ptr newFont;
