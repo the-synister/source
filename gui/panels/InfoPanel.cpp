@@ -33,6 +33,12 @@ InfoPanel::InfoPanel (SynthParams &p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    addAndMakeVisible (hyperlinkButton = new HyperlinkButton (TRANS("http://the-synister.github.io/"),
+                                                              URL ("http://the-synister.github.io/")));
+    hyperlinkButton->setTooltip (TRANS("http://the-synister.github.io/"));
+    hyperlinkButton->setButtonText (TRANS("http://the-synister.github.io/"));
+    hyperlinkButton->setColour (HyperlinkButton::textColourId, Colours::white);
+
     drawable1 = Drawable::createFromImageData (BinaryData::infoScreen_png, BinaryData::infoScreen_pngSize);
 
     //[UserPreSize]
@@ -50,6 +56,7 @@ InfoPanel::~InfoPanel()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    hyperlinkButton = nullptr;
     drawable1 = nullptr;
 
 
@@ -80,6 +87,7 @@ void InfoPanel::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
+    hyperlinkButton->setBounds (348, 219, 315, 39);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -108,6 +116,10 @@ BEGIN_JUCER_METADATA
     <IMAGE pos="0 0 685 555" resource="BinaryData::infoScreen_png" opacity="1"
            mode="0"/>
   </BACKGROUND>
+  <HYPERLINKBUTTON name="new hyperlink" id="da67067ab010118f" memberName="hyperlinkButton"
+                   virtualName="" explicitFocusOrder="0" pos="348 219 315 39" tooltip="http://the-synister.github.io/"
+                   textCol="ffffffff" buttonText="http://the-synister.github.io/"
+                   connectedEdges="0" needsCallback="0" radioGroupId="0" url="http://the-synister.github.io/"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -35,7 +35,7 @@ public:
         , fOutputDelay1(0.f)
         , fOutputDelay2(0.f)
         , delayBuffer()
-        , maxDelayLength(5000)
+        , maxDelayLength(20000)
     {}
     //! FxDelay destructor.
     ~FxDelay(){}

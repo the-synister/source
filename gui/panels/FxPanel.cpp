@@ -54,7 +54,7 @@ FxPanel::FxPanel (SynthParams &p)
     dryWetSlider->addListener (this);
 
     addAndMakeVisible (timeSlider = new MouseOverKnob ("Time"));
-    timeSlider->setRange (1, 5000, 1);
+    timeSlider->setRange (1, 20000, 1);
     timeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     timeSlider->setTextBoxStyle (Slider::TextBoxBelow, true, 100, 20);
     timeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xff2b3240));
@@ -75,13 +75,15 @@ FxPanel::FxPanel (SynthParams &p)
     divisor->setJustificationType (Justification::centred);
     divisor->setTextWhenNothingSelected (TRANS("4"));
     divisor->setTextWhenNoChoicesAvailable (TRANS("4"));
-    divisor->addItem (TRANS("1/1"), 1);
-    divisor->addItem (TRANS("1/2"), 2);
-    divisor->addItem (TRANS("1/4"), 3);
-    divisor->addItem (TRANS("1/8"), 4);
-    divisor->addItem (TRANS("1/16"), 5);
-    divisor->addItem (TRANS("1/32"), 6);
-    divisor->addItem (TRANS("1/64"), 7);
+    divisor->addItem (TRANS("4/1"), 1);
+    divisor->addItem (TRANS("2/1"), 2);
+    divisor->addItem (TRANS("1/1"), 3);
+    divisor->addItem (TRANS("1/2"), 4);
+    divisor->addItem (TRANS("1/4"), 5);
+    divisor->addItem (TRANS("1/8"), 6);
+    divisor->addItem (TRANS("1/16"), 7);
+    divisor->addItem (TRANS("1/32"), 8);
+    divisor->addItem (TRANS("1/64"), 9);
     divisor->addListener (this);
 
     addAndMakeVisible (cutoffSlider = new MouseOverKnob ("Cutoff"));
@@ -140,7 +142,7 @@ FxPanel::FxPanel (SynthParams &p)
     registerToggle(tripTggl, &params.delayTriplet);
     registerToggle(dottedNotes, &params.delayDottedLength);
 
-    registerNoteLength(divisor, &params.delayDivisor);
+    registerNoteLength(divisor, &params.delayDivisor, &params.delayDividend);
 
     onOffSwitchChanged();
     //[/UserPreSize]
@@ -215,7 +217,7 @@ void FxPanel::paint (Graphics& g)
 void FxPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-    divisor->setText("1/" + String(static_cast<int>(params.delayDivisor.get())));
+    divisor->setText(String(static_cast<int>(params.delayDividend.get())) + "/" + String(static_cast<int>(params.delayDivisor.get())));
     dottedNotes->setToggleState(params.delayDottedLength.getStep() == eOnOffToggle::eOn, dontSendNotification);
     revTggl->setToggleState(params.delayReverse.getStep() == eOnOffToggle::eOn, dontSendNotification);
     syncToggle->setToggleState(params.delaySync.getStep() == eOnOffToggle::eOn, dontSendNotification);
@@ -427,22 +429,22 @@ BEGIN_JUCER_METADATA
   <SLIDER name="Time" id="5ac27dc9db375d94" memberName="timeSlider" virtualName="MouseOverKnob"
           explicitFocusOrder="0" pos="95 35 64 64" rotarysliderfill="ff2b3240"
           textboxtext="ffffffff" textboxbkgd="ffffff" textboxoutline="ffffff"
-          min="1" max="5000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          min="1" max="20000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          textBoxEditable="0" textBoxWidth="100" textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="syncToggle1" id="103062bcdc341811" memberName="syncToggle"
                 virtualName="" explicitFocusOrder="0" pos="41 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"
                 state="0"/>
   <COMBOBOX name="delayDivisor" id="182e27201e78c23e" memberName="divisor"
             virtualName="IncDecDropDown" explicitFocusOrder="0" pos="28 136 85 24"
-            tooltip="Divisor" editable="0" layout="36" items="1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
+            tooltip="Divisor" editable="0" layout="36" items="4/1&#10;2/1&#10;1/1&#10;1/2&#10;1/4&#10;1/8&#10;1/16&#10;1/32&#10;1/64"
             textWhenNonSelected="4" textWhenNoItems="4"/>
   <SLIDER name="Cutoff" id="4e89be5035a6b485" memberName="cutoffSlider"
           virtualName="MouseOverKnob" explicitFocusOrder="0" pos="251 35 64 64"
           rotarysliderfill="ff2b3240" textboxtext="ffffffff" textboxbkgd="ffffff"
           textboxoutline="ffffff" min="40" max="20000" int="1" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="0" textBoxWidth="100"
-          textBoxHeight="20" skewFactor="0.33000000000000002"/>
+          textBoxHeight="20" skewFactor="0.33000000000000001554"/>
   <TOGGLEBUTTON name="tripTggl1" id="805f456c4a709e07" memberName="tripTggl"
                 virtualName="" explicitFocusOrder="0" pos="143 100 65 30" txtcol="ffffffff"
                 buttonText="" connectedEdges="0" needsCallback="1" radioGroupId="0"

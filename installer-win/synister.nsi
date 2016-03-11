@@ -66,6 +66,8 @@
 
 
 Function .onInit
+  SetShellVarContext all
+
   ${If} $InstDir == "" ; Don't override setup.exe /D=c:\custom\dir
     ${If} ${RunningX64}
 	  SetRegView 64
@@ -226,6 +228,18 @@ SectionEnd
 
 
 
+Section "patches" 
+
+  SetOutPath "$DOCUMENTS\Synister"
+	
+  ;Store installation folder
+  WriteRegStr HKCU "Software\QULab\SynisterPatches" "" $OUTDIR
+  
+  ;ADD YOUR OWN FILES HERE...
+  File /r "..\inst-patchfiles\"
+
+SectionEnd
+
 ;--------------------------------
 ;Uninstaller Section
 
@@ -242,6 +256,8 @@ Section "Uninstall"
   ReadRegStr $0 HKCU "Software\QULab\SynisterVst64" ""
   Delete "$0\synister64.dll"
 
+  ; don't remove the patches for now as the folder could contain user content as well
+  
   ReadRegStr $0 HKCU "Software\QULab\Synister" ""
   Delete "$0\synister.exe"
   Delete "$0\synister-uninstall.exe"

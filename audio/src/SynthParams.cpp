@@ -98,7 +98,7 @@ SynthParams::SynthParams()
     // FX
     , delayDryWet("dry/wet", "delWet", "Delay dry/wet", "", 0.f, 1.f, 0.f)
     , delayFeedback("feedback", "delFeed", "Delay feedback", "", 0.f, 1.f, 0.f)
-    , delayTime("time", "delTime", "Delay time", "ms", 1., 5000., 1000.)
+    , delayTime("time", "delTime", "Delay time", "ms", 1., 20000., 1000.)
     , delaySync("Tempo Sync", "delSync", "Delay sync", eOnOffToggle::eOff, onoffnames)
     , delayDividend("SyncDel Dividend", "delDivd", "Delay dividend", "", 1, 5, 1)
     , delayDivisor("SyncDel Divisor", "delDivs", "Delay divisor", "", 1, 64, 4)
@@ -325,7 +325,8 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
     writeXMLPatchTree(patch, paramsToSerialize);
 
     // create the output
-    FileChooser saveDirChooser("Please select the place you want to save!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
+    FileChooser saveDirChooser("Please select the place you want to save!", 
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister").getChildFile(patchName), "*.xml");
     if (saveDirChooser.browseForFileToSave(true))
     {
         File saveFile(saveDirChooser.getResult());
@@ -381,7 +382,8 @@ void SynthParams::readXMLPatchHost(const void* data, int sizeInBytes, eSerializa
 
 void SynthParams::readXMLPatchStandalone(eSerializationParams paramsToSerialize) {
     // read the xml params into the synth params
-    FileChooser openFileChooser("Please select the patch you want to read!", File::getSpecialLocation(File::userHomeDirectory), "*.xml");
+    FileChooser openFileChooser("Please select the patch you want to read!", 
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister"), "*.xml");
     if (openFileChooser.browseForFileToOpen()) {
         File openedFile(openFileChooser.getResult());
         ScopedPointer<XmlElement> patch = XmlDocument::parse(openedFile);

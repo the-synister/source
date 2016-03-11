@@ -85,7 +85,7 @@ public:
     * Adapt knob label depending on enablement state.
     */
     void enablementChanged() override;
-        
+
     /**
      * Toggles the mouseEnter and mouseExit function at once, because of lack of synchronisation.
      */
