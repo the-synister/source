@@ -141,11 +141,11 @@ cp -r "${PLUGIN_DIR}/build/Release/VST" "${TEMP_PLUGIN}"
 
 echo 'Creating application package..'
 # creates application package
-pkgbuild --install-location / --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg # > /dev/null 2>> installer-errors.log
+pkgbuild --install-location / --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.standalone --root "${TEMP_STANDALONE}" synister_standalone_build.pkg > /dev/null 2>> installer-errors.log
 
 # creates plugin package
 echo 'Creating plugin package..'
-pkgbuild --install-location /Library/Audio/Plug-Ins --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_plugin_build.pkg # > /dev/null 2>> installer-errors.log
+pkgbuild --install-location /Library/Audio/Plug-Ins --scripts "${SCRIPTS_DIR}" --version "${VERSION}" --identifier de.tu-berlin.qu.synister.plugin --root "${TEMP_PLUGIN}" synister_plugin_build.pkg > /dev/null 2>> installer-errors.log
 
 echo 'Creating distribution files..'
 # distribution files are for the personalized installer process
