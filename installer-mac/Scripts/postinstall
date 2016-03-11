@@ -6,6 +6,8 @@ echo 'Entering script..' > /tmp/logger.log
 
 mkdir -p "$3/Users/Shared/Synister"; >> /tmp/logger.log
 
+chmod 777 "$3/Users/Shared/Synister"
+
 cp -r "${PATCHES_DIR}"/* "$3/Users/Shared/Synister/";  >> /tmp/logger.log
 
 rm -rf "${PATCHES_DIR}"; >> /tmp/logger.log
