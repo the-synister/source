@@ -646,14 +646,16 @@ void OscPanel::updateWFShapeControls()
     pulsewidth->setEnabled(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
+    widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
 
     trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
 
     trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
-    trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && eWaveformKey == eOscWaves::eOscSaw);
     trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
-    trngModSrc2->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && eWaveformKey == eOscWaves::eOscSaw);
 
     widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
     widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
