@@ -331,7 +331,12 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
     {
         File saveFile(saveDirChooser.getResult());
         saveFile.create();
-        patch->writeToFile(saveFile, ""); // DTD optional, no validation yet
+        if (!patch->writeToFile(saveFile, "")) // DTD optional, no validation yet
+        {
+            AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "File not saved!",
+                "The File could not be saved to the selected folder!",
+                "OK");
+        }
     }
 }
 
