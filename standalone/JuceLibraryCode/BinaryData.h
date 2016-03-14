@@ -22,7 +22,7 @@ namespace BinaryData
     const int            synisterLogoSmall_pngSize = 1356;
 
     extern const char*   infoScreen_png;
-    const int            infoScreen_pngSize = 49781;
+    const int            infoScreen_pngSize = 46272;
 
     extern const char*   QUL_Logo_png;
     const int            QUL_Logo_pngSize = 82009;

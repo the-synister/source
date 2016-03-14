@@ -39,9 +39,30 @@ InfoPanel::InfoPanel (SynthParams &p)
     hyperlinkButton->setButtonText (TRANS("http://the-synister.github.io/"));
     hyperlinkButton->setColour (HyperlinkButton::textColourId, Colours::white);
 
+    addAndMakeVisible (versionLabel = new Label ("version label",
+                                                 TRANS("Version X.X")));
+    versionLabel->setFont (Font (40.00f, Font::plain));
+    versionLabel->setJustificationType (Justification::centredRight);
+    versionLabel->setEditable (false, false, false);
+    versionLabel->setColour (Label::textColourId, Colour (0xffcccccc));
+    versionLabel->setColour (TextEditor::textColourId, Colours::black);
+    versionLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (dateLabel = new Label ("date label",
+                                              TRANS("Date")));
+    dateLabel->setFont (Font (30.00f, Font::plain));
+    dateLabel->setJustificationType (Justification::centredRight);
+    dateLabel->setEditable (false, false, false);
+    dateLabel->setColour (Label::textColourId, Colours::black);
+    dateLabel->setColour (TextEditor::textColourId, Colours::black);
+    dateLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
     drawable1 = Drawable::createFromImageData (BinaryData::infoScreen_png, BinaryData::infoScreen_pngSize);
 
     //[UserPreSize]
+    today = Time().getCompilationDate();
+    dateLabel->setText(today.getMonthName(false) + " " + String(today.getYear()), dontSendNotification);
+    versionLabel->setText("Version: " + String(ProjectInfo::versionString), dontSendNotification);
     //[/UserPreSize]
 
     setSize (685, 555);
@@ -57,6 +78,8 @@ InfoPanel::~InfoPanel()
     //[/Destructor_pre]
 
     hyperlinkButton = nullptr;
+    versionLabel = nullptr;
+    dateLabel = nullptr;
     drawable1 = nullptr;
 
 
@@ -85,9 +108,14 @@ void InfoPanel::paint (Graphics& g)
 void InfoPanel::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    today = Time().getCompilationDate();
+    dateLabel->setText(today.getMonthName(false) + " " + String(today.getYear()), dontSendNotification);
+    versionLabel->setText("Version: " + String(ProjectInfo::versionString), dontSendNotification);
     //[/UserPreResize]
 
     hyperlinkButton->setBounds (348, 219, 315, 39);
+    versionLabel->setBounds (405, 270, 255, 30);
+    dateLabel->setBounds (405, 305, 255, 20);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -120,6 +148,16 @@ BEGIN_JUCER_METADATA
                    virtualName="" explicitFocusOrder="0" pos="348 219 315 39" tooltip="http://the-synister.github.io/"
                    textCol="ffffffff" buttonText="http://the-synister.github.io/"
                    connectedEdges="0" needsCallback="0" radioGroupId="0" url="http://the-synister.github.io/"/>
+  <LABEL name="version label" id="4acef8b7a42ef7c5" memberName="versionLabel"
+         virtualName="" explicitFocusOrder="0" pos="405 270 255 30" textCol="ffcccccc"
+         edTextCol="ff000000" edBkgCol="0" labelText="Version X.X" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="40" bold="0" italic="0" justification="34"/>
+  <LABEL name="date label" id="8bb2be6e3527c72a" memberName="dateLabel"
+         virtualName="" explicitFocusOrder="0" pos="405 305 255 20" textCol="ff000000"
+         edTextCol="ff000000" edBkgCol="0" labelText="Date" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="30" bold="0" italic="0" justification="34"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
