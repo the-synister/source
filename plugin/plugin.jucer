@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="XJmPmE" name="plugin" projectType="audioplug" version="1.0.1"
+<JUCERPROJECT id="XJmPmE" name="synister" projectType="audioplug" version="1.0.2"
               bundleIdentifier="de.tu-berlin.qu.synister" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
               pluginName="synister" pluginDesc="synister" pluginManufacturer="qu.tu-berlin.de"
@@ -10,7 +10,7 @@
               pluginAUExportPrefix="pluginAU" pluginRTASCategory="" aaxIdentifier="de.tu-berlin.qu.synister"
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
               companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
-  <MAINGROUP id="nqiOAf" name="plugin">
+  <MAINGROUP id="nqiOAf" name="synister">
     <GROUP id="{5C0F4DC5-0DF4-EA1D-AFA7-2F0358884FE3}" name="Gui">
       <GROUP id="{D5F6F2E5-0D60-C10A-7121-EAA8D1DD4AFE}" name="assets">
         <FILE id="yIcfYQ" name="world of water.ttf" compile="0" resource="1"
