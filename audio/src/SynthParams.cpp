@@ -334,8 +334,8 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
         if (!patch->writeToFile(saveFile, "")) // DTD optional, no validation yet
         {
             AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "File not saved!",
-                "The File could not be saved to the selected folder!",
-                "OK");
+                "The file could not be saved to the selected location!",
+                "Close");
         }
     }
 }
