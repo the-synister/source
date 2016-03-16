@@ -274,7 +274,6 @@ void SynthParams::addElement(XmlElement* patch, String name, float value) {
 void SynthParams::writeXMLPatchTree(XmlElement* patch, eSerializationParams paramsToSerialize) {
     // set version of the patch
     patch->setAttribute("version", version);
-    // TODO check patchname for chars that need to be replaced/escaped for correct XML
     patch->setAttribute("patchname", patchName);
 
     std::vector<Param*> parameters = serializeParams;
@@ -324,12 +323,14 @@ void SynthParams::writeXMLPatchStandalone(eSerializationParams paramsToSerialize
     ScopedPointer<XmlElement> patch = new XmlElement("patch");
     writeXMLPatchTree(patch, paramsToSerialize);
 
+
     // create the output
     FileChooser saveDirChooser("Please select the place you want to save!", 
         File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile("Synister").getChildFile(patchName), "*.xml");
     if (saveDirChooser.browseForFileToSave(true))
     {
         File saveFile(saveDirChooser.getResult());
+        if (patch->getStringAttribute("patchname") == "") patch->setAttribute("patchname", saveFile.getFileNameWithoutExtension());
         saveFile.create();
         patch->writeToFile(saveFile, ""); // DTD optional, no validation yet
     }
