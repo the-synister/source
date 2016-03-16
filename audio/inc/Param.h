@@ -30,7 +30,7 @@ public:
 
     const String& name() const { return name_; }
     const String& serializationTag() const { return serializationTag_; }
-    String hostTag() const { return prefix_ + hostTag_; }
+    String hostTag() const { return prefix_.isEmpty() ? (hostTag_) : (prefix_ + " " + hostTag_); }
     const String& unit() const { return unit_; }
     int getNumSteps() const { return numSteps_; }
 
