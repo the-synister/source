@@ -2,26 +2,26 @@
 
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="plugin">
-      <UniqueIdentifier>{98FF9CA0-02E8-5D5A-F182-E923E1BFA803}</UniqueIdentifier>
+    <Filter Include="synister">
+      <UniqueIdentifier>{A2DA6E89-9B2E-4321-D787-3E8A305D94F6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Gui">
-      <UniqueIdentifier>{E1BCBC1C-A163-9876-D70B-F5372500C76A}</UniqueIdentifier>
+    <Filter Include="synister\Gui">
+      <UniqueIdentifier>{6E7F391C-5F10-0A05-D01A-2BA154C1B896}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Gui\assets">
-      <UniqueIdentifier>{1A2E56BC-F75B-6366-CA85-587F27BC2B5F}</UniqueIdentifier>
+    <Filter Include="synister\Gui\assets">
+      <UniqueIdentifier>{FB9DF16C-9024-F78D-9CEC-7B150C89D680}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Gui\panels">
-      <UniqueIdentifier>{7D44F8BC-8F8D-04FB-22C7-D3E92209163E}</UniqueIdentifier>
+    <Filter Include="synister\Gui\panels">
+      <UniqueIdentifier>{255FCC76-7A4E-2152-904F-B31B6872B4F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Audio">
-      <UniqueIdentifier>{CF55AAB5-9E32-53BE-5E6C-5320E3C09C41}</UniqueIdentifier>
+    <Filter Include="synister\Audio">
+      <UniqueIdentifier>{C3BABFD1-A36A-CBBF-6150-B80101FE1021}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Audio\inc">
-      <UniqueIdentifier>{1FE6AC8D-BFFA-EA2D-7036-2BBBAD3483DB}</UniqueIdentifier>
+    <Filter Include="synister\Audio\inc">
+      <UniqueIdentifier>{61CB1E1F-F4C9-019F-89A4-1DE14EFE8427}</UniqueIdentifier>
     </Filter>
-    <Filter Include="plugin\Audio\src">
-      <UniqueIdentifier>{FE16DE94-70A5-3BC0-14BC-2E9907D87C19}</UniqueIdentifier>
+    <Filter Include="synister\Audio\src">
+      <UniqueIdentifier>{A72BA4AE-7FCE-5686-727D-816683250C3F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Juce Modules">
       <UniqueIdentifier>{422C46B7-0467-2DB0-BF3C-16DFCAFD69AC}</UniqueIdentifier>
@@ -308,91 +308,91 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\gui\FoldablePanel.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\EnvelopeCurve.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\CustomLookAndFeel.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\IncDecDropDown.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\WaveformVisual.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\InfoPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ChorusPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\ClippingPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LoFiPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\EnvPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FiltPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\FxPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\Env1Panel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\LfoPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\OscPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\panels\SeqPanel.cpp">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\MouseOverKnob.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\ModSourceBox.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PluginEditor.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\gui\PlugUI.cpp">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\Envelope.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\LowFidelity.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxChorus.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxClipping.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\ModulationMatrix.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\FxDelay.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\StepSequencer.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\PluginProcessor.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\audio\src\SynthParams.cpp">
-      <Filter>plugin\Audio\src</Filter>
+      <Filter>synister\Audio\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>
@@ -1603,106 +1603,106 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\gui\FoldablePanel.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\EnvelopeCurve.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\CustomLookAndFeel.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\IncDecDropDown.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\WaveformVisual.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\InfoPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ChorusPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\ClippingPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LoFiPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\EnvPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FiltPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\FxPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\Env1Panel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\LfoPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\OscPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\PanelBase.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\panels\SeqPanel.h">
-      <Filter>plugin\Gui\panels</Filter>
+      <Filter>synister\Gui\panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\MouseOverKnob.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\ModSourceBox.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PluginEditor.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\gui\PlugUI.h">
-      <Filter>plugin\Gui</Filter>
+      <Filter>synister\Gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\ModulationMatrix.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Oscillator.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\LowFidelity.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxChorus.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxClipping.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\FxDelay.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\StepSequencer.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\HostParam.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Param.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Envelope.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\Voice.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\PluginProcessor.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\audio\inc\SynthParams.h">
-      <Filter>plugin\Audio\inc</Filter>
+      <Filter>synister\Audio\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\juce\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>
@@ -3012,67 +3012,67 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\world of water.ttf">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\infoScreen.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\QUL_Logo.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\synisterLogoSmall.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\delayReverse.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\dottedNote.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\lfoGain.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\lfoSampleHold.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\lfoSineWave.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\lfoSquareWave.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\oscWaveForms.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\recordCutoff.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqRandom.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqSequential.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\seqUpDown.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\Synister-Logo_block.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\synisterLogo.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\tempoSync.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\toggleOff.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\toggleOn.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\png\triplets.png">
-      <Filter>plugin\Gui\assets</Filter>
+      <Filter>synister\Gui\assets</Filter>
     </None>
     <None Include="..\..\..\juce\modules\juce_audio_basics\juce_module_info">
       <Filter>Juce Modules\juce_audio_basics</Filter>

@@ -134,7 +134,7 @@ rm -rf "$ARCHIVE"
 
 echo 'Creating archive of plugin..'
 #
-xcodebuild -project "${PLUGIN_DIR}/plugin.xcodeproj" -scheme plugin -configuration Release archive > /dev/null 2>> installer-errors.log
+xcodebuild -project "${PLUGIN_DIR}/synister.xcodeproj" -scheme synister -configuration Release archive > /dev/null 2>> installer-errors.log
 
 cp -r "${PLUGIN_DIR}/build/Release/Components" "${TEMP_PLUGIN}"
 cp -r "${PLUGIN_DIR}/build/Release/VST" "${TEMP_PLUGIN}"

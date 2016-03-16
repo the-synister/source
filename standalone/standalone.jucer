@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.1"
+<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.2"
               bundleIdentifier="de.tu-berlin.qu.synister.standalone" includeBinaryInAppConfig="1"
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
