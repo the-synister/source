@@ -52,7 +52,7 @@ protected:
             slider->setMaxValue(max->getUI());
         }
         if (!min && !max) {
-            slider->setValue(p->getUI());
+            slider->setValue(p->getUI(), dontSendNotification);
         }
     }
 
@@ -105,7 +105,7 @@ protected:
     void updateDirtySliders() {
         for (auto s2p : sliderReg) {
             if (s2p.second[0]->isUIDirty() && !s2p.second[1] && !s2p.second[2]) {
-                s2p.first->setValue(s2p.second[0]->getUI());
+                s2p.first->setValue(s2p.second[0]->getUI(), dontSendNotification);
                 if (s2p.second[0]->hasLabels()) {
                     s2p.first->setName(s2p.second[0]->getUIString());
                 }
