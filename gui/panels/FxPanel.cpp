@@ -347,15 +347,6 @@ void FxPanel::updateToggleState()
     tripTggl->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     dottedNotes->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn && (static_cast<int>(onOffSwitch->getValue()) == 1));
     divisor->setEnabled(params.delaySync.getStep() == eOnOffToggle::eOn);
-
-    if (divisor->isEnabled()) {
-        params.delayTime.set(params.delayTime.get() + 0.0000001f); //dirty hack
-        params.delayTime.set(params.delayTime.get() - 0.0000001f); //dirty hack
-    }
-    else {
-        timeSlider->setValue(params.delayTime.get());
-        params.delayTime.setUI(static_cast<float>(params.delayTime.get()));
-    }
 }
 
 void FxPanel::onOffSwitchChanged()

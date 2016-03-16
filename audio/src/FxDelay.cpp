@@ -54,23 +54,17 @@ void FxDelay::init(int channelsIn, double sampleRateIn)
 
 void FxDelay::calcTime()
 {
-    double bpmIn = params.positionInfo[params.getGUIIndex()].bpm;
+    if (params.delaySync.getStep() == eOnOffToggle::eOn){
+        double bpmIn = params.positionInfo[params.getGUIIndex()].bpm;
 
-    // check for changes, re-calculate delay time - how slow is this?
-    if (params.delaySync.getStep() == eOnOffToggle::eOn ||
-        bpm != bpmIn ||
-        divisor != params.delayDivisor.get() ||
-        dividend != params.delayDividend.get() ||
-        triplet != params.delayTriplet.getStep() ){
-
-        params.delayTime.set(static_cast<float>(4000.0 * (1. / (bpmIn / 60.)) *
-            static_cast<double>(params.delayDividend.get() / params.delayDivisor.get())));
+        float newTime = static_cast<float>(4000.0 * (1. / (bpmIn / 60.)) *
+                                           static_cast<double>(params.delayDividend.get() / params.delayDivisor.get()));
 
         if (params.delayDottedLength.getStep() == eOnOffToggle::eOn) {
-            params.delayTime.set(params.delayTime.get() * 1.5f);
+            newTime *= 1.5f;
         }
         if (params.delayTriplet.getStep() == eOnOffToggle::eOn) {
-            params.delayTime.set(params.delayTime.get()*(2.f/3.f));
+            newTime *= 2.f/3.f;
         }
 
         bpm = bpmIn;
@@ -78,15 +72,19 @@ void FxDelay::calcTime()
         dividend = params.delayDividend.get();
         triplet = params.delayTriplet.getStep();
 
-        if (params.delayTime.get() > static_cast<float>(maxDelayLength)) {
-            params.delayTime.set(static_cast<float>(maxDelayLength));
+        if (newTime > static_cast<float>(maxDelayLength)) {
+            newTime = static_cast<float>(maxDelayLength);
         }
+
+        float oldTime = params.delayTime.get();
+        // only notify ui (and host) if change is greater than .1 ms
+        params.delayTime.set(newTime, std::abs(oldTime-newTime) > .1f);
     }
 }
 
 void FxDelay::render(AudioSampleBuffer& outputBuffer, int startSample, int numSamplesIn)
 {
-    numSamplesIn; // to get rid of the compiler warning, since it is not used yet
+    ignoreUnused(numSamplesIn); // to get rid of the compiler warning, since it is not used yet
 
     int newLoopLength;
     calcTime();
