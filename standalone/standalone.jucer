@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.1"
+<JUCERPROJECT id="wGjCVl" name="standalone" projectType="guiapp" version="1.0.2"
               bundleIdentifier="de.tu-berlin.qu.synister.standalone" includeBinaryInAppConfig="1"
               jucerVersion="3.2.0" companyName="QU Lab, TU Berlin" companyWebsite="http://www.qu.tu-berlin.de">
   <MAINGROUP id="rEFqQd" name="standalone">
     <GROUP id="{971998CF-3097-9E13-A29B-5981A6F0C187}" name="Gui">
       <GROUP id="{0854BA35-DAFA-DA52-AF62-860EC58B5118}" name="png">
+        <FILE id="r8QXaZ" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
+        <FILE id="RXAQWS" name="seqSequential.png" compile="0" resource="1"
+              file="../png/seqSequential.png"/>
+        <FILE id="WmWlvX" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
         <FILE id="ZqXvPA" name="synisterLogoSmall.png" compile="0" resource="1"
               file="../png/synisterLogoSmall.png"/>
         <FILE id="mL7dKx" name="infoScreen.png" compile="0" resource="1" file="../png/infoScreen.png"/>
@@ -23,10 +27,6 @@
               file="../png/oscWaveForms.png"/>
         <FILE id="tDzga7" name="recordCutoff.png" compile="0" resource="1"
               file="../png/recordCutoff.png"/>
-        <FILE id="X7bbhn" name="seqRandom.png" compile="0" resource="1" file="../png/seqRandom.png"/>
-        <FILE id="mF0MIl" name="seqSequential.png" compile="0" resource="1"
-              file="../png/seqSequential.png"/>
-        <FILE id="qoR5L9" name="seqUpDown.png" compile="0" resource="1" file="../png/seqUpDown.png"/>
         <FILE id="Mh4ekB" name="Synister-Logo_block.png" compile="0" resource="1"
               file="../png/Synister-Logo_block.png"/>
         <FILE id="mJAKsc" name="synisterLogo.png" compile="0" resource="1"

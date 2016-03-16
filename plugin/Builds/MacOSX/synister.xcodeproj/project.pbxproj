@@ -1162,7 +1162,7 @@
 					AB784619C4DC8A057E8DF49D, ); name = Audio; sourceTree = "<group>"; };
 		02140C82D5E990C442BB87B6 = {isa = PBXGroup; children = (
 					33CE03A001CEB266CE683273,
-					AD0512DEC869594B30B5100D, ); name = plugin; sourceTree = "<group>"; };
+					AD0512DEC869594B30B5100D, ); name = synister; sourceTree = "<group>"; };
 		95C8881C48D8672E5EFB51FF = {isa = PBXGroup; children = (
 					8A2EC53E54A2497BC5D31E9F,
 					D7AFAEC359F5AF49905BA4C3,
@@ -2275,8 +2275,8 @@
 					"_DEBUG=1",
 					"DEBUG=1",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.1",
-					"JUCE_APP_VERSION_HEX=0x10001", );
+					"JUCE_APP_VERSION=1.0.2",
+					"JUCE_APP_VERSION_HEX=0x10002", );
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = ("../../../vst", "../../JuceLibraryCode", "../../../juce/modules", "../../../gui", "../../../audio/inc", "$(inherited)");
@@ -2304,8 +2304,8 @@
 					"_NDEBUG=1",
 					"NDEBUG=1",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.1",
-					"JUCE_APP_VERSION_HEX=0x10001", );
+					"JUCE_APP_VERSION=1.0.2",
+					"JUCE_APP_VERSION_HEX=0x10002", );
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GENERATE_PKGINFO_FILE = YES;
@@ -2454,7 +2454,7 @@
 					082CC15F1F3ADFC1B99F3F81,
 					E12043E491B7B64E87E20ACB,
 					F12BC0981ABE774F386C5E6A,
-					A0C82022AF346339E67EB0D7, ); buildRules = ( ); dependencies = ( ); name = plugin; productName = plugin; productReference = D3BC7428D0E49456B47E4DA7; productInstallPath = "$(HOME)/Library/Audio/Plug-Ins/Components/"; productType = "com.apple.product-type.bundle"; };
+					A0C82022AF346339E67EB0D7, ); buildRules = ( ); dependencies = ( ); name = synister; productName = synister; productReference = D3BC7428D0E49456B47E4DA7; productInstallPath = "$(HOME)/Library/Audio/Plug-Ins/Components/"; productType = "com.apple.product-type.bundle"; };
 		0E76C6A1C181DF864DD64F4B = {isa = PBXProject; buildConfigurationList = 49F944E52122062FBD521076; attributes = { LastUpgradeCheck = 0440; }; compatibilityVersion = "Xcode 3.2"; hasScannedForEncodings = 0; mainGroup = D75901A5A1B4832C400D078F; projectDirPath = ""; projectRoot = ""; targets = ( 03A7974B7AA1B3CDBCBD2896 ); };
 	};
 	rootObject = 0E76C6A1C181DF864DD64F4B;

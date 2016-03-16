@@ -281,14 +281,14 @@ SeqPanel::SeqPanel (SynthParams &p)
     triplets->addListener (this);
 
     addAndMakeVisible (saveSeq = new TextButton ("save button"));
-    saveSeq->setButtonText (TRANS("save seq"));
+    saveSeq->setButtonText (TRANS("save"));
     saveSeq->addListener (this);
     saveSeq->setColour (TextButton::buttonColourId, Colours::white);
     saveSeq->setColour (TextButton::textColourOnId, Colours::grey);
     saveSeq->setColour (TextButton::textColourOffId, Colours::grey);
 
     addAndMakeVisible (loadSeq = new TextButton ("load button"));
-    loadSeq->setButtonText (TRANS("load seq"));
+    loadSeq->setButtonText (TRANS("load"));
     loadSeq->addListener (this);
     loadSeq->setColour (TextButton::buttonColourId, Colours::white);
     loadSeq->setColour (TextButton::textColourOnId, Colours::grey);
@@ -472,7 +472,7 @@ void SeqPanel::resized()
     seqStep6->setBounds (652, 68, 40, 210);
     seqStep7->setBounds (692, 68, 40, 210);
     seqStep8->setBounds (732, 68, 40, 210);
-    seqPlay->setBounds (55, 5, 100, 23);
+    seqPlay->setBounds (55, 6, 60, 21);
     syncHost->setBounds (326, 53, 64, 30);
     labelButton1->setBounds (448, 42, 48, 24);
     labelButton2->setBounds (488, 42, 48, 24);
@@ -482,7 +482,7 @@ void SeqPanel::resized()
     labelButton6->setBounds (648, 42, 48, 24);
     labelButton7->setBounds (688, 42, 48, 24);
     labelButton8->setBounds (728, 42, 48, 24);
-    genRandom->setBounds (104, 219, 176, 24);
+    genRandom->setBounds (104, 219, 176, 21);
     randomSeq->setBounds (40, 236, 300, 50);
     randMinLabel->setBounds (24, 212, 80, 36);
     randMaxLabel->setBounds (280, 212, 80, 36);
@@ -493,9 +493,9 @@ void SeqPanel::resized()
     labelSeqLength->setBounds (33, 149, 103, 20);
     labelSeqStepNum->setBounds (33, 63, 103, 20);
     triplets->setBounds (326, 87, 64, 30);
-    saveSeq->setBounds (170, 5, 100, 23);
-    loadSeq->setBounds (280, 5, 100, 23);
-    playModes->setBounds (328, 177, 64, 24);
+    saveSeq->setBounds (118, 6, 60, 21);
+    loadSeq->setBounds (181, 6, 60, 21);
+    playModes->setBounds (328, 180, 64, 24);
     dottedNotes->setBounds (326, 121, 64, 30);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -751,11 +751,11 @@ void SeqPanel::drawPics(Graphics& g, ScopedPointer<Slider>& seqPlayMode, ScopedP
     int centerX = seqPlayMode->getX() + seqPlayMode->getWidth() / 2;
     int centerY = seqPlayMode->getY() + seqPlayMode->getHeight() / 2;
 
-    g.drawImageWithin(sequentialPic, seqPlayMode->getX() - 22, centerY - 8, 20, 15, RectanglePlacement::centred); //16x14 -> 20x15
-    g.drawImageWithin(upDownPic, centerX - 8, seqPlayMode->getY() - 17, 20, 15, RectanglePlacement::centred); // 17x13 -> 20x15
-    g.drawImageWithin(randomPic, seqPlayMode->getX() + seqPlayMode->getWidth() + 2, centerY - 13, 15, 25, RectanglePlacement::centred);// 12x20 -> 15x25
+    g.drawImageWithin(sequentialPic, seqPlayMode->getX() - 22, centerY - 8, 18, 17, RectanglePlacement::centred); //18x17
+    g.drawImageWithin(upDownPic, centerX - 8, seqPlayMode->getY() - 18, 18, 17, RectanglePlacement::centred); // 17x13 -> 20x15
+    g.drawImageWithin(randomPic, seqPlayMode->getX() + seqPlayMode->getWidth() + 2, centerY - 13, 14, 23, RectanglePlacement::centred);// 12x20 -> 15x25
 
-    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 34, 23, Justification::centred); // 34x23
+    g.drawImageWithin(syncPic, syncT->getX() + 22, syncT->getY() + syncT->getHeight() / 2 - 12, 32, 22, Justification::centred); // 32x22
     g.drawImageWithin(tripletPic, tripletT->getX() + 22, tripletT->getY() + tripletT->getHeight() / 2 - 15, 39, 30, Justification::centred); // 39x30
     g.drawImageWithin(dotPic, dotT->getX() + 22, dotT->getY() + dotT->getHeight() / 2 - 11, 18, 22, Justification::centred); // 18x22
 }
@@ -868,7 +868,7 @@ BEGIN_JUCER_METADATA
           textBoxPos="NoTextBox" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <TEXTBUTTON name="play sequencer" id="4552dd6439420b59" memberName="seqPlay"
-              virtualName="" explicitFocusOrder="0" pos="55 5 100 23" bgColOff="ff9a9a9a"
+              virtualName="" explicitFocusOrder="0" pos="55 6 60 21" bgColOff="ff9a9a9a"
               bgColOn="ff60ff60" textCol="ffffffff" textColOn="ffffffff" buttonText="play"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TOGGLEBUTTON name="Sync Host" id="2314e559577fe768" memberName="syncHost"
@@ -908,7 +908,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ffffff" textCol="ffffffff" textColOn="ff808080" buttonText="C4"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="generate random" id="bb20cf6f1f73eff1" memberName="genRandom"
-              virtualName="" explicitFocusOrder="0" pos="104 219 176 24" bgColOff="ff564c43"
+              virtualName="" explicitFocusOrder="0" pos="104 219 176 21" bgColOff="ff564c43"
               textCol="ffffffff" textColOn="ffffffff" buttonText="generate sequence"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="random sequence" id="2cf72626a61379e3" memberName="randomSeq"
@@ -957,15 +957,15 @@ BEGIN_JUCER_METADATA
                 explicitFocusOrder="0" pos="326 87 64 30" buttonText="" connectedEdges="0"
                 needsCallback="1" radioGroupId="0" state="0"/>
   <TEXTBUTTON name="save button" id="575b7197b656cd01" memberName="saveSeq"
-              virtualName="" explicitFocusOrder="0" pos="170 5 100 23" bgColOff="ffffffff"
-              textCol="ff808080" textColOn="ff808080" buttonText="save seq"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="118 6 60 21" bgColOff="ffffffff"
+              textCol="ff808080" textColOn="ff808080" buttonText="save" connectedEdges="0"
+              needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="load button" id="aa37b372c2030ee9" memberName="loadSeq"
-              virtualName="" explicitFocusOrder="0" pos="280 5 100 23" bgColOff="ffffffff"
-              textCol="ff808080" textColOn="ff808080" buttonText="load seq"
-              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="181 6 60 21" bgColOff="ffffffff"
+              textCol="ff808080" textColOn="ff808080" buttonText="load" connectedEdges="0"
+              needsCallback="1" radioGroupId="0"/>
   <SLIDER name="playModes" id="8b30775dcc59763b" memberName="playModes"
-          virtualName="Slider" explicitFocusOrder="0" pos="328 177 64 24"
+          virtualName="Slider" explicitFocusOrder="0" pos="328 180 64 24"
           thumbcol="ff564c43" trackcol="ffffffff" min="0" max="2" int="1"
           style="LinearHorizontal" textBoxPos="NoTextBox" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>

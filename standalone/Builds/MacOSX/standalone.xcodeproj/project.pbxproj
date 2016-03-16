@@ -987,6 +987,9 @@
 		FF0988F722220953888E9580 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_mac_Threads.mm"; path = "../../../juce/modules/juce_core/native/juce_mac_Threads.mm"; sourceTree = "SOURCE_ROOT"; };
 		FF2D252B78441F87A807BA8A = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Logger.h"; path = "../../../juce/modules/juce_core/logging/juce_Logger.h"; sourceTree = "SOURCE_ROOT"; };
 		0CAEB19C977F1AB15BFE4CF0 = {isa = PBXGroup; children = (
+					BD7810078FA96217FE71900A,
+					CDFBA96CDE85BBD2C472776D,
+					5EB46AFA3107D8F9E746257D,
 					1A56CA87F9C06CE1F3F8CAEC,
 					9C1FBC9F640109600F7E935F,
 					F1C474BCA15859B775F0EC60,
@@ -998,9 +1001,6 @@
 					81C88785E609FD4A6218BB64,
 					7835724D1C597C5621E1406D,
 					3ADFDBF9997F57AB073872F5,
-					BD7810078FA96217FE71900A,
-					CDFBA96CDE85BBD2C472776D,
-					5EB46AFA3107D8F9E746257D,
 					51709B514F31CF467D401EBB,
 					984A474D0EEFB9160BF027DD,
 					308F1BB9FCFABFDA6D26C1D9,
@@ -2128,8 +2128,8 @@
 					"_DEBUG=1",
 					"DEBUG=1",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.1",
-					"JUCE_APP_VERSION_HEX=0x10001", );
+					"JUCE_APP_VERSION=1.0.2",
+					"JUCE_APP_VERSION_HEX=0x10002", );
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ("../../JuceLibraryCode", "../../../juce/modules", "../../../gui", "../../../audio/inc", "$(inherited)");
 				INFOPLIST_FILE = Info.plist;
@@ -2152,8 +2152,8 @@
 					"_NDEBUG=1",
 					"NDEBUG=1",
 					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.1",
-					"JUCE_APP_VERSION_HEX=0x10001", );
+					"JUCE_APP_VERSION=1.0.2",
+					"JUCE_APP_VERSION_HEX=0x10002", );
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ("../../JuceLibraryCode", "../../../juce/modules", "../../../gui", "../../../audio/inc", "$(inherited)");

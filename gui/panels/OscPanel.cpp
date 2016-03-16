@@ -616,8 +616,8 @@ void OscPanel::onOffSwitchChanged()
 
     pitchModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.pitchModSrc1.getStep() != eModSource::eNone);
     pitchModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.pitchModSrc2.getStep() != eModSource::eNone);
-    widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone);
-    widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone);
+    widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
     gainModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc1.getStep() != eModSource::eNone);
     gainModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.gainModSrc2.getStep() != eModSource::eNone);
     panModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.panModSrc1.getStep() != eModSource::eNone);
@@ -646,17 +646,19 @@ void OscPanel::updateWFShapeControls()
     pulsewidth->setEnabled(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc1->setVisible(eWaveformKey == eOscWaves::eOscSquare);
     widthModSrc2->setVisible(eWaveformKey == eOscWaves::eOscSquare);
+    widthModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
+    widthModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.waveForm.getStep() == eOscWaves::eOscSquare);
 
     trngAmount->setVisible(eWaveformKey != eOscWaves::eOscSquare);
     trngAmount->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
 
     trngModSrc1->setVisible(eWaveformKey != eOscWaves::eOscSquare);
-    trngModSrc1->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && eWaveformKey == eOscWaves::eOscSaw);
     trngModSrc2->setVisible(eWaveformKey != eOscWaves::eOscSquare);
-    trngModSrc2->setEnabled(eWaveformKey == eOscWaves::eOscSaw);
+    trngModSrc2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && eWaveformKey == eOscWaves::eOscSaw);
 
-    widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
-    widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
+    widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone && eWaveformKey != eOscWaves::eOscNoise);
 
     // sync boxes of shapeModSrc
     trngModSrc1->setSelectedId(static_cast<int>(osc.shapeModSrc1.getStep()) + COMBO_OFS);
@@ -687,9 +689,9 @@ void OscPanel::updateModAmountKnobs()
     pitchModAmount2->setEnabled(osc.pitchModSrc2.getStep() != eModSource::eNone);
     pitchModAmount2->showBipolarValues(isUnipolar(osc.pitchModSrc2.getStep()));
 
-    widthModAmount1->setEnabled(osc.shapeModSrc1.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount1->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc1.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
     widthModAmount1->showBipolarValues(isUnipolar(osc.shapeModSrc1.getStep()));
-    widthModAmount2->setEnabled(osc.shapeModSrc2.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
+    widthModAmount2->setEnabled((static_cast<int>(onOffSwitch->getValue()) == 1) && osc.shapeModSrc2.getStep() != eModSource::eNone && osc.waveForm.getStep() != eOscWaves::eOscNoise);
     widthModAmount2->showBipolarValues(isUnipolar(osc.shapeModSrc2.getStep()));
 }
 

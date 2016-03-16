@@ -13,7 +13,7 @@ namespace BinaryData
     const int            world_of_water_ttfSize = 83900;
 
     extern const char*   infoScreen_png;
-    const int            infoScreen_pngSize = 49781;
+    const int            infoScreen_pngSize = 46272;
 
     extern const char*   QUL_Logo_png;
     const int            QUL_Logo_pngSize = 82009;
@@ -46,13 +46,13 @@ namespace BinaryData
     const int            recordCutoff_pngSize = 491;
 
     extern const char*   seqRandom_png;
-    const int            seqRandom_pngSize = 335;
+    const int            seqRandom_pngSize = 374;
 
     extern const char*   seqSequential_png;
-    const int            seqSequential_pngSize = 266;
+    const int            seqSequential_pngSize = 300;
 
     extern const char*   seqUpDown_png;
-    const int            seqUpDown_pngSize = 300;
+    const int            seqUpDown_pngSize = 319;
 
     extern const char*   SynisterLogo_block_png;
     const int            SynisterLogo_block_pngSize = 3499;

@@ -78,14 +78,6 @@ PluginAudioProcessor::PluginAudioProcessor()
 
     addParameter(new HostParam<ParamStepped<eOnOffToggle>>(clippingActivation));
     addParameter(new HostParam<Param>(clippingFactor));
-    
-    addParameter(new HostParam<ParamStepped<eSectionState>>(oscSection));
-    addParameter(new HostParam<ParamStepped<eSectionState>>(envSection));
-    addParameter(new HostParam<ParamStepped<eSectionState>>(lfoSection));
-    addParameter(new HostParam<ParamStepped<eSectionState>>(filterSection));
-    addParameter(new HostParam<ParamStepped<eSectionState>>(fxSection));
-    addParameter(new HostParam<ParamStepped<eSectionState>>(seqSection));
-
 
     positionInfo[0].resetToDefault();
     positionInfo[1].resetToDefault();

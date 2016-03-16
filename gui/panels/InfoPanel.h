@@ -53,10 +53,13 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    Time today;
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<HyperlinkButton> hyperlinkButton;
+    ScopedPointer<Label> versionLabel;
+    ScopedPointer<Label> dateLabel;
     ScopedPointer<Drawable> drawable1;
 
 

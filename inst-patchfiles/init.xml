@@ -22,7 +22,7 @@
   <osc1OSCShapeModSrc2 value="0"/>
   <osc1OSCGainModAmount1 value="57"/>
   <osc1OSCGainModAmount2 value="48"/>
-  <osc1GainModSrc1 value="0"/>
+  <osc1GainModSrc1 value="4"/>
   <osc1GainModSrc2 value="0"/>
   <osc1Activation value="1"/>
   <osc2fine value="0"/>

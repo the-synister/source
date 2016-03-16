@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2015
-Project("{AB2999AD-D830-4CF2-E868-F8D669A52DB7}") = "plugin", "plugin.vcxproj", "{4B9D69C4-9E05-08A8-7553-64F62E413FDE}"
+Project("{F0BF4DAF-CC72-CD47-C14E-F81D67CEC009}") = "synister", "synister.vcxproj", "{4B9D69C4-9E05-08A8-7553-64F62E413FDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
