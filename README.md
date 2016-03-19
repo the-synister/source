@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+[![Github All Releases](https://img.shields.io/github/downloads/the-synister/the-source/total.svg)]()
 
 [![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)]()
 
