@@ -1,6 +1,6 @@
 # Synister - the Source
 
-Currently in closed beta!
+First release is out! 
 
 ## What is Synister?
 
