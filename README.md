@@ -1,6 +1,8 @@
+[![Github All Releases](https://img.shields.io/github/downloads/the-synister/the-source/total.svg)]() [![GitHub release](https://img.shields.io/github/release/the-synister/the-source.svg)]()
+
 # Synister - the Source
 
-Currently in closed beta!
+First [release](https://github.com/the-synister/the-source/releases) is out! 
 
 ## What is Synister?
 
