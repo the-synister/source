@@ -1,6 +1,6 @@
 [![Github All Releases](https://img.shields.io/github/downloads/the-synister/the-source/total.svg)]()
 
-[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)]()
+[![GitHub release](https://img.shields.io/github/release/the-synister/the-source/rubidium.svg)]()
 
 # Synister - the Source
 
