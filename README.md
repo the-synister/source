@@ -1,3 +1,7 @@
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+
+[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)]()
+
 # Synister - the Source
 
 First [release](https://github.com/the-synister/the-source/releases) is out! 
