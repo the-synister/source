@@ -4,6 +4,8 @@
 
 First [release](https://github.com/the-synister/the-source/releases) is out! 
 
+## What is Synister?
+
 Synister is a substractive software synthesizer made by students of the TU Berlin. Downloads include a standalone version (PC/Mac) and VST2 Plugins (Windows 32/64bit) (OSX 64bit) for use in Digital Audio Workstations (DAWs). Synister has been tested on the following DAWs: Logic, Ableton Live, Cubase and Maschine and on Windows 7, 8, 10 and OSX El Captain.
 
 ### Features
