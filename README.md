@@ -1,6 +1,4 @@
-[![Github All Releases](https://img.shields.io/github/downloads/the-synister/the-source/total.svg)]()
-
-[![GitHub release](https://img.shields.io/github/release/the-synister/the-source.svg)]()
+[![Github All Releases](https://img.shields.io/github/downloads/the-synister/the-source/total.svg)]() [![GitHub release](https://img.shields.io/github/release/the-synister/the-source.svg)]()
 
 # Synister - the Source
 
