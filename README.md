@@ -1,6 +1,6 @@
 # Synister - the Source
 
-First release is out! 
+First [release](https://github.com/the-synister/the-source/releases) is out! 
 
 ## What is Synister?
 
