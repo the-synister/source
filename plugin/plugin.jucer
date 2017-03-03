@@ -193,12 +193,34 @@
         <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </VS2015>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile/x64">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="synister"
-                       headerPath="../../../gui&#10;../../../audio/inc"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="synister"
-                       headerPath="../../../gui&#10;../../../audio/inc"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="synister_x64"
+                       headerPath="../../../../gui&#10;../../../../audio/inc"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="synister_x64"
+                       headerPath="../../../../gui&#10;../../../../audio/inc"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile/x32">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="synister_x32"
+                       linuxArchitecture="-m32" headerPath="../../../../gui&#10;../../../../audio/inc"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="synister_x32"
+                       linuxArchitecture="-m32" headerPath="../../../../gui&#10;../../../../audio/inc"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
