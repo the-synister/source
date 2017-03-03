@@ -11,7 +11,7 @@
 #ifndef ENVELOPE_H_INCLUDED
 #define ENVELOPE_H_INCLUDED
 
-#include "Synthparams.h"
+#include "SynthParams.h"
 #include "Param.h"
 
 //! Envelope Class: Envelope
