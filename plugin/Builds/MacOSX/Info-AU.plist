@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist>
+  <dict>
+    <key>CFBundleExecutable</key>
+    <string>${EXECUTABLE_NAME}</string>
+    <key>CFBundleIconFile</key>
+    <string>Icon.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleName</key>
+    <string>synister</string>
+    <key>CFBundleDisplayName</key>
+    <string>synister</string>
+    <key>CFBundlePackageType</key>
+    <string>BNDL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.2</string>
+    <key>CFBundleVersion</key>
+    <string>1.0.2</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>QU Lab, TU Berlin</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>AudioComponents</key>
+    <array>
+      <dict>
+        <key>name</key>
+        <string>qu.tu-berlin.de: synister</string>
+        <key>description</key>
+        <string>synister</string>
+        <key>factoryFunction</key>
+        <string>pluginAUFactory</string>
+        <key>manufacturer</key>
+        <string>Bitq</string>
+        <key>type</key>
+        <string>aumu</string>
+        <key>subtype</key>
+        <string>MiSp</string>
+        <key>version</key>
+        <integer>65538</integer>
+      </dict>
+    </array>
+  </dict>
+</plist>

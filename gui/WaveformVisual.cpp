@@ -14,10 +14,10 @@ void WaveformVisual::paint(Graphics &g)
 	//grid.startNewSubPath(0.0f, static_cast<float>(getHeight()/2));
 	//grid.lineTo(width, static_cast<float>(getHeight() / 2));
 
-	grid.addLineSegment(Line< float >::Line(0.f, static_cast<float>(getHeight() / 2), width, static_cast<float>(getHeight() / 2)), 1.f);
-	grid.addLineSegment(Line< float >::Line(static_cast<float>(width / 2), 0, static_cast<float>(width / 2), static_cast<float>(getHeight())), 1.f);
-	grid.addLineSegment(Line< float >::Line(static_cast<float>(width / 4), 0, static_cast<float>(width / 4), static_cast<float>(getHeight())), 1.f);
-	grid.addLineSegment(Line< float >::Line(static_cast<float>(width * 3 / 4), 0, static_cast<float>(width * 3 / 4), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >(0.f, static_cast<float>(getHeight() / 2), width, static_cast<float>(getHeight() / 2)), 1.f);
+	grid.addLineSegment(Line< float >(static_cast<float>(width / 2), 0, static_cast<float>(width / 2), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >(static_cast<float>(width / 4), 0, static_cast<float>(width / 4), static_cast<float>(getHeight())), 1.f);
+	grid.addLineSegment(Line< float >(static_cast<float>(width * 3 / 4), 0, static_cast<float>(width * 3 / 4), static_cast<float>(getHeight())), 1.f);
 
 	g.setColour(SynthParams::oscColour);
 	g.setOpacity(.4f);
